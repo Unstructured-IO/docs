@@ -1,0 +1,69 @@
+---
+title: Table Extraction from PDF 
+description: This section describes two methods for extracting tables from PDF files.
+---
+
+<Note>
+
+To extract tables from any documents, set the `strategy` parameter to `hi_res` for both methods below.
+</Note>
+
+## Method 1: Using partition\_pdf
+
+To extract the tables from PDF files using the [partition\_pdf](https://unstructured-io.github.io/unstructured/core/partition.html#partition-pdf), set the `infer_table_structure` parameter to `True` and `strategy` parameter to `hi_res`.
+
+**Usage**
+
+```python
+from unstructured.partition.pdf import partition_pdf
+
+fname = "example-docs/layout-parser-paper.pdf"
+
+elements = partition_pdf(filename=fname,
+                         infer_table_structure=True,
+                         strategy='hi_res',
+           )
+
+tables = [el for el in elements if el.category == "Table"]
+
+print(tables[0].text)
+print(tables[0].metadata.text_as_html)
+
+```
+
+
+## Method 2: Using Auto Partition or Unstructured API
+
+By default, table extraction from all file types is enabled. To extract tables from PDFs and images using [Auto Partition](https://unstructured-io.github.io/unstructured/core/partition.html#partition) or [Unstructured API parameters](/api-reference/api-services/api-parameters) simply set `strategy` parameter to `hi_res`.
+
+**Usage: Auto Partition**
+
+```python
+from unstructured.partition.auto import partition
+
+filename = "example-docs/layout-parser-paper.pdf"
+
+elements = partition(filename=filename,
+                     strategy='hi_res',
+           )
+
+tables = [el for el in elements if el.category == "Table"]
+
+print(tables[0].text)
+print(tables[0].metadata.text_as_html)
+
+```
+
+
+**Usage: API Parameters**
+
+```bash
+curl -X 'POST' \
+    'https://api.unstructured.io/general/v0/general' \
+    -H 'accept: application/json' \
+    -H 'Content-Type: multipart/form-data' \
+    -F 'files=@sample-docs/layout-parser-paper-with-table.jpg' \
+    -F 'strategy=hi_res' \
+    | jq -C . | less -R
+
+```

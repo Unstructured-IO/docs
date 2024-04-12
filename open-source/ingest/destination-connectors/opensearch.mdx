@@ -1,0 +1,272 @@
+# OpenSearch - Unstructured 0.13.0 documentation
+Toggle table of contents sidebar
+
+Batch process all your records using `unstructured-ingest` to store structured outputs locally on your filesystem and upload those local files to an OpenSearch index.
+
+First you’ll need to install OpenSearch dependencies as shown here.
+
+```bash
+pip install "unstructured[opensearch]"
+
+```
+
+
+## Run Locally
+
+The upstream connector can be any of the ones supported, but for convenience here, showing a sample command using the upstream local connector.
+
+<CodeGroup>
+    ```bash Shell
+    #!/usr/bin/env bash
+    
+    EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
+    
+    unstructured-ingest \
+      local \
+      --input-path example-docs/book-war-and-peace-1225p.txt \
+      --output-dir local-output-to-opensearch \
+      --strategy fast \
+      --chunk-elements \
+      --embedding-provider "$EMBEDDING_PROVIDER" \
+      --num-processes 4 \
+      --verbose \
+      opensearch \
+      --hosts "$OPENSEARCH_HOSTS" \
+      --username "$OPENSEARCH_USERNAME" \
+      --password "$OPENSEARCH_PASSWORD" \
+      --index-name "$OPENSEARCH_INDEX_NAME" \
+      --num-processes 2
+    
+    ```
+    
+    ```python Python 
+    import os
+    
+    from unstructured.ingest.connector.elasticsearch import (
+        ElasticsearchWriteConfig,
+    )
+    from unstructured.ingest.connector.local import SimpleLocalConfig
+    from unstructured.ingest.connector.opensearch import (
+        OpenSearchAccessConfig,
+        SimpleOpenSearchConfig,
+    )
+    from unstructured.ingest.interfaces import (
+        ChunkingConfig,
+        EmbeddingConfig,
+        PartitionConfig,
+        ProcessorConfig,
+        ReadConfig,
+    )
+    from unstructured.ingest.runner import LocalRunner
+    from unstructured.ingest.runner.writers.base_writer import Writer
+    from unstructured.ingest.runner.writers.opensearch import (
+        OpenSearchWriter,
+    )
+    
+    
+    def get_writer() -> Writer:
+        return OpenSearchWriter(
+            connector_config=SimpleOpenSearchConfig(
+                access_config=OpenSearchAccessConfig(
+                    hosts=os.getenv("OPENSEARCH_HOSTS"),
+                    username=os.getenv("OPENSEARCH_USERNAME"),
+                    password=os.getenv("OPENSEARCH_PASSWORD"),
+                ),
+                index_name=os.getenv("OPENSEARCH_INDEX_NAME"),
+            ),
+            write_config=ElasticsearchWriteConfig(
+                batch_size_bytes=15_000_000,
+                num_processes=2,
+            ),
+        )
+    
+    
+    if __name__ == "__main__":
+        writer = get_writer()
+        runner = LocalRunner(
+            processor_config=ProcessorConfig(
+                verbose=True,
+                output_dir="local-output-to-opensearch",
+                num_processes=2,
+            ),
+            connector_config=SimpleLocalConfig(
+                input_path="example-docs/book-war-and-peace-1225p.txt",
+            ),
+            read_config=ReadConfig(),
+            partition_config=PartitionConfig(),
+            chunking_config=ChunkingConfig(chunk_elements=True),
+            embedding_config=EmbeddingConfig(
+                provider="langchain-huggingface",
+            ),
+            writer=writer,
+            writer_kwargs={},
+        )
+        runner.run()
+    ```
+    
+</CodeGroup>
+
+
+For a full list of the options the CLI accepts check `unstructured-ingest <upstream connector> opensearch --help`.
+
+NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/installation/overview).
+
+## Vector Search Sample Mapping
+
+To make sure the schema of the index matches the data being written to it, a sample mapping json can be used.
+
+```json Object description
+  1 {"settings": {
+  2    "index": {
+  3      "knn": true,
+  4      "knn.algo_param.ef_search": 100
+  5   }
+  6  },
+  7   "mappings": {
+  8      "properties": {
+  9         "element_id": {
+ 10            "type": "keyword"
+ 11         },
+ 12         "text": {
+ 13            "type": "text",
+ 14            "analyzer": "english"
+ 15         },
+ 16         "type": {
+ 17            "type": "text"
+ 18         },
+ 19         "embeddings": {
+ 20            "type": "knn_vector",
+ 21            "dimension": 384
+ 22         },
+ 23         "metadata": {
+ 24            "type": "object",
+ 25            "properties": {
+ 26               "category_depth": {
+ 27                  "type": "integer"
+ 28               },
+ 29               "parent_id": {
+ 30                  "type": "keyword"
+ 31               },
+ 32               "attached_to_filename": {
+ 33                  "type": "keyword"
+ 34               },
+ 35               "filetype": {
+ 36                  "type": "keyword"
+ 37               },
+ 38               "last_modified": {
+ 39                  "type": "date"
+ 40               },
+ 41               "file_directory": {
+ 42                  "type": "keyword"
+ 43               },
+ 44               "filename": {
+ 45                  "type": "keyword"
+ 46               },
+ 47               "data_source": {
+ 48                  "type": "object",
+ 49                  "properties": {
+ 50                     "url": {
+ 51                        "type": "text",
+ 52                        "analyzer": "standard"
+ 53                     },
+ 54                     "version": {
+ 55                        "type": "keyword"
+ 56                     },
+ 57                     "date_created": {
+ 58                        "type": "date"
+ 59                     },
+ 60                     "date_modified": {
+ 61                        "type": "date"
+ 62                     },
+ 63                     "date_processed": {
+ 64                        "type": "date"
+ 65                     },
+ 66                     "record_locator": {
+ 67                        "type": "keyword"
+ 68                     },
+ 69                     "permissions_data": {
+ 70                        "type": "object"
+ 71                     }
+ 72                  }
+ 73               },
+ 74               "coordinates": {
+ 75                  "type": "object",
+ 76                  "properties": {
+ 77                     "system": {
+ 78                        "type": "keyword"
+ 79                     },
+ 80                     "layout_width": {
+ 81                        "type": "float"
+ 82                     },
+ 83                     "layout_height": {
+ 84                        "type": "float"
+ 85                     },
+ 86                     "points": {
+ 87                        "type": "float"
+ 88                     }
+ 89                  }
+ 90               },
+ 91               "languages": {
+ 92                  "type": "keyword"
+ 93               },
+ 94               "page_number": {
+ 95                  "type": "integer"
+ 96               },
+ 97               "page_name": {
+ 98                  "type": "keyword"
+ 99               },
+100               "url": {
+101                  "type": "text",
+102                  "analyzer": "standard"
+103               },
+104               "links": {
+105                  "type": "object"
+106               },
+107               "link_urls": {
+108                  "type": "text"
+109               },
+110               "link_texts": {
+111                  "type": "text"
+112               },
+113               "sent_from": {
+114                  "type": "text",
+115                  "analyzer": "standard"
+116               },
+117               "sent_to": {
+118                  "type": "text",
+119                  "analyzer": "standard"
+120               },
+121               "subject": {
+122                  "type": "text",
+123                  "analyzer": "standard"
+124               },
+125               "section": {
+126                  "type": "text",
+127                  "analyzer": "standard"
+128               },
+129               "header_footer_type": {
+130                  "type": "keyword"
+131               },
+132               "emphasized_text_contents": {
+133                  "type": "text"
+134               },
+135               "emphasized_text_tags": {
+136                  "type": "keyword"
+137               },
+138               "text_as_html": {
+139                  "type": "text",
+140                  "analyzer": "standard"
+141               },
+142               "regex_metadata": {
+143                  "type": "object"
+144               },
+145               "detection_class_prob": {
+146                  "type": "float"
+147               }
+148            }
+149         }
+150      }
+151   }
+152}
+
+```

@@ -1,0 +1,65 @@
+---
+title: MongoDB 
+description: Batch process all your records using `unstructured-ingest` to store structured outputs locally on your filesystem and upload those local files to an MongoDB collection.
+---
+
+First you’ll need to install the MongoDB dependencies as shown here.
+
+```bash
+pip install "unstructured[mongodb]"
+```
+
+
+## Run Locally
+The upstream connector can be any of the ones supported, but for convenience here, showing a sample command using the upstream local connector.
+
+<CodeGroup>
+    ```bash Shell
+    #!/usr/bin/env bash
+    
+    unstructured-ingest \
+      mongodb \
+      --metadata-exclude filename,file_directory,metadata.data_source.date_processed \
+      --uri "<MongoDB uri>" \
+      --database "<MongoDB Database Name>" \
+      --collection "<MongoDB Collection name>" \
+      --output-dir mongodb-ingest-output \
+      --num-processes 2
+    
+    ```
+    
+    ```python Python 
+    import os
+
+from unstructured.ingest.connector.mongodb import (
+    SimpleMongoDBConfig,
+)
+from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
+from unstructured.ingest.runner import MongoDBRunner
+
+if __name__ == "__main__":
+    runner = MongoDBRunner(
+        processor_config=ProcessorConfig(
+            verbose=True,
+            output_dir="mongodb-ingest-output",
+            num_processes=2,
+        ),
+        read_config=ReadConfig(),
+        partition_config=PartitionConfig(
+            metadata_exclude=["filename", "file_directory", "metadata.data_source.date_processed"],
+        ),
+        connector_config=SimpleMongoDBConfig(
+            uri=os.getenv("MONGODB_URI"),
+            database=os.getenv("MONGODB_DATABASE_NAME"),
+            collection=os.getenv("DESTINATION_MONGO_COLLECTION"),
+        ),
+    )
+    runner.run()
+    ```
+</CodeGroup>
+
+
+
+For a full list of the options the CLI accepts check `unstructured-ingest <upstream connector> mongodb --help`.
+
+NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/installation/overview).

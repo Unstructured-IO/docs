@@ -1,0 +1,219 @@
+---
+title: SQL 
+description: Batch process all your records using `unstructured-ingest` to store structured outputs locally on your filesystem and upload those local files to a PostgreSQL or SQLite schema.
+---
+
+Insert query is currently limited to append.
+
+First you’ll need to install the sql dependencies as shown here if you are using PostgreSQL.
+
+```bash
+pip install "unstructured[postgres]"
+
+```
+
+
+## Run Locally
+
+The upstream connector can be any of the ones supported, but for convenience here, showing a sample command using the upstream local connector.
+
+<CodeGroup>
+    ```bash Shell
+    #!/usr/bin/env bash
+    
+    unstructured-ingest \
+      local \
+      --input-path example-docs/fake-memo.pdf \
+      --anonymous \
+      --output-dir local-output-to-mongo \
+      --num-processes 2 \
+      --verbose \
+      --strategy fast \
+      sql \
+      --db-type postgresql \
+      --username postgres \
+      --password test \
+      --host localhost \
+      --port 5432 \
+      --database elements
+    
+    ```
+    
+    ```python Python 
+    import os
+    
+    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
+    from unstructured.ingest.runner import LocalRunner
+    
+    if __name__ == "__main__":
+        runner = LocalRunner(
+            processor_config=ProcessorConfig(
+                verbose=True,
+                output_dir="local-output-to-postgres",
+                num_processes=2,
+            ),
+            read_config=ReadConfig(),
+            partition_config=PartitionConfig(),
+            writer_type="sql",
+            writer_kwargs={
+                "db_type": os.getenv("DB_TYPE"),
+                "username": os.getenv("USERNAME"),
+                "password": os.getenv("DB_PASSWORD"),
+                "host": os.getenv("DB_HOST"),
+                "port": os.getenv("DB_PORT"),
+                "database": os.getenv("DB_DATABASE"),
+            },
+        )
+        runner.run(
+            input_path="example-docs/fake-memo.pdf",
+        )
+    ```
+</CodeGroup>
+
+
+
+For a full list of the options the CLI accepts check `unstructured-ingest <upstream connector> sql --help`.
+
+NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/installation/overview).
+
+## Sample Index Schema
+
+To make sure the schema of the index matches the data being written to it, a sample schema json can be used.
+
+<CodeGroup>
+    ```sql PostgreSQL
+     1CREATE TABLE elements (
+     2    id UUID PRIMARY KEY,
+     3    element_id VARCHAR,
+     4    text TEXT,
+     5    embeddings DECIMAL [],
+     6    type VARCHAR,
+     7    system VARCHAR,
+     8    layout_width DECIMAL,
+     9    layout_height DECIMAL,
+    10    points TEXT,
+    11    url TEXT,
+    12    version VARCHAR,
+    13    date_created TIMESTAMPTZ,
+    14    date_modified TIMESTAMPTZ,
+    15    date_processed TIMESTAMPTZ,
+    16    permissions_data TEXT,
+    17    record_locator TEXT,
+    18    category_depth INTEGER,
+    19    parent_id VARCHAR,
+    20    attached_filename VARCHAR,
+    21    filetype VARCHAR,
+    22    last_modified TIMESTAMPTZ,
+    23    file_directory VARCHAR,
+    24    filename VARCHAR,
+    25    languages VARCHAR [],
+    26    page_number VARCHAR,
+    27    links TEXT,
+    28    page_name VARCHAR,
+    29    link_urls VARCHAR [],
+    30    link_texts VARCHAR [],
+    31    sent_from VARCHAR [],
+    32    sent_to VARCHAR [],
+    33    subject VARCHAR,
+    34    section VARCHAR,
+    35    header_footer_type VARCHAR,
+    36    emphasized_text_contents VARCHAR [],
+    37    emphasized_text_tags VARCHAR [],
+    38    text_as_html TEXT,
+    39    regex_metadata TEXT,
+    40    detection_class_prob DECIMAL
+    41);
+    
+    ```
+    
+    ```sql PostgreSQL with pgvector 
+    CREATE EXTENSION vector;
+    
+    CREATE TABLE elements (
+        id UUID PRIMARY KEY,
+        element_id VARCHAR,
+        text TEXT,
+        embeddings vector(384),
+        type VARCHAR,
+        system VARCHAR,
+        layout_width DECIMAL,
+        layout_height DECIMAL,
+        points TEXT,
+        url TEXT,
+        version VARCHAR,
+        date_created TIMESTAMPTZ,
+        date_modified TIMESTAMPTZ,
+        date_processed TIMESTAMPTZ,
+        permissions_data TEXT,
+        record_locator TEXT,
+        category_depth INTEGER,
+        parent_id VARCHAR,
+        attached_filename VARCHAR,
+        filetype VARCHAR,
+        last_modified TIMESTAMPTZ,
+        file_directory VARCHAR,
+        filename VARCHAR,
+        languages VARCHAR [],
+        page_number VARCHAR,
+        links TEXT,
+        page_name VARCHAR,
+        link_urls VARCHAR [],
+        link_texts VARCHAR [],
+        sent_from VARCHAR [],
+        sent_to VARCHAR [],
+        subject VARCHAR,
+        section VARCHAR,
+        header_footer_type VARCHAR,
+        emphasized_text_contents VARCHAR [],
+        emphasized_text_tags VARCHAR [],
+        text_as_html TEXT,
+        regex_metadata TEXT,
+        detection_class_prob DECIMAL
+    );
+    ```
+    
+    
+    ```sql Sqlite
+    CREATE TABLE elements (
+        id TEXT PRIMARY KEY,
+        element_id TEXT,
+        text TEXT,
+        embeddings TEXT,
+        type TEXT,
+        system TEXT,
+        layout_width REAL,
+        layout_height REAL,
+        points TEXT,
+        url TEXT,
+        version TEXT,
+        date_created TEXT,
+        date_modified TEXT,
+        date_processed TEXT,
+        permissions_data TEXT,
+        record_locator TEXT,
+        category_depth INTEGER,
+        parent_id TEXT,
+        attached_filename TEXT,
+        filetype TEXT,
+        last_modified TEXT,
+        file_directory TEXT,
+        filename TEXT,
+        languages TEXT,
+        page_number TEXT,
+        links TEXT,
+        page_name TEXT,
+        link_urls TEXT,
+        link_texts TEXT,
+        sent_from TEXT,
+        sent_to TEXT,
+        subject TEXT,
+        section TEXT,
+        header_footer_type TEXT,
+        emphasized_text_contents TEXT,
+        emphasized_text_tags TEXT,
+        text_as_html TEXT,
+        regex_metadata TEXT,
+        detection_class_prob DECIMAL
+    );
+    ```
+</CodeGroup>

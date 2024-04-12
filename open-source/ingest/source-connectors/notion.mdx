@@ -1,0 +1,118 @@
+---
+title: Notion 
+description: Connect Airtable to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to store structured outputs locally on your filesystem.
+---
+
+First you’ll need to install the Notion dependencies as shown here.
+
+```bash
+pip install "unstructured[notion]"
+```
+
+
+## Run Locally
+
+<CodeGroup>
+    ```bash Shell
+    #!/usr/bin/env bash
+    
+    unstructured-ingest \
+      notion \
+      --api-key "<Notion api key>" \
+      --output-dir notion-ingest-output \
+      --page-ids "<Comma delimited list of page ids to process>" \
+      --database-ids "<Comma delimited list of database ids to process>" \
+      --num-processes 2 \
+      --verbose
+    
+    ```
+    
+    ```python Python 
+from unstructured.ingest.connector.notion.connector import NotionAccessConfig, SimpleNotionConfig
+from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
+from unstructured.ingest.runner import NotionRunner
+
+if __name__ == "__main__":
+    runner = NotionRunner(
+        processor_config=ProcessorConfig(
+            verbose=True,
+            output_dir="notion-ingest-output",
+            num_processes=2,
+        ),
+        read_config=ReadConfig(),
+        partition_config=PartitionConfig(),
+        connector_config=SimpleNotionConfig(
+            access_config=NotionAccessConfig(
+                notion_api_key="POPULATE API KEY",
+            ),
+            page_ids=["LIST", "OF", "PAGE", "IDS"],
+            database_ids=["LIST", "OF", "DATABASE", "IDS"],
+            recursive=False,
+        ),
+    )
+    runner.run()
+    ```
+</CodeGroup>
+
+
+
+## Run via the API
+
+You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
+
+<CodeGroup>
+    ```bash Shell
+    #!/usr/bin/env bash
+    
+    unstructured-ingest \
+      notion \
+      --api-key "<Notion api key>" \
+      --output-dir notion-ingest-output \
+      --page-ids "<Comma delimited list of page ids to process>" \
+      --database-ids "<Comma delimited list of database ids to process>" \
+      --num-processes 2 \
+      --verbose \
+      --partition-by-api \
+      --api-key "<UNSTRUCTURED-API-KEY>"
+    
+    ```
+    
+    ```python Python 
+import os
+
+from unstructured.ingest.connector.notion.connector import NotionAccessConfig, SimpleNotionConfig
+from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
+from unstructured.ingest.runner import NotionRunner
+
+if __name__ == "__main__":
+    runner = NotionRunner(
+        processor_config=ProcessorConfig(
+            verbose=True,
+            output_dir="notion-ingest-output",
+            num_processes=2,
+        ),
+        read_config=ReadConfig(),
+        partition_config=PartitionConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+        ),
+        connector_config=SimpleNotionConfig(
+            access_config=NotionAccessConfig(
+                notion_api_key="POPULATE API KEY",
+            ),
+            page_ids=["LIST", "OF", "PAGE", "IDS"],
+            database_ids=["LIST", "OF", "DATABASE", "IDS"],
+            recursive=False,
+        ),
+    )
+    runner.run()    
+    ```
+</CodeGroup>
+
+
+
+Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
+
+For a full list of the options the CLI accepts check `unstructured-ingest notion --help`.
+
+NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/installation/overview).

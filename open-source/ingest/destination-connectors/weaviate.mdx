@@ -1,0 +1,531 @@
+---
+title: Weaviate 
+description: Batch process all your records using `unstructured-ingest` to store structured outputs locally on your filesystem and upload those local files to a Weaviate collection.
+---
+
+First you’ll need to install the weaviate dependencies as shown here.
+
+```bash
+pip install "unstructured[weaviate]"
+
+```
+
+
+## Run Locally
+
+The upstream connector can be any of the ones supported, but for convenience here, showing a sample command using the upstream local connector. This will push elements into a collection schema of your choice into a weaviate instance running locally.
+
+<CodeGroup>
+    ```bash Shell
+    #!/usr/bin/env bash
+    
+    EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
+    
+    unstructured-ingest \
+      local \
+      --input-path example-docs/book-war-and-peace-1225p.txt \
+      --output-dir local-output-to-weaviate \
+      --strategy fast \
+      --chunk-elements \
+      --embedding-provider "$EMBEDDING_PROVIDER" \
+      --num-processes 2 \
+      --verbose \
+      --strategy fast \
+      weaviate \
+      --host-url http://localhost:8080 \
+      --class-name elements
+    
+    ```
+    
+    
+    ```python Python 
+    from unstructured.ingest.connector.local import SimpleLocalConfig
+    from unstructured.ingest.connector.weaviate import (
+        SimpleWeaviateConfig,
+        WeaviateAccessConfig,
+        WeaviateWriteConfig,
+    )
+    from unstructured.ingest.interfaces import (
+        ChunkingConfig,
+        EmbeddingConfig,
+        PartitionConfig,
+        ProcessorConfig,
+        ReadConfig,
+    )
+    from unstructured.ingest.runner import LocalRunner
+    from unstructured.ingest.runner.writers.base_writer import Writer
+    from unstructured.ingest.runner.writers.weaviate import (
+        WeaviateWriter,
+    )
+    
+    
+    def get_writer() -> Writer:
+        return WeaviateWriter(
+            connector_config=SimpleWeaviateConfig(
+                access_config=WeaviateAccessConfig(),
+                host_url="http://localhost:8080",
+                class_name="elements",
+            ),
+            write_config=WeaviateWriteConfig(),
+        )
+    
+    
+    if __name__ == "__main__":
+        writer = get_writer()
+        runner = LocalRunner(
+            processor_config=ProcessorConfig(
+                verbose=True,
+                output_dir="local-output-to-weaviate",
+                num_processes=2,
+            ),
+            connector_config=SimpleLocalConfig(
+                input_path="example-docs/book-war-and-peace-1225p.txt",
+            ),
+            read_config=ReadConfig(),
+            partition_config=PartitionConfig(),
+            chunking_config=ChunkingConfig(chunk_elements=True),
+            embedding_config=EmbeddingConfig(
+                provider="langchain-huggingface",
+            ),
+            writer=writer,
+            writer_kwargs={},
+        )
+        runner.run()
+    ```
+</CodeGroup>
+
+
+For a full list of the options the CLI accepts check `unstructured-ingest <upstream connector> weaviate --help`.
+
+NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/installation/overview).
+
+## Sample Index Schema
+
+To make sure the schema of the index matches the data being written to it, a sample schema json can be used:
+
+```json Object description
+  1{
+  2    "class": "Elements",
+  3    "invertedIndexConfig": {
+  4        "bm25": {
+  5            "b": 0.75,
+  6            "k1": 1.2
+  7        },
+  8        "cleanupIntervalSeconds": 60,
+  9        "stopwords": {
+ 10            "additions": null,
+ 11            "preset": "en",
+ 12            "removals": null
+ 13        }
+ 14    },
+ 15    "multiTenancyConfig": {
+ 16        "enabled": false
+ 17    },
+ 18    "properties": [
+ 19        {
+ 20            "dataType": [
+ 21                "text"
+ 22            ],
+ 23            "indexFilterable": true,
+ 24            "indexSearchable": true,
+ 25            "name": "element_id",
+ 26            "tokenization": "word"
+ 27        },
+ 28        {
+ 29            "dataType": [
+ 30                "text"
+ 31            ],
+ 32            "indexFilterable": true,
+ 33            "indexSearchable": true,
+ 34            "name": "text",
+ 35            "tokenization": "word"
+ 36        },
+ 37        {
+ 38            "dataType": [
+ 39                "text"
+ 40            ],
+ 41            "indexFilterable": true,
+ 42            "indexSearchable": true,
+ 43            "name": "type",
+ 44            "tokenization": "word"
+ 45        },
+ 46        {
+ 47            "dataType": [
+ 48                "object"
+ 49            ],
+ 50            "indexFilterable": true,
+ 51            "indexSearchable": false,
+ 52            "name": "metadata",
+ 53            "nestedProperties": [
+ 54                {
+ 55                    "dataType": [
+ 56                        "int"
+ 57                    ],
+ 58                    "indexFilterable": true,
+ 59                    "indexSearchable": false,
+ 60                    "name": "category_depth"
+ 61                },
+ 62                {
+ 63                    "dataType": [
+ 64                        "text"
+ 65                    ],
+ 66                    "indexFilterable": true,
+ 67                    "indexSearchable": true,
+ 68                    "name": "parent_id",
+ 69                    "tokenization": "word"
+ 70                },
+ 71                {
+ 72                    "dataType": [
+ 73                        "text"
+ 74                    ],
+ 75                    "indexFilterable": true,
+ 76                    "indexSearchable": true,
+ 77                    "name": "attached_to_filename",
+ 78                    "tokenization": "word"
+ 79                },
+ 80                {
+ 81                    "dataType": [
+ 82                        "text"
+ 83                    ],
+ 84                    "indexFilterable": true,
+ 85                    "indexSearchable": true,
+ 86                    "name": "filetype",
+ 87                    "tokenization": "word"
+ 88                },
+ 89                {
+ 90                    "dataType": [
+ 91                        "date"
+ 92                    ],
+ 93                    "indexFilterable": true,
+ 94                    "indexSearchable": false,
+ 95                    "name": "last_modified"
+ 96                },
+ 97                {
+ 98                    "dataType": [
+ 99                        "text"
+100                    ],
+101                    "indexFilterable": true,
+102                    "indexSearchable": true,
+103                    "name": "file_directory",
+104                    "tokenization": "word"
+105                },
+106                {
+107                    "dataType": [
+108                        "text"
+109                    ],
+110                    "indexFilterable": true,
+111                    "indexSearchable": true,
+112                    "name": "filename",
+113                    "tokenization": "word"
+114                },
+115                {
+116                    "dataType": [
+117                        "object"
+118                    ],
+119                    "indexFilterable": true,
+120                    "indexSearchable": false,
+121                    "name": "data_source",
+122                    "nestedProperties": [
+123                        {
+124                            "dataType": [
+125                                "text"
+126                            ],
+127                            "indexFilterable": true,
+128                            "indexSearchable": true,
+129                            "name": "url",
+130                            "tokenization": "word"
+131                        },
+132                        {
+133                            "dataType": [
+134                                "text"
+135                            ],
+136                            "indexFilterable": true,
+137                            "indexSearchable": true,
+138                            "name": "version",
+139                            "tokenization": "word"
+140                        },
+141                        {
+142                            "dataType": [
+143                                "date"
+144                            ],
+145                            "indexFilterable": true,
+146                            "indexSearchable": false,
+147                            "name": "date_created"
+148                        },
+149                        {
+150                            "dataType": [
+151                                "date"
+152                            ],
+153                            "indexFilterable": true,
+154                            "indexSearchable": false,
+155                            "name": "date_modified"
+156                        },
+157                        {
+158                            "dataType": [
+159                                "date"
+160                            ],
+161                            "indexFilterable": true,
+162                            "indexSearchable": false,
+163                            "name": "date_processed"
+164                        },
+165                        {
+166                            "dataType": [
+167                                "text"
+168                            ],
+169                            "indexFilterable": true,
+170                            "indexSearchable": true,
+171                            "name": "record_locator",
+172                            "tokenization": "word"
+173                        },
+174                        {
+175                            "dataType": [
+176                                "text"
+177                            ],
+178                            "indexFilterable": true,
+179                            "indexSearchable": true,
+180                            "name": "permissions_data",
+181                            "tokenization": "word"
+182                        }
+183
+184                    ]
+185                },
+186                {
+187                    "dataType": [
+188                        "object"
+189                    ],
+190                    "indexFilterable": true,
+191                    "indexSearchable": false,
+192                    "name": "coordinates",
+193                    "nestedProperties": [
+194                        {
+195                            "dataType": [
+196                                "text"
+197                            ],
+198                            "indexFilterable": true,
+199                            "indexSearchable": true,
+200                            "name": "system",
+201                            "tokenization": "word"
+202                        },
+203                        {
+204                            "dataType": [
+205                                "number"
+206                            ],
+207                            "indexFilterable": true,
+208                            "indexSearchable": false,
+209                            "name": "layout_width"
+210                        },
+211                        {
+212                            "dataType": [
+213                                "number"
+214                            ],
+215                            "indexFilterable": true,
+216                            "indexSearchable": false,
+217                            "name": "layout_height"
+218                        },
+219                        {
+220                            "dataType": [
+221                                "text"
+222                            ],
+223                            "indexFilterable": true,
+224                            "indexSearchable": true,
+225                            "name": "points",
+226                            "tokenization": "word"
+227                        }
+228                    ]
+229                },
+230                {
+231                    "dataType": [
+232                        "text[]"
+233                    ],
+234                    "indexFilterable": true,
+235                    "indexSearchable": true,
+236                    "name": "languages",
+237                    "tokenization": "word"
+238                },
+239                {
+240                    "dataType": [
+241                        "text"
+242                    ],
+243                    "indexFilterable": true,
+244                    "indexSearchable": false,
+245                    "name": "page_number"
+246                },
+247                {
+248                    "dataType": [
+249                        "text"
+250                    ],
+251                    "indexFilterable": true,
+252                    "indexSearchable": true,
+253                    "name": "page_name",
+254                    "tokenization": "word"
+255                },
+256                {
+257                    "dataType": [
+258                        "text"
+259                    ],
+260                    "indexFilterable": true,
+261                    "indexSearchable": true,
+262                    "name": "url",
+263                    "tokenization": "word"
+264                },
+265                {
+266                    "dataType": [
+267                        "text"
+268                    ],
+269                    "indexFilterable": true,
+270                    "indexSearchable": true,
+271                    "name": "links",
+272                    "tokenization": "word"
+273                },
+274                {
+275                    "dataType": [
+276                        "text[]"
+277                    ],
+278                    "indexFilterable": true,
+279                    "indexSearchable": true,
+280                    "name": "link_urls",
+281                    "tokenization": "word"
+282                },
+283                {
+284                    "dataType": [
+285                        "text[]"
+286                    ],
+287                    "indexFilterable": true,
+288                    "indexSearchable": true,
+289                    "name": "link_texts",
+290                    "tokenization": "word"
+291                },
+292                {
+293                    "dataType": [
+294                        "text"
+295                    ],
+296                    "indexFilterable": true,
+297                    "indexSearchable": true,
+298                    "name": "sent_from",
+299                    "tokenization": "word"
+300                },
+301                {
+302                    "dataType": [
+303                        "text"
+304                    ],
+305                    "indexFilterable": true,
+306                    "indexSearchable": true,
+307                    "name": "sent_to",
+308                    "tokenization": "word"
+309                },
+310                {
+311                    "dataType": [
+312                        "text"
+313                    ],
+314                    "indexFilterable": true,
+315                    "indexSearchable": true,
+316                    "name": "subject",
+317                    "tokenization": "word"
+318                },
+319                {
+320                    "dataType": [
+321                        "text"
+322                    ],
+323                    "indexFilterable": true,
+324                    "indexSearchable": true,
+325                    "name": "section",
+326                    "tokenization": "word"
+327                },
+328                {
+329                    "dataType": [
+330                        "text"
+331                    ],
+332                    "indexFilterable": true,
+333                    "indexSearchable": true,
+334                    "name": "header_footer_type",
+335                    "tokenization": "word"
+336                },
+337                {
+338                    "dataType": [
+339                        "text[]"
+340                    ],
+341                    "indexFilterable": true,
+342                    "indexSearchable": true,
+343                    "name": "emphasized_text_contents",
+344                    "tokenization": "word"
+345                },
+346                {
+347                    "dataType": [
+348                        "text[]"
+349                    ],
+350                    "indexFilterable": true,
+351                    "indexSearchable": true,
+352                    "name": "emphasized_text_tags",
+353                    "tokenization": "word"
+354                },
+355                {
+356                    "dataType": [
+357                        "text"
+358                    ],
+359                    "indexFilterable": true,
+360                    "indexSearchable": true,
+361                    "name": "text_as_html",
+362                    "tokenization": "word"
+363                },
+364                {
+365                    "dataType": [
+366                        "text"
+367                    ],
+368                    "indexFilterable": true,
+369                    "indexSearchable": true,
+370                    "name": "regex_metadata",
+371                    "tokenization": "word"
+372                },
+373                {
+374                    "dataType": [
+375                        "number"
+376                    ],
+377                    "indexFilterable": true,
+378                    "indexSearchable": false,
+379                    "name": "detection_class_prob"
+380                }
+381            ]
+382        }
+383    ],
+384    "replicationConfig": {
+385        "factor": 1
+386    },
+387    "shardingConfig": {
+388        "virtualPerPhysical": 128,
+389        "desiredCount": 1,
+390        "actualCount": 1,
+391        "desiredVirtualCount": 128,
+392        "actualVirtualCount": 128,
+393        "key": "_id",
+394        "strategy": "hash",
+395        "function": "murmur3"
+396    },
+397    "vectorIndexConfig": {
+398        "skip": false,
+399        "cleanupIntervalSeconds": 300,
+400        "maxConnections": 64,
+401        "efConstruction": 128,
+402        "ef": -1,
+403        "dynamicEfMin": 100,
+404        "dynamicEfMax": 500,
+405        "dynamicEfFactor": 8,
+406        "vectorCacheMaxObjects": 1000000000000,
+407        "flatSearchCutoff": 40000,
+408        "distance": "cosine",
+409        "pq": {
+410            "enabled": false,
+411            "bitCompression": false,
+412            "segments": 0,
+413            "centroids": 256,
+414            "trainingLimit": 100000,
+415            "encoder": {
+416                "type": "kmeans",
+417                "distribution": "log-normal"
+418            }
+419        }
+420    },
+421    "vectorIndexType": "hnsw",
+422    "vectorizer": "none"
+423}
+
+```

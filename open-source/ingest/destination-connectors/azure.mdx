@@ -1,0 +1,98 @@
+---
+title: Azure 
+description: Batch process all your records using `unstructured-ingest` to store structured outputs locally on your filesystem and upload those local files to an Azure bucket.
+---
+
+First you’ll need to install the Azure dependencies as shown here.
+
+```bash
+pip install "unstructured[azure]"
+
+```
+
+
+## Run Locally
+
+The upstream connector can be any of the ones supported, but for convenience here, showing a sample command using the upstream local connector.
+
+<CodeGroup>
+    ```bash Shell
+    #!/usr/bin/env bash
+    
+    EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
+    
+    unstructured-ingest \
+      local \
+      --input-path example-docs/book-war-and-peace-1225p.txt \
+      --output-dir local-output-to-azure \
+      --strategy fast \
+      --chunk-elements \
+      --embedding-provider "$EMBEDDING_PROVIDER" \
+      --num-processes 2 \
+      --verbose \
+      azure \
+      --account-name azureunstructured1 \
+      --remote-url "<your destination path here, ie 'az://unstructured/war-and-peace-output'>"
+    
+    ```
+    
+    ```python Python 
+    from unstructured.ingest.connector.fsspec.azure import (
+        AzureAccessConfig,
+        AzureWriteConfig,
+        SimpleAzureBlobStorageConfig,
+    )
+    from unstructured.ingest.connector.local import SimpleLocalConfig
+    from unstructured.ingest.interfaces import (
+        ChunkingConfig,
+        EmbeddingConfig,
+        PartitionConfig,
+        ProcessorConfig,
+        ReadConfig,
+    )
+    from unstructured.ingest.runner import LocalRunner
+    from unstructured.ingest.runner.writers.base_writer import Writer
+    from unstructured.ingest.runner.writers.fsspec.azure import (
+        AzureWriter,
+    )
+    
+    
+    def get_writer() -> Writer:
+        return AzureWriter(
+            connector_config=SimpleAzureBlobStorageConfig(
+                access_config=AzureAccessConfig(account_name="azureunstructured1"),
+                remote_url="az://unstructured/war-and-peace-output",
+            ),
+            write_config=AzureWriteConfig(),
+        )
+    
+    
+    if __name__ == "__main__":
+        writer = get_writer()
+        runner = LocalRunner(
+            processor_config=ProcessorConfig(
+                verbose=True,
+                output_dir="local-output-to-azure",
+                num_processes=2,
+            ),
+            connector_config=SimpleLocalConfig(
+                input_path="example-docs/book-war-and-peace-1225p.txt",
+            ),
+            read_config=ReadConfig(),
+            partition_config=PartitionConfig(),
+            chunking_config=ChunkingConfig(chunk_elements=True),
+            embedding_config=EmbeddingConfig(
+                provider="langchain-huggingface",
+            ),
+            writer=writer,
+            writer_kwargs={},
+        )
+        runner.run()
+    ```
+    
+</CodeGroup>
+
+
+For a full list of the options the CLI accepts check `unstructured-ingest <upstream connector> azure --help`.
+
+NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/installation/overview).

@@ -1,0 +1,105 @@
+---
+title: Chroma 
+description: Batch process all your records using `unstructured-ingest` to store structured outputs locally on your filesystem and upload those to a Chroma database.
+---
+
+First you’ll need to install the Chroma dependencies as shown here.
+
+```bash
+pip install "unstructured[chroma]"
+
+```
+
+
+## Run Locally
+
+The upstream connector can be any of the ones supported, but for convenience here, showing a sample command using the upstream local connector.
+
+<CodeGroup>
+    ```bash Shell
+    #!/usr/bin/env bash
+    
+    unstructured-ingest \
+      local \
+      --input-path example-docs/book-war-and-peace-1p.txt \
+      --output-dir local-to-chroma \
+      --strategy fast \
+      --chunk-elements \
+      --embedding-provider "<unstructured embedding provider, ie. langchain-huggingface>" \
+      --num-processes 2 \
+      --verbose \
+      --work-dir "<directory for intermediate outputs to be saved>" \
+      chroma \
+      --host "localhost" \
+      --port 8000 \
+      --collection-name "collection name" \
+      --tenant "default_tenant" \
+      --database "default_database" \
+      --batch-size 80
+    
+    ```
+    
+    ```python Python 
+    from unstructured.ingest.connector.chroma import (
+        ChromaAccessConfig,
+        ChromaWriteConfig,
+        SimpleChromaConfig,
+    )
+    from unstructured.ingest.connector.local import SimpleLocalConfig
+    from unstructured.ingest.interfaces import (
+        ChunkingConfig,
+        EmbeddingConfig,
+        PartitionConfig,
+        ProcessorConfig,
+        ReadConfig,
+    )
+    from unstructured.ingest.runner import LocalRunner
+    from unstructured.ingest.runner.writers.base_writer import Writer
+    from unstructured.ingest.runner.writers.chroma import (
+        ChromaWriter,
+    )
+    
+    
+    def get_writer() -> Writer:
+        return ChromaWriter(
+            connector_config=SimpleChromaConfig(
+                access_config=ChromaAccessConfig(),
+                host="localhost",
+                port=8000,
+                collection_name="elements",
+                tenant="default_tenant",
+                database="default_database",
+            ),
+            write_config=ChromaWriteConfig(),
+        )
+    
+    
+    if __name__ == "__main__":
+        writer = get_writer()
+        runner = LocalRunner(
+            processor_config=ProcessorConfig(
+                verbose=True,
+                output_dir="local-output-to-chroma",
+                num_processes=2,
+            ),
+            connector_config=SimpleLocalConfig(
+                input_path="example-docs/book-war-and-peace-1225p.txt",
+            ),
+            read_config=ReadConfig(),
+            partition_config=PartitionConfig(),
+            chunking_config=ChunkingConfig(chunk_elements=True),
+            embedding_config=EmbeddingConfig(
+                provider="langchain-huggingface",
+            ),
+            writer=writer,
+            writer_kwargs={},
+        )
+        runner.run()
+    ```
+    
+</CodeGroup>
+
+
+For a full list of the options the CLI accepts check `unstructured-ingest <upstream connector> chroma --help`.
+
+NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/installation/overview).
