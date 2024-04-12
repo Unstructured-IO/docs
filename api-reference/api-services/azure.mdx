@@ -1,0 +1,135 @@
+---
+title: Azure Marketplace Deployment Guide
+---
+
+## Introduction
+
+This guide provides step-by-step instructions for deploying a service on Azure using the Azure Marketplace.
+
+<Steps>
+    <Step title=" Login to Azure Portal">
+        **URL**: [https://portal.azure.com](https://portal.azure.com/).
+    </Step>
+    <Step title="Access Azure Marketplace">
+        Navigate to the Azure Marketplace using [this URL](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/unstructured1691024866136.customer_api_v1?tab=Overview/).
+
+        ![Azure Marketplace](https://unstructured-io.github.io/unstructured/_images/Azure_Step2.png)
+    </Step>
+    <Step title="Start Deployment Process">
+*   Click the **Get it Now** button and fill out the form.
+    
+*   Read the Terms and click **Continue**.
+    
+*   Click **Create** button.
+    
+
+![Deployment Process](https://unstructured-io.github.io/unstructured/_images/Azure_Step3.png)
+        
+    </Step>
+    <Step title=" Configure Deployment Options">
+On the **Create a virtual machine** page, go to **Basics** tab and follow the steps below.
+
+*   Project details
+    
+    *   Select **Subscription** and **Resource group** from dropdown menu.
+        
+    *   Or, you can also `Create New` resource group.
+        
+    
+
+![project details](https://unstructured-io.github.io/unstructured/_images/Azure_Step4a.png)
+
+*   Instance details
+    
+    *   Provide a name in the **Virtual machine name** field.
+        
+    *   Select a **Region** from the dropdown menu.
+        
+    *   **Image**: Select `Unstructured Customer Hosted API Hourly - x64 Gen2` (_default_)
+        
+    *   **Size**: Select VM size from dropdown menu. Refer to this page for [Azure VM comparisons](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/linux/)
+        
+    
+
+![instance details](https://unstructured-io.github.io/unstructured/_images/Azure_Step4b.png)
+
+*   Administrator account
+    
+    *   **Authentication type**: Select `Password` or `SSH public key`.
+        
+    *   Enter the `credentials`.
+        
+    
+
+![administrator account](https://unstructured-io.github.io/unstructured/_images/Azure_Step4c.png)        
+    </Step>
+    <Step title="Set Up Load Balancer">
+Before you click `Review + create` button, go to **Networking** tab and follow the steps below.
+
+*   Networking interface (required fields)
+    
+    *   **Virtual network**: Click `Create new` link or select a `Virtual network` from dropdown menu, if you have created one. Refer to [Quickstart: Use the Azure portal to create a virtual network](https://learn.microsoft.com/en-us/azure/virtual-network/quick-create-portal).
+        
+    *   **Subnet**: Click `Manage subnet configuration` link or select a subnet from dropdown menu, if you have created one. Refer to [Add, change, or delete a virtual network subnet](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-manage-subnet?tabs=azure-portal)
+        
+    *   **Configure network security group**: Click `Create new` link or select a security group from dropdown menu, if you have created one. Refer to [Create, change, or delete a network security group](https://learn.microsoft.com/en-us/azure/virtual-network/manage-network-security-group?tabs=network-security-group-portal).
+        
+    
+*   Load balancing
+    
+    *   **Load balancing option**: Select `Azure load balancer`
+        
+    *   **Select a load balancer**: If you have created a load balancer, select from dropdown menu, or click `Create a load balancer` and fill out the following fields in the pop-up window.
+        
+        *   Enter **Load balancer name**
+            
+        *   **Type**: Select `Public` or `Internal`
+            
+        *   **Protococl**: Select `TCP` or `UDP`
+            
+        *   **Port** and **Backend Port**: Set to `port 80`
+            
+        
+    
+
+![load balancer](https://unstructured-io.github.io/unstructured/_images/Azure_Step5.png)        
+    </Step>
+    <Step title="Finalize and Deploy">
+*   Click **Review + Create**.
+    
+*   Wait for validation.
+    
+*   Click **Create**.       
+
+![deployment](https://unstructured-io.github.io/unstructured/_images/Azure_Step6.png)
+
+    </Step>
+    <Step title="Post-Deployment Steps">
+*   Go to the **Virtual Machine** from Azure console.
+    
+*   Retrieve the **Load balancer public IP address**
+    
+*   The deployed endpoint is **http://\<load-balancer-public-IP-address>/general/v0/general**
+
+![retrieve public ip](https://unstructured-io.github.io/unstructured/_images/Azure_Step7.png)
+    </Step>
+    <Step title="Verification and Testing">
+*   Navigate to the public IP with the specified path for documentation and API testing.
+    
+*   Perform API testing with curl commands.
+    
+
+```bash
+curl -q -X POST http://<you-IP-address>/general/v0/general
+     -H 'accept: application/json'
+     -H 'Content-Type: multipart/form-data'
+     -F files=@<<FILENAME>>
+     -o <<PATH/OUTPUT>>.json
+
+```
+
+
+![testing](https://unstructured-io.github.io/unstructured/_images/Azure_Step8.png)        
+    </Step>        
+</Steps>
+

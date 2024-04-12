@@ -1,0 +1,117 @@
+---
+title: Google Cloud Storage 
+description: Connect Google Cloud Storage to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to store structured outputs locally on your filesystem.
+---
+
+First you’ll need to install the Google Cloud Storage dependencies as shown here.
+
+```bash
+pip install "unstructured[gcs]"
+```
+
+
+## Run Locally
+
+<CodeGroup>
+    ```bash Shell
+    #!/usr/bin/env bash
+    
+    unstructured-ingest \
+      gcs \
+      --remote-url gs://utic-test-ingest-fixtures-public/ \
+      --output-dir gcs-output \
+      --num-processes 2 \
+      --recursive \
+      --verbose
+    
+    ```
+    
+    ```python Python 
+    from unstructured.ingest.connector.fsspec.gcs import GcsAccessConfig, SimpleGcsConfig
+    from unstructured.ingest.interfaces import (
+        PartitionConfig,
+        ProcessorConfig,
+        ReadConfig,
+    )
+    from unstructured.ingest.runner import GCSRunner
+    
+    if __name__ == "__main__":
+        runner = GCSRunner(
+            processor_config=ProcessorConfig(
+                verbose=True,
+                output_dir="gcs-output",
+                num_processes=2,
+            ),
+            read_config=ReadConfig(),
+            partition_config=PartitionConfig(),
+            connector_config=SimpleGcsConfig(
+                access_config=GcsAccessConfig(),
+                remote_url="gs://utic-test-ingest-fixtures-public/",
+                recursive=True,
+            ),
+        )
+        runner.run()
+    ```
+</CodeGroup>
+
+
+## Run via the API
+
+You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
+
+<CodeGroup>
+    ```bash Shell
+    #!/usr/bin/env bash
+    
+    unstructured-ingest \
+      gcs \
+      --remote-url gs://utic-test-ingest-fixtures-public/ \
+      --output-dir gcs-output \
+      --num-processes 2 \
+      --recursive \
+      --verbose \
+      --partition-by-api \
+      --api-key "<UNSTRUCTURED-API-KEY>"
+    
+    ```
+    
+    ```python Python 
+    import os
+    
+    from unstructured.ingest.connector.fsspec.gcs import GcsAccessConfig, SimpleGcsConfig
+    from unstructured.ingest.interfaces import (
+        PartitionConfig,
+        ProcessorConfig,
+        ReadConfig,
+    )
+    from unstructured.ingest.runner import GCSRunner
+    
+    if __name__ == "__main__":
+        runner = GCSRunner(
+            processor_config=ProcessorConfig(
+                verbose=True,
+                output_dir="gcs-output",
+                num_processes=2,
+            ),
+            read_config=ReadConfig(),
+            partition_config=PartitionConfig(
+                partition_by_api=True,
+                api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            ),
+            connector_config=SimpleGcsConfig(
+                access_config=GcsAccessConfig(),
+                remote_url="gs://utic-test-ingest-fixtures-public/",
+                recursive=True,
+            ),
+        )
+        runner.run()
+    ```
+    
+</CodeGroup>
+
+
+Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
+
+For a full list of the options the CLI accepts check `unstructured-ingest gcs --help`.
+
+NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/installation/overview).

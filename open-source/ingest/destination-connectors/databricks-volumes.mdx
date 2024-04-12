@@ -1,0 +1,107 @@
+---
+title: Databricks Volumes
+description: Batch process all your records using `unstructured-ingest` to store structured outputs locally on your filesystem and upload those local files to a Databricks Volume.
+---
+
+First you’ll need to install the Databricks Volume dependencies as shown here.
+
+```bash
+pip install "unstructured[databricks-volumes]"
+
+```
+
+
+## Run Locally
+
+The upstream connector can be any of the ones supported, but for convenience here, showing a sample command using the upstream local connector.
+
+<CodeGroup>
+    ```bash Shell
+    #!/usr/bin/env bash
+    
+    unstructured-ingest \
+      local \
+      --input-path example-docs/book-war-and-peace-1p.txt \
+      --output-dir local-to-databricks-volume \
+      --strategy fast \
+      --chunk-elements \
+      --embedding-provider "<unstructured embedding provider, ie. langchain-huggingface>" \
+      --num-processes 2 \
+      --verbose \
+      --work-dir "<directory for intermediate outputs to be saved>" \
+      databricks-volumes \
+      --host "$DATABRICKS_HOST" \
+      --username "$DATABRICKS_USERNAME" \
+      --password "$DATABRICKS_PASSWORD" \
+      --volume "$DATABRICKS_VOLUME" \
+      --catalog "$DATABRICKS_CATALOG"
+    
+    ```
+    
+    ```python Python 
+    import os
+    
+    from unstructured.ingest.connector.databricks_volumes import (
+        DatabricksVolumesAccessConfig,
+        DatabricksVolumesWriteConfig,
+        SimpleDatabricksVolumesConfig,
+    )
+    from unstructured.ingest.connector.local import SimpleLocalConfig
+    from unstructured.ingest.interfaces import (
+        ChunkingConfig,
+        EmbeddingConfig,
+        PartitionConfig,
+        ProcessorConfig,
+        ReadConfig,
+    )
+    from unstructured.ingest.runner import LocalRunner
+    from unstructured.ingest.runner.writers.base_writer import Writer
+    from unstructured.ingest.runner.writers.databricks_volumes import (
+        DatabricksVolumesWriter,
+    )
+    
+    
+    def get_writer() -> Writer:
+        return DatabricksVolumesWriter(
+            connector_config=SimpleDatabricksVolumesConfig(
+                host=os.getenv("DATABRICKS_HOST"),
+                access_config=DatabricksVolumesAccessConfig(
+                    username=os.getenv("DATABRICKS_USERNAME"), password=os.getenv("DATABRICKS_PASSWORD")
+                ),
+            ),
+            write_config=DatabricksVolumesWriteConfig(
+                catalog=os.getenv("DATABRICKS_CATALOG"),
+                volume=os.getenv("DATABRICKS_VOLUME"),
+            ),
+        )
+    
+    
+    if __name__ == "__main__":
+        writer = get_writer()
+        runner = LocalRunner(
+            processor_config=ProcessorConfig(
+                verbose=True,
+                output_dir="local-output-to-databricks-volumes",
+                num_processes=2,
+            ),
+            connector_config=SimpleLocalConfig(
+                input_path="example-docs/book-war-and-peace-1225p.txt",
+            ),
+            read_config=ReadConfig(),
+            partition_config=PartitionConfig(),
+            chunking_config=ChunkingConfig(chunk_elements=True),
+            embedding_config=EmbeddingConfig(
+                provider="langchain-huggingface",
+            ),
+            writer=writer,
+            writer_kwargs={},
+        )
+        runner.run()
+    ```
+</CodeGroup>
+
+
+
+For a full list of the options the CLI accepts check `unstructured-ingest <upstream connector> databricks-volumes --help`.
+
+NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/installation/overview).

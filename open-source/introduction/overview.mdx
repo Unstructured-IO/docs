@@ -1,0 +1,59 @@
+---
+title: Introduction 
+sidebarTitle: Overview
+---
+## Product Offerings
+
+### Unstructured API Services
+
+*   **Unstructured SaaS API**: A scalable, highly-optimized API service hosted on Unstructured’s infrastructure. Learn more and access the API here: [SaaS API](/api-reference/api-services/saas-api-development-guide).
+    
+*   **Azure and AWS Marketplace APIs**: Enables deployment of the Unstructured API on cloud infrastructure. Access via [Azure Marketplace](/api-reference/api-services/azure) or [AWS Marketplace](/api-reference/api-services/aws).
+    
+
+### Enterprise Platform
+
+*   **Enterprise Platform**: Scheduled for launch in early 2024, this platform is designed to offer comprehensive enterprise-grade support and solutions.
+    
+
+### Open Source Solutions
+
+*   **Unstructured Core Library**: The open-source library offering core functionalities of Unstructured. Access it at the [unstructured GitHub repository](https://github.com/Unstructured-IO/unstructured).
+    
+*   **Model Inference for Layout Parsing**: Specialized in model inference for layout parsing tasks. Explore this at the [unstructured-inference GitHub repository](https://github.com/Unstructured-IO/unstructured-inference).
+    
+*   **Self Hosting API**: Offers an API for self-hosting purposes. More details can be found at the [unstructured-api GitHub repository](https://github.com/Unstructured-IO/unstructured-api).
+    
+
+## Key Features
+
+*   **Precise Document Extraction**: Unstructured offers advanced capabilities in extracting elements and metadata from documents. This includes a variety of document element types and metadata. Learn more about [Document Elements](https://unstructured-io.github.io/unstructured/introduction/getting_started.html#elements) and [Metadata](/metadata).
+    
+*   **Extensive File Support**: The platform supports a wide array of file types, ensuring versatility in handling different document formats from PDF, Images, HTML, and many more. Detailed information on supported file types can be found [here](/api-reference/api-services/overview#supported-file-types).
+    
+*   **Robust Core Functionality**: Unstructured provides a suite of core functionalities critical for efficient data processing. This includes:
+    
+    *   [Partitioning](/core-functionality/partitioning): The partitioning functions in Unstructured enable the extraction of structured content from raw, unstructured documents. This feature is crucial for transforming unorganized data into usable formats, aiding in efficient data processing and analysis.
+        
+    *   [Cleaning](/core-functionality/cleaning): Data preparation for NLP models often requires cleaning to ensure quality. The Unstructured library includes cleaning functions that assist in sanitizing output, removing unwanted content, and improving the performance of NLP models. This step is essential for maintaining the integrity of data before it is passed to downstream applications.
+        
+    *   [Extracting](/core-functionality/extracting): This functionality allows for the extraction of specific entities within documents. It is designed to identify and isolate relevant pieces of information, making it easier for users to focus on the most pertinent data in their documents.
+        
+    *   [Staging](/core-functionality/staging): Staging functions help prepare your data for ingestion into downstream systems. Please note that this functionality is being deprecated in favor of `Destination Connectors`.
+        
+    *   [Chunking](/core-functionality/chunking): The chunking process in Unstructured is distinct from conventional methods. Instead of relying solely on text-based features to form chunks, Unstructured uses a deep understanding of document formats to partition documents into semantic units (document elements).
+        
+    *   [Embedding](/core-functionality/chunking): The embedding encoder classes in Unstructured leverage document elements detected through partitioning or grouped via chunking to obtain embeddings for each element. This is particularly useful for applications like Retrieval Augmented Generation (RAG), where precise and contextually relevant embeddings are crucial.
+        
+*   **High-performant Connectors**: The platform includes optimized connectors for efficient data ingestion and output. These comprise [Source Connectors](/ingest/destination-connectors/overview) for data input and [Destination Connectors](/ingest/destination-connectors/overview) for data export.
+    
+
+## Common Use Cases
+
+*   Pretraining Models
+    
+*   Fine-tuning Models
+    
+*   Retrieval Augmented Generation (RAG)
+    
+*   Traditional ETL

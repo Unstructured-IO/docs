@@ -1,0 +1,45 @@
+---
+ttile: Sharepoint 
+description: This page contains the information to ingest your documents from Sharepoint sites.
+---
+
+## Prerequisites
+
+*   Sharepoint Site URL
+    
+*   Client ID and Client Credential with access to the Sharepoint instance
+    
+
+For more information, please refer to [Sharepoint Online documentation](https://docs.microsoft.com/en-us/sharepoint/dev/).
+
+## Step-by-Step Guide
+
+![Source Connector Sharepoint](https://unstructured-io.github.io/unstructured/_images/Source-Sharepoint.png)
+
+1.  **Access the Create Source Page**. Navigate to the “Sources” section on the left sidebar and click the “New Source” button.
+    
+2.  **Select Source Type**. Select **Sharepoint** from the `Type` dropdown menu.
+    
+3.  **Configure Source Details to connect to Sharepoint**
+    
+<Note>
+*   `Name` (_required_): Enter a unique name for the Sharepoint source connector.
+    
+*   `Client ID` (_required_): Input the Client ID provided by Sharepoint for app registration.
+    
+*   `Client Credential` (_required_): Enter the Client Credential (secret or certificate) associated with the Client ID.
+    
+*   `Site URL` (_required_): Provide the base URL of the Sharepoint site you wish to connect to.
+    
+*   `Path` (_required_): Specify the path from which to start parsing files. Default is “Shared Documents”.
+</Note> 
+
+4.  **Additional Settings**
+    
+<Note>
+*   Check `Recursive` if you want the platform to recursively ingest data from sub-folders within the specified path.
+    
+*   Check `Files Only` if you want the platform to ingest files without considering the folder structure.
+</Note>  
+
+5.  **Submit**. After filling in the necessary information, click ‘Submit’ to create the Source Connector. The newly completed Sharepoint connector will be listed on the Sources dashboard.
