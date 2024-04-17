@@ -42,7 +42,7 @@ mv $f $f.mdx
 done
 
 for f in *.sh
-do sed -i '1i```shell\' $f
+do sed -i '1i```bash\' $f
 sed -i '$ a ```' $f
 mv $f $f.mdx
 done
@@ -57,7 +57,7 @@ mv $f $f.mdx
 done
 
 for f in *.sh
-do sed -i '1i```shell\' $f
+do sed -i '1i```bash\' $f
 sed -i '$ a ```' $f
 mv $f $f.mdx
 done
