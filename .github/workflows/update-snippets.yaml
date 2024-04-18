@@ -1,7 +1,9 @@
 name: Generate Snippets
 'on':
-  push:
   workflow_dispatch: null
+  schedule:
+    - cron: '30 0 * * *'  # Runs at 00:30 AM UTC every day
+
 jobs:
   generate-snippets:
     runs-on: ubuntu-latest
