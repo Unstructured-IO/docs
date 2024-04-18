@@ -1,59 +1,75 @@
 #!/usr/bin/env bash
 
-# This script downloads the .py and .sh code from the open source repo
-# Then it converts the code to markdown files
+# Expects paths for the destination and source directories.
+# Example usage: ./make_mdx.sh /Users/potter/dest ./src
 
-# Requres two ABSOLUTE paths to the final destination and source directories
-# ex: ./make_mdx.sh /Users/potter/dest /Users/potter/src
+if [ $# -ne 2 ]; then
+    echo "Error: Two paths (destination and source) are required."
+    echo "Usage: $0 <destination_directory> <source_directory>"
+    exit 1
+fi
 
-# make temp directory
-WORK_DIR=$(mktemp -d) 
+# Convert relative paths to absolute paths and ensure they are valid
+DEST_TARGET_DIR=$(realpath --relative-to=. "$1" 2>/dev/null || echo "$1")
+SRC_TARGET_DIR=$(realpath --relative-to=. "$2" 2>/dev/null || echo "$2")
 
-PY_DEST_REPO="docs/source/ingest/destination_connectors/code/python/"
-SH_DEST_REPO="docs/source/ingest/destination_connectors/code/bash/"
-DEST_TARGET_DIR=$1 # first argument to script
-PY_SRC_REPO="docs/source/ingest/source_connectors/code/python/"
-SH_SRC_REPO="docs/source/ingest/source_connectors/code/bash/"
-SRC_TARGET_DIR=$2 # second argument to script
+# Create the directories if they do not exist
+mkdir -p "${DEST_TARGET_DIR}"
+mkdir -p "${SRC_TARGET_DIR}"
 
-# Clone the correct directories in the open source repo
-cd "$WORK_DIR"
-git init
-git remote add -f origin https://github.com/Unstructured-IO/unstructured
-git config core.sparseCheckout true
-echo "$PY_DEST_REPO" >> .git/info/sparse-checkout
-echo "$SH_DEST_REPO" >> .git/info/sparse-checkout
-echo "$PY_SRC_REPO" >> .git/info/sparse-checkout
-echo "$SH_SRC_REPO" >> .git/info/sparse-checkout
-git pull origin main
+# Normalize the paths to absolute paths again after creation
+DEST_TARGET_DIR=$(realpath "$DEST_TARGET_DIR")
+SRC_TARGET_DIR=$(realpath "$SRC_TARGET_DIR")
 
-cp -R "$WORK_DIR/$PY_DEST_REPO/." "$DEST_TARGET_DIR/"
-cp -R "$WORK_DIR/$SH_DEST_REPO/." "$DEST_TARGET_DIR/"
-cp -R "$WORK_DIR/$PY_SRC_REPO/." "$SRC_TARGET_DIR/"
-cp -R "$WORK_DIR/$SH_SRC_REPO/." "$SRC_TARGET_DIR/"
+# Ensure directories end with a slash
+[[ "${DEST_TARGET_DIR}" != */ ]] && DEST_TARGET_DIR="${DEST_TARGET_DIR}/"
+[[ "${SRC_TARGET_DIR}" != */ ]] && SRC_TARGET_DIR="${SRC_TARGET_DIR}/"
 
-function to_mdx() {
-    for f in *.py
-    do sed -i '1i```python\' $f
-    sed -i '$ a ```' $f
-    mv $f $f.mdx
-    done
+echo "Working with DEST_TARGET_DIR=${DEST_TARGET_DIR}"
+echo "Working with SRC_TARGET_DIR=${SRC_TARGET_DIR}"
 
-    for f in *.sh
-    do sed -i '1i```bash\' $f
-    sed -i '$ a ```' $f
-    mv $f $f.mdx
+# Create a temporary directory for work
+WORK_DIR=$(mktemp -d)
+
+# Repository and path configurations
+REPO_URL="https://github.com/Unstructured-IO/unstructured"
+DEST_PYTHON_PATH="docs/source/ingest/destination_connectors/code/python/"
+DEST_SHELL_PATH="docs/source/ingest/destination_connectors/code/bash/"
+SRC_PYTHON_PATH="docs/source/ingest/source_connectors/code/python/"
+SRC_SHELL_PATH="docs/source/ingest/source_connectors/code/bash/"
+
+# Clone only the necessary directories using sparse-checkout
+git clone --depth 1 --filter=blob:none --sparse "${REPO_URL}" "${WORK_DIR}"
+cd "${WORK_DIR}" || exit
+git sparse-checkout set "${DEST_PYTHON_PATH}" "${DEST_SHELL_PATH}" "${SRC_PYTHON_PATH}" "${SRC_SHELL_PATH}"
+
+# Copy files to destination and source directories
+cp -R "${WORK_DIR}/${DEST_PYTHON_PATH}"* "${DEST_TARGET_DIR}"
+cp -R "${WORK_DIR}/${DEST_SHELL_PATH}"* "${DEST_TARGET_DIR}"
+cp -R "${WORK_DIR}/${SRC_PYTHON_PATH}"* "${SRC_TARGET_DIR}"
+cp -R "${WORK_DIR}/${SRC_SHELL_PATH}"* "${SRC_TARGET_DIR}"
+
+# Function to convert code files to markdown
+function convert_to_mdx() {
+    local CODE_DIR="$1"
+    cd "${CODE_DIR}" || exit
+    echo "Converting files in ${CODE_DIR}"
+    for f in *.py *.sh; do
+        if [ -f "$f" ]; then
+            local extension="${f##*.}"
+            awk 'BEGIN {print "```" extension}
+                {print}
+                END {print "```"}' extension="$extension" "$f" > "${f}.mdx"
+            mv "${f}.mdx" "$f"
+        else
+            echo "No files to convert in ${CODE_DIR}"
+        fi
     done
 }
 
-# Convert the destination_connectors to markdown
-cd "$DEST_TARGET_DIR"
-to_mdx
+convert_to_mdx "${DEST_TARGET_DIR}"
+convert_to_mdx "${SRC_TARGET_DIR}"
 
-# Convert the source_connectors to markdown
-cd "$SRC_TARGET_DIR"
-to_mdx
-
-rm -rf "$WORK_DIR"
-
-echo "Markdown files created in $DEST_TARGET_DIR and $SRC_TARGET_DIR"
+# Clean up the work directory
+rm -rf "${WORK_DIR}"
+echo "Markdown files created in ${DEST_TARGET_DIR} and ${SRC_TARGET_DIR}"
