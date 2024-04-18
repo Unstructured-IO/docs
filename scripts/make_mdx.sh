@@ -21,10 +21,6 @@ mkdir -p "${SRC_TARGET_DIR}"
 DEST_TARGET_DIR=$(realpath "$DEST_TARGET_DIR")
 SRC_TARGET_DIR=$(realpath "$SRC_TARGET_DIR")
 
-# Ensure directories end with a slash
-[[ "${DEST_TARGET_DIR}" != */ ]] && DEST_TARGET_DIR="${DEST_TARGET_DIR}/"
-[[ "${SRC_TARGET_DIR}" != */ ]] && SRC_TARGET_DIR="${SRC_TARGET_DIR}/"
-
 echo "Working with DEST_TARGET_DIR=${DEST_TARGET_DIR}"
 echo "Working with SRC_TARGET_DIR=${SRC_TARGET_DIR}"
 
@@ -57,24 +53,19 @@ function convert_to_mdx() {
     for f in *.py *.sh; do
         if [ -f "$f" ]; then
             local extension="${f##*.}"
-            local lang=""
-            if [ "$extension" = "py" ]; then
-                lang="python"
-            elif [ "$extension" = "sh" ]; then
-                lang="bash"
-            fi
+            local lang="${extension:0:2}"  # Simplified logic for language detection
+            lang=${lang/py/python}        # If Python, set to 'python'
+            lang=${lang/sh/bash}          # If Shell, set to 'bash'
             # Create .mdx file with correct code fences
             awk -v lang="$lang" 'BEGIN {print "```" lang}
                 {print}
                 END {print "```"}' "$f" > "${f}.mdx"
-            rm "$f"
+            rm "$f"  # Remove the original file
         else
             echo "No files to convert in ${CODE_DIR}"
         fi
     done
 }
-
-
 
 convert_to_mdx "${DEST_TARGET_DIR}"
 convert_to_mdx "${SRC_TARGET_DIR}"
