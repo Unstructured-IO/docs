@@ -63,15 +63,18 @@ function convert_to_mdx() {
             elif [ "$extension" = "sh" ]; then
                 lang="bash"
             fi
+            # Create .mdx file with correct code fences
             awk -v lang="$lang" 'BEGIN {print "```" lang}
                 {print}
                 END {print "```"}' "$f" > "${f}.mdx"
-            mv "${f}.mdx" "$f"
+            rm "$f"
         else
             echo "No files to convert in ${CODE_DIR}"
         fi
     done
 }
+
+
 
 convert_to_mdx "${DEST_TARGET_DIR}"
 convert_to_mdx "${SRC_TARGET_DIR}"
