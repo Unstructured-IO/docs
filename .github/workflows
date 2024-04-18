@@ -13,7 +13,7 @@ jobs:
   generate-snippets:
     - name: Generate Snippets
       run: |
-        ./scripts/make_mdx.sh
+        ./scripts/make_mdx.sh snippets/destination_connectors snippets/source_connectors
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v5
       with:
