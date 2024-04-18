@@ -5,14 +5,10 @@ name: Generate Snippets
       - '*'
   workflow_dispatch: null
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
   generate-snippets:
     runs-on: ubuntu-latest
-    needs: setup
     steps:
+        - uses: actions/checkout@v2
         - name: Generate Snippets
           run: |
             ./scripts/make_mdx.sh snippets/destination_connectors snippets/source_connectors
