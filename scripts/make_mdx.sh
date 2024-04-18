@@ -57,9 +57,15 @@ function convert_to_mdx() {
     for f in *.py *.sh; do
         if [ -f "$f" ]; then
             local extension="${f##*.}"
-            awk 'BEGIN {print "```" extension}
+            local lang=""
+            if [ "$extension" = "py" ]; then
+                lang="python"
+            elif [ "$extension" = "sh" ]; then
+                lang="bash"
+            fi
+            awk -v lang="$lang" 'BEGIN {print "```" lang}
                 {print}
-                END {print "```"}' extension="$extension" "$f" > "${f}.mdx"
+                END {print "```"}' "$f" > "${f}.mdx"
             mv "${f}.mdx" "$f"
         else
             echo "No files to convert in ${CODE_DIR}"
