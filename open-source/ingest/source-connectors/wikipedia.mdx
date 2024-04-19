@@ -13,92 +13,31 @@ pip install "unstructured[wikipedia]"
 
 ## Run Locally
 
-<CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      wikipedia \
-      --page-title "Open Source Software" \
-      --output-dir wikipedia-ingest-output \
-      --num-processes 2 \
-      --verbose
-    
-    ```
-    
-    ```python Python 
-    from unstructured.ingest.connector.wikipedia import SimpleWikipediaConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import WikipediaRunner
-    
-    if __name__ == "__main__":
-        runner = WikipediaRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="wikipedia-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(),
-            connector_config=SimpleWikipediaConfig(
-                page_title="Open Source Software",
-                auto_suggest=False,
-            ),
-        )
-        runner.run()
-    ```
-    
-</CodeGroup>
+import WikipediaSh from '/snippets/source_connectors/wikipedia.sh.mdx';
+import WikipediaPy from '/snippets/source_connectors/wikipedia.py.mdx';
 
+<CodeGroup>
+
+  <WikipediaSh />
+
+  <WikipediaPy />
+
+</CodeGroup>
 
 ## Run via the API
 
 You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
 
+import WikipediaAPISh from '/snippets/source_connectors/wikipedia_api.sh.mdx';
+import WikipediaAPIPy from '/snippets/source_connectors/wikipedia_api.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      wikipedia \
-      --page-title "Open Source Software" \
-      --output-dir wikipedia-ingest-output \
-      --num-processes 2 \
-      --verbose \
-      --partition-by-api \
-      --api-key "<UNSTRUCTURED-API-KEY>"
-    
-    ```
-    
-    ```python Python 
-    import os
-    
-    from unstructured.ingest.connector.wikipedia import SimpleWikipediaConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import WikipediaRunner
-    
-    if __name__ == "__main__":
-        runner = WikipediaRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="wikipedia-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(
-                partition_by_api=True,
-                api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            ),
-            connector_config=SimpleWikipediaConfig(
-                page_title="Open Source Software",
-                auto_suggest=False,
-            ),
-        )
-        runner.run()
-    ```
+
+  <WikipediaAPISh />
+
+  <WikipediaAPIPy />
+
 </CodeGroup>
-
-
 
 Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
 

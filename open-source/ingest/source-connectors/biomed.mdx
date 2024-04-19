@@ -13,124 +13,32 @@ pip install "unstructured[biomed]"
 
 ## Run Locally
 
+import BiomedSh from '/snippets/source_connectors/biomed.sh.mdx';
+import BiomedPy from '/snippets/source_connectors/biomed.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      biomed \
-      --path "oa_pdf/07/07/sbaa031.073.PMC7234218.pdf" \
-      --output-dir biomed-ingest-output-path \
-      --num-processes 2 \
-      --verbose \
-      --preserve-downloads
-    
-    ```
-    
-    ```python Python
-    from unstructured.ingest.connector.biomed import (
-        SimpleBiomedConfig,
-    )
-    from unstructured.ingest.interfaces import (
-        PartitionConfig,
-        ProcessorConfig,
-        ReadConfig,
-    )
-    from unstructured.ingest.runner import BiomedRunner
-    
-    if __name__ == "__main__":
-        runner = BiomedRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="azure-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(),
-            connector_config=SimpleBiomedConfig(path="oa_pdf/07/07/sbaa031.073.PMC7234218.pdf"),
-        )
-        runner.run()
-    ```  
-</CodeGroup>  
+
+  <BiomedSh />
+
+  <BiomedPy />
+
+</CodeGroup>
 
 
 ## Run via the API
 
 You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
 
+import BiomedAPISh from '/snippets/source_connectors/biomed_api.sh.mdx';
+import BiomedAPIPy from '/snippets/source_connectors/biomed_api.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      biomed \
-      --path "oa_pdf/07/07/sbaa031.073.PMC7234218.pdf" \
-      --output-dir biomed-ingest-output-path \
-      --num-processes 2 \
-      --verbose \
-      --preserve-downloads \
-      --partition-by-api \
-      --api-key "<UNSTRUCTURED-API-KEY>"
-    
-    ```
-    
-    ```Python Python
-    import os
-    
-    from unstructured.ingest.connector.biomed import (
-        SimpleBiomedConfig,
-    )
-    from unstructured.ingest.interfaces import (
-        PartitionConfig,
-        ProcessorConfig,
-        ReadConfig,
-    )
-    from unstructured.ingest.runner import BiomedRunner
-    
-    if __name__ == "__main__":
-        runner = BiomedRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="azure-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(
-                partition_by_api=True,
-                api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            ),
-            connector_config=SimpleBiomedConfig(path="oa_pdf/07/07/sbaa031.073.PMC7234218.pdf"),
-        )
-        runner.run()
-    import os
-    
-    from unstructured.ingest.connector.biomed import (
-        SimpleBiomedConfig,
-    )
-    from unstructured.ingest.interfaces import (
-        PartitionConfig,
-        ProcessorConfig,
-        ReadConfig,
-    )
-    from unstructured.ingest.runner import BiomedRunner
-    
-    if __name__ == "__main__":
-        runner = BiomedRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="azure-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(
-                partition_by_api=True,
-                api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            ),
-            connector_config=SimpleBiomedConfig(path="oa_pdf/07/07/sbaa031.073.PMC7234218.pdf"),
-        )
-        runner.run()
-    ```  
-</CodeGroup>      
+
+  <BiomedAPISh />
+
+  <BiomedAPIPy />
+
+</CodeGroup>
 
 Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
 

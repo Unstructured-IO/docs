@@ -15,90 +15,16 @@ pip install "unstructured[astra]"
 
 The upstream connector can be any of the ones supported, but for convenience here, showing a sample command using the upstream local connector.
 
-<CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
-    
-    unstructured-ingest \
-      local \
-      --input-path example-docs/book-war-and-peace-1p.txt \
-      --output-dir local-output-to-astra \
-      --strategy fast \
-      --chunk-elements \
-      --embedding-provider "$EMBEDDING_PROVIDER" \
-      --num-processes 2 \
-      --verbose \
-      astra \
-      --token "$ASTRA_DB_TOKEN" \
-      --api-endpoint "$ASTRA_DB_ENDPOINT" \
-      --collection-name "$COLLECTION_NAME" \
-      --embedding-dimension "$EMBEDDING_DIMENSION"
-    
-    ```
-    
-    ```python Python 
-    import os
-    
-    from unstructured.ingest.connector.astra import (
-        AstraAccessConfig,
-        AstraWriteConfig,
-        SimpleAstraConfig,
-    )
-    from unstructured.ingest.connector.local import SimpleLocalConfig
-    from unstructured.ingest.interfaces import (
-        ChunkingConfig,
-        EmbeddingConfig,
-        PartitionConfig,
-        ProcessorConfig,
-        ReadConfig,
-    )
-    from unstructured.ingest.runner import LocalRunner
-    from unstructured.ingest.runner.writers.astra import (
-        AstraWriter,
-    )
-    from unstructured.ingest.runner.writers.base_writer import Writer
-    
-    
-    def get_writer() -> Writer:
-        return AstraWriter(
-            connector_config=SimpleAstraConfig(
-                access_config=AstraAccessConfig(
-                    token=os.getenv("ASTRA_DB_TOKEN"), api_endpoint=os.getenv("ASTRA_DB_ENDPOINT")
-                ),
-                collection_name="test_collection",
-                embedding_dimension=384,
-            ),
-            write_config=AstraWriteConfig(batch_size=80),
-        )
-    
-    
-    if __name__ == "__main__":
-        writer = get_writer()
-        runner = LocalRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="local-output-to-astra",
-                num_processes=2,
-            ),
-            connector_config=SimpleLocalConfig(
-                input_path="example-docs/book-war-and-peace-1p.txt",
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(),
-            chunking_config=ChunkingConfig(chunk_elements=True),
-            embedding_config=EmbeddingConfig(
-                provider="langchain-huggingface",
-            ),
-            writer=writer,
-            writer_kwargs={},
-        )
-        runner.run()
-    ```
-    
-</CodeGroup>
+import AstraSh from '/snippets/destination_connectors/astra.sh.mdx';
+import AstraPy from '/snippets/destination_connectors/astra.py.mdx';
 
+<CodeGroup>
+
+  <AstraSh />
+
+  <AstraPy />
+
+</CodeGroup>
 
 For a full list of the options the CLI accepts check `unstructured-ingest <upstream connector> astra --help`.
 

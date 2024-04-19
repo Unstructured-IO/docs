@@ -12,96 +12,31 @@ pip install "unstructured[gitlab]"
 
 ## Run Locally
 
-<CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      gitlab \
-      --url https://gitlab.com/gitlab-com/content-sites/docsy-gitlab \
-      --git-branch 'v0.0.7' \
-      --output-dir gitlab-ingest-output \
-      --num-processes 2 \
-      --verbose
-    
-    ```
-    
-    ```python Python 
-    from unstructured.ingest.connector.git import GitAccessConfig
-    from unstructured.ingest.connector.gitlab import SimpleGitlabConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import GitlabRunner
-    
-    if __name__ == "__main__":
-        runner = GitlabRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="gitlab-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(),
-            connector_config=SimpleGitlabConfig(
-                url="https://gitlab.com/gitlab-com/content-sites/docsy-gitlab",
-                branch="v0.0.7",
-                access_config=GitAccessConfig(),
-            ),
-        )
-        runner.run()
-    ```
-</CodeGroup>
+import GitLabSh from '/snippets/source_connectors/gitlab.sh.mdx';
+import GitLabPy from '/snippets/source_connectors/gitlab.py.mdx';
 
+<CodeGroup>
+
+  <GitLabSh />
+
+  <GitLabPy />
+
+</CodeGroup>
 
 
 ## Run via the API
 
 You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
 
+import GitLabAPISh from '/snippets/source_connectors/gitlab_api.sh.mdx';
+import GitLabAPIPy from '/snippets/source_connectors/gitlab_api.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      gitlab \
-      --url https://gitlab.com/gitlab-com/content-sites/docsy-gitlab \
-      --git-branch 'v0.0.7' \
-      --output-dir gitlab-ingest-output \
-      --num-processes 2 \
-      --verbose \
-      --partition-by-api \
-      --api-key "<UNSTRUCTURED-API-KEY>"
-    
-    ```
-    
-    ```python Python 
-    import os
-    
-    from unstructured.ingest.connector.git import GitAccessConfig
-    from unstructured.ingest.connector.gitlab import SimpleGitlabConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import GitlabRunner
-    
-    if __name__ == "__main__":
-        runner = GitlabRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="gitlab-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(
-                partition_by_api=True,
-                api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            ),
-            connector_config=SimpleGitlabConfig(
-                url="https://gitlab.com/gitlab-com/content-sites/docsy-gitlab",
-                branch="v0.0.7",
-                access_config=GitAccessConfig(),
-            ),
-        )
-        runner.run()
-    ```
-    
+
+  <GitLabAPISh />
+
+  <GitLabAPIPy />
+
 </CodeGroup>
 
 

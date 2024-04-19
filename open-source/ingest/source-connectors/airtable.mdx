@@ -13,49 +13,15 @@ First you’ll need to install the Airtable dependencies as shown here.
 
 ## Run Locally
 
-<CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      airtable \
-      --metadata-exclude filename,file_directory,metadata.data_source.date_processed \
-      --personal-access-token "$AIRTABLE_PERSONAL_ACCESS_TOKEN" \
-      --output-dir airtable-ingest-output \
-      --num-processes 2 \
-      --reprocess
-    
-    ```
+import AirtableSh from '/snippets/source_connectors/airtable.sh.mdx';
+import AirtablePy from '/snippets/source_connectors/airtable.py.mdx';
 
-        ```python Python
-    import os
-    
-    from unstructured.ingest.connector.airtable import AirtableAccessConfig, SimpleAirtableConfig
-    from unstructured.ingest.interfaces import (
-        PartitionConfig,
-        ProcessorConfig,
-        ReadConfig,
-    )
-    from unstructured.ingest.runner import AirtableRunner
-    
-    if __name__ == "__main__":
-        runner = AirtableRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="airtable-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(),
-            connector_config=SimpleAirtableConfig(
-                access_config=AirtableAccessConfig(
-                    personal_access_token=os.getenv("AIRTABLE_PERSONAL_ACCESS_TOKEN")
-                ),
-            ),
-        )
-        runner.run()
-    ```
-    
+<CodeGroup>
+
+  <AirtableSh />
+
+  <AirtablePy />
+
 </CodeGroup>
 
 
@@ -63,53 +29,15 @@ First you’ll need to install the Airtable dependencies as shown here.
 
 You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
 
+import AirtableAPISh from '/snippets/source_connectors/airtable_api.sh.mdx';
+import AirtableAPIPy from '/snippets/source_connectors/airtable_api.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      airtable \
-      --metadata-exclude filename,file_directory,metadata.data_source.date_processed \
-      --personal-access-token "$AIRTABLE_PERSONAL_ACCESS_TOKEN" \
-      --output-dir airtable-ingest-output \
-      --num-processes 2 \
-      --reprocess \
-      --partition-by-api \
-      --api-key "<UNSTRUCTURED-API-KEY>"
-    
-    ```
-    
-        ```python Python
-        import os
-        
-        from unstructured.ingest.connector.airtable import AirtableAccessConfig, SimpleAirtableConfig
-        from unstructured.ingest.interfaces import (
-            PartitionConfig,
-            ProcessorConfig,
-            ReadConfig,
-        )
-        from unstructured.ingest.runner import AirtableRunner
-        
-        if __name__ == "__main__":
-            runner = AirtableRunner(
-                processor_config=ProcessorConfig(
-                    verbose=True,
-                    output_dir="airtable-ingest-output",
-                    num_processes=2,
-                ),
-                read_config=ReadConfig(),
-                partition_config=PartitionConfig(
-                    partition_by_api=True,
-                    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-                ),
-                connector_config=SimpleAirtableConfig(
-                    access_config=AirtableAccessConfig(
-                        personal_access_token=os.getenv("AIRTABLE_PERSONAL_ACCESS_TOKEN")
-                    ),
-                ),
-            )
-            runner.run()
-        ```
+
+  <AirtableAPISh />
+
+  <AirtableAPIPy />
+
 </CodeGroup>
 
 

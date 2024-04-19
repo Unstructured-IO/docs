@@ -15,116 +15,31 @@ pip install "unstructured[sftp]"
 
 ## Run Locally
 
+import SFTPSh from '/snippets/source_connectors/sftp.sh.mdx';
+import SFTPPy from '/snippets/source_connectors/sftp.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      sftp \
-      --remote-url sftp://address:port/upload \
-      --username foo \
-      --password bar \
-      --output-dir sftp-output \
-      --num-processes 2 \
-      --recursive \
-      --verbose
-    
-    ```
-    
-    ```python Python 
-    import os
-    
-    from unstructured.ingest.connector.fsspec.sftp import SftpAccessConfig, SimpleSftpConfig
-    from unstructured.ingest.interfaces import (
-        PartitionConfig,
-        ProcessorConfig,
-        ReadConfig,
-    )
-    from unstructured.ingest.runner import SftpRunner
-    
-    if __name__ == "__main__":
-        runner = SftpRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="sftp-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(),
-            connector_config=SimpleSftpConfig(
-                access_config=SftpAccessConfig(
-                    username=os.getenv("SFTP_USERNAME"),
-                    password=os.getenv("SFTP_PASSWORD"),
-                ),
-                remote_url="sftp://address:port/upload",
-                recursive=True,
-            ),
-        )
-        runner.run()
-    ```
+
+  <SFTPSh />
+
+  <SFTPPy />
+
 </CodeGroup>
-
-
 
 ## Run via the API
 
 You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
 
+import SFTPAPISh from '/snippets/source_connectors/sftp_api.sh.mdx';
+import SFTPAPIPy from '/snippets/source_connectors/sftp_api.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      sftp \
-      --remote-url sftp://address:port/upload \
-      --username foo \
-      --password bar \
-      --output-dir sftp-output \
-      --num-processes 2 \
-      --recursive \
-      --verbose \
-      --partition-by-api \
-      --api-key "<UNSTRUCTURED-API-KEY>"
-    
-    ```
-    
-    ```python Python 
-    import os
-    
-    from unstructured.ingest.connector.fsspec.sftp import SftpAccessConfig, SimpleSftpConfig
-    from unstructured.ingest.interfaces import (
-        PartitionConfig,
-        ProcessorConfig,
-        ReadConfig,
-    )
-    from unstructured.ingest.runner import SftpRunner
-    
-    if __name__ == "__main__":
-        runner = SftpRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="sftp-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(
-                partition_by_api=True,
-                api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            ),
-            connector_config=SimpleSftpConfig(
-                access_config=SftpAccessConfig(
-                    username=os.getenv("SFTP_USERNAME"),
-                    password=os.getenv("SFTP_PASSWORD"),
-                ),
-                remote_url="sftp://address:port/upload",
-                recursive=True,
-            ),
-        )
-        runner.run()
-    ```
+
+  <SFTPAPISh />
+
+  <SFTPAPIPy />
+
 </CodeGroup>
-
-
 
 Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
 

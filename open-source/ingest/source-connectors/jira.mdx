@@ -12,101 +12,32 @@ pip install "unstructured[jira]"
 
 ## Run Locally
 
-<CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      jira \
-      --metadata-exclude filename,file_directory,metadata.data_source.date_processed \
-      --url https://unstructured-jira-connector-test.atlassian.net \
-      --user-email 12345678@unstructured.io \
-      --api-token ABCDE1234ABDE1234ABCDE1234 \
-      --output-dir jira-ingest-output \
-      --num-processes 2
-    
-    ```
-    
-    ```python Python 
-    from unstructured.ingest.connector.jira import JiraAccessConfig, SimpleJiraConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import JiraRunner
-    
-    if __name__ == "__main__":
-        runner = JiraRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="jira-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(
-                metadata_exclude=["filename", "file_directory", "metadata.data_source.date_processed"],
-            ),
-            connector_config=SimpleJiraConfig(
-                access_config=JiraAccessConfig(api_token="ABCDE1234ABDE1234ABCDE1234"),
-                url="https://unstructured-jira-connector-test.atlassian.net",
-                user_email="12345678@unstructured.io",
-            ),
-        )
-        runner.run()
-    ```
-</CodeGroup>
+import JiraSh from '/snippets/source_connectors/jira.sh.mdx';
+import JiraPy from '/snippets/source_connectors/jira.py.mdx';
 
+<CodeGroup>
+
+  <JiraSh />
+
+  <JiraPy />
+
+</CodeGroup>
 
 
 ## Run via the API
 
 You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
 
-<CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      jira \
-      --metadata-exclude filename,file_directory,metadata.data_source.date_processed \
-      --url https://unstructured-jira-connector-test.atlassian.net \
-      --user-email 12345678@unstructured.io \
-      --api-token ABCDE1234ABDE1234ABCDE1234 \
-      --output-dir jira-ingest-output \
-      --num-processes 2 \
-      --partition-by-api \
-      --api-key "<UNSTRUCTURED-API-KEY>"
-    
-    ```
-    
-    ```python Python 
-    import os
-    
-    from unstructured.ingest.connector.jira import JiraAccessConfig, SimpleJiraConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import JiraRunner
-    
-    if __name__ == "__main__":
-        runner = JiraRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="jira-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(
-                metadata_exclude=["filename", "file_directory", "metadata.data_source.date_processed"],
-                partition_by_api=True,
-                api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            ),
-            connector_config=SimpleJiraConfig(
-                access_config=JiraAccessConfig(api_token="ABCDE1234ABDE1234ABCDE1234"),
-                url="https://unstructured-jira-connector-test.atlassian.net",
-                user_email="12345678@unstructured.io",
-            ),
-        )
-        runner.run()
-    ```
-    
-</CodeGroup>
+import JiraAPISh from '/snippets/source_connectors/jira_api.sh.mdx';
+import JiraAPIPy from '/snippets/source_connectors/jira_api.py.mdx';
 
+<CodeGroup>
+
+  <JiraAPISh />
+
+  <JiraAPIPy />
+
+</CodeGroup>
 
 Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
 

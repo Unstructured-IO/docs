@@ -13,49 +13,15 @@ pip install "unstructured[azure]"
 
 ## Run Locally
 
-<CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      azure \
-      --remote-url abfs://container1/ \
-      --account-name azureunstructured1 \
-      --output-dir azure-ingest-output \
-      --num-processes 2
-    
-    ```
-    
-    ```python Python
-    from unstructured.ingest.connector.fsspec.azure import (
-        AzureAccessConfig,
-        SimpleAzureBlobStorageConfig,
-    )
-    from unstructured.ingest.interfaces import (
-        PartitionConfig,
-        ProcessorConfig,
-        ReadConfig,
-    )
-    from unstructured.ingest.runner import AzureRunner
+import AzureSh from '/snippets/source_connectors/azure.sh.mdx';
+import AzurePy from '/snippets/source_connectors/azure.py.mdx';
 
-    if __name__ == "__main__":
-        runner = AzureRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="azure-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(),
-            connector_config=SimpleAzureBlobStorageConfig(
-                access_config=AzureAccessConfig(
-                    account_name="azureunstructured1",
-                ),
-                remote_url="abfs://container1/",
-            ),
-        )
-        runner.run()
-    ```    
+<CodeGroup>
+
+  <AzureSh />
+
+  <AzurePy />
+
 </CodeGroup>
 
 
@@ -63,57 +29,17 @@ pip install "unstructured[azure]"
 
 You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
 
+import AzureAPISh from '/snippets/source_connectors/azure_api.sh.mdx';
+import AzureAPIPy from '/snippets/source_connectors/azure_api.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      azure \
-      --remote-url abfs://container1/ \
-      --account-name azureunstructured1 \
-      --output-dir azure-ingest-output \
-      --num-processes 2 \
-      --partition-by-api \
-      --api-key "<UNSTRUCTURED-API-KEY>"
-    
-    ```
-    
-    ```python Python
-    import os
-    
-    from unstructured.ingest.connector.fsspec.azure import (
-        AzureAccessConfig,
-        SimpleAzureBlobStorageConfig,
-    )
-    from unstructured.ingest.interfaces import (
-        PartitionConfig,
-        ProcessorConfig,
-        ReadConfig,
-    )
-    from unstructured.ingest.runner import AzureRunner
-    
-    if __name__ == "__main__":
-        runner = AzureRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="azure-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(
-                partition_by_api=True,
-                api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            ),
-            connector_config=SimpleAzureBlobStorageConfig(
-                access_config=AzureAccessConfig(
-                    account_name="azureunstructured1",
-                ),
-                remote_url="abfs://container1/",
-            ),
-        )
-        runner.run()
-    ```    
+
+  <AzureAPISh />
+
+  <AzureAPIPy />
+
 </CodeGroup>
+
 
 Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
 

@@ -12,113 +12,32 @@ pip install "unstructured[reddit]"
 
 ## Run Locally
 
-<CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      reddit \
-      --subreddit-name machinelearning \
-      --client-id "<client id here>" \
-      --client-secret "<client secret here>" \
-      --user-agent "Unstructured Ingest Subreddit fetcher by \u\..." \
-      --search-query "Unstructured" \
-      --num-posts 10 \
-      --output-dir reddit-ingest-output \
-      --num-processes 2 \
-      --verbose
-    
-    ```
-    
-    ```python Python 
-    from unstructured.ingest.connector.reddit import RedditAccessConfig, SimpleRedditConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import RedditRunner
-    
-    if __name__ == "__main__":
-        runner = RedditRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="reddit-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(),
-            connector_config=SimpleRedditConfig(
-                access_config=RedditAccessConfig(
-                    client_secret="<client secret here>",
-                ),
-                subreddit_name="machinelearning",
-                client_id="<client id here>",
-                user_agent=r"Unstructured Ingest Subreddit fetcher by \\u\...",
-                search_query="Unstructured",
-                num_posts=10,
-            ),
-        )
-        runner.run()
-    ```
-</CodeGroup>
+import RedditSh from '/snippets/source_connectors/reddit.sh.mdx';
+import RedditPy from '/snippets/source_connectors/reddit.py.mdx';
 
+<CodeGroup>
+
+  <RedditSh />
+
+  <RedditPy />
+
+</CodeGroup>
 
 
 ## Run via the API
 
 You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
 
+import RedditAPISh from '/snippets/source_connectors/reddit_api.sh.mdx';
+import RedditAPIPy from '/snippets/source_connectors/reddit_api.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      reddit \
-      --subreddit-name machinelearning \
-      --client-id "<client id here>" \
-      --client-secret "<client secret here>" \
-      --user-agent "Unstructured Ingest Subreddit fetcher by \u\..." \
-      --search-query "Unstructured" \
-      --num-posts 10 \
-      --output-dir reddit-ingest-output \
-      --num-processes 2 \
-      --verbose \
-      --partition-by-api \
-      --api-key "<UNSTRUCTURED-API-KEY>"
-    
-    ```
-    
-    ```python Python 
-import os
 
-from unstructured.ingest.connector.reddit import RedditAccessConfig, SimpleRedditConfig
-from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-from unstructured.ingest.runner import RedditRunner
+  <RedditAPISh />
 
-if __name__ == "__main__":
-    runner = RedditRunner(
-        processor_config=ProcessorConfig(
-            verbose=True,
-            output_dir="reddit-ingest-output",
-            num_processes=2,
-        ),
-        read_config=ReadConfig(),
-        partition_config=PartitionConfig(
-            partition_by_api=True,
-            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-        ),
-        connector_config=SimpleRedditConfig(
-            access_config=RedditAccessConfig(
-                client_secret="<client secret here>",
-            ),
-            subreddit_name="machinelearning",
-            client_id="<client id here>",
-            user_agent=r"Unstructured Ingest Subreddit fetcher by \\u\...",
-            search_query="Unstructured",
-            num_posts=10,
-        ),
-    )
-    runner.run()    
-    ```
+  <RedditAPIPy />
+
 </CodeGroup>
-
 
 Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
 

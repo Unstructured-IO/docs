@@ -12,92 +12,30 @@ pip install "unstructured[github]"
 
 ## Run Locally
 
+import GitHubSh from '/snippets/source_connectors/github.sh.mdx';
+import GitHubPy from '/snippets/source_connectors/github.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      github \
-      --url Unstructured-IO/unstructured \
-      --git-branch main \
-      --output-dir github-ingest-output \
-      --num-processes 2 \
-      --verbose
-    
-    ```
-    
-    ```python Python 
-    from unstructured.ingest.connector.git import GitAccessConfig
-    from unstructured.ingest.connector.github import SimpleGitHubConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import GithubRunner
-    
-    if __name__ == "__main__":
-        runner = GithubRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="github-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(),
-            connector_config=SimpleGitHubConfig(
-                url="Unstructured-IO/unstructured", branch="main", access_config=GitAccessConfig()
-            ),
-        )
-        runner.run()
-    ```
+
+  <GitHubSh />
+
+  <GitHubPy />
+
 </CodeGroup>
-
-
 
 ## Run via the API
 
 You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
 
+import GitHubAPISh from '/snippets/source_connectors/github_api.sh.mdx';
+import GitHubAPIPy from '/snippets/source_connectors/github_api.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      github \
-      --url Unstructured-IO/unstructured \
-      --git-branch main \
-      --output-dir github-ingest-output \
-      --num-processes 2 \
-      --verbose \
-      --partition-by-api \
-      --api-key "<UNSTRUCTURED-API-KEY>"
-    
-    ```
-    
-    ```python Python 
-    import os
-    
-    from unstructured.ingest.connector.git import GitAccessConfig
-    from unstructured.ingest.connector.github import SimpleGitHubConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import GithubRunner
-    
-    if __name__ == "__main__":
-        runner = GithubRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="github-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(
-                partition_by_api=True,
-                api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            ),
-            connector_config=SimpleGitHubConfig(
-                url="Unstructured-IO/unstructured", branch="main", access_config=GitAccessConfig()
-            ),
-        )
-        runner.run()
-    ```
-    
+
+  <GitHubAPISh />
+
+  <GitHubAPIPy />
+
 </CodeGroup>
 
 
