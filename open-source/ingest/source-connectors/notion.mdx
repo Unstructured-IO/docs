@@ -12,104 +12,32 @@ pip install "unstructured[notion]"
 
 ## Run Locally
 
+import NotionSh from '/snippets/source_connectors/notion.sh.mdx';
+import NotionPy from '/snippets/source_connectors/notion.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      notion \
-      --api-key "<Notion api key>" \
-      --output-dir notion-ingest-output \
-      --page-ids "<Comma delimited list of page ids to process>" \
-      --database-ids "<Comma delimited list of database ids to process>" \
-      --num-processes 2 \
-      --verbose
-    
-    ```
-    
-    ```python Python 
-from unstructured.ingest.connector.notion.connector import NotionAccessConfig, SimpleNotionConfig
-from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-from unstructured.ingest.runner import NotionRunner
 
-if __name__ == "__main__":
-    runner = NotionRunner(
-        processor_config=ProcessorConfig(
-            verbose=True,
-            output_dir="notion-ingest-output",
-            num_processes=2,
-        ),
-        read_config=ReadConfig(),
-        partition_config=PartitionConfig(),
-        connector_config=SimpleNotionConfig(
-            access_config=NotionAccessConfig(
-                notion_api_key="POPULATE API KEY",
-            ),
-            page_ids=["LIST", "OF", "PAGE", "IDS"],
-            database_ids=["LIST", "OF", "DATABASE", "IDS"],
-            recursive=False,
-        ),
-    )
-    runner.run()
-    ```
+  <NotionSh />
+
+  <NotionPy />
+
 </CodeGroup>
-
 
 
 ## Run via the API
 
 You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
 
+import NotionAPISh from '/snippets/source_connectors/notion_api.sh.mdx';
+import NotionAPIPy from '/snippets/source_connectors/notion_api.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      notion \
-      --api-key "<Notion api key>" \
-      --output-dir notion-ingest-output \
-      --page-ids "<Comma delimited list of page ids to process>" \
-      --database-ids "<Comma delimited list of database ids to process>" \
-      --num-processes 2 \
-      --verbose \
-      --partition-by-api \
-      --api-key "<UNSTRUCTURED-API-KEY>"
-    
-    ```
-    
-    ```python Python 
-import os
 
-from unstructured.ingest.connector.notion.connector import NotionAccessConfig, SimpleNotionConfig
-from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-from unstructured.ingest.runner import NotionRunner
+  <NotionAPISh />
 
-if __name__ == "__main__":
-    runner = NotionRunner(
-        processor_config=ProcessorConfig(
-            verbose=True,
-            output_dir="notion-ingest-output",
-            num_processes=2,
-        ),
-        read_config=ReadConfig(),
-        partition_config=PartitionConfig(
-            partition_by_api=True,
-            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-        ),
-        connector_config=SimpleNotionConfig(
-            access_config=NotionAccessConfig(
-                notion_api_key="POPULATE API KEY",
-            ),
-            page_ids=["LIST", "OF", "PAGE", "IDS"],
-            database_ids=["LIST", "OF", "DATABASE", "IDS"],
-            recursive=False,
-        ),
-    )
-    runner.run()    
-    ```
+  <NotionAPIPy />
+
 </CodeGroup>
-
-
 
 Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
 

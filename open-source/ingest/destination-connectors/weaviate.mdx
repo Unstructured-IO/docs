@@ -15,83 +15,15 @@ pip install "unstructured[weaviate]"
 
 The upstream connector can be any of the ones supported, but for convenience here, showing a sample command using the upstream local connector. This will push elements into a collection schema of your choice into a weaviate instance running locally.
 
+import WeaviateSh from '/snippets/destination_connectors/weaviate.sh.mdx';
+import WeaviatePy from '/snippets/destination_connectors/weaviate.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
-    
-    unstructured-ingest \
-      local \
-      --input-path example-docs/book-war-and-peace-1225p.txt \
-      --output-dir local-output-to-weaviate \
-      --strategy fast \
-      --chunk-elements \
-      --embedding-provider "$EMBEDDING_PROVIDER" \
-      --num-processes 2 \
-      --verbose \
-      --strategy fast \
-      weaviate \
-      --host-url http://localhost:8080 \
-      --class-name elements
-    
-    ```
-    
-    
-    ```python Python 
-    from unstructured.ingest.connector.local import SimpleLocalConfig
-    from unstructured.ingest.connector.weaviate import (
-        SimpleWeaviateConfig,
-        WeaviateAccessConfig,
-        WeaviateWriteConfig,
-    )
-    from unstructured.ingest.interfaces import (
-        ChunkingConfig,
-        EmbeddingConfig,
-        PartitionConfig,
-        ProcessorConfig,
-        ReadConfig,
-    )
-    from unstructured.ingest.runner import LocalRunner
-    from unstructured.ingest.runner.writers.base_writer import Writer
-    from unstructured.ingest.runner.writers.weaviate import (
-        WeaviateWriter,
-    )
-    
-    
-    def get_writer() -> Writer:
-        return WeaviateWriter(
-            connector_config=SimpleWeaviateConfig(
-                access_config=WeaviateAccessConfig(),
-                host_url="http://localhost:8080",
-                class_name="elements",
-            ),
-            write_config=WeaviateWriteConfig(),
-        )
-    
-    
-    if __name__ == "__main__":
-        writer = get_writer()
-        runner = LocalRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="local-output-to-weaviate",
-                num_processes=2,
-            ),
-            connector_config=SimpleLocalConfig(
-                input_path="example-docs/book-war-and-peace-1225p.txt",
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(),
-            chunking_config=ChunkingConfig(chunk_elements=True),
-            embedding_config=EmbeddingConfig(
-                provider="langchain-huggingface",
-            ),
-            writer=writer,
-            writer_kwargs={},
-        )
-        runner.run()
-    ```
+
+  <WeaviateSh />
+
+  <WeaviatePy />
+
 </CodeGroup>
 
 

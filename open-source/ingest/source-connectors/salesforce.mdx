@@ -13,112 +13,31 @@ pip install "unstructured[salesforce]"
 
 ## Run Locally
 
-<CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      salesforce \
-      --username "$SALESFORCE_USERNAME" \
-      --consumer-key "$SALESFORCE_CONSUMER_KEY" \
-      --private-key "$SALESFORCE_PRIVATE_KEY_PATH" \
-      --categories "EmailMessage,Account,Lead,Case,Campaign" \
-      --output-dir salesforce-output \
-      --num-processes 2 \
-      --recursive \
-      --verbose
-    
-    ```
-    
-    ```python Python 
-    import os
-    
-    from unstructured.ingest.connector.salesforce import SalesforceAccessConfig, SimpleSalesforceConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import SalesforceRunner
-    
-    if __name__ == "__main__":
-        runner = SalesforceRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="salesforce-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(),
-            connector_config=SimpleSalesforceConfig(
-                access_config=SalesforceAccessConfig(
-                    consumer_key=os.getenv("SALESFORCE_CONSUMER_KEY"),
-                ),
-                username=os.getenv("SALESFORCE_USERNAME"),
-                private_key_path=os.getenv("SALESFORCE_PRIVATE_KEY_PATH"),
-                categories=["EmailMessage", "Account", "Lead", "Case", "Campaign"],
-                recursive=True,
-            ),
-        )
-        runner.run()
-    ```
-    
-</CodeGroup>
+import SalesforceSh from '/snippets/source_connectors/salesforce.sh.mdx';
+import SalesforcePy from '/snippets/source_connectors/salesforce.py.mdx';
 
+<CodeGroup>
+
+  <SalesforceSh />
+
+  <SalesforcePy />
+
+</CodeGroup>
 
 ## Run via the API
 
 You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
 
+import SalesforceAPISh from '/snippets/source_connectors/salesforce_api.sh.mdx';
+import SalesforceAPIPy from '/snippets/source_connectors/salesforce_api.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      salesforce \
-      --username "$SALESFORCE_USERNAME" \
-      --consumer-key "$SALESFORCE_CONSUMER_KEY" \
-      --private-key "$SALESFORCE_PRIVATE_KEY_PATH" \
-      --categories "EmailMessage,Account,Lead,Case,Campaign" \
-      --output-dir salesforce-output \
-      --num-processes 2 \
-      --recursive \
-      --verbose \
-      --partition-by-api \
-      --api-key "<UNSTRUCTURED-API-KEY>"
-    
-    ```
-    
-    ```python Python 
-    import os
-    
-    from unstructured.ingest.connector.salesforce import SalesforceAccessConfig, SimpleSalesforceConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import SalesforceRunner
-    
-    if __name__ == "__main__":
-        runner = SalesforceRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="salesforce-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(
-                partition_by_api=True,
-                api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            ),
-            connector_config=SimpleSalesforceConfig(
-                access_config=SalesforceAccessConfig(
-                    consumer_key=os.getenv("SALESFORCE_CONSUMER_KEY"),
-                ),
-                username=os.getenv("SALESFORCE_USERNAME"),
-                private_key=os.getenv("SALESFORCE_PRIVATE_KEY_PATH"),
-                categories=["EmailMessage", "Account", "Lead", "Case", "Campaign"],
-                recursive=True,
-            ),
-        )
-        runner.run()
-    ```
+
+  <SalesforceAPISh />
+
+  <SalesforceAPIPy />
+
 </CodeGroup>
-
-
 
 Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
 

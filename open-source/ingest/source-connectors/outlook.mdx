@@ -13,112 +13,30 @@ pip install "unstructured[outlook]"
 
 ## Run Locally
 
-<CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      outlook \
-      --client-id "$MS_CLIENT_ID" \
-      --client-cred "$MS_CLIENT_CRED" \
-      --tenant "$MS_TENANT_ID" \
-      --user-email "$MS_USER_EMAIL" \
-      --outlook-folders Inbox,"Sent Items" \
-      --output-dir outlook-output \
-      --num-processes 2 \
-      --recursive \
-      --verbose
-    
-    ```
-    
-    ```python Python 
-    import os
-    
-    from unstructured.ingest.connector.outlook import OutlookAccessConfig, SimpleOutlookConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import OutlookRunner
-    
-    if __name__ == "__main__":
-        runner = OutlookRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="outlook-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(),
-            connector_config=SimpleOutlookConfig(
-                access_config=OutlookAccessConfig(
-                    client_credential=os.getenv("MS_CLIENT_CRED"),
-                ),
-                client_id=os.getenv("MS_CLIENT_ID"),
-                tenant=os.getenv("MS_TENANT_ID"),
-                user_email=os.getenv("MS_USER_EMAIL"),
-                outlook_folders=["Inbox", "Sent Items"],
-                recursive=True,
-            ),
-        )
-        runner.run()
-    ```
-</CodeGroup>
+import OutlookSh from '/snippets/source_connectors/outlook.sh.mdx';
+import OutlookPy from '/snippets/source_connectors/outlook.py.mdx';
 
+<CodeGroup>
+
+  <OutlookSh />
+
+  <OutlookPy />
+
+</CodeGroup>
 
 ## Run via the API
 
 You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
 
+import OutlookAPISh from '/snippets/source_connectors/outlook_api.sh.mdx';
+import OutlookAPIPy from '/snippets/source_connectors/outlook_api.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      outlook \
-      --client-id "$MS_CLIENT_ID" \
-      --client-cred "$MS_CLIENT_CRED" \
-      --tenant "$MS_TENANT_ID" \
-      --user-email "$MS_USER_EMAIL" \
-      --outlook-folders Inbox,"Sent Items" \
-      --output-dir outlook-output \
-      --num-processes 2 \
-      --recursive \
-      --verbose \
-      --partition-by-api \
-      --api-key "<UNSTRUCTURED-API-KEY>"
-    
-    ```
-    
-    ```python Python 
-    import os
-    
-    from unstructured.ingest.connector.outlook import OutlookAccessConfig, SimpleOutlookConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import OutlookRunner
-    
-    if __name__ == "__main__":
-        runner = OutlookRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="outlook-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(
-                partition_by_api=True,
-                api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            ),
-            connector_config=SimpleOutlookConfig(
-                access_config=OutlookAccessConfig(
-                    client_credential=os.getenv("MS_CLIENT_CRED"),
-                ),
-                client_id=os.getenv("MS_CLIENT_ID"),
-                tenant=os.getenv("MS_TENANT_ID"),
-                user_email=os.getenv("MS_USER_EMAIL"),
-                outlook_folders=["Inbox", "Sent Items"],
-                recursive=True,
-            ),
-        )
-        runner.run()
-    ```
+
+  <OutlookAPISh />
+
+  <OutlookAPIPy />
+
 </CodeGroup>
 
 

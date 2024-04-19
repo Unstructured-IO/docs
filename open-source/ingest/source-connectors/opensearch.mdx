@@ -12,107 +12,31 @@ pip install "unstructured[opensearch]"
 
 ## Run Locally
 
+import OpenSearchSh from '/snippets/source_connectors/opensearch.sh.mdx';
+import OpenSearchPy from '/snippets/source_connectors/opensearch.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      opensearch \
-      --metadata-exclude filename,file_directory,metadata.data_source.date_processed \
-      --url http://localhost:9200 \
-      --index-name movies \
-      --fields 'ethnicity, director, plot' \
-      --output-dir opensearch-ingest-output \
-      --num-processes 2
-    
-    ```
-    
-    ```python Python 
-    from unstructured.ingest.connector.opensearch import (
-        OpenSearchAccessConfig,
-        SimpleOpenSearchConfig,
-    )
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import OpenSearchRunner
-    
-    if __name__ == "__main__":
-        runner = OpenSearchRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="opensearch-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(
-                metadata_exclude=["filename", "file_directory", "metadata.data_source.date_processed"],
-            ),
-            connector_config=SimpleOpenSearchConfig(
-                access_config=OpenSearchAccessConfig(hosts=["http://localhost:9200"]),
-                index_name="movies",
-                fields=["ethnicity", "director", "plot"],
-            ),
-        )
-        runner.run()
-    ```
+
+  <OpenSearchSh />
+
+  <OpenSearchPy />
+
 </CodeGroup>
-
-
 
 ## Run via the API
 
 You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
 
+import OpenSearchAPISh from '/snippets/source_connectors/opensearch_api.sh.mdx';
+import OpenSearchAPIPy from '/snippets/source_connectors/opensearch_api.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      opensearch \
-      --metadata-exclude filename,file_directory,metadata.data_source.date_processed \
-      --url http://localhost:9200 \
-      --index-name movies \
-      --fields 'ethnicity, director, plot' \
-      --output-dir opensearch-ingest-output \
-      --num-processes 2 \
-      --partition-by-api \
-      --api-key "<UNSTRUCTURED-API-KEY>"
-    
-    ```
-    
-    ```python Python 
-    import os
-    
-    from unstructured.ingest.connector.opensearch import (
-        OpenSearchAccessConfig,
-        SimpleOpenSearchConfig,
-    )
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import OpenSearchRunner
-    
-    if __name__ == "__main__":
-        runner = OpenSearchRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="opensearch-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(
-                metadata_exclude=["filename", "file_directory", "metadata.data_source.date_processed"],
-                partition_by_api=True,
-                api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            ),
-            connector_config=SimpleOpenSearchConfig(
-                access_config=OpenSearchAccessConfig(hosts=["http://localhost:9200"]),
-                index_name="movies",
-                fields=["ethnicity", "director", "plot"],
-            ),
-        )
-        runner.run()
-    ```
+
+  <OpenSearchAPISh />
+
+  <OpenSearchAPIPy />
+
 </CodeGroup>
-
-
 
 Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
 

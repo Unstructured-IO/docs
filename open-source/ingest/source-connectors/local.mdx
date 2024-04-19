@@ -5,94 +5,31 @@ description: Connect local files to your preprocessing pipeline, and batch proce
 
 ## Run Locally
 
+import LocalSh from '/snippets/source_connectors/local.sh.mdx';
+import LocalPy from '/snippets/source_connectors/local.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      local \
-      --input-path example-docs \
-      --output-dir local-ingest-output \
-      --num-processes 2 \
-      --recursive \
-      --verbose
-    
-    ```
-    
-    ```python Python 
-    from unstructured.ingest.connector.local import SimpleLocalConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import LocalRunner
-    
-    if __name__ == "__main__":
-        runner = LocalRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="local-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(),
-            connector_config=SimpleLocalConfig(
-                input_path="example-docs",
-                recursive=True,
-            ),
-        )
-        runner.run()
-    ```
+
+  <LocalSh />
+
+  <LocalPy />
+
 </CodeGroup>
-
-
 
 ## Run via the API
 
 You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
 
-<CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      local \
-      --input-path example-docs \
-      --output-dir local-ingest-output \
-      --num-processes 2 \
-      --recursive \
-      --verbose \
-      --partition-by-api \
-      --api-key "<UNSTRUCTURED-API-KEY>"
-    
-    ```
-    
-    ```python Python 
-    import os
-    
-    from unstructured.ingest.connector.local import SimpleLocalConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import LocalRunner
-    
-    if __name__ == "__main__":
-        runner = LocalRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="local-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(
-                partition_by_api=True,
-                api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            ),
-            connector_config=SimpleLocalConfig(
-                input_path="example-docs",
-                recursive=True,
-            ),
-        )
-        runner.run()
-    ```
-    
-</CodeGroup>
+import LocalAPISh from '/snippets/source_connectors/local_api.sh.mdx';
+import LocalAPIPy from '/snippets/source_connectors/local_api.py.mdx';
 
+<CodeGroup>
+
+  <LocalAPISh />
+
+  <LocalAPIPy />
+
+</CodeGroup>
 
 Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
 

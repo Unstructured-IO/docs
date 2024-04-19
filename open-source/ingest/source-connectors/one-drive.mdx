@@ -12,112 +12,31 @@ pip install "unstructured[onedrive]"
 
 ## Run Locally
 
+import OneDriveSh from '/snippets/source_connectors/onedrive.sh.mdx';
+import OneDrivePy from '/snippets/source_connectors/onedrive.py.mdx';
+
 <CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      onedrive \
-      --client-id "<Azure AD app client-id>" \
-      --client-cred "<Azure AD app client-secret>" \
-      --authority-url "<Authority URL, default is https://login.microsoftonline.com>" \
-      --tenant "<Azure AD tenant_id, default is 'common'>" \
-      --user-pname "<Azure AD principal name, in most cases is the email linked to the drive>" \
-      --path "<Path to start parsing files from>" \
-      --output-dir onedrive-ingest-output \
-      --num-processes 2 \
-      --verbose
-    
-    ```
-    
-    ```python Python 
-    from unstructured.ingest.connector.onedrive import OneDriveAccessConfig, SimpleOneDriveConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import OneDriveRunner
-    
-    if __name__ == "__main__":
-        runner = OneDriveRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="onedrive-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(),
-            connector_config=SimpleOneDriveConfig(
-                access_config=OneDriveAccessConfig(client_credential="<Azure AD app client-id>"),
-                client_id="<Azure AD app client-id>",
-                authority_url="<Authority URL, default is https://login.microsoftonline.com>",
-                tenant="<Azure AD tenant_id, default is 'common'>",
-                user_pname="<Azure AD principal name, in most cases is the email linked to the drive>",
-                path="<Path to start parsing files from>",
-                recursive=False,
-            ),
-        )
-        runner.run()
-    ```
+
+  <OneDriveSh />
+
+  <OneDrivePy />
+
 </CodeGroup>
-
-
 
 ## Run via the API
 
 You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
 
-<CodeGroup>
-    ```bash Shell
-    #!/usr/bin/env bash
-    
-    unstructured-ingest \
-      onedrive \
-      --client-id "<Azure AD app client-id>" \
-      --client-cred "<Azure AD app client-secret>" \
-      --authority-url "<Authority URL, default is https://login.microsoftonline.com>" \
-      --tenant "<Azure AD tenant_id, default is 'common'>" \
-      --user-pname "<Azure AD principal name, in most cases is the email linked to the drive>" \
-      --path "<Path to start parsing files from>" \
-      --output-dir onedrive-ingest-output \
-      --num-processes 2 \
-      --verbose \
-      --partition-by-api \
-      --api-key "<UNSTRUCTURED-API-KEY>"
-    
-    ```
-    
-    ```python Python 
-    import os
-    
-    from unstructured.ingest.connector.onedrive import OneDriveAccessConfig, SimpleOneDriveConfig
-    from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-    from unstructured.ingest.runner import OneDriveRunner
-    
-    if __name__ == "__main__":
-        runner = OneDriveRunner(
-            processor_config=ProcessorConfig(
-                verbose=True,
-                output_dir="onedrive-ingest-output",
-                num_processes=2,
-            ),
-            read_config=ReadConfig(),
-            partition_config=PartitionConfig(
-                partition_by_api=True,
-                api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            ),
-            connector_config=SimpleOneDriveConfig(
-                access_config=OneDriveAccessConfig(client_credential="<Azure AD app client-id>"),
-                client_id="<Azure AD app client-id>",
-                authority_url="<Authority URL, default is https://login.microsoftonline.com>",
-                tenant="<Azure AD tenant_id, default is 'common'>",
-                user_pname="<Azure AD principal name, in most cases is the email linked to the drive>",
-                path="<Path to start parsing files from>",
-                recursive=False,
-            ),
-        )
-        runner.run()
-    ```
-    
-</CodeGroup>
+import OneDriveAPISh from '/snippets/source_connectors/onedrive_api.sh.mdx';
+import OneDriveAPIPy from '/snippets/source_connectors/onedrive_api.py.mdx';
 
+<CodeGroup>
+
+  <OneDriveAPISh />
+
+  <OneDriveAPIPy />
+
+</CodeGroup>
 
 Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
 
