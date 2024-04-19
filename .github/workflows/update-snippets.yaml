@@ -1,0 +1,31 @@
+name: Generate Snippets
+'on':
+  workflow_dispatch: null
+  schedule:
+    - cron: '30 0 * * *'  # Runs at 00:30 AM UTC every day
+
+jobs:
+  generate-snippets:
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v2
+        - name: Generate Snippets
+          run: |
+            ./scripts/make_mdx.sh snippets/destination_connectors snippets/source_connectors
+        - name: Extract Branch Name
+          id: extract-branch
+          shell: bash
+          run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+        - name: Create Pull Request
+          uses: peter-evans/create-pull-request@v5
+          with:
+            token: ${{ secrets.MAKE_PR_TOKEN }}
+            add-paths: |
+              snippets
+            commit-message: Update code snippets
+            branch: update-code-snippets/${{ github.sha }}
+            title: 'chore: update code snippets'
+            delete-branch: true
+            body: |
+              This automated pull request includes updated code snippets.
+            base: ${{ steps.extract-branch.outputs.branch }}
