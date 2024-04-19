@@ -54,8 +54,8 @@ function convert_to_mdx() {
         if [ -f "$f" ]; then
             local extension="${f##*.}"
             local lang="${extension:0:2}"  # Simplified logic for language detection
-            lang=${lang/py/python}        # If Python, set to 'python'
-            lang=${lang/sh/bash}          # If Shell, set to 'bash'
+            lang=${lang/py/"python Python"}        # If Python, set to 'python Python'
+            lang=${lang/sh/"bash Shell"}          # If Shell, set to 'bash Shell'
             # Create .mdx file with correct code fences
             awk -v lang="$lang" 'BEGIN {print "```" lang}
                 {print}
