@@ -1,0 +1,145 @@
+---
+title: Free Unstructured API
+description: This page describes how to obtain an API key to use with the free Unstructured API, the limitations of the free Unstructured API, and provides a quick start example.
+---
+
+## Get an API key
+
+The Free Unstructured API requires authentication via an API key. Here's how you can obtain your API key:
+
+1.  Navigate to the [Free Unstructured API](https://unstructured.io/api-key-free) page on our website.
+2.  Fill out the registration form with your details: first name, last name, email, and company. Make sure your contact information is valid.
+3.  Check the `I agree` box if you consent to Unstructured contacting you about our products and services.
+4.  Carefully read the Terms and Conditions, and check the appropriate box to agree.
+5.  Click "Submit". You will receive an API key to the provided email.
+
+Make sure to store your API key securely, and do not share publicly.
+
+<Note>
+    When using the Free Unstructured API, you only need the API key to authenticate yourself.
+    If you're using the SaaS Unstructured API, refer to the [SaaS Unstructured API](/api-reference/api-services/saas-api-development-guide) for the quick start documentation.
+</Note>
+
+## Free Unstructured API limitations
+
+The free Unstructured API is designed for prototyping purposes, and not for production use:
+* The API usage is limited to 1000 pages.
+* Unlike the users of SaaS Unstructured API, users of the free to do not get their own dedicated infrastructure.
+* The data sent over the free Unstructured API can be used for model training purposes, and other service improvements.
+
+If you require a production-ready API, consider using the [Saas Unstructured API](/api-reference/api-services/saas-api-development-guide) instead.
+
+## Quick Start Example
+
+Let's say you want to preprocess an `*.eml` file using the free Unstructured API. There are several ways
+you can do this, which all lead to the same result, so pick your preferred method.
+
+### POST request
+
+Supply your API key, and the file to preprocess:
+
+```bash
+# The URL is the same for all free Unstructured API users
+curl -X 'POST' 'https://api.unstructured.io/general/v0/general'
+     -H 'accept: application/json'
+     -H 'Content-Type: multipart/form-data'
+     -H 'unstructured-api-key: 'YOUR_API_KEY'
+     -F 'files=@sample-docs/family-day.eml'
+```
+
+The result will look something like this:
+![Sample Output](img/api/sample_output.png)
+
+### Unstructured Python/JavaScript SDK
+
+To work with the free Unstructured API in Python or JavaScript, use the
+Unstructured [Python SDK](https://github.com/Unstructured-IO/unstructured-python-client), or
+[JavaScript SDK](https://github.com/Unstructured-IO/unstructured-js-client).
+
+First, install your preferred SDK:
+<CodeGroup>
+
+```bash  Python
+pip install unstructured-client
+```
+
+```bash  JavaScript
+npm install unstructured-client
+```
+</CodeGroup>
+
+Next, use it to call the API:
+
+<CodeGroup>
+
+```python Python
+from unstructured_client import UnstructuredClient
+from unstructured_client.models import shared
+from unstructured_client.models.errors import SDKError
+
+client = UnstructuredClient(api_key_auth="YOUR_API_KEY")
+filename = "sample-docs/family-day.eml"
+
+with open(filename, "rb") as f:
+    files=shared.Files(
+        content=f.read(),
+        file_name=filename,
+    )
+
+req = shared.PartitionParameters(files=files)
+
+try:
+    resp = client.general.partition(req)
+except SDKError as e:
+    print(e)
+```
+
+```javascript JavaScript
+import { UnstructuredClient } from "unstructured-client";
+import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
+import * as fs from "fs";
+
+const key = "YOUR_API_KEY";
+
+const client = new UnstructuredClient({
+    security: {
+        apiKeyAuth: key,
+    },
+});
+
+const filename = "sample-docs/family-day.eml";
+const data = fs.readFileSync(filename);
+
+client.general.partition({
+    files: {
+        content: data,
+        fileName: filename,
+    },
+}).then((res: PartitionResponse) => {
+    if (res.statusCode == 200) {
+        console.log(res.elements);
+    }
+}).catch((e) => {
+    console.log(e.statusCode);
+    console.log(e.body);
+});
+```
+</CodeGroup>
+
+### Calling the Unstructured API from the Unstructured open source library
+
+Finally, you can call the Unstructured API directly from the Unstructured open source library:
+
+```python
+from unstructured.partition.api import partition_via_api
+
+filename = "sample-docs/family-day.eml"
+
+elements = partition_via_api(
+  filename=filename,
+  api_key="YOUR API KEY",
+)
+```
+
+
+
