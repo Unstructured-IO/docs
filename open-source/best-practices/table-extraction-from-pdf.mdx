@@ -10,7 +10,7 @@ To extract tables from any documents, set the `strategy` parameter to `hi_res` f
 
 ## Method 1: Using partition\_pdf
 
-To extract the tables from PDF files using the [partition\_pdf](https://unstructured-io.github.io/unstructured/core/partition.html#partition-pdf), set the `infer_table_structure` parameter to `True` and `strategy` parameter to `hi_res`.
+To extract the tables from PDF files using the [partition\_pdf](/open-source/core-functionality/partitioning#partition-pdf), set the `infer_table_structure` parameter to `True` and `strategy` parameter to `hi_res`.
 
 **Usage**
 
@@ -34,7 +34,7 @@ print(tables[0].metadata.text_as_html)
 
 ## Method 2: Using Auto Partition or Unstructured API
 
-By default, table extraction from all file types is enabled. To extract tables from PDFs and images using [Auto Partition](https://unstructured-io.github.io/unstructured/core/partition.html#partition) or [Unstructured API parameters](/api-reference/api-services/api-parameters) simply set `strategy` parameter to `hi_res`.
+By default, table extraction from all file types is enabled. To extract tables from PDFs and images using [Auto Partition](/open-source/core-functionality/partitioning#partition) or [Unstructured API parameters](/api-reference/api-services/api-parameters) simply set `strategy` parameter to `hi_res`.
 
 **Usage: Auto Partition**
 

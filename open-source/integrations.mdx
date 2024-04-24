@@ -18,7 +18,7 @@ You can format a list of `Text` elements as input to token based tasks in [Datas
 
 ## `Integration with Hugging Face`
 
-You can prepare `Text` elements for processing in Hugging Face [Transformers](https://huggingface.co/docs/transformers/index) pipelines by splitting the elements into chunks that fit into the model’s attention window using the [stage\_for\_transformers](/core-functionality/staging#stage-for-transformers) staging function. You can customise the transformation by defining the `buffer` and `window_size`, the `split_function` and the `chunk_separator`. if you need to operate on text directly instead of `unstructured` `Text` objects, use the [chunk\_by\_attention\_window](https://unstructured-io.github.io/unstructured/functions/staging.html#stage-for-transformers) helper function. Follow the links for more details on usage.
+You can prepare `Text` elements for processing in Hugging Face [Transformers](https://huggingface.co/docs/transformers/index) pipelines by splitting the elements into chunks that fit into the model’s attention window using the [stage\_for\_transformers](/open-source/core-functionality/staging#stage-for-transformers) staging function. You can customise the transformation by defining the `buffer` and `window_size`, the `split_function` and the `chunk_separator`. if you need to operate on text directly instead of `unstructured` `Text` objects, use the [chunk\_by\_attention\_window](/open-source/core-functionality/staging#stage-for-transformers) helper function. Follow the links for more details on usage.
 
 ## `Integration with Labelbox`
 
@@ -26,9 +26,11 @@ You can format your outputs for use with [LabelBox](https://labelbox.com/) using
 
 ## `Integration with Label Studio`
 
-You can format your outputs for upload to [Label Studio](https://labelstud.io/) using the [stage\_for\_label\_studio](https://unstructured-io.github.io/unstructured/functions/staging.html#stage-for-label-studio) staging function. After running `stage_for_label_studio`, you can write the results to a JSON folder that is ready to be included in a new Label Studio project. You can also include pre-annotations and predictions as part of your upload.
+You can format your outputs for upload to [Label Studio](https://labelstud.io/) using the [stage\_for\_label\_studio](/open-source/core-functionality/staging#stage-for-label-studio) staging function. After running `stage_for_label_studio`, you can write the results to a JSON folder that is ready to be included in a new Label Studio project. You can also include pre-annotations and predictions as part of your upload.
 
-Check our example notebook to format and upload the risk section from an SEC filing to Label Studio for a sentiment analysis labeling task [here](https://unstructured-io.github.io/unstructured/examples.html#sentiment-analysis-labeling-in-labelstudio) . Follow the link for more details on usage, and check [Label Studio docs](https://labelstud.io/tags/labels.html) for a full list of options for labels and annotations.
+Check our example notebook to format and upload the risk section from an SEC filing to Label Studio for a sentiment
+analysis labeling task [here](https://unstructured-io.github.io/unstructured/examples.html#sentiment-analysis-labeling-in-labelstudio).
+Follow the link for more details on usage, and check [Label Studio docs](https://labelstud.io/tags/labels.html) for a full list of options for labels and annotations.
 
 ## `Integration with LangChain`
 
@@ -66,12 +68,12 @@ See [here](https://llamahub.ai/) for more LlamaHub examples.
 
 ## `Integration with Pandas`
 
-You can convert a list of `Element` objects to a Pandas dataframe with columns for the text from each element and their types such as `NarrativeText` or `Title` using the [convert\_to\_dataframe](https://unstructured-io.github.io/unstructured/functions/staging.html#convert-to-dataframe) staging function. Follow the link for more details on usage.
+You can convert a list of `Element` objects to a Pandas dataframe with columns for the text from each element and their types such as `NarrativeText` or `Title` using the [convert\_to\_dataframe](/open-source/core-functionality/staging#convert-to-dataframe) staging function. Follow the link for more details on usage.
 
 ## `Integration with Prodigy`
 
-You can format your JSON or CSV outputs for use with [Prodigy](https://prodi.gy/docs/api-loaders) using the [stage\_for\_prodigy](https://unstructured-io.github.io/unstructured/functions/staging.html#stage-for-prodigy) and [stage\_csv\_for\_prodigy](https://unstructured-io.github.io/unstructured/functions/staging.html#stage-csv-for-prodigy) staging functions. After running `stage_for_prodigy` | `stage_csv_for_prodigy`, you can write the results to a `.json` | `.jsonl` or a `.csv` file that is ready to be used with Prodigy. Follow the links for more details on usage.
+You can format your JSON or CSV outputs for use with [Prodigy](https://prodi.gy/docs/api-loaders) using the [stage\_for\_prodigy](/open-source/core-functionality/staging#stage-for-prodigy) and [stage\_csv\_for\_prodigy](/open-source/core-functionality/staging#stage-csv-for-prodigy) staging functions. After running `stage_for_prodigy` | `stage_csv_for_prodigy`, you can write the results to a `.json` | `.jsonl` or a `.csv` file that is ready to be used with Prodigy. Follow the links for more details on usage.
 
 ## `Integration with Weaviate`
 
-[Weaviate](https://weaviate.io/) is an open-source vector database that allows you to store data objects and vector embeddings from a variety of ML models. Storing text and embeddings in a vector database such as Weaviate is a key component of the [emerging LLM tech stack](https://medium.com/@unstructured-io/llms-and-the-emerging-ml-tech-stack-bdb189c8be5c). See the [stage\_for\_weaviate](https://unstructured-io.github.io/unstructured/functions.html#stage-for-weaviate) docs for details on how to upload `unstructured` outputs to Weaviate. An example notebook is also available [here](https://github.com/Unstructured-IO/unstructured/tree/main/examples/weaviate).
+[Weaviate](https://weaviate.io/) is an open-source vector database that allows you to store data objects and vector embeddings from a variety of ML models. Storing text and embeddings in a vector database such as Weaviate is a key component of the [emerging LLM tech stack](https://medium.com/@unstructured-io/llms-and-the-emerging-ml-tech-stack-bdb189c8be5c). See the [stage\_for\_weaviate](open-source/core-functionality/staging#stage-for-weaviate) docs for details on how to upload `unstructured` outputs to Weaviate. An example notebook is also available [here](https://github.com/Unstructured-IO/unstructured/tree/main/examples/weaviate).

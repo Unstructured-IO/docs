@@ -1,5 +1,5 @@
 ---
-title: Azure Marketplace Deployment Guide
+title: Unstructured API on Azure
 ---
 
 ## Introduction
@@ -13,7 +13,7 @@ This guide provides step-by-step instructions for deploying a service on Azure u
     <Step title="Access Azure Marketplace">
         Navigate to the Azure Marketplace using [this URL](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/unstructured1691024866136.customer_api_v1?tab=Overview/).
 
-        ![Azure Marketplace](https://unstructured-io.github.io/unstructured/_images/Azure_Step2.png)
+        ![Azure Marketplace](img/api/Azure_Step2.png)
     </Step>
     <Step title="Start Deployment Process">
 *   Click the **Get it Now** button and fill out the form.
@@ -23,7 +23,7 @@ This guide provides step-by-step instructions for deploying a service on Azure u
 *   Click **Create** button.
     
 
-![Deployment Process](https://unstructured-io.github.io/unstructured/_images/Azure_Step3.png)
+![Deployment Process](img/api/Azure_Step3.png)
         
     </Step>
     <Step title=" Configure Deployment Options">
@@ -37,7 +37,7 @@ On the **Create a virtual machine** page, go to **Basics** tab and follow the st
         
     
 
-![project details](https://unstructured-io.github.io/unstructured/_images/Azure_Step4a.png)
+![project details](img/api/Azure_Step4a.png)
 
 *   Instance details
     
@@ -51,7 +51,7 @@ On the **Create a virtual machine** page, go to **Basics** tab and follow the st
         
     
 
-![instance details](https://unstructured-io.github.io/unstructured/_images/Azure_Step4b.png)
+![instance details](img/api/Azure_Step4b.png)
 
 *   Administrator account
     
@@ -61,7 +61,7 @@ On the **Create a virtual machine** page, go to **Basics** tab and follow the st
         
     
 
-![administrator account](https://unstructured-io.github.io/unstructured/_images/Azure_Step4c.png)        
+![administrator account](img/api/Azure_Step4c.png)
     </Step>
     <Step title="Set Up Load Balancer">
 Before you click `Review + create` button, go to **Networking** tab and follow the steps below.
@@ -92,7 +92,7 @@ Before you click `Review + create` button, go to **Networking** tab and follow t
         
     
 
-![load balancer](https://unstructured-io.github.io/unstructured/_images/Azure_Step5.png)        
+![load balancer](img/api/Azure_Step5.png)
     </Step>
     <Step title="Finalize and Deploy">
 *   Click **Review + Create**.
@@ -101,7 +101,7 @@ Before you click `Review + create` button, go to **Networking** tab and follow t
     
 *   Click **Create**.       
 
-![deployment](https://unstructured-io.github.io/unstructured/_images/Azure_Step6.png)
+![deployment](img/api/Azure_Step6.png)
 
     </Step>
     <Step title="Post-Deployment Steps">
@@ -111,7 +111,7 @@ Before you click `Review + create` button, go to **Networking** tab and follow t
     
 *   The deployed endpoint is **http://\<load-balancer-public-IP-address>/general/v0/general**
 
-![retrieve public ip](https://unstructured-io.github.io/unstructured/_images/Azure_Step7.png)
+![retrieve public ip](img/api/Azure_Step7.png)
     </Step>
     <Step title="Verification and Testing">
 *   Navigate to the public IP with the specified path for documentation and API testing.
@@ -129,7 +129,7 @@ curl -q -X POST http://<you-IP-address>/general/v0/general
 ```
 
 
-![testing](https://unstructured-io.github.io/unstructured/_images/Azure_Step8.png)        
+![testing](img/api/Azure_Step8.png)
     </Step>        
 </Steps>
 

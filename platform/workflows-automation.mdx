@@ -8,7 +8,7 @@ A Workflow in the Unstructured Platform is a defined sequence of processes that 
 
 Workflows are crucial for establishing a systematic approach to managing data flows within the platform, ensuring consistency, efficiency, and adherence to specific data processing requirements.
 
-![workflow completed](https://unstructured-io.github.io/unstructured/_images/03b-Workflow-completed.png)
+![workflow completed](img/platform/03b-Workflow-completed.png)
 
 <Note>
 
@@ -16,7 +16,7 @@ The “Show Ad Hoc Jobs” switch views or hides one-time jobs that do not repea
 </Note>
 ## Set up A Workflow Automation
 
-![workflow overview](https://unstructured-io.github.io/unstructured/_images/03a-Workflow-overview.png)
+![workflow overview](img/platform/03a-Workflow-overview.png)
 
 The key components of a Workflow include:
 
@@ -47,29 +47,29 @@ The key components of a Workflow include:
         
 *   **Options**: Tailor the workflow further with the following options
     
-    *   `Elements to Exclude`: Select the [element types](https://unstructured-io.github.io/unstructured/introduction/overview.html#id1) you want to exclude from document processing. This option is useful if you want to include or exclude elements, such as Table or Image elements.
+    *   `Elements to Exclude`: Select the [element types](/open-source/introduction/overview) you want to exclude from document processing. This option is useful if you want to include or exclude elements, such as Table or Image elements.
         
     *   Connector Settings:
         
-        *   `Include Page Breaks`: If checked, the output will include page breaks if the file type supports it. For more information about page break, check out the documentation [here](https://unstructured-io.github.io/unstructured/apis/api_parameters.html#include-page-breaks).
+        *   `Include Page Breaks`: If checked, the output will include page breaks if the file type supports it. For more information about page break, check out the documentation [here](/api-reference/api-services/api-parameters#include-page-breaks).
             
         *   `Infer Table Structure`: Check if you want to extract tables from PDFs or images.
             
-        *   `Keep XML Tags`: If checked, the output will retain the XML tags. This only applies to partition\_xml. For more information about XML tags, check out the documentation [here](https://unstructured-io.github.io/unstructured/apis/api_parameters.html#xml-keep-tags).
+        *   `Keep XML Tags`: If checked, the output will retain the XML tags. This only applies to partition\_xml. For more information about XML tags, check out the documentation [here](/api-reference/api-services/api-parameters#xml-keep-tags).
             
         *   `Reprocess all documents`: The workflow will process the previously processed documents if checked.
             
 *   **Chunking Options**: To turn chunking the processed data on or off. When turned on, users can select one of the two chunking strategies:
     
-    *   `Chunk by Title`: When a “Title” element appears, it marks the start of a new section. The system will then finish the current chunk and begin a new one, even if the current chunk has space to include the “Title” element. For more information about chunk by title, please refer to the documentation [here](https://unstructured-io.github.io/unstructured/core/chunking.html#by-title-chunking-strategy).
+    *   `Chunk by Title`: When a “Title” element appears, it marks the start of a new section. The system will then finish the current chunk and begin a new one, even if the current chunk has space to include the “Title” element. For more information about chunk by title, please refer to the documentation [here](/open-source/core-functionality/chunking#by-title-chunking-strategy).
         
-    *   `Basic`: This strategy combines the sequential elements to optimize the size of each chunk while adhering to the predefined “max\_characters” (hard maximum) and “new\_after\_n\_chars” (soft maximum) settings. For more information about basic chunking, please refer to the documentation [here](https://unstructured-io.github.io/unstructured/core/chunking.html#basic-chunking-strategy).
+    *   `Basic`: This strategy combines the sequential elements to optimize the size of each chunk while adhering to the predefined “max\_characters” (hard maximum) and “new\_after\_n\_chars” (soft maximum) settings. For more information about basic chunking, please refer to the documentation [here](/open-source/core-functionality/chunking#basic-chunking-strategy).
         
 *   **Embedding Options**: To turn on or off vectorizing the processed data. When turned on, users can select one of these two embedding models:
     
-    *   `OpenAI`: enter the _API Key_ and select the model name from the dropdown menu. For more information about OpenAI embedding, please refer to the documentation [here](https://unstructured-io.github.io/unstructured/core/embedding.html#openaiembeddingencoder).
+    *   `OpenAI`: enter the _API Key_ and select the model name from the dropdown menu. For more information about OpenAI embedding, please refer to the documentation [here](/open-source/core-functionality/embedding#openaiembeddingencoder).
         
-    *   `Bedrock`: enter the _AWS Access Key_, _AWS Secret Key_, and _AWS Region_ to connect to AWS Bedrock embedding models. For more information about AWS Bedrock embedding, please refer to the documentation [here](https://unstructured-io.github.io/unstructured/core/embedding.html#bedrockembeddingencoder).
+    *   `Bedrock`: enter the _AWS Access Key_, _AWS Secret Key_, and _AWS Region_ to connect to AWS Bedrock embedding models. For more information about AWS Bedrock embedding, please refer to the documentation [here](/open-source/core-functionality/embedding#bedrockembeddingencoder).
         
 
 ## Managing Workflow Actions
@@ -83,7 +83,7 @@ For each of the workflows on the Workflow list page, the following actions are a
 *   **Run**: Manually initiate the workflow outside of its scheduled runs. This is particularly useful for testing or ad-hoc data processing needs.
     
 
-![workflow actions](https://unstructured-io.github.io/unstructured/_images/03c-Workflows-Actions.png)
+![workflow actions](img/platform/03c-Workflows-Actions.png)
 
 ## Monitoring Workflow Status
 
@@ -96,4 +96,4 @@ The status of the workflows is a quick visual indicator of their current state o
 *   **Archive**: Workflows that are no longer in use but need to be kept for record-keeping or compliance purposes can be archived. This status removes the workflow from active duty without deleting its setup.
     
 
-![workflow status](https://unstructured-io.github.io/unstructured/_images/03d-Workflows-Status.png)
+![workflow status](img/platform/03d-Workflows-Status.png)

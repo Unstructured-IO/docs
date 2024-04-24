@@ -1,5 +1,5 @@
 ---
-title: AWS Marketplace Deployment Guide
+title: Unstructured API on AWS
 description: his guide provides step-by-step instructions for deploying Unstructured API from AWS Marketplace.
 ---
 ## Pre-Requirements
@@ -22,7 +22,7 @@ In Part 1, we will construct a resilient and secure infrastructure within AWS by
 
 We will establish the foundational network structure for deploying the Unstructured API by creating two public subnets and one private subnet within our VPC. The public subnets will host resources that require direct access to the internet, such as a load balancer, enabling them to communicate with external users. The private subnet is designed for resources that should not be directly accessible from the internet, like EC2 Compute Engine.
 
-![Infrastructure Diagram](https://unstructured-io.github.io/unstructured/_images/Infrastructure_Diagram.png)
+![Infrastructure Diagram](img/api/Infrastructure_Diagram.png)
 
 **Step-by-Step Process:**
 
@@ -45,7 +45,7 @@ We will establish the foundational network structure for deploying the Unstructu
     *   Click “Create VPC” button
         
 
-![create vpc](https://unstructured-io.github.io/unstructured/_images/VPC_Step2.png)
+![create vpc](img/api/VPC_Step2.png)
 
 3.  **Create Subnets**:
     
@@ -80,7 +80,7 @@ We will establish the foundational network structure for deploying the Unstructu
     *   Click `Create subnet`.
         
 
-![create subnet](https://unstructured-io.github.io/unstructured/_images/VPC_Step3.png)
+![create subnet](img/api/VPC_Step3.png)
 
 4.  **Create Internet Gateway (for Public Subnets)**:
     
@@ -91,7 +91,7 @@ We will establish the foundational network structure for deploying the Unstructu
         *   Note: we will attach the newly created internet gateway to your VPC in Step 6 - Edit Route.
             
 
-![create internet gateway](https://unstructured-io.github.io/unstructured/_images/VPC_Step4.png)
+![create internet gateway](img/api/VPC_Step4.png)
 
 5.  **Set Up Route Tables (for Public Subnets)**: _AWS automatically creates a default Route Table in Step 3 above. To tailor our network architecture, we will create a new Route Table specifically for our public subnets, which will include a route to the Internet Gateway from Step 4 above._
     
@@ -106,7 +106,7 @@ We will establish the foundational network structure for deploying the Unstructu
     *   Click `Create route table`
         
 
-![create route table](https://unstructured-io.github.io/unstructured/_images/VPC_Step5.png)
+![create route table](img/api/VPC_Step5.png)
 
 6.  **Associate Public Subnets to the Route Table and Internet Gateway**:
     
@@ -145,14 +145,14 @@ We will establish the foundational network structure for deploying the Unstructu
     *   For the **private subnet**, use the main route table or create a new one without a route to the internet gateway.
         
 
-![connect public subnet to route table](https://unstructured-io.github.io/unstructured/_images/VPC_Step6.png) ![edit routes](https://unstructured-io.github.io/unstructured/_images/VPC_Step7.png)
+![connect public subnet to route table](img/api/VPC_Step6.png) ![edit routes](img/api/VPC_Step7.png)
 
 7.  **Inspect VPC Resource Map**:
     
     You can check the configurations from the Resource Maps on the VPC Details dashboard.
     
 
-![VPC Resource Maps](https://unstructured-io.github.io/unstructured/_images/VPC_Step8.png)
+![VPC Resource Maps](img/api/VPC_Step8.png)
 
 ## Part II: Deploying Unstructured API from AWS Marketplace
 
@@ -167,7 +167,7 @@ We will establish the foundational network structure for deploying the Unstructu
     *   Click `Continue to Configuration`
         
 
-![Unstructured API on AWS Marketplace](https://unstructured-io.github.io/unstructured/_images/Marketplace_Step8.png)
+![Unstructured API on AWS Marketplace](img/api/Marketplace_Step8.png)
 
 9.  **Configure the CloudFormation**
     
@@ -186,7 +186,7 @@ We will establish the foundational network structure for deploying the Unstructu
     *   Click `Launch` button.
         
 
-![CloudFormation Configuration](https://unstructured-io.github.io/unstructured/_images/Marketplace_Step9.png)
+![CloudFormation Configuration](img/api/Marketplace_Step9.png)
 
 10.  **Create Stack on CloudFormation**
     
@@ -201,7 +201,7 @@ We will establish the foundational network structure for deploying the Unstructu
     *   Click `Next` button.
         
     
-    ![Create Stack](https://unstructured-io.github.io/unstructured/_images/Marketplace_Step10a.png)
+    ![Create Stack](img/api/Marketplace_Step10a.png)
     
     **Step 2: Specify stack details**
     
@@ -224,7 +224,7 @@ We will establish the foundational network structure for deploying the Unstructu
     *   Click `Next` button.
         
     
-    ![Specify stack details](https://unstructured-io.github.io/unstructured/_images/Marketplace_Step10b.png)
+    ![Specify stack details](img/api/Marketplace_Step10b.png)
     
     **Step 3: Configure stack options**
     
@@ -233,7 +233,7 @@ We will establish the foundational network structure for deploying the Unstructu
     *   Click `Next` button.
         
     
-    ![Specify stack options](https://unstructured-io.github.io/unstructured/_images/Marketplace_Step10c.png)
+    ![Specify stack options](img/api/Marketplace_Step10c.png)
     
     **Step 4: Review**
     
@@ -242,7 +242,7 @@ We will establish the foundational network structure for deploying the Unstructu
     *   Click `Submit` button.
         
     
-    ![Review stack](https://unstructured-io.github.io/unstructured/_images/Marketplace_Step10d.png)
+    ![Review stack](img/api/Marketplace_Step10d.png)
 11.  **Get the Unstructured API Endpoint**
     
     *   Check the status of the CloudFormation stack.
@@ -258,7 +258,7 @@ We will establish the foundational network structure for deploying the Unstructu
         *   Note: You will use this `DNS Name` to replace the `<api_url>` for the next steps, i.e., Healthcheck and Data Processing.
             
 
-![Unstructured API Endpoint](https://unstructured-io.github.io/unstructured/_images/Marketplace_Step11.png)
+![Unstructured API Endpoint](img/api/Marketplace_Step11.png)
 
 ## Healthcheck
 
@@ -270,7 +270,7 @@ curl https://<api_url>/healthcheck
 ```
 
 
-![Healthcheck](https://unstructured-io.github.io/unstructured/_images/healthcheck.png)
+![Healthcheck](img/api/healthcheck.png)
 
 ## Data Processing
 
@@ -289,7 +289,7 @@ curl -X 'POST' 'https://<api_url>/general/v0/general'
 ```
 
 
-![Data Processing Endpoint](https://unstructured-io.github.io/unstructured/_images/endpoint.png)
+![Data Processing Endpoint](img/api/endpoint.png)
 
 ## Getting Started with Unstructured
 
