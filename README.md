@@ -19,7 +19,7 @@ To contribute changes to the documentation:
 
 1. Fork the repo.
 2. Create a new branch with a descriptive name.
-3. Add your changes. DO NOT MANUALLY EDIT THE CONTENTS OF THE SNIPPETS FOLDER. These are auto-generated from tested code examples. 
+3. Add your changes. DO NOT MANUALLY EDIT THE CONTENTS OF THE `snippets/destination_connectors` and `snippets/source_connectors` FOLDERS. These are auto-generated from tested code examples. 
 4. Check for grammatical and technical correctness of the changes. 
 5. Preview your changes locally. [See how below](#previewing-documentation-changes-locally). 
 6. Create a pull request.
