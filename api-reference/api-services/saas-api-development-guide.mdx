@@ -1,11 +1,11 @@
 ---
 title: SaaS Unstructured API
-description: This pages describes how to get started with the SaaS Unstructured API. Learn how to obtain an API key to use with the SaaS Unstructured API, and get started in no time.
+description: This page describes how to get started with the SaaS Unstructured API. Learn how to obtain an API key to use with the SaaS Unstructured API, and get started in no time.
 ---
 
 ## Get an API Key
 
-The SaaS Unstructured API users receive a unique API URL to use that requires authentication via an API key.
+Each user of the SaaS Unstructured API receives a unique API URL that requires authentication via their API key.
 Here's how you can obtain your API key and unique API URL:
 
 1.  Navigate to the [SaaS Unstructured API](https://unstructured.io/api-key-hosted) page on our website.
@@ -16,7 +16,7 @@ Here's how you can obtain your API key and unique API URL:
 4.  Read and accept our terms and conditions by checking the appropriate box to proceed.
 5.  Click "Submit" to create your account. You will receive an API key, a unique API URL and further instructions to the provided email.
 
-Save your API key and the unique API URL securely, as you will need them to access and integrate the SaaS Unstructured API with your applications.
+Save your API key and the unique API URL securely, as you will need them to access the SaaS Unstructured API and integrate it with your applications.
 
 ## Set up billing
 
@@ -27,7 +27,7 @@ Once you receive your SaaS Unstructured API key and a unique API URL, set up you
 1. At the end of the email you will find the payment link that will lead you to Stripe.
 2. Fill out your billing information.
     *   There will be a small initiation fee for all new subscriptions. This one-time fee will be charged to your credit card to enable automatic billing.
-3.  Click the “Pay this invoice” button in the email and follow the instructions to enter your payment details securely on Stripe website.
+3.  Click the “Pay this invoice” button in the email and follow the instructions to enter your payment details securely on the Stripe website.
 4.  Confirm the payment to complete this process. Look out for any confirmation prompts or messages that signify a successful transaction.
     *   Note that we don’t send out a receipt. If you want to keep a receipt, click the “Download invoice” button after completing the payment on Stripe.
 
@@ -47,10 +47,10 @@ your email, i.e. this URL should include the specific path `/general/v0/general`
 ```bash
 # Make sure to replace the placeholders with the actual URL and API key from your email
 # Include the path `/general/v0/general` in the URL.
-curl -X 'POST' 'https://YOUR_API_URL'
-     -H 'accept: application/json'
-     -H 'Content-Type: multipart/form-data'
-     -H 'unstructured-api-key: 'YOUR_API_KEY'
+curl -X 'POST' 'https://YOUR_API_URL' \
+     -H 'accept: application/json' \
+     -H 'Content-Type: multipart/form-data' \
+     -H 'unstructured-api-key: 'YOUR_API_KEY' \
      -F 'files=@sample-docs/family-day.eml'
 ```
 
@@ -76,8 +76,8 @@ npm install unstructured-client
 ```
 </CodeGroup>
 
-Next, use it to call the API. Provide the API URL from the email you received, make sure to use the one **without** the
-path `/general/v0/general`. Double-check that you use `https` in the URL to prevent potential errors. Use your SaaS
+Next, use it to call the API. Be sure to use the base API URL, the one that does NOT end with the path `/general/v0/general`,
+from the email you received. Double-check that you use `https` in the URL to prevent potential errors. Use your SaaS
 Unstructured API key to authenticate yourself.
 
 <CodeGroup>
@@ -89,8 +89,8 @@ from unstructured_client.models.errors import SDKError
 
 client = UnstructuredClient(
     api_key_auth="YOUR_API_KEY",
-    server_url="YOUR_API_URL"
-    )
+    server_url="YOUR_API_URL",
+)
 
 filename = "sample-docs/family-day.eml"
 
@@ -153,8 +153,8 @@ filename = "sample-docs/family-day.eml"
 
 elements = partition_via_api(
   filename=filename,
-  api_key="YOUR API KEY",
-  api_url="YOUR API_ URL/general/v0/general"
+  api_key="YOUR_API_KEY",
+  api_url="https://YOUR_API_HOSTNAME.api.unstructuredapp.io/general/v0/general"
 )
 ```
 
