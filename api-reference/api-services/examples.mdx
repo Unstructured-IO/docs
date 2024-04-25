@@ -1,0 +1,102 @@
+---
+title: Examples
+description: This page provides some examples of accessing Unstructured API via different methods
+---
+
+### Changing partition strategy for a PDF
+
+Here's how you can modify partition strategy for a pdf file, and select an alternative model to use with Unstructured API.
+The `hi_res` strategy supports different models, and the default is `detectron2onnx`.
+
+[//]: # (TODO: add a link to the concepts section about partitioning strategies. Need to create the shared Concepts section first)
+
+<CodeGroup>
+
+```bash POST
+ curl -X 'POST' 'https://api.unstructured.io/general/v0/general' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -H 'unstructured-api-key: <YOUR_API_KEY>' \
+  -F 'files=@sample-docs/layout-parser-paper.pdf' \
+  -F 'strategy=hi_res' \
+  -F 'hi_res_model_name=chipper'
+```
+
+</CodeGroup>
+
+If you have a local deployment of the Unstructured API, you can use other supported models, such as `yolox`.
+
+### Specifying the language of a document for better OCR results
+
+For better OCR results, you can specify what languages your document is in using the `languages` parameter.
+See the [Tesseract documentation](https://github.com/tesseract-ocr/tessdata) for a full list of languages.
+
+<CodeGroup>
+
+```bash POST
+curl -X 'POST' 'https://api.unstructured.io/general/v0/general' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'files=@sample-docs/english-and-korean.png' \
+  -F 'strategy=ocr_only' \
+  -F 'languages=eng'  \
+  -F 'languages=kor'
+```
+
+</CodeGroup>
+
+### Saving bounding box coordinates
+
+When elements are extracted from PDFs or images, it may be useful to get their bounding boxes as well.
+Set the `coordinates` parameter to `true` to add this field to the elements in the response.
+
+<CodeGroup>
+
+```bash POST
+ curl -X 'POST' 'https://api.unstructured.io/general/v0/general' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'files=@sample-docs/layout-parser-paper.pdf' \
+  -F 'coordinates=true' \
+```
+
+</CodeGroup>
+
+### Returning unique element IDs
+
+By default, the element ID is a SHA-256 hash of the element text. This is to ensure that
+the ID is deterministic. One downside is that the ID is not guaranteed to be unique.
+Different elements with the same text will have the same ID, and there could also be hash collisions.
+To use UUIDs in the output instead, set `unique_element_ids=true`. Note: this means that the element IDs
+will be random, so with every partition of the same file, you will get different IDs.
+This can be helpful if you'd like to use the IDs as a primary key in a database, for example.
+
+<CodeGroup>
+
+```bash POST
+curl -X 'POST' 'https://api.unstructured.io/general/v0/general' \
+ -H 'accept: application/json'  \
+ -H 'Content-Type: multipart/form-data' \
+ -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
+ -F 'unique_element_ids=true'
+```
+</CodeGroup>
+
+### Adding the chunking step after partitioning
+
+You can combine partitioning and subsequent chunking in a single request by setting the `chunking_strategy` parameter.
+By default, the `chunking_strategy` is set to `None`, and no chunking is performed.
+
+[//]: # (TODO: add a link to the concepts section about chunking strategies. Need to create the shared Concepts section first)
+
+<CodeGroup>
+
+```bash POST
+curl -X 'POST' 'https://api.unstructured.io/general/v0/general' \
+ -H 'accept: application/json'  \
+ -H 'Content-Type: multipart/form-data' \
+ -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
+ -F 'chunking_strategy=by_title'
+```
+
+</CodeGroup>

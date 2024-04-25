@@ -1,4 +1,67 @@
 ---
-title: Python SDK
-description: This documentation covers the usage of the Python and JavaScript SDKs for interacting with the Unstructured API.
+title: Using Python SDK
+description: This documentation covers the usage of the Python SDK for interacting with the Unstructured API.
 ---
+
+The [Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) allows for easy interaction with the Unstructured API using Python.
+Whether you're using the free Unstructured API, the SaaS Unstructured API, Unstructured API on Azure/AWS or your local
+deployment of Unstructured API, you can access the API using the Python SDK.
+
+## Installation
+
+Before using the Python SDK to interact with your Unstructured API, install the library:
+
+```bash
+pip install unstructured-client
+```
+
+## Basics
+
+Let's start with a simple example in which you send a pdf document to partition via Unstructured API using the Python SDK:
+
+```python
+from unstructured_client import UnstructuredClient
+from unstructured_client.models import shared
+from unstructured_client.models.errors import SDKError
+
+client = UnstructuredClient(
+    api_key_auth="YOUR_API_KEY",
+    # you may need to provide your unique API URL
+    # server_url="YOUR_API_URL",
+)
+
+filename = "sample-docs/layout-parser-paper.pdf"
+file = open(filename, "rb")
+req = shared.PartitionParameters(
+    # Note that this currently only supports a single file
+    files=shared.Files(
+        content=file.read(),
+        file_name=filename,
+    ),
+    # Other parameters
+    strategy="fast",
+)
+
+try:
+    res = client.general.partition(req)
+    print(res.elements[0])
+except SDKError as e:
+    print(e)
+```
+
+In the example above we're sending the request to the free Unstructured API, in which case the API URL is the same for all
+users, and you don't need to provide it. Note, however, that you still need to authenticate yourself with
+your individual API Key.
+
+If you want to use the SaaS Unstructured API, you need to replace the URL in this example with the unique API URL that you have
+received in the same email as your API key. For Unstructured API on Azure/AWS, use the API URL that you
+configured through those services.
+
+## Parameters & examples
+
+The API parameters are the same across all methods of accessing the Unstructured API.
+
+* Refer to the [API parameters](/api-reference/api-services/api-parameters) page for the full list of available parameters.
+* Refer to the [Examples](/api-reference/api-services/examples) page for some inspiration on using the parameters.
+
+[//]: # (TODO: when we have the concepts page shared across products, link it from here for the users to learn about partition strategies, chunking strategies and other important shared concepts)
