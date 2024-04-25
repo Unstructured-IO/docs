@@ -8,12 +8,10 @@ description: This page provides some examples of accessing Unstructured API via 
 Here's how you can modify partition strategy for a pdf file, and select an alternative model to use with Unstructured API.
 The `hi_res` strategy supports different models, and the default is `detectron2onnx`.
 
-[//]: # (TODO: add a link to the concepts section about partitioning strategies. Need to create the shared Concepts section first)
-
 <CodeGroup>
 
 ```bash POST
- curl -X 'POST' 'https://api.unstructured.io/general/v0/general' \
+ curl -X 'POST' <YOUR_API_URL> \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
   -H 'unstructured-api-key: <YOUR_API_KEY>' \
@@ -22,6 +20,68 @@ The `hi_res` strategy supports different models, and the default is `detectron2o
   -F 'hi_res_model_name=chipper'
 ```
 
+```python Python SDK
+from unstructured_client import UnstructuredClient
+from unstructured_client.models import shared
+from unstructured_client.models.errors import SDKError
+
+client = UnstructuredClient(
+    api_key_auth="YOUR_API_KEY",
+    server_url="YOUR_API_URL",
+)
+
+filename = "sample-docs/layout-parser-paper.pdf"
+file = open(filename, "rb")
+req = shared.PartitionParameters(
+    # Note that this currently only supports a single file
+    files=shared.Files(
+        content=file.read(),
+        file_name=filename,
+    ),
+    strategy="hi_res",
+    hi_res_model_name="chipper",
+)
+
+try:
+    res = client.general.partition(req)
+    print(res.elements[0])
+except SDKError as e:
+    print(e)
+```
+
+```javascript JavaScript SDK
+import { UnstructuredClient } from "unstructured-client";
+import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
+import * as fs from "fs";
+
+const key = "YOUR_API_KEY";
+
+const client = new UnstructuredClient({
+    serverURL: "YOUR_API_URL",
+    security: {
+        apiKeyAuth: key,
+    },
+});
+
+const filename = "sample-docs/layout-parser-paper.pdf";
+const data = fs.readFileSync(filename);
+
+client.general.partition({
+    files: {
+        content: data,
+        fileName: filename,
+    },
+    strategy: "hi_res",
+    hiResModelName: "chipper",
+}).then((res: PartitionResponse) => {
+    if (res.statusCode == 200) {
+        console.log(res.elements);
+    }
+}).catch((e) => {
+    console.log(e.statusCode);
+    console.log(e.body);
+});
+```
 </CodeGroup>
 
 If you have a local deployment of the Unstructured API, you can use other supported models, such as `yolox`.
@@ -34,13 +94,76 @@ See the [Tesseract documentation](https://github.com/tesseract-ocr/tessdata) for
 <CodeGroup>
 
 ```bash POST
-curl -X 'POST' 'https://api.unstructured.io/general/v0/general' \
+curl -X 'POST' <YOUR_API_URL> \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
-  -F 'files=@sample-docs/english-and-korean.png' \
-  -F 'strategy=ocr_only' \
-  -F 'languages=eng'  \
+  -H 'unstructured-api-key: <YOUR_API_KEY>' \
+  -F 'files=@sample-docs/korean.png' \
+  -F 'strategy=hi_res' \
   -F 'languages=kor'
+```
+
+```python Python SDK
+from unstructured_client import UnstructuredClient
+from unstructured_client.models import shared
+from unstructured_client.models.errors import SDKError
+
+client = UnstructuredClient(
+    api_key_auth="YOUR_API_KEY",
+    server_url="YOUR_API_URL",
+)
+
+filename = "sample-docs/korean.png"
+file = open(filename, "rb")
+req = shared.PartitionParameters(
+    # Note that this currently only supports a single file
+    files=shared.Files(
+        content=file.read(),
+        file_name=filename,
+    ),
+    strategy="hi_res",
+    languages=["kor"],
+)
+
+try:
+    res = client.general.partition(req)
+    print(res.elements[0])
+except SDKError as e:
+    print(e)
+```
+
+```javascript JavaScript SDK
+import { UnstructuredClient } from "unstructured-client";
+import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
+import * as fs from "fs";
+
+const key = "YOUR_API_KEY";
+
+const client = new UnstructuredClient({
+    serverURL: "YOUR_API_URL",
+    security: {
+        apiKeyAuth: key,
+    },
+});
+
+const filename = "sample-docs/korean.png";
+const data = fs.readFileSync(filename);
+
+client.general.partition({
+    files: {
+        content: data,
+        fileName: filename,
+    },
+    strategy: "hi_res",
+    languages: ["kor"],
+}).then((res: PartitionResponse) => {
+    if (res.statusCode == 200) {
+        console.log(res.elements);
+    }
+}).catch((e) => {
+    console.log(e.statusCode);
+    console.log(e.body);
+});
 ```
 
 </CodeGroup>
@@ -53,11 +176,73 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
 <CodeGroup>
 
 ```bash POST
- curl -X 'POST' 'https://api.unstructured.io/general/v0/general' \
+ curl -X 'POST' <YOUR_API_URL> \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
+  -H 'unstructured-api-key: <YOUR_API_KEY>' \
   -F 'files=@sample-docs/layout-parser-paper.pdf' \
   -F 'coordinates=true' \
+```
+
+```python Python SDK
+from unstructured_client import UnstructuredClient
+from unstructured_client.models import shared
+from unstructured_client.models.errors import SDKError
+
+client = UnstructuredClient(
+    api_key_auth="YOUR_API_KEY",
+    server_url="YOUR_API_URL",
+)
+
+filename = "sample-docs/layout-parser-paper.pdf"
+file = open(filename, "rb")
+req = shared.PartitionParameters(
+    # Note that this currently only supports a single file
+    files=shared.Files(
+        content=file.read(),
+        file_name=filename,
+    ),
+    coordinates=True,
+)
+
+try:
+    res = client.general.partition(req)
+    print(res.elements[0])
+except SDKError as e:
+    print(e)
+```
+
+```javascript JavaScript SDK
+import { UnstructuredClient } from "unstructured-client";
+import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
+import * as fs from "fs";
+
+const key = "YOUR_API_KEY";
+
+const client = new UnstructuredClient({
+    serverURL: "YOUR_API_URL",
+    security: {
+        apiKeyAuth: key,
+    },
+});
+
+const filename = "sample-docs/layout-parser-paper.pdf";
+const data = fs.readFileSync(filename);
+
+client.general.partition({
+    files: {
+        content: data,
+        fileName: filename,
+    },
+    coordinates: true,
+}).then((res: PartitionResponse) => {
+    if (res.statusCode == 200) {
+        console.log(res.elements);
+    }
+}).catch((e) => {
+    console.log(e.statusCode);
+    console.log(e.body);
+});
 ```
 
 </CodeGroup>
@@ -74,12 +259,75 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
 <CodeGroup>
 
 ```bash POST
-curl -X 'POST' 'https://api.unstructured.io/general/v0/general' \
+curl -X 'POST' <YOUR_API_URL> \
  -H 'accept: application/json'  \
  -H 'Content-Type: multipart/form-data' \
+ -H 'unstructured-api-key: <YOUR_API_KEY>' \
  -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
  -F 'unique_element_ids=true'
 ```
+
+```python Python SDK
+from unstructured_client import UnstructuredClient
+from unstructured_client.models import shared
+from unstructured_client.models.errors import SDKError
+
+client = UnstructuredClient(
+    api_key_auth="YOUR_API_KEY",
+    server_url="YOUR_API_URL",
+)
+
+filename = "sample-docs/layout-parser-paper-fast.pdf"
+file = open(filename, "rb")
+req = shared.PartitionParameters(
+    # Note that this currently only supports a single file
+    files=shared.Files(
+        content=file.read(),
+        file_name=filename,
+    ),
+    unique_element_ids=True,
+)
+
+try:
+    res = client.general.partition(req)
+    print(res.elements[0])
+except SDKError as e:
+    print(e)
+```
+
+```javascript JavaScript SDK
+import { UnstructuredClient } from "unstructured-client";
+import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
+import * as fs from "fs";
+
+const key = "YOUR_API_KEY";
+
+const client = new UnstructuredClient({
+    serverURL: "YOUR_API_URL",
+    security: {
+        apiKeyAuth: key,
+    },
+});
+
+const filename = "sample-docs/layout-parser-paper-fast.pdf";
+const data = fs.readFileSync(filename);
+
+client.general.partition({
+    files: {
+        content: data,
+        fileName: filename,
+    },
+    uniqueElementIds: true,
+}).then((res: PartitionResponse) => {
+    if (res.statusCode == 200) {
+        console.log(res.elements);
+    }
+}).catch((e) => {
+    console.log(e.statusCode);
+    console.log(e.body);
+});
+```
+
 </CodeGroup>
 
 ### Adding the chunking step after partitioning
@@ -92,11 +340,76 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
 <CodeGroup>
 
 ```bash POST
-curl -X 'POST' 'https://api.unstructured.io/general/v0/general' \
+curl -X 'POST' <YOUR_API_URL> \
  -H 'accept: application/json'  \
  -H 'Content-Type: multipart/form-data' \
+ -H 'unstructured-api-key: <YOUR_API_KEY>' \
  -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
- -F 'chunking_strategy=by_title'
+ -F 'chunking_strategy=by_title' \
+ -F 'combine_under_n_chars=1024'
+```
+
+```python Python SDK
+from unstructured_client import UnstructuredClient
+from unstructured_client.models import shared
+from unstructured_client.models.errors import SDKError
+
+client = UnstructuredClient(
+    api_key_auth="YOUR_API_KEY",
+    server_url="YOUR_API_URL",
+)
+
+filename = "sample-docs/layout-parser-paper-fast.pdf"
+file = open(filename, "rb")
+req = shared.PartitionParameters(
+    # Note that this currently only supports a single file
+    files=shared.Files(
+        content=file.read(),
+        file_name=filename,
+    ),
+    chunking_strategy="by_title",
+    combine_under_n_chars=1024,
+)
+
+try:
+    res = client.general.partition(req)
+    print(res.elements[0])
+except SDKError as e:
+    print(e)
+```
+
+```javascript JavaScript SDK
+import { UnstructuredClient } from "unstructured-client";
+import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
+import * as fs from "fs";
+
+const key = "YOUR_API_KEY";
+
+const client = new UnstructuredClient({
+    serverURL: "YOUR_API_URL",
+    security: {
+        apiKeyAuth: key,
+    },
+});
+
+const filename = "sample-docs/layout-parser-paper-fast.pdf";
+const data = fs.readFileSync(filename);
+
+client.general.partition({
+    files: {
+        content: data,
+        fileName: filename,
+    },
+    chunkingStrategy: "by_title",
+    combineUnderNChars: 1024,
+}).then((res: PartitionResponse) => {
+    if (res.statusCode == 200) {
+        console.log(res.elements);
+    }
+}).catch((e) => {
+    console.log(e.statusCode);
+    console.log(e.body);
+});
 ```
 
 </CodeGroup>
