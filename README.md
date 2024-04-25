@@ -17,12 +17,13 @@ Everyone is welcome to contribute, and you can do it in a couple of ways:
 
 To contribute changes to the documentation:
 
-1. Create a new branch with a descriptive name.
-2. Add your changes. DO NOT MANUALLY EDIT THE CONTENTS OF THE SNIPPETS FOLDER. These are auto-generated from tested code examples. 
-3. Check for grammatical and technical correctness of the changes. 
-4. Preview your changes locally. [See how below](#previewing-documentation-changes-locally). 
-5. Create a pull request.
-6. Ping [MKhalusova](https://github.com/mkhalusova) for a review.
+1. If you're not a member of Unstructured team, start by forking the repo. If you are part of the team, you can clone this repo. 
+2. Create a new branch with a descriptive name. 
+3. Add your changes. DO NOT MANUALLY EDIT THE CONTENTS OF THE `snippets/destination_connectors` and `snippets/source_connectors` FOLDERS. These are auto-generated from tested code examples. 
+4. Check for grammatical and technical correctness of the changes. 
+5. Preview your changes locally. [See how below](#previewing-documentation-changes-locally). 
+6. Create a pull request.
+7. Ping [MKhalusova](https://github.com/mkhalusova) for a review.
 
 ### Previewing documentation changes locally
 
