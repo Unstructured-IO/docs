@@ -181,7 +181,7 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
   -H 'Content-Type: multipart/form-data' \
   -H 'unstructured-api-key: <YOUR_API_KEY>' \
   -F 'files=@sample-docs/layout-parser-paper.pdf' \
-  -F 'coordinates=true' \
+  -F 'coordinates=true'
 ```
 
 ```python Python SDK
@@ -346,7 +346,7 @@ curl -X 'POST' <YOUR_API_URL> \
  -H 'unstructured-api-key: <YOUR_API_KEY>' \
  -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
  -F 'chunking_strategy=by_title' \
- -F 'combine_under_n_chars=1024'
+ -F 'max_characters=1024'
 ```
 
 ```python Python SDK
@@ -368,7 +368,7 @@ req = shared.PartitionParameters(
         file_name=filename,
     ),
     chunking_strategy="by_title",
-    combine_under_n_chars=1024,
+    max_characters=1024,
 )
 
 try:
@@ -401,7 +401,7 @@ client.general.partition({
         fileName: filename,
     },
     chunkingStrategy: "by_title",
-    combineUnderNChars: 1024,
+    maxCharacters: 1024,
 }).then((res: PartitionResponse) => {
     if (res.statusCode == 200) {
         console.log(res.elements);

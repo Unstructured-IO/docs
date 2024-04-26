@@ -1,5 +1,5 @@
 ---
-title: Using API from partition_via_api
+title: Using API from partition_via_api()
 ---
 
 If you're used to working the [Unstructured Open Source library](https://github.com/Unstructured-IO/unstructured) but
@@ -21,9 +21,8 @@ in the Unstructured Open Source library:
 ```python
 from unstructured.partition.api import partition_via_api
 
-filename = "example-docs/eml/fake-email.eml"
 elements = partition_via_api(
-    filename=filename,
+    filename="example-docs/eml/fake-email.eml",
     api_key="YOUR_API_KEY",
     # you may need to specify your unique API URL
     # api_url="YOUR_API_URL",
