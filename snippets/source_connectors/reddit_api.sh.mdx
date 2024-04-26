@@ -4,8 +4,8 @@
 unstructured-ingest \
   reddit \
   --subreddit-name machinelearning \
-  --client-id "<client id here>" \
-  --client-secret "<client secret here>" \
+  --client-id "$REDDIT_CLIENT_ID" \
+  --client-secret "$REDDIT_CLIENT_SECRET" \
   --user-agent "Unstructured Ingest Subreddit fetcher by \u\..." \
   --search-query "Unstructured" \
   --num-posts 10 \
@@ -13,5 +13,5 @@ unstructured-ingest \
   --num-processes 2 \
   --verbose \
   --partition-by-api \
-  --api-key "<UNSTRUCTURED-API-KEY>"
+  --api-key "$UNSTRUCTURED_API_KEY"
 ```
