@@ -1,0 +1,38 @@
+---
+title: Sending POST requests to Unstructured API
+description: This page provides some examples of accessing Unstructured API via direct calls.
+---
+
+## Basics
+
+Whether you're using the free Unstructured API, the SaaS Unstructured API, Unstructured API on Azure/AWS or your local
+deployment of Unstructured API, you can work with the API by sending POST requests to it.
+
+Let's start with a simple example in which you send an email file (`*.eml`) to partition via Unstructured API:
+
+```bash
+ curl -X 'POST' \
+  'https://api.unstructured.io/general/v0/general' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -H 'unstructured-api-key: <YOUR_API_KEY>' \
+  -F 'files=@sample-docs/family-day.eml'
+```
+
+In the example above we're sending the request to the free Unstructured API, in which case the API URL is the same for all
+users: `https://api.unstructured.io/general/v0/general`. Note, however, that you still need to authenticate yourself with
+your individual API Key. Learn how to obtain an API key in the Getting Started section of the documentation:
+[Free Unstructured API guide](/api-reference/api-services/free-api) and [SaaS Unstructured API guide](/api-reference/api-services/saas-api-development-guide).
+
+If you are using the SaaS Unstructured API, you need to replace the URL in this example with the unique API URL that you have
+received in the same email as your API key. For Unstructured API on Azure/AWS, use the API URL that you
+configured through those services.
+
+## Parameters & examples
+
+The API parameters are the same across all methods of accessing the Unstructured API.
+
+* Refer to the [API parameters](/api-reference/api-services/api-parameters) page for the full list of available parameters.
+* Refer to the [Examples](/api-reference/api-services/examples) page for some inspiration on using the parameters.
+
+[//]: # (TODO: when we have the concepts page shared across products, link it from here for the users to learn about partition strategies, chunking strategies and other important shared concepts)

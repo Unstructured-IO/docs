@@ -1,173 +1,43 @@
 ---
 title: API Parameters
-description: The endpoint of the API provides several parameters to customize the processing of documents. Below are the details of these parameters
+description: The Unstructured API provides parameters to customize the processing of documents. Below are the details for these parameters.
 ---
 
-## files
+## Parameters
 
-*   **Type**: string (binary format)
-    
-*   **Description**: The file to extract.
-    
-*   **Required**: true
-    
-*   **Example**: File to be partitioned. [Example File](https://github.com/Unstructured-IO/unstructured/blob/98d3541909f64290b5efb65a226fc3ee8a7cc5ee/example-docs/layout-parser-paper.pdf)
-    
+The only required parameter is `files` -  the file you wish to process.
 
-## strategy
-*   **Type**: string
-    
-*   **Description**: The strategy to use for partitioning PDF/image. Options are fast, hi\_res, auto. Default: auto.
-    
-*   **Example**: hi\_res
-    
+[//]: # (TODO: In the future we should automatically generate this table to make sure it's up to date)
 
-## gz\_uncompressed\_content\_type
-*   **Type**: string
-    
-*   **Description**: If file is gzipped, use this content type after unzipping.
-    
-*   **Example**: application/pdf
-    
+| Python & direct call                      | JavaScript                               | Description                                                                                                                                                                                                                                                                                                                                                                          |
+|-------------------------------------------|------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `files` (_shared.Files_)                  | `files` (_File_, _Blob_, _shared.Files_) | The file to process.                                                                                                                                                                                                                                                                                                                                                                 |
+| `coordinates` (_bool_)                    | `coordinates` (_boolean_)                | If true, return bounding box coordinates for each element extracted via OCR. Default: false                                                                                                                                                                                                                                                                                          |
+| `encoding` (_str_)                        | `encoding` (_string_)                    | The encoding method used to decode the text input. Default: `utf-8`                                                                                                                                                                                                                                                                                                                  |
+| `extract_image_block_types` (_List[str]_) | `extractImageBlockTypes` (_string[]_)    | The types of elements to extract, for use in extracting image blocks as base64 encoded data stored in metadata fields                                                                                                                                                                                                                                                                |
+| `gz_uncompressed_content_type` (_str_)    | `gzUncompressedContentType` (_string_)   | If file is gzipped, use this content type after unzipping. Example: `application/pdf`                                                                                                                                                                                                                                                                                                |
+| `hi_res_model_name` (_str_)               | `hiResModelName`  (_string_)             | The name of the inference model used when strategy is `hi_res`. Example: `chipper`                                                                                                                                                                                                                                                                                                   |
+| `include_page_breaks` (_bool_)            | `includePageBreaks` (_boolean_)          | If True, the output will include page breaks if the filetype that supports it. Default: `false`                                                                                                                                                                                                                                                                                      |
+| `languages` (_List[str]_)                 | `languages` (_string[]_)                 | The languages present in the document, for use in partitioning and/or OCR. See the [Tesseract documentation](https://github.com/tesseract-ocr/tessdata) for a full list of languages.                                                                                                                                                                                                |
+| `output_format` (_str_)                   | `outputFormat` (_string_)                | The format of the response. Supported formats are `application/json` and `text/csv`. Default: `application/json`.                                                                                                                                                                                                                                                                    |
+| `pdf_infer_table_structure` (_bool_)      | `pdfInferTableStructure` (_boolean_)     | **Deprecated!** If True and strategy=hi_res, any Table Elements extracted from a PDF will include an additional metadata field, 'text_as_html', where the value (string) is a just a transformation of the data into an HTML table.                                                                                                                                                  |
+| `skip_infer_table_types` (_List[str]_)    | `skipInferTableTypes` (_string[]_)       | The document types that you want to skip table extraction with. Default: ['pdf', 'jpg', 'png', 'heic']                                                                                                                                                                                                                                                                               |
+| `split_pdf_page` (_bool_)                 | `splitPdfPage` (_boolean_)               | Should the pdf file be split at client. Ignored on backend.                                                                                                                                                                                                                                                                                                                          |
+| `strategy` (_str_)                        | `strategy` (_string_)                    | The strategy to use for partitioning PDF/image. Options are `fast`, `hi_res`, `auto`. Default: `auto`                                                                                                                                                                                                                                                                                |
+| `unique_element_ids` (_bool_)             | `uniqueElementIds` (_boolean_)           | When True, assign UUIDs to element IDs, which guarantees their uniqueness (useful when using them as primary keys in database). Otherwise a SHA-256 of element text is used. Default: False                                                                                                                                                                                          |
+| `xml_keep_tags` (_bool_)                  | `xmlKeepTags` (_boolean_)                | If True, will retain the XML tags in the output. Otherwise it will simply extract the text from within the tags. Only applies to XML documents.                                                                                                                                                                                                                                      |
+| `chunking_strategy` (_str_)               | `chunkingStrategy` (_string_)            | Use one of the supported strategies to chunk the returned elements after partitioning. When `chunking_strategy` is not specified, no chunking is performed and any other chunking parameters provided are ignored. Supported strategies: `"basic"`, `"by_title"`                                                                                                                     |
 
-## output\_format-
+The following parameters only apply when a `chunking_strategy` is specified. Otherwise, they are ignored.
 
-*   **Type**: string
-    
-*   **Description**: The format of the response. Supported formats are application/json and text/csv. Default: application/json.
-    
-*   **Example**: application/json
-    
+| Python & direct call             | JavaScript                        | Description                                                                                                                                                                                                                                                                                                                                                                          |
+|----------------------------------|-----------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `combine_under_n_chars` (_int_)  | `combineUnderNChars` (_number_)   | Applies only when chunking strategy is set to `"by_title"`. Use this parameter to combines small chunks until the combined chunk reaches a length of n chars. This can mitigate the appearance of small chunks created by short paragraphs, not intended as section headings, being identified as `Title` elements in certain documents. Default: the same value as `max_characters` |
+| `include_orig_elements` (_bool_) | `includeOrigElements` (_boolean_) | When True (the default), the elements used to form a chunk appear in `.metadata.orig_elements` for that chunk.                                                                                                                                                                                                                                                                       |
+| `max_characters` (_int_)         | `maxCharacters` (_number_)        | Cut off new sections after reaching a length of n chars (hard max). Default: 500                                                                                                                                                                                                                                                                                                     |
+| `multipage_sections` (_bool_)    | `multipageSections` (_boolean_)   | Applies only when `chunking_strategy` is set to `by_title`. Determines if a chunk can include elements from more than one page. Default: true                                                                                                                                                                                                                                        |
+| `new_after_n_chars` (_int_)      | `newAfterNChars` (_number_)       | Applies only when `chunking_strategy` is specified. Cut off new sections after reaching a length of n chars (soft max). Default: 1500                                                                                                                                                                                                                                                |
+| `overlap` (_int_)                | `overlap` (_number_)              | A prefix of this many trailing characters from the prior text-split chunk is applied to second and later chunks formed from oversized elements by text-splitting. Default: None                                                                                                                                                                                                      |
+| `overlap_all` (_bool_)           | `overlapAll` (_boolean_)          | When True, overlap is also applied to 'normal' chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. Default: None                                                                                                                                                                                            |
 
-## coordinates
-
-*   **Type**: boolean
-    
-*   **Description**: If true, return coordinates for each element. Default: false.
-    
-
-## encoding
-
-*   **Type**: string
-    
-*   **Description**: The encoding method used to decode the text input. Default: utf-8.
-    
-*   **Example**: utf-8
-    
-
-## hi\_res\_model\_name
-
-*   **Type**: string
-    
-*   **Description**: The name of the inference model used when strategy is hi\_res.
-    
-*   **Example**: yolox
-    
-
-## include\_page\_breaks
-
-*   **Type**: boolean
-    
-*   **Description**: When true, the output will include page break elements when the filetype supports it. Default: false.
-    
-
-## languages
-
-*   **Type**: array
-    
-*   **Description**: The languages present in the document, for use in partitioning and/or OCR.
-    
-*   **Default**: \[\]
-    
-*   **Example**: \[eng\]
-    
-
-## pdf\_infer\_table\_structure
-
-*   **Type**: boolean
-    
-*   **Description**: Deprecated! Use skip\_infer\_table\_types to opt out of table extraction for any file type. If False and strategy=hi\_res, no Table Elements will be extracted from pdf files regardless of skip\_infer\_table\_types contents.
-    
-
-## skip\_infer\_table\_types
-
-*   **Type**: array
-    
-*   **Description**: The document types that you want to skip table extraction with. Default: \[‘pdf’, ‘jpg’, ‘png’, ‘heic’\].
-    
-
-## xml\_keep\_tags
-
-*   **Type**: boolean
-    
-*   **Description**: If True, will retain the XML tags in the output. Otherwise it will simply extract the text from within the tags. Only applies to partition\_xml.
-    
-
-## Chunking Parameters
-
-The following parameters control chunking behavior. Chunking is automatically performed after partitioning when a value is provided for the `chunking_strategy` argument. The remaining chunking parameters are only operative when a chunking strategy is specified. Note that not all chunking parameters apply to all chunking strategies. Any chunking arguments not supported by the selected chunker are ignored.
-
-## chunking\_strategy
-
-*   **Type**: string
-    
-*   **Description**: Use one of the supported strategies to chunk the returned elements. When omitted, no chunking is performed and any other chunking parameters provided are ignored.
-    
-*   **Valid values**: `"basic"`, `"by_title"`
-    
-
-## combine\_under\_n\_chars
-
-*   **Type**: integer
-    
-*   **Applicable Chunkers**: “by\_title” only
-    
-*   **Description**: When chunking strategy is set to “by\_title”, combine small chunks until the combined chunk reaches a length of n chars. This can mitigate the appearance of small chunks created by short paragraphs, not intended as section headings, being identified as `Title` elements in certain documents.
-    
-*   **Default**: the same value as `max_characters`
-    
-*   **Example**: 500
-    
-
-## include\_orig\_elements
-
-*   **Type**: boolean
-    
-*   **Applicable Chunkers**: All
-    
-*   **Description**: Add the elements used to form each chunk to `.metadata.orig_elements` for that chunk. These can be used to recover the original text and metadata for individual elements when that is required, for example to identify the page-numbers or coordinates spanned by a chunk. When an element larger than `max_characters` is divided into two or more chunks via text-splitting, each of those chunks will contain the entire original chunk as the only item in its `.metadata.orig_elements` list.
-    
-*   **Default**: true
-    
-
-## max\_characters
-
-*   **Type**: integer
-    
-*   **Applicable Chunkers**: All
-    
-*   **Description**: When chunking strategy is set, cut off new chunks after reaching a length of n chars (hard max).
-    
-*   **Default**: 500
-    
-
-## multipage\_sections
-
-*   **Type**: boolean
-    
-*   **Applicable Chunkers**: “by\_title” only
-    
-*   **Description**: When true and chunking strategy is set to “by\_title”, allows a chunk to include elements from more than one page. Otherwise chunks are broken on page boundaries.
-    
-*   **Default**: true
-    
-
-## new\_after\_n\_chars
-
-*   **Type**: integer
-    
-*   **Applicable Chunkers**: “basic”, “by\_title”
-    
-*   **Description**: When chunking strategy is set, cut off new chunk after reaching a length of n chars (soft max).
-    
-*   **Default**: 1500
+Need help getting started? Check out the [Examples page](/api-reference/api-services/examples) for some inspiration.

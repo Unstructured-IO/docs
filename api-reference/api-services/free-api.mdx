@@ -40,10 +40,10 @@ Supply your API key, and the file to preprocess:
 
 ```bash
 # The URL is the same for all free Unstructured API users
-curl -X 'POST' 'https://api.unstructured.io/general/v0/general'
-     -H 'accept: application/json'
-     -H 'Content-Type: multipart/form-data'
-     -H 'unstructured-api-key: 'YOUR_API_KEY'
+curl -X 'POST' 'https://api.unstructured.io/general/v0/general' \
+     -H 'accept: application/json' \
+     -H 'Content-Type: multipart/form-data' \
+     -H 'unstructured-api-key: YOUR_API_KEY' \
      -F 'files=@sample-docs/family-day.eml'
 ```
 

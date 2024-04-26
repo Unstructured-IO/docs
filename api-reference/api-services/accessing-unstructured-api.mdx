@@ -1,94 +1,25 @@
 ---
-title: Accessing Unstructured API 
+title: Overview
 ---
 
-## Method 1: Partition via API (`partition_via_api`)
-*   **Functionality**: Automates the partitioning of documents using the hosted or locally hosted Unstructured API.
-    
-*   **Key Features**: - API Key Authentication. - Automatic or explicit MIME type handling.
-    
-*   **Usage Examples**:
-    
-    *   **Basic Use Case**:
-        
-        ```python
-        from unstructured.partition.api import partition_via_api
+Whether you're using the free Unstructured API, the SaaS Unstructured API, Unstructured API on Azure/AWS or your local
+deployment of Unstructured API, you have several methods of accessing it. The functionality is the same across different methods.
 
-        filename = "example-docs/eml/fake-email.eml"
-        elements = partition_via_api(filename=filename, api_key="MY_API_KEY", content_type="message/rfc822")
+Choose your preferred method:
 
-        ```
+* [Sending POST requests to Unstructured API](/api-reference/api-services/post-requests)
+* [Using Python SDK](/api-reference/api-services/python-sdk)
+* [Using JavaScript SDK](/api-reference/api-services/javascript-sdk)
+* [Using API by calling `partition_via_api()` from Python code](/api-reference/api-services/partition-via-api)
 
-        
-    *   **Advanced Settings**:
-        
-        ```python
-        from unstructured.partition.api import partition_via_api
+The API parameters for all these methods are documented on the [API parameters](/api-reference/api-services/api-parameters) page.
 
-        filename = "example-docs/DA-1p.pdf"
-        elements = partition_via_api(
-        filename=filename, api_key="MY_API_KEY", strategy="auto"
-        )
+If you'd like to try out the Unstructured API interactively, you can do so via the [Swagger UI](https://api.unstructured.io/general/docs#/default/pipeline_1_general_v0_general_post).
+Make sure to have your API key on hand.
 
-        ```
-
-        
-    *   **Self-Hosting or Local API**:
-        
-        ```python
-        from unstructured.partition.api import partition_via_api
-
-        filename = "example-docs/eml/fake-email.eml"
-        elements = partition_via_api(
-        filename=filename, api_url="http://localhost:5000/general/v0/general"
-        )
-
-        ```
-
-        
-*   **More Details**: For comprehensive information, visit the [Partition via API Documentation](/open-source/core-functionality/partitioning#partition-via-api).
-    
-
-## Method 2: Local Deployment Using `unstructured-api` Library
-*   **Environment Setup**: - Use `pyenv` and `virtualenv` for environment management. - Install dependencies as per OS requirements.
-    
-*   **Running the Application**: - Run `make install` for dependencies installation. - Start with `make run-jupyter` for Jupyter Notebook or `make run-web-app` for FastAPI Web App.
-    
-*   **Using the API Locally**: - Example API Call:
-    
-    ```python
-    curl -X 'POST' \
-    'http://localhost:8000/general/v0/general' \
-    -H 'accept: application/json' \
-    -H 'Content-Type: multipart/form-data' \
-    -F 'files=@sample-docs/family-day.eml' \
-    | jq -C . | less -R
-
-    ```
-
-    
-*   **Additional Features**:
-    
-    *   Parallel processing for PDFs with environment variables.
-        
-    *   Server load management with UNSTRUCTURED\_MEMORY\_FREE\_MINIMUM\_MB.
-        
-*   **Using Docker Image**: Docker commands for pulling and running the container.
-    
-*   **More Details**: Check out the [unstructured-api GitHub Repository](https://github.com/Unstructured-IO/unstructured-api) for further information.
-    
-
-## Method 3: Accessing via Swagger UI
-*   **Procedure**:
-    
-    1.  Visit the Swagger UI Documentation: [Swagger UI](https://api.unstructured.io/general/docs#/default/pipeline_1_general_v0_general_post).
-        
-    2.  Click “Try it out” for interactive testing.
-        
-    3.  Enter API key in “unstructured-api-key” field
-        
-    4.  Enter parameters in “Request body”.
-        
-    5.  Click “execute” to send the request.
-        
-    6.  Download or view the JSON output.
+1. Go to  [Swagger UI](https://api.unstructured.io/general/docs#/default/pipeline_1_general_v0_general_post).
+2. Click "Try it out" for interactive testing.
+3. Enter your API key in the "unstructured-api-key" field.
+4. Choose your parameters in the "Request body".
+5. Click "execute" to send the request.
+6. Download or view the JSON output.
