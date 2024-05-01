@@ -1,7 +1,6 @@
----
-title: Key Concepts
-description: Natural Language Processing (NLP) encompasses various tasks and methodologies. This section introduces fundamental concepts crucial for most NLP projects involving Unstructured products.
----
+
+
+Natural Language Processing (NLP) encompasses various tasks and methodologies. This section introduces fundamental concepts crucial for most NLP projects involving Unstructured products.
 
 ## Data Ingestion
 
@@ -12,9 +11,9 @@ Unstructured `Source Connectors` make data ingestion easy. They ensure that your
 Before the core analysis, raw data often requires significant preprocessing:
 
 *   **Partitioning**: Segregating data into smaller, manageable segments or partitions.
-    
+
 *   **Cleaning**: Removing anomalies, filling in missing values, and eliminating irrelevant or erroneous information.
-    
+
 
 Preprocessing ensures data integrity and can significantly influence the outcomes of subsequent tasks.
 
@@ -51,18 +50,18 @@ Moreover, RAG offers a cost-effective solution. Instead of bearing the extensive
 A RAG workflow can be broken down into the following steps:
 
 1.  **Data ingestion**: The first step is acquiring data from your relevant sources. We make this easy with our [source connectors](/ingest/source-connectors/overview).
-    
+
 2.  **Data preprocessing and cleaning**: Once you’ve identified and collected your data sources, removing any unnecessary artifacts within the dataset is a good practice. At Unstructured, we have various tools for data processing in our [core functionalities](/open-source/core-functionality/overview).
-    
+
 3.  **Chunking**: The next step is to break your text into digestible pieces for your LLM to consume. We provide the basic and context-aware chunking strategies. Please refer to the documentation [here](/open-source/core-functionality/chunking).
-    
+
 4.  **Embedding**: After chunking, you must convert the text into a numerical representation (vector embedding) that an LLM can understand. To use the various embedding models using Unstructured tools, please refer to [this page](/open-source/core-functionality/embedding).
-    
+
 5.  **Vector Database**: The next step is to choose a location for storing your chunked embeddings. There are many options for your vector database (AstraDB, ChromaDB, Clarifai, Milvus, Pinecone, Qdrant, Weaviate, and more). For complete list of Unstructured `Destination Connectors`, please visit [this page](/ingest/destination-connectors/overview).
-    
+
 6.  **User Prompt**: Take the user prompt and grab the most relevant chunks of information in the vector database via similarity search.
-    
+
 7.  **LLM Generation**: Once you’ve retrieved your relevant chunks, you pass the prompt + the context to the LLM for the LLM to generate a more accurate response.
-    
+
 
 For a complete guide on how to implement RAG, check out this [blog post](https://medium.com/unstructured-io/effortless-document-extraction-a-guide-to-using-unstructured-api-and-data-connectors-6c2659eda4af)
