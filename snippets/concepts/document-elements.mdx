@@ -33,7 +33,9 @@ Let's explore some of these document element components in more detail.
 
 Instead of treating all documents like a wall of plain text, Unstructured preserves the semantic structure of the documents.
 This gives you more control and flexibility over how you further use the processed documents and allows you to take their
-structure into consideration. For example, if you plan to summarize a document, you may only be interested in the narrative
+structure into consideration. At the same time, normalizing data from various file formats to the Unstructured element
+type scheme lets you treat all documents the same in your downstream processing, regardless of source format.
+For example, if you plan to summarize a document, you may only be interested in the narrative
 of the document, and not care about footers and headers. You can easily filter out the elements you don't need using their type.
 
 Here are some examples of the element types your document may contain:
@@ -63,10 +65,8 @@ several individual list items may be combined into a single chunk.
 
 ## Element ID
 
-By default, an element ID is a SHA-256 hash of the element text. This is to ensure that the ID is deterministic.
-However, the ID is not guaranteed to be unique. Different elements with the same text will have the same ID, and there could
-also be hash collisions. If you'd like to use UUIDs in the output instead, you can set the `unique_element_ids` parameter to `True`
-when partitioning documents. This can be helpful if you'd like to use the IDs as a primary key in a database, for example.
+An element ID is a SHA-256 hash that is computed including the element text, element's sequence number on page, page number,
+and document filename. This allows the element IDs to be deterministic and unique.
 
 ## Metadata
 
