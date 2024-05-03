@@ -2,35 +2,99 @@
 title: Unstructured
 sidebarTitle: Welcome
 mode: wide
-description: "`Unstructured` offers tools designed to help preprocess unstructured documents for use in downstream machine learning tasks. This documentation covers three product lines: Unstructured API, Unstructured Enterprise Platform, and the Unstructured Open Source Library."
+description: "**Unstructured** provides tools to ingest and preprocess unstructured documents for `Retrieval Augmented Generation (RAG)` and `Fine Tuning`."
 ---
 
-<CardGroup cols={2}>
-    <Card
-        title="Unstructured API Services"
-        icon="square-terminal"
-        href="/api-reference/api-services/overview"
-        iconType="duotone"
-    >
-    Access all the power of `unstructured` through the `unstructured-api` or learn to host it locally.
-    </Card>
-    <Card
-        title="Unstructured Platform"
-        icon="browser"
-        href="/platform/overview"
-        iconType="duotone"
-    >
-    Explore the enterprise-grade platform for enterprises and high-growth companies with large data volume looking to automatically retrieve, transform, and stage their data for LLMs.
-    </Card>
-    <Card
-        title="Unstructured Open Source Library"
-        icon="hammer"
-        href="/open-source/introduction/overview"
-        iconType="duotone"
-    >
-    Learn more about the partitioning, chunking, cleaning, and staging functionality available within the Unstructured library.
-    </Card>
-</CardGroup>
+We offer **3 products**:
+
+1. [API](/api-reference/api-services/overview "API") - The quickest way to get started for document transformation.
+2. [Open Source](/open-source/introduction/overview/ "OSS") - Best for prototyping.
+3. [Enterprise Platform](/platform/overview "Platform") - Entirely no code platform for end-to-end RAG.
+
+
+## TLDR
+
+If you're here just to process docs, here's the too long didn't read version:
+
+
+1. **Get an API Key** and **Server URL** by signing up to the [SaaS Unstructured API](https://unstructured.io/api-key-hosted) page on our website.
+2. Copy and run this code to **install** the Unstructured Python/JavaScript API SDK.
+<CodeGroup>
+
+```bash  Python
+pip install unstructured-client
+```
+
+```bash  JavaScript
+npm install unstructured-client
+```
+</CodeGroup>
+3. Copy and run this code, replacing `api_key_auth`, `server_url`, and `filename` with actual values.
+
+<CodeGroup>
+
+```python Python
+from unstructured_client import UnstructuredClient
+from unstructured_client.models import shared
+from unstructured_client.models.errors import SDKError
+
+client = UnstructuredClient(
+    api_key_auth="YOUR_API_KEY",
+    server_url="YOUR_API_URL",
+)
+
+filename = "sample-docs/family-day.eml"
+
+with open(filename, "rb") as f:
+    files=shared.Files(
+        content=f.read(),
+        file_name=filename,
+    )
+
+req = shared.PartitionParameters(files=files)
+
+try:
+    resp = client.general.partition(req)
+    print(resp.elements)
+except SDKError as e:
+    print(e)
+```
+
+```javascript JavaScript
+import { UnstructuredClient } from "unstructured-client";
+import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
+import * as fs from "fs";
+
+const key = "YOUR-API-KEY";
+
+const client = new UnstructuredClient({
+    serverURL: "YOUR_API_URL",
+    security: {
+        apiKeyAuth: key,
+    },
+});
+
+const filename = "sample-docs/ragtest.pdf";
+const data = fs.readFileSync(filename);
+
+client.general.partition({
+    files: {
+        content: data,
+        fileName: filename,
+    },
+}).then((res: PartitionResponse) => {
+    if (res.statusCode == 200) {
+        console.log(res.elements);
+    }
+}).catch((e) => {
+    console.log(e.statusCode);
+    console.log(e.body);
+});
+```
+</CodeGroup>
+
+4. **Done!** If you'd like a deeper dive on the API, see the details [API Documentation](/api-reference/api-services/overview "API").
+   
 
 ## Get in touch
 
