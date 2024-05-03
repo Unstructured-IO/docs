@@ -1,16 +1,10 @@
 ---
-title: Google Cloud Storage 
-description: Connect Google Cloud Storage to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to store structured outputs locally on your filesystem.
+title: Google Cloud Storage
 ---
 
-First you’ll need to install the Google Cloud Storage dependencies as shown here.
+import SharedContentGCS from '/snippets/sc-shared-text/google-cloud-storage.mdx';
 
-```bash
-pip install "unstructured[gcs]"
-```
-
-
-## Run Locally
+<SharedContentGCS/>
 
 import GCSSh from '/snippets/source_connectors/gcs.sh.mdx';
 import GCSPy from '/snippets/source_connectors/gcs.py.mdx';
@@ -23,25 +17,4 @@ import GCSPy from '/snippets/source_connectors/gcs.py.mdx';
 
 </CodeGroup>
 
-
-## Run via the API
-
-You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
-
-import GCSAPISh from '/snippets/source_connectors/gcs_api.sh.mdx';
-import GCSAPIPy from '/snippets/source_connectors/gcs_api.py.mdx';
-
-<CodeGroup>
-
-  <GCSAPISh />
-
-  <GCSAPIPy />
-
-</CodeGroup>
-
-
-Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
-
 For a full list of the options the CLI accepts check `unstructured-ingest gcs --help`.
-
-NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/open-source/installation/overview).
