@@ -234,7 +234,7 @@ elements = partition_email(
 
 If the content of an email is PGP encrypted, `partition_email` will return an empty list of elements and emit a warning indicated the email is encrypted.
 
-For more information about the `partition_email` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/email.py).
+For more information about the `partition_email` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/email.py).
 
 ## `partition_epub`
 
@@ -250,7 +250,7 @@ elements = partition_epub(filename="example-docs/winter-sports.epub")
 ```
 
 
-For more information about the `partition_epub` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/epub.py).
+For more information about the `partition_epub` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/epub.py).
 
 ## `partition_html`
 
@@ -294,7 +294,7 @@ elements = partition_html(url="https://python.org/", ssl_verify=False)
 
 If you website contains news articles, it can be helpful to only grab content that appears in between the `<article>` tags, if the site uses that convention. To activate this behavior, you can set `html_assemble_articles=True`. If `html_assemble_articles` is `True`, each `<article>` tag will be treated as a a page. If `html_assemble_articles` is `True` and no `<article>` tags are present, the behavior is the same as `html_assemble_articles=False`.
 
-For more information about the `partition_html` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/html.py).
+For more information about the `partition_html` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/html.py).
 
 ## `partition_image`
 
@@ -335,7 +335,7 @@ elements = partition_image(filename=filename, languages=["eng", "kor"], strategy
 ```
 
 
-For more information about the `partition_image` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/image.py).
+For more information about the `partition_image` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/image.py).
 
 ## `partition_md`
 
@@ -351,7 +351,7 @@ elements = partition_md(filename="README.md")
 ```
 
 
-For more information about the `partition_md` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/md.py).
+For more information about the `partition_md` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/md.py).
 
 ## `partition_msg`
 
@@ -385,7 +385,7 @@ elements = partition_msg(
 
 If the content of an email is PGP encrypted, `partition_msg` will return an empty list of elements and emit a warning indicated the email is encrypted.
 
-For more information about the `partition_msg` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/msg.py).
+For more information about the `partition_msg` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/msg.py).
 
 ## `partition_multiple_via_api`
 
@@ -427,7 +427,7 @@ with ExitStack() as stack:
 ```
 
 
-For more information about the `partition_multiple_via_api` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/api.py).
+For more information about the `partition_multiple_via_api` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/api.py).
 
 ## `partition_odt`
 
@@ -443,7 +443,7 @@ elements = partition_odt(filename="example-docs/fake.odt")
 ```
 
 
-For more information about the `partition_odt` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/odt.py).
+For more information about the `partition_odt` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/odt.py).
 
 ## `partition_org`
 
@@ -459,7 +459,7 @@ elements = partition_org(filename="example-docs/README.org")
 ```
 
 
-For more information about the `partition_org` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/org.py).
+For more information about the `partition_org` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/org.py).
 
 ## `partition_pdf`
 
@@ -530,7 +530,7 @@ elements = partition_pdf("example-docs/copy-protected.pdf", strategy="fast")
 
 `partition_pdf` includes a `max_partition` parameter that indicates the maximum character length for a document element. This parameter only applies if the `"ocr_only"` strategy is used for partitioning. The default value is `1500`, which roughly corresponds to the average character length for a paragraph. You can disable `max_partition` by setting it to `None`.
 
-For more information about the `partition_pdf` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/pdf.py).
+For more information about the `partition_pdf` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/pdf.py).
 
 ## `partition_ppt`
 
@@ -546,7 +546,7 @@ elements = partition_ppt(filename="example-docs/fake-power-point.ppt")
 ```
 
 
-For more information about the `partition_ppt` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/ppt.py).
+For more information about the `partition_ppt` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/ppt.py).
 
 ## `partition_pptx`
 
@@ -565,7 +565,7 @@ with open("example-docs/fake-power-point.pptx", "rb") as f:
 ```
 
 
-For more information about the `partition_pptx` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/pptx.py).
+For more information about the `partition_pptx` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/pptx.py).
 
 ## `partition_rst`
 
@@ -581,7 +581,7 @@ elements = partition_rst(filename="example-docs/README.rst")
 ```
 
 
-For more information about the `partition_rst` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/rst.py).
+For more information about the `partition_rst` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/rst.py).
 
 ## `partition_rtf`
 
@@ -597,7 +597,7 @@ elements = partition_rtf(filename="example-docs/fake-doc.rtf")
 ```
 
 
-For more information about the `partition_rtf` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/rtf.py).
+For more information about the `partition_rtf` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/rtf.py).
 
 ## `partition_text`
 
@@ -642,7 +642,7 @@ partition_text(text=text, paragraph_grouper=group_broken_paragraphs)
 
 `partition_text` includes a `max_partition` parameter that indicates the maximum character length for a document element. The default value is `1500`, which roughly corresponds to the average character length for a paragraph. You can disable `max_partition` by setting it to `None`.
 
-For more information about the `partition_text` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/text.py).
+For more information about the `partition_text` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/text.py).
 
 ## `partition_tsv`
 
@@ -723,7 +723,7 @@ elements = partition_via_api(
 ```
 
 
-For more information about the `partition_via_api` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/api.py).
+For more information about the `partition_via_api` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/api.py).
 
 ## `partition_xlsx`
 
@@ -740,7 +740,7 @@ print(elements[0].metadata.text_as_html)
 ```
 
 
-For more information about the `partition_xlsx` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/xlsx.py).
+For more information about the `partition_xlsx` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/xlsx.py).
 
 ## `partition_xml`
 
@@ -756,4 +756,4 @@ elements = partition_xml(filename="example-docs/factbook.xml", xml_keep_tags=Fal
 ```
 
 
-For more information about the `partition_xml` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/a583d47b841bdd426b9058b7c34f6aa3ed8de152/unstructured/partition/xml.py).
+For more information about the `partition_xml` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/xml.py).
