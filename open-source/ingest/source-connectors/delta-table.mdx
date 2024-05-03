@@ -1,16 +1,10 @@
 ---
-title: Delta Table 
-description: Connect delta tables to your preprocessing pipeline, and batch process all your records using `unstructured-ingest` to store structured outputs locally on your filesystem.
+title: Delta Table
 ---
 
-First you’ll need to install the delta table dependencies as shown here.
+import SharedContentDelta from '/snippets/sc-shared-text/delta-table.mdx';
 
-```bash
-pip install "unstructured[delta-table]"
-
-```
-
-## Run Locally
+<SharedContentDelta/>
 
 import DeltaTableSh from '/snippets/source_connectors/delta_table.sh.mdx';
 import DeltaTablePy from '/snippets/source_connectors/delta_table.py.mdx';
@@ -23,24 +17,4 @@ import DeltaTablePy from '/snippets/source_connectors/delta_table.py.mdx';
 
 </CodeGroup>
 
-
-## Run via the API
-
-You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
-
-import DeltaTableAPISh from '/snippets/source_connectors/delta_table_api.sh.mdx';
-import DeltaTableAPIPy from '/snippets/source_connectors/delta_table_api.py.mdx';
-
-<CodeGroup>
-
-  <DeltaTableAPISh />
-
-  <DeltaTableAPIPy />
-
-</CodeGroup>
-
-Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
-
 For a full list of the options the CLI accepts check `unstructured-ingest delta-table --help`.
-
-NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/open-source/installation/overview).

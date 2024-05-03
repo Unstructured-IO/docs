@@ -1,0 +1,19 @@
+Connect Confluence to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to
+store structured outputs locally on your filesystem.
+
+Make sure to have the Confluence dependencies installed:
+
+    ```bash Shell
+    pip install "unstructured[confluence]"
+    ```
+
+To connect to Confluence Cloud, provide the url to the Confluence Cloud instance, and your credentials:
+* user_email
+* api_token to authenticate into Confluence Cloud
+
+For more details on authentication, refer to [Confluence documentation](https://developer.atlassian.com/cloud/confluence/basic-auth-for-rest-apis/).
+
+Optional arguments:
+* `max-num-of-spaces`: The maximum number of spaces to be ingested. E.g. pass `--max-num-of-spaces 10` to set this to 10.
+* `spaces`: A comma separated list of space ids for the spaces to be ingested. Example: ` --spaces testteamsp1,testteamsp2`. Cannot be used together with `max-num-of-spaces`.
+* `max-num-of-docs-from-each-space`: The maximum number of documents to be ingested from each space. Example: `--max-num-of-docs-from-each-space 250`.

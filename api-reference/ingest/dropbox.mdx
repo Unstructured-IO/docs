@@ -1,0 +1,22 @@
+---
+title: Dropbox
+---
+import SharedContentDropbox from '/snippets/sc-shared-text/dropbox.mdx';
+
+<SharedContentDropbox/>
+
+Make sure to set the `--partition-by-api` flag and pass in your API key with `--api-key`:
+
+import DropboxAPISh from '/snippets/source_connectors/dropbox_api.sh.mdx';
+import DropboxAPIPy from '/snippets/source_connectors/dropbox_api.py.mdx';
+
+<CodeGroup>
+
+  <DropboxAPISh />
+
+  <DropboxAPIPy />
+
+</CodeGroup>
+
+Additionally, if you're using Unstructured SaaS API, your locally deployed Unstructured API, or an Unstructured API
+deployed on Azure or AWS, you also need to specify the API URL via the `--partition-endpoint` argument.
