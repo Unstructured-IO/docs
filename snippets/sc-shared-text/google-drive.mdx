@@ -1,0 +1,11 @@
+Connect Google Drive to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to store structured outputs locally on your filesystem.
+
+First, install the Google Drive dependencies as shown here.
+
+```bash
+pip install "unstructured[gdrive]"
+```
+
+Make sure to set up a service account and get a service account key - [learn how](https://developers.google.com/workspace/guides/create-credentials#service-account).
+Make sure the email address for the service account is given access to the Google Drive folder.
+Use `drive_id` to specify the folder: this is a part of the URL for your Google Drive folder, e.g. `https://drive.google.com/drive/folders/{folder-id}`.

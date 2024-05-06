@@ -1,16 +1,10 @@
 ---
-title: Jira 
-description: Connect Jira to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to store structured outputs locally on your filesystem.
+title: Jira
 ---
 
-First you’ll need to install the Jira dependencies as shown here.
+import SharedContentJira from '/snippets/sc-shared-text/jira.mdx';
 
-```bash 
-pip install "unstructured[jira]"
-```
-
-
-## Run Locally
+<SharedContentJira/>
 
 import JiraSh from '/snippets/source_connectors/jira.sh.mdx';
 import JiraPy from '/snippets/source_connectors/jira.py.mdx';
@@ -23,24 +17,4 @@ import JiraPy from '/snippets/source_connectors/jira.py.mdx';
 
 </CodeGroup>
 
-
-## Run via the API
-
-You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
-
-import JiraAPISh from '/snippets/source_connectors/jira_api.sh.mdx';
-import JiraAPIPy from '/snippets/source_connectors/jira_api.py.mdx';
-
-<CodeGroup>
-
-  <JiraAPISh />
-
-  <JiraAPIPy />
-
-</CodeGroup>
-
-Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
-
 For a full list of the options the CLI accepts check `unstructured-ingest jira --help`.
-
-NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/open-source/installation/overview).
