@@ -1,0 +1,25 @@
+Batch process all your records using `unstructured-ingest` to store structured outputs locally on your filesystem and upload those local files to a Delta Table.
+
+First you’ll need to install the delta table dependencies as shown here.
+
+```bash
+pip install "unstructured[delta-table]"
+```
+
+The upstream connector can be any of the ones supported, but for convenience here, showing a sample command using the upstream local connector.
+
+import DeltaTableSh from '/snippets/destination_connectors/delta_table.sh.mdx';
+import DeltaTablePy from '/snippets/destination_connectors/delta_table.py.mdx';
+
+<CodeGroup>
+
+  <DeltaTableSh />
+
+  <DeltaTablePy />
+
+</CodeGroup>
+
+
+For a full list of the options the CLI accepts check `unstructured-ingest <upstream connector> delta-table --help`.
+
+NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/open-source/installation/overview).

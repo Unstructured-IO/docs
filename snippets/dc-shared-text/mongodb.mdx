@@ -1,0 +1,25 @@
+Batch process all your records using `unstructured-ingest` to store structured outputs locally on your filesystem and upload those local files to an MongoDB collection.
+
+First you’ll need to install the MongoDB dependencies as shown here.
+
+```bash
+pip install "unstructured[mongodb]"
+```
+
+The upstream connector can be any of the ones supported, but for convenience here, showing a sample command using the upstream local connector.
+
+import MongoDBSh from '/snippets/destination_connectors/mongodb.sh.mdx';
+import MongoDBPy from '/snippets/destination_connectors/mongodb.py.mdx';
+
+<CodeGroup>
+
+  <MongoDBSh />
+
+  <MongoDBPy />
+
+</CodeGroup>
+
+
+For a full list of the options the CLI accepts check `unstructured-ingest <upstream connector> mongodb --help`.
+
+NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/open-source/installation/overview).

@@ -1,0 +1,25 @@
+Batch process all your records using `unstructured-ingest` to store structured outputs locally on your filesystem and upload those local files to an Azure bucket.
+
+First you’ll need to install the Azure dependencies as shown here.
+
+```bash
+pip install "unstructured[azure]"
+```
+
+The upstream connector can be any of the ones supported, but for convenience here, showing a sample command using the upstream local connector.
+
+import AzureSh from '/snippets/destination_connectors/azure.sh.mdx';
+import AzurePy from '/snippets/destination_connectors/azure.py.mdx';
+
+<CodeGroup>
+
+  <AzureSh />
+
+  <AzurePy />
+
+</CodeGroup>
+
+
+For a full list of the options the CLI accepts check `unstructured-ingest <upstream connector> azure --help`.
+
+NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/open-source/installation/overview).

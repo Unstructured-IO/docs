@@ -1,0 +1,227 @@
+Batch process all your records using `unstructured-ingest` to store structured outputs locally on your filesystem and upload those local files to an Azure Cognitive Search index.
+
+First you’ll need to install the azure cognitive search dependencies as shown here.
+
+```bash
+pip install "unstructured[azure-cognitive-search]"
+```
+
+The upstream connector can be any of the ones supported, but for convenience here, showing a sample command using the upstream local connector.
+
+import AzureCognitiveSearchSh from '/snippets/destination_connectors/azure_cognitive_search.sh.mdx';
+import AzureCognitiveSearchPy from '/snippets/destination_connectors/azure_cognitive_search.py.mdx';
+
+<CodeGroup>
+
+  <AzureCognitiveSearchSh />
+
+  <AzureCognitiveSearchPy />
+
+</CodeGroup>
+
+
+For a full list of the options the CLI accepts check `unstructured-ingest <upstream connector> azure-cognitive-search --help`.
+
+NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/open-source/installation/overview).
+
+## Sample Index Schema
+
+To make sure the schema of the index matches the data being written to it, a sample schema json can be used:
+
+```json Object description
+  1{
+  2  "@odata.context": "https://utic-test-ingest-fixtures.search.windows.net/$metadata#indexes/$entity",
+  3  "@odata.etag": "\"0x8DBB93E09C8F4BD\"",
+  4  "name": "your-index-here",
+  5  "fields": [
+  6    {
+  7      "name": "id",
+  8      "type": "Edm.String",
+  9      "key": true
+ 10    },
+ 11    {
+ 12      "name": "element_id",
+ 13      "type": "Edm.String"
+ 14    },
+ 15    {
+ 16      "name": "text",
+ 17      "type": "Edm.String"
+ 18    },
+ 19    {
+ 20      "name": "embeddings",
+ 21      "type": "Collection(Edm.Single)",
+ 22      "dimensions": 400,
+ 23      "vectorSearchConfiguration": "embeddings-config"
+ 24    },
+ 25    {
+ 26      "name": "type",
+ 27      "type": "Edm.String"
+ 28    },
+ 29    {
+ 30      "name": "metadata",
+ 31      "type": "Edm.ComplexType",
+ 32      "fields": [
+ 33        {
+ 34          "name": "category_depth",
+ 35          "type": "Edm.Int32"
+ 36        },
+ 37        {
+ 38          "name": "parent_id",
+ 39          "type": "Edm.String"
+ 40        },
+ 41        {
+ 42          "name": "attached_to_filename",
+ 43          "type": "Edm.String"
+ 44        },
+ 45        {
+ 46          "name": "filetype",
+ 47          "type": "Edm.String"
+ 48        },
+ 49        {
+ 50          "name": "last_modified",
+ 51          "type": "Edm.DateTimeOffset"
+ 52        },
+ 53        {
+ 54          "name": "file_directory",
+ 55          "type": "Edm.String"
+ 56        },
+ 57        {
+ 58          "name": "filename",
+ 59          "type": "Edm.String"
+ 60        },
+ 61        {
+ 62          "name": "data_source",
+ 63          "type": "Edm.ComplexType",
+ 64          "fields": [
+ 65            {
+ 66              "name": "url",
+ 67              "type": "Edm.String"
+ 68            },
+ 69            {
+ 70              "name": "version",
+ 71              "type": "Edm.String"
+ 72            },
+ 73            {
+ 74              "name": "date_created",
+ 75              "type": "Edm.DateTimeOffset"
+ 76            },
+ 77            {
+ 78              "name": "date_modified",
+ 79              "type": "Edm.DateTimeOffset"
+ 80            },
+ 81            {
+ 82              "name": "date_processed",
+ 83              "type": "Edm.DateTimeOffset"
+ 84            },
+ 85            {
+ 86              "name": "permissions_data",
+ 87              "type": "Edm.String"
+ 88            },
+ 89            {
+ 90              "name": "record_locator",
+ 91              "type": "Edm.String"
+ 92            }
+ 93          ]
+ 94        },
+ 95        {
+ 96          "name": "coordinates",
+ 97          "type": "Edm.ComplexType",
+ 98          "fields": [
+ 99            {
+100              "name": "system",
+101              "type": "Edm.String"
+102            },
+103            {
+104              "name": "layout_width",
+105              "type": "Edm.Double"
+106            },
+107            {
+108              "name": "layout_height",
+109              "type": "Edm.Double"
+110            },
+111            {
+112              "name": "points",
+113              "type": "Edm.String"
+114            }
+115          ]
+116        },
+117        {
+118          "name": "page_number",
+119          "type": "Edm.String"
+120        },
+121        {
+122          "name": "links",
+123          "type": "Collection(Edm.String)"
+124        },
+125        {
+126          "name": "url",
+127          "type": "Edm.String"
+128        },
+129        {
+130          "name": "link_urls",
+131          "type": "Collection(Edm.String)"
+132        },
+133        {
+134          "name": "link_texts",
+135          "type": "Collection(Edm.String)"
+136        },
+137        {
+138          "name": "sent_from",
+139          "type": "Collection(Edm.String)"
+140        },
+141        {
+142          "name": "sent_to",
+143          "type": "Collection(Edm.String)"
+144        },
+145        {
+146          "name": "subject",
+147          "type": "Edm.String"
+148        },
+149        {
+150          "name": "section",
+151          "type": "Edm.String"
+152        },
+153        {
+154          "name": "header_footer_type",
+155          "type": "Edm.String"
+156        },
+157        {
+158          "name": "emphasized_text_contents",
+159          "type": "Collection(Edm.String)"
+160        },
+161        {
+162          "name": "emphasized_text_tags",
+163          "type": "Collection(Edm.String)"
+164        },
+165        {
+166          "name": "text_as_html",
+167          "type": "Edm.String"
+168        },
+169        {
+170          "name": "regex_metadata",
+171          "type": "Edm.String"
+172        },
+173        {
+174          "name": "detection_class_prob",
+175          "type": "Edm.Double"
+176        }
+177      ]
+178    }
+179  ],
+180  "vectorSearch": {
+181    "algorithmConfigurations": [
+182      {
+183        "name": "embeddings-config",
+184        "kind": "hnsw",
+185        "hnswParameters": {
+186          "metric": "cosine",
+187          "m": 4,
+188          "efConstruction": 400,
+189          "efSearch": 500
+190        }
+191      }
+192    ]
+193  }
+194}
+
+```
