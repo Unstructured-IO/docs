@@ -1,0 +1,23 @@
+---
+title: S3
+---
+
+import SharedContentS3 from '/snippets/sc-shared-text/s3.mdx';
+
+<SharedContentS3/>
+
+Make sure to set the `--partition-by-api` flag and pass in your API key with `--api-key`:
+
+import S3APISh from '/snippets/source_connectors/s3_api.sh.mdx';
+import S3APIPy from '/snippets/source_connectors/s3_api.py.mdx';
+
+<CodeGroup>
+
+  <S3APISh />
+
+  <S3APIPy />
+
+</CodeGroup>
+
+Additionally, if you're using Unstructured SaaS API, your locally deployed Unstructured API, or an Unstructured API
+deployed on Azure or AWS, you also need to specify the API URL via the `--partition-endpoint` argument.

@@ -1,0 +1,16 @@
+Connect Reddit to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to store structured outputs locally on your filesystem.
+
+First, install the Reddit dependencies as shown here.
+
+```bash
+pip install "unstructured[reddit]"
+```
+
+You must provide:
+* A client ID and a client secret to authenticate yourself. Learn how to get them [here](https://github.com/reddit-archive/reddit/wiki/OAuth2-Quick-Start-Example#first-steps).
+* `user-agent`: user agent request header to use when calling Reddit API
+* `subreddit-name`: The name of a subreddit, without the "r\\", e.g. "machinelearning"
+
+Optionally you can choose to specify:
+* `search-query`: If set, return posts using this query. Otherwise, use hot posts.
+* `num-posts`: If set, limits the number of posts to pull in.

@@ -1,0 +1,22 @@
+Connect Elasticsearch to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to store structured outputs locally on your filesystem.
+
+First, install the Elasticsearch dependencies as shown here.
+
+```bash
+pip install "unstructured[elasticsearch]"
+```
+
+Provide values for the Elasticsearch-specific parameters depending on your Elasticsearch configuration:
+* `index-name`: Name of the Elasticsearch index to pull data from
+* `hosts`: List of URLs where elasticsearch index is served
+* `fields`: If provided, will limit the fields returned by Elasticsearch to this comma-delimited list
+* `username`: Username to authenticate into the index
+* `password`: Password to authenticate into the index
+* `cloud-id`: ID used to connect to Elastic Cloud
+* `es-api-key`: Elasticsearch API key used for authentication
+* `api-key-id`: ID associated with api key used for authentication: [read more](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-create-api-key.html)
+* `bearer-auth`: Bearer token used for HTTP bearer authentication
+* `ca-certs`: "path/to/ca/certs"
+* `ssl-assert-fingerprint`: SHA256 fingerprint value
+* `batch-size`: How many records to read at a time per process
+

@@ -1,0 +1,23 @@
+---
+title: Jira
+---
+
+import SharedContentJira from '/snippets/sc-shared-text/jira.mdx';
+
+<SharedContentJira/>
+
+Make sure to set the `--partition-by-api` flag and pass in your API key with `--api-key`:
+
+import JiraAPISh from '/snippets/source_connectors/jira_api.sh.mdx';
+import JiraAPIPy from '/snippets/source_connectors/jira_api.py.mdx';
+
+<CodeGroup>
+
+  <JiraAPISh />
+
+  <JiraAPIPy />
+
+</CodeGroup>
+
+Additionally, if you're using Unstructured SaaS API, your locally deployed Unstructured API, or an Unstructured API
+deployed on Azure or AWS, you also need to specify the API URL via the `--partition-endpoint` argument.

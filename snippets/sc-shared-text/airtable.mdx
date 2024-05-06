@@ -1,0 +1,22 @@
+
+Connect Airtable to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to
+store structured outputs locally on your filesystem.
+
+Make sure to have the Airtable dependencies installed:
+
+    ```bash Shell
+    pip install "unstructured[airtable]"
+    ```
+
+Before connecting your preprocessing pipeline to Airtable, obtain a personal access token to authenticate into Airtable.
+Check [Airtable documentation](https://support.airtable.com/docs/creating-and-using-api-keys-and-access-tokens) for more info.
+
+Unless otherwise specified, Unstructured will process all tables within each and every base within an Airtable org.
+Optionally, you can choose to specify the locations to ingest data from within Airtable using the `--list-of-paths` argument
+(`list_of_paths` in Python example).
+An Airtable path has the following structure: `base_id/table_id(optional)/view_id(optional)/`
+
+Refer to Airtable documentation to learn how you can obtain ids in bulk:
+* [base ids](https://airtable.com/developers/web/api/list-bases)
+* [table and view ids](https://airtable.com/developers/web/api/get-base-schema)
+* [base, table and view ids](https://pyairtable.readthedocs.io/en/latest/metadata.html)

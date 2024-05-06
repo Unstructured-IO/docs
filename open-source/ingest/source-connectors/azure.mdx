@@ -1,17 +1,11 @@
 ---
-title: Azure 
-description: Connect Azure to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to store structured outputs locally on your filesystem.
+title: Azure
 ---
 
-First you’ll need to install the Azure dependencies as shown here.
+import SharedContentAzure from '/snippets/sc-shared-text/azure.mdx';
 
-```bash
-pip install "unstructured[azure]"
+<SharedContentAzure/>
 
-```
-
-
-## Run Locally
 
 import AzureSh from '/snippets/source_connectors/azure.sh.mdx';
 import AzurePy from '/snippets/source_connectors/azure.py.mdx';
@@ -25,24 +19,4 @@ import AzurePy from '/snippets/source_connectors/azure.py.mdx';
 </CodeGroup>
 
 
-## Run via the API
-
-You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
-
-import AzureAPISh from '/snippets/source_connectors/azure_api.sh.mdx';
-import AzureAPIPy from '/snippets/source_connectors/azure_api.py.mdx';
-
-<CodeGroup>
-
-  <AzureAPISh />
-
-  <AzureAPIPy />
-
-</CodeGroup>
-
-
-Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
-
 For a full list of the options the CLI accepts check `unstructured-ingest azure --help`.
-
-NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/open-source/installation/overview).

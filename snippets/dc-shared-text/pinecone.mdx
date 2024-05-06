@@ -1,0 +1,24 @@
+Batch process all your records using `unstructured-ingest` to store structured outputs and embeddings locally on your filesystem and upload those to a Pinecone index.
+
+First you’ll need to install the Pinecone dependencies as shown here.
+
+```bash
+pip install "unstructured[pinecone]"
+```
+
+The upstream connector can be any of the ones supported, but for convenience here, showing a sample command using the upstream local connector.
+
+import PineconeSh from '/snippets/destination_connectors/pinecone.sh.mdx';
+import PineconePy from '/snippets/destination_connectors/pinecone.py.mdx';
+
+<CodeGroup>
+
+  <PineconeSh />
+
+  <PineconePy />
+
+</CodeGroup>
+
+For a full list of the options the CLI accepts check `unstructured-ingest <upstream connector> pinecone --help`.
+
+NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/open-source/installation/overview).

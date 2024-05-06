@@ -1,0 +1,18 @@
+Connect Salesforce to your preprocessing pipeline, and batch process Salesforce data using `unstructured-ingest` to store structured outputs locally on your filesystem.
+
+First, install the Salesforce dependencies as shown here.
+
+```bash
+pip install "unstructured[salesforce]"
+```
+
+Salesforce source connector supports the following categories: Account, Case, Campaign, EmailMessage, Lead.
+
+Configure JWT authorization, read more in Salesforce documentation:
+* https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_key_and_cert.htm
+* https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_connected_app.htm
+
+To connect to Salesforce, make sure to specify:
+* `username`: Salesforce username, usually looks like an email.
+* `consumer-key`: For the Salesforce JWT auth. Found in Consumer Details.
+* `private-key`: Path to the private key or its contents for the Salesforce JWT auth. Key file is usually named `server.key`.

@@ -1,0 +1,24 @@
+---
+title: Azure
+---
+
+import SharedContentAzure from '/snippets/sc-shared-text/azure.mdx';
+
+<SharedContentAzure/>
+
+Make sure to set the `--partition-by-api` flag and pass in your API key with `--api-key`:
+
+import AzureAPISh from '/snippets/source_connectors/azure_api.sh.mdx';
+import AzureAPIPy from '/snippets/source_connectors/azure_api.py.mdx';
+
+<CodeGroup>
+
+  <AzureAPISh />
+
+  <AzureAPIPy />
+
+</CodeGroup>
+
+
+Additionally, if you're using Unstructured SaaS API, your locally deployed Unstructured API, or an Unstructured API
+deployed on Azure or AWS, you also need to specify the API URL via the `--partition-endpoint` argument.

@@ -1,17 +1,10 @@
 ---
-title: Biomed 
-description: Connect Biomed to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to store structured outputs locally on your filesystem.
+title: Biomed
 ---
 
-First you’ll need to install the Biomed dependencies as shown here.
+import SharedContentBiomed from '/snippets/sc-shared-text/biomed.mdx';
 
-```bash
-pip install "unstructured[biomed]"
-
-```
-
-
-## Run Locally
+<SharedContentBiomed/>
 
 import BiomedSh from '/snippets/source_connectors/biomed.sh.mdx';
 import BiomedPy from '/snippets/source_connectors/biomed.py.mdx';
@@ -24,24 +17,4 @@ import BiomedPy from '/snippets/source_connectors/biomed.py.mdx';
 
 </CodeGroup>
 
-
-## Run via the API
-
-You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
-
-import BiomedAPISh from '/snippets/source_connectors/biomed_api.sh.mdx';
-import BiomedAPIPy from '/snippets/source_connectors/biomed_api.py.mdx';
-
-<CodeGroup>
-
-  <BiomedAPISh />
-
-  <BiomedAPIPy />
-
-</CodeGroup>
-
-Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
-
 For a full list of the options the CLI accepts check `unstructured-ingest biomed --help`.
-
-NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/open-source/installation/overview).

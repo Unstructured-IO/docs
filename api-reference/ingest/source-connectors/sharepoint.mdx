@@ -1,0 +1,23 @@
+---
+title: SharePoint
+---
+
+import SharedContentSharePoint from '/snippets/sc-shared-text/sharepoint.mdx';
+
+<SharedContentSharePoint/>
+
+Make sure to set the `--partition-by-api` flag and pass in your API key with `--api-key`:
+
+import SharepointAPISh from '/snippets/source_connectors/sharepoint_api.sh.mdx';
+import SharepointAPIPy from '/snippets/source_connectors/sharepoint_api.py.mdx';
+
+<CodeGroup>
+
+  <SharepointAPISh />
+
+  <SharepointAPIPy />
+
+</CodeGroup>
+
+Additionally, if you're using Unstructured SaaS API, your locally deployed Unstructured API, or an Unstructured API
+deployed on Azure or AWS, you also need to specify the API URL via the `--partition-endpoint` argument.

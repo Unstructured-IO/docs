@@ -1,0 +1,23 @@
+---
+title: GitLab
+---
+
+import SharedContentGitLab from '/snippets/sc-shared-text/gitlab.mdx';
+
+<SharedContentGitLab/>
+
+Make sure to set the `--partition-by-api` flag and pass in your API key with `--api-key`:
+
+import GitLabAPISh from '/snippets/source_connectors/gitlab_api.sh.mdx';
+import GitLabAPIPy from '/snippets/source_connectors/gitlab_api.py.mdx';
+
+<CodeGroup>
+
+  <GitLabAPISh />
+
+  <GitLabAPIPy />
+
+</CodeGroup>
+
+Additionally, if you're using Unstructured SaaS API, your locally deployed Unstructured API, or an Unstructured API
+deployed on Azure or AWS, you also need to specify the API URL via the `--partition-endpoint` argument.

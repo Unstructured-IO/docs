@@ -1,15 +1,7 @@
 ---
 title: Source Connectors
-description: Connect to your favorite data storage platforms for effortless batch processing of your files. We are constantly adding new data connectors and if you don’t see your favorite platform let us know in our community Slack.
 ---
 
-When ingesting data from a storage via a source connector, you typically store the resulting `*.json` files in a
-specified output directory.
+import SourceConnectorsOverview from '/snippets/source-connectors-overview.mdx';
 
-To "rehydrate" elements in JSON form into in-memory objects to further use in your application, use `elements_from_json`:
-
-```python
-from unstructured.staging.base import elements_from_json
-
-elements = elements_from_json(filename=path_to_json_file)
-```
+<SourceConnectorsOverview />

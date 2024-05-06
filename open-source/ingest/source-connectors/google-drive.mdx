@@ -1,16 +1,10 @@
 ---
-title: Google Drive 
-description: Connect Google Drive to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to store structured outputs locally on your filesystem.
+title: Google Drive
 ---
 
-First you’ll need to install the Google Drive dependencies as shown here.
+import SharedContentGoogleDrive from '/snippets/sc-shared-text/google-drive.mdx';
 
-```bash
-pip install "unstructured[gdrive]"
-```
-
-
-## Run Locally
+<SharedContentGoogleDrive/>
 
 import GoogleDriveSh from '/snippets/source_connectors/google_drive.sh.mdx';
 import GoogleDrivePy from '/snippets/source_connectors/google_drive.py.mdx';
@@ -23,24 +17,4 @@ import GoogleDrivePy from '/snippets/source_connectors/google_drive.py.mdx';
 
 </CodeGroup>
 
-
-## Run via the API
-
-You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
-
-import GoogleDriveAPISh from '/snippets/source_connectors/google_drive_api.sh.mdx';
-import GoogleDriveAPIPy from '/snippets/source_connectors/google_drive_api.py.mdx';
-
-<CodeGroup>
-
-  <GoogleDriveAPISh />
-
-  <GoogleDriveAPIPy />
-
-</CodeGroup>
-
-Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
-
 For a full list of the options the CLI accepts check `unstructured-ingest gdrive --help`.
-
-NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/open-source/installation/overview).

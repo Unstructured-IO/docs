@@ -1,0 +1,24 @@
+---
+title: Airtable
+---
+
+import SharedContentAirtable from '/snippets/sc-shared-text/airtable.mdx';
+
+<SharedContentAirtable/>
+
+Finally, make sure to set the `--partition-by-api` flag and pass in your API key with `--api-key`:
+
+import AirtableAPISh from '/snippets/source_connectors/airtable_api.sh.mdx';
+import AirtableAPIPy from '/snippets/source_connectors/airtable_api.py.mdx';
+
+<CodeGroup>
+
+  <AirtableAPISh />
+
+  <AirtableAPIPy />
+
+</CodeGroup>
+
+
+Additionally, if you're using Unstructured SaaS API, your locally deployed Unstructured API, or an Unstructured API
+deployed on Azure or AWS, you also need to specify the API URL via the `--partition-endpoint` argument.

@@ -1,0 +1,16 @@
+Batch process all your records using `unstructured-ingest` to store structured outputs locally on your filesystem and upload those local files to an MongoDB collection.
+
+First, install the MongoDB dependencies as shown here:
+
+```bash
+pip install "unstructured[mongodb]"
+```
+
+Specify the following parameters to configure your MongoDB source connector:
+
+* `uri`: URI to user when connecting.
+* `host`: Hostname, IP address, or Unix domain socket path where mongodb database is served.
+* `port`: Port where mongodb database is served.
+* `database`: Database name to connect to.
+* `collection`: Collection name to ingest data from.
+* `batch-size`: How many records to read at a time per process.

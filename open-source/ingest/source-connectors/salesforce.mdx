@@ -1,17 +1,10 @@
 ---
-title: Salesforce 
-description: Connect Salesforce to your preprocessing pipeline, and batch process Salesforce data using `unstructured-ingest` to store structured outputs locally on your filesystem.
+title: Salesforce
 ---
 
-First you’ll need to install the Salesforce dependencies as shown here.
+import SharedContentSalesforce from '/snippets/sc-shared-text/salesforce.mdx';
 
-```bash 
-pip install "unstructured[salesforce]"
-
-```
-
-
-## Run Locally
+<SharedContentSalesforce/>
 
 import SalesforceSh from '/snippets/source_connectors/salesforce.sh.mdx';
 import SalesforcePy from '/snippets/source_connectors/salesforce.py.mdx';
@@ -24,23 +17,4 @@ import SalesforcePy from '/snippets/source_connectors/salesforce.py.mdx';
 
 </CodeGroup>
 
-## Run via the API
-
-You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
-
-import SalesforceAPISh from '/snippets/source_connectors/salesforce_api.sh.mdx';
-import SalesforceAPIPy from '/snippets/source_connectors/salesforce_api.py.mdx';
-
-<CodeGroup>
-
-  <SalesforceAPISh />
-
-  <SalesforceAPIPy />
-
-</CodeGroup>
-
-Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
-
 For a full list of the options the CLI accepts check `unstructured-ingest salesforce --help`.
-
-NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/open-source/installation/overview).

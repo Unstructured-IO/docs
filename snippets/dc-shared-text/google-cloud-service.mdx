@@ -1,0 +1,25 @@
+Batch process all your records using `unstructured-ingest` to store structured outputs locally on your filesystem and upload those local files to a Google Cloud Service bucket.
+
+First you’ll need to install the GCS dependencies as shown here.
+
+```bash 
+pip install "unstructured[gcs]"
+```
+
+The upstream connector can be any of the ones supported, but for convenience here, showing a sample command using the upstream local connector.
+
+import GCSSh from '/snippets/destination_connectors/gcs.sh.mdx';
+import GCSPy from '/snippets/destination_connectors/gcs.py.mdx';
+
+<CodeGroup>
+
+  <GCSSh />
+
+  <GCSPy />
+
+</CodeGroup>
+
+
+For a full list of the options the CLI accepts check `unstructured-ingest <upstream connector> gcs --help`.
+
+NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/open-source/installation/overview).
