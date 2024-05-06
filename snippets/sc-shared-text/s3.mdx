@@ -1,0 +1,15 @@
+Connect S3 to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to store structured outputs locally on your filesystem.
+
+First, install the S3 dependencies as shown here.
+
+```bash
+pip install "unstructured[s3]"
+```
+
+Use the `remote-url` parameter to provide the remote URL formatted as `protocol://dir/path`.
+If your S3 bucket allows access without local AWS credentials, you can set the `anonymous` flag.
+
+If your S3 bucket doesn't allow anonymous access, make sure to provide your credentials:
+* `key`: access key ID. Takes precedence over.
+* `secret`: secret access key.
+* `token`: security token.
