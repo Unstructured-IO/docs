@@ -1,16 +1,10 @@
 ---
-title: Notion 
-description: Connect Airtable to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to store structured outputs locally on your filesystem.
+title: Notion
 ---
 
-First you’ll need to install the Notion dependencies as shown here.
+import SharedContentNotion from '/snippets/sc-shared-text/notion.mdx';
 
-```bash
-pip install "unstructured[notion]"
-```
-
-
-## Run Locally
+<SharedContentNotion/>
 
 import NotionSh from '/snippets/source_connectors/notion.sh.mdx';
 import NotionPy from '/snippets/source_connectors/notion.py.mdx';
@@ -23,24 +17,4 @@ import NotionPy from '/snippets/source_connectors/notion.py.mdx';
 
 </CodeGroup>
 
-
-## Run via the API
-
-You can also use upstream connectors with the `unstructured` API. For this you’ll need to use the `--partition-by-api` flag and pass in your API key with `--api-key`.
-
-import NotionAPISh from '/snippets/source_connectors/notion_api.sh.mdx';
-import NotionAPIPy from '/snippets/source_connectors/notion_api.py.mdx';
-
-<CodeGroup>
-
-  <NotionAPISh />
-
-  <NotionAPIPy />
-
-</CodeGroup>
-
-Additionally, you will need to pass the `--partition-endpoint` if you’re running the API locally. You can find more information about the `unstructured` API [here](https://github.com/Unstructured-IO/unstructured-api).
-
 For a full list of the options the CLI accepts check `unstructured-ingest notion --help`.
-
-NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/open-source/installation/overview).
