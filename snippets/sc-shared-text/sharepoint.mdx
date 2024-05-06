@@ -1,0 +1,15 @@
+Connect SharePoint to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to
+store structured outputs locally on your filesystem.
+
+First, install the SharePoint dependencies as shown here.
+
+```bash
+pip install "unstructured[sharepoint]"
+```
+
+To authenticate the source connector with SharePoint, you must enter a MS Sharepoint app client-id, client secret and
+SharePoint site url.
+To get the credentials for your Sharepoint app, follow these [steps](https://github.com/vgrem/Office365-REST-Python-Client/wiki/How-to-connect-to-SharePoint-Online-and-and-SharePoint-2013-2016-2019-on-premises--with-app-principal).
+
+Learn how to set up your application and obtain permissions related variables (`permissions-application-id`,
+`permissions-client-cred`, `permissions-tenant`), [here](https://tsmatz.wordpress.com/2016/10/07/application-permission-with-v2-endpoint-and-microsoft-graph).
