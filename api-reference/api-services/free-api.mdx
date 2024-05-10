@@ -36,15 +36,14 @@ you can do this, which all lead to the same result, so pick your preferred metho
 
 ### POST request
 
-Supply your API key, and the file to preprocess:
+Supply your API key, and the file to preprocess, the URL is the same for all free Unstructured API users:
 
 ```bash
-# The URL is the same for all free Unstructured API users
 curl -X 'POST' 'https://api.unstructured.io/general/v0/general' \
      -H 'accept: application/json' \
      -H 'Content-Type: multipart/form-data' \
      -H 'unstructured-api-key: YOUR_API_KEY' \
-     -F 'files=@sample-docs/family-day.eml'
+     -F 'files=PATH_TO_FILE'
 ```
 
 The result will look something like this:
@@ -78,7 +77,7 @@ from unstructured_client.models import shared
 from unstructured_client.models.errors import SDKError
 
 client = UnstructuredClient(api_key_auth="YOUR_API_KEY")
-filename = "sample-docs/family-day.eml"
+filename = "PATH_TO_FILE"
 
 with open(filename, "rb") as f:
     files=shared.Files(
@@ -107,7 +106,7 @@ const client = new UnstructuredClient({
     },
 });
 
-const filename = "sample-docs/family-day.eml";
+const filename = "PATH_TO_FILE";
 const data = fs.readFileSync(filename);
 
 client.general.partition({
@@ -133,7 +132,7 @@ Finally, you can call the Unstructured API directly from the Unstructured open s
 ```python
 from unstructured.partition.api import partition_via_api
 
-filename = "sample-docs/family-day.eml"
+filename = "PATH_TO_FILE"
 
 elements = partition_via_api(
   filename=filename,

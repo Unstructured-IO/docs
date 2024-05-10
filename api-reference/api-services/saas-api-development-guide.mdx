@@ -45,13 +45,11 @@ Supply your API key, and the file to preprocess. Make sure to copy the complete 
 your email, i.e. this URL should include the specific path `/general/v0/general`:
 
 ```bash
-# Make sure to replace the placeholders with the actual URL and API key from your email
-# Include the path `/general/v0/general` in the URL.
 curl -X 'POST' 'https://YOUR_API_URL' \
      -H 'accept: application/json' \
      -H 'Content-Type: multipart/form-data' \
      -H 'unstructured-api-key: YOUR_API_KEY' \
-     -F 'files=@sample-docs/family-day.eml'
+     -F 'files=PATH_TO_FILE'
 ```
 
 The result will look something like this:
@@ -92,7 +90,7 @@ client = UnstructuredClient(
     server_url="YOUR_API_URL",
 )
 
-filename = "sample-docs/family-day.eml"
+filename = "PATH_TO_FILE"
 
 with open(filename, "rb") as f:
     files=shared.Files(
@@ -122,7 +120,7 @@ const client = new UnstructuredClient({
     },
 });
 
-const filename = "sample-docs/family-day.eml";
+const filename = "PATH_TO_FILE";
 const data = fs.readFileSync(filename);
 
 client.general.partition({
@@ -149,7 +147,7 @@ Finally, you can call the SaaS Unstructured API directly from the Unstructured o
 ```python
 from unstructured.partition.api import partition_via_api
 
-filename = "sample-docs/family-day.eml"
+filename = "PATH_TO_FILE"
 
 elements = partition_via_api(
   filename=filename,
