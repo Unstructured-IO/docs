@@ -8,14 +8,12 @@ description: "**Unstructured** provides tools to ingest and preprocess unstructu
 We offer **3 products**:
 
 1. [API](/api-reference/api-services/overview "API") - The quickest way to get started for document transformation.
-2. [Open Source](/open-source/introduction/overview/ "OSS") - Best for prototyping.
-3. [Enterprise Platform](/platform/overview "Platform") - Entirely no code platform for end-to-end RAG.
-
+2. [Platform](/platform/overview "Platform") - Entirely no code enterprise platform to get **all** your data RAG-ready.
+3. [Open Source](/open-source/introduction/overview/ "OSS") - Best for prototyping.
 
 ## TLDR
 
-If you're here just to process docs, here's the too long didn't read version:
-
+If you're here to quickly transform your unstructured documents into understandable JSON, here's the too long didn't read version:
 
 1. **Get an API Key** and **Server URL** by signing up to the [SaaS Unstructured API](https://unstructured.io/api-key-hosted) page on our website.
 2. Copy and run this code to **install** the Unstructured Python/JavaScript API SDK.
@@ -38,12 +36,14 @@ from unstructured_client import UnstructuredClient
 from unstructured_client.models import shared
 from unstructured_client.models.errors import SDKError
 
+# Update here with your api key and server url
 client = UnstructuredClient(
     api_key_auth="YOUR_API_KEY",
     server_url="YOUR_API_URL",
 )
 
-filename = "sample-docs/family-day.eml"
+# Update here with your filename
+filename = "sample-docs/YOUR_FILE_NAME.pdf"
 
 with open(filename, "rb") as f:
     files=shared.Files(
@@ -51,11 +51,12 @@ with open(filename, "rb") as f:
         file_name=filename,
     )
 
-req = shared.PartitionParameters(files=files)
+# You can choose fast, hi_res or ocr_only for strategy, learn more in the docs at step 4
+req = shared.PartitionParameters(files=files, strategy="auto")
 
 try:
     resp = client.general.partition(req)
-    print(resp.elements)
+    pprint(json.dumps(resp.elements, indent=2))
 except SDKError as e:
     print(e)
 ```
@@ -65,8 +66,10 @@ import { UnstructuredClient } from "unstructured-client";
 import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
 import * as fs from "fs";
 
+// Update here with your api 
 const key = "YOUR-API-KEY";
 
+// Update here with your serverURL
 const client = new UnstructuredClient({
     serverURL: "YOUR_API_URL",
     security: {
@@ -74,7 +77,8 @@ const client = new UnstructuredClient({
     },
 });
 
-const filename = "sample-docs/ragtest.pdf";
+// Update here with your filename
+filename = "sample-docs/YOUR_FILE_NAME.pdf"
 const data = fs.readFileSync(filename);
 
 client.general.partition({
@@ -93,7 +97,9 @@ client.general.partition({
 ```
 </CodeGroup>
 
-4. **Done!** If you'd like a deeper dive on the API, see the detailed [API Documentation](/api-reference/api-services/overview "API").
+1. **Done!** If you'd like a deeper dive on the API, see the detailed [API Documentation](/api-reference/api-services/overview "API"). For more on what partitioning strategies are and why they are important, check out the  [Partioning Strategies](/api-reference/api-services/partitioning "Partioning Strategies") guide.
+
+
    
 
 ## Get in touch
