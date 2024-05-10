@@ -23,13 +23,13 @@ To **get your data RAG-ready** our platform moves it through the following proce
     We have multiple [Source Connectors](/content/text). We can connect to your data in its existing location.
   </Step>
   <Step title="Route">
-    **Routing** determines which strategy we will employ in **transforming your document to our canonical JSON schema**. There are **three strategies** for document transformation, ```fast```, ```hires```, or ```ocr only```. ```fast``` is great for when there is extractable text available, like in HTML files or in the Microsoft Office Document format. ```hires``` is best for PDFs and tables and where accurate classification of document elements is critical. ```ocr_only``` is useful when dealing with image-based files or PDFs that do not have extractable text. **If you're unsure, select ```auto``` and we'll handle the decision for you**.
+    **Routing** determines which strategy we will employ in **transforming your document to our canonical JSON schema**. There are three [Partioning Strategies](/api-reference/api-services/partitioning "partioning strategies") for document transformation, ```fast```, ```hires```, or ```ocr only```. ```fast``` is great for when there is extractable text available, like in HTML files or in the Microsoft Office Document format. ```hires``` is best for PDFs and tables and where accurate classification of document elements is critical. ```ocr_only``` is useful when dealing with image-based files or PDFs that do not have extractable text. **If you're unsure, select ```auto``` and we'll handle the decision for you**.
   </Step>
-  <Step title="Transform">
-    Your source document is **transformed to our canonical JSON schema**. Irrespective of the input document, the JSON schema we provide gives you a **standardized output to code against**. It contains 20+ elements, such as ```Header```, ```Footer```, ```Title```, ```NarrativeText```, ```Table```, ```Image```, and more.
+  <Step title="Transform"> 
+    Your source document is **transformed to our canonical JSON schema**. Irrespective of the input document, the JSON schema we provide gives you a [standardized output to code against](/open-source/concepts/document-elements#element-id "Elements and Metadata"). It contains 20+ elements, such as ```Header```, ```Footer```, ```Title```, ```NarrativeText```, ```Table```, ```Image```, and more.
   </Step>
-    <Step title="Chunk">
-    Initially platform comes with **two chunking strategies**. **Basic**: Combines sequential elements up to specified size limits. Oversized elements are split, while tables are isolated and divided if necessary. Overlap between chunks is optional. **By Title**: Semantic chunking, understands the layout of the document and makes intelligent splits.
+    <Step title="Chunk"> 
+    Initially platform comes with [two chunking strategies](/open-source/core-functionality/chunking#chunking-basics  "Chunking Strategies"). **Basic**: Combines sequential elements up to specified size limits. Oversized elements are split, while tables are isolated and divided if necessary. Overlap between chunks is optional. **By Title**: Semantic chunking, understands the layout of the document and makes intelligent splits.
   </Step>
     <Step title="Embed">
     Call out to third party embedding providers, ```Open AI```, ```AWS Bedrock```, and ```Octo ML```.
@@ -55,8 +55,8 @@ To simplify this  process and provide it as a no-code solution, platform consist
 
 1. [Source Connectors](platform-source-connectors/overview) to ingest your data.
 2. [Destination Connectors](platform-destination-connectors/overview) tell our system where to write your transformed data too..
-3. [Workflows](platform/platform-destination-connectors/overview) connect sources to destinations and provide chunking, embedding, and scheduling options.
-4. [Jobs](platform/platform-destination-connectors/overview) allow you to monitor data transformation progress.
+3. [Workflows](workflows-automation) connect sources to destinations and provide chunking, embedding, and scheduling options.
+4. [Jobs](jobs-scheduling) allow you to monitor data transformation progress.
 
 
 ### Compliance
