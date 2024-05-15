@@ -3,8 +3,9 @@ speakeasyVersion: latest
 sources:
     docs-source:
         inputs:
-            - location: https://raw.githubusercontent.com/Unstructured-IO/unstructured-python-client/main/codeSamples.yaml
+            - location: https://api.unstructured.io/general/openapi.json
         overlays:
-            - location: https://raw.githubusercontent.com/Unstructured-IO/unstructured-python-client/main/overlay_client.yaml
+            - location: https://raw.githubusercontent.com/Unstructured-IO/unstructured-python-client/main/codeSamples.yaml
+            - location: https://raw.githubusercontent.com/Unstructured-IO/unstructured-js-client/main/codeSamples.yaml
         output: openapi.yaml
 targets: {}
