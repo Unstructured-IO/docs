@@ -1,0 +1,103 @@
+---
+title: Frequently Asked Questions
+sidebarTitle: Frequently Asked Questions
+---
+
+### Get in touch
+
+If you don't find the information you're looking for in the documentation, or require assistance,
+get in touch with our Support team at [support@unstructured.io](mailto:support%40unstructured.io),
+or [join our Slack](https://short.unstructured.io/pzw05l7) where our team and community can help you.
+
+
+## API Errors
+
+### What should be done when encountering a 401 or 404 error? 
+Encountering a 401 or 404 error necessitates reviewing the endpoint and API key usage. Ensuring that the endpoint alignment and API key authentication are correctly configured is crucial. This may involve verifying the inclusion or exclusion of specific path elements based on the use context, such as when employing the `partition_via_api` function or via the SDKs. 
+
+### How can I address a 504 gateway timeout error during hi_res or ocr_only processing? 
+A 504 gateway timeout error typically arises during prolonged processing tasks, particularly when employing high-resolution strategies or extensive data sets. This situation suggests the operation exceeded the allotted processing window by about 30 minutes. Adjusting processing parameters or strategies to optimize performance may be beneficial. Our support team is available to assist in identifying and implementing suitable modifications to circumvent these timeouts, ensuring efficient data processing.
+
+## API Usage
+
+### How does the partition_by_api function work with the Unstructured SaaS API?
+The partition_via_api function within the Unstructured platform provides a streamlined way for users to segment documents via the hosted Unstructured API.
+The partition_via_api function within the Unstructured platform provides a streamlined way for users to segment documents via the hosted Unstructured API. This automation tool is particularly valuable for those managing the API on their servers or in local containerized environments, simplifying the process of breaking down documents into more manageable components.
+
+``` Python partition
+from unstructured.partition.api import partition_via_api
+
+filename = "example-docs/eml/fake-email.eml"
+
+elements = partition_via_api(
+    filename=filename,
+    api_key="<<REPLACE WITH API KEY>>"
+    api_url="<<REPLACE WITH API SERVER URL>>/general/v0/general"
+)
+```
+
+### How can I specify the language for OCR document processing using Unstructured SaaS API?
+
+To define the OCR language when processing documents, utilize the languages keyword argument in your API request. For example:
+
+``` Curl ocrlang
+curl -X 'POST' \
+  '<<YOUR API SERVER URL>>/general/v0/general' \
+  -H 'unstructured-api-key: <<YOUR API KEY>>' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'files=@sample-docs/english-and-korean.png' \
+  -F 'strategy=ocr_only' \
+  -F 'languages=eng'  \
+  -F 'languages=kor'  \
+  | jq -C . | less -R
+```
+For comprehensive language support, refer to the [Tesseract documentation]("https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html"), which provides a detailed list of supported languages and installation guidelines.
+
+<Note>You can still use ``ocr_languages`` kwarg, but this parameter is being deprecated in favor of ``languages`` kwarg.</Note>
+
+### How is the SaaS API used alongside Chipper model?
+Unstructured SaaS API supports using the Chipper models, which are still experimental. To define the model, you can pass the hi_res_model_name as shown in the following example:
+
+``` Curl Chipper
+curl -X 'POST' \
+'<<YOUR API SERVER URL>>/general/v0/general' \
+  -H 'unstructured-api-key: <<YOUR API KEY>>' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: multipart/form-data' \
+  -F 'files=@sample-docs/layout-parser-paper.pdf' \
+  -F 'strategy=hi_res' \
+  -F 'hi_res_model_name=chipper'  \
+  | jq -C . | less -R
+  ```
+
+Go here to learn more about the available [models](/open-source/concepts/models) and [partioning strategies](/open-source/concepts/partitioning-strategies).
+
+### Can I employ the basic chunking strategy with the Unstructured API? 
+Yes, the [Unstructured API](/api-reference/api-services/overview) supports the implementation of the [Unstructured chunking strategies](/open-source/core-functionality/chunking). This approach facilitates the efficient segmentation of content, enhancing manageability and processing. Our [API Parameter](/api-reference/api-services/api-parameters) documentation provides detailed instructions on employing the chunking_strategy and relevant kwargs, including ``multipage_sections``, ``combine_under_n_chars``, ``new_after_n_chars``, and ``max_characters``.
+
+### How can I extract images from PDFs via the API?
+You can pass the ``extract_image_block_types`` and ``extract_image_block_to_payload`` kwargs in the [API Parameters](/api-reference/api-services/api-parameters). For more information, please refer to our [API Parameter](/api-reference/api-services/api-parameters) documentation.
+
+  
+## Billing
+
+### How can I monitor my API usage and expenditures? 
+To ensure transparency and help you manage your API usage, we provide weekly updates directly to your email. Receiving these insights regularly lets you stay informed about your API consumption and effectively monitor your expenses. Soon we will bring online our new dashboard to let you see this detail live.
+### What is the resolution for unexpected charges on a credit card? 
+In the event of unexpected charges, please contact support@unstructured.io. Our team will review and ensure the rectification of any discrepancies, with the refund process typically concluding within 5-10 days.
+### How can I cancel my subscription for unused services? 
+Subscription cancellation can be requested via the designated form on our Hosted API webpage. For a more detailed cancellation request process, please refer to our documentation.
+
+
+
+## Terms & Conditions
+
+### Do the Terms & Conditions allow Unstructured to use the data I send through the API?
+<Note>On our paid products your data is kept entirely private. We do not persist it. We do not use any of it for training. We cannot see it.</Note>
+
+If you decide to use our Free API, you'll see Clause #9 in our [Terms & Conditions](https://unstructured.io/terms-and-conditions). It applies solely to the Free API version. It grants us the option to use data coming through the Free API only, to refine and enhance our service offerings. 
+
+On our paid products your data is kept entirely private. We do not persist it. We do not use any of it for training. We cannot see it.
+
+<Glossary/>
