@@ -1,0 +1,60 @@
+---
+title: Delta Table Source Connector 
+---
+
+**This sample code utilizes the Unstructured [Open Source](/open-source/introduction/overview "Open Source") Library**.
+
+## Objectives
+
+1.  Extract text and metadata from a PDF file using the Unstructured.io Python SDK.
+    
+2.  Process and store this data in a Databricks Delta Table.
+    
+3.  Retrieve data from the Delta Table using the Unstructured.io Delta Table Connector.
+    
+
+## Prerequisites
+
+*   Unstructured Python SDK
+    
+*   Databricks account and workspace
+    
+*   AWS S3 for Delta Table storage
+    
+
+## Processing and Storing into Databricks Delta Table
+
+3.  Initialize PySpark
+    
+
+```python
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName('sparkdf').getOrCreate()
+
+```
+
+
+4.  Convert JSON output into Dataframe
+    
+
+```python
+import pyspark
+
+dataframe = spark.createDataFrame(res.elements)
+
+```
+
+
+5.  Store DataFrame as Delta Table
+    
+
+```
+dataframe.write.mode("overwrite").format("delta").saveAsTable("delta_table")
+
+```
+
+
+## Conclusion
+
+This documentation covers the essential steps for converting unstructured PDF data into structured data and storing it in a Databricks Delta Table. It also outlines how to extract this data for further use.
