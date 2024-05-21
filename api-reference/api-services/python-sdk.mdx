@@ -41,6 +41,7 @@ file = open(filename, "rb")
 
 res = client.general.partition(request=operations.PartitionRequest(
     partition_parameters=shared.PartitionParameters(
+        # Note that this currently only supports a single file
         files=shared.Files(
             content=file.read(),
             file_name=filename,
