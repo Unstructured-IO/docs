@@ -1,0 +1,48 @@
+---
+title: Chunking strategies
+---
+
+Chunking functions use metadata and document elements detected with partition functions to split a document into
+appropriately-sized chunks for uses cases such as Retrieval Augmented Generation (RAG).
+
+If you are familiar with chunking methods that split long text documents into smaller chunks, you'll notice that
+Unstructured methods slightly differ, since the partitioning step already divides an entire document into its structural elements.
+
+Individual elements will only be split if they exceed the desired maximum chunk size. However, you have an option to
+combine small elements into a larger chunk without exceeding the maximum chunk size where it makes sense (based on the
+chosen chunking strategy). A chunk that is a result of combining elements will have a `CompositeElement` type. A table
+element is not combined with other elements, but if table element exceeds the maximum chunk size, it will be split into
+`TableChunk` elements.
+
+The way small elements will be combined into a larger chunk is controlled by choosing a chunking strategy.
+
+import SharedChunkingStrategies from '/snippets/concepts/chunking-strategies.mdx';
+
+<SharedChunkingStrategies/>
+
+### "by_page" chunking strategy
+
+Only available in Unstructured API and Platform.
+
+The `by_page` chunking strategy ensures the content from different pages do not end up in the same chunk.
+A single chunk will never contain text that occurred in two different pages. When a new page is detected, the
+existing chunk is completed and a new one is started, even if the next element would fit in the
+prior chunk.
+
+### "by_similarity" chunking strategy
+
+Only available in Unstructured API and Platform.
+
+The `by_similarity` chunking strategy employs embedding models to identify topically similar sequential elements and
+combine them into chunks. As with other strategies, chunks will never exceed the hard-maximum chunk size set by
+`max_characters`. For this reason, not all elements that share a topic will necessarily appear in the same chunk.
+However, with this strategy you can guarantee that two elements with low similarity will not be combined in a single chunk.
+
+Parameters specific to `by_similarity` chunking strategy:
+
+* `embedding_model`: By default, the `sentence-transformers/multi-qa-mpnet-base-dot-v1` embedding model is used to
+calculate similarity between sequential elements. At this moment, it is also the only supported embedding model for this
+chunking strategy. In the future, you will be able to specify an embedding model from the Hugging Face Hub to use here.
+
+* `similarity_threshold`: A value between 0.0 and 1.0 specifying the minimum similarity text in consecutive elements
+must have to be included in the same chunk. The default is 0.5.
