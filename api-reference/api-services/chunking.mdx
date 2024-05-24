@@ -8,13 +8,17 @@ appropriately-sized chunks for uses cases such as Retrieval Augmented Generation
 If you are familiar with chunking methods that split long text documents into smaller chunks, you'll notice that
 Unstructured methods slightly differ, since the partitioning step already divides an entire document into its structural elements.
 
-Individual elements will only be split if they exceed the desired maximum chunk size. However, you have an option to
-combine small elements into a larger chunk without exceeding the maximum chunk size where it makes sense (based on the
-chosen chunking strategy). A chunk that is a result of combining elements will have a `CompositeElement` type. A table
-element is not combined with other elements, but if table element exceeds the maximum chunk size, it will be split into
-`TableChunk` elements.
+Individual elements will only be split if they exceed the desired maximum chunk size. Two or more consecutive text elements
+that will together fit within `max_characters` will be combined. After chunking, you will only have elements of the
+following types:
 
-The way small elements will be combined into a larger chunk is controlled by choosing a chunking strategy.
+* `CompositeElement`: Any text element will become a `CompositeElement` after chunking. A composite element can be a
+combination of two or more original text elements that together fit within the maximum chunk size. It can also be a single
+element that doesn't leave room in the chunk for any others but fits by itself. Or it can be a fragment of an original
+text element that was too big to fit in one chunk and required splitting.
+* `Table`:  A table element is not combined with other elements and if it fits within `max_characters` it will remain as is.
+* `TableChunk`: large tables that exceed `max_characters` chunk size are split into special `TableChunk` elements.
+
 
 import SharedChunkingStrategies from '/snippets/concepts/chunking-strategies.mdx';
 
@@ -25,24 +29,20 @@ import SharedChunkingStrategies from '/snippets/concepts/chunking-strategies.mdx
 Only available in Unstructured API and Platform.
 
 The `by_page` chunking strategy ensures the content from different pages do not end up in the same chunk.
-A single chunk will never contain text that occurred in two different pages. When a new page is detected, the
-existing chunk is completed and a new one is started, even if the next element would fit in the
+When a new page is detected, the existing chunk is completed and a new one is started, even if the next element would fit in the
 prior chunk.
 
 ### "by_similarity" chunking strategy
 
 Only available in Unstructured API and Platform.
 
-The `by_similarity` chunking strategy employs embedding models to identify topically similar sequential elements and
-combine them into chunks. As with other strategies, chunks will never exceed the hard-maximum chunk size set by
-`max_characters`. For this reason, not all elements that share a topic will necessarily appear in the same chunk.
-However, with this strategy you can guarantee that two elements with low similarity will not be combined in a single chunk.
+The `by_similarity` chunking strategy employs the `sentence-transformers/multi-qa-mpnet-base-dot-v1` embedding model to
+identify topically similar sequential elements and combine them into chunks.
 
-Parameters specific to `by_similarity` chunking strategy:
+As with other strategies, chunks will never exceed the hard-maximum chunk size set by `max_characters`. For this reason,
+not all elements that share a topic will necessarily appear in the same chunk. However, with this strategy you can
+guarantee that two elements with low similarity will not be combined in a single chunk.
 
-* `embedding_model`: By default, the `sentence-transformers/multi-qa-mpnet-base-dot-v1` embedding model is used to
-calculate similarity between sequential elements. At this moment, it is also the only supported embedding model for this
-chunking strategy. In the future, you will be able to specify an embedding model from the Hugging Face Hub to use here.
-
-* `similarity_threshold`: A value between 0.0 and 1.0 specifying the minimum similarity text in consecutive elements
+You can control the level of topic similarity you require for elements to have by setting the `similarity_threshold` parameter.
+`similarity_threshold` expects a value between 0.0 and 1.0 specifying the minimum similarity text in consecutive elements
 must have to be included in the same chunk. The default is 0.5.
