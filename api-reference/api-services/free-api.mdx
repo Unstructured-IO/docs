@@ -72,25 +72,34 @@ Next, use it to call the API:
 <CodeGroup>
 
 ```python Python
-from unstructured_client import UnstructuredClient
-from unstructured_client.models import shared
-from unstructured_client.models.errors import SDKError
+import unstructured_client
+from unstructured_client.models import operations, shared
 
-client = UnstructuredClient(api_key_auth="YOUR_API_KEY")
-filename = "PATH_TO_FILE"
+client = unstructured_client.UnstructuredClient(
+    api_key_auth="YOUR_API_KEY",
+    # you may need to provide your unique API URL
+    # server_url="YOUR_API_URL",
+)
 
-with open(filename, "rb") as f:
-    files=shared.Files(
-        content=f.read(),
-        file_name=filename,
-    )
+filename = "sample-docs/layout-parser-paper.pdf"
+file = open(filename, "rb")
 
-req = shared.PartitionParameters(files=files)
+res = client.general.partition(request=operations.PartitionRequest(
+    partition_parameters=shared.PartitionParameters(
+        # Note that this currently only supports a single file
+        files=shared.Files(
+            content=file.read(),
+            file_name=filename,
+        ),
+        # Other parameters
+        strategy=shared.Strategy.HI_RES,
+        chunking_strategy=shared.ChunkingStrategy.BY_PAGE,
+    ),
+))
 
-try:
-    resp = client.general.partition(req)
-except SDKError as e:
-    print(e)
+if res.elements is not None:
+    # handle response
+    pass
 ```
 
 ```javascript JavaScript
