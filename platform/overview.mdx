@@ -20,7 +20,7 @@ To **get your data RAG-ready** our platform moves it through the following proce
 ```
 <Steps>
   <Step title="Connect">
-    We offer multiple [Source Connectors](/content/text). We can connect to your data in its existing location.
+    We offer multiple [Source Connectors](../platform/platform-source-connectors/overview). We can connect to your data in its existing location.
   </Step>
   <Step title="Route">
     **Routing** determines which strategy we will employ in **transforming your document to our canonical JSON schema**. There are three [Partioning Strategies](/api-reference/api-services/partitioning "partioning strategies") for document transformation, ```fast```, ```hires```, or ```ocr_only```. ```fast``` is great for when there is extractable text available, like in HTML files or in the Microsoft Office Document format. ```hires``` is best for PDFs and tables and where accurate classification of document elements is critical. ```ocr_only``` is useful when dealing with image-based files or PDFs that do not have extractable text. **If you're unsure, select ```auto``` and we'll handle the decision for you**.
@@ -35,7 +35,7 @@ To **get your data RAG-ready** our platform moves it through the following proce
     Call out to third party embedding providers, ```Open AI```, ```AWS Bedrock```, and ```Octo ML```.
   </Step>
       <Step title="Persist">
-    We have multiple [Destination Connectors](/content/text). Including **all major vector databases**.
+    We have multiple [Destination Connectors](../platform/platform-destination-connectors/overview). Including **all major vector databases**.
   </Step>
 </Steps>
 
@@ -53,10 +53,10 @@ To simplify this  process and provide it as a no-code solution, platform consist
     Workflow[3. Workflow] --> Jobs[4. Jobs]
 ```
 
-1. [Source Connectors](platform-source-connectors/overview) to ingest your data.
-2. [Destination Connectors](platform-destination-connectors/overview) tell our system where to write your transformed data too..
-3. [Workflows](workflows-automation) connect sources to destinations and provide chunking, embedding, and scheduling options.
-4. [Jobs](jobs-scheduling) allow you to monitor data transformation progress.
+1. [Source Connectors](../platform/platform-source-connectors/overview) to ingest your data.
+2. [Destination Connectors](../platform/platform-destination-connectors/overview) tell our system where to write your transformed data too..
+3. [Workflows](../platform/workflows-automation) connect sources to destinations and provide chunking, embedding, and scheduling options.
+4. [Jobs](../platform/jobs-scheduling) allow you to monitor data transformation progress.
 
 
 ### Compliance
