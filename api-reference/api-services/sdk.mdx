@@ -14,7 +14,6 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 Before using the SDK to interact with your Unstructured API, install the library:
 
 <CodeGroup>
-
 ```bash Python
 pip install unstructured-client
 ```
@@ -22,7 +21,6 @@ pip install unstructured-client
 ```bash JavaScript
 npm install unstructured-client
 ```
-
 </CodeGroup>
 
 ## Basics
@@ -39,10 +37,9 @@ npm install unstructured-client
     advised to use the new enum classes for defining those parameters. Ex: `shared.Strategy.HI_RES`
 </Note>
 
-Let's start with a simple example in which you send a pdf document to partition via the *free* Unstructured API:
+Let's start with a simple example in which you send a pdf document to partition via the free Unstructured API:
 
 <CodeGroup>
-
 ```python Python
 import unstructured_client
 from unstructured_client.models import operations, shared
@@ -63,7 +60,7 @@ res = client.general.partition(request=operations.PartitionRequest(
             file_name=filename,
         ),
         # Other partition parameters
-        strategy=shared.Strategy.HI_RES,
+        strategy=shared.Strategy.AUTO,
         chunking_strategy=shared.ChunkingStrategy.BY_PAGE,
         languages=['eng'], 
         starting_page_number=1,
@@ -119,20 +116,21 @@ client = unstructured_client.UnstructuredClient(
 filename = "sample-docs/layout-parser-paper.pdf"
 file = open(filename, "rb")
 
-# Creating the request without `shared.PartitionRequest` may be deprecated
 req = shared.PartitionParameters(
     files=shared.Files(  # The sdk currently only supports sending a single file
         content=file.read(),
         file_name=filename,
     ),
     # Other partition parameters
-    # Definind `strategy` as a string may be deprecated in favor of enum classes: `shared.ChunkingStrategy.FAST`
-    strategy="fast",
     languages=['eng'],
+    # Defining `strategy` as a string may be deprecated in favor of 
+    # enum classes (ex. `shared.ChunkingStrategy.AUTO`)
+    strategy="fast",
 )
 
 try:
-    res = client.general.partition(req)
+    # Requests not wrapped in `shared.PartitionRequest` may be deprecated in the future
+    res = client.general.partition(request=req)
     print(res.elements[0])
 except SDKError as e:
     print(e)
@@ -173,22 +171,150 @@ client.general.partition({
     console.log(e.body);
 });
 ```
-
 </CodeGroup>
 
-In the example above we're sending the request to the free Unstructured API, in which case the API URL is the same for all
-users and you don't need to provide it. Note, however, that you still need to authenticate yourself with
-your individual API Key.
+In the example above we're sending the request to the free Unstructured API, where the API URL is
+the same for all users, so you don't need to provide the server URL. However, you still need to
+authenticate using your individual API Key.
 
-If you want to use the SaaS Unstructured API, you need to define `server_url` as the unique API URL that you
-received in the same email as your API key. For Unstructured API on Azure/AWS, use the API URL that you
-configured through those services.
+## Paid API
+
+If you want to use the SaaS Unstructured API, all you need to do is initialize the SDK client with
+the unique API URL that you received in the same email as your API key. For Unstructured API on
+Azure/AWS, use the API URL that you configured through those services.
+
+<CodeGroup>
+```python Python
+client = unstructured_client.UnstructuredClient(
+    api_key_auth="YOUR_API_KEY",
+    server_url="YOUR_API_URL",
+)
+```
+
+```javascript JavaScript
+const unstructuredClient = new UnstructuredClient({
+    security: {
+        apiKeyAuth: "YOUR_API_KEY",
+    },
+    serverURL: "YOUR_API_URL",
+});
+```
+</CodeGroup>
+
+## Handling the Response
+
+The partition response defaults to a json format. Below is an example of reading it:
+
+<CodeGroup>
+```python Python
+
+```
+```javascript JavaScript
+
+```
+</CodeGroup>
+
+## Page Splitting
+
+In order to speed up processing of long PDF files, set the `splitPdfPage`[*](#parameter-names) parameter to `true`. This will
+cause the PDF to be split page-by-page by the client before sending requests to the API. The client
+awaits all parallel requests and combines the responses into a single response object. This will
+work only for PDF files, so don't set it for other types of files.
+
+The number of parallel requests is controlled by `splitPdfConcurrencyLevel`[*](#parameter-names). 
+The default is 5 and the max is set to 15 to avoid high resource usage and costs.
+
+If at least one request is successful, the responses are combined into a single response object. An
+error is returned only if all requests failed or there was no PDF split.
+
+When using page splitting, note that chunking will not always work since chunking may happen on the
+API side. If you need to chunk, you can make a second request to the API with the returned elements.
+
+<Note>
+Warning: Page splitting causes the `parent_id` metadata generation in elements to be disabled, as it
+requires having context of multiple pages.
+</Note>
+
+<CodeGroup>
+```python Python
+
+```
+
+```javascript JavaScript
+...
+
+client.general.partition({
+    files: {
+        content: data,
+        fileName: filename,
+    },
+    // Set `splitPdfPage` parameter to `true` in order to split the PDF file
+    splitPdfPage: true,
+    // Modify splitPdfConcurrencyLevel to change the number of parallel requests
+    splitPdfConcurrencyLevel: 10,
+}).then((res: PartitionResponse) => {
+    if (res.statusCode == 200) {
+        console.log(res.elements);
+    }
+}).catch((e) => {
+    console.log(e.statusCode);
+    console.log(e.body);
+});
+```
+</CodeGroup>
+
+## Custom callbacks, wrappers, and more
+### Adding Extra Logging
+<CodeGroup>
+```python Python
+
+```
+```javascript JavaScript
+
+```
+</CodeGroup>
+
+### Disabling SSL Validation
+
+<CodeGroup>
+```python Python
+import requests
+
+...
+
+# If verify is set to `False`, requests will accept any TLS certificate
+# presented by the server and ignore hostname mismatches and/or expired certificates, 
+# which will make your application vulnerable to man-in-the-middle (MitM) attacks.
+# Only set this to `False` for testing.
+http_client = requests.Session()
+http_client.verify = False
+
+s = UnstructuredClient(
+    client=http_client,
+    ...
+)
+
+...
+
+```
+```javascript JavaScript
+
+```
+</CodeGroup>
+
+
 
 ## Parameters & examples
 
-The API parameters are the same across all methods of accessing the Unstructured API.
+#### Parameter names 
+The parameter names used in this document are the JavaScript SDK names, which follow camelCase
+convention, while the Python SDK uses snake_case. Otherwise, the API parameters are the same across all methods of accessing the Unstructured API.
 
 * Refer to the [API parameters](/api-reference/api-services/api-parameters) page for the full list of available parameters.
 * Refer to the [Examples](/api-reference/api-services/examples) page for some inspiration on using the parameters.
 
+
+
 [//]: # (TODO: when we have the concepts page shared across products, link it from here for the users to learn about partition strategies, chunking strategies and other important shared concepts)
+
+
