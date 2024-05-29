@@ -5,7 +5,7 @@ description: This documentation covers the usage of the Python and JavaScript SD
 
 The [Python](https://github.com/Unstructured-IO/unstructured-python-client) and
 [JavaScript](https://github.com/Unstructured-IO/unstructured-js-client)
-SDKs allow for easy interaction with the Unstructured API using Python. Whether you're using the
+SDKs allow for easy interaction with the Unstructured API. Whether you're using the
 free Unstructured API, the SaaS Unstructured API, Unstructured API on Azure/AWS or your local
 deployment of Unstructured API, you can access the API using the Python or JavaScript SDK.
 
@@ -39,7 +39,7 @@ npm install unstructured-client
     advised to use the new enum classes for defining those parameters. Ex: `shared.Strategy.HI_RES`
 </Note>
 
-Let's start with a simple example in which you send a pdf document to partition via Unstructured API:
+Let's start with a simple example in which you send a pdf document to partition via the *free* Unstructured API:
 
 <CodeGroup>
 
@@ -48,8 +48,8 @@ import unstructured_client
 from unstructured_client.models import operations, shared
 
 client = unstructured_client.UnstructuredClient(
-    api_key_auth="YOUR_API_KEY",
-    # You may need to provide your unique API URL
+    api_key_auth="YOUR_FREE_API_KEY",
+    # You only need to provide your unique API URL if using the paid api
     # server_url="YOUR_API_URL",
 )
 
@@ -71,7 +71,7 @@ res = client.general.partition(request=operations.PartitionRequest(
 ))
 
 if res.elements is not None:
-    # handle response
+    # Handle the response
     pass
 ```
 
@@ -82,9 +82,9 @@ import { Strategy } from "unstructured-client/sdk/models/shared";
 
 const unstructuredClient = new UnstructuredClient({
     security: {
-        apiKeyAuth: "YOUR_API_KEY",
+        apiKeyAuth: "YOUR_FREE_API_KEY",
     },
-    // You may need to provide your unique API URL
+    // You only need to provide your unique API URL if using the paid api
     // serverURL: "YOUR_API_URL",
 });
 
@@ -111,8 +111,8 @@ from unstructured_client.models import shared
 from unstructured_client.models.errors import SDKError
 
 client = unstructured_client.UnstructuredClient(
-    api_key_auth="YOUR_API_KEY",
-    # You may need to provide your unique API URL
+    api_key_auth="YOUR_FREE_API_KEY",
+    # You only need to provide your unique API URL if using the paid api
     # server_url="YOUR_API_URL",
 )
 
@@ -143,13 +143,13 @@ import { UnstructuredClient } from "unstructured-client";
 import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
 import * as fs from "fs";
 
-const key = "YOUR_API_KEY";
+const key = "YOUR_FREE_API_KEY";
 
 const client = new UnstructuredClient({
     security: {
         apiKeyAuth: key,
     },
-    // You may need to provide your unique API URL
+    // You only need to provide your unique API URL if using the paid api
     // serverURL: "YOUR_API_URL",
 });
 
