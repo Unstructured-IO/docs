@@ -75,6 +75,36 @@ if res.elements is not None:
     pass
 ```
 
+```javascript JavaScript
+import { openAsBlob } from "node:fs";
+import { UnstructuredClient } from "unstructured-client";
+import { Strategy } from "unstructured-client/sdk/models/shared";
+
+const unstructuredClient = new UnstructuredClient({
+    security: {
+        apiKeyAuth: "YOUR_API_KEY",
+    },
+    // You may need to provide your unique API URL
+    // serverURL: "YOUR_API_URL",
+});
+
+async function run() {
+    const result = await unstructuredClient.general.partition({
+        partitionParameters: {
+            // The sdk currently only supports sending a single file
+            files: await openAsBlob("./sample-file"),
+            // Other partition params
+            strategy: Strategy.Auto,
+        },
+    });
+
+    // Handle the result
+    console.log(result)
+}
+
+run();
+```
+
 ```python Python (SDK <v0.22.0)
 import unstructured_client
 from unstructured_client.models import shared
@@ -116,11 +146,11 @@ import * as fs from "fs";
 const key = "YOUR_API_KEY";
 
 const client = new UnstructuredClient({
-    // You may need to provide your unique API URL
-    // serverURL: "YOUR_API_URL",
     security: {
         apiKeyAuth: key,
     },
+    // You may need to provide your unique API URL
+    // serverURL: "YOUR_API_URL",
 });
 
 const filename = "sample-docs/layout-parser-paper.pdf";
