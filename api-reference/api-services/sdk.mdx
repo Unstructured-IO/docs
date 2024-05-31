@@ -261,11 +261,12 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
     </CodeGroup>
 
 ## Customizing the Client
-    ### Configuring Retry Logic
-        If a request to the API fails, the client will retry the request with an 
-        exponential backoff strategy up to a maximum interval of one minute. The function keeps
-        retrying until the total elapsed time exceeds `maxElapsedTime`[*](#parameter-names), which defaults to one hour.
-        These defaults can be customized through the `retryConfig`[*](#parameter-names) when initializing the client:
+    ### Retries
+        You can also change the defaults for retries through the `retryConfig`[*](#parameter-names)
+        when initializing the client. If a request to the API fails, the client will retry the 
+        request with an exponential backoff strategy up to a maximum interval of one minute. The
+        function keeps retrying until the total elapsed time exceeds `maxElapsedTime`[*](#parameter-names),
+        which defaults to one hour:
 
         <CodeGroup>
         ```python Python
@@ -276,7 +277,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
                     initial_interval=500,
                     max_interval=60000,
                     exponent=1.5,
-                    max_elapsed_time=900000,  # 15*60*1000 = 15 minutes
+                    max_elapsed_time=900000,  # 15min*60sec*1000ms = 15 minutes
                 ), False),
                 retry_connection_errors=True,  // Set to `False` to disable retries completely
             )
@@ -292,13 +293,96 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
                         initialInterval: 500,
                         maxInterval: 60000,
                         exponent: 1.5,
-                        maxElapsedTime: 900000, // 15*60*1000 = 15 minutes
+                        maxElapsedTime: 900000, // 15min*60sec*1000ms = 15 minutes
                     },
                     retryConnectionErrors: true,  // Set to `false` to disable retries completely
                 };
             });
         ```
         </CodeGroup>
+
+        If you want to retry on specific response codes, you will have to modify the underlying
+        `httpClient` or `requests` object.
+
+        The TypeScript SDK makes API calls using an HTTPClient that wraps the native
+        [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). This HTTPClient is a
+        thin wrapper around `fetch` and provides the ability to attach hooks around the
+        request lifecycle that can be used to modify the request or handle errors and response.
+
+        The HTTPClient constructor takes an optional fetcher argument that can be used to integrate a
+        third-party HTTP client, mock out the HTTP client for tests, or feed in fixtures and further
+        customize the retry logic to only rety on certain errors:
+
+        <CodeGroup>
+        ```python Python
+            from requests.adapters import HTTPAdapter
+            from requests.packages.urllib3.util.retry import Retry
+
+            retry_strategy = Retry(
+                status_forcelist=[429, 500, 502, 503, 504],  # Response codes to retry on
+                method_whitelist=["POST"]  # method_whitelist does not include POST by default
+            )
+            http_client = requests.Session()
+            http_client.mount("https://", HTTPAdapter(max_retries=retry_strategy))
+
+            s = UnstructuredClient(
+                client=http_client,
+                ...
+            )
+        ```
+        ```javascript JavaScript
+            const MAX_RETRIES = 3; // Maximum number of retries
+            const RETRY_DELAY = 1000; // Delay between retries in milliseconds
+
+            const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+            const httpClient = new HTTPClient({
+                fetcher: async (originalRequest) => {
+                    let attempt = 0;
+
+                    // Function to create a new request
+                    const createRequest = async () => {
+                        const requestClone = new Request(originalRequest, {
+                            body: originalRequest.clone().body,
+                            duplex: "half", // Required when sending a body
+                        });
+                        return requestClone;
+                    };
+
+                    while (attempt < MAX_RETRIES) {
+                        try {
+                            const request = await createRequest();
+                            const response = await fetch(request);
+
+                            // Check the response status
+                            if ([503].includes(response.status)) {
+                                throw new Error(`Retryable response status: ${response.status}`);
+                            }
+                            return response; // Return the response if it's successful
+                        } catch (error) {
+                            attempt++;
+                            if (attempt >= MAX_RETRIES) {
+                                throw error; // Rethrow the error if max retries are reached
+                            }
+                            console.log(`Retrying request... (${attempt}/${MAX_RETRIES})`);
+                            await sleep(RETRY_DELAY); // Wait before retrying
+                        }
+                    }
+                },
+            });
+
+            const sdk = new UnstructuredClient({ 
+                httpClient,
+                security: {apiKeyAuth: "YOUR_API_KEY"},
+            });
+        ```
+        ```javascript JavaScript SDK Hooks
+            httpClient.addHook("response", (response, request) => {
+                // configure retries on certain responses
+            });
+        ```
+        </CodeGroup>
+
 
     ### Adding Logging
         Users have to leverage the underlying client to configure logging (requests/http_client)
