@@ -56,8 +56,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 
         filename = "sample-docs/layout-parser-paper.pdf"
         file = open(filename, "rb")
-
-        res = client.general.partition(request=operations.PartitionRequest(
+        req = operations.PartitionRequest(
             partition_parameters=shared.PartitionParameters(
                 files=shared.Files(  # The sdk currently only supports sending a single file
                     content=file.read(),
@@ -69,16 +68,18 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
                 languages=['eng'], 
                 starting_page_number=1,
             ),
-        ))
+        )
+
+        res = client.general.partition(request=req)
 
         if res.elements is not None:
-        # Handle the response
-        pass
+            # Handle the response
+            pass
     ```
     ```javascript JavaScript
         import { openAsBlob } from "node:fs";
         import { UnstructuredClient } from "unstructured-client";
-        import { Strategy } from "unstructured-client/sdk/models/shared";
+        import { Strategy, ChunkingStrategy } from "unstructured-client/sdk/models/shared";
 
         const unstructuredClient = new UnstructuredClient({
             security: { apiKeyAuth: "YOUR_FREE_API_KEY" },
@@ -93,6 +94,9 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
                     files: await openAsBlob("./sample-file"),
                     // Other partition params
                     strategy: Strategy.Auto,
+                    chunkingStrategy=ChunkingStrategy.ByPage,
+                    languages=['eng'], 
+                    startingPageNumber=1,
                 },
             });
 
@@ -116,6 +120,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         filename = "sample-docs/layout-parser-paper.pdf"
         file = open(filename, "rb")
 
+        # Requests not wrapped in `shared.PartitionRequest` may be deprecated in the future
         req = shared.PartitionParameters(
             files=shared.Files(  # The sdk currently only supports sending a single file
                 content=file.read(),
@@ -129,11 +134,10 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         )
 
         try:
-            # Requests not wrapped in `shared.PartitionRequest` may be deprecated in the future
             res = client.general.partition(request=req)
             print(res.elements[0])
         except SDKError as e:
-        print(e)
+            print(e)
     ```
     ```javascript JavaScript (SDK <v0.10.6)
         import { UnstructuredClient } from "unstructured-client";
@@ -159,14 +163,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
             },
             // Other partition params
             strategy: "auto", // Defining `strategy` as a string may be deprecated in favor of enum classes
-        }).then((res: PartitionResponse) => {
-            if (res.statusCode == 200) {
-                console.log(res.elements);
-            }
-        }).catch((e) => {
-            console.log(e.statusCode);
-            console.log(e.body);
-        });
+        })
     ```
     </CodeGroup>
 
@@ -373,18 +370,6 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
             httpClient.addHook("response", (response, request) => {
                 // configure retries on certain responses
             });
-        ```
-        </CodeGroup>
-
-    ### Adding Logging
-        Users have to leverage the underlying client to configure logging (requests/http_client)
-
-        <CodeGroup>
-        ```python Python
-
-        ```
-        ```javascript JavaScript
-
         ```
         </CodeGroup>
 
