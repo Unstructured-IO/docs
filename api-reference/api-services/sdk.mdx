@@ -302,7 +302,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         </CodeGroup>
 
         If you want to retry on specific response codes, you will have to modify the underlying
-        `httpClient` or `requests` object.
+        `httpClient` or `requests` object that the SDK wraps.
 
         The TypeScript SDK makes API calls using an HTTPClient that wraps the native
         [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). This HTTPClient is a
@@ -311,16 +311,26 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 
         The HTTPClient constructor takes an optional fetcher argument that can be used to integrate a
         third-party HTTP client, mock out the HTTP client for tests, or feed in fixtures and further
-        customize the retry logic to only rety on certain errors:
+        customize the retry logic to only rety on certain errors.
+
+        The Python SDK relies on `requests`, which you can modify with `HTTPAdapter` and urllib3's 
+        [`Retry`](https://urllib3.readthedocs.io/en/stable/reference/urllib3.util.html#urllib3.util.Retry).
 
         <CodeGroup>
         ```python Python
+            import requests
+            import urllib3
+            import logging
             from requests.adapters import HTTPAdapter
-            from requests.packages.urllib3.util.retry import Retry
+            from urllib3.util import Retry
+
+            logging.basicConfig(level=logging.DEBUG)  # Set logging to debug to see retry attempts
 
             retry_strategy = Retry(
+                total=3,
+                backoff_factor=0.1,  # will sleep for [0.0s, 0.2s, 0.4s, 0.8s, …]
                 status_forcelist=[429, 500, 502, 503, 504],  # Response codes to retry on
-                method_whitelist=["POST"]  # method_whitelist does not include POST by default
+                allowed_methods=["POST"]  # allowed_methods does not include POST by default
             )
             http_client = requests.Session()
             http_client.mount("https://", HTTPAdapter(max_retries=retry_strategy))
@@ -383,7 +393,6 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         ```
         </CodeGroup>
 
-
     ### Adding Logging
         Users have to leverage the underlying client to configure logging (requests/http_client)
 
@@ -420,8 +429,9 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 ## Parameters & examples
 
     #### Parameter names 
-        The parameter names used in this document are the JavaScript SDK names, which follow camelCase
-        convention, while the Python SDK uses snake_case. Otherwise, the API parameters are the same across all methods of accessing the Unstructured API.
+        The parameter names used in this document are for the JavaScript SDK, which follow camelCase
+        convention (while the Python SDK uses snake_case). Other than this difference in naming convention, 
+        the names used in the SDKs are the same across all methods.
 
     * Refer to the [API parameters](/api-reference/api-services/api-parameters) page for the full list of available parameters.
     * Refer to the [Examples](/api-reference/api-services/examples) page for some inspiration on using the parameters.
