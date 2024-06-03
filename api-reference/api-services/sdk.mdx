@@ -89,7 +89,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         });
 
         async function run() {
-            const result = await unstructuredClient.general.partition({
+            const res = await unstructuredClient.general.partition({
                 partitionParameters: {
                     // The sdk currently only supports sending a single file
                     files: await openAsBlob("./sample-file"),
@@ -98,8 +98,8 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
                 },
             });
 
-            // Handle the result
-            console.log(result)
+            // Handle the response
+            console.log(res)
         }
 
         run();
@@ -201,19 +201,6 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
     ```
     </CodeGroup>
 
-## Handling the Response
-
-    The partition response defaults to a json format. Below is an example of reading it:
-
-    <CodeGroup>
-    ```python Python
-
-    ```
-    ```javascript JavaScript
-
-    ```
-    </CodeGroup>
-
 ## Page Splitting
 
     In order to speed up processing of long PDF files, set the `splitPdfPage`[*](#parameter-names) parameter to `true`. This will
@@ -237,7 +224,16 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 
     <CodeGroup>
     ```python Python
-
+    res = client.general.partition(request=operations.PartitionRequest(
+        partition_parameters=shared.PartitionParameters(
+            files=shared.Files(
+                content=file.read(),
+                file_name=filename,
+            ),
+            split_pdf_page=True,  # Set `split_pdf_page` parameter to `True` to enable splitting the PDF file
+            split_pdf_concurrency_level=10,  # Modify split_pdf_concurrency_level to set the number of parallel requests
+        ),
+    ))
     ```
     ```javascript JavaScript
         client.general.partition({
@@ -245,18 +241,11 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
                 content: data,
                 fileName: filename,
             },
-            // Set `splitPdfPage` parameter to `true` in order to split the PDF file
+            // Set `splitPdfPage` parameter to `true` to enable splitting the PDF file
             splitPdfPage: true,
-            // Modify splitPdfConcurrencyLevel to change the number of parallel requests
+            // Modify splitPdfConcurrencyLevel to set the number of parallel requests
             splitPdfConcurrencyLevel: 10,
-        }).then((res: PartitionResponse) => {
-            if (res.statusCode == 200) {
-                console.log(res.elements);
-            }
-        }).catch((e) => {
-            console.log(e.statusCode);
-            console.log(e.body);
-        });
+        })
     ```
     </CodeGroup>
 
@@ -362,13 +351,13 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
                     while (attempt < MAX_RETRIES) {
                         try {
                             const request = await createRequest();
-                            const response = await fetch(request);
+                            const res = await fetch(request);
 
                             // Check the response status
-                            if ([503].includes(response.status)) {
-                                throw new Error(`Retryable response status: ${response.status}`);
+                            if ([503].includes(res.status)) {
+                                throw new Error(`Retryable response status: ${res.status}`);
                             }
-                            return response; // Return the response if it's successful
+                            return res; // Return the response if it's successful
                         } catch (error) {
                             attempt++;
                             if (attempt >= MAX_RETRIES) {
@@ -425,6 +414,24 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 
         ```
         </CodeGroup>
+
+## Handling the Response
+
+    The partition response defaults to a dict format that can be converted to Unstructured elements with
+    the `elements_from_dicts` utility function as seen below. Otherwise, the api response can be sent directly 
+    to your vector store or another destination.
+
+    <CodeGroup>
+    ```python Python
+        from unstructured.staging.base import elements_from_dicts
+
+        ...
+
+        if res.elements is not None:
+            elements = elements_from_dicts(response.elements)
+    ```
+
+    </CodeGroup>
 
 ## Parameters & examples
 
