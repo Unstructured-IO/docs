@@ -5,7 +5,7 @@ description: This documentation covers the usage of the Python and JavaScript SD
 
 The [Python](https://github.com/Unstructured-IO/unstructured-python-client) and
 [JavaScript](https://github.com/Unstructured-IO/unstructured-js-client)
-SDKs allow for easy interaction with the Unstructured API. Whether you're using the
+SDK clients allow for easy interaction with the Unstructured API. Whether you're using the
 free Unstructured API, the SaaS Unstructured API, Unstructured API on Azure/AWS or your local
 deployment of Unstructured API, you can access the API using the Python or JavaScript SDK.
 
@@ -41,7 +41,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         advised to use the new enum classes for defining those parameters. Ex: `shared.Strategy.HI_RES`
     </Note>
 
-    Let's start with a simple example in which you send a pdf document to partition via the free Unstructured API:
+    Let's start with a simple example in which you send a pdf document to be partitioned via the free Unstructured API:
 
     <CodeGroup>
     ```python Python
@@ -81,9 +81,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         import { Strategy } from "unstructured-client/sdk/models/shared";
 
         const unstructuredClient = new UnstructuredClient({
-            security: {
-                apiKeyAuth: "YOUR_FREE_API_KEY",
-            },
+            security: { apiKeyAuth: "YOUR_FREE_API_KEY" },
             // You only need to provide your unique API URL if using the paid api
             // serverURL: "YOUR_API_URL",
         });
@@ -145,9 +143,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         const key = "YOUR_FREE_API_KEY";
 
         const client = new UnstructuredClient({
-            security: {
-                apiKeyAuth: key,
-            },
+            security: { apiKeyAuth: "YOUR_FREE_API_KEY" },
             // You only need to provide your unique API URL if using the paid api
             // serverURL: "YOUR_API_URL",
         });
@@ -162,7 +158,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
                 fileName: filename,
             },
             // Other partition params
-            strategy: "fast",
+            strategy: "auto", // Defining `strategy` as a string may be deprecated in favor of enum classes
         }).then((res: PartitionResponse) => {
             if (res.statusCode == 200) {
                 console.log(res.elements);
@@ -193,9 +189,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
     ```
     ```javascript JavaScript
         const unstructuredClient = new UnstructuredClient({
-            security: {
-                apiKeyAuth: "YOUR_API_KEY",
-            },
+            security: { apiKeyAuth: "YOUR_API_KEY" },
             serverURL: "YOUR_API_URL",
         });
     ```
@@ -273,9 +267,8 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         ```
         ```javascript JavaScript
             const unstructuredClient = new UnstructuredClient({
-                security: {
-                    apiKeyAuth: "YOUR_API_KEY",
-                },
+                security: { apiKeyAuth: "YOUR_API_KEY" },
+                serverURL: "YOUR_API_URL",
                 retryConfig: {
                     strategy: "backoff",
                     backoff: {
@@ -373,6 +366,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
             const sdk = new UnstructuredClient({ 
                 httpClient,
                 security: {apiKeyAuth: "YOUR_API_KEY"},
+                serverURL: "YOUR_API_URL",
             });
         ```
         ```javascript JavaScript SDK Hooks
