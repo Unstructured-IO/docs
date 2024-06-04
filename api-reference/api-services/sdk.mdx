@@ -81,22 +81,22 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         import { UnstructuredClient } from "unstructured-client";
         import { Strategy, ChunkingStrategy } from "unstructured-client/sdk/models/shared";
 
-        const unstructuredClient = new UnstructuredClient({
+        const client = new UnstructuredClient({
             security: { apiKeyAuth: "YOUR_FREE_API_KEY" },
             // You only need to provide your unique API URL if using the paid api
             // serverURL: "YOUR_API_URL",
         });
 
         async function run() {
-            const res = await unstructuredClient.general.partition({
+            const res = await client.general.partition({
                 partitionParameters: {
                     // The sdk currently only supports sending a single file
                     files: await openAsBlob("./sample-file"),
                     // Other partition params
                     strategy: Strategy.Auto,
-                    chunkingStrategy=ChunkingStrategy.ByPage,
-                    languages=['eng'], 
-                    startingPageNumber=1,
+                    chunkingStrategy: ChunkingStrategy.ByPage,
+                    languages: ['eng'], 
+                    startingPageNumber: 1,
                 },
             });
 
@@ -185,7 +185,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         )
     ```
     ```javascript JavaScript
-        const unstructuredClient = new UnstructuredClient({
+        const client = new UnstructuredClient({
             security: { apiKeyAuth: "YOUR_API_KEY" },
             serverURL: "YOUR_API_URL",
         });
@@ -364,11 +364,6 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
                 httpClient,
                 security: {apiKeyAuth: "YOUR_API_KEY"},
                 serverURL: "YOUR_API_URL",
-            });
-        ```
-        ```javascript JavaScript SDK Hooks
-            httpClient.addHook("response", (response, request) => {
-                // configure retries on certain responses
             });
         ```
         </CodeGroup>
