@@ -15,10 +15,10 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 
     <CodeGroup>
     ```bash Python
-        pip install unstructured-client
+    pip install unstructured-client
     ```
     ```bash JavaScript
-        npm install unstructured-client
+    npm install unstructured-client
     ```
     </CodeGroup>
 
@@ -45,125 +45,125 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 
     <CodeGroup>
     ```python Python
-        import unstructured_client
-        from unstructured_client.models import operations, shared
+    import unstructured_client
+    from unstructured_client.models import operations, shared
 
-        client = unstructured_client.UnstructuredClient(
-            api_key_auth="YOUR_FREE_API_KEY",
-            # You only need to provide your unique API URL if using the paid api
-            # server_url="YOUR_API_URL",
-        )
+    client = unstructured_client.UnstructuredClient(
+        api_key_auth="YOUR_FREE_API_KEY",
+        # You only need to provide your unique API URL if using the paid api
+        # server_url="YOUR_API_URL",
+    )
 
-        filename = "sample-docs/layout-parser-paper.pdf"
-        file = open(filename, "rb")
-        req = operations.PartitionRequest(
-            partition_parameters=shared.PartitionParameters(
-                files=shared.Files(  # The sdk currently only supports sending a single file
-                    content=file.read(),
-                    file_name=filename,
-                ),
-                # Other partition parameters
-                strategy=shared.Strategy.AUTO,
-                chunking_strategy=shared.ChunkingStrategy.BY_PAGE,
-                languages=['eng'], 
-                starting_page_number=1,
-            ),
-        )
-
-        res = client.general.partition(request=req)
-
-        if res.elements is not None:
-            # Handle the response
-            pass
-    ```
-    ```javascript JavaScript
-        import { openAsBlob } from "node:fs";
-        import { UnstructuredClient } from "unstructured-client";
-        import { Strategy, ChunkingStrategy } from "unstructured-client/sdk/models/shared";
-
-        const client = new UnstructuredClient({
-            security: { apiKeyAuth: "YOUR_FREE_API_KEY" },
-            // You only need to provide your unique API URL if using the paid api
-            // serverURL: "YOUR_API_URL",
-        });
-
-        async function run() {
-            const res = await client.general.partition({
-                partitionParameters: {
-                    // The sdk currently only supports sending a single file
-                    files: await openAsBlob("./sample-file"),
-                    // Other partition params
-                    strategy: Strategy.Auto,
-                    chunkingStrategy: ChunkingStrategy.ByPage,
-                    languages: ['eng'], 
-                    startingPageNumber: 1,
-                },
-            });
-
-            // Handle the response
-            console.log(res)
-        }
-
-        run();
-    ```
-    ```python Python (SDK <v0.22.0)
-        import unstructured_client
-        from unstructured_client.models import shared
-        from unstructured_client.models.errors import SDKError
-
-        client = unstructured_client.UnstructuredClient(
-            api_key_auth="YOUR_FREE_API_KEY",
-            # You only need to provide your unique API URL if using the paid api
-            # server_url="YOUR_API_URL",
-        )
-
-        filename = "sample-docs/layout-parser-paper.pdf"
-        file = open(filename, "rb")
-
-        # Requests not wrapped in `shared.PartitionRequest` may be deprecated in the future
-        req = shared.PartitionParameters(
+    filename = "sample-docs/layout-parser-paper.pdf"
+    file = open(filename, "rb")
+    req = operations.PartitionRequest(
+        partition_parameters=shared.PartitionParameters(
             files=shared.Files(  # The sdk currently only supports sending a single file
                 content=file.read(),
                 file_name=filename,
             ),
             # Other partition parameters
-            languages=['eng'],
-            # Defining `strategy` as a string may be deprecated in favor of 
-            # enum classes (ex. `shared.ChunkingStrategy.AUTO`)
-            strategy="fast",
-        )
+            strategy=shared.Strategy.AUTO,
+            chunking_strategy=shared.ChunkingStrategy.BY_PAGE,
+            languages=['eng'], 
+            starting_page_number=1,
+        ),
+    )
 
-        try:
-            res = client.general.partition(request=req)
-            print(res.elements[0])
-        except SDKError as e:
-            print(e)
+    res = client.general.partition(request=req)
+
+    if res.elements is not None:
+        # Handle the response
+        pass
     ```
-    ```javascript JavaScript (SDK <v0.10.6)
-        import { UnstructuredClient } from "unstructured-client";
-        import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
-        import * as fs from "fs";
+    ```javascript JavaScript
+    import { openAsBlob } from "node:fs";
+    import { UnstructuredClient } from "unstructured-client";
+    import { Strategy, ChunkingStrategy } from "unstructured-client/sdk/models/shared";
 
-        const key = "YOUR_FREE_API_KEY";
+    const client = new UnstructuredClient({
+        security: { apiKeyAuth: "YOUR_FREE_API_KEY" },
+        // You only need to provide your unique API URL if using the paid api
+        // serverURL: "YOUR_API_URL",
+    });
 
-        const client = new UnstructuredClient({
-            security: { apiKeyAuth: "YOUR_FREE_API_KEY" },
-            // You only need to provide your unique API URL if using the paid api
-            // serverURL: "YOUR_API_URL",
+    async function run() {
+        const res = await client.general.partition({
+            partitionParameters: {
+                // The sdk currently only supports sending a single file
+                files: await openAsBlob("./sample-file"),
+                // Other partition params
+                strategy: Strategy.Auto,
+                chunkingStrategy: ChunkingStrategy.ByPage,
+                languages: ['eng'], 
+                startingPageNumber: 1,
+            },
         });
 
-        const filename = "sample-docs/layout-parser-paper.pdf";
-        const data = fs.readFileSync(filename);
+        // Handle the response
+        console.log(res)
+    }
 
-        client.general.partition({
-            // The sdk currently only supports sending a single file
-            files: {
-                content: data,
-                fileName: filename,
-            },
-            // Other partition params
-            strategy: "auto", // Defining `strategy` as a string may be deprecated in favor of enum classes
-        })
+    run();
+    ```
+    ```python Python (SDK <v0.22.0)
+    import unstructured_client
+    from unstructured_client.models import shared
+    from unstructured_client.models.errors import SDKError
+
+    client = unstructured_client.UnstructuredClient(
+        api_key_auth="YOUR_FREE_API_KEY",
+        # You only need to provide your unique API URL if using the paid api
+        # server_url="YOUR_API_URL",
+    )
+
+    filename = "sample-docs/layout-parser-paper.pdf"
+    file = open(filename, "rb")
+
+    # Requests not wrapped in `shared.PartitionRequest` may be deprecated in the future
+    req = shared.PartitionParameters(
+        files=shared.Files(  # The sdk currently only supports sending a single file
+            content=file.read(),
+            file_name=filename,
+        ),
+        # Other partition parameters
+        languages=['eng'],
+        # Defining `strategy` as a string may be deprecated in favor of 
+        # enum classes (ex. `shared.ChunkingStrategy.AUTO`)
+        strategy="fast",
+    )
+
+    try:
+        res = client.general.partition(request=req)
+        print(res.elements[0])
+    except SDKError as e:
+        print(e)
+    ```
+    ```javascript JavaScript (SDK <v0.10.6)
+    import { UnstructuredClient } from "unstructured-client";
+    import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
+    import * as fs from "fs";
+
+    const key = "YOUR_FREE_API_KEY";
+
+    const client = new UnstructuredClient({
+        security: { apiKeyAuth: "YOUR_FREE_API_KEY" },
+        // You only need to provide your unique API URL if using the paid api
+        // serverURL: "YOUR_API_URL",
+    });
+
+    const filename = "sample-docs/layout-parser-paper.pdf";
+    const data = fs.readFileSync(filename);
+
+    client.general.partition({
+        // The sdk currently only supports sending a single file
+        files: {
+            content: data,
+            fileName: filename,
+        },
+        // Other partition params
+        strategy: "auto", // Defining `strategy` as a string may be deprecated in favor of enum classes
+    })
     ```
     </CodeGroup>
 
@@ -179,16 +179,16 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 
     <CodeGroup>
     ```python Python
-        client = unstructured_client.UnstructuredClient(
-            api_key_auth="YOUR_API_KEY",
-            server_url="YOUR_API_URL",
-        )
+    client = unstructured_client.UnstructuredClient(
+        api_key_auth="YOUR_API_KEY",
+        server_url="YOUR_API_URL",
+    )
     ```
     ```javascript JavaScript
-        const client = new UnstructuredClient({
-            security: { apiKeyAuth: "YOUR_API_KEY" },
-            serverURL: "YOUR_API_URL",
-        });
+    const client = new UnstructuredClient({
+        security: { apiKeyAuth: "YOUR_API_KEY" },
+        serverURL: "YOUR_API_URL",
+    });
     ```
     </CodeGroup>
 
@@ -227,16 +227,16 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
     ))
     ```
     ```javascript JavaScript
-        client.general.partition({
-            files: {
-                content: data,
-                fileName: filename,
-            },
-            // Set `splitPdfPage` parameter to `true` to enable splitting the PDF file
-            splitPdfPage: true,
-            // Modify splitPdfConcurrencyLevel to set the number of parallel requests
-            splitPdfConcurrencyLevel: 10,
-        })
+    client.general.partition({
+        files: {
+            content: data,
+            fileName: filename,
+        },
+        // Set `splitPdfPage` parameter to `true` to enable splitting the PDF file
+        splitPdfPage: true,
+        // Modify splitPdfConcurrencyLevel to set the number of parallel requests
+        splitPdfConcurrencyLevel: 10,
+    })
     ```
     </CodeGroup>
 
@@ -250,33 +250,33 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 
         <CodeGroup>
         ```python Python
-            client = UnstructuredClient(
-                api_key_auth="YOUR_API_KEY",
-                retry_config=RetryConfig("backoff", BackoffStrategy(
-                    # time intervals are defined in milliseconds
-                    initial_interval=500,
-                    max_interval=60000,
-                    exponent=1.5,
-                    max_elapsed_time=900000,  # 15min*60sec*1000ms = 15 minutes
-                ), False),
-                retry_connection_errors=True,  // Set to `False` to disable retries completely
-            )
+        client = UnstructuredClient(
+            api_key_auth="YOUR_API_KEY",
+            retry_config=RetryConfig("backoff", BackoffStrategy(
+                # time intervals are defined in milliseconds
+                initial_interval=500,
+                max_interval=60000,
+                exponent=1.5,
+                max_elapsed_time=900000,  # 15min*60sec*1000ms = 15 minutes
+            ), False),
+            retry_connection_errors=True,  // Set to `False` to disable retries completely
+        )
         ```
         ```javascript JavaScript
-            const unstructuredClient = new UnstructuredClient({
-                security: { apiKeyAuth: "YOUR_API_KEY" },
-                serverURL: "YOUR_API_URL",
-                retryConfig: {
-                    strategy: "backoff",
-                    backoff: {
-                        initialInterval: 500,
-                        maxInterval: 60000,
-                        exponent: 1.5,
-                        maxElapsedTime: 900000, // 15min*60sec*1000ms = 15 minutes
-                    },
-                    retryConnectionErrors: true,  // Set to `false` to disable retries completely
-                };
-            });
+        const unstructuredClient = new UnstructuredClient({
+            security: { apiKeyAuth: "YOUR_API_KEY" },
+            serverURL: "YOUR_API_URL",
+            retryConfig: {
+                strategy: "backoff",
+                backoff: {
+                    initialInterval: 500,
+                    maxInterval: 60000,
+                    exponent: 1.5,
+                    maxElapsedTime: 900000, // 15min*60sec*1000ms = 15 minutes
+                },
+                retryConnectionErrors: true,  // Set to `false` to disable retries completely
+            };
+        });
         ```
         </CodeGroup>
 
@@ -297,74 +297,74 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 
         <CodeGroup>
         ```python Python
-            import requests
-            import urllib3
-            import logging
-            from requests.adapters import HTTPAdapter
-            from urllib3.util import Retry
+        import requests
+        import urllib3
+        import logging
+        from requests.adapters import HTTPAdapter
+        from urllib3.util import Retry
 
-            logging.basicConfig(level=logging.DEBUG)  # Set logging to debug to see retry attempts
+        logging.basicConfig(level=logging.DEBUG)  # Set logging to debug to see retry attempts
 
-            retry_strategy = Retry(
-                total=3,
-                backoff_factor=0.1,  # will sleep for [0.0s, 0.2s, 0.4s, 0.8s, …]
-                status_forcelist=[429, 500, 502, 503, 504],  # Response codes to retry on
-                allowed_methods=["POST"]  # allowed_methods does not include POST by default
-            )
-            http_client = requests.Session()
-            http_client.mount("https://", HTTPAdapter(max_retries=retry_strategy))
+        retry_strategy = Retry(
+            total=3,
+            backoff_factor=0.1,  # will sleep for [0.0s, 0.2s, 0.4s, 0.8s, …]
+            status_forcelist=[429, 500, 502, 503, 504],  # Response codes to retry on
+            allowed_methods=["POST"]  # allowed_methods does not include POST by default
+        )
+        http_client = requests.Session()
+        http_client.mount("https://", HTTPAdapter(max_retries=retry_strategy))
 
-            s = UnstructuredClient(
-                client=http_client,
-                ...
-            )
+        s = UnstructuredClient(
+            client=http_client,
+            ...
+        )
         ```
         ```javascript JavaScript
-            const MAX_RETRIES = 3; // Maximum number of retries
-            const RETRY_DELAY = 1000; // Delay between retries in milliseconds
+        const MAX_RETRIES = 3; // Maximum number of retries
+        const RETRY_DELAY = 1000; // Delay between retries in milliseconds
 
-            const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+        const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-            const httpClient = new HTTPClient({
-                fetcher: async (originalRequest) => {
-                    let attempt = 0;
+        const httpClient = new HTTPClient({
+            fetcher: async (originalRequest) => {
+                let attempt = 0;
 
-                    // Function to create a new request
-                    const createRequest = async () => {
-                        const requestClone = new Request(originalRequest, {
-                            body: originalRequest.clone().body,
-                            duplex: "half", // Required when sending a body
-                        });
-                        return requestClone;
-                    };
+                // Function to create a new request
+                const createRequest = async () => {
+                    const requestClone = new Request(originalRequest, {
+                        body: originalRequest.clone().body,
+                        duplex: "half", // Required when sending a body
+                    });
+                    return requestClone;
+                };
 
-                    while (attempt < MAX_RETRIES) {
-                        try {
-                            const request = await createRequest();
-                            const res = await fetch(request);
+                while (attempt < MAX_RETRIES) {
+                    try {
+                        const request = await createRequest();
+                        const res = await fetch(request);
 
-                            // Check the response status
-                            if ([503].includes(res.status)) {
-                                throw new Error(`Retryable response status: ${res.status}`);
-                            }
-                            return res; // Return the response if it's successful
-                        } catch (error) {
-                            attempt++;
-                            if (attempt >= MAX_RETRIES) {
-                                throw error; // Rethrow the error if max retries are reached
-                            }
-                            console.log(`Retrying request... (${attempt}/${MAX_RETRIES})`);
-                            await sleep(RETRY_DELAY); // Wait before retrying
+                        // Check the response status
+                        if ([503].includes(res.status)) {
+                            throw new Error(`Retryable response status: ${res.status}`);
                         }
+                        return res; // Return the response if it's successful
+                    } catch (error) {
+                        attempt++;
+                        if (attempt >= MAX_RETRIES) {
+                            throw error; // Rethrow the error if max retries are reached
+                        }
+                        console.log(`Retrying request... (${attempt}/${MAX_RETRIES})`);
+                        await sleep(RETRY_DELAY); // Wait before retrying
                     }
-                },
-            });
+                }
+            },
+        });
 
-            const sdk = new UnstructuredClient({ 
-                httpClient,
-                security: {apiKeyAuth: "YOUR_API_KEY"},
-                serverURL: "YOUR_API_URL",
-            });
+        const sdk = new UnstructuredClient({ 
+            httpClient,
+            security: {apiKeyAuth: "YOUR_API_KEY"},
+            serverURL: "YOUR_API_URL",
+        });
         ```
         </CodeGroup>
 
@@ -372,17 +372,17 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 
         <CodeGroup>
         ```python Python
-            # If verify is set to `False`, requests will accept any TLS certificate
-            # presented by the server and ignore hostname mismatches and/or expired certificates, 
-            # which will make your application vulnerable to man-in-the-middle (MitM) attacks.
-            # Only set this to `False` for testing.
-            http_client = requests.Session()
-            http_client.verify = False
+        # If verify is set to `False`, requests will accept any TLS certificate
+        # presented by the server and ignore hostname mismatches and/or expired certificates, 
+        # which will make your application vulnerable to man-in-the-middle (MitM) attacks.
+        # Only set this to `False` for testing.
+        http_client = requests.Session()
+        http_client.verify = False
 
-            s = UnstructuredClient(
-                client=http_client,
-                ...
-            )
+        s = UnstructuredClient(
+            client=http_client,
+            ...
+        )
         ```
         ```javascript JavaScript
 
@@ -397,14 +397,13 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 
     <CodeGroup>
     ```python Python
-        from unstructured.staging.base import elements_from_dicts
+    from unstructured.staging.base import elements_from_dicts
 
-        ...
+    ...
 
-        if res.elements is not None:
-            elements = elements_from_dicts(response.elements)
+    if res.elements is not None:
+        elements = elements_from_dicts(response.elements)
     ```
-
     </CodeGroup>
 
 ## Parameters & examples
