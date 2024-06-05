@@ -195,7 +195,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 ## Page Splitting
 
     In order to speed up processing of long PDF files, set the `splitPdfPage`[*](#parameter-names) parameter to `true`. This will
-    cause the PDF to be split page-by-page by the client before sending requests to the API. The client
+    cause the PDF to be split into small batches of pages by the client before sending requests to the API. The client
     awaits all parallel requests and combines the responses into a single response object. This will
     work only for PDF files, so don't set it for other types of files.
 
@@ -203,10 +203,11 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
     The default is 5 and the max is set to 15 to avoid high resource usage and costs.
 
     If at least one request is successful, the responses are combined into a single response object. An
-    error is returned only if all requests failed or there was no PDF split.
+    error is returned only if all requests failed or there was an error during splitting.
 
-    When using page splitting, note that chunking will not always work since chunking may happen on the
-    API side. If you need to chunk, you can make a second request to the API with the returned elements.
+    When using page splitting, note that chunking will not always work as expected since chunking will happen on the
+    API side. When chunking elements the whole document context is processed but when we use splitting we only have a part
+    of the context. If you need to chunk, you can make a second request to the API with the returned elements.
 
     <Note>
     Warning: Page splitting causes the `parent_id` metadata generation in elements to be disabled, as it
