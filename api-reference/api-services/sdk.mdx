@@ -209,11 +209,6 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
     API side. When chunking elements the whole document context is processed but when we use splitting we only have a part
     of the context. If you need to chunk, you can make a second request to the API with the returned elements.
 
-    <Note>
-    Warning: Page splitting causes the `parent_id` metadata generation in elements to be disabled, as it
-    requires having context of multiple pages.
-    </Note>
-
     <CodeGroup>
     ```python Python
     res = client.general.partition(request=operations.PartitionRequest(
@@ -264,7 +259,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         )
         ```
         ```javascript JavaScript
-        const unstructuredClient = new UnstructuredClient({
+        const client = new UnstructuredClient({
             security: { apiKeyAuth: "YOUR_API_KEY" },
             serverURL: "YOUR_API_URL",
             retryConfig: {
@@ -315,7 +310,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         http_client = requests.Session()
         http_client.mount("https://", HTTPAdapter(max_retries=retry_strategy))
 
-        s = UnstructuredClient(
+        client = UnstructuredClient(
             client=http_client,
             ...
         )
@@ -361,7 +356,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
             },
         });
 
-        const sdk = new UnstructuredClient({ 
+        const client = new UnstructuredClient({ 
             httpClient,
             security: {apiKeyAuth: "YOUR_API_KEY"},
             serverURL: "YOUR_API_URL",
@@ -371,22 +366,20 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 
     ### Disabling SSL Validation
 
+        If you disabling SSL validation, requests will accept any TLS certificate
+        presented by the server and ignore hostname mismatches and/or expired certificates, 
+        which will make your application vulnerable to man-in-the-middle (MitM) attacks.
+        Only set this to `False` for testing.
+
         <CodeGroup>
         ```python Python
-        # If verify is set to `False`, requests will accept any TLS certificate
-        # presented by the server and ignore hostname mismatches and/or expired certificates, 
-        # which will make your application vulnerable to man-in-the-middle (MitM) attacks.
-        # Only set this to `False` for testing.
         http_client = requests.Session()
         http_client.verify = False
 
-        s = UnstructuredClient(
+        client = UnstructuredClient(
             client=http_client,
             ...
         )
-        ```
-        ```javascript JavaScript
-
         ```
         </CodeGroup>
 
