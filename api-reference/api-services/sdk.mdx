@@ -273,6 +273,95 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         ```
         </CodeGroup>
 
+        #### Retry on response code
+            If you want to retry on specific response codes, you will have to modify the underlying
+            `httpClient` or `requests` object that the SDK wraps.
+
+            The TypeScript SDK makes API calls using an HTTPClient that wraps the native
+            [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). This HTTPClient is a
+            thin wrapper around `fetch` and provides the ability to attach hooks around the
+            request lifecycle that can be used to modify the request or handle errors and response.
+
+            The HTTPClient constructor takes an optional fetcher argument that can be used to integrate a
+            third-party HTTP client, mock out the HTTP client for tests, or feed in fixtures and further
+            customize the retry logic to only rety on certain errors.
+
+            The Python SDK relies on `requests`, which you can modify with `HTTPAdapter` and urllib3's 
+            [`Retry`](https://urllib3.readthedocs.io/en/stable/reference/urllib3.util.html#urllib3.util.Retry).
+
+            <CodeGroup>
+            ```python Python
+            import requests
+            import urllib3
+            import logging
+            from requests.adapters import HTTPAdapter
+            from urllib3.util import Retry
+
+            logging.basicConfig(level=logging.DEBUG)  # Set logging to debug to see retry attempts
+
+            retry_strategy = Retry(
+                total=3,
+                backoff_factor=0.1,  # will sleep for [0.0s, 0.2s, 0.4s, 0.8s, …]
+                status_forcelist=[429, 500, 502, 503, 504],  # Response codes to retry on
+                allowed_methods=["POST"]  # allowed_methods does not include POST by default
+            )
+            http_client = requests.Session()
+            http_client.mount("https://", HTTPAdapter(max_retries=retry_strategy))
+
+            client = UnstructuredClient(
+                client=http_client,
+                ...
+            )
+            ```
+            ```javascript JavaScript
+            const MAX_RETRIES = 3; // Maximum number of retries
+            const RETRY_DELAY = 1000; // Delay between retries in milliseconds
+
+            const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+            const httpClient = new HTTPClient({
+                fetcher: async (originalRequest) => {
+                    let attempt = 0;
+
+                    // Function to create a new request
+                    const createRequest = async () => {
+                        const requestClone = new Request(originalRequest, {
+                            body: originalRequest.clone().body,
+                            duplex: "half", // Required when sending a body
+                        });
+                        return requestClone;
+                    };
+
+                    while (attempt < MAX_RETRIES) {
+                        try {
+                            const request = await createRequest();
+                            const res = await fetch(request);
+
+                            // Check the response status
+                            if ([503].includes(res.status)) {
+                                throw new Error(`Retryable response status: ${res.status}`);
+                            }
+                            return res; // Return the response if it's successful
+                        } catch (error) {
+                            attempt++;
+                            if (attempt >= MAX_RETRIES) {
+                                throw error; // Rethrow the error if max retries are reached
+                            }
+                            console.log(`Retrying request... (${attempt}/${MAX_RETRIES})`);
+                            await sleep(RETRY_DELAY); // Wait before retrying
+                        }
+                    }
+                },
+            });
+
+            const client = new UnstructuredClient({ 
+                httpClient,
+                security: {apiKeyAuth: "YOUR_API_KEY"},
+                serverURL: "YOUR_API_URL",
+            });
+            ```
+            </CodeGroup>
+
     ### Disabling SSL Validation
 
         If you disable SSL validation, requests will accept any TLS certificate
