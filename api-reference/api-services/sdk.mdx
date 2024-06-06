@@ -63,9 +63,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
             # parameters as strings is accepted, but will not pass strict type checking. It is
             # advised to use the new enum classes for defining those parameters as shown below.
             strategy=shared.Strategy.AUTO,  
-            chunking_strategy=shared.ChunkingStrategy.BY_PAGE,
-            languages=['eng'], 
-            starting_page_number=1,
+            languages=['eng'],
         ),
     )
 
@@ -90,12 +88,10 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         const res = await client.general.partition({
             partitionParameters: {
                 // --- `files` is the only required parameter ---
-                files: await openAsBlob("./sample-file"),  // The sdk currently only supports sending a single file
+                files: await openAsBlob("sample-docs/layout-parser-paper.pdf"),  // The sdk currently only supports sending a single file
                 // --- Other partition params ---
                 strategy: Strategy.Auto,
-                chunkingStrategy: ChunkingStrategy.ByPage,
                 languages: ['eng'], 
-                startingPageNumber: 1,
             },
         });
 
@@ -126,8 +122,8 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
             file_name=filename,
         ),
         # Other partition parameters
-        languages=['eng'],
-        strategy="fast",
+        strategy="auto",
+        languages=['eng'], 
     )
 
     try:
@@ -160,6 +156,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         },
         // Other partition params
         strategy: "auto",
+        languages: ['eng'], 
     })
     ```
     </CodeGroup>
