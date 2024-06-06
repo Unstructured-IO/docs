@@ -208,7 +208,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 
     <CodeGroup>
     ```python Python
-    res = client.general.partition(request=operations.PartitionRequest(
+    req = operations.PartitionRequest(
         partition_parameters=shared.PartitionParameters(
             files=shared.Files(
                 content=file.read(),
@@ -216,19 +216,22 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
             ),
             split_pdf_page=True,  # Set `split_pdf_page` parameter to `True` to enable splitting the PDF file
             split_pdf_concurrency_level=10,  # Modify split_pdf_concurrency_level to set the number of parallel requests
-        ),
-    ))
+        )
+    )
+    res = client.general.partition(req)
     ```
     ```javascript JavaScript
     client.general.partition({
-        files: {
-            content: data,
-            fileName: filename,
-        },
-        // Set `splitPdfPage` parameter to `true` to enable splitting the PDF file
-        splitPdfPage: true,
-        // Modify splitPdfConcurrencyLevel to set the number of parallel requests
-        splitPdfConcurrencyLevel: 10,
+        partitionParameters: {
+            files: {
+                content: data,
+                fileName: filename,
+            },
+            // Set `splitPdfPage` parameter to `true` to enable splitting the PDF file
+            splitPdfPage: true,
+            // Modify splitPdfConcurrencyLevel to set the number of parallel requests
+            splitPdfConcurrencyLevel: 10,
+        }
     })
     ```
     </CodeGroup>
