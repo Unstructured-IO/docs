@@ -35,11 +35,6 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         could break in future releases. Users should migrate to the new `shared.PartitionRequest` object 
         to ensure compatibility with future updates.
     </Note>
-    <Note>
-        Python SDK Deprecation Warning (>v0.22.0): Defining `strategy`, `chunking_strategy`, and `output_format`
-        parameters as strings may also be deprecated and could break in future releases. It is
-        advised to use the new enum classes for defining those parameters. Ex: `shared.Strategy.HI_RES`
-    </Note>
 
     Let's start with a simple example in which you send a pdf document to be partitioned via the free Unstructured API:
 
@@ -58,12 +53,16 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
     file = open(filename, "rb")
     req = operations.PartitionRequest(
         partition_parameters=shared.PartitionParameters(
+            # --- `files` is the only required parameter ---
             files=shared.Files(  # The sdk currently only supports sending a single file
                 content=file.read(),
                 file_name=filename,
             ),
-            # Other partition parameters
-            strategy=shared.Strategy.AUTO,
+            # --- Other partition parameters ---
+            # Note: Defining `strategy`, `chunking_strategy`, and `output_format`
+            # parameters as strings is accepted, but will not pass strict type checking. It is
+            # advised to use the new enum classes for defining those parameters as shown below.
+            strategy=shared.Strategy.AUTO,  
             chunking_strategy=shared.ChunkingStrategy.BY_PAGE,
             languages=['eng'], 
             starting_page_number=1,
@@ -90,9 +89,9 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
     async function run() {
         const res = await client.general.partition({
             partitionParameters: {
-                // The sdk currently only supports sending a single file
-                files: await openAsBlob("./sample-file"),
-                // Other partition params
+                // --- `files` is the only required parameter ---
+                files: await openAsBlob("./sample-file"),  // The sdk currently only supports sending a single file
+                // --- Other partition params ---
                 strategy: Strategy.Auto,
                 chunkingStrategy: ChunkingStrategy.ByPage,
                 languages: ['eng'], 
@@ -120,7 +119,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
     filename = "sample-docs/layout-parser-paper.pdf"
     file = open(filename, "rb")
 
-    # Requests not wrapped in `shared.PartitionRequest` may be deprecated in the future
+    # Requests not wrapped in `shared.PartitionRequest` may be deprecated and break in future versions
     req = shared.PartitionParameters(
         files=shared.Files(  # The sdk currently only supports sending a single file
             content=file.read(),
@@ -128,8 +127,6 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         ),
         # Other partition parameters
         languages=['eng'],
-        # Defining `strategy` as a string may be deprecated in favor of 
-        # enum classes (ex. `shared.ChunkingStrategy.AUTO`)
         strategy="fast",
     )
 
@@ -162,7 +159,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
             fileName: filename,
         },
         // Other partition params
-        strategy: "auto", // Defining `strategy` as a string may be deprecated in favor of enum classes
+        strategy: "auto",
     })
     ```
     </CodeGroup>
