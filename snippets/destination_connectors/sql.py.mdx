@@ -1,11 +1,10 @@
 ```python Python
 import os
-from unstructured.ingest.interfaces import WriteConfig
+
 from unstructured.ingest.connector.local import SimpleLocalConfig
 from unstructured.ingest.connector.sql import (
-    SqlAccessConfig,
-    # SqlWriteConfig,
     SimpleSqlConfig,
+    SqlAccessConfig,
 )
 from unstructured.ingest.interfaces import (
     ChunkingConfig,
@@ -13,6 +12,7 @@ from unstructured.ingest.interfaces import (
     PartitionConfig,
     ProcessorConfig,
     ReadConfig,
+    WriteConfig,
 )
 from unstructured.ingest.runner import LocalRunner
 from unstructured.ingest.runner.writers.base_writer import Writer
@@ -24,7 +24,8 @@ from unstructured.ingest.runner.writers.sql import (
 def get_writer() -> Writer:
     return SqlWriter(
         connector_config=SimpleSqlConfig(
-            access_config=SqlAccessConfig(username="unstructured", password="test"),
+            access_config=SqlAccessConfig(username=os.getenv("USERNAME"), 
+            password=os.getenv("DB_PASSWORD")),
             db_type="postgresql",
             host="localhost",
             database="elements",
@@ -40,21 +41,13 @@ if __name__ == "__main__":
         processor_config=ProcessorConfig(
             verbose=True,
             output_dir="local-output-to-sql",
-            num_processes=1,
-            work_dir="local-work-to-sql",
+            num_processes=2,
         ),
         connector_config=SimpleLocalConfig(
-            input_path="example-docs/fakememo/",
+            input_path="example-docs/fake-memo.pdf",
         ),
         read_config=ReadConfig(),
-        partition_config=PartitionConfig(
-            # metadata_exclude=["orig_elements"],
-        ),
-        chunking_config=ChunkingConfig(chunk_elements=True, include_orig_elements=False),
-        embedding_config=EmbeddingConfig(
-            provider="langchain-huggingface",
-            api_key=None,
-        ),
+        partition_config=PartitionConfig(),
         writer=writer,
         writer_kwargs={},
     )
