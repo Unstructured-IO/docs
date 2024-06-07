@@ -1,0 +1,24 @@
+speakeasyVersion: 1.292.0
+sources:
+    docs-source:
+        sourceNamespace: docs-source
+        sourceRevisionDigest: sha256:b1450697c4756996229298176bfdde4b4557965b474e3e29256d067a6362fcd3
+        sourceBlobDigest: sha256:39ddd335872983e59c618db3416961b4984532718bd222754c803caff255a610
+        tags:
+            - latest
+targets: {}
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        docs-source:
+            inputs:
+                - location: https://api.unstructured.io/general/openapi.json
+            overlays:
+                - location: https://raw.githubusercontent.com/Unstructured-IO/unstructured-python-client/main/overlay_client.yaml
+                - location: https://raw.githubusercontent.com/Unstructured-IO/unstructured-python-client/main/codeSamples.yaml
+                - location: https://raw.githubusercontent.com/Unstructured-IO/unstructured-js-client/main/codeSamples.yaml
+            output: openapi_with_sdk_codeSamples.yaml
+            registry:
+                location: registry.speakeasyapi.dev/unstructured/unstructurede4s/docs-source
+    targets: {}
