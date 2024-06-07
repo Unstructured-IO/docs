@@ -74,25 +74,3 @@ model = get_model("yolox")
 layout = DocumentLayout.from_file("sample-docs/layout-parser-paper.pdf", detection_model=model)
 
 ```
-
-
-## Bring Your Own Models
-
-**Utilizing Layout Detection Model Zoo**
-
-In the [LayoutParser](https://layout-parser.readthedocs.io/en/latest/api_doc/models.html#layoutparser.models.Detectron2LayoutModel) library, you can use various pre-trained models available in the [model zoo](https://layout-parser.readthedocs.io/en/latest/notes/modelzoo.html) for document layout analysis. Here’s a guide on leveraging this feature using the `UnstructuredDetectronModel` class in `unstructured-inference` library.
-
-The `UnstructuredDetectronModel` class in `unstructured_inference.models.detectron2` uses the `faster_rcnn_R_50_FPN_3x` model pretrained on `DocLayNet`. But any model in the model zoo can be used by using different construction parameters. `UnstructuredDetectronModel` is a light wrapper around the LayoutParser’s `Detectron2LayoutModel` object, and accepts the same arguments.
-
-**Using Your Own Object Detection Model**
-
-To seamlessly integrate your custom detection and extraction models into `unstructured_inference` pipeline, start by wrapping your model within the `UnstructuredObjectDetectionModel` class. This class acts as an intermediary between your detection model and Unstructured workflow.
-
-Ensure your `UnstructuredObjectDetectionModel` subclass incorporates two vital methods:
-
-1.  The `predict` method, which should be designed to accept a `PIL.Image.Image` type and return a list of `LayoutElements`, facilitating the communication of your model’s results.
-
-2.  The `initialize` method is essential for loading and prepping your model for inference, guaranteeing its readiness for any incoming tasks.
-
-
-It’s important that your model’s outputs, specifically from the predict method, integrate smoothly with the DocumentLayout class for optimal performance.
