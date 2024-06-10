@@ -264,13 +264,13 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
             serverURL: "YOUR_API_URL",
             retryConfig: {
                 strategy: "backoff",
+                retryConnectionErrors: true,
                 backoff: {
                     initialInterval: 500,
                     maxInterval: 60000,
                     exponent: 1.5,
                     maxElapsedTime: 900000, // 15min*60sec*1000ms = 15 minutes
                 },
-                retryConnectionErrors: true,
             };
         });
         ```
