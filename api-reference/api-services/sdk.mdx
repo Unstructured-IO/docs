@@ -245,14 +245,17 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         ```python Python
         client = UnstructuredClient(
             api_key_auth="YOUR_API_KEY",
-            retry_config=RetryConfig("backoff", BackoffStrategy(
-                # time intervals are defined in milliseconds
-                initial_interval=500,
-                max_interval=60000,
-                exponent=1.5,
-                max_elapsed_time=900000,  # 15min*60sec*1000ms = 15 minutes
-            ), False),
-            retry_connection_errors=True,  // Set to `False` to disable retries completely
+            retry_config=RetryConfig(
+                strategy="backoff",
+                retry_connection_errors=True,
+                backoff=BackoffStrategy(
+                    # time intervals are defined in milliseconds
+                    initial_interval=500,
+                    max_interval=60000,
+                    exponent=1.5,
+                    max_elapsed_time=900000,  # 15min*60sec*1000ms = 15 minutes
+                ),
+            )
         )
         ```
         ```javascript JavaScript
