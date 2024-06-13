@@ -2,11 +2,12 @@
 #!/usr/bin/env bash
 
 unstructured-ingest \
-  mongodb \
-  --metadata-exclude filename,file_directory,metadata.data_source.date_processed \
-  --uri "$MONGODB_URI" \
-  --database "$MONGODB_DATABASE" \
-  --collection "$MONGODB_COLLECTION" \
-  --output-dir mongodb-ingest-output \
-  --num-processes 2
+  kafka \
+  --bootstrap-server localhost \
+  --topic "$KAFKA_TOPIC" \
+  --num-messages-to-consume 1 \
+  --port 29092 \
+  --metadata-exclude coordinates,filename,file_directory,metadata.data_source.date_processed \
+  --output-dir "$OUTPUT_DIR" \
+  --confluent false
 ```
