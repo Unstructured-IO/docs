@@ -86,40 +86,45 @@ from unstructured_client.models import operations, shared
 
 client = unstructured_client.UnstructuredClient(
     api_key_auth="YOUR_API_KEY",
-    # you may need to provide your unique API URL
     # server_url="YOUR_API_URL",
 )
 
-filename = "sample-docs/layout-parser-paper.pdf"
-file = open(filename, "rb")
+filename = "PATH_TO_FILE"
+with open(filename, "rb") as f:
+    data = f.read()
 
-res = client.general.partition(request=operations.PartitionRequest(
+req = operations.PartitionRequest(
     partition_parameters=shared.PartitionParameters(
-        # Note that this currently only supports a single file
         files=shared.Files(
-            content=file.read(),
+            content=data,
             file_name=filename,
         ),
-        # Other parameters
-        strategy=shared.Strategy.HI_RES,
-        chunking_strategy=shared.ChunkingStrategy.BY_PAGE,
+        # --- Other partition parameters ---
+        # Note: Defining `strategy`, `chunking_strategy`, and `output_format`
+        # parameters as strings is accepted, but will not pass strict type checking. It is
+        # advised to use the defined enum classes as shown below.
+        strategy=shared.Strategy.AUTO,  
+        languages=['eng'],
     ),
-))
+)
+
+res = client.general.partition(request=req)
 
 if res.elements is not None:
-    # handle response
+    # Handle the response
     pass
 ```
 
 ```javascript JavaScript
 import { UnstructuredClient } from "unstructured-client";
-import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
+import { PartitionResponse } from "unstructured-client/sdk/models/operations";
+import { Strategy } from "unstructured-client/sdk/models/shared";
 import * as fs from "fs";
 
-const key = "YOUR-API-KEY";
+const key = "YOUR_API_KEY";
 
 const client = new UnstructuredClient({
-    serverURL: "YOUR_API_URL",
+    // serverURL: "YOUR_API_URL",
     security: {
         apiKeyAuth: key,
     },
@@ -129,17 +134,25 @@ const filename = "PATH_TO_FILE";
 const data = fs.readFileSync(filename);
 
 client.general.partition({
-    files: {
-        content: data,
-        fileName: filename,
-    },
+    partitionParameters: {
+        files: {
+            content: data,
+            fileName: filename,
+        },
+        strategy: Strategy.Auto,
+        languages: ['eng'],
+    }
 }).then((res: PartitionResponse) => {
     if (res.statusCode == 200) {
         console.log(res.elements);
     }
 }).catch((e) => {
-    console.log(e.statusCode);
-    console.log(e.body);
+    if (e.statusCode) {
+        console.log(e.statusCode);
+        console.log(e.body);
+    } else {
+        console.log(e);
+    }
 });
 ```
 </CodeGroup>
