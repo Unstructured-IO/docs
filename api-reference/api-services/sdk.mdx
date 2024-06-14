@@ -46,7 +46,9 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
     </Warning>
 
     <Note>
-        Currently, the SDKs only support sending one file at a time.
+    By default, the SDKs send requests to the free API. In order to access the paid API, you'll need
+    to include the argument for the server URL. If you receive authentication errors, and you've
+    checked that your key is correct, be sure that you are accessing the correct endpoint.
     </Note>
 
     <CodeGroup>
@@ -56,7 +58,6 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
 
     client = unstructured_client.UnstructuredClient(
         api_key_auth="YOUR_API_KEY",
-        # You only need to provide your unique API URL if using the SaaS Unstructured API
         # server_url="YOUR_API_URL",
     )
 
@@ -89,10 +90,10 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
     import { Strategy } from "unstructured-client/sdk/models/shared";
     import * as fs from "fs";
 
-    const key = "${apiKey}";
+    const key = "YOUR_API_KEY";
 
     const client = new UnstructuredClient({
-        serverURL: "${apiUrl}",
+        // serverURL: "YOUR_API_URL",
         security: {
             apiKeyAuth: key,
         },
@@ -129,7 +130,6 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
 
     client = unstructured_client.UnstructuredClient(
         api_key_auth="YOUR_API_KEY",
-        # You only need to provide your unique API URL if using the SaaS Unstructured API
         # server_url="YOUR_API_URL",
     )
 
@@ -157,10 +157,10 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
     import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
     import * as fs from "fs";
 
-    const key = "${apiKey}";
+    const key = "YOUR_API_KEY";
 
     const client = new UnstructuredClient({
-        serverURL: "${apiUrl}",
+        // serverURL: "YOUR_API_URL",
         security: {
             apiKeyAuth: key,
         },
@@ -190,9 +190,7 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
     ```
     </CodeGroup>
 
-    In the example above we're sending the request to the free Unstructured API, where the API URL is
-    the same for all users, so you don't need to provide the server URL. However, you still need to
-    authenticate using your individual API Key.
+    Note that currently, the SDKs only support sending one file at a time.
 
 ## SaaS Unstructured API
 
