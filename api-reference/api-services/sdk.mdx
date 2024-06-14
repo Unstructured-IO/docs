@@ -62,11 +62,13 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
     )
 
     filename = "PATH_TO_FILE"
-    file = open(filename, "rb")
+    with open(filename, "rb") as f:
+        data = f.read()
+
     req = operations.PartitionRequest(
         partition_parameters=shared.PartitionParameters(
             files=shared.Files(
-                content=file.read(),
+                content=data,
                 file_name=filename,
             ),
             # --- Other partition parameters ---
@@ -108,7 +110,8 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
                 content: data,
                 fileName: filename,
             },
-            strategy: Strategy.Fast,
+            strategy: Strategy.Auto,
+            languages: ['eng'],
         }
     }).then((res: PartitionResponse) => {
         if (res.statusCode == 200) {
@@ -134,11 +137,12 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
     )
 
     filename = "PATH_TO_FILE"
-    file = open(filename, "rb")
+    with open(filename, "rb") as f:
+        data = f.read()
 
     req = shared.PartitionParameters(
         files=shared.Files(
-            content=file.read(),
+            content=data,
             file_name=filename,
         ),
         # Other partition parameters
@@ -174,7 +178,8 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
             content: data,
             fileName: filename,
         },
-        strategy: 'fast'
+        strategy: 'auto',
+        languages: ['eng']
     }).then((res: PartitionResponse) => {
         if (res.statusCode == 200) {
             console.log(res.elements);
