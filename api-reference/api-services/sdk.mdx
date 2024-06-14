@@ -1,13 +1,13 @@
 ---
-title: Python and JavaScript SDKs
-description: This documentation covers the usage of the Python and JavaScript SDKs for interacting with the Unstructured API.
+title: Python and TypeScript SDKs
+description: This documentation covers the usage of the Python and TypeScript SDKs for interacting with the Unstructured API.
 ---
 
 The [Python](https://github.com/Unstructured-IO/unstructured-python-client) and
-[JavaScript](https://github.com/Unstructured-IO/unstructured-js-client)
+[TypeScript](https://github.com/Unstructured-IO/unstructured-js-client)
 SDK clients allow for easy interaction with the Unstructured API. Whether you're using the
 free Unstructured API, the SaaS Unstructured API, Unstructured API on Azure/AWS or your local
-deployment of Unstructured API, you can access the API using the Python or JavaScript SDK.
+deployment of Unstructured API, you can access the API using the Python or TypeScript SDK.
 
 ## Installation
 
@@ -28,15 +28,28 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
     </Note>
 
 ## Basics
+    Let's start with a simple example in which you send a pdf document to be partitioned via the free Unstructured API:
 
-    <Note>
+    <Warning>
+         The TypeScript SDK has the following breaking changes in v0.11.0:
+         * Imports under the `dist` path have moved up a level
+         * Enums are now used for parameters with a set of options
+           * This includes `chunkingStrategy`, `outputFormat`, and `strategy`
+         * All parameters to `partition` have moved to a `partitionParameters` object
+    </Warning>
+
+    <Warning>
         Python SDK Deprecation Warning (>v0.22.0): The legacy method of passing `shared.PartitionParameters`
         directly to `client.general.partition()` is currently supported but may be deprecated and
         could break in future releases. Users should migrate to the new `shared.PartitionRequest` object 
         to ensure compatibility with future updates.
-    </Note>
+    </Warning>
 
-    Let's start with a simple example in which you send a pdf document to be partitioned via the free Unstructured API:
+    <Note>
+    By default, the SDKs send requests to the free API. In order to access the paid API, you'll need
+    to include the argument for the server URL. If you receive authentication errors, and you've
+    checked that your key is correct, be sure that you are accessing the correct endpoint.
+    </Note>
 
     <CodeGroup>
     ```python Python
@@ -45,23 +58,23 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 
     client = unstructured_client.UnstructuredClient(
         api_key_auth="YOUR_API_KEY",
-        # You only need to provide your unique API URL if using the SaaS Unstructured API
         # server_url="YOUR_API_URL",
     )
 
-    filename = "sample-docs/layout-parser-paper.pdf"
-    file = open(filename, "rb")
+    filename = "PATH_TO_FILE"
+    with open(filename, "rb") as f:
+        data = f.read()
+
     req = operations.PartitionRequest(
         partition_parameters=shared.PartitionParameters(
-            # --- `files` is the only required parameter ---
-            files=shared.Files(  # The sdk currently only supports sending a single file
-                content=file.read(),
+            files=shared.Files(
+                content=data,
                 file_name=filename,
             ),
             # --- Other partition parameters ---
             # Note: Defining `strategy`, `chunking_strategy`, and `output_format`
             # parameters as strings is accepted, but will not pass strict type checking. It is
-            # advised to use the new enum classes for defining those parameters as shown below.
+            # advised to use the defined enum classes as shown below.
             strategy=shared.Strategy.AUTO,  
             languages=['eng'],
         ),
@@ -73,52 +86,63 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         # Handle the response
         pass
     ```
-    ```javascript JavaScript
-    import { openAsBlob } from "node:fs";
+    ```javascript TypeScript
     import { UnstructuredClient } from "unstructured-client";
-    import { Strategy, ChunkingStrategy } from "unstructured-client/sdk/models/shared";
+    import { PartitionResponse } from "unstructured-client/sdk/models/operations";
+    import { Strategy } from "unstructured-client/sdk/models/shared";
+    import * as fs from "fs";
+
+    const key = "YOUR_API_KEY";
 
     const client = new UnstructuredClient({
-        security: { apiKeyAuth: "YOUR_API_KEY" },
-        // You only need to provide your unique API URL if using the SaaS Unstructured API
         // serverURL: "YOUR_API_URL",
+        security: {
+            apiKeyAuth: key,
+        },
     });
 
-    async function run() {
-        const res = await client.general.partition({
-            partitionParameters: {
-                // --- `files` is the only required parameter ---
-                files: await openAsBlob("sample-docs/layout-parser-paper.pdf"),  // The sdk currently only supports sending a single file
-                // --- Other partition params ---
-                strategy: Strategy.Auto,
-                languages: ['eng'], 
+    const filename = "PATH_TO_FILE";
+    const data = fs.readFileSync(filename);
+
+    client.general.partition({
+        partitionParameters: {
+            files: {
+                content: data,
+                fileName: filename,
             },
-        });
-
-        // Handle the response
-        console.log(res)
-    }
-
-    run();
+            strategy: Strategy.Auto,
+            languages: ['eng'],
+        }
+    }).then((res: PartitionResponse) => {
+        if (res.statusCode == 200) {
+            console.log(res.elements);
+        }
+    }).catch((e) => {
+        if (e.statusCode) {
+          console.log(e.statusCode);
+          console.log(e.body);
+        } else {
+          console.log(e);
+        }
+    });
     ```
-    ```python Python (SDK <v0.22.0)
+    ```python Python (SDK <=v0.22.0)
     import unstructured_client
     from unstructured_client.models import shared
     from unstructured_client.models.errors import SDKError
 
     client = unstructured_client.UnstructuredClient(
         api_key_auth="YOUR_API_KEY",
-        # You only need to provide your unique API URL if using the SaaS Unstructured API
         # server_url="YOUR_API_URL",
     )
 
-    filename = "sample-docs/layout-parser-paper.pdf"
-    file = open(filename, "rb")
+    filename = "PATH_TO_FILE"
+    with open(filename, "rb") as f:
+        data = f.read()
 
-    # Requests not wrapped in `shared.PartitionRequest` may be deprecated and break in future versions
     req = shared.PartitionParameters(
-        files=shared.Files(  # The sdk currently only supports sending a single file
-            content=file.read(),
+        files=shared.Files(
+            content=data,
             file_name=filename,
         ),
         # Other partition parameters
@@ -132,7 +156,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
     except SDKError as e:
         print(e)
     ```
-    ```javascript JavaScript (SDK <v0.10.6)
+    ```javascript TypeScript (SDK <=v0.10.6)
     import { UnstructuredClient } from "unstructured-client";
     import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
     import * as fs from "fs";
@@ -140,30 +164,38 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
     const key = "YOUR_API_KEY";
 
     const client = new UnstructuredClient({
-        security: { apiKeyAuth: "YOUR_API_KEY" },
-        // You only need to provide your unique API URL if using the SaaS Unstructured API
         // serverURL: "YOUR_API_URL",
+        security: {
+            apiKeyAuth: key,
+        },
     });
 
-    const filename = "sample-docs/layout-parser-paper.pdf";
+    const filename = "PATH_TO_FILE";
     const data = fs.readFileSync(filename);
 
     client.general.partition({
-        // The sdk currently only supports sending a single file
         files: {
             content: data,
             fileName: filename,
         },
-        // Other partition params
-        strategy: "auto",
-        languages: ['eng'], 
-    })
+        strategy: 'auto',
+        languages: ['eng']
+    }).then((res: PartitionResponse) => {
+        if (res.statusCode == 200) {
+            console.log(res.elements);
+        }
+    }).catch((e) => {
+      if (e.statusCode) {
+        console.log(e.statusCode);
+        console.log(e.body);
+      } else {
+        console.log(e);
+      }
+    });
     ```
     </CodeGroup>
 
-    In the example above we're sending the request to the free Unstructured API, where the API URL is
-    the same for all users, so you don't need to provide the server URL. However, you still need to
-    authenticate using your individual API Key.
+    Note that currently, the SDKs only support sending one file at a time.
 
 ## SaaS Unstructured API
 
@@ -178,7 +210,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         server_url="YOUR_API_URL",
     )
     ```
-    ```javascript JavaScript
+    ```javascript TypeScript
     const client = new UnstructuredClient({
         security: { apiKeyAuth: "YOUR_API_KEY" },
         serverURL: "YOUR_API_URL",
@@ -217,7 +249,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
     )
     res = client.general.partition(req)
     ```
-    ```javascript JavaScript
+    ```javascript TypeScript
     client.general.partition({
         partitionParameters: {
             files: {
@@ -258,7 +290,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
             )
         )
         ```
-        ```javascript JavaScript
+        ```javascript TypeScript
         const client = new UnstructuredClient({
             security: { apiKeyAuth: "YOUR_API_KEY" },
             serverURL: "YOUR_API_URL",
@@ -315,7 +347,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 ## Parameters & examples
 
     #### Parameter names 
-        The parameter names used in this document are for the JavaScript SDK, which follow camelCase
+        The parameter names used in this document are for the TypeScript SDK, which follow camelCase
         convention (while the Python SDK uses snake_case). Other than this difference in naming convention, 
         the names used in the SDKs are the same across all methods.
 
