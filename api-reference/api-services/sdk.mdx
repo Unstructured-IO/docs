@@ -30,7 +30,6 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
 ## Basics
     Let's start with a simple example in which you send a pdf document to be partitioned via the free Unstructured API:
 
-
     <Warning>
          The TypeScript SDK has the following breaking changes in v0.11.0:
          * Imports under the `dist` path have moved up a level
@@ -61,7 +60,7 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
         # server_url="YOUR_API_URL",
     )
 
-    filename = "sample-docs/layout-parser-paper.pdf"
+    filename = "PATH_TO_FILE"
     file = open(filename, "rb")
     req = operations.PartitionRequest(
         partition_parameters=shared.PartitionParameters(
@@ -134,7 +133,7 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
         # server_url="YOUR_API_URL",
     )
 
-    filename = "sample-docs/layout-parser-paper.pdf"
+    filename = "YOUR_FILE_HERE"
     file = open(filename, "rb")
 
     req = shared.PartitionParameters(
