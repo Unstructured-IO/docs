@@ -1,13 +1,13 @@
 ---
-title: Python and JavaScript SDKs
-description: This documentation covers the usage of the Python and JavaScript SDKs for interacting with the Unstructured API.
+title: Python and TypeScript SDKs
+description: This documentation covers the usage of the Python and TypeScript SDKs for interacting with the Unstructured API.
 ---
 
 The [Python](https://github.com/Unstructured-IO/unstructured-python-client) and
-[JavaScript](https://github.com/Unstructured-IO/unstructured-js-client)
+[TypeScript](https://github.com/Unstructured-IO/unstructured-js-client)
 SDK clients allow for easy interaction with the Unstructured API. Whether you're using the
 free Unstructured API, the SaaS Unstructured API, Unstructured API on Azure/AWS or your local
-deployment of Unstructured API, you can access the API using the Python or JavaScript SDK.
+deployment of Unstructured API, you can access the API using the Python or TypeScript SDK.
 
 ## Installation
 
@@ -73,7 +73,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         # Handle the response
         pass
     ```
-    ```javascript JavaScript
+    ```javascript TypeScript
     import { openAsBlob } from "node:fs";
     import { UnstructuredClient } from "unstructured-client";
     import { Strategy, ChunkingStrategy } from "unstructured-client/sdk/models/shared";
@@ -132,7 +132,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
     except SDKError as e:
         print(e)
     ```
-    ```javascript JavaScript (SDK <v0.10.6)
+    ```javascript TypeScript (SDK <v0.10.6)
     import { UnstructuredClient } from "unstructured-client";
     import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
     import * as fs from "fs";
@@ -178,7 +178,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
         server_url="YOUR_API_URL",
     )
     ```
-    ```javascript JavaScript
+    ```javascript TypeScript
     const client = new UnstructuredClient({
         security: { apiKeyAuth: "YOUR_API_KEY" },
         serverURL: "YOUR_API_URL",
@@ -217,7 +217,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
     )
     res = client.general.partition(req)
     ```
-    ```javascript JavaScript
+    ```javascript TypeScript
     client.general.partition({
         partitionParameters: {
             files: {
@@ -258,7 +258,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
             )
         )
         ```
-        ```javascript JavaScript
+        ```javascript TypeScript
         const client = new UnstructuredClient({
             security: { apiKeyAuth: "YOUR_API_KEY" },
             serverURL: "YOUR_API_URL",
@@ -315,7 +315,7 @@ deployment of Unstructured API, you can access the API using the Python or JavaS
 ## Parameters & examples
 
     #### Parameter names 
-        The parameter names used in this document are for the JavaScript SDK, which follow camelCase
+        The parameter names used in this document are for the TypeScript SDK, which follow camelCase
         convention (while the Python SDK uses snake_case). Other than this difference in naming convention, 
         the names used in the SDKs are the same across all methods.
 
