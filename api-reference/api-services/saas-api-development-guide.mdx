@@ -108,11 +108,11 @@ req = operations.PartitionRequest(
     ),
 )
 
-res = client.general.partition(request=req)
-
-if res.elements is not None:
-    # Handle the response
-    pass
+try:
+    res = client.general.partition(request=req)
+    print(res.elements[0])
+except Exception as e:
+    print(e)
 ```
 
 ```javascript JavaScript

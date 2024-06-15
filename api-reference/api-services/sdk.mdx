@@ -80,11 +80,11 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
         ),
     )
 
-    res = client.general.partition(request=req)
-
-    if res.elements is not None:
-        # Handle the response
-        pass
+    try:
+        res = client.general.partition(request=req)
+        print(res.elements[0])
+    except Exception as e:
+        print(e)
     ```
     ```javascript TypeScript
     import { UnstructuredClient } from "unstructured-client";
