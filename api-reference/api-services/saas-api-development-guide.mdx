@@ -100,9 +100,6 @@ req = operations.PartitionRequest(
             file_name=filename,
         ),
         # --- Other partition parameters ---
-        # Note: Defining `strategy`, `chunking_strategy`, and `output_format`
-        # parameters as strings is accepted, but will not pass strict type checking. It is
-        # advised to use the defined enum classes as shown below.
         strategy=shared.Strategy.AUTO,  
         languages=['eng'],
     ),
