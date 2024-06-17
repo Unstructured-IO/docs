@@ -220,10 +220,10 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
 
 ## Page Splitting
 
-    In order to speed up processing of long PDF files, set the `splitPdfPage`[*](#parameter-names) parameter to `true`. This will
-    cause the PDF to be split into small batches of pages by the client before sending requests to the API. The client
-    awaits all parallel requests and combines the responses into a single response object. This will
-    work only for PDF files, so don't set it for other types of files.
+    In order to speed up processing of large PDF files, the `splitPdfPage`[*](#parameter-names) parameter is `true` by default. This
+    causes the PDF to be split into small batches of pages before sending requests to the API. The client
+    awaits all parallel requests and combines the responses into a single response object. This is specific to PDF files and other
+    filetypes are ignored.
 
     The number of parallel requests is controlled by `splitPdfConcurrencyLevel`[*](#parameter-names). 
     The default is 5 and the max is set to 15 to avoid high resource usage and costs.
@@ -231,9 +231,14 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
     If at least one request is successful, the responses are combined into a single response object. An
     error is returned only if all requests failed or there was an error during splitting.
 
-    When using page splitting, note that chunking will not always work as expected since chunking will happen on the
-    API side. When chunking elements the whole document context is processed but when we use splitting we only have a part
-    of the context. If you need to chunk, you can make a second request to the API with the returned elements.
+    <Note>
+    This feature may lead to unexpected results when chunking because the server does not see the entire
+    document context at once. If you'd like to chunk across the whole document and still get the speedup from 
+    parallel processing, you can:
+    * Partition the pdf with `splitPdfPage` set to true, without any chunking parameters
+    * Store the returned elements in `results.json`
+    * Partition this json file with the desired chunking parameters
+    </Note>
 
     <CodeGroup>
     ```python Python
