@@ -248,7 +248,7 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
                 content=file.read(),
                 file_name=filename,
             ),
-            split_pdf_page=True,  # Set `split_pdf_page` parameter to `True` to enable splitting the PDF file
+            split_pdf_page=True,  # Set to `False` to disable PDF splitting
             split_pdf_concurrency_level=10,  # Modify split_pdf_concurrency_level to set the number of parallel requests
         )
     )
@@ -261,7 +261,7 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
                 content: data,
                 fileName: filename,
             },
-            // Set `splitPdfPage` parameter to `true` to enable splitting the PDF file
+            // Set to `false` to disable PDF splitting
             splitPdfPage: true,
             // Modify splitPdfConcurrencyLevel to set the number of parallel requests
             splitPdfConcurrencyLevel: 10,
