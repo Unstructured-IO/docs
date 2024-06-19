@@ -42,7 +42,7 @@ Supply your API key, and the file to preprocess. Make sure to copy the complete 
 in your dashboard on the **API keys** page:
 
 ```bash
-curl -X 'POST' 'https://YOUR_API_URL' \
+curl -X 'POST' 'https://API_URL' \
      -H 'accept: application/json' \
      -H 'Content-Type: multipart/form-data' \
      -H 'unstructured-api-key: YOUR_API_KEY' \
@@ -82,7 +82,7 @@ from unstructured_client.models import operations, shared
 
 client = unstructured_client.UnstructuredClient(
     api_key_auth="YOUR_API_KEY",
-    server_url="YOUR_API_URL",
+    server_url="API_URL",
 )
 
 filename = "sample-docs/layout-parser-paper.pdf"
@@ -114,7 +114,7 @@ import * as fs from "fs";
 const key = "YOUR-API-KEY";
 
 const client = new UnstructuredClient({
-    serverURL: "YOUR_API_URL",
+    serverURL: "API_URL",
     security: {
         apiKeyAuth: key,
     },
@@ -152,7 +152,7 @@ filename = "PATH_TO_FILE"
 elements = partition_via_api(
   filename=filename,
   api_key="YOUR_API_KEY",
-  api_url="YOUR_API_URL"
+  api_url="API_URL"
 )
 ```
 
