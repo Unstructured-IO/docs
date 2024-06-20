@@ -9,12 +9,12 @@ If you don't find the information you're looking for in the documentation, or re
 get in touch with our Support team at [support@unstructured.io](mailto:support%40unstructured.io),
 or [join our Slack](https://short.unstructured.io/pzw05l7) where our team and community can help you.
 
-## Re-launch of SaaS API
+## Re-launch of Serverless API
 
 ### What is the Unstructured Serverless API, and why did you relaunch it?
 
 The Unstructured Serverless API is a powerful tool that simplifies extracting and analyzing valuable information from
-unstructured data like documents and images. We've relaunched our SaaS API with a new serverless architecture, per-page
+unstructured data like documents and images. We've relaunched our Serverless API with a new serverless architecture, per-page
 pricing, and enhanced processing capabilities to deliver faster insights, a smoother user experience, and more predictable costs.
 
 ### What are the new Serverless API features?
@@ -83,7 +83,7 @@ A 504 gateway timeout error typically arises during prolonged processing tasks, 
 
 ## API Usage
 
-### How does the partition_by_api function work with the Unstructured SaaS API?
+### How does the partition_by_api function work with the Unstructured Serverless API?
 The partition_via_api function within the Unstructured platform provides a streamlined way for users to segment documents via the hosted Unstructured API.
 The partition_via_api function within the Unstructured platform provides a streamlined way for users to segment documents via the hosted Unstructured API. This automation tool is particularly valuable for those managing the API on their servers or in local containerized environments, simplifying the process of breaking down documents into more manageable components.
 
@@ -99,7 +99,7 @@ elements = partition_via_api(
 )
 ```
 
-### How can I specify the language for OCR document processing using Unstructured SaaS API?
+### How can I specify the language for OCR document processing using Unstructured Serverless API?
 
 To define the OCR language when processing documents, utilize the languages keyword argument in your API request. For example:
 
@@ -119,9 +119,9 @@ For comprehensive language support, refer to the [Tesseract documentation](https
 
 <Note>You can still use ``ocr_languages`` kwarg, but this parameter is being deprecated in favor of ``languages`` kwarg.</Note>
 
-### How is the SaaS API used alongside Chipper model?
+### How is the Serverless API used alongside Chipper model?
 
-Unstructured SaaS API supports using the Chipper models. To define the model, you can pass the hi_res_model_name as shown in the following example:
+Unstructured Serverless API supports using the Chipper models. To define the model, you can pass the hi_res_model_name as shown in the following example:
 
 ``` Curl Chipper
 curl -X 'POST' \
