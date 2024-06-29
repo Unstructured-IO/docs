@@ -17,8 +17,8 @@ Everyone is welcome to contribute, and you can do it in a couple of ways:
 
 To contribute changes to the documentation:
 
-1. Fork the repo.
-2. Create a new branch with a descriptive name.
+1. If you're not a member of Unstructured team, start by forking the repo. If you are part of the team, you can clone this repo. 
+2. Create a new branch with a descriptive name. 
 3. Add your changes. DO NOT MANUALLY EDIT THE CONTENTS OF THE `snippets/destination_connectors` and `snippets/source_connectors` FOLDERS. These are auto-generated from tested code examples. 
 4. Check for grammatical and technical correctness of the changes. 
 5. Preview your changes locally. [See how below](#previewing-documentation-changes-locally). 
