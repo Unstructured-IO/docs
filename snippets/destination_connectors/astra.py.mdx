@@ -25,12 +25,13 @@ def get_writer() -> Writer:
     return AstraWriter(
         connector_config=SimpleAstraConfig(
             access_config=AstraAccessConfig(
-                token=os.getenv("ASTRA_DB_TOKEN"), api_endpoint=os.getenv("ASTRA_DB_ENDPOINT")
+                token=os.getenv("ASTRA_DB_APPLICATION_TOKEN"),
+                api_endpoint=os.getenv("ASTRA_DB_API_ENDPOINT")
             ),
-            collection_name="test_collection",
-            embedding_dimension=384,
+            collection_name=os.getenv("COLLECTION_NAME", "unstructured"),
+            embedding_dimension=os.getenv("EMBEDDING_DIMENSION", 384),
         ),
-        write_config=AstraWriteConfig(batch_size=80),
+        write_config=AstraWriteConfig(batch_size=10),
     )
 
 
@@ -48,9 +49,6 @@ if __name__ == "__main__":
         read_config=ReadConfig(),
         partition_config=PartitionConfig(),
         chunking_config=ChunkingConfig(chunk_elements=True),
-        embedding_config=EmbeddingConfig(
-            provider="langchain-huggingface",
-        ),
         writer=writer,
         writer_kwargs={},
     )
