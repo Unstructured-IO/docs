@@ -2,10 +2,17 @@ Connect Google Drive to your preprocessing pipeline, and batch process all your 
 
 First, install the Google Drive dependencies as shown here.
 
-```bash
-pip install "unstructured[gdrive]"
-```
+<CodeGroup>
+
+    ```bash Version 2
+    pip install "unstructured[google-drive]"
+    ```
+    ```bash Version 1
+    pip install "unstructured[gdrive]"
+    ```
+
+</CodeGroup>
 
 Make sure to set up a service account and get a service account key - [learn how](https://developers.google.com/workspace/guides/create-credentials#service-account).
 Make sure the email address for the service account is given access to the Google Drive folder.
-Use `drive_id` to specify the folder: this is a part of the URL for your Google Drive folder, e.g. `https://drive.google.com/drive/folders/{folder-id}`.
+For `--drive-id` (CLI) or `GOOGLE_DRIVE_FOLDER_ID` (SDK), specify the folder ID: this is a part of the URL for your Google Drive folder represented in the following URL as `{folder_id}`: `https://drive.google.com/drive/folders/{folder-id}`.

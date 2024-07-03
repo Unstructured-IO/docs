@@ -6,8 +6,6 @@ import SharedContentGoogleDrive from '/snippets/sc-shared-text/google-drive.mdx'
 
 <SharedContentGoogleDrive/>
 
-Make sure to set the `--partition-by-api` flag and pass in your API key with `--api-key`:
-
 import GoogleDriveAPISh from '/snippets/source_connectors/google_drive_api.sh.mdx';
 import GoogleDriveAPIPy from '/snippets/source_connectors/google_drive_api.py.mdx';
 
@@ -19,5 +17,5 @@ import GoogleDriveAPIPy from '/snippets/source_connectors/google_drive_api.py.md
 
 </CodeGroup>
 
-Additionally, if you're using Unstructured Serverless API, your locally deployed Unstructured API, or an Unstructured API
-deployed on Azure or AWS, you also need to specify the API URL via the `--partition-endpoint` argument.
+If you're using the Unstructured Serverless API, your locally deployed Unstructured API, or an Unstructured API
+deployed on Azure or AWS, you also need to specify the API URL through `--partition-endpoint` (CLI) or `partition_endpoint` (SDK). If you're using the Free Unstructured API, do not specify an API URL.

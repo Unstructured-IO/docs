@@ -1,14 +1,16 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
 
 unstructured-ingest \
   google-drive \
-  --drive-id "<file or folder id>" \
-  --service-account-key "<path to drive service account key>" \
-  --output-dir google-drive-ingest-output \
+  --drive-id "$GOOGLE_DRIVE_FOLDER_ID" \
+  --service-account-key "$GCP_SERVICE_ACCOUNT_KEY_FILE_PATH" \
+  --download-dir "google-drive-ingest-download" \
+  --output-dir "google-drive-ingest-output" \
   --num-processes 2 \
   --recursive \
   --verbose \
   --partition-by-api \
-  --api-key "$UNSTRUCTURED_API_KEY"
+  --api-key "$UNSTRUCTURED_API_KEY" \
+  --partition-endpoint "$UNSTRUCTURED_API_URL"
 ```

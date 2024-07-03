@@ -1,4 +1,40 @@
-```python Python
+```python Python (SDK v2)
+import os
+
+from unstructured.ingest.v2.pipeline.pipeline import Pipeline
+from unstructured.ingest.v2.interfaces import ProcessorConfig
+from unstructured.ingest.v2.processes.chunker import ChunkerConfig
+from unstructured.ingest.v2.processes.connectors.google_drive import (
+    GoogleDriveConnectionConfig,
+    GoogleDriveAccessConfig,
+    GoogleDriveIndexerConfig,
+    GoogleDriveDownloaderConfig,
+)
+from unstructured.ingest.v2.processes.connectors.local import LocalUploaderConfig
+from unstructured.ingest.v2.processes.partitioner import PartitionerConfig
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(tqdm=True, reprocess=True, verbose=False),
+        source_connection_config=GoogleDriveConnectionConfig(
+            access_config=GoogleDriveAccessConfig(
+                service_account_key=os.getenv("GCP_SERVICE_ACCOUNT_KEY_FILE_PATH")
+            ),
+            drive_id=os.getenv("GOOGLE_DRIVE_FOLDER_ID"),
+        ),
+        indexer_config=GoogleDriveIndexerConfig(),
+        downloader_config=GoogleDriveDownloaderConfig(download_dir="google-drive-ingest-download"),
+        uploader_config=LocalUploaderConfig(output_dir="google-drive-ingest-output"),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            strategy="fast"
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+    ).run()
+```
+```python Python (SDK v1)
 import os
 
 from unstructured.ingest.connector.google_drive import (
@@ -19,10 +55,11 @@ if __name__ == "__main__":
         partition_config=PartitionConfig(
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
         ),
         connector_config=SimpleGoogleDriveConfig(
             access_config=GoogleDriveAccessConfig(
-                service_account_key=os.getenv("GOOGLE_DRIVE_ACCOUNT_KEY")
+                service_account_key=os.getenv("GCP_SERVICE_ACCOUNT_KEY_FILE_PATH")
             ),
             recursive=True,
             drive_id=os.getenv("GOOGLE_DRIVE_FOLDER_ID"),
