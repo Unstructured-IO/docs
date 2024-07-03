@@ -18,7 +18,7 @@ if __name__ == "__main__":
         context=ProcessorConfig(tqdm=True, reprocess=True, verbose=False),
         source_connection_config=GoogleDriveConnectionConfig(
             access_config=GoogleDriveAccessConfig(
-                service_account_key=os.getenv("GCP_SERVICE_ACCOUNT_KEY_FILE_PATH")
+                service_account_key=os.getenv("GCP_SERVICE_ACCOUNT_KEY_FILE")
             ),
             drive_id=os.getenv("GOOGLE_DRIVE_FOLDER_ID"),
         ),
@@ -33,37 +33,4 @@ if __name__ == "__main__":
         ),
         chunker_config=ChunkerConfig(chunking_strategy="by_title"),
     ).run()
-```
-```python Python (SDK v1)
-import os
-
-from unstructured.ingest.connector.google_drive import (
-    GoogleDriveAccessConfig,
-    SimpleGoogleDriveConfig,
-)
-from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-from unstructured.ingest.runner import GoogleDriveRunner
-
-if __name__ == "__main__":
-    runner = GoogleDriveRunner(
-        processor_config=ProcessorConfig(
-            verbose=True,
-            output_dir="google-drive-ingest-output",
-            num_processes=2,
-        ),
-        read_config=ReadConfig(),
-        partition_config=PartitionConfig(
-            partition_by_api=True,
-            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
-        ),
-        connector_config=SimpleGoogleDriveConfig(
-            access_config=GoogleDriveAccessConfig(
-                service_account_key=os.getenv("GCP_SERVICE_ACCOUNT_KEY_FILE_PATH")
-            ),
-            recursive=True,
-            drive_id=os.getenv("GOOGLE_DRIVE_FOLDER_ID"),
-        ),
-    )
-    runner.run()
 ```

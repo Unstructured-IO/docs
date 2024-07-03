@@ -6,10 +6,10 @@ First, install the S3 dependencies as shown here.
 pip install "unstructured[s3]"
 ```
 
-Use the `remote-url` parameter to provide the remote URL formatted as `protocol://dir/path`.
-If your S3 bucket allows access without local AWS credentials, you can set the `anonymous` flag.
+Use `--remote-url` (CLI) or `remote_url` (SDK) to provide the remote URL formatted as `protocol://dir/path`.
+If your S3 bucket allows access without local AWS credentials, you can set `--anonymous` (CLI) or `anonymous=True` (SDK).
 
 If your S3 bucket doesn't allow anonymous access, make sure to provide your credentials:
-* `key`: access key ID. Takes precedence over.
-* `secret`: secret access key.
-* `token`: security token.
+* `--key` (CLI) or `key` (SDK): access key ID. Takes precedence over.
+* `--secret` (CLI) or `secret` (SDK): secret access key.
+* `--token` (CLI) or `token` (SDK): security token.

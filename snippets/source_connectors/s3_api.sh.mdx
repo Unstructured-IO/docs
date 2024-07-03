@@ -8,5 +8,6 @@ unstructured-ingest \
   --output-dir s3-small-batch-output \
   --num-processes 2 \
   --partition-by-api \
-  --api-key "$UNSTRUCTURED_API_KEY"
+  --api-key "$UNSTRUCTURED_API_KEY" \
+  --partition-endpoint "$UNSTRUCTURED_API_URL"
 ```
