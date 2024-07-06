@@ -1,4 +1,4 @@
-```python Python (SDK v1)
+```python Python SDK v1
 import os
 
 from unstructured.ingest.connector.google_drive import (
@@ -23,7 +23,7 @@ if __name__ == "__main__":
         ),
         connector_config=SimpleGoogleDriveConfig(
             access_config=GoogleDriveAccessConfig(
-                service_account_key=os.getenv("GCP_SERVICE_ACCOUNT_KEY_FILE")
+                service_account_key=os.getenv("GCP_SERVICE_ACCOUNT_KEY")
             ),
             recursive=True,
             drive_id=os.getenv("GOOGLE_DRIVE_FOLDER_ID"),

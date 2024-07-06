@@ -2,9 +2,11 @@
 title: S3
 ---
 
-import SharedContentS3 from '/snippets/sc-shared-text/s3.mdx';
+import SharedContentS3 from '/snippets/sc-shared-text/s3-api.mdx';
 
 <SharedContentS3/>
+
+Now call the Unstructured CLI or Python SDK, for example:
 
 import S3APISh from '/snippets/source_connectors/s3_api.sh.mdx';
 import S3APIPyV2 from '/snippets/source_connectors/s3_api.v2.py.mdx';
@@ -19,6 +21,3 @@ import S3APIPyV1 from '/snippets/source_connectors/s3_api.v1.py.mdx';
   <S3APIPyV1 />
 
 </CodeGroup>
-
-If you're using the Unstructured Serverless API, your locally deployed Unstructured API, or an Unstructured API
-deployed on Azure or AWS, you also need to specify the API URL through `--partition-endpoint` (CLI) or `partition_endpoint` (SDK). If you're using the Free Unstructured API, do not specify an API URL.
