@@ -266,17 +266,17 @@ You will establish the foundational network structure for deploying the Unstruct
         
     c.   On the **EC2 > Load balancers > (Load balancer ID)** page, copy the **DNS Name** value, which is shown as an **(A Record)** and ends with `.elb.amazonaws.com`.
         
-         - Note: You will use this **DNS Name** to replace the `<api_url>` for the following healthcheck and data processing steps.
+         - Note: You will use this **DNS Name** to replace the `<application-load-balancer-dns-name>` for the following healthcheck and data processing steps.
             
 
 ![Unstructured API Endpoint](/img/api/Marketplace_Step11.png)
 
 ## Healthcheck
 
-Perform a health check by running this `curl` command:
+Perform a health check by running this `curl` command, replacing `<application-load-balancer-dns-name>` with your application load balancer's DNS name:
 
 ```bash
-curl https://<api_url>/healthcheck
+curl http://<application-load-balancer-dns-name>/healthcheck
 
 ```
 
@@ -285,27 +285,19 @@ curl https://<api_url>/healthcheck
 
 ## Data processing
 
-Data processing can be performed by using `curl` commands.
+Data processing can be performed by using `curl` commands. For example, run the following command, replacing:
 
-*   Note: You will need to add the suffix to the endpoint: **/general/v0/general**
-    
+- `<application-load-balancer-dns-name>` with your application load balancer's DNS name.
+- `<path/to/input-file>` with the path on your local machine to a file to process. If you do not have any input files available, you can download any of the ones from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in GitHub.
+- `<path/to/output-file>` with the path on your local machine to the processed output in JSON format.
 
 ```bash
-curl -X 'POST' 'https://<api_url>/general/v0/general' \
+curl -q -X 'POST' http://<application-load-balancer-dns-name>/general/v0/general \
      -H 'accept: application/json' \
      -H 'Content-Type: multipart/form-data' \
-     -F 'files=@sample-docs/family-day.eml' \
-     | jq -C . | less -R
-
+     -F files=@<path/to/input-file> \
+     -o <path/to/output-file>.json
 ```
 
 
 ![Data Processing Endpoint](/img/api/endpoint.png)
-
-## Getting started with Unstructured
-
-Explore examples in the Unstructured GitHub repository: [Unstructured GitHub](https://github.com/Unstructured-IO/unstructured).
-
-## Support
-
-For support inquiries, contact: [support@unstructured.io](mailto:support%40unstructured.io)
