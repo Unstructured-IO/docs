@@ -2,17 +2,9 @@ Connect Google Drive to your preprocessing pipeline, and use the Unstructured CL
 
 You will need:
 
-- The Google Drive connector dependencies:
+import SharedGoogleDrive from '/snippets/general-shared-text/google-drive.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
-  ```bash CLI, Python SDK
-  pip install "unstructured[google-drive]"
-  ```
+<SharedGoogleDrive />
 
-- A Google Cloud service account and its related `credentials.json` key file or its contents in JSON format. [Learn how](https://developers.google.com/workspace/guides/create-credentials#service-account).
-- Give the service account's email address access to the Google Drive folder.
-- These environment variables:
-
-  - `GOOGLE_DRIVE_FOLDER_ID` - The folder ID. This is a part of the URL for your Google Drive folder represented in the following URL as `{folder_id}`: `https://drive.google.com/drive/folders/{folder-id}`.
-  - `GCP_SERVICE_ACCOUNT_KEY` - The path to the `credentials.json` key file or its contents in JSON format.
-  - `UNSTRUCTURED_API_KEY` - Your Unstructured API key value.
-  - `UNSTRUCTURED_API_URL` - Your Unstructured API URL.
+<SharedAPIKeyURL />

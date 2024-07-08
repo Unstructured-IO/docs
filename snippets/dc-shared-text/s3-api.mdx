@@ -1,32 +1,20 @@
 Batch process all your records to store structured outputs in an S3 bucket.
 
-You will need: 
+You will need:
 
-- The S3 connector dependencies:
+import SharedS3 from '/snippets/general-shared-text/s3.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx'
 
-  ```bash CLI, Python SDK
-  pip install "unstructured[s3]"
-  ```
+<SharedS3 />
 
-- These environment variables:
+<SharedAPIKeyURL />
 
-  - `AWS_S3_URL` - The S3 remote URL, formatted as `protocol://dir/path/` (for example, `s3://my-bucket/my-folder/`).
-  - If your S3 bucket doesn't allow anonymous access, provide your AWS credentials:
-
-    - `--key` (CLI) or `key` (Python SDK) - The AWS access key ID, represented as `AWS_ACCESS_KEY_ID`.
-    - `--secret` (CLI) or `secret` (Python SDK) - Your AWS secret access key, represented as `AWS_SECRET_ACCESS_KEY`.
-
-    If your S3 bucket allows access without local AWS credentials, set `--anonymous` (CLI) or `anonymous=True` (Python SDK) instead.
-
-  - `UNSTRUCTURED_API_KEY` - Your Unstructured API key value.
-  - `UNSTRUCTURED_API_URL` - Your Unstructured API URL.
-
-
-The source connector can be any of the ones supported. This example the local source connector:
+The source connector can be any of the ones supported. This example uses the local source connector:
 
 import S3Sh from '/snippets/destination_connectors/s3_api.sh.mdx';
 import S3PyV2 from '/snippets/destination_connectors/s3_api.v2.py.mdx';
 import S3PyV1 from '/snippets/destination_connectors/s3_api.v1.py.mdx';
+
 
 <CodeGroup>
 
