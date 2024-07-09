@@ -1,4 +1,4 @@
-```python Python
+```python Python SDK v1
 import os
 
 from unstructured.ingest.connector.fsspec.s3 import S3AccessConfig, SimpleS3Config
@@ -20,12 +20,13 @@ if __name__ == "__main__":
         partition_config=PartitionConfig(
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")
         ),
         connector_config=SimpleS3Config(
             access_config=S3AccessConfig(
                 anon=True,
             ),
-            remote_url="s3://utic-dev-tech-fixtures/small-pdf-set/",
+            remote_url=os.getenv("AWS_S3_URL"),
         ),
     )
     runner.run()

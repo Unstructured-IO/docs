@@ -1,4 +1,4 @@
-```python Python
+```python Python SDK v1
 import os
 
 from unstructured.ingest.connector.google_drive import (
@@ -19,10 +19,11 @@ if __name__ == "__main__":
         partition_config=PartitionConfig(
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
         ),
         connector_config=SimpleGoogleDriveConfig(
             access_config=GoogleDriveAccessConfig(
-                service_account_key=os.getenv("GOOGLE_DRIVE_ACCOUNT_KEY")
+                service_account_key=os.getenv("GCP_SERVICE_ACCOUNT_KEY")
             ),
             recursive=True,
             drive_id=os.getenv("GOOGLE_DRIVE_FOLDER_ID"),
