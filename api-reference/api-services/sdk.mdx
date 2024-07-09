@@ -319,7 +319,7 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
         const client = new UnstructuredClient({
             security: { apiKeyAuth: key },
-            serverURL: "YOUR_API_URL",
+            serverURL: url,
             retryConfig: {
                 strategy: "backoff",
                 retryConnectionErrors: true,

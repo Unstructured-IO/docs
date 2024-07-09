@@ -695,14 +695,16 @@ elements = partition_via_api(
 If you are using the [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide), you can use the `api_url` kwarg to point the `partition_via_api` function at your Unstructured Serverless API URL.
 
 ```python
+import os
+
 from unstructured.partition.api import partition_via_api
 
 filename = "example-docs/eml/fake-email.eml"
 
 elements = partition_via_api(
   filename=filename,
-  api_key=<<REPLACE WITH YOUR API KEY>>,
-  api_url="https://<<REPLACE WITH YOUR API URL>>/general/v0/general"
+  api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+  api_url=os.getenv("UNSTRUCTURED_API_URL")
 )
 
 ```

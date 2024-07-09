@@ -105,8 +105,8 @@ To define the OCR language when processing documents, utilize the languages keyw
 
 ``` Curl ocrlang
 curl -X 'POST' \
-  '<<YOUR API SERVER URL>>/general/v0/general' \
-  -H 'unstructured-api-key: <<YOUR API KEY>>' \
+  '$UNSTRUCTURED_API_URL/general/v0/general' \
+  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
   -F 'files=@sample-docs/english-and-korean.png' \
@@ -125,8 +125,8 @@ Unstructured Serverless API supports using the Chipper models. To define the mod
 
 ``` Curl Chipper
 curl -X 'POST' \
-'<<YOUR API SERVER URL>>/general/v0/general' \
-  -H 'unstructured-api-key: <<YOUR API KEY>>' \
+'$UNSTRUCTURED_API_URL/general/v0/general' \
+  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
   -F 'files=@sample-docs/layout-parser-paper.pdf' \
