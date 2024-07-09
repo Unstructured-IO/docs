@@ -1,7 +1,13 @@
 ---
 title: Examples
-description: This page provides some examples of accessing Unstructured API via different methods
+description: This page provides some examples of accessing Unstructured API via different methods.
 ---
+
+For each of these examples, you'll need:
+
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedAPIKeyURL />
 
 ### Changing partition strategy for a PDF
 
@@ -11,23 +17,25 @@ The `hi_res` strategy supports different models, and the default is `detectron2o
 <CodeGroup>
 
 ```bash POST
- curl -X 'POST' <YOUR_API_URL> \
+ curl -X 'POST' $UNSTRUCTURED_API_URL \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
-  -H 'unstructured-api-key: <YOUR_API_KEY>' \
+  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -F 'files=@sample-docs/layout-parser-paper.pdf' \
   -F 'strategy=hi_res' \
   -F 'hi_res_model_name=chipper'
 ```
 
 ```python Python SDK
+import os
+
 from unstructured_client import UnstructuredClient
 from unstructured_client.models import shared
 from unstructured_client.models.errors import SDKError
 
 client = UnstructuredClient(
-    api_key_auth="YOUR_API_KEY",
-    server_url="YOUR_API_URL",
+    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+    api_url=os.getenv("UNSTRUCTURED_API_URL"),
 )
 
 filename = "sample-docs/layout-parser-paper.pdf"
@@ -54,10 +62,11 @@ import { UnstructuredClient } from "unstructured-client";
 import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
 import * as fs from "fs";
 
-const key = "YOUR_API_KEY";
+const key = process.env.UNSTRUCTURED_API_KEY;
+const url = process.env.UNSTRUCTURED_API_URL;
 
 const client = new UnstructuredClient({
-    serverURL: "YOUR_API_URL",
+    serverURL: url,
     security: {
         apiKeyAuth: key,
     },
@@ -94,23 +103,25 @@ See the [Tesseract documentation](https://github.com/tesseract-ocr/tessdata) for
 <CodeGroup>
 
 ```bash POST
-curl -X 'POST' <YOUR_API_URL> \
+curl -X 'POST' $UNSTRUCTURED_API_URL \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
-  -H 'unstructured-api-key: <YOUR_API_KEY>' \
+  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -F 'files=@sample-docs/korean.png' \
   -F 'strategy=hi_res' \
   -F 'languages=kor'
 ```
 
 ```python Python SDK
+import os
+
 from unstructured_client import UnstructuredClient
 from unstructured_client.models import shared
 from unstructured_client.models.errors import SDKError
 
 client = UnstructuredClient(
-    api_key_auth="YOUR_API_KEY",
-    server_url="YOUR_API_URL",
+    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+    server_url=os.getenv("UNSTRUCTURED_API_URL"),
 )
 
 filename = "sample-docs/korean.png"
@@ -137,10 +148,11 @@ import { UnstructuredClient } from "unstructured-client";
 import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
 import * as fs from "fs";
 
-const key = "YOUR_API_KEY";
+const key = process.env.UNSTRUCTURED_API_KEY;
+const url = process.env.UNSTRUCTURED_API_URL;
 
 const client = new UnstructuredClient({
-    serverURL: "YOUR_API_URL",
+    serverURL: url,
     security: {
         apiKeyAuth: key,
     },
@@ -176,22 +188,24 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
 <CodeGroup>
 
 ```bash POST
- curl -X 'POST' <YOUR_API_URL> \
+ curl -X 'POST' $UNSTRUCTURED_API_URL \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
-  -H 'unstructured-api-key: <YOUR_API_KEY>' \
+  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -F 'files=@sample-docs/layout-parser-paper.pdf' \
   -F 'coordinates=true'
 ```
 
 ```python Python SDK
+import os
+
 from unstructured_client import UnstructuredClient
 from unstructured_client.models import shared
 from unstructured_client.models.errors import SDKError
 
 client = UnstructuredClient(
-    api_key_auth="YOUR_API_KEY",
-    server_url="YOUR_API_URL",
+    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+    server_url=os.getenv("UNSTRUCTURED_API_URL"),
 )
 
 filename = "sample-docs/layout-parser-paper.pdf"
@@ -217,10 +231,11 @@ import { UnstructuredClient } from "unstructured-client";
 import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
 import * as fs from "fs";
 
-const key = "YOUR_API_KEY";
+const key = process.env.UNSTRUCTURED_API_KEY;
+const url = process.env.UNSTRUCTURED_API_URL;
 
 const client = new UnstructuredClient({
-    serverURL: "YOUR_API_URL",
+    serverURL: url,
     security: {
         apiKeyAuth: key,
     },
@@ -259,22 +274,24 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
 <CodeGroup>
 
 ```bash POST
-curl -X 'POST' <YOUR_API_URL> \
+curl -X 'POST' $UNSTRUCTURED_API_URL \
  -H 'accept: application/json'  \
  -H 'Content-Type: multipart/form-data' \
- -H 'unstructured-api-key: <YOUR_API_KEY>' \
+ -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
  -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
  -F 'unique_element_ids=true'
 ```
 
 ```python Python SDK
+import os
+
 from unstructured_client import UnstructuredClient
 from unstructured_client.models import shared
 from unstructured_client.models.errors import SDKError
 
 client = UnstructuredClient(
-    api_key_auth="YOUR_API_KEY",
-    server_url="YOUR_API_URL",
+    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+    server_url=os.getenv("UNSTRUCTURED_API_URL"),
 )
 
 filename = "sample-docs/layout-parser-paper-fast.pdf"
@@ -300,10 +317,11 @@ import { UnstructuredClient } from "unstructured-client";
 import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
 import * as fs from "fs";
 
-const key = "YOUR_API_KEY";
+const key = process.env.UNSTRUCTURED_API_KEY;
+const url = process.env.UNSTRUCTURED_API_URL;
 
 const client = new UnstructuredClient({
-    serverURL: "YOUR_API_URL",
+    serverURL: url,
     security: {
         apiKeyAuth: key,
     },
@@ -340,23 +358,25 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
 <CodeGroup>
 
 ```bash POST
-curl -X 'POST' <YOUR_API_URL> \
+curl -X 'POST' $UNSTRUCTURED_API_URL \
  -H 'accept: application/json'  \
  -H 'Content-Type: multipart/form-data' \
- -H 'unstructured-api-key: <YOUR_API_KEY>' \
+ -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
  -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
  -F 'chunking_strategy=by_title' \
  -F 'max_characters=1024'
 ```
 
 ```python Python SDK
+import os
+
 from unstructured_client import UnstructuredClient
 from unstructured_client.models import shared
 from unstructured_client.models.errors import SDKError
 
 client = UnstructuredClient(
-    api_key_auth="YOUR_API_KEY",
-    server_url="YOUR_API_URL",
+    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+    server_url=os.getenv("UNSTRUCTURED_API_URL"),
 )
 
 filename = "sample-docs/layout-parser-paper-fast.pdf"
@@ -383,10 +403,11 @@ import { UnstructuredClient } from "unstructured-client";
 import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
 import * as fs from "fs";
 
-const key = "YOUR_API_KEY";
+const key = process.env.UNSTRUCTURED_API_KEY;
+const url = process.env.UNSTRUCTURED_API_URL;
 
 const client = new UnstructuredClient({
-    serverURL: "YOUR_API_URL",
+    serverURL: url,
     security: {
         apiKeyAuth: key,
     },

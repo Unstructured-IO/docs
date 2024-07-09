@@ -6,20 +6,24 @@ description: This page provides some examples of accessing Unstructured API via 
 ## Basics
 
 Whether you're using the free Unstructured API, the Unstructured Serverless API, Unstructured API on Azure/AWS or your local
-deployment of Unstructured API, you can work with the API by sending POST requests to it.
+deployment of Unstructured API, you can work with the API by sending POST requests to it. You will need:
 
-Let's start with a simple example in which you send an email file (`*.eml`) to partition via Unstructured API:
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedAPIKeyURL />
+
+Let's start with a simple example in which you send an email file (`*.eml`) to partition via Unstructured API. 
 
 ```bash
  curl -X 'POST' \
-  'https://api.unstructured.io/general/v0/general' \
+  '$UNSTRUCTURED_API_URL' \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
-  -H 'unstructured-api-key: <YOUR_API_KEY>' \
+  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -F 'files=@sample-docs/family-day.eml'
 ```
 
-In the example above we're sending the request to the free Unstructured API, in which case the API URL is the same for all
+In the example above we're sending the request to the Free Unstructured API, in which case the API URL is the same for all
 users: `https://api.unstructured.io/general/v0/general`. Note, however, that you still need to authenticate yourself with
 your individual API Key. Learn how to obtain an API key in the Getting Started section of the documentation:
 [Free Unstructured API guide](/api-reference/api-services/free-api) and [Unstructured Serverless API guide](/api-reference/api-services/saas-api-development-guide).
