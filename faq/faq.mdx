@@ -88,14 +88,16 @@ The partition_via_api function within the Unstructured platform provides a strea
 The partition_via_api function within the Unstructured platform provides a streamlined way for users to segment documents via the hosted Unstructured API. This automation tool is particularly valuable for those managing the API on their servers or in local containerized environments, simplifying the process of breaking down documents into more manageable components.
 
 ``` Python partition
+import os 
+
 from unstructured.partition.api import partition_via_api
 
 filename = "example-docs/eml/fake-email.eml"
 
 elements = partition_via_api(
     filename=filename,
-    api_key="<<REPLACE WITH API KEY>>"
-    api_url="<<REPLACE WITH API SERVER URL>>/general/v0/general"
+    api_key=os.getenv("UNSTRUCTURED_API_KEY")
+    api_url=os.getenv("UNSTRUCTURED_API_URL")
 )
 ```
 
@@ -105,7 +107,7 @@ To define the OCR language when processing documents, utilize the languages keyw
 
 ``` Curl ocrlang
 curl -X 'POST' \
-  '$UNSTRUCTURED_API_URL/general/v0/general' \
+  '$UNSTRUCTURED_API_URL' \
   -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
@@ -125,7 +127,7 @@ Unstructured Serverless API supports using the Chipper models. To define the mod
 
 ``` Curl Chipper
 curl -X 'POST' \
-'$UNSTRUCTURED_API_URL/general/v0/general' \
+'$UNSTRUCTURED_API_URL' \
   -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \

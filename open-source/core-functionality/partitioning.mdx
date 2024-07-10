@@ -713,13 +713,16 @@ elements = partition_via_api(
 If you are self-hosting or running the API locally, you can use the `api_url` kwarg to point the `partition_via_api` function at your self-hosted or local API. See [here](https://github.com/Unstructured-IO/unstructured-api#dizzy-instructions-for-using-the-docker-image) for documentation on how to run the API as a container locally.
 
 ```python
+import os
+
 from unstructured.partition.api import partition_via_api
 
 filename = "example-docs/eml/fake-email.eml"
 
 elements = partition_via_api(
   filename=filename,
-  api_url="http://localhost:5000/general/v0/general"
+  api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+  api_url=os.getenv("UNSTRUCTURED_API_URL")
 )
 
 ```
