@@ -1,0 +1,24 @@
+```bash Shell
+#!/usr/bin/env bash
+
+EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
+
+unstructured-ingest \
+  local \
+  --input-path example-docs/book-war-and-peace-1225p.txt \
+  --output-dir local-output-to-couchbase \
+  --strategy fast \
+  --chunk-elements \
+  --embedding-provider "$EMBEDDING_PROVIDER" \
+  --num-processes 2 \
+  --verbose \
+  couchbase \
+  --connection-string "$COUCHBASE_CONNECTION_STRING" \
+  --username "$COUCHBASE_USERNAME" \
+  --password "$COUCHBASE_PASSWORD" \
+  --bucket "$COUCHBASE_BUCKET" \
+  --scope "$COUCHBASE_SCOPE" \
+  --collection "$COUCHBASE_COLLECTION" \
+  --num-processes 2 \
+  --batch-size 80
+```

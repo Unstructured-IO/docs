@@ -1,0 +1,15 @@
+```bash Shell
+#!/usr/bin/env bash
+
+unstructured-ingest \
+  couchbase \
+  --metadata-exclude filename,file_directory,metadata.data_source.date_processed \
+  --connection-string "$COUCHBASE_CONNECTION_STRING" \
+  --username "$COUCHBASE_USERNAME" \
+  --password "$COUCHBASE_PASSWORD" \
+  --bucket "$COUCHBASE_BUCKET" \
+  --scope "$COUCHBASE_SCOPE" \
+  --collection "$COUCHBASE_COLLECTION" \
+  --output-dir couchbase-ingest-output \
+  --num-processes 2
+```

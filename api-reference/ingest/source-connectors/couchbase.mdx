@@ -1,0 +1,22 @@
+---
+title: Couchbase
+---
+
+import SharedContentCouchbase from '/snippets/sc-shared-text/couchbase.mdx';
+
+<SharedContentCouchbase />
+
+import CouchbaseApiSh from '/snippets/source_connectors/couchbase_api.sh.mdx';
+import CouchbaseApiPy from '/snippets/source_connectors/couchbase_api.py.mdx';
+
+Make sure to set the --partition-by-api flag and pass in your API key with --api-key:
+
+<CodeGroup>
+
+  <CouchbaseApiSh />
+
+  <CouchbaseApiPy />
+
+</CodeGroup>
+
+Additionally, if you’re using Unstructured Serverless API, your locally deployed Unstructured API, or an Unstructured API deployed on Azure or AWS, you also need to specify the API URL via the --partition-endpoint argument.
