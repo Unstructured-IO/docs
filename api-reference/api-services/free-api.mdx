@@ -32,17 +32,23 @@ If you require a production-ready API, consider using the [Unstructured Serverle
 ## Quick Start Example
 
 Let's say you want to preprocess an `*.eml` file using the free Unstructured API. There are several ways
-you can do this, which all lead to the same result, so pick your preferred method.
+you can do this, which all lead to the same result, so pick your preferred method. Regardless of the method you pick, you will need:
+
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedAPIKeyURL />
+
+<Info>For all Free Unstructured API users, the Unstructured API URL is `https://api.unstructuredapp.io` when making a `POST` request, and a blank string when using the CLI, SDKs, or open source library.</Info>
 
 ### POST request
 
-Supply your API key, and the file to preprocess, the URL is the same for all free Unstructured API users:
+Supply your API URL, key, and the file to preprocess:
 
 ```bash
-curl -X 'POST' 'https://api.unstructured.io/general/v0/general' \
+curl -X 'POST' '$UNSTRUCTURED_API_URL' \
      -H 'accept: application/json' \
      -H 'Content-Type: multipart/form-data' \
-     -H 'unstructured-api-key: YOUR_API_KEY' \
+     -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
      -F 'files=@PATH_TO_FILE'
 ```
 
@@ -72,13 +78,14 @@ Next, use it to call the API:
 <CodeGroup>
 
 ```python Python
+import os
+
 import unstructured_client
 from unstructured_client.models import operations, shared
 
 client = unstructured_client.UnstructuredClient(
-    api_key_auth="YOUR_API_KEY",
-    # you may need to provide your unique API URL
-    # server_url="YOUR_API_URL",
+    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+    server_url=os.getenv("UNSTRUCTURED_API_URL"),
 )
 
 filename = "sample-docs/layout-parser-paper.pdf"
@@ -107,9 +114,11 @@ import { UnstructuredClient } from "unstructured-client";
 import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
 import * as fs from "fs";
 
-const key = "YOUR_API_KEY";
+const key = process.env.UNSTRUCTURED_API_KEY;
+const url = process.env.UNSTRUCTURED_API_URL;
 
 const client = new UnstructuredClient({
+    serverURL: url,
     security: {
         apiKeyAuth: key,
     },
@@ -136,16 +145,19 @@ client.general.partition({
 
 ### Calling the Unstructured API from the Unstructured open source library
 
-Finally, you can call the Unstructured API directly from the Unstructured open source library:
+Finally, you can call the Unstructured API directly from the Unstructured open source library. Unstructured recommends this approach only for rapid local script or code prototyping or simple proofs-of-concept, not for production scenarios:
 
 ```python
+import os
+
 from unstructured.partition.api import partition_via_api
 
 filename = "PATH_TO_FILE"
 
 elements = partition_via_api(
   filename=filename,
-  api_key="YOUR API KEY",
+  api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+  api_url=os.getenv("UNSTRUCTURED_API_URL")
 )
 ```
 

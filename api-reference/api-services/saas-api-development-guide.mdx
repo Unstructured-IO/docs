@@ -33,18 +33,22 @@ The following example illustrates how to preprocess an `*.eml` file using the Un
 The functionality is similar to the free Unstructured API, the main difference is that in addition to your API key,
 you must provide the API URL from your dashboard.
 
-There are several ways to use the Unstructured Serverless API, which all lead to the same result, so pick your preferred method.
+There are several ways to use the Unstructured Serverless API, which all lead to the same result, so pick your preferred method. Regardless of the method you pick, you will need:
+
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedAPIKeyURL />
 
 ### POST request
 
-Supply your API key, and the file to preprocess. Make sure to copy the complete Unstructured Serverless API URL that you can find
+Set the `UNSTRUCTURED_API_KEY` environment variable to your API key, and specify the file to preprocess. Make sure to set the `UNSTRUCTURED_API_URL` environment variable to the complete Unstructured Serverless API URL that you can find
 in your dashboard on the **API keys** page:
 
 ```bash
-curl -X 'POST' 'https://API_URL' \
+curl -X 'POST' '$UNSTRUCTURED_API_URL' \
      -H 'accept: application/json' \
      -H 'Content-Type: multipart/form-data' \
-     -H 'unstructured-api-key: YOUR_API_KEY' \
+     -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
      -F 'files=@PATH_TO_FILE'
 ```
 
@@ -70,18 +74,20 @@ npm install unstructured-client
 ```
 </CodeGroup>
 
-Next, use it to call the API. Be sure to supply the API URL from your dashboard. Use your 
+Next, use it to call the API. Be sure to set the `UNSTRUCTURED_API_URL` environment variable to the API URL from your dashboard. Also set the `UNSTRUCTURED_API_KEY` environment variable to your 
 Unstructured Serverless API key to authenticate yourself.
 
 <CodeGroup>
 
 ```python Python
+import os
+
 import unstructured_client
 from unstructured_client.models import operations, shared
 
 client = unstructured_client.UnstructuredClient(
-    api_key_auth="YOUR_API_KEY",
-    server_url="API_URL",
+    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+    server_url=os.getenv("UNSTRUCTURED_API_URL"),
 )
 
 filename = "PATH_TO_FILE"
@@ -113,10 +119,11 @@ import { PartitionResponse } from "unstructured-client/sdk/models/operations";
 import { Strategy } from "unstructured-client/sdk/models/shared";
 import * as fs from "fs";
 
-const key = "YOUR_API_KEY";
+const key = process.env.UNSTRUCTURED_API_KEY;
+const url = process.env.UNSTRUCTURED_API_URL;
 
 const client = new UnstructuredClient({
-    serverURL: "API_URL",
+    serverURL: url,
     security: {
         apiKeyAuth: key,
     },
@@ -152,17 +159,19 @@ client.general.partition({
 
 ### Calling the Unstructured API from the Unstructured open source library
 
-Finally, you can call the Unstructured Serverless API directly from the Unstructured open source library:
+Finally, you can call the Unstructured Serverless API directly from the Unstructured open source library. Unstructured recommends this approach only for rapid local script or code prototyping or simple proofs-of-concept, not for production scenarios:
 
 ```python
+import os 
+
 from unstructured.partition.api import partition_via_api
 
 filename = "PATH_TO_FILE"
 
 elements = partition_via_api(
   filename=filename,
-  api_key="YOUR_API_KEY",
-  api_url="API_URL"
+  api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+  api_url=os.getenv("UNSTRUCTURED_API_URL")
 )
 ```
 

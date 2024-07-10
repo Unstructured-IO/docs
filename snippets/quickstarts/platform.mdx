@@ -1,0 +1,47 @@
+This quickstart uses a no-code, point-and-click user interface in your web browser to get all of your data RAG-ready. Data is processed on Unstructured-hosted compute resources.
+
+You will need:
+
+- A compatible source (input) location in cloud storage that contains your documents for Unstructured to process. [See the list of supported source types](/platform/platform-source-connectors/overview).
+- Compatible files in your source location. [See the list of supported file types](/api-reference/api-services/overview#supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+- A compatible destination (output) location in cloud storage for Unstructured to put the processed data. [See the list of supported destination types](/platform/platform-destination-connectors/overview).
+
+<Steps>
+    <Step title="Sign up">
+        [Sign up for the Platform beta](https://unstructured.io/platform).
+    </Step>
+    <Step title="Sign in">
+        Use the sign in URL, username, and temporary password in the welcome email that Unstructured sends you.
+    </Step>
+    <Step title="Set the source (input) location">
+        1. In the sidebar, click **Sources**.
+        2. Click **New Source**.
+        3. In the **Type** dropdown list, select the source location type that matches yours.
+        4. Fill in the rest of the fields with the appropriate settings. [Learn more](/platform/platform-source-connectors/overview).
+        5. Click **Test connection**.
+        6. Click **Submit**.
+    </Step>
+    <Step title="Set the destination (output) location">
+        1. In the sidebar, click **Destinations**.
+        2. Click **New Destination**.
+        3. In the **Type** dropdown list, select the destination location type that matches yours.
+        4. Fill in the rest of the fields with the appropriate settings. [Learn more](/platform/platform-destination-connectors/overview).
+        5. Click **Test connection**.
+        6. Click **Submit**.
+    </Step>
+    <Step title="Process the documents">
+        1. In the sidebar, click **Jobs**.
+        2. Click **Run Job**.
+        3. In the **Select a Workflow or create a new one** dropdown list, select **New**.
+        4. In the **Sources** dropdown list, select your source location from Step 3.
+        5. In the **Destination** dropdown list, select your destination location from Step 4.
+        6. Click **Run**. 
+    </Step>
+    <Step title="Monitor the processing job">
+        1. In the list of **Jobs**, click the **Workflow** link for your **New** job.
+        2. When the **Status** shows **JOB FINISHED**, go to the next Step.
+    </Step>
+    <Step title="View the processed data">
+        Go to your destination location to view the processed data.
+    </Step>
+</Steps>

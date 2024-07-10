@@ -64,9 +64,9 @@ runner = S3Runner(
      ),
      read_config=ReadConfig(),
      partition_config=PartitionConfig(
-         partition_endpoint="https://api.unstructured.io/general/v0/general",
+         partition_endpoint=os.getenv("$UNSTRUCTURED_API_URL"),
          partition_by_api=True,
-         api_key=UNSTRUCTURED_API_KEY,
+         api_key=os.getenv("UNSTRUCTURED_API_KEY"),
          strategy="hi_res",
          hi_res_model_name="yolox",
      ),

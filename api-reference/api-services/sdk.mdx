@@ -7,7 +7,11 @@ The [Python](https://github.com/Unstructured-IO/unstructured-python-client) and
 [TypeScript](https://github.com/Unstructured-IO/unstructured-js-client)
 SDK clients allow for easy interaction with the Unstructured API. Whether you're using the
 free Unstructured API, the Unstructured Serverless API, Unstructured API on Azure/AWS or your local
-deployment of Unstructured API, you can access the API using the Python or TypeScript SDK.
+deployment of Unstructured API, you can access the API using the Python or TypeScript SDK. Regardless of the SDK you use, you'll need:
+
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedAPIKeyURL />
 
 ## Installation
 
@@ -53,12 +57,14 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
 
     <CodeGroup>
     ```python Python
+    import os
+
     import unstructured_client
     from unstructured_client.models import operations, shared
 
     client = unstructured_client.UnstructuredClient(
-        api_key_auth="YOUR_API_KEY",
-        # server_url="YOUR_API_URL",
+        api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+        server_url=os.getenv("UNSTRUCTURED_API_URL"),
     )
 
     filename = "PATH_TO_FILE"
@@ -92,10 +98,11 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
     import { Strategy } from "unstructured-client/sdk/models/shared";
     import * as fs from "fs";
 
-    const key = "YOUR_API_KEY";
+    const key = process.env.UNSTRUCTURED_API_KEY;
+    const url = process.env.UNSTRUCTURED_API_URL;
 
     const client = new UnstructuredClient({
-        // serverURL: "YOUR_API_URL",
+        serverURL: url,
         security: {
             apiKeyAuth: key,
         },
@@ -127,13 +134,15 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
     });
     ```
     ```python Python (SDK <=v0.22.0)
+    import os
+
     import unstructured_client
     from unstructured_client.models import shared
     from unstructured_client.models.errors import SDKError
 
     client = unstructured_client.UnstructuredClient(
-        api_key_auth="YOUR_API_KEY",
-        # server_url="YOUR_API_URL",
+        api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+        server_url=os.getenv("UNSTRUCTURED_API_URL"),
     )
 
     filename = "PATH_TO_FILE"
@@ -161,10 +170,11 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
     import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
     import * as fs from "fs";
 
-    const key = "YOUR_API_KEY";
+    const key = process.env.UNSTRUCTURED_API_KEY;
+    const url = process.env.UNSTRUCTURED_API_URL;
 
     const client = new UnstructuredClient({
-        // serverURL: "YOUR_API_URL",
+        serverURL: url,
         security: {
             apiKeyAuth: key,
         },
@@ -205,15 +215,20 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
 
     <CodeGroup>
     ```python Python
+    import os
+
     client = unstructured_client.UnstructuredClient(
-        api_key_auth="YOUR_API_KEY",
-        server_url="YOUR_API_URL",
+        api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+        server_url=os.getenv("UNSTRUCTURED_API_URL"),
     )
     ```
     ```javascript TypeScript
+    const key = process.env.UNSTRUCTURED_API_KEY;
+    const url = process.env.UNSTRUCTURED_API_URL;    
+
     const client = new UnstructuredClient({
-        security: { apiKeyAuth: "YOUR_API_KEY" },
-        serverURL: "YOUR_API_URL",
+        security: { apiKeyAuth: key },
+        serverURL: url,
     });
     ```
     </CodeGroup>
@@ -280,8 +295,11 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
 
         <CodeGroup>
         ```python Python
+        import os 
+
         client = UnstructuredClient(
-            api_key_auth="YOUR_API_KEY",
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+            server_url=os.getenv("UNSTRUCTURED_API_URL"),
             retry_config=RetryConfig(
                 strategy="backoff",
                 retry_connection_errors=True,
@@ -296,9 +314,12 @@ deployment of Unstructured API, you can access the API using the Python or TypeS
         )
         ```
         ```javascript TypeScript
+        const key = process.env.UNSTRUCTURED_API_KEY;
+        const url = process.env.UNSTRUCTURED_API_URL;    
+
         const client = new UnstructuredClient({
-            security: { apiKeyAuth: "YOUR_API_KEY" },
-            serverURL: "YOUR_API_URL",
+            security: { apiKeyAuth: key },
+            serverURL: url,
             retryConfig: {
                 strategy: "backoff",
                 retryConnectionErrors: true,

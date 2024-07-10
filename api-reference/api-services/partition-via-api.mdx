@@ -6,7 +6,11 @@ If you're used to working the [Unstructured Open Source library](https://github.
 would like to leverage the advanced capabilities of the Unstructured API services, you can do so without leaving the comfort
 and familiarity of the open source library.  Whether you're using the free Unstructured API, the Unstructured Serverless API,
 Unstructured API on Azure/AWS or your local deployment of Unstructured API, you can access it from the open source library
-through `partition_via_api`.
+through `partition_via_api`. You'll also need:
+
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedAPIKeyURL />
 
 ## Installation
 
@@ -19,13 +23,14 @@ Here's a basic example in which you send an email file to partition via Unstruct
 in the Unstructured Open Source library:
 
 ```python
+import os
+
 from unstructured.partition.api import partition_via_api
 
 elements = partition_via_api(
     filename="example-docs/eml/fake-email.eml",
-    api_key="YOUR_API_KEY",
-    # you may need to specify your unique API URL
-    # api_url="YOUR_API_URL",
+    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+    api_url=os.getenv("UNSTRUCTURED_API_URL"),
     content_type="message/rfc822"
     )
 ```
