@@ -1,0 +1,13 @@
+```bash Shell
+#!/usr/bin/env bash
+
+unstructured-ingest \
+  astra \
+  --token "<AstraDB Application Token>" \
+  --api-endpoint "<AstraDB Api Endpoint>" \
+  --collection-name "<AstraDB Collection Name>" \
+  --output-dir astra-ingest-output \
+  --num-processes 2 \
+  --partition-by-api \
+  --api-key "$UNSTRUCTURED_API_KEY"
+```

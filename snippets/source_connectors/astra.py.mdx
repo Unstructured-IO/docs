@@ -1,0 +1,33 @@
+```python Python
+import os
+
+from unstructured.ingest.connector.astra import (
+    AstraAccessConfig,
+    SimpleAstraConfig,
+)
+from unstructured.ingest.interfaces import (
+    PartitionConfig,
+    ProcessorConfig,
+    ReadConfig,
+)
+from unstructured.ingest.runner import AstraRunner
+
+if __name__ == "__main__":
+    runner = AstraRunner(
+        processor_config=ProcessorConfig(
+            verbose=True,
+            output_dir="astra-ingest-output",
+            num_processes=2,
+        ),
+        read_config=ReadConfig(),
+        partition_config=PartitionConfig(),
+        connector_config=SimpleAstraConfig(
+            access_config=AstraAccessConfig(
+                token=os.getenv("ASTRA_DB_APPLICATION_TOKEN"),
+                api_endpoint=os.getenv("ASTRA_DB_API_ENDPOINT"),
+            ),
+            collection_name==os.getenv("ASTRA_COLLECTION"),
+        ),
+    )
+    runner.run()
+```
