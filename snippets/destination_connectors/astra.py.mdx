@@ -29,9 +29,11 @@ def get_writer() -> Writer:
                 api_endpoint=os.getenv("ASTRA_DB_API_ENDPOINT")
             ),
             collection_name=os.getenv("COLLECTION_NAME", "unstructured"),
+        ),
+        write_config=AstraWriteConfig(
+            batch_size=10,
             embedding_dimension=os.getenv("EMBEDDING_DIMENSION", 384),
         ),
-        write_config=AstraWriteConfig(batch_size=10),
     )
 
 
