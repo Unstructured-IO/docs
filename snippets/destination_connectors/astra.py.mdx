@@ -51,6 +51,9 @@ if __name__ == "__main__":
         read_config=ReadConfig(),
         partition_config=PartitionConfig(),
         chunking_config=ChunkingConfig(chunk_elements=True),
+        embedding_config=EmbeddingConfig(
+                provider="langchain-huggingface",
+        ),
         writer=writer,
         writer_kwargs={},
     )
