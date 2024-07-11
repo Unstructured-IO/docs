@@ -1,4 +1,6 @@
-```python Python
+```python Python Ingest v1
+import os
+
 from unstructured.ingest.connector.local import SimpleLocalConfig
 from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
 from unstructured.ingest.runner import LocalRunner
@@ -11,7 +13,9 @@ if __name__ == "__main__":
             num_processes=2,
         ),
         read_config=ReadConfig(),
-        partition_config=PartitionConfig(),
+        partition_config=PartitionConfig(
+            partition_by_api=False
+        ),
         connector_config=SimpleLocalConfig(
             input_path="example-docs",
             recursive=True,

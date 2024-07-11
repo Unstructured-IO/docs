@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured.ingest.connector.google_drive import (
@@ -16,7 +16,9 @@ if __name__ == "__main__":
             num_processes=2,
         ),
         read_config=ReadConfig(),
-        partition_config=PartitionConfig(),
+        partition_config=PartitionConfig(
+            partition_by_api=False
+        ),
         connector_config=SimpleGoogleDriveConfig(
             access_config=GoogleDriveAccessConfig(
                 service_account_key=os.getenv("GCP_SERVICE_ACCOUNT_KEY")

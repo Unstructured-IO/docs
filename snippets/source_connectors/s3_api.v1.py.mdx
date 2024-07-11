@@ -1,4 +1,4 @@
-```python Python Ingest SDK v1
+```python Python Ingest v1
 import os
 
 from unstructured.ingest.connector.fsspec.s3 import S3AccessConfig, SimpleS3Config
@@ -24,7 +24,8 @@ if __name__ == "__main__":
         ),
         connector_config=SimpleS3Config(
             access_config=S3AccessConfig(
-                anon=True,
+                key=os.getenv("AWS_ACCESS_KEY_ID"),
+                secret=os.getenv("AWS_SECRET_ACCESS_KEY")
             ),
             remote_url=os.getenv("AWS_S3_URL"),
         ),

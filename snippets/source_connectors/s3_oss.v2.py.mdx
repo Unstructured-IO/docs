@@ -22,13 +22,11 @@ if __name__ == "__main__":
         source_connection_config=S3ConnectionConfig(
             access_config=S3AccessConfig(
                 key=os.getenv("AWS_ACCESS_KEY_ID"),
-                secret=os.getenv("AWS_SECRET_ACCESS_KEY")
+                secret=os.getenv("AWS_SECRET_ACCESS_KEY"),
             )
         ),
         partitioner_config=PartitionerConfig(
-            partition_by_api=True,
-            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            partition_by_api=False,
             strategy="fast"
         ),
         chunker_config=ChunkerConfig(chunking_strategy="by_title"),
