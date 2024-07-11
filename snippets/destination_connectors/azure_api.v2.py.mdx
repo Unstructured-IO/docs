@@ -3,11 +3,16 @@ import os
 
 from unstructured.ingest.v2.pipeline.pipeline import Pipeline
 from unstructured.ingest.v2.interfaces import ProcessorConfig
+
+from unstructured.ingest.v2.processes.connectors.fsspec.azure import (
+    AzureConnectionConfig,
+    AzureAccessConfig,
+    AzureUploaderConfig
+)
 from unstructured.ingest.v2.processes.connectors.local import (
     LocalIndexerConfig,
     LocalDownloaderConfig,
-    LocalConnectionConfig,
-    LocalUploaderConfig
+    LocalConnectionConfig
 )
 from unstructured.ingest.v2.processes.partitioner import PartitionerConfig
 from unstructured.ingest.v2.processes.chunker import ChunkerConfig
@@ -27,6 +32,12 @@ if __name__ == "__main__":
         ),
         chunker_config=ChunkerConfig(chunking_strategy="by_title"),
         embedder_config=EmbedderConfig(embedding_provider="langchain-huggingface"),
-        uploader_config=LocalUploaderConfig(output_dir="local-ingest-output")
+        destination_connection_config=AzureConnectionConfig(
+            access_config=AzureAccessConfig(
+                account_name=os.getenv("AZURE_STORAGE_ACCOUNT_NAME"),
+                account_key=os.getenv("AZURE_STORAGE_ACCOUNT_KEY")
+            )
+        ),
+        uploader_config=AzureUploaderConfig(remote_url=os.getenv("AZURE_STORAGE_ACCOUNT_URL"))
     ).run()
 ```

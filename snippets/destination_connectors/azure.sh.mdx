@@ -1,4 +1,4 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
 
 EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
@@ -13,6 +13,6 @@ unstructured-ingest \
   --num-processes 2 \
   --verbose \
   azure \
-  --account-name "$AZURE_ACCOUNT_NAME" \
-  --remote-url "<your destination path here, ie 'az://unstructured/war-and-peace-output'>"
+  --account-name "$AZURE_STORAGE_ACCOUNT_NAME" \
+  --remote-url "$AZURE_STORAGE_ACCOUNT_URL"
 ```
