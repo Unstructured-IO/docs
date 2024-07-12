@@ -38,9 +38,9 @@ you can do this, which all lead to the same result, so pick your preferred metho
 
 ### POST request
 
-To work with the Unstructured Serverless API by calling the Unstructured REST API POST operation, you will need to set the `UNSTRUCTURED_API_KEY` environment variable to your Unstructured API key.
+To work with the Unstructured Serverless API by calling the Unstructured REST API POST with `curl`, you will need to set the `UNSTRUCTURED_API_KEY` environment variable to your Unstructured API key.
 
-Now, use a REST API client such as `curl` to call the API, specifying where the source (input) files are to preprocess and the destination (output) where Unstructured will deliver the processed data:
+Now, use `curl` to call the API, specifying where the source (input) files are to preprocess and the destination (output) where Unstructured will deliver the processed data:
 
 ```bash
 curl -X POST $UNSTRUCTURED_API_URL \
@@ -94,7 +94,7 @@ Unstructured [Python SDK](https://github.com/Unstructured-IO/unstructured-python
 First, install your preferred SDK:
 <CodeGroup>
 
-```bash  Python
+```bash
 pip install unstructured-client
 ```
 
@@ -179,7 +179,7 @@ You will need to:
 
 - Install Python, and then install the open source library:
 
-  ```bash  Python
+  ```bash
   pip install unstructured
   ```
 

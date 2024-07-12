@@ -41,13 +41,13 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
 ### POST request
 
-To work with the Unstructured Serverless API by calling the Unstructured REST API POST operation, you will need to:
+To work with the Unstructured Serverless API by calling the Unstructured REST API POST with `curl`, you will need to:
 
 - Set the `UNSTRUCTURED_API_KEY` environment variable to your Unstructured API key.
 - Set the `UNSTRUCTURED_API_URL` environment variable to the complete Unstructured API URL that you can find
 in your dashboard on the **API keys** page.
 
-Now, use a REST API client such as `curl` to call the API, specifying where the source (input) files are to preprocess and the destination (output) where Unstructured will deliver the processed data:
+Now, use `curl` to call the API, specifying where the source (input) files are to preprocess and the destination (output) where Unstructured will deliver the processed data:
 
 ```bash
 curl -X POST $UNSTRUCTURED_API_URL \
@@ -199,7 +199,7 @@ You will need to:
 
 - Install Python, and then install the open source library:
 
-  ```bash  Python
+  ```bash
   pip install unstructured
   ```
 
