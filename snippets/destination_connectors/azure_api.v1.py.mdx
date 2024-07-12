@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured.ingest.connector.fsspec.azure import (
@@ -20,16 +20,14 @@ from unstructured.ingest.runner.writers.fsspec.azure import (
     AzureWriter,
 )
 
-
 def get_writer() -> Writer:
     return AzureWriter(
         connector_config=SimpleAzureBlobStorageConfig(
-            access_config=AzureAccessConfig(account_name=os.getenv("AZURE_ACCOUNT_NAME")),
-            remote_url="az://unstructured/war-and-peace-output",
+            access_config=AzureAccessConfig(account_name=os.getenv("AZURE_STORAGE_ACCOUNT_NAME")),
+            remote_url=os.getenv("AZURE_STORAGE_ACCOUNT_URL"),
         ),
         write_config=AzureWriteConfig(),
     )
-
 
 if __name__ == "__main__":
     writer = get_writer()
@@ -43,7 +41,11 @@ if __name__ == "__main__":
             input_path="example-docs/book-war-and-peace-1225p.txt",
         ),
         read_config=ReadConfig(),
-        partition_config=PartitionConfig(),
+        partition_config=PartitionConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")
+        ),
         chunking_config=ChunkingConfig(chunk_elements=True),
         embedding_config=EmbeddingConfig(
             provider="langchain-huggingface",

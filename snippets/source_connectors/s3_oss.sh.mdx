@@ -1,0 +1,15 @@
+```bash CLI
+#!/usr/bin/env bash
+
+unstructured-ingest \
+  s3 \
+    --remote-url $AWS_S3_URL \
+    --download-dir s3-ingest-download \
+    --key $AWS_ACCESS_KEY_ID \
+    --secret $AWS_SECRET_ACCESS_KEY \
+    --strategy fast \
+    --chunking-strategy by_title \
+    --embedding-provider langchain-huggingface \
+  local \
+    --output-dir s3-ingest-output
+```

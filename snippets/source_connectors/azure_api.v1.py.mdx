@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured.ingest.connector.fsspec.azure import (
@@ -26,9 +26,9 @@ if __name__ == "__main__":
         ),
         connector_config=SimpleAzureBlobStorageConfig(
             access_config=AzureAccessConfig(
-                account_name=os.getenv("AZURE_ACCOUNT_NAME"),
+                account_name=os.getenv("AZURE_STORAGE_ACCOUNT_NAME"),
             ),
-            remote_url="abfs://container1/",
+            remote_url=os.getenv("AZURE_STORAGE_ACCOUNT_URL"),
         ),
     )
     runner.run()
