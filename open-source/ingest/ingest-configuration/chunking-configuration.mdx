@@ -5,3 +5,5 @@ title: Chunking Configuration
 import SharedContentChunkingConfiguration from '/snippets/ingest-configuration-shared/chunking-configuration.mdx';
 
 <SharedContentChunkingConfiguration/>
+
+<Note>Chunking will fail if you set `partition_by_api`to false and if you also set `chunking_strategy` to `by_page` or `by_similarity`. However, the rest of your data processing pipeline should be unaffected by this setting.</Note>
