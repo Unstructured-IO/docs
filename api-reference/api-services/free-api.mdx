@@ -29,7 +29,11 @@ The free Unstructured API is designed for prototyping purposes, and not for prod
 
 If you require a production-ready API, consider using the [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide) instead.
 
-## Quickstart
+import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx';
+
+<SharedPagesBilling />
+
+## Quick Start Example
 
 Let's say you want to preprocess an `*.eml` file using the free Unstructured API. There are several ways
 you can do this, which all lead to the same result, so pick your preferred method.
@@ -199,6 +203,12 @@ elements = partition_via_api(
   api_key=os.getenv("UNSTRUCTURED_API_KEY")
 )
 ```
+
+## Telemetry
+
+import SharedTelemetry from '/snippets/general-shared-text/telemetry.mdx';
+
+<SharedTelemetry />
 
 
 
