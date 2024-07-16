@@ -43,11 +43,11 @@ To adjust a workflow's data processing behavior, set one or more of the followin
 
 *   **Strategy**: One of the following data processing strategies:
     
-    *   **Auto** (default strategy): The "auto" strategy will choose the partitioning strategy based on document characteristics and the function `kwargs`.
+    *   **Auto** (default strategy): Chooses the partitioning strategy based on document characteristics and the function `kwargs`.
         
-    *   **Fast**: The "fast" strategy will leverage traditional NLP extraction techniques to pull all text elements quickly. The “fast” strategy is not good for image-based file types.
+    *   **Fast**: Leverages traditional NLP extraction techniques to pull all text elements quickly. This strategy is not good for image-based file types.
         
-    *   **Hi Res**: The advantage of "hi\_res” is that it uses the document layout to gain additional information about document elements. We recommend using this strategy if your use case is highly sensitive to correct classifications for document elements.
+    *   **Hi Res**: Uses the document layout to gain additional information about document elements. We recommend using this strategy if your use case is highly sensitive to correct classifications for document elements.
         
     *   **OCR Only**: Leverages Optical Character Recognition to extract text from the image-based files.
         
