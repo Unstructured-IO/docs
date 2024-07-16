@@ -2,19 +2,22 @@
 title: Local
 ---
 
-import SharedContentLocal from '/snippets/sc-shared-text/local.mdx';
+import SharedContentLocal from '/snippets/sc-shared-text/local-oss.mdx';
 
 <SharedContentLocal/>
 
-import LocalSh from '/snippets/source_connectors/local.sh.mdx';
-import LocalPy from '/snippets/source_connectors/local.py.mdx';
+Now call the Unstructured CLI or Python SDK, for example:
+
+import LocalSh from '/snippets/source_connectors/local_oss.sh.mdx';
+import LocalPyV2 from '/snippets/source_connectors/local_oss.v2.py.mdx';
+import LocalPyV1 from '/snippets/source_connectors/local_oss.v1.py.mdx';
 
 <CodeGroup>
 
   <LocalSh />
 
-  <LocalPy />
+  <LocalPyV2 />
+
+  <LocalPyV1 />
 
 </CodeGroup>
-
-For a full list of the options the CLI accepts check `unstructured-ingest local --help`.

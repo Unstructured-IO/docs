@@ -2,19 +2,22 @@
 title: Google Drive
 ---
 
-import SharedContentGoogleDrive from '/snippets/sc-shared-text/google-drive.mdx';
+import SharedContentGoogleDrive from '/snippets/sc-shared-text/google-drive-oss.mdx';
 
 <SharedContentGoogleDrive/>
 
-import GoogleDriveSh from '/snippets/source_connectors/google_drive.sh.mdx';
-import GoogleDrivePy from '/snippets/source_connectors/google_drive.py.mdx';
+Now call the Unstructured CLI or Python SDK, for example:
+
+import GoogleDriveSh from '/snippets/source_connectors/google_drive_oss.sh.mdx';
+import GoogleDrivePyV2 from '/snippets/source_connectors/google_drive_oss.v2.py.mdx';
+import GoogleDrivePyV1 from '/snippets/source_connectors/google_drive_oss.v1.py.mdx';
 
 <CodeGroup>
 
   <GoogleDriveSh />
 
-  <GoogleDrivePy />
+  <GoogleDrivePyV2 />
+
+  <GoogleDrivePyV1 />
 
 </CodeGroup>
-
-For a full list of the options the CLI accepts check `unstructured-ingest gdrive --help`.

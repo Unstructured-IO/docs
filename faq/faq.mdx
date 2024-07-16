@@ -44,7 +44,7 @@ Yes, you can still use your old API keys. We will migrate all the user keys to t
 
 When you log in to the Serverless API dashboard, you can access your API keys by clicking the `API Keys` link in the side navigation.
 Under the `Actions` column, click the `Copy` icon to copy the key or the boilerplate codes to process the documents
-using the Unstructured [Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) and [Typescript](https://github.com/Unstructured-IO/unstructured-js-client) SDKs or Bash command.
+using the Unstructured REST API POST with `curl`, or the Unstructured CLI, or the [Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) or [Unstructured JavaScript/Typescript SDK](https://github.com/Unstructured-IO/unstructured-js-client).
 
 ### What is the new Unstructured API pricing structure?
 
@@ -59,6 +59,9 @@ document preprocessing costs. We have two different document processing strategi
 
     Best for complex file types like PDF and JPEG or documents with images, forms, and tables. This strategy uses AI models to understand document layouts and render their contents in structured JSON.
 
+import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx';
+
+<SharedPagesBilling />
 
 ### How can I check my balance and make the payment?
 
@@ -88,14 +91,16 @@ The partition_via_api function within the Unstructured platform provides a strea
 The partition_via_api function within the Unstructured platform provides a streamlined way for users to segment documents via the hosted Unstructured API. This automation tool is particularly valuable for those managing the API on their servers or in local containerized environments, simplifying the process of breaking down documents into more manageable components.
 
 ``` Python partition
+import os 
+
 from unstructured.partition.api import partition_via_api
 
 filename = "example-docs/eml/fake-email.eml"
 
 elements = partition_via_api(
     filename=filename,
-    api_key="<<REPLACE WITH API KEY>>"
-    api_url="<<REPLACE WITH API SERVER URL>>/general/v0/general"
+    api_key=os.getenv("UNSTRUCTURED_API_KEY")
+    api_url=os.getenv("UNSTRUCTURED_API_URL")
 )
 ```
 
@@ -105,8 +110,8 @@ To define the OCR language when processing documents, utilize the languages keyw
 
 ``` Curl ocrlang
 curl -X 'POST' \
-  '<<YOUR API SERVER URL>>/general/v0/general' \
-  -H 'unstructured-api-key: <<YOUR API KEY>>' \
+  '$UNSTRUCTURED_API_URL' \
+  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
   -F 'files=@sample-docs/english-and-korean.png' \
@@ -125,8 +130,8 @@ Unstructured Serverless API supports using the Chipper models. To define the mod
 
 ``` Curl Chipper
 curl -X 'POST' \
-'<<YOUR API SERVER URL>>/general/v0/general' \
-  -H 'unstructured-api-key: <<YOUR API KEY>>' \
+'$UNSTRUCTURED_API_URL' \
+  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
   -F 'files=@sample-docs/layout-parser-paper.pdf' \
@@ -144,6 +149,10 @@ Yes, the [Unstructured API](/api-reference/api-services/overview) supports the i
 ### How can I extract images from PDFs via the API?
 
 You can pass the ``extract_image_block_types`` and ``extract_image_block_to_payload`` kwargs in the [API Parameters](/api-reference/api-services/api-parameters). For more information, please refer to our [API Parameter](/api-reference/api-services/api-parameters) documentation.
+
+### What is the difference between table_as_cells and table_as_html?
+
+``table_as_cells`` was designed for internal testing only. It has been replaced with the more descriptive name ``table_as_html``.
 
 ## Terms & Conditions
 

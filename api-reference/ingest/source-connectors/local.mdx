@@ -2,22 +2,22 @@
 title: Local
 ---
 
-import SharedContentLocal from '/snippets/sc-shared-text/local.mdx';
+import SharedContentLocal from '/snippets/sc-shared-text/local-api.mdx';
 
 <SharedContentLocal/>
 
-Make sure to set the `--partition-by-api` flag and pass in your API key with `--api-key`:
+Now call the Unstructured CLI or Python SDK, for example:
 
 import LocalAPISh from '/snippets/source_connectors/local_api.sh.mdx';
-import LocalAPIPy from '/snippets/source_connectors/local_api.py.mdx';
+import LocalAPIPyV2 from '/snippets/source_connectors/local_api.v2.py.mdx';
+import LocalAPIPyV1 from '/snippets/source_connectors/local_api.v1.py.mdx';
 
 <CodeGroup>
 
   <LocalAPISh />
 
-  <LocalAPIPy />
+  <LocalAPIPyV2 />
+
+  <LocalAPIPyV1 />
 
 </CodeGroup>
-
-Additionally, if you're using Unstructured Serverless API, your locally deployed Unstructured API, or an Unstructured API
-deployed on Azure or AWS, you also need to specify the API URL via the `--partition-endpoint` argument.

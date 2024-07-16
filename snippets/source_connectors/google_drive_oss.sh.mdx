@@ -1,0 +1,14 @@
+```bash CLI
+#!/usr/bin/env bash
+
+unstructured-ingest \
+  google-drive \
+    --download-dir google-drive-ingest-download \
+    --drive-id $GOOGLE_DRIVE_FOLDER_ID \
+    --service-account-key $GCP_SERVICE_ACCOUNT_KEY \
+    --strategy fast \
+    --chunking-strategy by_title \
+    --embedding-provider langchain-huggingface \
+  local \
+    --output-dir google-drive-ingest-output
+```

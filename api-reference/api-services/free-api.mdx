@@ -1,6 +1,6 @@
 ---
 title: Free Unstructured API
-description: This page describes how to obtain an API key to use with the free Unstructured API, the limitations of the free Unstructured API, and provides a quick start example.
+description: This page describes how to obtain an API key to use with the free Unstructured API, the limitations of the free Unstructured API, and provides a quickstart example.
 ---
 
 ## Get an API key
@@ -17,7 +17,7 @@ Make sure to store your API key securely, and do not share publicly.
 
 <Note>
     When using the Free Unstructured API, you only need the API key to authenticate yourself.
-    If you're using the Unstructured Serverless API, refer to the [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide) for the quick start documentation.
+    If you're using the Unstructured Serverless API, refer to the [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide) for the quickstart documentation.
 </Note>
 
 ## Free Unstructured API limitations
@@ -29,56 +29,97 @@ The free Unstructured API is designed for prototyping purposes, and not for prod
 
 If you require a production-ready API, consider using the [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide) instead.
 
+import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx';
+
+<SharedPagesBilling />
+
 ## Quick Start Example
 
 Let's say you want to preprocess an `*.eml` file using the free Unstructured API. There are several ways
 you can do this, which all lead to the same result, so pick your preferred method.
 
+<Info>When using the Free Unstructured API, use `https://api.unstructured.io/general/v0/general` as the URL for `POST` requests, or a blank string as the URL when using the CLI, SDKs, or open source library. Note that the Free API URL has a slightly different domain name than the Serverless API which is `api.unstructuredapp.io`.</Info>
+
 ### POST request
 
-Supply your API key, and the file to preprocess, the URL is the same for all free Unstructured API users:
+To work with the Unstructured Serverless API by calling the Unstructured REST API POST with `curl`, you will need to set the `UNSTRUCTURED_API_KEY` environment variable to your Unstructured API key.
+
+Now, use `curl` to call the API, specifying where the source (input) files are to preprocess and the destination (output) where Unstructured will deliver the processed data:
 
 ```bash
-curl -X 'POST' 'https://api.unstructured.io/general/v0/general' \
+curl -X POST $UNSTRUCTURED_API_URL \
      -H 'accept: application/json' \
      -H 'Content-Type: multipart/form-data' \
-     -H 'unstructured-api-key: YOUR_API_KEY' \
-     -F 'files=@PATH_TO_FILE'
+     -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
+     -F 'files=@<local/path/to/input/files>' \
+     -o '<local/path/to/output/files>'
 ```
 
 The result will look something like this:
 ![Sample Output](/img/api/sample_output.png)
 
-### Unstructured Python/JavaScript SDK
+<Info>`POST` requests support using only local machine paths as the source (input) for the files to preprocess and as the destination (output) that Unstructured sends the processed data to. To specify a source or destination other than a local machine, use the CLI, the Python SDK, or the open source library instead.</Info>
+
+### Unstructured CLI
+
+To work with the Free Unstructured API by using the Unstructured CLI, you will need to:
+
+- Install Python, and then install the CLI package:
+
+  ```bash
+  pip install unstructured
+  ```
+
+- Set the `UNSTRUCTURED_API_KEY` environment variable to your API key.
+
+Now, use the CLI to call the API, specifying where the files are to preprocess and where Unstructured will output the processed data.
+
+```bash CLI
+unstructured-ingest \
+  local \
+    --input-path <local/path/to/input/files> \
+    --output-dir <local/path/to/output/files> \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY
+```
+
+### Unstructured Python SDK and JavaScript/TypeScript SDK
 
 To work with the free Unstructured API in Python or JavaScript, use the
 Unstructured [Python SDK](https://github.com/Unstructured-IO/unstructured-python-client), or
 [JavaScript SDK](https://github.com/Unstructured-IO/unstructured-js-client).
 
+To work with the Unstructured Serverless API in Python, JavaScript, or TypeScript, use the
+Unstructured [Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) or
+[JavaScript/TypeScript SDK](https://github.com/Unstructured-IO/unstructured-js-client).
+
+<Info>The JavaScript/TypeScript SDK supports using only local machine paths as the source (input) for the files to preprocess and as the destination (output) that Unstructured sends the processed data to. To specify a source or destination other than a local machine, use the CLI, the Python SDK, or the open source library instead.</Info>
+
 First, install your preferred SDK:
 <CodeGroup>
 
-```bash  Python
+```bash
 pip install unstructured-client
 ```
 
-```bash  JavaScript
+```bash  JavaScript/TypeScript
 npm install unstructured-client
 ```
 </CodeGroup>
 
-Next, use it to call the API:
+Next, use it to call the API. Be sure to set the `UNSTRUCTURED_API_KEY` environment variable to your 
+Unstructured Serverless API key to authenticate yourself.
 
 <CodeGroup>
 
 ```python Python
+import os
+
 import unstructured_client
 from unstructured_client.models import operations, shared
 
 client = unstructured_client.UnstructuredClient(
-    api_key_auth="YOUR_API_KEY",
-    # you may need to provide your unique API URL
-    # server_url="YOUR_API_URL",
+    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
 )
 
 filename = "sample-docs/layout-parser-paper.pdf"
@@ -102,12 +143,12 @@ if res.elements is not None:
     pass
 ```
 
-```javascript JavaScript
+```typescript TypeScript
 import { UnstructuredClient } from "unstructured-client";
 import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
 import * as fs from "fs";
 
-const key = "YOUR_API_KEY";
+const key = process.env.UNSTRUCTURED_API_KEY;
 
 const client = new UnstructuredClient({
     security: {
@@ -136,18 +177,38 @@ client.general.partition({
 
 ### Calling the Unstructured API from the Unstructured open source library
 
-Finally, you can call the Unstructured API directly from the Unstructured open source library:
+You can call the Unstructured Serverless API directly from the Unstructured open source library. Unstructured recommends this approach only for rapid local script or code prototyping or simple proofs-of-concept, not for production scenarios:
+
+You will need to: 
+
+- Install Python, and then install the open source library:
+
+  ```bash
+  pip install unstructured
+  ```
+
+- Set the `UNSTRUCTURED_API_KEY` environment variable to your API key.
+
+Now, use the open source library to call the API, specifying the file to preprocess:
 
 ```python
+import os
+
 from unstructured.partition.api import partition_via_api
 
 filename = "PATH_TO_FILE"
 
 elements = partition_via_api(
   filename=filename,
-  api_key="YOUR API KEY",
+  api_key=os.getenv("UNSTRUCTURED_API_KEY")
 )
 ```
+
+## Telemetry
+
+import SharedTelemetry from '/snippets/general-shared-text/telemetry.mdx';
+
+<SharedTelemetry />
 
 
 

@@ -2,23 +2,22 @@
 title: Azure
 ---
 
-import SharedContentAzure from '/snippets/sc-shared-text/azure.mdx';
+import SharedContentAzure from '/snippets/sc-shared-text/azure-api.mdx';
 
 <SharedContentAzure/>
 
-Make sure to set the `--partition-by-api` flag and pass in your API key with `--api-key`:
+Now call the Unstructured CLI or Python SDK, for example:
 
 import AzureAPISh from '/snippets/source_connectors/azure_api.sh.mdx';
-import AzureAPIPy from '/snippets/source_connectors/azure_api.py.mdx';
+import AzureAPIPyV2 from '/snippets/source_connectors/azure_api.v2.py.mdx';
+import AzureAPIPyV1 from '/snippets/source_connectors/azure_api.v1.py.mdx';
 
 <CodeGroup>
 
   <AzureAPISh />
 
-  <AzureAPIPy />
+  <AzureAPIPyV2 />
+
+  <AzureAPIPyV1 />
 
 </CodeGroup>
-
-
-Additionally, if you're using Unstructured Serverless API, your locally deployed Unstructured API, or an Unstructured API
-deployed on Azure or AWS, you also need to specify the API URL via the `--partition-endpoint` argument.

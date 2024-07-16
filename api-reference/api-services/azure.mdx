@@ -4,98 +4,98 @@ title: Unstructured API on Azure
 
 ## Introduction
 
-This guide provides step-by-step instructions for deploying a service on Azure using the Azure Marketplace.
+Follow these steps to deploy the Unstructured API service into your Azure account.
 
 <Steps>
-    <Step title=" Login to Azure Portal">
-        **URL**: [https://portal.azure.com](https://portal.azure.com/).
+    <Step title=" Log in to the Azure Portal">
+        Go to [https://portal.azure.com](https://portal.azure.com/).
     </Step>
     <Step title="Access Azure Marketplace">
-        Navigate to the Azure Marketplace using [this URL](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/unstructured1691024866136.customer_api_v1?tab=Overview/).
+        Go to the [Unstructured Data Prepocessing - Customer Hosted API](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/unstructured1691024866136.customer_api_v1?tab=Overview/) offering in the Azure Marketplace.
 
         ![Azure Marketplace](/img/api/Azure_Step2.png)
     </Step>
-    <Step title="Start Deployment Process">
-*   Click the **Get it Now** button and fill out the form.
+    <Step title="Start the deployment process">
+*   Click **Get It Now** and fill out the form.
     
-*   Read the Terms and click **Continue**.
+*   Read the terms and click **Continue**.
     
-*   Click **Create** button.
+*   Click **Create**.
     
 
 ![Deployment Process](/img/api/Azure_Step3.png)
         
     </Step>
-    <Step title=" Configure Deployment Options">
-On the **Create a virtual machine** page, go to **Basics** tab and follow the steps below.
+    <Step title=" Configure the deployment options">
+On the **Create a virtual machine** page, click the **Basics** tab and follow these steps:
 
-*   Project details
+*   **Project details** section
     
-    *   Select **Subscription** and **Resource group** from dropdown menu.
+    *   Select the **Subscription** and **Resource group** from the dropdown menus.
         
-    *   Or, you can also `Create New` resource group.
+    *   Or, you can create a new resource group by clicking **Create new**.
         
     
 
 ![project details](/img/api/Azure_Step4a.png)
 
-*   Instance details
+*   **Instance details** section
     
     *   Provide a name in the **Virtual machine name** field.
         
     *   Select a **Region** from the dropdown menu.
         
-    *   **Image**: Select `Unstructured Customer Hosted API Hourly - x64 Gen2` (_default_)
+    *   **Image**: Select **Unstructured Customer Hosted API Hourly - x64 Gen2** (_default_).
         
-    *   **Size**: Select VM size from dropdown menu. Refer to this page for [Azure VM comparisons](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/linux/)
+    *   **Size**: Select a VM size from the dropdown menu. To learn more, see [Azure VM comparisons](https://azure.microsoft.com/en-us/pricing/details/virtual-machines/linux/).
         
     
 
 ![instance details](/img/api/Azure_Step4b.png)
 
-*   Administrator account
+*   **Administrator account** section
     
-    *   **Authentication type**: Select `Password` or `SSH public key`.
+    *   **Authentication type**: Select **Password** or **SSH public key**.
         
-    *   Enter the `credentials`.
+    *   Enter the credential settings, depending on the authentication type.
         
     
 
 ![administrator account](/img/api/Azure_Step4c.png)
     </Step>
-    <Step title="Set Up Load Balancer">
-Before you click `Review + create` button, go to **Networking** tab and follow the steps below.
+    <Step title="Set up the load balancer">
+Before you click **Review + create**, click the **Networking** tab and follow these steps:
 
 *   Networking interface (required fields)
     
-    *   **Virtual network**: Click `Create new` link or select a `Virtual network` from dropdown menu, if you have created one. Refer to [Quickstart: Use the Azure portal to create a virtual network](https://learn.microsoft.com/en-us/azure/virtual-network/quick-create-portal).
+    *   **Virtual network**: Click **Create new** or select an existing virtual network from the dropdown menu. To learn more, see [Quickstart: Use the Azure portal to create a virtual network](https://learn.microsoft.com/en-us/azure/virtual-network/quick-create-portal).
         
-    *   **Subnet**: Click `Manage subnet configuration` link or select a subnet from dropdown menu, if you have created one. Refer to [Add, change, or delete a virtual network subnet](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-manage-subnet?tabs=azure-portal)
+    *   **Subnet**: Click **Manage subnet configuration**, or select an existing subnet from the dropdown menu. To learn more, see [Add, change, or delete a virtual network subnet](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-manage-subnet?tabs=azure-portal)
         
-    *   **Configure network security group**: Click `Create new` link or select a security group from dropdown menu, if you have created one. Refer to [Create, change, or delete a network security group](https://learn.microsoft.com/en-us/azure/virtual-network/manage-network-security-group?tabs=network-security-group-portal).
+    *   **Configure network security group**: Click **Create new**, or select an existing security group from the dropdown menu. To learn more, see [Create, change, or delete a network security group](https://learn.microsoft.com/en-us/azure/virtual-network/manage-network-security-group?tabs=network-security-group-portal).
         
     
-*   Load balancing
+*   **Load balancing** section
     
-    *   **Load balancing option**: Select `Azure load balancer`
+    *   **Load balancing options**: Select **Azure load balancer**.
         
-    *   **Select a load balancer**: If you have created a load balancer, select from dropdown menu, or click `Create a load balancer` and fill out the following fields in the pop-up window.
+    *   **Select a load balancer**: Click **Create a load balancer** and fill out the following fields in the pop-up window, or select an existing load balancer from the dropdown menu: 
         
-        *   Enter **Load balancer name**
+        *   Enter a **Load balancer name**.
             
-        *   **Type**: Select `Public` or `Internal`
+        *   **Type**: Select **Public** or **Internal**.
             
-        *   **Protococl**: Select `TCP` or `UDP`
+        *   **Protococl**: Select **TCP** or **UDP**.
             
-        *   **Port** and **Backend Port**: Set to `port 80`
+        *   **Port** and **Backend Port**: Set both to **80**.
             
         
     
 
 ![load balancer](/img/api/Azure_Step5.png)
     </Step>
-    <Step title="Finalize and Deploy">
-*   Click **Review + Create**.
+    <Step title="Finalize and deploy">
+*   Click **Review + create**.
     
 *   Wait for validation.
     
@@ -104,28 +104,28 @@ Before you click `Review + create` button, go to **Networking** tab and follow t
 ![deployment](/img/api/Azure_Step6.png)
 
     </Step>
-    <Step title="Post-Deployment Steps">
-*   Go to the **Virtual Machine** from Azure console.
+    <Step title="Post-deployment steps">
+*   Go to the **Virtual machine** in the Azure console.
     
-*   Retrieve the **Load balancer public IP address**
+*   Get the **Public IP address** for the **Load balancer**.
     
 *   The deployed endpoint is **http://\<load-balancer-public-IP-address>/general/v0/general**
 
 ![retrieve public ip](/img/api/Azure_Step7.png)
     </Step>
     <Step title="Verification and Testing">
-*   Navigate to the public IP with the specified path for documentation and API testing.
-    
-*   Perform API testing with curl commands.
-    
+Perform API testing with `curl`. For example, run the following command, replacing:
+
+- `<load-balancer-public-IP-address>` with your load balancer's public IP address.
+- `<path/to/input-file>` with the path on your local machine to a file to process. If you do not have any input files available, you can download any of the ones from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in GitHub.
+- `<path/to/output-file>` with the path on your local machine to the processed output in JSON format.
 
 ```bash
-curl -q -X POST http://<you-IP-address>/general/v0/general
-     -H 'accept: application/json'
-     -H 'Content-Type: multipart/form-data'
-     -F files=@<<FILENAME>>
-     -o <<PATH/OUTPUT>>.json
-
+curl -q -X POST http://<load-balancer-public-IP-address>/general/v0/general \
+     -H 'accept: application/json' \
+     -H 'Content-Type: multipart/form-data' \
+     -F files=@<path/to/input-file> \
+     -o <path/to/output-file>.json
 ```
 
 

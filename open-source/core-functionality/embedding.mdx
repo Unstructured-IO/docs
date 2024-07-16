@@ -100,13 +100,15 @@ Key methods and attributes include:
 Initialization: To create an instance of the BedrockEmbeddingEncoder, AWS credentials and the region name are required.
 
 ```python
+import os
+
 from unstructured.documents.elements import Text
 from unstructured.embed.bedrock import BedrockEmbeddingEncoder
 
 # Initialize the encoder with AWS credentials
 embedding_encoder = BedrockEmbeddingEncoder(
-    aws_access_key_id="YOUR_AWS_ACCESS_KEY_ID",
-    aws_secret_access_key="YOUR_AWS_SECRET_ACCESS_KEY",
+    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
     region_name="us-west-2",
 )
 
