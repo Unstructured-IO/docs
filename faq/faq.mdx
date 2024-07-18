@@ -124,24 +124,6 @@ For comprehensive language support, refer to the [Tesseract documentation](https
 
 <Note>You can still use ``ocr_languages`` kwarg, but this parameter is being deprecated in favor of ``languages`` kwarg.</Note>
 
-### How is the Serverless API used alongside Chipper model?
-
-Unstructured Serverless API supports using the Chipper models. To define the model, you can pass the hi_res_model_name as shown in the following example:
-
-``` Curl Chipper
-curl -X 'POST' \
-'$UNSTRUCTURED_API_URL' \
-  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: multipart/form-data' \
-  -F 'files=@sample-docs/layout-parser-paper.pdf' \
-  -F 'strategy=hi_res' \
-  -F 'hi_res_model_name=chipper'  \
-  | jq -C . | less -R
-  ```
-
-Go here to learn more about the available [models](/open-source/concepts/models) and [partioning strategies](/open-source/concepts/partitioning-strategies).
-
 ### Can I employ the basic chunking strategy with the Unstructured API? 
 
 Yes, the [Unstructured API](/api-reference/api-services/overview) supports the implementation of the [Unstructured chunking strategies](/open-source/core-functionality/chunking). This approach facilitates the efficient segmentation of content, enhancing manageability and processing. Our [API Parameter](/api-reference/api-services/api-parameters) documentation provides detailed instructions on employing the chunking_strategy and relevant kwargs, including ``multipage_sections``, ``combine_under_n_chars``, ``new_after_n_chars``, and ``max_characters``.
