@@ -23,7 +23,7 @@ The `hi_res` strategy supports different models, and the default is `detectron2o
   -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -F 'files=@sample-docs/layout-parser-paper.pdf' \
   -F 'strategy=hi_res' \
-  -F 'hi_res_model_name=chipper'
+  -F 'hi_res_model_name=yolox'
 ```
 
 ```python Python
@@ -47,7 +47,7 @@ req = shared.PartitionParameters(
         file_name=filename,
     ),
     strategy="hi_res",
-    hi_res_model_name="chipper",
+    hi_res_model_name="yolox",
 )
 
 try:
@@ -81,7 +81,7 @@ client.general.partition({
         fileName: filename,
     },
     strategy: "hi_res",
-    hiResModelName: "chipper",
+    hiResModelName: "yolox",
 }).then((res: PartitionResponse) => {
     if (res.statusCode == 200) {
         console.log(res.elements);

@@ -44,21 +44,25 @@ you can do this, which all lead to the same result, so pick your preferred metho
 
 To work with the Unstructured Serverless API by calling the Unstructured REST API POST with `curl`, you will need to set the `UNSTRUCTURED_API_KEY` environment variable to your Unstructured API key.
 
-Now, use `curl` to call the API, specifying where the source (input) files are to preprocess and the destination (output) where Unstructured will deliver the processed data:
+Now, use `curl` to call the API, specifying where the source (input) file is to preprocess and the destination (output) where Unstructured will deliver the processed data:
 
 ```bash
 curl -X POST $UNSTRUCTURED_API_URL \
      -H 'accept: application/json' \
      -H 'Content-Type: multipart/form-data' \
      -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
-     -F 'files=@<local/path/to/input/files>' \
-     -o '<local/path/to/output/files>'
+     -F 'files=@<local/path/to/input/file>' \
+     -o '<local/path/to/output/file>'
 ```
 
 The result will look something like this:
 ![Sample Output](/img/api/sample_output.png)
 
-<Info>`POST` requests support using only local machine paths as the source (input) for the files to preprocess and as the destination (output) that Unstructured sends the processed data to. To specify a source or destination other than a local machine, use the CLI, the Python SDK, or the open source library instead.</Info>
+<Info>`POST` requests support using only local machine paths as the source (input) for the file to preprocess and as the destination (output) that Unstructured sends the processed data to. To specify a source or destination other than a local machine, use the CLI, the Python SDK, or the open source library instead.</Info>
+
+import SharedPOSTSingleFile from '/snippets/general-shared-text/post-api-single-file.mdx';
+
+<SharedPOSTSingleFile />
 
 ### Unstructured CLI
 
@@ -127,12 +131,11 @@ file = open(filename, "rb")
 
 res = client.general.partition(request=operations.PartitionRequest(
     partition_parameters=shared.PartitionParameters(
-        # Note that this currently only supports a single file
         files=shared.Files(
             content=file.read(),
             file_name=filename,
         ),
-        # Other parameters
+        # Other parameters.
         strategy=shared.Strategy.HI_RES,
         chunking_strategy=shared.ChunkingStrategy.BY_PAGE,
     ),
@@ -175,6 +178,10 @@ client.general.partition({
 ```
 </CodeGroup>
 
+import SharedAPISingleFile from '/snippets/general-shared-text/multi-file-api-use-connectors.mdx';
+
+<SharedAPISingleFile />
+
 ### Calling the Unstructured API from the Unstructured open source library
 
 You can call the Unstructured Serverless API directly from the Unstructured open source library. Unstructured recommends this approach only for rapid local script or code prototyping or simple proofs-of-concept, not for production scenarios:
@@ -203,6 +210,10 @@ elements = partition_via_api(
   api_key=os.getenv("UNSTRUCTURED_API_KEY")
 )
 ```
+
+import SharedPartitionViaAPISingleFile from '/snippets/general-shared-text/multi-file-partition-via-api.mdx';
+
+<SharedPartitionViaAPISingleFile />
 
 ## Telemetry
 
