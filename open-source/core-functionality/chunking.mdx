@@ -22,7 +22,7 @@ A few concepts about chunking are worth introducing before discussing the detail
 
 ## Chunking Options
 
-The following options are available to tune chunking behaviors. These are keyword arguments that can be used in a partitioning or chunking function call. All these options have defaults and need only be specified when a non-default setting is required. Specific chunking strategies (such as “by-title”) may have additional options.
+The following options are available to tune chunking behaviors. These are keyword arguments that can be used in a partitioning or chunking function call. All these options have defaults and need only be specified when a non-default setting is required. Specific chunking strategies (such as `by_title`) may have additional options.
 
 *   `max_characters: int (default=500)` - the hard maximum size for a chunk. No chunk will exceed this number of characters. A single element that by itself exceeds this size will be divided into two or more chunks using text-splitting.
     
@@ -39,7 +39,7 @@ Chunking can be performed as part of partitioning or as a separate step after pa
 
 ### Specifying a chunking strategy while partitioning
 
-Chunking can be performed as part of partitioning by specifying a value for the `chunking_strategy` argument. The current options are `basic` and `by-title` (described below).
+Chunking can be performed as part of partitioning by specifying a value for the `chunking_strategy` argument. The current options are `basic` and `by_title` (described below).
 
 ```python
 from unstructured.partition.html import partition_html
