@@ -12,7 +12,7 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 ### Changing partition strategy for a PDF
 
 Here's how you can modify partition strategy for a pdf file, and select an alternative model to use with Unstructured API.
-The `hi_res` strategy supports different models, and the default is `detectron2onnx`.
+The `hi_res` strategy supports different models, and the default is `layout_v1.1.0`.
 
 <CodeGroup>
 
@@ -97,8 +97,8 @@ If you have a local deployment of the Unstructured API, you can use other suppor
 
 ### Specifying the language of a document for better OCR results
 
-For better OCR results, you can specify what languages your document is in using the `languages` parameter.
-See the [Tesseract documentation](https://github.com/tesseract-ocr/tessdata) for a full list of languages.
+For better OCR results, you can specify what languages your document is in using the `languages` parameter. 
+[View the list of available languages](https://github.com/tesseract-ocr/tessdata).
 
 <CodeGroup>
 
