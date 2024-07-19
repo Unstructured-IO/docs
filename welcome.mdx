@@ -1,28 +1,54 @@
 ---
 title: Unstructured
 sidebarTitle: Overview
-description: "Unstructured provides tools to ingest and process unstructured documents for Retrieval Augmented Generation (RAG) and model fine-tuning."
+description: "Unstructured provides a platform and tools to ingest and process unstructured documents for Retrieval Augmented Generation (RAG) and model fine-tuning."
 ---
 
 ### Product offerings
 
 Unstructured offers three products:
 
-1. [Unstructured Platform](/platform/overview "Platform") - No-code user interface, pay-as-you-go platform to get all of your data RAG-ready. Data is processed on Unstructured-hosted compute resources.
-2. [Unstructured API service](/api-reference/api-services/overview "API") - Use scripts or code to call the Unstructured CLI, SDKs, or REST API to get all of your data RAG-ready. The Unstructured API service has a [Serverless](api-reference/api-services/saas-api-development-guide) pay-as-you-go edition and a [Free](/api-reference/api-services/free-api_) [limited](/api-reference/api-services/free-api#free-unstructured-api-limitations) edition that process data on Unstructured-hosted compute resources. If you need to use compute resources that you host instead, there are also [Azure](/api-reference/api-services/azure) pay-as-you-go and [AWS](/api-reference/api-services/aws) pay-as-you-go editions; these editions process data by using the Unstructured API installed on compute resources hosted in your own Azure or AWS account.
-3. [Unstructured open source library](/open-source/introduction/overview/ "OSS") - Recommended only for rapid local script or code prototyping or simple proofs-of-concept. It is not designed for production scenarios. Data processing is done only on your local machine and only with local compute resources, and there are no charges. However, features and performance are [limited](/open-source/introduction/overview#limits) compared to the Platform and API service products.
+<Icon icon="dash" iconType="duotone"/>&nbsp;&nbsp;<Icon icon="computer" />&nbsp;&nbsp;[Unstructured Platform](/platform/overview) - No-code UI. Production-ready. Pay as you go.<br/><br/>
+<Icon icon="dash" iconType="duotone"/>&nbsp;&nbsp;<Icon icon="square-terminal" />&nbsp;&nbsp;[Unstructured Serverless API Services](/api-reference/api-services/overview) - Use scripts or code. Production-ready. Pay as you go. (There is also a non-production, free edition with [limits](/api-reference/api-services/free-api#free-unstructured-api-limitations).)<br/><br/>
+<Icon icon="dash" iconType="duotone"/>&nbsp;&nbsp;<Icon icon="door-open" />&nbsp;&nbsp;[Unstructured open source library](/open-source/introduction/overview/) - Use scripts or code. Not production-ready. [Limited](/open-source/introduction/overview#limits).
 
-You can get started quickly with Unstructured by completing the no-code quickstart for the Platform or the script-based quickstarts for the API service or open source library:
+Learn more about these products:
 
-### Quickstart: Unstructured Platform
+<Card title="Unstructured Platform" icon="computer" href="/platform/overview">
+  <br/>No-code user interface, pay-as-you-go platform to get all of your data RAG-ready.<br/><br/>
+  Data is processed on Unstructured-hosted compute resources.<br/><br/>
+  [Try the quickstart](#quickstart-unstructured-platform).<br/><br/>
+  [Learn more](/platform/overview).
+</Card>
+<Card title="Unstructured Serverless API Services" icon="square-terminal" href="/api-reference/api-services/overview">
+  <br/>Use scripts or code to call the Unstructured CLI, SDKs, or REST API to get all of your data RAG-ready.<br/><br/>
+  Unstructured Serverless API Services have a [Serverless](api-reference/api-services/saas-api-development-guide) pay-as-you-go edition and a [Free](/api-reference/api-services/free-api_) [limited](/api-reference/api-services/free-api#free-unstructured-api-limitations) edition that process data on Unstructured-hosted compute resources.<br/><br/>
+  If you need to use compute resources that you host instead, there are also [Azure](/api-reference/api-services/azure) pay-as-you-go and [AWS](/api-reference/api-services/aws) pay-as-you-go editions; these editions process data by using the Unstructured API installed on compute resources hosted in your own Azure or AWS account.<br/><br/>
+  [Try the quickstart](#quickstart-unstructured-api-service).<br/><br/>
+  [Learn more](/api-reference/api-services/overview).
+</Card>
+<Card title="Unstructured open source library" icon="door-open" href="/open-source/introduction/overview/">
+  <br/>Recommended only for rapid local script or code prototyping or simple proofs-of-concept. It is not designed for production scenarios.<br/><br/>
+  Data processing is done only on your local machine and only with local compute resources, and there are no charges. However, features and performance are [limited](/open-source/introduction/overview#limits) compared to the Platform and API service products.<br/><br/>
+  [Try the quickstart](#quickstart-unstructured-open-source-library).<br/><br/>
+  [Learn more](/open-source/introduction/overview/).
+</Card>
 
-<Info>If you want to use your local machine for either the source (input) or the destination (output) location, you cannot use this quickstart. You must run scripts on your local machine instead: skip to the _Unstructured API service_ or _Unstructured open source library_ quickstart later in this article.</Info>
+---
+
+### <Icon icon="computer" />   Quickstart: Unstructured Platform
+
+<Info>If you want to use your local machine for either the source (input) or the destination (output) location, you cannot use this quickstart. You must run scripts on your local machine instead: skip to the [Quickstart: Unstructured Serverless API Services](#quickstart-unstructured-api-service) or [Quickstart: Unstructured open source library](#quickstart-unstructured-open-source-library), later in this article.</Info>
 
 import SharedPlatform from '/snippets/quickstarts/platform.mdx';
 
 <SharedPlatform />
 
-### Quickstart: Unstructured API service
+[Learn more about the Unstructured Platform](/platform/overview).
+
+---
+
+### <Icon icon="square-terminal" />   Quickstart: Unstructured API service
 
 This quickstart uses your local machine for the source (input) and destination (output) locations, and the [Free Unstructured API](/api-reference/api-services/free-api) edition. Data is processed on Unstructured-hosted compute resources.
 
@@ -38,12 +64,13 @@ You will need:
         [Sign up for the Free edition](https://unstructured.io/api-key-free).
     </Step>
     <Step title="Get your API key and API URL">
-        1. Get your Unstructured API key from the welcome email that Unstructured sends you.
-        2. Your Unstructured API URL is an empty string.
+        1. Get your Unstructured API key from the welcome email that Unstructured sends you. Store your API key in a secure location. Do not share it with others.
+        2. For this quickstart, your Unstructured API URL is an empty string.
     </Step>
     <Step title="Set enviromnent variables">
         1. Set an environment variable named `UNSTRUCTURED_API_KEY` to the value of your Unstructured API key.
-        2. Set another environment variable named `UNSTRUCTURED_API_URL` to an empty string.<br/><br/>
+        2. Set another environment variable named `UNSTRUCTURED_API_URL` to an empty string.
+        <Info>Setting the environment variable named `UNSTRUCTURED_API_URL` to an empty string makes your code forward-compatible if you later upgrade to the [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide), which requires an API URL instead of an empty string.</Info>
         To learn how to set environment variables, see your operating system's documentation.
     </Step>
     <Step title="Install the API library">
@@ -75,11 +102,15 @@ You will need:
     </Step>
 </Steps>
 
-### Quickstart: Unstructured open source library
+[Learn more about the Unstructured Serverless API](/api-reference/api-services/overview).
 
-This quickstart uses your local machine for the source (input) and destination (output) locations and for local data processing. It does not call the Unstructured API service.
+---
 
-<Info>The open source library is [limited](/open-source/introduction/overview#limits) compared to the Platform and API service products.</Info>
+### <Icon icon="door-open" />   Quickstart: Unstructured open source library
+
+This quickstart uses your local machine for the source (input) and destination (output) locations and for local data processing. It does not call Unstructured Serverless API Services.
+
+<Info>The open source library is [limited](/open-source/introduction/overview#limits) compared to the [Unstructured Platform](/platform/overview) and the [Unstructured Serverless API](/api-reference/api-services/overview).</Info>
 
 You will need:
 
@@ -112,6 +143,10 @@ You will need:
         Go to your destination location to view the processed data.
     </Step>
 </Steps>
+
+[Learn more about the Unstructured open source library](/open-source/introduction/overview).
+
+---
 
 ## Get in touch
 
