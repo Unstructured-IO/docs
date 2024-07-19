@@ -11,14 +11,14 @@ To call the Unstructured Serverless API, you need an API key and API URL:
 2. Enter your email address and then click **Sign In** to receive a magic link to sign in to your personalized dashboard, or authenticate yourself with your Google or GitHub account.
 3. Once you authenticate with the magic link or with your Google or GitHub account, your dashboard appears.
 4. On the sidebar, click **API Keys**, if it is not already selected.
-5. To get your API key, click the copy icon in the **Actions** column for your API key. Store your copied API key in a secure location.
-6. To get your API URL, click the copy icon next to the URL next to **API URL**. Store your copied API URL in a secure location.
+5. To get your API key, click the copy icon in the **Actions** column for your API key. Store your copied API key in a secure location. Do not share it with others.
+6. To get your API URL, click the copy icon next to the URL next to **API URL**. Store your copied API URL in a secure location. Do not share it with others.
 
 import SeverlessKeyNoFreeURL from '/snippets/general-shared-text/serverless-api-key-no-free-access.mdx';
 
 <SeverlessKeyNoFreeURL />
 
-[Try the quickstart](#quickstart-example).
+[Try the quickstart](#quickstart).
 
 ## Set up billing
 
@@ -39,7 +39,7 @@ import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx'
 
 <SharedPagesBilling />
 
-## Quickstart example
+## Quickstart
 
 The following example illustrates how to preprocess an `*.eml` file using the Unstructured Serverless API.
 
@@ -209,11 +209,11 @@ client.general.partition({
 ```
 </CodeGroup>
 
+If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+
 import SharedAPISingleFile from '/snippets/general-shared-text/multi-file-api-use-connectors.mdx';
 
 <SharedAPISingleFile />
-
-If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 
 [Learn more about how to use the Unstructured Python and JavaScript/TypeScript SDKs](/api-reference/api-services/sdk).
 
@@ -248,6 +248,10 @@ elements = partition_via_api(
 ```
 
 If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+
+import SharedPartitionViaAPISingleFile from '/snippets/general-shared-text/multi-file-partition-via-api.mdx';
+
+<SharedPartitionViaAPISingleFile />
 
 [Learn more about how to use the Unstructured open source library](/open-source/introduction/overview).
 
