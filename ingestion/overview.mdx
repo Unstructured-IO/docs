@@ -71,7 +71,7 @@ flowchart LR
 ```
 
 - This flow never happens for the Unstructured Platform. The Platform does not allow sending files from a local destination to Unstructured or Unstructured sending processed data to a local destination.
-- For the Unstructured CLI, the Unstructured Python SDK, or the Unstructured open source library, to use this flow:
+- For the Unstructured CLI or the Unstructured open source library, to use this flow:
 
   - When using the Unstructured CLI, omit the `--partition-by-api`, `--api-key`, and `--partition-endpoint` options.
-  - When using the Unstructured Python SDK or the Unstructured open source library, omit `partition_by_api` or explicitly set `parition_by_api=False`. Also omit `api_key` and `partition_endpoint`.
+  - When using the Unstructured open source library, omit `partition_by_api` or explicitly set `parition_by_api=False`. Also omit `api_key` and `partition_endpoint`.
