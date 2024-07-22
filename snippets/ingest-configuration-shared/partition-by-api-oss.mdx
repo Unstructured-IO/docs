@@ -7,15 +7,15 @@ One of the key differences is with the open source library, you can use the `--p
   Local file processing does not use an Unstructured API key or API URL, so you can also omit the following, if they appear:
 
   - `--api-key $UNSTRUCTURED_API_KEY` (CLI) or `api_key=os.getenv["UNSTRUCTURED_API_KEY"]` (Python)
-  - `--partition-endpoint $UNSTRUCTURED_API_URL` (CLI), or `partition_endpoint=os.getenv["UNSTRUCTURED_API_URL"]` (Python)
-  - The environment variables `UNSTRUCTURED_API_KEY` and `UNSTRUCTURED_API_URL`.
+  - `--partition-endpoint $UNSTRUCTURED_API_URL` (CLI) or `partition_endpoint=os.getenv["UNSTRUCTURED_API_URL"]` (Python)
+  - The environment variables `UNSTRUCTURED_API_KEY` and `UNSTRUCTURED_API_URL`
 
 - To send files to Unstructured API services for processing, specify `--partition-by-api` (CLI) or `partition_by_api=True` (Python). 
 
   Unstructured API services also requires an Unstructured API key and API URL, by adding the following:
 
   - `--api-key $UNSTRUCTURED_API_KEY` (CLI) or `api_key=os.getenv["UNSTRUCTURED_API_KEY"]` (Python)
-  - `--partition-endpoint $UNSTRUCTURED_API_URL` (CLI), or `partition_endpoint=os.getenv["UNSTRUCTURED_API_URL"]` (Python)
-  - The environment variables `UNSTRUCTURED_API_KEY` and `UNSTRUCTURED_API_URL`, representing your API and API URL, respectively.
+  - `--partition-endpoint $UNSTRUCTURED_API_URL` (CLI) or `partition_endpoint=os.getenv["UNSTRUCTURED_API_URL"]` (Python)
+  - The environment variables `UNSTRUCTURED_API_KEY` and `UNSTRUCTURED_API_URL`, representing your API key and API URL, respectively.
 
   [Get an API key and API URL](/api-reference/api-services/saas-api-development-guide#get-started).
