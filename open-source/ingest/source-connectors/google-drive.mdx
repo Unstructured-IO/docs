@@ -2,15 +2,19 @@
 title: Google Drive
 ---
 
-import SharedContentGoogleDrive from '/snippets/sc-shared-text/google-drive-oss.mdx';
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentGoogleDrive from '/snippets/sc-shared-text/google-drive.mdx';
 
 <SharedContentGoogleDrive/>
 
-Now call the Unstructured CLI or Python SDK, for example:
+Now call the Unstructured CLI or Python. The destination connector can be any of the ones supported. This example uses the local destination connector:
 
-import GoogleDriveSh from '/snippets/source_connectors/google_drive_oss.sh.mdx';
-import GoogleDrivePyV2 from '/snippets/source_connectors/google_drive_oss.v2.py.mdx';
-import GoogleDrivePyV1 from '/snippets/source_connectors/google_drive_oss.v1.py.mdx';
+import GoogleDriveSh from '/snippets/source_connectors/google_drive.sh.mdx';
+import GoogleDrivePyV2 from '/snippets/source_connectors/google_drive.v2.py.mdx';
+import GoogleDrivePyV1 from '/snippets/source_connectors/google_drive.v1.py.mdx';
 
 <CodeGroup>
 
@@ -21,3 +25,7 @@ import GoogleDrivePyV1 from '/snippets/source_connectors/google_drive_oss.v1.py.
   <GoogleDrivePyV1 />
 
 </CodeGroup>
+
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>
