@@ -6,16 +6,16 @@ pip install "unstructured[singlestore]"
 
 These environment variables:
 
-- SINGLESTORE_HOST
-- SINGLESTORE_PORT
-- SINGLESTORE_USER
-- SINGLESTORE_PASSWORD
-- SINGLESTORE_DB
-- SINGLESTORE_TABLE
+- `SINGLESTORE_HOST` - The hostname for the SingleStore deployment.
+- `SINGLESTORE_PORT` - The port for the host.
+- `SINGLESTORE_USER` - The username for the deployment. 
+- `SINGLESTORE_PASSWORD` - The password for the user.
+- `SINGLESTORE_DB` - The name of the database in the deployment.
+- `SINGLESTORE_TABLE` - The name of the table in the database.
 
 To get the values for the enviornment variables `SINGLESTORE_HOST`, `SINGLESTORE_PORT`, `SINGLESTORE_USER`, and `SINGLESTORE_PASSWORD`:
 
-1. In your SingleStore dashboard's sidebar, click **Deployments**.
+1. In your SingleStore account's dashboard sidebar, click **Deployments**.
 2. From the drop-down list at the top of the **Deployments** page, select your deployment.
 3. On the **Overview** tab, in the **Compute** area, in the **Connect** drop-down list for your deployment, select 
 **Your App**. 
@@ -26,7 +26,7 @@ To get the values for the enviornment variables `SINGLESTORE_HOST`, `SINGLESTORE
 <user-name>:<password>@<host>:<port>
 ```
 
-- `<user-name>` is your username. Use this for the `SINGLESTORE_USER` environment variable.
+- `<user-name>` is the username. Use this for the `SINGLESTORE_USER` environment variable.
 - `<password>` is the user's password. Use this for `SINGLESTORE_PASSWORD`.
 - `<host>` is the workspace's hostname. Use this for `SINGLESTORE_HOST`.
 - `<post>` is the host's port. Use this for `SINGLESTORE_PORT`.
@@ -35,15 +35,7 @@ To get the values for the environment variables `SINGLESTORE_DB` and `SINGLESTOR
 
 1. In your SingleStore dashboard's sidebar, click **Deployments**.
 2. From the drop-down list at the top of the **Deployments** page, select your deployment.
-3. On the **Databases** tab, note **Name** of your database. Use this for `SINGLESTORE_DB`. [Create a database](https://docs.singlestore.com/cloud/reference/sql-reference/data-definition-language-ddl/create-database/).
-4. Click the database and, on the **Tables** tab, note the name of your table. Use this for `SINGLESTORE_TABLE`. [Create a table](https://docs.singlestore.com/cloud/reference/sql-reference/data-definition-language-ddl/create-table/).
-5. To run create commands, on the sidebar, under **Develop**, click **Data Studio**, and then click **Open SQL Editor**.
+3. On the **Databases** tab, note **Name** of your database. Use this for `SINGLESTORE_DB`.
+4. Click the database and, on the **Tables** tab, note the name of your table. Use this for `SINGLESTORE_TABLE`.
 
-An example of a conforming table:
-
-```sql
-CREATE TABLE mytable (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    log TEXT
-);
-``` 
+To create deployments, databases, and tables in SingleStore, [learn how](https://www.singlestore.com/blog/how-to-get-started-with-singlestore/).
