@@ -6,15 +6,15 @@ import NewDocument from '/snippets/general-shared-text/new-document.mdx';
 
 <NewDocument />
 
-import SharedContentS3 from '/snippets/sc-shared-text/s3-oss.mdx';
+import SharedContentS3 from '/snippets/sc-shared-text/s3.mdx';
 
 <SharedContentS3/>
 
-Now call the Unstructured CLI or Python SDK, for example:
+Now call the Unstructured CLI or Python. The destination connector can be any of the ones supported. This example uses the local destination connector:
 
-import S3Sh from '/snippets/source_connectors/s3_oss.sh.mdx';
-import S3PyV2 from '/snippets/source_connectors/s3_oss.v2.py.mdx';
-import S3PyV1 from '/snippets/source_connectors/s3_oss.v1.py.mdx';
+import S3Sh from '/snippets/source_connectors/s3.sh.mdx';
+import S3PyV2 from '/snippets/source_connectors/s3.v2.py.mdx';
+import S3PyV1 from '/snippets/source_connectors/s3.v1.py.mdx';
 
 <CodeGroup>
 
@@ -25,3 +25,7 @@ import S3PyV1 from '/snippets/source_connectors/s3_oss.v1.py.mdx';
   <S3PyV1 />
 
 </CodeGroup>
+
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>
