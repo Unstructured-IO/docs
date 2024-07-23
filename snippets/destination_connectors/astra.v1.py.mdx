@@ -25,10 +25,10 @@ def get_writer() -> Writer:
     return AstraWriter(
         connector_config=SimpleAstraConfig(
             access_config=AstraAccessConfig(
-                api_endpoint=os.getenv("ASTRA_DB_ENDPOINT"),
-                token=os.getenv("ASTRA_DB_TOKEN"),
+                api_endpoint=os.getenv("ASTRA_DB_API_ENDPOINT"),
+                token=os.getenv("ASTRA_DB_APPLICATION_TOKEN"),
             ),
-            namespace=os.getenv("ASTRA_DB_KEYSPACE"),
+            namespace=os.getenv("ASTRA_DB_NAMESPACE"),
             collection_name=os.getenv("ASTRA_DB_COLLECTION"),
             embedding_dimension=os.getenv("ASTRA_DB_EMBEDDING_DIMENSIONS"),
         ),
