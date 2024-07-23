@@ -1,0 +1,21 @@
+```bash CLI
+#!/usr/bin/env bash
+
+unstructured-ingest \
+  local \
+    --input-path local-ingest-source \
+    --partition-by-api \
+    --strategy fast \
+    --chunking-strategy by_title \
+    --embedding-provider langchain-huggingface \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+  singlestore \
+    --host $SINGLESTORE_HOST \
+    --port $SINGLESTORE_PORT \
+    --user $SINGLESTORE_USER \
+    --password $SINGLESTORE_PASSWORD \
+    --database $SINGLESTORE_DB \
+    --table-name $SINGLESTORE_TABLE
+```

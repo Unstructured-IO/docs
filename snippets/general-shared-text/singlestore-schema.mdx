@@ -1,0 +1,67 @@
+To insert the JSON data that Unstructured outputs into a SingleStore table, the table must have a column that matches the name and datatype of each object in the JSON data.
+
+During insertion, JSON objects are flattened, and underscores are placed between nested object names. For example, the following JSON object matches a column in the table named `data_source_date_created`:
+
+```
+"data_source": {
+    "date_created": "1719963233.949"
+}
+```
+
+The `metadata` object itself is also flattened in a similar way. However, for nested objects in `metadata`, do not start the column name with `metadata_`. For example, the following JSON object matches a column in the table named `last_modified`:
+
+```
+"metadata": {
+    "last_modified": "2022-12-16T17:04:16-05:00"
+}
+```
+
+Here is a `CREATE TABLE` statement for an example table named `elements` that can handle many (but not necessarily all) of the JSON objects that Unstructured outputs. You will likely need to adjust these column names and datatypes, depending on the structure of your own JSON data.
+
+```sql
+CREATE TABLE elements (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    element_id TEXT,
+    text TEXT,
+    embeddings Vector(768),
+    type TEXT,
+    url TEXT,
+    version TEXT,
+    data_source_date_created TIMESTAMP,
+    data_source_date_modified TIMESTAMP,
+    data_source_date_processed TIMESTAMP,
+    data_source_permissions_data TEXT,
+    data_source_url TEXT,
+    data_source_version TEXT,
+    data_source_record_locator JSON,
+    category_depth INTEGER,
+    parent_id TEXT,
+    attached_filename TEXT,
+    filetype TEXT,
+    last_modified TIMESTAMP,
+    file_directory TEXT,
+    filename TEXT,
+    languages TEXT,
+    page_number TEXT,
+    links TEXT,
+    page_name TEXT,
+    link_urls TEXT,
+    link_texts TEXT,
+    sent_from TEXT,
+    sent_to TEXT,
+    subject TEXT,
+    section TEXT,
+    header_footer_type TEXT,
+    emphasized_text_contents TEXT,
+    emphasized_text_tags TEXT,
+    text_as_html TEXT,
+    regex_metadata TEXT,
+    detection_class_prob DECIMAL,
+    is_continuation BOOLEAN,
+    orig_elements TEXT,
+    coordinates_points TEXT,
+    coordinates_system TEXT,
+    coordinates_layout_width DECIMAL,
+    coordinates_layout_height DECIMAL
+);
+```
