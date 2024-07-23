@@ -21,7 +21,9 @@ if __name__ == "__main__":
         ),
         read_config=ReadConfig(),
         partition_config=PartitionConfig(
-            partition_by_api=False
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
         ),
         connector_config=SimpleAzureBlobStorageConfig(
             access_config=AzureAccessConfig(
