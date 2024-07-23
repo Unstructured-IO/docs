@@ -1,18 +1,17 @@
 ```bash CLI
 #!/usr/bin/env bash
 
-EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
-
 unstructured-ingest \
   local \
-    --input-path example-docs/book-war-and-peace-1225p.txt \
-    --output-dir local-output-to-s3 \
+    --input-path local-ingest-source \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
     --strategy fast \
-    --chunk-elements \
-    --embedding-provider "$EMBEDDING_PROVIDER" \
-    --num-processes 2 \
-    --verbose \
+    --chunking-strategy by_title \
+    --embedding-provider langchain-huggingface \
   s3 \
-    --anonymous \
-    --remote-url $AWS_S3_URL
+    --remote-url $AWS_S3_URL \
+    --key $AWS_ACCESS_KEY_ID \
+    --secret $AWS_SECRET_ACCESS_KEY
 ```

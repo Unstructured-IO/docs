@@ -24,13 +24,17 @@ Let's start with a simple example in which you send an email file (`*.eml`) to p
 ```
 
 In the example above we're sending the request to the Free Unstructured API, in which case the API URL is the same for all
-users: `https://api.unstructured.io`. Note, however, that you still need to authenticate yourself with
-your individual API Key. Learn how to obtain an API key in the Getting Started section of the documentation:
+users: `https://api.unstructured.io/general/v0/general` and is represented by the environment variable `UNSTRUCTURED_API_URL`. Note, however, that you still need to authenticate yourself with
+your individual API Key, represented by the environment variable `UNSTRUCTURED_API_KEY`. Learn how to obtain an API key in the Getting Started section of the documentation:
 [Free Unstructured API guide](/api-reference/api-services/free-api) and [Unstructured Serverless API guide](/api-reference/api-services/saas-api-development-guide).
 
 If you are using the Unstructured Serverless API, you need to replace the URL in this example with the unique API URL that you have
 received in the same email as your API key. For Unstructured API on Azure/AWS, use the API URL that you
 configured through those services.
+
+import SharedPOSTSingleFile from '/snippets/general-shared-text/post-api-single-file.mdx';
+
+<SharedPOSTSingleFile />
 
 ## Parameters & examples
 

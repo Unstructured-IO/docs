@@ -1,13 +1,13 @@
 ---
-title: Python and TypeScript SDKs
-description: This documentation covers the usage of the Python and TypeScript SDKs for interacting with the Unstructured API.
+title: Python and JavaScript/TypeScript SDKs
+description: This documentation covers the usage of the Python and JavaScript/TypeScript SDKs for interacting with the Unstructured API.
 ---
 
 The [Python](https://github.com/Unstructured-IO/unstructured-python-client) and
-[TypeScript](https://github.com/Unstructured-IO/unstructured-js-client)
+[JavaScript/TypeScript](https://github.com/Unstructured-IO/unstructured-js-client)
 SDK clients allow for easy interaction with the Unstructured API. Whether you're using the
 free Unstructured API, the Unstructured Serverless API, Unstructured API on Azure/AWS or your local
-deployment of Unstructured API, you can access the API using the Python or TypeScript SDK. Regardless of the SDK you use, you'll need:
+deployment of Unstructured API, you can access the API using the Python or JavaScript/TypeScript SDK. Regardless of the SDK you use, you'll need:
 
 import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
@@ -21,7 +21,7 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
     ```bash Python
     pip install unstructured-client
     ```
-    ```bash JavaScript
+    ```bash JavaScript/TypeScript
     npm install unstructured-client
     ```
     </CodeGroup>
@@ -35,7 +35,7 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
     Let's start with a simple example in which you send a pdf document to be partitioned via the free Unstructured API:
 
     <Warning>
-         The TypeScript SDK has the following breaking changes in v0.11.0:
+         The JavaScript/TypeScript SDK has the following breaking changes in v0.11.0:
          * Imports under the `dist` path have moved up a level
          * Enums are now used for parameters with a set of options
            * This includes `chunkingStrategy`, `outputFormat`, and `strategy`
@@ -92,7 +92,7 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
     except Exception as e:
         print(e)
     ```
-    ```javascript TypeScript
+    ```typescript TypeScript
     import { UnstructuredClient } from "unstructured-client";
     import { PartitionResponse } from "unstructured-client/sdk/models/operations";
     import { Strategy } from "unstructured-client/sdk/models/shared";
@@ -165,7 +165,7 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
     except SDKError as e:
         print(e)
     ```
-    ```javascript TypeScript (SDK <=v0.10.6)
+    ```typescript TypeScript (SDK <=v0.10.6)
     import { UnstructuredClient } from "unstructured-client";
     import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
     import * as fs from "fs";
@@ -205,7 +205,9 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
     ```
     </CodeGroup>
 
-    Note that currently, the SDKs only support sending one file at a time.
+    import SharedAPISingleFile from '/snippets/general-shared-text/multi-file-api-use-connectors.mdx';
+
+    <SharedAPISingleFile />
 
 ## Unstructured Serverless API
 
@@ -222,7 +224,7 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
         server_url=os.getenv("UNSTRUCTURED_API_URL"),
     )
     ```
-    ```javascript TypeScript
+    ```typescript TypeScript
     const key = process.env.UNSTRUCTURED_API_KEY;
     const url = process.env.UNSTRUCTURED_API_URL;    
 
@@ -269,7 +271,7 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
     )
     res = client.general.partition(req)
     ```
-    ```javascript TypeScript
+    ```typescript TypeScript
     client.general.partition({
         partitionParameters: {
             files: {
@@ -313,7 +315,7 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
             )
         )
         ```
-        ```javascript TypeScript
+        ```typescript TypeScript
         const key = process.env.UNSTRUCTURED_API_KEY;
         const url = process.env.UNSTRUCTURED_API_URL;    
 
@@ -372,11 +374,10 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
 ## Parameters & examples
 
-    #### Parameter names 
-        The parameter names used in this document are for the TypeScript SDK, which follow camelCase
-        convention (while the Python SDK uses snake_case). Other than this difference in naming convention, 
-        the names used in the SDKs are the same across all methods.
+The parameter names used in this document are for the JavaScript/TypeScript SDK, which follow camelCase
+convention (while the Python SDK uses snake_case). Other than this difference in naming convention, 
+the names used in the SDKs are the same across all methods.
 
-    * Refer to the [API parameters](/api-reference/api-services/api-parameters) page for the full list of available parameters.
-    * Refer to the [Examples](/api-reference/api-services/examples) page for some inspiration on using the parameters.
+* Refer to the [API parameters](/api-reference/api-services/api-parameters) page for the full list of available parameters.
+* Refer to the [Examples](/api-reference/api-services/examples) page for some inspiration on using the parameters.
 

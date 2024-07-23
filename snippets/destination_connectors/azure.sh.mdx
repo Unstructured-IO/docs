@@ -1,18 +1,17 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
-
-EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
 
 unstructured-ingest \
   local \
-  --input-path example-docs/book-war-and-peace-1225p.txt \
-  --output-dir local-output-to-azure \
-  --strategy fast \
-  --chunk-elements \
-  --embedding-provider "$EMBEDDING_PROVIDER" \
-  --num-processes 2 \
-  --verbose \
+    --input-path local-ingest-source \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --strategy fast \
+    --chunking-strategy by_title \
+    --embedding-provider langchain-huggingface \
   azure \
-  --account-name "$AZURE_ACCOUNT_NAME" \
-  --remote-url "<your destination path here, ie 'az://unstructured/war-and-peace-output'>"
+    --remote-url $AZURE_STORAGE_ACCOUNT_URL \
+    --account-name $AZURE_STORAGE_ACCOUNT_NAME \
+    --account-key $AZURE_STORAGE_ACCOUNT_KEY
 ```

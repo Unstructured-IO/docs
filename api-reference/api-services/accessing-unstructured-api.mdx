@@ -7,18 +7,23 @@ deployment of Unstructured API, you have several methods of accessing it. The fu
 
 Choose your preferred method:
 
-* [Sending POST requests to Unstructured API](/api-reference/api-services/post-requests)
-* [Using the Python and JavaScript SDK](/api-reference/api-services/sdk)
-* [Using API by calling `partition_via_api()` from Python code](/api-reference/api-services/partition-via-api)
+* [Sending POST requests to the Unstructured API](/api-reference/api-services/post-requests)
+* [Using the Python and JavaScript/TypeScript SDKs](/api-reference/api-services/sdk)
+* [Calling the Unstructured API with `partition_via_api()` from Python code](/api-reference/api-services/partition-via-api)
 
 The API parameters for all these methods are documented on the [API parameters](/api-reference/api-services/api-parameters) page.
 
-If you'd like to try out the Unstructured API interactively, you can do so via the [Swagger UI](https://api.unstructured.io/general/docs#/default/pipeline_1_general_v0_general_post).
-Make sure to have your API key on hand.
+If you'd like to try out the Unstructured API interactively by using the Free Unstructured API to process a single file, you can do so by using the [Swagger UI](https://api.unstructured.io/general/docs#/default/pipeline_1_general_v0_general_post).
 
-1. Go to  [Swagger UI](https://api.unstructured.io/general/docs#/default/pipeline_1_general_v0_general_post).
-2. Click "Try it out" for interactive testing.
-3. Enter your API key in the "unstructured-api-key" field.
-4. Choose your parameters in the "Request body".
-5. Click "execute" to send the request.
-6. Download or view the JSON output.
+1. Go to the [Swagger UI](https://api.unstructured.io/general/docs#/default/pipeline_1_general_v0_general_post).
+2. For **Servers**, select **https://api.unstructured.io - Hosted API Free**.
+2. Click **Authorize**.
+3. In the **Available authorizations** dialog box, for **Value**, enter your Free Unstructured API key. [Get a Free Unstructured API key](/api-reference/api-services/free-api#get-an-api-key).
+4. Click **Authorize**.
+5. Click **Close**.
+6. Expand the **POST** section.
+7. In the **Request body** section, next to **files**, click **Choose File**.
+8. Browse to and select a file for the Free Unstructured API to process.
+9. Enter any other settings as desired. [Learn how](/api-reference/api-services/api-parameters).
+10. At the end of the list of settings, click **Execute**.
+11. See the results in the **Responses** section below the **Execute** button.

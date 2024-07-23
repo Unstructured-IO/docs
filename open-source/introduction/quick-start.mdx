@@ -1,5 +1,5 @@
 ---
-title: Quick Start
+title: Quickstart
 description: Using Unstructured Open Source.
 ---
 ## Installation
@@ -57,7 +57,7 @@ The following section will cover basic concepts and usage patterns in `unstructu
 
 The example documents in this section come from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) directory in the `unstructured` repo.
 
-Before running the code in this make sure you’ve installed the `unstructured` library and all dependencies using the instructions in the [Quick Start](../installation/overview#quick-start) section.
+Before running the code in this make sure you’ve installed the `unstructured` library and all dependencies using the instructions in the [quickstart](../installation/overview#quick-start) section.
 
 ## Partitioning a document
 
@@ -81,6 +81,10 @@ with open("example-10k.html", "rb") as f:
 
 
 The `partition` function uses [libmagic](https://formulae.brew.sh/formula/libmagic) for filetype detection. If `libmagic` is not present and the user passes a filename, `partition` falls back to detecting the filetype using the file extension. `libmagic` is required if you’d like to pass a file-like object to `partition`. We highly recommend installing `libmagic` and you may observe different file detection behaviors if `libmagic` is not installed\`.
+
+import SharedOSSSingleFile from '/snippets/general-shared-text/multi-file-oss-use-connectors.mdx';
+
+<SharedOSSSingleFile />
 
 ## Quickstart Tutorial
 
