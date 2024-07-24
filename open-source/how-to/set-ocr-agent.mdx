@@ -4,7 +4,7 @@ title: Set the OCR agent
 
 ## Task
 
-You want to the type of agent that you use when performing optical character recognition (OCR) on files, such as images and PDFs.
+You want to specify the type of agent that you use when performing optical character recognition (OCR) on files, such as images and PDFs.
 
 <Note>This task works only with the Unstructured open source library.</Note>
 
@@ -12,17 +12,15 @@ You want to the type of agent that you use when performing optical character rec
 
 Set the environment variable named `OCR_AGENT` to one of the following supported values:
 
-- `unstructured.partition.utils.ocr_models.paddle_ocr.OCRAgentTesseract` to use Tesseract OCR.
+- `unstructured.partition.utils.ocr_models.tesseract_ocr.OCRAgentTesseract` to use Tesseract OCR. This is the default if not otherwise specified.
 - `unstructured.partition.utils.ocr_models.paddle_ocr.OCRAgentPaddle` to use Paddle OCR.
 - `unstructured.partition.utils.ocr_models.google_vision_ocr.OCRAgentGoogleVision` to use Google Cloud Vision OCR.
 
-Then run your code as usual.
+Also, be sure to install the corresponding OCR agent and its dependencies, if you have not already done so.
 
-## To run this example
+## Example code
 
 This example uses a PNG file with an embedded combination of English and Korean text.
-
-## Code
 
 import SetOCRAgentOSSPy from '/snippets/how-to-oss/set_ocr_agent.py.mdx';
 
