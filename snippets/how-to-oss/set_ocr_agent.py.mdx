@@ -10,7 +10,7 @@ filename = "local-ingest-png/english-and-korean.png"
 elements = partition_image(
   filename=filename,
   strategy="ocr_only",
-  languages=["en", "korean"]
+  languages=["eng", "kor"] # Language codes differ by the OCR agent used.
 )
 
 # Convert the list of returned elements into a list of dictionaries for printing or saving.
@@ -21,6 +21,8 @@ print(json.dumps(element_dicts, indent=2))
 
 # Or, save the list locally:
 #
-# with open("local-ingest-output/english-and-korean.json", "w") as file:
+# file = "local-ingest-output/english-and-korean.json"
+#
+# with open(file, "w") as file:
 #     json.dump(element_dicts, file, indent=2)
 ```
