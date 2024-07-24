@@ -13,6 +13,10 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
 <SharedAPIKeyURL />
 
+import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serverless-api.mdx';
+
+<NoURLForServerlessAPI/>
+
 ## Installation
 
     Before using the SDK to interact with your Unstructured API, install the library:
@@ -48,12 +52,6 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
         could break in future releases. Users should migrate to the new `shared.PartitionRequest` object 
         to ensure compatibility with future updates.
     </Warning>
-
-    <Note>
-    By default, the SDKs send requests to the free API. In order to access the paid API, you'll need
-    to include the argument for the server URL. If you receive authentication errors, and you've
-    checked that your key is correct, be sure that you are accessing the correct endpoint.
-    </Note>
 
     <CodeGroup>
     ```python Python
@@ -208,32 +206,6 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
     import SharedAPISingleFile from '/snippets/general-shared-text/multi-file-api-use-connectors.mdx';
 
     <SharedAPISingleFile />
-
-## Unstructured Serverless API
-
-    If you want to use the Unstructured Serverless API, all you need to do is initialize the SDK client with
-    the unique API URL that you received in the same email as your API key. For Unstructured API on
-    Azure/AWS, use the API URL that you configured through those services.
-
-    <CodeGroup>
-    ```python Python
-    import os
-
-    client = unstructured_client.UnstructuredClient(
-        api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-        server_url=os.getenv("UNSTRUCTURED_API_URL"),
-    )
-    ```
-    ```typescript TypeScript
-    const key = process.env.UNSTRUCTURED_API_KEY;
-    const url = process.env.UNSTRUCTURED_API_URL;    
-
-    const client = new UnstructuredClient({
-        security: { apiKeyAuth: key },
-        serverURL: url,
-    });
-    ```
-    </CodeGroup>
 
 ## Page Splitting
 

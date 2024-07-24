@@ -71,7 +71,7 @@ The result will look something like this:
 
 ![Sample Output](/img/api/sample_output.png)
 
-<Info>`POST` requests support using only local machine paths as the source (input) for the files to preprocess and as the destination (output) that Unstructured sends the processed data to. To specify a source or destination other than a local machine, use the CLI, the Python SDK, or the open source library instead.</Info>
+<Info>`POST` requests support using only local machine paths as the source (input) for the files to preprocess and as the destination (output) that Unstructured sends the processed data to. To specify a source or destination other than a local machine, use the [CLI](#unstructured-cli), the [Python SDK](#unstructured-python-sdk-and-javascript-typescript-sdk), or the [open source library](#calling-the-unstructured-api-from-the-unstructured-open-source-library) instead.</Info>
 
 import SharedPOSTSingleFile from '/snippets/general-shared-text/post-api-single-file.mdx';
 
@@ -90,6 +90,10 @@ To work with the Unstructured Serverless API by using the Unstructured CLI, you 
   ```
 
 - Set the `UNSTRUCTURED_API_KEY` environment variable to your API key. Make sure to also set the `UNSTRUCTURED_API_URL` environment variable to your API URL. [Get your API key and API URL](#get-started).
+
+import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serverless-api.mdx';
+
+<NoURLForServerlessAPI/>
 
 Now, use the CLI to call the API, specifying where the source (input) files are to preprocess and the destination (output) where Unstructured will deliver the processed data:
 
@@ -128,6 +132,8 @@ npm install unstructured-client
 </CodeGroup>
 
 Next, use it to call the API. Be sure to set the `UNSTRUCTURED_API_URL` environment variable to your API URL Also set the `UNSTRUCTURED_API_KEY` environment variable to your API key. [Get your API key and API URL](#get-started). 
+
+<NoURLForServerlessAPI/>
 
 <CodeGroup>
 
@@ -230,6 +236,8 @@ You will need to:
   ```
 
 - Set the `UNSTRUCTURED_API_KEY` environment variable to your API key. Make sure to set the `UNSTRUCTURED_API_URL` environment variable to your API URL. [Get your API key and API URL](#get-started). 
+
+<NoURLForServerlessAPI/>
 
 Now, use the open source library to call the API, specifying the file to preprocess:
 
