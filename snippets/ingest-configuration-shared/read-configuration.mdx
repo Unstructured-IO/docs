@@ -2,12 +2,12 @@ A shared read configuration serves as a universal set of parameters that are con
 
 ## Configs
 
-*   `download_dir`: What location to download the files to. When run via the CLI, a default location will be used if one is not provided.
-    
-*   `re_download (default False)`: By default, the process will skip downloads if the files already exist in the download directory. By setting this to `True`, it will force the files to be re downloaded regardless of them existing already.
-    
-*   `preserve_downloads (default False)`: By default, the process will delete the downloaded content at the end if everything finished without error. By setting this to `True`, those files will be preserved.
-    
-*   `download_only (default False)`: If set to `True`, the process wil exit right after all the files are downloaded and omit any future steps such as partitioning and uploading to a destination.
-    
-*   `max_docs`: An optional integer which will cap how many documents are pulled in in a single process.
+*   <Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`download_dir`: What location to download the files to. When run via the CLI, a default location will be used if one is not provided.
+
+*   <Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`download_only`: Default: `False`. If set to `True`, the process will exit right after all the files are downloaded and omit any future steps such as partitioning and uploading to a destination.
+
+*   <Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`max_docs`: How many documents are pulled in for a single process.
+
+*   <Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`preserve_downloads`: `False` (default) for the process to delete the downloaded content at the end if everything finished without error. By setting this to `True`, those files will be preserved.
+
+*   <Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`re_download`: `False` (default) for the process to skip downloads if the files already exist in the download directory. By setting this to `True`, it will force the files to be re downloaded regardless of them existing already.

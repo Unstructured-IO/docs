@@ -2,14 +2,33 @@ A common process configuration plays a pivotal role in overseeing the entire ing
 
 ## Configs
 
-*   `reprocess (default False)`: If set to true, will ignore all content that may have been cached and rerun each step.
-    
-*   `verbose (default False)`: Boolean flag to set if debug logging should be included in the output or not.
-    
-*   `work_dir`: The file path for where intermediate results should be saved. If one is not set, a default will be used relative to the users’ home location.
-    
-*   `output_dir`: Where the final results will be located when the process is finished. This will be regardless of if a destination is configured.
-    
-*   `num_processes`: For every step that can use a pool of workers to increase throughput, how many workers to configure in the pool.
-    
-*   `raise_on_error (default False)`: By default, for any single document that might fail in the process, will cause the error to be logged but allow for all other documents to proceed in the process. If this flag is set, will cause the entire process to fail and raise the error if any one document fails.
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`disable_parallelism`: `True` if the `INGEST_DISABLE_PARALLELISM` environment variable is set to `true` (case-insensitive), otherwise `False` (the default).
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`download_only`: Default: `False`.
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`max_connections`
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`max_docs`
+
+*   <Icon icon="v"/><Icon icon="2"/>,&nbsp;<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`num_processes`: Default: `2`. For every step that can use a pool of workers to increase throughput, how many workers to configure in the pool.
+
+*   <Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`output_dir`: Where the final results will be located when the process is finished. This is regardless of whether a destination is configured. If a directory is not specified, by default a folder named `structured-output`, relative to the current working directory, is used.
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`preserve_downloads`: Default: `False`.
+
+*   <Icon icon="v"/><Icon icon="2"/>,&nbsp;<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`raise_on_error`: `False `(default) for any single document that fails in the process, causes the error to be logged but allows for all other documents to proceed in the process. If `True`, causes the entire process to fail and raise the error if any one document fails.
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`re_download`: Default: `False`.
+
+*   <Icon icon="v"/><Icon icon="2"/>,&nbsp;<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`reprocess`: Default: `False`. If set to `True`, will ignore all content that may have been cached and rerun each step.
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`status`
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`tqdm`: Default `False`.
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`uncompress`: Default `False`.
+
+*   <Icon icon="v"/><Icon icon="2"/>,&nbsp;<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`verbose`: Default: `False`. If set to `True`, debug logging should be included in the output.
+
+*   <Icon icon="v"/><Icon icon="2"/>,&nbsp;<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`work_dir`: The file path for where intermediate results should be saved. If a file path is not set, a default file path will be used relative to the user's home directory (`/home/username/.cache/unstructured/ingest/pipeline` or `C:\Users\username\.cache\unstructured\ingest\pipeline`).
+
