@@ -12,6 +12,10 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
 <SharedAPIKeyURL />
 
+import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serverless-api.mdx';
+
+<NoURLForServerlessAPI/>
+
 ## Installation
 
 Make sure you have the Unstructured Open Source library installed.
@@ -32,7 +36,7 @@ elements = partition_via_api(
     api_key=os.getenv("UNSTRUCTURED_API_KEY"),
     api_url=os.getenv("UNSTRUCTURED_API_URL"),
     content_type="message/rfc822"
-    )
+)
 
 element_dicts = [element.to_dict() for element in elements]
 json_elements = json.dumps(element_dicts, indent=2)
