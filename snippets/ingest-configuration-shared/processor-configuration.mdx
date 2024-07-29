@@ -4,29 +4,27 @@ A common process configuration plays a pivotal role in overseeing the entire ing
 
 *   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`disable_parallelism`: `True` if the `INGEST_DISABLE_PARALLELISM` environment variable is set to `true` (case-insensitive), otherwise `False` (the default).
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`download_only`: Default: `False`.
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`download_only`: Default: `False`. If set to `True`, downloads any files that are not already present in the connector's specified download directory (`download_dir`), or `work_dir` if `download_dir` is not specified, or the default file path for `work_dir` if `work_dir` is not specified.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`max_connections`
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`max_connections`: The maximum of connections allowed when running an asynchronous step in the ingest pipeline.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`max_docs`
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`max_docs`: The maximum number of documents to process.
 
 *   <Icon icon="v"/><Icon icon="2"/>,&nbsp;<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`num_processes`: Default: `2`. For every step that can use a pool of workers to increase throughput, how many workers to configure in the pool.
 
 *   <Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`output_dir`: Where the final results will be located when the process is finished. This is regardless of whether a destination is configured. If a directory is not specified, by default a folder named `structured-output`, relative to the current working directory, is used.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`preserve_downloads`: Default: `False`.
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`preserve_downloads`: `False` (the default) to remove downloaded files after they are successfully processed.
 
 *   <Icon icon="v"/><Icon icon="2"/>,&nbsp;<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`raise_on_error`: `False `(default) for any single document that fails in the process, causes the error to be logged but allows for all other documents to proceed in the process. If `True`, causes the entire process to fail and raise the error if any one document fails.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`re_download`: Default: `False`.
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`re_download`: `False` (the default) to not re-download files if they are already present in the download directory.
 
 *   <Icon icon="v"/><Icon icon="2"/>,&nbsp;<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`reprocess`: Default: `False`. If set to `True`, will ignore all content that may have been cached and rerun each step.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`status`
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`tqdm`: `False` (the default) to not show a progress bar.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`tqdm`: Default `False`.
-
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`uncompress`: Default `False`.
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`uncompress`: `False` (the default) to not uncompress any archived ZIP or TAR files.
 
 *   <Icon icon="v"/><Icon icon="2"/>,&nbsp;<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`verbose`: Default: `False`. If set to `True`, debug logging should be included in the output.
 
