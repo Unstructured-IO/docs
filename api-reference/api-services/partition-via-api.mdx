@@ -23,7 +23,7 @@ Here's a basic example in which you send an email file to partition via Unstruct
 in the Unstructured Open Source library:
 
 ```python
-import os
+import os, json
 
 from unstructured.partition.api import partition_via_api
 
@@ -33,6 +33,16 @@ elements = partition_via_api(
     api_url=os.getenv("UNSTRUCTURED_API_URL"),
     content_type="message/rfc822"
     )
+
+element_dicts = [element.to_dict() for element in elements]
+json_elements = json.dumps(element_dicts, indent=2)
+
+# Print the processed data.
+print(json_elements)
+
+# Write the processed data to a local file.
+with open("example-docs/eml/fake-email-output.json", "w") as file:
+    file.write(json_elements)
 ```
 
 When sending a request to the free Unstructured API, you only need to provide your individual API key.

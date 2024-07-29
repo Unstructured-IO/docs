@@ -57,7 +57,7 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
     <CodeGroup>
     ```python Python
-    import os
+    import os, json
 
     import unstructured_client
     from unstructured_client.models import operations, shared
@@ -67,7 +67,7 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
         server_url=os.getenv("UNSTRUCTURED_API_URL"),
     )
 
-    filename = "PATH_TO_FILE"
+    filename = "PATH_TO_INPUT_FILE"
     with open(filename, "rb") as f:
         data = f.read()
 
@@ -88,7 +88,15 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
     try:
         res = client.general.partition(request=req)
-        print(res.elements[0])
+        element_dicts = [element for element in res.elements]
+        json_elements = json.dumps(element_dicts, indent=2)
+    
+        # Print the processed data.
+        print(json_elements)
+
+        # Write the processed data to a local file.
+        with open("PATH_TO_OUTPUT_FILE", "w") as file:
+            file.write(json_elements)
     except Exception as e:
         print(e)
     ```
@@ -108,7 +116,7 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
         },
     });
 
-    const filename = "PATH_TO_FILE";
+    const filename = "PATH_TO_INPUT_FILE";
     const data = fs.readFileSync(filename);
 
     client.general.partition({
@@ -122,7 +130,13 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
         }
     }).then((res: PartitionResponse) => {
         if (res.statusCode == 200) {
-            console.log(res.elements);
+            const jsonElements = JSON.stringify(res.elements, null, 2)
+       
+            // Print the processed data.
+            console.log(jsonElements);
+
+            // Write the processed data to a local file.
+            fs.writeFileSync("PATH_TO_OUTPUT_FILE", jsonElements)
         }
     }).catch((e) => {
         if (e.statusCode) {
