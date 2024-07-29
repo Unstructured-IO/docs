@@ -13,6 +13,10 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
 <SharedAPIKeyURL />
 
+import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serverless-api.mdx';
+
+<NoURLForServerlessAPI/>
+
 ## Installation
 
     Before using the SDK to interact with your Unstructured API, install the library:
@@ -49,15 +53,9 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
         to ensure compatibility with future updates.
     </Warning>
 
-    <Note>
-    By default, the SDKs send requests to the free API. In order to access the paid API, you'll need
-    to include the argument for the server URL. If you receive authentication errors, and you've
-    checked that your key is correct, be sure that you are accessing the correct endpoint.
-    </Note>
-
     <CodeGroup>
     ```python Python
-    import os
+    import os, json
 
     import unstructured_client
     from unstructured_client.models import operations, shared
@@ -67,7 +65,7 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
         server_url=os.getenv("UNSTRUCTURED_API_URL"),
     )
 
-    filename = "PATH_TO_FILE"
+    filename = "PATH_TO_INPUT_FILE"
     with open(filename, "rb") as f:
         data = f.read()
 
@@ -88,7 +86,15 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
     try:
         res = client.general.partition(request=req)
-        print(res.elements[0])
+        element_dicts = [element for element in res.elements]
+        json_elements = json.dumps(element_dicts, indent=2)
+    
+        # Print the processed data.
+        print(json_elements)
+
+        # Write the processed data to a local file.
+        with open("PATH_TO_OUTPUT_FILE", "w") as file:
+            file.write(json_elements)
     except Exception as e:
         print(e)
     ```
@@ -108,7 +114,7 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
         },
     });
 
-    const filename = "PATH_TO_FILE";
+    const filename = "PATH_TO_INPUT_FILE";
     const data = fs.readFileSync(filename);
 
     client.general.partition({
@@ -122,7 +128,13 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
         }
     }).then((res: PartitionResponse) => {
         if (res.statusCode == 200) {
-            console.log(res.elements);
+            const jsonElements = JSON.stringify(res.elements, null, 2)
+       
+            // Print the processed data.
+            console.log(jsonElements);
+
+            // Write the processed data to a local file.
+            fs.writeFileSync("PATH_TO_OUTPUT_FILE", jsonElements)
         }
     }).catch((e) => {
         if (e.statusCode) {
@@ -208,32 +220,6 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
     import SharedAPISingleFile from '/snippets/general-shared-text/multi-file-api-use-connectors.mdx';
 
     <SharedAPISingleFile />
-
-## Unstructured Serverless API
-
-    If you want to use the Unstructured Serverless API, all you need to do is initialize the SDK client with
-    the unique API URL that you received in the same email as your API key. For Unstructured API on
-    Azure/AWS, use the API URL that you configured through those services.
-
-    <CodeGroup>
-    ```python Python
-    import os
-
-    client = unstructured_client.UnstructuredClient(
-        api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-        server_url=os.getenv("UNSTRUCTURED_API_URL"),
-    )
-    ```
-    ```typescript TypeScript
-    const key = process.env.UNSTRUCTURED_API_KEY;
-    const url = process.env.UNSTRUCTURED_API_URL;    
-
-    const client = new UnstructuredClient({
-        security: { apiKeyAuth: key },
-        serverURL: url,
-    });
-    ```
-    </CodeGroup>
 
 ## Page Splitting
 

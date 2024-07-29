@@ -20,7 +20,8 @@ Let's start with a simple example in which you send an email file (`*.eml`) to p
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
   -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
-  -F 'files=@sample-docs/family-day.eml'
+  -F 'files=@sample-docs/family-day.eml' \
+  -o 'sample-docs/family-day-output.json'
 ```
 
 In the example above we're sending the request to the Free Unstructured API, in which case the API URL is the same for all

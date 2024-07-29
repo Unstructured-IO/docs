@@ -1,0 +1,58 @@
+```python Python SDK
+from unstructured_client import UnstructuredClient
+from unstructured_client.models import operations, shared
+
+import os, webbrowser, json
+
+if __name__ == "__main__":
+    client = UnstructuredClient(
+        api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+        server_url=os.getenv("UNSTRUCTURED_API_URL")
+    )
+
+    # Source: https://github.com/Unstructured-IO/unstructured/blob/main/example-docs/embedded-images-tables.pdf
+
+    # Where to get the local file, relative to this .py file.
+    local_input_filepath = "local-ingest-pdf/embedded-images-tables.pdf"
+
+    # Where to store the retrieved HTML, relative to this .py file.
+    local_html_output_path = "local-ingest-output"
+
+    with open(local_input_filepath, "rb") as f:
+        files = shared.Files(
+            content=f.read(),
+            file_name=local_input_filepath
+        )
+
+    request = operations.PartitionRequest(
+        shared.PartitionParameters(
+            files=files
+        )
+    )
+
+    try:
+        result = client.general.partition(request)
+
+        # Provide some minimal CSS for better table readability.
+        table_css = "<head><style>table, th, td { border: 1px solid; }</style></head>"
+
+        for element in result.elements:
+            if "text_as_html" in element["metadata"]:
+                # Surround the element's HTML with basic <html> and <body> tags, and add the minimal CSS.
+                html_string = f"<!DOCTYPE html><html>{table_css}<body>{element["metadata"]["text_as_html"]}</body></html>"
+
+                # Save the element's HTML to a local file.
+                save_path = f"{local_html_output_path}/{element["element_id"]}.html"
+                file = open(save_path, 'w')
+                file.write(html_string)
+                file.close()
+
+                # View the locally saved file in the local default web browser.
+                webbrowser.open_new(f"file:///{os.getcwd()}/{save_path}")
+
+        # Also print the JSON representation of all elements for
+        # inspection and validation.
+        print(json.dumps(result.elements, indent=2))
+    except Exception as e:
+        print(e)
+```
