@@ -66,9 +66,9 @@ flowchart LR
 ```
 
 - This flow always happens for the Unstructured Platform. The Platform only allows sending files from cloud storage and sending processed data to cloud storage.
-- For the Unstructured CLI or Unstructured Ingest Python, to use this flow:
+- For the Unstructured Ingest CLI or Unstructured Ingest Python, to use this flow:
 
-  - When using the Unstructured CLI, include the `--partition-by-api` option and set `--api-key` and `--partition-endpoint` to a valid, matching Unstructured API key and API URL, respectively.
+  - When using the Unstructured Ingest CLI, include the `--partition-by-api` option and set `--api-key` and `--partition-endpoint` to a valid, matching Unstructured API key and API URL, respectively.
   - When using Unstructured Ingest Python, set `partition_by_api=True` and `api_key` and set `partition_endpoint` to a valid, matching Unstructured API key and API URL, respectively.
 
 ## Local ingestion options
@@ -81,9 +81,9 @@ flowchart LR
 ```
 
 - This flow never happens for the Unstructured Platform. The Platform does not allow sending files from a local destination to Unstructured or Unstructured sending processed data to a local destination.
-- For the Unstructured CLI or Unstructured Ingest Python, to use this flow:
+- For the Unstructured Ingest CLI or Unstructured Ingest Python, to use this flow:
 
-  - When using the Unstructured CLI, omit the `--partition-by-api`, `--api-key`, and `--partition-endpoint` options.
+  - When using the Unstructured Ingest CLI, omit the `--partition-by-api`, `--api-key`, and `--partition-endpoint` options.
   - When using the Unstructured Ingest Python, omit `partition_by_api` or explicitly set `parition_by_api=False`. Also omit `api_key` and `partition_endpoint`.
 
 ## Unstructured Ingest CLI

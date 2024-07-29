@@ -36,7 +36,7 @@ import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx'
 ## Quickstart
 
 Let's say you want to preprocess an `*.eml` file using the free Unstructured API. There are several ways
-you can do this, which all lead to the same result, so pick your preferred method: [POST](#post-request), [CLI](#unstructured-cli), [SDK](#unstructured-python-sdk-and-javascript-typescript-sdk), or [open source](#calling-the-unstructured-api-from-the-unstructured-open-source-library).
+you can do this, which all lead to the same result, so pick your preferred method: [POST](#post-request), [CLI](#unstructured-ingest-cli), [SDK](#unstructured-python-sdk-and-javascript-typescript-sdk), or [open source](#calling-the-unstructured-api-from-the-unstructured-open-source-library).
 
 <Info>When using the Free Unstructured API, use `https://api.unstructured.io/general/v0/general` as the URL for `POST` requests, or a blank string as the URL when using the CLI, SDKs, or open source library. Note that the Free API URL has a slightly different domain name than the Serverless API which is `api.unstructuredapp.io`.</Info>
 
@@ -64,7 +64,7 @@ If you do not have any files available, you can download some from the [example-
 The result will look something like this:
 ![Sample Output](/img/api/sample_output.png)
 
-<Info>`POST` requests support using only local machine paths as the source (input) for the file to preprocess and as the destination (output) that Unstructured sends the processed data to. To specify a source or destination other than a local machine, use the [CLI](#unstructured-cli), the Python SDK, or the [open source library](#calling-the-unstructured-api-from-the-unstructured-open-source-library) instead.</Info>
+<Info>`POST` requests support using only local machine paths as the source (input) for the file to preprocess and as the destination (output) that Unstructured sends the processed data to. To specify a source or destination other than a local machine, use the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli) or [Unstructured Ingest Python](/ingestion/overview#unstructured-ingest-python) instead.</Info>
 
 import SharedPOSTSingleFile from '/snippets/general-shared-text/post-api-single-file.mdx';
 
@@ -72,9 +72,9 @@ import SharedPOSTSingleFile from '/snippets/general-shared-text/post-api-single-
 
 [Learn more about how to use POST requests](/api-reference/api-services/post-requests).
 
-### Unstructured CLI
+### Unstructured Ingest CLI
 
-To work with the Free Unstructured API by using the Unstructured CLI, you will need to:
+To work with the Free Unstructured API by using the Unstructured Ingest CLI, you will need to:
 
 - Install Python, and then install the CLI package:
 
@@ -109,7 +109,7 @@ To work with the Unstructured Serverless API in Python, JavaScript, or TypeScrip
 Unstructured [Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) or
 [JavaScript/TypeScript SDK](https://github.com/Unstructured-IO/unstructured-js-client).
 
-<Info>The JavaScript/TypeScript SDK supports using only local machine paths as the source (input) for the files to preprocess and as the destination (output) that Unstructured sends the processed data to. To specify a source or destination other than a local machine, use the [CLI](#unstructured-cli), the Python SDK, or the [open source library](#calling-the-unstructured-api-from-the-unstructured-open-source-library) instead..</Info>
+<Info>The JavaScript/TypeScript SDK supports using only local machine paths as the source (input) for the files to preprocess and as the destination (output) that Unstructured sends the processed data to. To specify a source or destination other than a local machine, use the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli) or [Unstructured Ingest Python](/ingestion/overview#unstructured-ingest-python) instead.</Info>
 
 First, install your preferred SDK:
 <CodeGroup>
