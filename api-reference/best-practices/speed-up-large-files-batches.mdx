@@ -2,22 +2,29 @@
 title: Speed up processing of large files and batches
 ---
 
-When you use Unstructued API services, here are some techniques that you can try to help speed up the processing or large files and large batches of files.
+When you use Unstructued API services, here are some techniques that you can try to help speed up the processing of large files and large batches of files.
 
-## Adding processors
+## Adding CPUs
 
-For speeding up file processing during [ingestion](), the Unstructured CLI and Unstructured Python Ingest enable you to instruct Unstructured to use additional processing resources:
+For speeding up file processing during [ingestion](/ingestion/overview), the Unstructured CLI and Unstructured Python Ingest enable you to instruct Unstructured to use additional local CPUs where applicable. 
 
-For the Unstructured CLI, set `--num-processes` to the number of ..., for example:
+Using additional local CPUs applies only to pipeline steps that Unstructured logs as being processed across CPUs. It does not apply to pipeline steps that are logged as being processed asynchronously. To get a list of which operations are processed where, look for the following log messages when you run an ingest pipeline:
+
+- Steps that are processed across CPUs correspond to log messages that read: `processing content across processes`. These steps might benefit by setting a higher number of local CPUs to be used.
+- Steps that are processed asynchronously correspond to log messages that read: `processing content across processes`. Any settings to use a higher number of local CPUs are ignored for these steps.
+
+For the Unstructured CLI, you can set `--num-processes` to the maximum number of available local CPUs that you want to use where applicable, for example:
 
 ```bash
 unstructured-ingest \
   local \
-    --num-processes 2
+    --num-processes <number>
     # ...
 ```
 
-For Unstructured Python Ingest, set the `ProcessorConfig` object's `num_processes` parameter to the number of ..., for example:
+To get the maximum number of available local logical CPUs that can be used where applicable, see your operating system's documentation.
+
+For Unstructured Python Ingest, you can set the `ProcessorConfig` object's `num_processes` parameter to the maximum number of available local CPUs that you want to use where applicable, for example:
 
 <CodeGroup>
     ```python Python Ingest v2
@@ -28,7 +35,7 @@ For Unstructured Python Ingest, set the `ProcessorConfig` object's `num_processe
     if __name__ == "__main__":
         Pipeline.from_configs(
             context=ProcessorConfig(
-                num_processes=2,
+                num_processes=<number>,
                 # ...  
             ),
             # ...
@@ -47,13 +54,15 @@ For Unstructured Python Ingest, set the `ProcessorConfig` object's `num_processe
     if __name__ == "__main__":
         runner = LocalRunner(
             processor_config=ProcessorConfig(
-                num_processes=2,
+                num_processes=<number>,
                 # ...
             ),
             # ...
         ).run()
     ```
 </CodeGroup>
+
+In Python, to specify the maximum number of available local logical CPUs that can be used where applicable, you can call functions such as [os.cpu_count](https://docs.python.org/3/library/os.html#os.cpu_count) and [multiprocessing.cpu_count](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.cpu_count).
 
 ## PDF files
 
