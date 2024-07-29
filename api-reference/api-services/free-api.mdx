@@ -45,7 +45,10 @@ To work with the Unstructured Serverless API by calling the Unstructured REST AP
 - Set the `UNSTRUCTURED_API_KEY` environment variable to your Free Unstructured API key.
 - Set the `UNSTRUCTURED_API_URL` environment variable to your Free Unstructured API URL, which is `https://api.unstructured.io/general/v0/general`
 
-Now, use `curl` to call the API, specifying where the source (input) file is to preprocess and the destination (output) where Unstructured will deliver the processed data:
+Now, use `curl` to call the API, replacing:
+
+- `<local/path/to/input/file>` with the path to the source (input) file on your local machine.
+- `<local/path/to/output/file>` with the path to the destination (output) on your local machine where Unstructured will deliver the processed data. 
 
 ```bash
 curl -X POST $UNSTRUCTURED_API_URL \
@@ -56,10 +59,9 @@ curl -X POST $UNSTRUCTURED_API_URL \
      -o '<local/path/to/output/file>'
 ```
 
-If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+After the command successfully runs, see the results in the specified output path on your local machine.
 
-The result will look something like this:
-![Sample Output](/img/api/sample_output.png)
+If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 
 <Info>`POST` requests support using only local machine paths as the source (input) for the file to preprocess and as the destination (output) that Unstructured sends the processed data to. To specify a source or destination other than a local machine, use the [CLI](#unstructured-cli), the [Python SDK](#unstructured-python-sdk-and-javascript-typescript-sdk), or the [open source library](#calling-the-unstructured-api-from-the-unstructured-open-source-library) instead.</Info>
 
@@ -82,7 +84,10 @@ To work with the Free Unstructured API by using the Unstructured CLI, you will n
 - Set the `UNSTRUCTURED_API_KEY` environment variable to your Free Unstructured API key.
 - Set the `UNSTRUCTURED_API_URL` environment variable to your Free Unstructured API URL, which is `https://api.unstructured.io/general/v0/general`
 
-Now, use the CLI to call the API, specifying where the files are to preprocess and where Unstructured will output the processed data.
+Now, use the CLI to call the API, replacing:
+
+- `<local/path/to/input/files>` with the path to the source (input) files on your local machine.
+- `<local/path/to/output/files>` with the path to the destination (output) on your local machine where Unstructured will deliver the processed data. 
 
 ```bash CLI
 unstructured-ingest \
@@ -94,19 +99,19 @@ unstructured-ingest \
     --partition-endpoint $UNSTRUCTURED_API_URL
 ```
 
+After the command successfully runs, see the results in the specified output path on your local machine.
+
 If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 
 To learn more about how to use the `local` command, run the command `unstructured-ingest local --help`.
 
+To use source and destination locations outside of your local machine, see the documentation for the available [source](/api-reference/ingest/source-connectors/overview) and [destination](/api-reference/ingest/destination-connector/overview) connectors.
+
 ### Unstructured Python SDK and JavaScript/TypeScript SDK
 
-To work with the free Unstructured API in Python or JavaScript, use the
+To work with the Free Unstructured API in Python or JavaScript, use the
 Unstructured [Python SDK](https://github.com/Unstructured-IO/unstructured-python-client), or
 [JavaScript SDK](https://github.com/Unstructured-IO/unstructured-js-client).
-
-To work with the Unstructured Serverless API in Python, JavaScript, or TypeScript, use the
-Unstructured [Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) or
-[JavaScript/TypeScript SDK](https://github.com/Unstructured-IO/unstructured-js-client).
 
 <Info>The JavaScript/TypeScript SDK supports using only local machine paths as the source (input) for the files to preprocess and as the destination (output) that Unstructured sends the processed data to. To specify a source or destination other than a local machine, use the [CLI](#unstructured-cli), the Python SDK, or the [open source library](#calling-the-unstructured-api-from-the-unstructured-open-source-library) instead.</Info>
 
@@ -126,14 +131,17 @@ Set the `UNSTRUCTURED_API_KEY` environment variable to your Free Unstructured AP
 
 Set the `UNSTRUCTURED_API_URL` environment variable to your Free Unstructured API URL, which is `https://api.unstructured.io/general/v0/general`
 
-Now call the API. 
+Now, call the API, replacing:
+
+- `<local/path/to/input/file>` with the path to the source (input) file on your local machine.
+- `<local/path/to/output/file>` with the path to the destination (output) on your local machine where Unstructured will deliver the processed data.
 
 <CodeGroup>
 
 ```python Python
-import os
+import json, os
 
-import unstructured_client
+from unstructured_client import UnstructuredClient
 from unstructured_client.models import operations, shared
 
 client = unstructured_client.UnstructuredClient(
@@ -141,30 +149,44 @@ client = unstructured_client.UnstructuredClient(
     server_url=os.getenv("UNSTRUCTURED_API_URL")
 )
 
-filename = "sample-docs/layout-parser-paper.pdf"
-file = open(filename, "rb")
+input_filepath = "<local/path/to/input/file>"
+output_filepath = "<local/path/to/output/file>"
 
-res = client.general.partition(request=operations.PartitionRequest(
-    partition_parameters=shared.PartitionParameters(
-        files=shared.Files(
-            content=file.read(),
-            file_name=filename,
-        ),
-        # Other parameters.
-        strategy=shared.Strategy.HI_RES,
-        chunking_strategy=shared.ChunkingStrategy.BY_PAGE,
-    ),
-))
+with open(input_filepath, "rb") as f:
+    files = shared.Files(
+        content=f.read(),
+        file_name=input_filepath
+    )
 
-if res.elements is not None:
-    # handle response
-    pass
+req = operations.PartitionRequest(
+    shared.PartitionParameters(
+        files=files,
+        strategy=shared.Strategy.AUTO
+    )
+)
+
+try:
+    res = client.general.partition(request=req)
+    element_dicts = [element for element in res.elements]
+    json_elements = json.dumps(element_dicts, indent=2)
+    
+    # Print the processed data.
+    print(json_elements)
+
+    # Write the processed data to a local file.
+    with open(output_filepath, "w") as file:
+      file.write(json_elements)
+except Exception as e:
+    print(e)
 ```
 
 ```typescript TypeScript
 import { UnstructuredClient } from "unstructured-client";
-import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
+import { Strategy } from "unstructured-client/sdk/models/shared/index.js";
 import * as fs from "fs";
+
+const inputFilepath = "<local/path/to/input/file>" || '';
+const outputFilepath = "<local/path/to/output/file>" || '';
 
 const key = process.env.UNSTRUCTURED_API_KEY;
 const url = process.env.UNSTRUCTURED_API_URL;
@@ -176,21 +198,33 @@ const client = new UnstructuredClient({
     serverUrl: url
 });
 
-const filename = "PATH_TO_FILE";
-const data = fs.readFileSync(filename);
+const data = fs.readFileSync(inputFilepath);
 
 client.general.partition({
-    files: {
-        content: data,
-        fileName: filename,
-    },
-}).then((res: PartitionResponse) => {
+    partitionParameters: {
+        files: {
+            content: data,
+            fileName: inputFilepath
+        },
+        strategy: Strategy.Auto
+    }
+}).then((res) => {
     if (res.statusCode == 200) {
-        console.log(res.elements);
+       const jsonElements = JSON.stringify(res.elements, null, 2)
+       
+       // Print the processed data.
+       console.log(jsonElements);
+
+       // Write the processed data to a local file.
+       fs.writeFileSync(outputFilepath, jsonElements)
     }
 }).catch((e) => {
-    console.log(e.statusCode);
-    console.log(e.body);
+    if (e.statusCode) {
+        console.log(e.statusCode);
+        console.log(e.body);
+    } else {
+        console.log(e);
+    }
 });
 ```
 </CodeGroup>
@@ -218,20 +252,34 @@ You will need to:
 - Set the `UNSTRUCTURED_API_KEY` environment variable to your Free Unstructured API key.
 - Set the `UNSTRUCTURED_API_URL` environment variable to your Free Unstructured API URL, which is `https://api.unstructured.io/general/v0/general`
 
-Now, use the open source library to call the API, specifying the file to preprocess:
+Now, call the API, replacing:
+
+- `<local/path/to/input/file>` with the path to the source (input) file on your local machine.
+- `<local/path/to/output/file>` with the path to the destination (output) on your local machine where Unstructured will deliver the processed data. 
 
 ```python
-import os
+import os, json
 
 from unstructured.partition.api import partition_via_api
 
-filename = "PATH_TO_FILE"
+input_filepath = "<local/path/to/input/file>"
+output_filepath = "<local/path/to/output/file>"
 
 elements = partition_via_api(
   filename=filename,
   api_key=os.getenv("UNSTRUCTURED_API_KEY"),
   parition_endpoint=os.getenv("UNSTRUCTURED_API_URL")
 )
+
+element_dicts = [element.to_dict() for element in elements]
+json_elements = json.dumps(element_dicts, indent=2)
+
+# Print the processed data to a local file.
+print(json_elements)
+
+# Write the processed data to a local file.
+with open(output_filepath, "w") as file:
+    file.write(json_elements)
 ```
 
 If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
