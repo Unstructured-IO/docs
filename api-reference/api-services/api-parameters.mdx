@@ -1,6 +1,6 @@
 ---
-title: API Parameters
-description: The Unstructured API provides parameters to customize the processing of documents. Below are the details for these parameters.
+title: API parameters
+description: Unstructured API services provide parameters to customize the processing of documents. Below are the details for these parameters.
 ---
 
 ## Parameters
@@ -40,11 +40,11 @@ The following parameters only apply when a chunking strategy is specified. Other
 | `overlap` (_int_)                | `overlap` (_number_)              | A prefix of this many trailing characters from the prior text-split chunk is applied to second and later chunks formed from oversized elements by text-splitting. Default: none.                                                                                                                                                                                                               |
 | `overlap_all` (_bool_)           | `overlapAll` (_boolean_)          | True to have an overlap also applied to "normal" chunks formed by combining whole elements. Use with caution, as this can introduce noise into otherwise clean semantic units. Default: none.                                                                                                                                                                                                  |
 
-The following parameters are specific to the Python and Javascript/TypeScript clients and are not sent to the server. [Learn more](/api-reference/api-services/sdk#page-splitting).
+The following parameters are specific to the Python and Javascript/TypeScript clients and are not sent to the server. [Learn more](/api-reference/api-services/sdk-python#page-splitting).
 
 | POST, Python                          | JavaScript/TypeScript                 | Description                                                                                                                    |
 |---------------------------------------|---------------------------------------|--------------------------------------------------------------------------------------------------------------------------------|
-| `split_pdf_page` (_bool_)             | `splitPdfPage` (_boolean_)            | True to split the PDF file client-side. [Learn more](/api-reference/api-services/sdk#page-splitting).                          |
+| `split_pdf_page` (_bool_)             | `splitPdfPage` (_boolean_)            | True to split the PDF file client-side. [Learn more](/api-reference/api-services/sdk-python#page-splitting).                   |
 | `split_pdf_concurrency_level` (_int_) | `splitPdfConcurrencyLevel` (_number_) | The number of split files to be sent concurrently. Default: 5. Maximum: 15.                                                    |
 
 Need help getting started? Check out the [Examples page](/api-reference/api-services/examples) for some inspiration.
