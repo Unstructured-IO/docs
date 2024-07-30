@@ -14,17 +14,17 @@ A common process configuration plays a pivotal role in overseeing the entire ing
 
 *   <Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`output_dir`: Where the final results will be located when the process is finished. This is regardless of whether a destination is configured. If a directory is not specified, by default a folder named `structured-output`, relative to the current working directory, is used.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`preserve_downloads`: `False` (the default) to remove downloaded files after they are successfully processed.
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`preserve_downloads`: When set to `False` (the default), will remove downloaded files after they are successfully processed.
 
 *   <Icon icon="v"/><Icon icon="2"/>,&nbsp;<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`raise_on_error`: `False `(default) for any single document that fails in the process, causes the error to be logged but allows for all other documents to proceed in the process. If `True`, causes the entire process to fail and raise the error if any one document fails.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`re_download`: `False` (the default) to not re-download files if they are already present in the download directory.
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`re_download`: When set to `False` (the default), will not re-download files if they are already present in the download directory.
 
 *   <Icon icon="v"/><Icon icon="2"/>,&nbsp;<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`reprocess`: Default: `False`. If set to `True`, will ignore all content that may have been cached and rerun each step.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`tqdm`: `False` (the default) to not show a progress bar.
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`tqdm`: When set to `False` (the default), will not show a progress bar.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`uncompress`: `False` (the default) to not uncompress any archived ZIP or TAR files.
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`uncompress`: When set to `False` (the default), will not uncompress any archived ZIP or TAR files.
 
 *   <Icon icon="v"/><Icon icon="2"/>,&nbsp;<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`verbose`: Default: `False`. If set to `True`, debug logging should be included in the output.
 

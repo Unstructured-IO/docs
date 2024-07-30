@@ -1,20 +1,18 @@
 
 
-The configurations listed in this section are common to all source connectors.
+The configurations listed in this section are common to all connectors.
 These configurations act as instructions for how to collect, process, and store data.
-If you're looking for parameters specific to a source connector type (such as authentication options), see the
-corresponding source connector's documentation.
 
-Configurations are available for v2 and v1 versions of source connctors, where available. 
+Some connectors implement only version 2 (v2) of the connector specification; some connectors implement only version 1 (v1); and some connectors provide both v2 and v1 implementations.
 
-*   Congigurations that apply to both v2 and v1 are prefaced by <Icon icon="v"/><Icon icon="2"/>, <Icon icon="v"/><Icon icon="1"/>.
+*   Connectors that implement both v2 and v1 are prefaced by <Icon icon="v"/><Icon icon="2"/>, <Icon icon="v"/><Icon icon="1"/>.
 
-*   v2-only configurations are prefaced by <Icon icon="v"/><Icon icon="2"/>.
+*   v2-only implementations are prefaced by <Icon icon="v"/><Icon icon="2"/>.
 
-*   v1-only configurations are prefaced by <Icon icon="v"/><Icon icon="1"/>.
+*   v1-only implementations are prefaced by <Icon icon="v"/><Icon icon="1"/>.
 
-If you're looking for parameters specific to a source connector type (such as authentication options)&mdash;or to determine whether a source connector supports v2 configurations, v1 configurations, or both&mdash;see the
-corresponding source connector's documentation:
+If you're looking for parameters specific to a connector (such as authentication options)&mdash;or to determine whether a connector provides a v2 implementation, a v1 implementation, or both&mdash;browse the
+corresponding connector's source code:
 
 - [v2 non-fsspec connectors](https://github.com/Unstructured-IO/unstructured/tree/main/unstructured/ingest/v2/processes/connectors)
 - [v2 fsspec connectors](https://github.com/Unstructured-IO/unstructured/tree/main/unstructured/ingest/v2/processes/connectors/fsspec)
