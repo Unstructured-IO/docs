@@ -1,12 +1,12 @@
 ---
-title: Using API from partition_via_api()
+title: Process an individual file by using the Unstructured open source Python library
+sidebarTitle: Open source Python library
 ---
 
-If you're used to working the [Unstructured Open Source library](https://github.com/Unstructured-IO/unstructured) but
-would like to leverage the advanced capabilities of the Unstructured API services, you can do so without leaving the comfort
-and familiarity of the open source library.  Whether you're using the free Unstructured API, the Unstructured Serverless API,
-Unstructured API on Azure/AWS or your local deployment of Unstructured API, you can access it from the open source library
-through `partition_via_api`. You'll also need:
+If you're used to working the [Unstructured open source library](https://github.com/Unstructured-IO/unstructured) but
+would like to leverage the advanced capabilities of Unstructured API services, you can do so without leaving your familiarity with the open source library. 
+Whether you're using the Free Unstructured API, the Unstructured Serverless API,
+the Unstructured API on Azure/AWS, or your local deployment of the Unstructured API, you can use the open source library to send an individual file through `partition_via_api` for processing with Unstructured API services. You'll also need:
 
 import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
@@ -18,13 +18,13 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
 
 ## Installation
 
-Make sure you have the Unstructured Open Source library installed.
-Refer to the [Unstructured Open Source library Quickstart guide](/open-source/introduction/quick-start) for instructions.
+Make sure you have the Unstructured open source library installed.
+Refer to the [Unstructured Open Source library quickstart guide](/open-source/introduction/quick-start) for instructions.
 
 ## Basics
 
 Here's a basic example in which you send an email file to partition via Unstructured API using `partition_via_api` available
-in the Unstructured Open Source library:
+in the Unstructured open source library:
 
 ```python
 import os, json
@@ -49,7 +49,7 @@ with open("example-docs/eml/fake-email-output.json", "w") as file:
     file.write(json_elements)
 ```
 
-When sending a request to the free Unstructured API, you only need to provide your individual API key.
+When sending a request to the Free Unstructured API, you only need to provide your individual API key.
 When sending requests to the Unstructured Serverless API, you need to supply your unique API URL in addition to your API key.
 For Unstructured API on Azure/AWS, use the API URL that you configured through those services.
 

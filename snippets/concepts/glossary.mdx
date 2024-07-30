@@ -6,11 +6,11 @@ Natural Language Processing (NLP) encompasses various tasks and methodologies. T
 
 Vector databases often require data to be in smaller, consistent chunks for efficient storage and retrieval. Chunking involves dividing lengthy texts into smaller segments or chunks, ensuring that each piece retains enough context to be meaningful.
 
-## Data Ingestion
+## Data ingestion
 
 Unstructured `Source Connectors` make data ingestion easy. They ensure that your data is accessible, up to date, and usable for any downstream task. If you’d like to read more on our source connectors, you can find details [here](/open-source/ingest/source-connectors/overview).
 
-## Data Preprocessing
+## Data preprocessing
 
 Before the core analysis, raw data often requires significant preprocessing:
 
@@ -24,7 +24,7 @@ Preprocessing ensures data integrity and can significantly influence the outcome
 
 Embeddings convert textual data into fixed-size vectors, preserving semantic context. These vector representations can be used for many tasks, including similarity searches, clustering, and classification. Different embeddings prioritize different aspects of the text, from semantic meaning to sentence structure.
 
-## Ingestion Strategies
+## Ingestion strategies
 
 Unstructured offers multiple strategies and models to extract document information. They are `fast`, `hires`, `ocr_only` and `auto`. They configure the `model` to optimize document information extraction.
 
@@ -32,15 +32,15 @@ High-level overview of available strategies and models in `Unstructured` library
 
 ![strategy](/img/open-source/strategy.png)
 
-## Large Language Models (LLMs)
+## Large language models (LLMs)
 
 LLMs, like GPT, are trained on vast amounts of data and can comprehend and generate human-like text. They have achieved state-of-the-art results across many NLP tasks and can be fine-tuned to cater to specific domains or requirements.
 
-## Retrieval Augmented Generation (RAG)
+## Retrieval augmented generation (RAG)
 
-Large Language Models (LLMs) like OpenAI’s ChatGPT and Anthropic’s Claude have revolutionized the AI landscape with their prowess. However, they inherently suffer from significant drawbacks. One major issue is their static nature, which means they’re “frozen in time.” Despite this, LLMs might often respond to newer queries with unwarranted confidence, a phenomenon known as “hallucination.” Such errors can be highly detrimental, mainly when these models serve critical real-world applications.
+Large language models (LLMs) like OpenAI’s ChatGPT and Anthropic’s Claude have revolutionized the AI landscape with their prowess. However, they inherently suffer from significant drawbacks. One major issue is their static nature, which means they’re “frozen in time.” Despite this, LLMs might often respond to newer queries with unwarranted confidence, a phenomenon known as “hallucination.” Such errors can be highly detrimental, mainly when these models serve critical real-world applications.
 
-Retrieval Augmented Generation (RAG) is a groundbreaking technique designed to counteract the limitations of foundational LLMs. By pairing an LLM with an RAG pipeline, we can enable users to access the underlying data sources that the model uses. This transparent approach ensures that an LLM’s claims can be verified for accuracy and builds a trust factor among users.
+Retrieval augmented generation (RAG) is a groundbreaking technique designed to counteract the limitations of foundational LLMs. By pairing an LLM with an RAG pipeline, we can enable users to access the underlying data sources that the model uses. This transparent approach ensures that an LLM’s claims can be verified for accuracy and builds a trust factor among users.
 
 Moreover, RAG offers a cost-effective solution. Instead of bearing the extensive computational and financial burdens of training custom models or fine-tuning existing ones, RAG can, in many situations, serve as a sufficient alternative. This reduction in resource consumption is particularly beneficial for organizations that need more means to develop and deploy foundational models from scratch.
 
@@ -66,7 +66,7 @@ For a complete guide on how to implement RAG, check out this [blog post](https:/
 
 Tokenization decomposes texts into smaller units called tokens. A token might represent a word, part of a word, or even a single character. This process helps analyze and process the text, making it digestible for models and algorithms.
 
-## Vector Databases
+## Vector databases
 
 Vector databases store embeddings in a manner optimized for high-speed similarity searches. Given a query embedding, these databases can quickly retrieve the most similar vectors, facilitating tasks like recommendation, anomaly detection, and clustering.
 
