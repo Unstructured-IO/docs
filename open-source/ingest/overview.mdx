@@ -1,7 +1,7 @@
 ---
 title: Ingest 
 sidebarTitle: Overview
-description: The Ingest Library is a powerful tool designed to coordinate the process of pulling data from data providers, partitioning the content, and pushing that new content to a desired location. This technical documentation will provide an in-depth understanding of the Ingest Library, including its features, architecture, installation, configuration, usage, API reference, troubleshooting, examples, and more.
+description: The Unstructured Python Ingest library is a powerful tool designed to coordinate the process of pulling data from data providers, partitioning the content, and pushing that new content to a desired location. This technical documentation will provide an in-depth understanding of the Python Ingest library, including its features, architecture, installation, configuration, usage, API reference, troubleshooting, examples, and more.
 ---
 
 ## Library Documentation
@@ -20,7 +20,7 @@ Each configuration used when generating an ingest process.
 
 ## Features
 
-The Ingest Library/CLI offers the following key features:
+The Unstructured Ingest CLI and Unstructured Ingest Python offer the following key features:
 
 *   Data Ingestion: Facilitates the ingestion of data from various sources, such as databases, APIs, files, or streaming services.
     
@@ -37,7 +37,7 @@ The Ingest Library/CLI offers the following key features:
 
 ## Architecture
 
-The Ingest Library follows a modular architecture comprising the following components:
+The Unstructured Python Ingest library follows a modular architecture comprising the following components:
 
 *   Source Connectors: These components are responsible for fetching data from external sources, which can include databases, web services, file systems, or data streams.
     
@@ -54,15 +54,15 @@ The Ingest Library follows a modular architecture comprising the following compo
 
 ## Installation
 
-To install the Ingest Library, follow these steps:
+To install the Unstructured Python Ingest library, follow these steps:
 
 1.  Run `pip install unstructured` to install the latest version of the unstructured library which include the ingest code and the cli.
     
-2.  For specific connectors, run `pip install unstructured[CONNECTOR_DEPS]` where `CONNECTOR_DEPS` references the extra dependency label for a particular connector. For example, `pip install unstructured[s3]` will install the dependencies to interact with the s3 connectors. If these aren’t installed before hand, a convenient error message will be printed for you when you run the ingest CLI for the first time, prompting you with the correct pip command to run.
+2.  For specific connectors, run `pip install unstructured[CONNECTOR_DEPS]` where `CONNECTOR_DEPS` references the extra dependency label for a particular connector. For example, `pip install unstructured[s3]` will install the dependencies to interact with the s3 connectors. If these aren’t installed before hand, a convenient error message will be printed for you when you run the Unstructured Ingest CLI for the first time, prompting you with the correct pip command to run.
     
 3.  Once installed, you can run `unstructured-ingest --help` to get all the available commands.
     
 
 ## Configuration
 
-The Ingest Library requires configuration to define data sources, ingestion processes, and destination targets. For the CLI, configuration is done through the various cli parameters supported. When the library is run in python, those parameters that are exposed in the CLI map to python config classes, which are described in more detail in the configs section.
+The Unstructured Python Ingest library requires configuration to define data sources, ingestion processes, and destination targets. For the CLI, configuration is done through the various cli parameters supported. When the library is run in python, those parameters that are exposed in the CLI map to python config classes, which are described in more detail in the configs section.
