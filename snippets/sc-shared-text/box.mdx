@@ -1,18 +1,7 @@
-Connect Box to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to
-store structured outputs locally on your filesystem.
+Connect Box to your preprocessing pipeline, and use the Unstructured CLI or Python to batch process all your documents and store structured outputs locally on your filesystem.
 
-Make sure to have the Box dependencies installed:
+You will need: 
 
-    ```bash Shell
-    pip install "unstructured[box]"
-    ```
+import SharedBox from '/snippets/general-shared-text/box.mdx';
 
-Set up your App/Credentials to access Box folders/files (doesn't work with a free Box account):
-* Make sure the App service email is a collaborator for your folder (co-owner or editor).
-* Make sure you have the 'write all files' application scope.
-* Check 'Make api calls as the as-user header'.
-* Reauthorize the app after making any of the above changes.
-
-Specify the `box-app-config` parameter which is the path to a json file, available in the App Settings
-section of your Box App. Learn more about [Box app setup](https://developer.box.com/guides/authentication/jwt/jwt-setup/)
-and [the app config.json file](https://developer.box.com/guides/authentication/jwt/with-sdk/)
+<SharedBox />

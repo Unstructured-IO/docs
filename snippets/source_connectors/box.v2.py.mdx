@@ -1,0 +1,38 @@
+```python Python Ingest v2
+import os
+
+from unstructured.ingest.v2.pipeline.pipeline import Pipeline
+from unstructured.ingest.v2.interfaces import ProcessorConfig
+
+from unstructured.ingest.v2.processes.connectors.fsspec.box import (
+    BoxAccessConfig,
+    BoxConnectionConfig,
+    BoxIndexerConfig,
+    BoxDownloaderConfig
+)
+
+from unstructured.ingest.v2.processes.partitioner import PartitionerConfig
+from unstructured.ingest.v2.processes.chunker import ChunkerConfig
+from unstructured.ingest.v2.processes.embedder import EmbedderConfig
+from unstructured.ingest.v2.processes.connectors.local import LocalUploaderConfig
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=BoxIndexerConfig(remote_url=os.getenv("BOX_REMOTE_URL")),
+        downloader_config=BoxDownloaderConfig(download_dir="box-ingest-download"),
+        source_connection_config=BoxConnectionConfig(
+            access_config=BoxAccessConfig(
+                box_app_config=os.getenv("BOX_APP_CONFIG_PATH")
+            )
+        ),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="langchain-huggingface"),
+        uploader_config=LocalUploaderConfig(output_dir="box-ingest-output")
+    ).run()
+```
