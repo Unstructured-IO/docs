@@ -5,7 +5,11 @@ sidebarTitle: Python SDK
 
 The [Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) client allows you to send an individual file for processing by Unstructured API services. Whether you're using the
 Free Unstructured API, the Unstructured Serverless API, the Unstructured API on Azure/AWS, or your local
-deployment of the Unstructured API, you can access the API using the Python SDK. You'll need:
+deployment of the Unstructured API, you can access the API using the Python SDK. 
+
+<Note>To process files in batches instead, and to use non-local source and destination locations, see the options for [Batch processing and ingestion](/api-reference/ingest/overview).</Note>
+
+To use the Python SDK, you'll need:
 
 import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
@@ -116,10 +120,6 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
         print(e)
     ```
     </CodeGroup>
-
-    import SharedAPISingleFile from '/snippets/general-shared-text/multi-file-api-use-connectors.mdx';
-
-    <SharedAPISingleFile />
 
 ## Page splitting
 
