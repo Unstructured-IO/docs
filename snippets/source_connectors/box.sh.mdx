@@ -1,12 +1,12 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
 
 unstructured-ingest \
   box \
-  --box_app_config "$BOX_APP_CONFIG_PATH" \
-  --remote-url box://utic-test-ingest-fixtures \
-  --output-dir box-output \
-  --num-processes 2 \
-  --recursive \
-  --verbose
+    --box-app-config $BOX_APP_CONFIG_PATH \
+    --remote-url $BOX_REMOTE_URL \
+    --output-dir box-ingest-output \
+    --num-processes 2 \
+    --recursive \
+    --verbose
 ```

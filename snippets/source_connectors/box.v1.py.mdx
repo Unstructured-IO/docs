@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured.ingest.connector.fsspec.box import BoxAccessConfig, SimpleBoxConfig
@@ -13,15 +13,17 @@ if __name__ == "__main__":
     runner = BoxRunner(
         processor_config=ProcessorConfig(
             verbose=True,
-            output_dir="box-output",
+            output_dir="box-ingest-output",
             num_processes=2,
         ),
         read_config=ReadConfig(),
         partition_config=PartitionConfig(),
         connector_config=SimpleBoxConfig(
-            remote_url="box://utic-test-ingest-fixtures",
+            remote_url=os.getenv("BOX_REMOTE_URL"),
             recursive=True,
-            access_config=BoxAccessConfig(box_app_config=os.getenv("BOX_APP_CONFIG_PATH")),
+            access_config=BoxAccessConfig(
+                box_app_config=os.getenv("BOX_APP_CONFIG_PATH")
+            ),
         ),
     )
     runner.run()
