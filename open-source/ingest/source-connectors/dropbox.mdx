@@ -2,20 +2,30 @@
 title: Dropbox
 ---
 
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
 import SharedContentDropbox from '/snippets/sc-shared-text/dropbox.mdx';
 
 <SharedContentDropbox/>
 
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library.  The destination connector can be any of the ones supported. This example uses the local destination connector:
 
 import DropboxSh from '/snippets/source_connectors/dropbox.sh.mdx';
-import DropboxPy from '/snippets/source_connectors/dropbox.py.mdx';
+import DropboxPyV2 from '/snippets/source_connectors/dropbox.v2.py.mdx';
+import DropboxPyV1 from '/snippets/source_connectors/dropbox.v1.py.mdx';
 
 <CodeGroup>
 
   <DropboxSh />
 
-  <DropboxPy />
+  <DropboxPyV2 />
+
+  <DropboxPyV1 />
 
 </CodeGroup>
 
-For a full list of the options the Unstructured Ingest CLI accepts check `unstructured-ingest dropbox --help`.
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>
