@@ -10,7 +10,7 @@ You can perform ingestion with the following tools:
 
 - The [Unstructured Platform](/platform/overview), a no-code user interface, unlimited pay-as-you-go platform to get all of your data ready for Retrieval Augmented Generation (RAG) and model fine-tuning.
 - The [Unstructured Ingest CLI](#unstructured-ingest-cli), with unlimited pay-as-you-go and limited free options, that enable you to use command-line scripts to get all of your data ready for RAG and model fine-tuning.
-- The [Unstructured Ingest Python](#unstructured-ingest-python) library and connectors, with unlimited pay-as-you-go and limited free options, that enable you to use Python code to get all of your data ready for RAG and model fine-tuning.
+- The [Unstructured Ingest Python library](#unstructured-ingest-python-library), with unlimited pay-as-you-go and limited free options, that enable you to use Python code to get all of your data ready for RAG and model fine-tuning.
 
 <Info>
     The [Unstructured Python SDK](/api-reference/api-services/sdk-python) and Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts) can process only one file at a time.
@@ -32,7 +32,7 @@ flowchart LR
 
 The Unstructured Platform enables you to connect to many kinds of [sources](/platform/platform-source-connectors/overview) and [destinations](/platform/platform-destination-connectors/overview).
 
-If you use the Unstructured Ingest CLI or Unstructured Ingest Python, the source or destination can be a cloud storage location or a local location. For example:
+If you use the Unstructured Ingest CLI or the Unstructured Ingest Python library, the source or destination can be a cloud storage location or a local location. For example:
 
 ```mermaid
 flowchart LR
@@ -66,10 +66,10 @@ flowchart LR
 ```
 
 - This flow always happens for the Unstructured Platform. The Platform only allows sending files from cloud storage and sending processed data to cloud storage.
-- For the Unstructured CLI or Unstructured Ingest Python, to use this flow:
+- For the Unstructured Ingest CLI or the Unstructured Ingest Python library, to use this flow:
 
-  - When using the Unstructured CLI, include the `--partition-by-api` option and set `--api-key` and `--partition-endpoint` to a valid, matching Unstructured API key and API URL, respectively.
-  - When using Unstructured Ingest Python, set `partition_by_api=True` and `api_key` and set `partition_endpoint` to a valid, matching Unstructured API key and API URL, respectively.
+  - When using the Unstructured Ingest CLI, include the `--partition-by-api` option and set `--api-key` and `--partition-endpoint` to a valid, matching Unstructured API key and API URL, respectively.
+  - When using the Unstructured Ingest Python library, set `partition_by_api=True` and `api_key` and set `partition_endpoint` to a valid, matching Unstructured API key and API URL, respectively.
 
 ## Local ingestion options
 
@@ -81,10 +81,10 @@ flowchart LR
 ```
 
 - This flow never happens for the Unstructured Platform. The Platform does not allow sending files from a local destination to Unstructured or Unstructured sending processed data to a local destination.
-- For the Unstructured CLI or Unstructured Ingest Python, to use this flow:
+- For the Unstructured Ingest CLI or the Unstructured Ingest Python library, to use this flow:
 
-  - When using the Unstructured CLI, omit the `--partition-by-api`, `--api-key`, and `--partition-endpoint` options.
-  - When using the Unstructured Ingest Python, omit `partition_by_api` or explicitly set `parition_by_api=False`. Also omit `api_key` and `partition_endpoint`.
+  - When using the Unstructured Ingest CLI, omit the `--partition-by-api`, `--api-key`, and `--partition-endpoint` options.
+  - When using the Unstructured Ingest Python library, omit `partition_by_api` or explicitly set `parition_by_api=False`. Also omit `api_key` and `partition_endpoint`.
 
 ## Unstructured Ingest CLI
 
@@ -133,11 +133,11 @@ To begin using the CLI, see the quickstarts for the:
 - [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide#unstructured-cli)
 - [Free Unstructured API](/api-reference/api-services/free-api#unstructured-cli)
 
-## Unstructured Ingest Python
+## Unstructured Ingest Python library
 
-The Unstructured Ingest Python library and connectors enable you to use Python code to get all of your data ready for RAG and model fine-tuning.
+The Unstructured Ingest Python library enable you to use Python code to get all of your data ready for RAG and model fine-tuning.
 
-One approach to using Unstructured Ingest Python is installing Python and then running the following command to install the library and the default connectors:
+One approach to using the Unstructured Ingest Python library is installing Python and then running the following command to install the library and the default connectors:
 
 ```bash
 pip install unstructured
@@ -159,4 +159,4 @@ Some source and destination connectors provide newer v2 and older v1 implementat
 - [v1 fsspec connectors](https://github.com/Unstructured-IO/unstructured/tree/main/unstructured/ingest/connector/fsspec)
 - [v1 Notion connector](https://github.com/Unstructured-IO/unstructured/tree/main/unstructured/ingest/connector/notion)
 
-To begin using Unstructured Ingest Python, see the code examples for the [source](/api-reference/ingest/source-connectors/overview) and [destination](/api-reference/ingest/destination-connector/overview) connectors.
+To begin using the Unstructured Ingest Python library, see the code examples for the [source](/api-reference/ingest/source-connectors/overview) and [destination](/api-reference/ingest/destination-connector/overview) connectors.
