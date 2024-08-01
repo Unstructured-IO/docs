@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured.ingest.connector.mongodb import (
@@ -17,11 +17,14 @@ if __name__ == "__main__":
         read_config=ReadConfig(),
         partition_config=PartitionConfig(
             metadata_exclude=["filename", "file_directory", "metadata.data_source.date_processed"],
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
         ),
         connector_config=SimpleMongoDBConfig(
             uri=os.getenv("MONGODB_URI"),
-            database=os.getenv("MONGODB_DATABASE_NAME"),
-            collection=os.getenv("DESTINATION_MONGO_COLLECTION"),
+            database=os.getenv("MONGODB_DATABASE"),
+            collection=os.getenv("MONGODB_COLLECTION"),
         ),
     )
     runner.run()

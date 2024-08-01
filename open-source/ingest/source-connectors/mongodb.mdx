@@ -10,17 +10,20 @@ import SharedContentMongoDB from '/snippets/sc-shared-text/mongodb.mdx';
 
 <SharedContentMongoDB/>
 
-The upstream connector can be any of the ones supported, but for convenience here, showing a sample command using the upstream local connector.
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library.  The destination connector can be any of the ones supported. This example uses the local destination connector:
 
 import MongoDBSh from '/snippets/source_connectors/mongodb.sh.mdx';
-import MongoDBPy from '/snippets/source_connectors/mongodb.py.mdx';
+import MongoDBPyV1 from '/snippets/source_connectors/mongodb.v1.py.mdx';
 
 <CodeGroup>
 
   <MongoDBSh />
 
-  <MongoDBPy />
+  <MongoDBPyV1 />
 
 </CodeGroup>
 
-For a full list of the options the Unstructured Ingest CLI accepts check `unstructured-ingest <upstream connector> mongodb --help`.
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>
+

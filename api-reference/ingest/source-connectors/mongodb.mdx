@@ -2,60 +2,25 @@
 title: MongoDB
 ---
 
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
 import SharedContentMongoDB from '/snippets/sc-shared-text/mongodb.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
 <SharedContentMongoDB/>
+<SharedAPIKeyURL/>
 
-Make sure to set the `--partition-by-api` flag and pass in your API key with `--api-key`:
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library. The destination connector can be any of the ones supported. This example uses the local destination connector:
+
+import MongoDBAPISh from '/snippets/source_connectors/mongodb.sh.mdx';
+import MongoDBAPIPyV1 from '/snippets/source_connectors/mongodb.v1.py.mdx';
 
 <CodeGroup>
-```bash Shell
-#!/usr/bin/env bash
 
-unstructured-ingest \
-  mongodb \
-  --metadata-exclude filename,file_directory,metadata.data_source.date_processed \
-  --uri "$MONGODB_URI" \
-  --database "$MONGODB_DATABASE" \
-  --collection "$MONGODB_COLLECTION" \
-  --output-dir mongodb-ingest-output \
-  --num-processes 2 \
-  --partition-by-api \
-  --api-key "$UNSTRUCTURED_API_KEY"
-```
+  <MongoDBAPISh />
 
-```python Python
-import os
-
-from unstructured.ingest.connector.mongodb import (
-    SimpleMongoDBConfig,
-)
-from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-from unstructured.ingest.runner import MongoDBRunner
-
-if __name__ == "__main__":
-    runner = MongoDBRunner(
-        processor_config=ProcessorConfig(
-            verbose=True,
-            output_dir="mongodb-ingest-output",
-            num_processes=2,
-        ),
-        read_config=ReadConfig(),
-        partition_config=PartitionConfig(
-            metadata_exclude=["filename", "file_directory", "metadata.data_source.date_processed"],
-            partition_by_api=True,
-            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-        ),
-        connector_config=SimpleMongoDBConfig(
-            uri=os.getenv("MONGODB_URI"),
-            database=os.getenv("MONGODB_DATABASE_NAME"),
-            collection=os.getenv("DESTINATION_MONGO_COLLECTION"),
-        ),
-    )
-    runner.run()
-```
+  <MongoDBAPIPyV1 />
 
 </CodeGroup>
-
-Additionally, if you're using Unstructured Serverless API, your locally deployed Unstructured API, or an Unstructured API
-deployed on Azure or AWS, you also need to specify the API URL via the `--partition-endpoint` argument.
