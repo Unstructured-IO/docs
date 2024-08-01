@@ -191,7 +191,7 @@ For more information about the `partition_docx` function, you can check the [sou
 
 The `partition_email` function partitions `.eml` documents and works with exports from email clients such as Microsoft Outlook and Gmail. The `partition_email` takes a filename, file-like object, or raw text as input and produces a list of document `Element` objects as output. Also `content_source` can be set to `text/html` (default) or `text/plain` to process the html or plain text version of the email, respectively. In order for `partition_email` to return the header information as elements, `include_headers` must be set to `True`. Header information is captured in element metadata regardless of the `include_headers` setting.
 
-| Header     | Element Type | Metadata Name    |
+| Header     | Element type | Metadata name    |
 | ---        | ---          | ---              |
 | Subject    | Subject      | subject          |
 | From       | Sender       | sent_from        |
