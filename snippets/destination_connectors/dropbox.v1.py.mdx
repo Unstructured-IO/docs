@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v2
 import os
 
 from unstructured.ingest.connector.fsspec.dropbox import (
@@ -24,8 +24,8 @@ from unstructured.ingest.runner.writers.fsspec.dropbox import (
 def get_writer() -> Writer:
     return DropboxWriter(
         connector_config=SimpleDropboxConfig(
-            access_config=DropboxAccessConfig(token=os.getenv("DROPBOX_TOKEN")),
-            remote_url="dropbox://unstructured/war-and-peace-output",
+            access_config=DropboxAccessConfig(token=os.getenv("DROPBOX_ACCESS_TOKEN")),
+            remote_url=os.getenv("DROPBOX_REMOTE_URL"),
         ),
         write_config=DropboxWriteConfig(),
     )
@@ -47,7 +47,8 @@ if __name__ == "__main__":
         chunking_config=ChunkingConfig(chunk_elements=True),
         embedding_config=EmbeddingConfig(
             provider="langchain-huggingface",
-            api_key=None
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
         ),
         writer=writer,
         writer_kwargs={},
