@@ -3,6 +3,8 @@ title: Free Unstructured API
 description: This page describes how to obtain an API key to use with the free Unstructured API, the limitations of the free Unstructured API, and provides a quickstart example.
 ---
 
+<Info>The Free Unstructured API is different than the free 14-day trial for the [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide).</Info>
+
 ## Get an API key
 
 The Free Unstructured API requires authentication via an API key. Here's how you can obtain your API key:
@@ -35,8 +37,13 @@ import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx'
 
 ## Quickstart
 
-Let's say you want to preprocess an `*.eml` file using the free Unstructured API. There are several ways
-you can do this, which all lead to the same result, so pick your preferred method: [POST](#post-request), [CLI](#unstructured-ingest-cli), [SDK](#unstructured-python-sdk-and-javascript-typescript-sdk), or [open source](#calling-the-unstructured-api-from-the-unstructured-open-source-library).
+These examples use your local machine. They preprocess a single-file source (input) file on your local machine, and the Free Unstructured API delivers the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
+
+<Info>
+    These examples work with only a single file at a time and only with local source and destination locations. To process multiple files at a time, or to use non-local source or destination locations, use the [Unstructured Python Ingest CLI](/ingestion/overview#unstructured-ingest-cli) or the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library) instead.
+</Info> 
+
+There are several ways to use the Free Serverless API, which all lead to the same result, so pick your preferred method: [POST](#post-request), [CLI](#unstructured-ingest-cli), [SDK](#unstructured-python-sdk-and-javascript-typescript-sdk), or [open source](#calling-the-free-unstructured-api-from-the-unstructured-open-source-library).
 
 ### POST request
 
@@ -63,17 +70,13 @@ After the command successfully runs, see the results in the specified output pat
 
 If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 
-<Info>`POST` requests support using only local machine paths as the source (input) for the file to preprocess and as the destination (output) that Unstructured sends the processed data to. To specify a source or destination other than a local machine, use the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli) or the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library) instead.</Info>
-
-import SharedPOSTSingleFile from '/snippets/general-shared-text/post-api-single-file.mdx';
-
-<SharedPOSTSingleFile />
-
 [Learn more about how to use POST requests](/api-reference/api-services/post-requests).
 
 ### Unstructured Ingest CLI
 
-To work with the Free Unstructured API by using the Unstructured Ingest CLI, you will need to:
+<Info>Although this example works with only a single file at a time and only with local source and destination locations, the Unstructured Ingest CLI works with multiple files at a time and with non-local source and destination locations. [Learn more](/ingestion/overview#unstructured-ingest-cli).</Info>
+
+To work with the Free Unstructured API by using the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli), you will need to:
 
 - Install Python, and then install the CLI package:
 
@@ -86,14 +89,14 @@ To work with the Free Unstructured API by using the Unstructured Ingest CLI, you
 
 Now, use the CLI to call the API, replacing:
 
-- `<local/path/to/input/files>` with the path to the source (input) files on your local machine.
+- `<local/path/to/input/files>` with the path to the source (input) file on your local machine.
 - `<local/path/to/output/files>` with the path to the destination (output) on your local machine where Unstructured will deliver the processed data. 
 
 ```bash CLI
 unstructured-ingest \
   local \
-    --input-path <local/path/to/input/files> \
-    --output-dir <local/path/to/output/files> \
+    --input-path <local/path/to/input/file> \
+    --output-dir <local/path/to/output/file> \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
     --partition-endpoint $UNSTRUCTURED_API_URL
@@ -103,17 +106,11 @@ After the command successfully runs, see the results in the specified output pat
 
 If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 
-To learn more about how to use the `local` command, run the command `unstructured-ingest local --help`.
-
-To use source and destination locations outside of your local machine, see the documentation for the available [source](/api-reference/ingest/source-connectors/overview) and [destination](/api-reference/ingest/destination-connector/overview) connectors.
-
 ### Unstructured Python SDK and JavaScript/TypeScript SDK
 
 To work with the Free Unstructured API in Python or JavaScript, use the
-Unstructured [Python SDK](https://github.com/Unstructured-IO/unstructured-python-client), or
-[JavaScript SDK](https://github.com/Unstructured-IO/unstructured-js-client).
-
-<Info>The JavaScript/TypeScript SDK supports using only local machine paths as the source (input) for the files to preprocess and as the destination (output) that Unstructured sends the processed data to. To specify a source or destination other than a local machine, use the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli) or the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library) instead.</Info>
+[Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) or the
+[Unstructured JavaScript SDK](https://github.com/Unstructured-IO/unstructured-js-client).
 
 <CodeGroup>
 ```bash Python
@@ -229,15 +226,11 @@ client.general.partition({
 
 If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 
-import SharedAPISingleFile from '/snippets/general-shared-text/multi-file-api-use-connectors.mdx';
-
-<SharedAPISingleFile />
-
 Learn more about how to use the ]Unstructured Python SDK](/api-reference/api-services/sdk-python) and [Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts).
 
-### Calling the Unstructured API from the Unstructured open source library
+### Calling the Free Unstructured API from the Unstructured open source library
 
-You can call the Unstructured Serverless API directly from the Unstructured open source library. Unstructured recommends this approach only for rapid local script or code prototyping or simple proofs-of-concept, not for production scenarios:
+You can call the Free Unstructured API directly from the Unstructured open source library. Unstructured recommends this approach only for rapid local script or code prototyping or simple proofs-of-concept, not for production scenarios.
 
 You will need to: 
 
@@ -281,10 +274,6 @@ with open(output_filepath, "w") as file:
 ```
 
 If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
-
-import SharedPartitionViaAPISingleFile from '/snippets/general-shared-text/multi-file-partition-via-api.mdx';
-
-<SharedPartitionViaAPISingleFile />
 
 [Learn more about how to use the Unstructured open source library](/open-source/introduction/overview).
 

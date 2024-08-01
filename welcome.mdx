@@ -9,7 +9,7 @@ description: "Unstructured provides a platform and tools to ingest and process u
 Unstructured offers three products:
 
 <Icon icon="dash" iconType="duotone"/>&nbsp;&nbsp;<Icon icon="computer" />&nbsp;&nbsp;[Unstructured Platform](/platform/overview) - No-code UI. Production-ready. Pay as you go.<br/><br/>
-<Icon icon="dash" iconType="duotone"/>&nbsp;&nbsp;<Icon icon="square-terminal" />&nbsp;&nbsp;[Unstructured Serverless API Services](/api-reference/api-services/overview) - Use scripts or code. Production-ready. Pay as you go. (There is also a non-production, free edition with [limits](/api-reference/api-services/free-api#free-unstructured-api-limitations).)<br/><br/>
+<Icon icon="dash" iconType="duotone"/>&nbsp;&nbsp;<Icon icon="square-terminal" />&nbsp;&nbsp;[Unstructured Serverless API services](/api-reference/api-services/overview) - Use scripts or code. Production-ready. Pay as you go. (There is also a non-production, free edition with [limits](/api-reference/api-services/free-api#free-unstructured-api-limitations).)<br/><br/>
 <Icon icon="dash" iconType="duotone"/>&nbsp;&nbsp;<Icon icon="door-open" />&nbsp;&nbsp;[Unstructured open source library](/open-source/introduction/overview/) - Use scripts or code. Not production-ready. [Limited](/open-source/introduction/overview#limits).
 
 Learn more about these products:
@@ -21,9 +21,9 @@ Learn more about these products:
   [Learn more](/platform/overview).<br/><br/>
   <Icon icon="blog"/>&nbsp;&nbsp;[Read the announcement](https://unstructured.io/blog/introducing-unstructured-platform).
 </Card>
-<Card title="Unstructured Serverless API Services" icon="square-terminal" href="/api-reference/api-services/overview">
-  <br/>Use scripts or code to call the Unstructured Ingest CLI, SDKs, or REST API to get all of your data RAG-ready.<br/><br/>
-  Unstructured Serverless API Services have a [Serverless](api-reference/api-services/saas-api-development-guide) pay-as-you-go edition and a [Free](/api-reference/api-services/free-api_) [limited](/api-reference/api-services/free-api#free-unstructured-api-limitations) edition that process data on Unstructured-hosted compute resources.<br/><br/>
+<Card title="Unstructured Serverless API services" icon="square-terminal" href="/api-reference/api-services/overview">
+  <br/>Use scripts or code to call the Unstructured Ingest CLI or Ingest Python library, the Unstructured Python or JavaScript/TypeScript SDKs, or with a direct POST request to the Unstructured API, to get all of your data RAG-ready.<br/><br/>
+  Unstructured Serverless API services have a [Serverless](api-reference/api-services/saas-api-development-guide) pay-as-you-go edition and a [Free](/api-reference/api-services/free-api_) [limited](/api-reference/api-services/free-api#free-unstructured-api-limitations) edition that process data on Unstructured-hosted compute resources.<br/><br/>
   If you need to use compute resources that you host instead, there are also [Azure](/api-reference/api-services/azure) pay-as-you-go and [AWS](/api-reference/api-services/aws) pay-as-you-go editions; these editions process data by using the Unstructured API installed on compute resources hosted in your own Azure or AWS account.<br/><br/>
   [Try the quickstart](#quickstart-unstructured-api-service).<br/><br/>
   [Learn more](/api-reference/api-services/overview).<br/><br/>
@@ -40,7 +40,7 @@ Learn more about these products:
 
 ### <Icon icon="computer" />   Quickstart: Unstructured Platform
 
-<Info>If you want to use your local machine for either the source (input) or the destination (output) location, you cannot use this quickstart. You must run scripts on your local machine instead: skip to the [Quickstart: Unstructured Serverless API Services](#quickstart-unstructured-api-service) or [Quickstart: Unstructured open source library](#quickstart-unstructured-open-source-library), later in this article.</Info>
+<Info>If you want to use your local machine for either your source (input) files, or the destination (output) location for Unstructured to deliver the processed data, you cannot use this quickstart. You must run code on your local machine instead: skip to the [Quickstart: Unstructured Serverless API services](#quickstart-unstructured-api-service) or [Quickstart: Unstructured open source library](#quickstart-unstructured-open-source-library), later in this article.</Info>
 
 import SharedPlatform from '/snippets/quickstarts/platform.mdx';
 
@@ -52,9 +52,13 @@ import SharedPlatform from '/snippets/quickstarts/platform.mdx';
 
 ### <Icon icon="square-terminal" />   Quickstart: Unstructured API service
 
-This quickstart uses your local machine for the source (input) and destination (output) locations, and the [Unstructured Python SDK](/api-reference/api-services/sdk). Data is processed on Unstructured-hosted compute resources.
+This quickstart uses your local machine, with the [Unstructured Python SDK](/api-reference/api-services/sdk) installed. It preprocess a single-file source (input) file on your local machine, and it uses the Free Unstructured API to deliver the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
 
-<Info>The Free Unstructured API has [limits](/api-reference/api-services/free-api#free-unstructured-api-limitations). To remove these limits, sign up for the [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide).</Info>
+<Info>
+    The Free Unstructured API has [limits](/api-reference/api-services/free-api#free-unstructured-api-limitations). To remove these limits, sign up for the [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide).
+    
+    The Unstructured Python SDK (and the Unstructured JavaScript/TypeScript SDK) work with only a single file at a time and only with local source and destination locations. To process multiple files at a time, or to use non-local source or destination locations, use the [Unstructured Python Ingest CLI](/ingestion/overview#unstructured-ingest-cli) or the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library) instead.
+</Info>
 
 You will need:
 
@@ -126,9 +130,7 @@ You will need:
         except Exception as e:
             print(e)
         ```
-
-        <Info>The Python SDK works with only a single file. To process multiple files at a time, use the [Unstructured Python Ingest CLI](/ingestion/overview#unstructured-ingest-cli) or the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library) instead.</Info>
-    </Step>
+        </Step>
     <Step title="View the processed data">
         Go to your destination location to view the processed data.
     </Step>
@@ -140,9 +142,13 @@ You will need:
 
 ### <Icon icon="door-open" />   Quickstart: Unstructured open source library
 
-This quickstart uses your local machine for the source (input) and destination (output) locations and for local data processing. It does not call Unstructured Serverless API Services.
+This quickstart uses your local machine for a single-file source (input) location, and a destination (output) location for the processed data. This quickstart also uses local data processing. It does not call Unstructured Serverless API services.
 
-<Info>The open source library is [limited](/open-source/introduction/overview#limits) compared to the [Unstructured Platform](/platform/overview) and the [Unstructured Serverless API](/api-reference/api-services/overview).</Info>
+<Info>
+    The open source library is [limited](/open-source/introduction/overview#limits) compared to the [Unstructured Platform](/platform/overview) and [Unstructured Serverless API services](/api-reference/api-services/overview).
+    
+    The open source library is designed primarily to work with only a single file at a time and only with local source and destination locations. To process multiple files at a time, or to use non-local source or destination locations, use the [Unstructured Python Ingest CLI](/ingestion/overview#unstructured-ingest-cli) or the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library) instead.    
+</Info>
 
 You will need:
 
@@ -184,8 +190,6 @@ You will need:
         with open(output_filepath, "w") as file:
             file.write(json_elements)
         ```
-
-        <Info>To process multiple files at a time, use the [Unstructured Python Ingest CLI](/ingestion/overview#unstructured-ingest-cli) or the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library) instead.</Info>
     </Step>
     <Step title="View the processed data">
         Go to your destination location to view the processed data.
