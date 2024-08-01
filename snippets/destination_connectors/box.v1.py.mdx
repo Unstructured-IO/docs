@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured.ingest.connector.fsspec.box import (
@@ -25,7 +25,7 @@ def get_writer() -> Writer:
     return BoxWriter(
         connector_config=SimpleBoxConfig(
             access_config=BoxAccessConfig(box_app_config=os.getenv("BOX_APP_CONFIG_PATH")),
-            remote_url="box://unstructured/war-and-peace-output",
+            remote_url=os.getenv("BOX_REMOTE_URL"),
         ),
         write_config=BoxWriteConfig(),
     )
@@ -43,7 +43,11 @@ if __name__ == "__main__":
             input_path="example-docs/book-war-and-peace-1225p.txt",
         ),
         read_config=ReadConfig(),
-        partition_config=PartitionConfig(),
+        partition_config=PartitionConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")
+        ),
         chunking_config=ChunkingConfig(chunk_elements=True),
         embedding_config=EmbeddingConfig(
             provider="langchain-huggingface",
