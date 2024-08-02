@@ -2,11 +2,11 @@ A standard partition configuration is a collection of parameters designed to ove
 
 ## Configs for Partitioning
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`additional_partition_args`
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`additional_partition_args`: A JSON string representation of any values to pass through to the `partition` function.
 
 *   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`encoding`: The encoding method used to decode the text input. If None, utf-8 will be used.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`ocr_languages`: The languages present in the document, for use in partitioning, OCR, or both. For partitioning image or PDF documents with Tesseract, you must first install the appropriate Tesseract language pack if running with the Unstructured open source library. For other partitions, the language is detected by using a naive Bayesian filter with langdetect. Multiple languages indicate that the text could be in any of the specified languages.
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`ocr_languages`: The languages present in the document, for use in partitioning, OCR, or both. Multiple languages indicate that the text could be in any of the specified languages.
 
 *   <Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`pdf_infer_table_structure`: <Icon icon="ban"/>&nbsp;&nbsp;**Deprecated!** Use `skip_infer_table_types` to opt out of table extraction for any file type. If `False` and `strategy=hi_res`, no `Table` elements will be extracted from PDF files regardless of `skip_infer_table_types` contents.
 
@@ -22,7 +22,7 @@ A standard partition configuration is a collection of parameters designed to ove
 
 *   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`flatten_metadata`: Default: `False`. If set to `True`, the hierarchical metadata structure is flattened to have all values exist at the top level.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`hi_res_model_name`
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`hi_res_model_name`: The model to use when `strategy` is set to `hi_res`. Available values are `layout_v1.0.0` (the default) and `yolox`.
 
 *   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`metadata_exclude`: Values from the `metadata` field to exclude from the output.
 
