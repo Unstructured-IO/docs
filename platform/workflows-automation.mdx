@@ -1,5 +1,5 @@
 ---
-title: Using workflows
+title: Workflows
 ---
 
 ## Workflows dashboard
@@ -18,6 +18,14 @@ Workflows are crucial for establishing a systematic approach to managing data fl
 
 ![workflow overview](/img/platform/03a-Workflow-overview.png)
 
+<Warning>
+    You must first have an existing source connector and destination connector to add to the workflow.
+
+    If you do not have an existing connector for either your target source (input) or destination (output) location, stop. [Create the source connector](/platform/platform-source-connectors/overview), [create the destination connector](/platform/platform-destination-connectors/overview), and then return here.
+
+    To see your existing connectors, on the sidebar, click **Sources** or **Destinations**.
+</Warning>
+
 To create a workflow:
 
 1. On the sidebar, click **Workflows**.
@@ -31,7 +39,7 @@ The key components of a workflow include:
     
 *   **Schedule Type**: How frequently the workflow runs. While scheduling is available for regular automated execution daily or weekly, workflows can also be triggered on a one-off basis as needed: see [Run a Job](/platform/jobs-scheduling#run-a-job).
     
-*   **Sources** and **Destination**: The data's origin or input location (**Sources**) and endpoint or output location (**Destination**) for the workflow. You can configure multiple source connectors to aggregate data from various origins. You can also configure multiple destination connectors to replicate the processed data in various locations. To learn more, see [Source Connectors](/platform/platform-source-connectors/overview) and [Destination Connectors](/platform/platform-destination-connectors/overview).
+*   **Sources** and **Destination**: The data's origin or input location (**Sources**) and endpoint or output location (**Destination**) for the workflow. You can configure multiple source connectors to aggregate data from various origins. You can also configure multiple destination connectors to replicate the processed data in various locations. To learn more, see [Sources](/platform/platform-source-connectors/overview) and [Destinations](/platform/platform-destination-connectors/overview).
     
 *   **Strategy**: The data processing strategy. For strategy options, see "Strategy" later in this section.
 
@@ -79,6 +87,10 @@ To adjust a workflow's data processing behavior, set one or more of the followin
         
     *   **Bedrock**: Enter your **AWS Access Key**, **AWS Secret Key**, and **AWS Region** to connect to AWS Bedrock embedding models. [Get an AWS access key and secret key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html). [Learn more](/open-source/core-functionality/embedding#bedrockembeddingencoder).
         
+## Run a workflow
+
+To run a workflow, [run a job](/platform/jobs-scheduling#run-a-job) for that workflow.
+
 ## Manage a workflow
 
 ![workflow actions](/img/platform/03c-Workflows-Actions.png)

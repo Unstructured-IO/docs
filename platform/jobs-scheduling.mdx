@@ -1,5 +1,5 @@
 ---
-title: Using jobs
+title: Jobs
 ---
 ## Jobs dashboard
 
@@ -9,7 +9,7 @@ To view the jobs dashboard, on the sidebar, click **Jobs**.
 
 The jobs dashboard provides a centralized view for managing and monitoring the execution of data processing tasks within your workflows.
 
-The jobs dashboard lists each job and its associated workflow's **Name**, **ID**, **Status**, and **Execution Start Time**.
+The jobs dashboard lists each job and its associated **Workflow** name, **ID**, **Status**, and **Execution Start Time**.
 
 Each job's status, shown in the **Status** column, can be:
     
@@ -27,43 +27,23 @@ Each job's status, shown in the **Status** column, can be:
 
 ![create adhoc job](/img/platform/04b-Create-Adhoc-Job.png)
 
+<Warning>
+    You must first have an existing workflow to run a job against.
+
+    If you do not have an existing workflow, stop. [Create a workflow](/platform/workflows-automation#create-a-workflow), and then return here.
+
+    To see your existing workflows, on the sidebar, click **Workflows**.
+</Warning>
+
 1.  On the sidebar, click **Jobs**, and then click **Run Job**.
     
-2.  In the **Select a Workflow or create a new one** dropdown list, select an existing workflow, and then click **Run**.
-
-3.  To create a new workflow for this job, in the **Select a Workflow or create a new one** dropdown list, click **New**. Fill in the following fields, and then click **Run**.
-    
-    *   **Sources**: The existing source connector for the job. This determines where to get the files to be processed. If you do not have an existing source connector, you must stop here, click **Close**, and create one. [Learn how](/platform/platform-source-connectors/overview).
-        
-    *   **Destination**: The existing destination connector for the job. This determines where the processed data will be sent. If you do not have an existing destination connector, you must stop here, click **Close**, and create one. [Learn how](/platform/platform-destination-connectors/overview).
-        
-    *   **Strategy**: Select the processing strategy for the data:
-
-        *   **Auto** (default strategy): Chooses the partitioning strategy based on document characteristics and the function `kwargs`.
-        
-        *   **Fast**: Leverages traditional NLP extraction techniques to pull all text elements quickly. This strategy is not good for image-based file types.
-        
-        *   **Hi Res**: Uses the document layout to gain additional information about document elements. We recommend using this strategy if your use case is highly sensitive to correct classifications for document elements.
-        
-        *   **OCR Only**: Leverages Optical Character Recognition to extract text from the image-based files.
-
-    *   **Settings**: Select one or more of the following boxes to enable these behaviors:
-        
-        *   **Include Page Breaks**: The output includes page breaks if the file type supports it. [Learn more](/api-reference/api-services/api-parameters#include-page-breaks).
-            
-        *   **Infer Table Structure**: Extract tables from PDFs or images.
-            
-        *   **Keep XML Tags**: The output retains the XML tags. This only applies to "partition\_xml". [Learn more](/api-reference/api-services/api-parameters#xml-keep-tags).
-            
-        *   **Reprocess all documents**: The workflow processes any previously processed documents.
-
-        *   **Retry failed documents (on next run)**: The next time this workflow runs, the workflow attempts to reprocess any failed documents from the previous run.
+2.  In the **Select a Workflow** dropdown list, select an existing workflow, and then click **Run**.
 
 ## Monitor a job
 
 ![job detail status](/img/platform/04c-Jobs-Detail-Status.png)
 
-The **Job Details** page is a comprehensive section for monitoring the specific details of jobs executed within a particular workflow. To access this page, click the specific **Workflow** or **ID** link on the jobs dashboard.
+The **Job Details** page is a comprehensive section for monitoring the specific details of jobs executed within a particular workflow. To access this page, click the specific job's **ID** link on the jobs dashboard.
 
 The **Job Details** page shows:
 
