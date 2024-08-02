@@ -1,12 +1,14 @@
 ---
-title: Sending POST requests to Unstructured API
-description: This page provides some examples of accessing Unstructured API via direct calls.
+title: Process an individual file by making a direct POST request
+sidebarTitle: POST request
 ---
 
-## Basics
+Whether you're using the free Unstructured API, the Unstructured Serverless API, Unstructured API on Azure/AWS, or your local
+deployment of Unstructured API, you can work with the API by sending single-file POST requests to it. 
 
-Whether you're using the free Unstructured API, the Unstructured Serverless API, Unstructured API on Azure/AWS or your local
-deployment of Unstructured API, you can work with the API by sending POST requests to it. You will need:
+<Note>To process files in batches instead, and to use non-local source and destination locations, see the options for [Batch processing and ingestion](/api-reference/ingest/overview).</Note>
+
+To make POST requests, you will need:
 
 import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
@@ -20,7 +22,8 @@ Let's start with a simple example in which you send an email file (`*.eml`) to p
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
   -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
-  -F 'files=@sample-docs/family-day.eml'
+  -F 'files=@sample-docs/family-day.eml' \
+  -o 'sample-docs/family-day-output.json'
 ```
 
 In the example above we're sending the request to the Free Unstructured API, in which case the API URL is the same for all

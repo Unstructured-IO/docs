@@ -2,29 +2,32 @@ A standard partition configuration is a collection of parameters designed to ove
 
 ## Configs for Partitioning
 
-*   `pdf_infer_table_structure`: Deprecated! Use skip\_infer\_table\_types to opt out of table extraction for any file type. If False and strategy=hi\_res, no Table Elements will be extracted from pdf files regardless of skip\_infer\_table\_types contents.
-    
-*   `skip_infer_table_types`: List of document types that you want to skip table extraction with.
-    
-*   `strategy (default auto)`: The strategy to use for partitioning PDF/image. Uses a layout detection model if set to ‘hi\_res’, otherwise partition simply extracts the text from the document and processes it.
-    
-*   `ocr_languages`: The languages present in the document, for use in partitioning and/or OCR. For partitioning image or pdf documents with Tesseract, you’ll first need to install the appropriate Tesseract language pack if running via local unstructured library. For other partitions, language is detected using naive Bayesian filter via langdetect. Multiple languages indicates text could be in either language.
-    
-*   `encoding`: The encoding method used to decode the text input. If None, utf-8 will be used.
-    
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`additional_partition_args`: A JSON string representation of any values to pass through to the `partition` function.
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`encoding`: The encoding method used to decode the text input. If None, utf-8 will be used.
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`ocr_languages`: The languages present in the document, for use in partitioning, OCR, or both. Multiple languages indicate that the text could be in any of the specified languages.
+
+*   <Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`pdf_infer_table_structure`: <Icon icon="ban"/>&nbsp;&nbsp;**Deprecated!** Use `skip_infer_table_types` to opt out of table extraction for any file type. If `False` and `strategy=hi_res`, no `Table` elements will be extracted from PDF files regardless of `skip_infer_table_types` contents.
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`skip_infer_table_types`: List of document types that you want to skip table extraction with.
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`strategy`: Default: `auto`. The strategy to use for partitioning PDF and image files. Uses a layout detection model if set to `hi_res`. Otherwise, partitioning simply extracts the text from the document and processes it.
 
 ## Configs for the Process
 
-*   `fields_include (default ["element_id", "text", "type", "metadata", "embeddings"])`: Fields to include in the output JSON.
-    
-*   `flatten_metadata (default False)`: If set to true, the hierarchical metadata structure is flattened to have all values exist at the top level.
-    
-*   `metadata_exclude`: Values from the metadata to exclude from the output
-    
-*   `metadata_include`: If provided, only these values will be preserved in the metadata output.
-    
-*   `partition_endpoint (default https://api.unstructured.io)`: If using the api, will send requests to this endpoint.
-    
-*   `partition_by_api (default False)`: If set to True, will use the api to run partitioning.
-    
-*   `api_key`: api key needed to access the Unstructured api.
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`api_key`: api key needed to access the Unstructured api.
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`fields_include`: Fields to include in the output JSON. By default, the following fields are included: `element_id`, `text`, `type`, `metadata`, and `embeddings`.
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`flatten_metadata`: Default: `False`. If set to `True`, the hierarchical metadata structure is flattened to have all values exist at the top level.
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`hi_res_model_name`: The model to use when `strategy` is set to `hi_res`. Available values are `layout_v1.0.0` (the default) and `yolox`.
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`metadata_exclude`: Values from the `metadata` field to exclude from the output.
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`metadata_include`: If provided, only the specified fields are preserved in the `metadata` output.
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`partition_by_api`: Default: `False`. If set to `True`, uses Unstructured API services to run partitioning.
+
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`partition_endpoint`: If using Unstructured API services, requests are sent to this API URL.

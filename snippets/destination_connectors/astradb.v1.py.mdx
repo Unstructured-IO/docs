@@ -1,0 +1,65 @@
+```python Python Ingest v1
+import os
+
+from unstructured.ingest.connector.astradb import (
+    AstraDBAccessConfig,
+    AstraDBWriteConfig,
+    SimpleAstraDBConfig,
+)
+from unstructured.ingest.connector.local import SimpleLocalConfig
+from unstructured.ingest.interfaces import (
+    ChunkingConfig,
+    EmbeddingConfig,
+    PartitionConfig,
+    ProcessorConfig,
+    ReadConfig,
+)
+from unstructured.ingest.runner import LocalRunner
+from unstructured.ingest.runner.writers.astradb import (
+    AstraDBWriter,
+)
+from unstructured.ingest.runner.writers.base_writer import Writer
+
+
+def get_writer() -> Writer:
+    return AstraDBWriter(
+        connector_config=SimpleAstraDBConfig(
+            access_config=AstraDBAccessConfig(
+                api_endpoint=os.getenv("ASTRA_DB_API_ENDPOINT"),
+                token=os.getenv("ASTRA_DB_APPLICATION_TOKEN"),
+            ),
+            namespace=os.getenv("ASTRA_DB_NAMESPACE"),
+            collection_name=os.getenv("ASTRA_DB_COLLECTION"),
+            embedding_dimension=os.getenv("ASTRA_DB_EMBEDDING_DIMENSIONS"),
+        ),
+        write_config=AstraWriteConfig(batch_size=80),
+    )
+
+
+if __name__ == "__main__":
+    writer = get_writer()
+    runner = LocalRunner(
+        processor_config=ProcessorConfig(
+            verbose=True,
+            output_dir="local-output-to-astradb",
+            num_processes=2,
+        ),
+        connector_config=SimpleLocalConfig(
+            input_path="example-docs/book-war-and-peace-1p.txt",
+        ),
+        read_config=ReadConfig(),
+        partition_config=PartitionConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+        ),
+        chunking_config=ChunkingConfig(chunk_elements=True),
+        embedding_config=EmbeddingConfig(
+            provider="langchain-huggingface",
+            api_key=None,
+        ),
+        writer=writer,
+        writer_kwargs={},
+    )
+    runner.run()
+```

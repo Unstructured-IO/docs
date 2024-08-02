@@ -1,6 +1,6 @@
 ---
-title: Frequently Asked Questions
-sidebarTitle: Frequently Asked Questions
+title: Frequently asked questions
+sidebarTitle: Frequently asked questions
 ---
 
 ### Get in touch
@@ -43,8 +43,8 @@ Yes, you can still use your old API keys. We will migrate all the user keys to t
 ### How can I generate and use a new API Key to process my documents?
 
 When you log in to the Serverless API dashboard, you can access your API keys by clicking the `API Keys` link in the side navigation.
-Under the `Actions` column, click the `Copy` icon to copy the key or the boilerplate codes to process the documents
-using the Unstructured REST API POST with `curl`, or the Unstructured CLI, or the [Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) or [Unstructured JavaScript/Typescript SDK](https://github.com/Unstructured-IO/unstructured-js-client).
+Under the `Actions` column, click the `Copy` icon to copy the key or an example code snippet to process the documents
+using the Unstructured REST API, or the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli), or the [Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) or [Unstructured JavaScript/Typescript SDK](https://github.com/Unstructured-IO/unstructured-js-client).
 
 ### What is the new Unstructured API pricing structure?
 
@@ -123,24 +123,6 @@ curl -X 'POST' \
 For comprehensive language support, refer to the [Tesseract documentation](https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html), which provides a detailed list of supported languages and installation guidelines.
 
 <Note>You can still use ``ocr_languages`` kwarg, but this parameter is being deprecated in favor of ``languages`` kwarg.</Note>
-
-### How is the Serverless API used alongside Chipper model?
-
-Unstructured Serverless API supports using the Chipper models. To define the model, you can pass the hi_res_model_name as shown in the following example:
-
-``` Curl Chipper
-curl -X 'POST' \
-'$UNSTRUCTURED_API_URL' \
-  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: multipart/form-data' \
-  -F 'files=@sample-docs/layout-parser-paper.pdf' \
-  -F 'strategy=hi_res' \
-  -F 'hi_res_model_name=chipper'  \
-  | jq -C . | less -R
-  ```
-
-Go here to learn more about the available [models](/open-source/concepts/models) and [partioning strategies](/open-source/concepts/partitioning-strategies).
 
 ### Can I employ the basic chunking strategy with the Unstructured API? 
 

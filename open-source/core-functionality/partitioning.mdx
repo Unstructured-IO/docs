@@ -11,7 +11,7 @@ The following table shows the document types the `unstructured` library currentl
 | Document Type                                                             | Partition Function | Strategies                           | Table Support | Options                                                                                      |
 |---------------------------------------------------------------------------|--------------------|--------------------------------------|---------------|----------------------------------------------------------------------------------------------|
 | CSV Files (.csv)                                                          | partition_csv      | N/A                                  | Yes           | None                                                                                         |
-| E-mails (.eml)                                                            | partition_email    | N/A                                  | No            | Encoding; Max Partition; Process Attachments                                                 |
+| E-mails (.eml)                                                            | partition_email    | N/A                                  | No            | Encoding; Include Headers; Max Partition; Process Attachments                                |
 | E-mails (.msg)                                                            | partition_msg      | N/A                                  | No            | Encoding; Max Partition; Process Attachments                                                 |
 | EPubs (.epub)                                                             | partition_epub     | N/A                                  | Yes           | Include Page Breaks                                                                          |
 | Excel Documents (.xlsx/.xls)                                              | partition_xlsx     | N/A                                  | Yes           | None                                                                                         |
@@ -189,7 +189,18 @@ For more information about the `partition_docx` function, you can check the [sou
 
 ## `partition_email`
 
-The `partition_email` function partitions `.eml` documents and works with exports from email clients such as Microsoft Outlook and Gmail. The `partition_email` takes a filename, file-like object, or raw text as input and produces a list of document `Element` objects as output. Also `content_source` can be set to `text/html` (default) or `text/plain` to process the html or plain text version of the email, respectively. In order for `partition_email` to also return the header information (e.g. sender, recipient, attachment, etc.), `include_headers` must be set to `True`. Returns tuple with body elements first and header elements second, if `include_headers` is True.
+The `partition_email` function partitions `.eml` documents and works with exports from email clients such as Microsoft Outlook and Gmail. The `partition_email` takes a filename, file-like object, or raw text as input and produces a list of document `Element` objects as output. Also `content_source` can be set to `text/html` (default) or `text/plain` to process the html or plain text version of the email, respectively. In order for `partition_email` to return the header information as elements, `include_headers` must be set to `True`. Header information is captured in element metadata regardless of the `include_headers` setting.
+
+| Header     | Element type | Metadata name    |
+| ---        | ---          | ---              |
+| Subject    | Subject      | subject          |
+| From       | Sender       | sent_from        |
+| To         | Recipient    | sent_to          |
+| Cc         | Recipient    | cc_recipient     |
+| Bcc        | Recipient    | bcc_recipient    |
+| Received   | ReceivedInfo | NA               |
+| Message-ID | MetaData     | email_message_id |
+| (other)    | MetaData     | NA               |
 
 Examples:
 
@@ -291,9 +302,6 @@ elements = partition_html(url="https://python.org/", ssl_verify=False)
 
 ```
 
-
-If you website contains news articles, it can be helpful to only grab content that appears in between the `<article>` tags, if the site uses that convention. To activate this behavior, you can set `html_assemble_articles=True`. If `html_assemble_articles` is `True`, each `<article>` tag will be treated as a a page. If `html_assemble_articles` is `True` and no `<article>` tags are present, the behavior is the same as `html_assemble_articles=False`.
-
 For more information about the `partition_html` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/html.py).
 
 ## `partition_image`
@@ -320,11 +328,11 @@ The `strategy` kwarg controls the method that will be used to process the PDF. T
 
 The `"auto"` strategy will choose the partitioning strategy based on document characteristics and the function kwargs. If `infer_table_structure` is passed, the strategy will be `"hi_res"` because that is the only strategy that currently extracts tables for PDFs. Otherwise, `"auto"` will choose `ocr_only`. `"auto"` is the default strategy.
 
-The `"hi_res"` strategy will identify the layout of the document using `detectron2`. The advantage of “hi\_res” is that it uses the document layout to gain additional information about document elements. We recommend using this strategy if your use case is highly sensitive to correct classifications for document elements. If `detectron2` is not available, the `"hi_res"` strategy will fall back to the `"ocr_only"` strategy.
+The `"hi_res"` strategy will identify the layout of the document using `detectron2_onnx`. The advantage of “hi\_res” is that it uses the document layout to gain additional information about document elements. We recommend using this strategy if your use case is highly sensitive to correct classifications for document elements. If `detectron2_onnx` is not available, the `"hi_res"` strategy will fall back to the `"ocr_only"` strategy.
 
 The `"ocr_only"` strategy runs the document through Tesseract for OCR and then runs the raw text through `partition_text`. Currently, `"hi_res"` has difficulty ordering elements for documents with multiple columns. If you have a document with multiple columns that does not have extractable text, we recoomend using the `"ocr_only"` strategy.
 
-It is helpful to use `"ocr_only"` instead of `"hi_res"` if `detectron2` does not detect a text element in the image. To run example below, ensure you have the Korean language pack for Tesseract installed on your system.
+It is helpful to use `"ocr_only"` instead of `"hi_res"` if `detectron2_onnx` does not detect a text element in the image. To run example below, ensure you have the Korean language pack for Tesseract installed on your system.
 
 ```python
 from unstructured.partition.image import partition_image
@@ -355,7 +363,7 @@ For more information about the `partition_md` function, you can check the [sourc
 
 ## `partition_msg`
 
-The `partition_msg` functions processes `.msg` files, which is a filetype specific to email exports from Microsoft Outlook.
+The `partition_msg` functions processes `.msg` files, which is a filetype specific to email exports from Microsoft Outlook. Email header information (`bcc_recipient`, `cc_recipient`, `email_message_id`, `sent_from`, `sent_to`, `subject`, etc.) is captured in element metadata.
 
 Examples:
 
@@ -486,7 +494,7 @@ The `strategy` kwarg controls the method that will be used to process the PDF. T
 
 *   The `"auto"` strategy will choose the partitioning strategy based on document characteristics and the function kwargs. If `infer_table_structure` is passed, the strategy will be `"hi_res"` because that is the only strategy that currently extracts tables for PDFs. Otherwise, `"auto"` will choose `"fast"` if the PDF text is extractable and `"ocr_only"` otherwise. `"auto"` is the default strategy.
     
-*   The `"hi_res"` strategy will identify the layout of the document using `detectron2`. The advantage of “hi\_res” is that it uses the document layout to gain additional information about document elements. We recommend using this strategy if your use case is highly sensitive to correct classifications for document elements. If `detectron2` is not available, the `"hi_res"` strategy will fall back to the `"ocr_only"` strategy.
+*   The `"hi_res"` strategy will identify the layout of the document using `detectron2_onnx`. The advantage of “hi\_res” is that it uses the document layout to gain additional information about document elements. We recommend using this strategy if your use case is highly sensitive to correct classifications for document elements. If `detectron2_onnx` is not available, the `"hi_res"` strategy will fall back to the `"ocr_only"` strategy.
     
 *   The `"ocr_only"` strategy runs the document through Tesseract for OCR and then runs the raw text through `partition_text`. Currently, `"hi_res"` has difficulty ordering elements for documents with multiple columns. If you have a document with multiple columns that does not have extractable text, we recommend using the `"ocr_only"` strategy. `"ocr_only"` falls back to `"fast"` if Tesseract is not available and the document has extractable text.
     
@@ -512,7 +520,7 @@ partition_pdf(
 ```
 
 
-If a PDF is copy protected, `partition_pdf` can process the document with the `"hi_res"` strategy (which will treat it like an image), but cannot process the document with the `"fast"` strategy. If the user chooses `"fast"` on a copy protected PDF, `partition_pdf` will fall back to the `"hi_res"` strategy. If `detectron2` is not installed, `partition_pdf` will fail for copy protected PDFs because the document will not be processable by any of the available methods.
+If a PDF is copy protected, `partition_pdf` can process the document with the `"hi_res"` strategy (which will treat it like an image), but cannot process the document with the `"fast"` strategy. If the user chooses `"fast"` on a copy protected PDF, `partition_pdf` will fall back to the `"hi_res"` strategy. If `detectron2_onnx` is not installed, `partition_pdf` will fail for copy protected PDFs because the document will not be processable by any of the available methods.
 
 Examples:
 

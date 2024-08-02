@@ -3,74 +3,86 @@ title: Unstructured Serverless API
 description: This page describes how to get started with the Unstructured Serverless API. Learn how to obtain an API key to use with the Unstructured Serverless API, and get started in no time.
 ---
 
-## Sign in to get started with the Unstructured Serverless API
+## Get started
 
-To connect to Unstructured Serverless API you need to obtain the API URL and a unique API key:
+To call the Unstructured Serverless API, you need an API key and API URL:
 
-1. Navigate to the [Unstructured Serverless API](https://unstructured.io/api-key-hosted) page on our website.
-2. Enter your valid email address to receive a magic link to sign in to your personalized dashboard, or
-authenticate yourself with either your Google or GitHub account.
-3. Once authenticated either via Google/GitHub, or via the magic link sent to your email, you'll find your newly generated Unstructured API key in your dashboard.
+1. Go to [https://app.unstructured.io](https://app.unstructured.io).
+2. Enter your email address and then click **Sign In** to receive a magic link to sign in to your personalized dashboard, or authenticate yourself with your Google or GitHub account.
+3. Once you authenticate with the magic link or with your Google or GitHub account, your dashboard appears.
+4. On the sidebar, click **API Keys**, if it is not already selected.
+5. To get your API key, click the copy icon in the **Actions** column for your API key. Store your copied API key in a secure location. Do not share it with others.
+6. To get your API URL, click the copy icon next to the URL next to **API URL**. Store your copied API URL in a secure location. Do not share it with others.
 
-On the same page as your API key(s), you'll find the Unstructured API URL.
-Save your API key and the API URL securely, as you will need them to access the Unstructured Serverless API and integrate it with your applications.
+import SeverlessKeyNoFreeURL from '/snippets/general-shared-text/serverless-api-key-no-free-access.mdx';
+
+<SeverlessKeyNoFreeURL />
+
+[Try the quickstart](#quickstart).
 
 ## Set up billing
 
-Once you sign up for Unstructured API, you can enjoy a free 14-day trial with usage capped at 1000 pages per day.
-At the end of the trial, or if you need to exceed the trial's limit, you need to set up your billing information to proceed using
-the Unstructured Serverless API.
+Once you sign up for the Unstructured Serverless API, you can enjoy a free 14-day trial with usage capped at 1000 pages per day.
 
-1. Log in to your personal dashboard.
-2. Navigate to the Billing tab on the left side of the screen.
-3. Click on the **Manage Payment Method** button. This will take you to the Stripe page. Specify your credit card details, and click Save card.
+<Info>The free 14-day trial for the Unstructured Serverless API is different than the [Free Unstructured API](/api-reference/api-services/free-api).</Info>
 
-Your card will be billed monthly based on the usage. You can see the billing overview for the ongoing month on the Billing page of your dashboard.
+At the end of the 14-day free trial, or if you need to go past the trial's page processing limits during the 14-day free trial, you must set up your billing information to keep using
+the Unstructured Serverless API:
+
+1. Go to [https://app.unstructured.io](https://app.unstructured.io) and sign in.
+2. On the sidebar, click **Billing**.
+3. Click **Manage Payment Method**, follow the on-screen instructions to enter your payment details through Stripe, and then click **Save card**.
+
+Your card is billed monthly based on your usage. The **Billing** page shows a billing overview for the current month and a list of your billing invoices.
 
 import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx';
 
 <SharedPagesBilling />
 
-## Quickstart Example
+## Quickstart
 
-The following example illustrates how to preprocess an `*.eml` file using the Unstructured Serverless API.
-The functionality is similar to the free Unstructured API, the main difference is that in addition to your API key,
-you must provide the API URL from your dashboard.
+These examples use your local machine. They preprocess a single-file source (input) file on your local machine, and the Unstructured Serverless API delivers the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
 
-There are several ways to use the Unstructured Serverless API, which all lead to the same result, so pick your preferred method. Regardless of the method you pick, you will need:
+<Info>
+    These examples work with only a single file at a time and only with local source and destination locations. To process multiple files at a time, or to use non-local source or destination locations, use the [Unstructured Python Ingest CLI](/ingestion/overview#unstructured-ingest-cli) or the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library) instead.
+</Info>
 
-import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
-
-<SharedAPIKeyURL />
+There are several ways to use the Unstructured Serverless API, which all lead to the same result, so pick your preferred method: [POST](#post-request), [CLI](#unstructured-ingest-cli), [SDK](#unstructured-python-sdk-and-javascript-typescript-sdk), or [open source](#calling-the-unstructured-api-from-the-unstructured-open-source-library).
 
 ### POST request
 
 To work with the Unstructured Serverless API by calling the Unstructured REST API POST with `curl`, you will need to:
 
-- Set the `UNSTRUCTURED_API_KEY` environment variable to your Unstructured API key.
-- Set the `UNSTRUCTURED_API_URL` environment variable to the complete Unstructured API URL that you can find
-in your dashboard on the **API keys** page.
+- Set the `UNSTRUCTURED_API_KEY` environment variable to your Unstructured Serverless API key.
+- Set the `UNSTRUCTURED_API_URL` environment variable to your Unstructured Serverless API URL.
 
-Now, use `curl` to call the API, specifying where the source (input) files are to preprocess and the destination (output) where Unstructured will deliver the processed data:
+[Get your API key and API URL](#get-started).
+
+Now, use `curl` to call the API, replacing:
+
+- `<local/path/to/input/file>` with the path to the source (input) file on your local machine.
+- `<local/path/to/output/file>` with the path to the destination (output) on your local machine where Unstructured will deliver the processed data. 
 
 ```bash
 curl -X POST $UNSTRUCTURED_API_URL \
      -H 'accept: application/json' \
      -H 'Content-Type: multipart/form-data' \
      -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
-     -F 'files=@<local/path/to/input/files>' \
-     -o '<local/path/to/output/files>'
+     -F 'files=@<local/path/to/input/file>' \
+     -o '<local/path/to/output/file>'
 ```
 
-The result will look something like this:
+After the command successfully runs, see the results in the specified output path on your local machine.
 
-![Sample Output](/img/api/sample_output.png)
+If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 
-<Info>`POST` requests support using only local machine paths as the source (input) for the files to preprocess and as the destination (output) that Unstructured sends the processed data to. To specify a source or destination other than a local machine, use the CLI, the Python SDK, or the open source library instead.</Info>
+[Learn more about how to use POST requests](/api-reference/api-services/post-requests).
 
-### Unstructured CLI
+### Unstructured Ingest CLI
 
-To work with the Unstructured Serverless API by using the Unstructured CLI, you will need to:
+<Info>Although this example works with only a single file at a time and only with local source and destination locations, the Unstructured Ingest CLI works with multiple files at a time and with non-local source and destination locations. [Learn more](/ingestion/overview#unstructured-ingest-cli).</Info>
+
+To work with the Unstructured Serverless API by using the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli), you will need to:
 
 - Install Python, and then install the CLI package:
 
@@ -78,28 +90,37 @@ To work with the Unstructured Serverless API by using the Unstructured CLI, you 
   pip install unstructured
   ```
 
-- Set the `UNSTRUCTURED_API_KEY` environment variable to your API key. Make sure to also set the `UNSTRUCTURED_API_URL` environment variable to the complete Unstructured Serverless API URL that you can find
-in your dashboard on the **API keys** page.
+- Set the following environment variables:
 
-Now, use the CLI to call the API, specifying where the source (input) files are to preprocess and the destination (output) where Unstructured will deliver the processed data:
+  - Set `UNSTRUCTURED_API_KEY` to your API key.
+  - Set `UNSTRUCTURED_API_URL` to your API URL.
+  
+  [Get your API key and API URL](#get-started).
+
+Now, use the CLI to call the API, replacing:
+
+- `<local/path/to/input/files>` with the path to the source (input) file on your local machine.
+- `<local/path/to/output/file>` with the path to the destination (output) on your local machine where Unstructured will deliver the processed data. 
 
 ```bash CLI
 unstructured-ingest \
   local \
-    --input-path <local/path/to/input/files> \
-    --output-dir <local/path/to/output/files> \
+    --input-path <local/path/to/input/file> \
+    --output-dir <local/path/to/output/file> \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
     --partition-endpoint $UNSTRUCTURED_API_URL
 ```
 
+After the command successfully runs, see the results in the specified output path on your local machine.
+
+If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+
 ### Unstructured Python SDK and JavaScript/TypeScript SDK
 
 To work with the Unstructured Serverless API in Python, JavaScript, or TypeScript, use the
-Unstructured [Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) or
-[JavaScript/TypeScript SDK](https://github.com/Unstructured-IO/unstructured-js-client).
-
-<Info>The JavaScript/TypeScript SDK supports using only local machine paths as the source (input) for the files to preprocess and as the destination (output) that Unstructured sends the processed data to. To specify a source or destination other than a local machine, use the CLI, the Python SDK, or the open source library instead.</Info>
+[Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) or the 
+[Unstructured JavaScript/TypeScript SDK](https://github.com/Unstructured-IO/unstructured-js-client).
 
 First, install your preferred SDK:
 <CodeGroup>
@@ -113,76 +134,99 @@ npm install unstructured-client
 ```
 </CodeGroup>
 
-Next, use it to call the API. Be sure to set the `UNSTRUCTURED_API_URL` environment variable to the API URL from your dashboard. Also set the `UNSTRUCTURED_API_KEY` environment variable to your 
-Unstructured Serverless API key to authenticate yourself.
+Next, set the following environment variables:
+
+- Set `UNSTRUCTURED_API_URL` environment variable to your API URL.
+- Set the `UNSTRUCTURED_API_KEY` environment variable to your API key.
+
+[Get your API key and API URL](#get-started). 
+
+Now, call the API, replacing:
+
+- `<local/path/to/input/file>` with the path to the source (input) file on your local machine.
+- `<local/path/to/output/file>` with the path to the destination (output) on your local machine where Unstructured will deliver the processed data.
+
+<NoURLForServerlessAPI/>
 
 <CodeGroup>
 
 ```python Python
-import os
+import json, os
 
-import unstructured_client
+from unstructured_client import UnstructuredClient
 from unstructured_client.models import operations, shared
 
-client = unstructured_client.UnstructuredClient(
+input_filepath = "<local/path/to/input/file>"
+output_filepath = "<local/path/to/output/file>"
+
+client = UnstructuredClient(
     api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
     server_url=os.getenv("UNSTRUCTURED_API_URL"),
 )
 
-filename = "PATH_TO_FILE"
-with open(filename, "rb") as f:
-    data = f.read()
+with open(input_filepath, "rb") as f:
+    files = shared.Files(
+        content=f.read(),
+        file_name=input_filepath
+    )
 
 req = operations.PartitionRequest(
-    partition_parameters=shared.PartitionParameters(
-        files=shared.Files(
-            content=data,
-            file_name=filename,
-        ),
-        # --- Other partition parameters ---
-        strategy=shared.Strategy.AUTO,
-        languages=['eng'],
-    ),
+    shared.PartitionParameters(
+        files=files,
+        strategy=shared.Strategy.AUTO
+    )
 )
 
 try:
     res = client.general.partition(request=req)
-    print(res.elements[0])
+    element_dicts = [element for element in res.elements]
+    json_elements = json.dumps(element_dicts, indent=2)
+    
+    # Print the processed data.
+    print(json_elements)
+
+    # Write the processed data to a local file.
+    with open(output_filepath, "w") as file:
+      file.write(json_elements)
 except Exception as e:
     print(e)
 ```
 
 ```typescript TypeScript
 import { UnstructuredClient } from "unstructured-client";
-import { PartitionResponse } from "unstructured-client/sdk/models/operations";
-import { Strategy } from "unstructured-client/sdk/models/shared";
+import { Strategy } from "unstructured-client/sdk/models/shared/index.js";
 import * as fs from "fs";
 
-const key = process.env.UNSTRUCTURED_API_KEY;
-const url = process.env.UNSTRUCTURED_API_URL;
+const inputFilepath = "<local/path/to/input/file>" || '';
+const outputFilepath = "<local/path/to/output/file>" || ''
+
+const key = process.env.UNSTRUCTURED_API_KEY || '';
+const url = process.env.UNSTRUCTURED_API_URL || '';
 
 const client = new UnstructuredClient({
-    serverURL: url,
-    security: {
-        apiKeyAuth: key,
-    },
+    security: { apiKeyAuth: key },
+    serverURL: url
 });
 
-const filename = "PATH_TO_FILE";
-const data = fs.readFileSync(filename);
+const data = fs.readFileSync(inputFilepath);
 
 client.general.partition({
     partitionParameters: {
         files: {
             content: data,
-            fileName: filename,
+            fileName: inputFilepath
         },
-        strategy: Strategy.Auto,
-        languages: ['eng'],
+        strategy: Strategy.Auto
     }
-}).then((res: PartitionResponse) => {
+}).then((res) => {
     if (res.statusCode == 200) {
-        console.log(res.elements);
+       const jsonElements = JSON.stringify(res.elements, null, 2)
+       
+       // Print the processed data.
+       console.log(jsonElements);
+
+       // Write the processed data to a local file.
+       fs.writeFileSync(outputFilepath, jsonElements)
     }
 }).catch((e) => {
     if (e.statusCode) {
@@ -195,44 +239,77 @@ client.general.partition({
 ```
 </CodeGroup>
 
+After the code successfully runs, see the results in the specified output path on your local machine.
+
+If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+
+Learn more about how to use the [Unstructured Python SDK](/api-reference/api-services/sdk-python) and the [Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts).
+
 ### Calling the Unstructured API from the Unstructured open source library
 
-You can call the Unstructured Serverless API directly from the Unstructured open source library. Unstructured recommends this approach only for rapid local script or code prototyping or simple proofs-of-concept, not for production scenarios:
+You can call the Unstructured Serverless API directly from the Unstructured open source library. Unstructured recommends this approach only for rapid local script or code prototyping or simple proofs-of-concept, not for production scenarios.
 
 You will need to: 
 
-- Install Python, and then install the open source library:
+- Set the following environment variables:
 
-  ```bash
-  pip install unstructured
-  ```
+  - Set `UNSTRUCTURED_API_KEY` to your API key.
+  - Set `UNSTRUCTURED_API_URL` to your API URL.
+  
+  [Get your API key and API URL](#get-started).
 
-- Set the `UNSTRUCTURED_API_KEY` environment variable to your API key. Make sure to set the `UNSTRUCTURED_API_URL` environment variable to the complete Unstructured Serverless API URL that you can find
-in your dashboard on the **API keys** page.
+Now, call the API, replacing:
 
-Now, use the open source library to call the API, specifying the file to preprocess:
+- `<local/path/to/input/file>` with the path to the source (input) file on your local machine.
+- `<local/path/to/output/file>` with the path to the destination (output) on your local machine where Unstructured will deliver the processed data. 
 
 ```python
-import os 
+import os, json
 
 from unstructured.partition.api import partition_via_api
 
-filename = "PATH_TO_FILE"
+input_filepath = "<local/path/to/input/file>"
+output_filepath = "<local/path/to/output/file>"
 
 elements = partition_via_api(
-  filename=filename,
+  filename=input_filepath,
   api_key=os.getenv("UNSTRUCTURED_API_KEY"),
   api_url=os.getenv("UNSTRUCTURED_API_URL")
 )
+
+element_dicts = [element.to_dict() for element in elements]
+json_elements = json.dumps(element_dicts, indent=2)
+
+# Print the processed data.
+print(json_elements)
+
+# Write the processed data to a local file.
+with open(output_filepath, "w") as file:
+    file.write(json_elements)
 ```
 
-## Unstructured Serverless API Account Maintenance
+After the code successfully runs, see the results in the specified output path on your local machine.
 
-Log in to your Unstructured API dashboard to manage your account:
+If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 
-* Go to the **API keys** page to generate new API keys, deactivate existing keys.
-* Review the details on the **Usage** page to understand the breakdown of processed documents.
-* Track your costs, and manage payment methods on the **Billing** page.
+[Learn more about how to use the Unstructured open source library](/open-source/introduction/overview).
+
+## Manage your account
+
+**To manage your account**: Begin by going to [https://app.unstructured.io](https://app.unstructured.io) and signing in.
+
+**To manage your API keys**:
+
+* On the sidebar, click **API Keys**.
+* To create a key, click **Generate New Key**, and follow the on-screen instructions.
+* To enable or disable a key, switch **On/Off** in the column for that key to on or off.
+* To delete a key, click the trash can in the **Actions** column for that key.
+
+**To view your usage**: On the sidebar, click **Usage**.
+
+**To view your billing costs and invoices and to manage your payment method**: On the sidebar, click **Billing**.
+
+**To log out of your account**: On the sidebar, click your email address, and then click **Logout**.
 
 If you need direct assistance, our support team is just an email away. Contact us at [support@unstructured.io](mailto:support@unstructured.io).
 

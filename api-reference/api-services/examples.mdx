@@ -9,10 +9,14 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
 <SharedAPIKeyURL />
 
+import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serverless-api.mdx';
+
+<NoURLForServerlessAPI/>
+
 ### Changing partition strategy for a PDF
 
 Here's how you can modify partition strategy for a pdf file, and select an alternative model to use with Unstructured API.
-The `hi_res` strategy supports different models, and the default is `detectron2onnx`.
+The `hi_res` strategy supports different models, and the default is `layout_v1.1.0`.
 
 <CodeGroup>
 
@@ -23,7 +27,7 @@ The `hi_res` strategy supports different models, and the default is `detectron2o
   -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -F 'files=@sample-docs/layout-parser-paper.pdf' \
   -F 'strategy=hi_res' \
-  -F 'hi_res_model_name=chipper'
+  -F 'hi_res_model_name=yolox'
 ```
 
 ```python Python
@@ -47,7 +51,7 @@ req = shared.PartitionParameters(
         file_name=filename,
     ),
     strategy="hi_res",
-    hi_res_model_name="chipper",
+    hi_res_model_name="yolox",
 )
 
 try:
@@ -81,7 +85,7 @@ client.general.partition({
         fileName: filename,
     },
     strategy: "hi_res",
-    hiResModelName: "chipper",
+    hiResModelName: "yolox",
 }).then((res: PartitionResponse) => {
     if (res.statusCode == 200) {
         console.log(res.elements);
@@ -97,8 +101,8 @@ If you have a local deployment of the Unstructured API, you can use other suppor
 
 ### Specifying the language of a document for better OCR results
 
-For better OCR results, you can specify what languages your document is in using the `languages` parameter.
-See the [Tesseract documentation](https://github.com/tesseract-ocr/tessdata) for a full list of languages.
+For better OCR results, you can specify what languages your document is in using the `languages` parameter. 
+[View the list of available languages](https://github.com/tesseract-ocr/tessdata).
 
 <CodeGroup>
 

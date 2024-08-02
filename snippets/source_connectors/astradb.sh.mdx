@@ -1,0 +1,14 @@
+```bash CLI
+#!/usr/bin/env bash
+
+unstructured-ingest \
+  astradb \
+    --api-endpoint $ASTRA_DB_API_ENDPOINT \
+    --token $ASTRA_DB_APPLICATION_TOKEN \
+    --namespace $ASTRA_DB_NAMESPACE \
+    --collection-name $ASTRA_DB_COLLECTION \
+    --download-dir astradb-ingest-output \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL
+```

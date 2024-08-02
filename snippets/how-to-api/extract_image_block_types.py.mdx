@@ -1,0 +1,57 @@
+```python Python SDK
+from unstructured_client import UnstructuredClient
+from unstructured_client.models import operations, shared
+
+import os
+import base64
+from PIL import Image
+import io
+import json
+
+if __name__ == "__main__":
+    client = UnstructuredClient(
+        api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+        server_url=os.getenv("UNSTRUCTURED_API_URL")
+    )
+
+    # Source: https://github.com/Unstructured-IO/unstructured/blob/main/example-docs/embedded-images-tables.pdf
+    local_filepath = "embedded-images-tables.pdf"
+
+    with open(local_filepath, "rb") as f:
+        files = shared.Files(
+            content=f.read(),
+            file_name=local_filepath
+        )
+
+    request = operations.PartitionRequest(
+        shared.PartitionParameters(
+            files=files,
+            # Extract the Base64-encoded representation of each
+            # processed "Image" and "Table" element. Extract each into
+            # an "image_base64" object, as a child of the
+            # "metadata" object, for that element in the result.
+            # Element type names, such as "Image" and "Table" here,
+            # are case-insensitive.
+            # Any available Unstructured element type is allowed.
+            extract_image_block_types=["Image", "Table"]
+        )
+    )
+
+    try:
+        result = client.general.partition(request)
+
+        for element in result.elements:
+            if "image_base64" in element["metadata"]:
+                # Decode the Base64-encoded representation of the 
+                # processed "Image" or "Table" element into its original
+                # visual representation, and then show it.
+                image_data = base64.b64decode(element["metadata"]["image_base64"])
+                image = Image.open(io.BytesIO(image_data))
+                image.show()
+
+        # Also print the JSON representation of all elements for
+        # inspection and validation.
+        print(json.dumps(result.elements, indent=2))
+    except Exception as e:
+        print(e)
+```

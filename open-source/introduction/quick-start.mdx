@@ -82,6 +82,10 @@ with open("example-10k.html", "rb") as f:
 
 The `partition` function uses [libmagic](https://formulae.brew.sh/formula/libmagic) for filetype detection. If `libmagic` is not present and the user passes a filename, `partition` falls back to detecting the filetype using the file extension. `libmagic` is required if you’d like to pass a file-like object to `partition`. We highly recommend installing `libmagic` and you may observe different file detection behaviors if `libmagic` is not installed\`.
 
+import SharedOSSSingleFile from '/snippets/general-shared-text/multi-file-oss-use-connectors.mdx';
+
+<SharedOSSSingleFile />
+
 ## Quickstart Tutorial
 
 If you’re eager to dive in, head over [Getting Started](https://colab.research.google.com/drive/1U8VCjY2-x8c6y5TYMbSFtQGlQVFHCVIW#scrollTo=jZp37lfueaeZ) on Google Colab to get a hands-on introduction to the `unstructured` library. In a few minutes, you’ll have a basic workflow set up and running!

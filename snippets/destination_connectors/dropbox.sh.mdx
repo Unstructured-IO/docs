@@ -1,18 +1,21 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
 
 EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
 
 unstructured-ingest \
   local \
-  --input-path example-docs/book-war-and-peace-1225p.txt \
-  --output-dir local-output-to-dropbox \
-  --strategy fast \
-  --chunk-elements \
-  --embedding-provider "$EMBEDDING_PROVIDER" \
-  --num-processes 2 \
-  --verbose \
+    --input-path example-docs/book-war-and-peace-1225p.txt \
+    --output-dir local-output-to-dropbox \
+    --strategy fast \
+    --chunk-elements \
+    --embedding-provider "$EMBEDDING_PROVIDER" \
+    --num-processes 2 \
+    --verbose \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY\
+    --partition-endpoint $UNSTRUCTURED_API_URL \
   dropbox \
-  --token "$DROPBOX_TOKEN" \
-  --remote-url "<your destination path here, ie 'dropbox://unstructured/war-and-peace-output'>"
+    --token $DROPBOX_ACCESS_TOKEN \
+    --remote-url $DROPBOX_REMOTE_URL
 ```

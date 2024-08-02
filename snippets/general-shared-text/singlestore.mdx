@@ -1,0 +1,41 @@
+The SingleStore connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured[singlestore]"
+```
+
+These environment variables:
+
+- `SINGLESTORE_HOST` - The hostname for the SingleStore deployment.
+- `SINGLESTORE_PORT` - The port for the host.
+- `SINGLESTORE_USER` - The username for the deployment. 
+- `SINGLESTORE_PASSWORD` - The password for the user.
+- `SINGLESTORE_DB` - The name of the database in the deployment.
+- `SINGLESTORE_TABLE` - The name of the table in the database.
+
+To get the values for the enviornment variables `SINGLESTORE_HOST`, `SINGLESTORE_PORT`, `SINGLESTORE_USER`, and `SINGLESTORE_PASSWORD`:
+
+1. In your SingleStore account's dashboard sidebar, click **Deployments**.
+2. From the drop-down list at the top of the **Deployments** page, select your deployment.
+3. On the **Overview** tab, in the **Compute** area, in the **Connect** drop-down list for your deployment, select 
+**Your App**. 
+4. If a **Create User** dialog box appears, note the **User** name and **Password** values. Use these for the `SINGLESTORE_USER` and `SINGLESTORE_PASSWORD` environment variables.
+5. In the **Connect to Workspace** pane's **Your App** tab, note the string in the following format:
+
+```
+<user-name>:<password>@<host>:<port>
+```
+
+- `<user-name>` is the username. Use this for the `SINGLESTORE_USER` environment variable.
+- `<password>` is the user's password. Use this for `SINGLESTORE_PASSWORD`.
+- `<host>` is the workspace's hostname. Use this for `SINGLESTORE_HOST`.
+- `<post>` is the host's port. Use this for `SINGLESTORE_PORT`.
+
+To get the values for the environment variables `SINGLESTORE_DB` and `SINGLESTORE_TABLE`:
+
+1. In your SingleStore dashboard's sidebar, click **Deployments**.
+2. From the drop-down list at the top of the **Deployments** page, select your deployment.
+3. On the **Databases** tab, note **Name** of your database. Use this for `SINGLESTORE_DB`.
+4. Click the database and, on the **Tables** tab, note the name of your table. Use this for `SINGLESTORE_TABLE`.
+
+To create deployments, databases, and tables in SingleStore, [learn how](https://www.singlestore.com/blog/how-to-get-started-with-singlestore/).

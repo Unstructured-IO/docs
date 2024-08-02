@@ -17,23 +17,29 @@
       "type": "github",
       "url": "https://github.com/Unstructured-IO/unstructured"
     },
-    "topbarLinks": [
-      {
-        "name": "Contact Us",
-        "url": "mailto:support@unstructured.io"
-      }
-    ],
     "anchors": [
-      {
-        "name": "Blog",
-        "icon": "newspaper",
-        "url": "https://unstructured.io/blog"
+      { 
+        "name": "Support",
+        "icon": "person-circle-question",
+        "url": "mailto:support@unstructured.io"
+
       },
       {
         "name": "Community",
         "icon": "slack",
         "url": "https://short.unstructured.io/pzw05l7"
       },
+      {
+        "name": "Feedback",
+        "icon": "pencil",
+        "url": "https://smart-forms.saasjet.com/external?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRLZXkiOiIzZGQ5OTEzYy04Mzg1LTNkNDAtYWQ1MS03NmM0Nzg5YjAxOGUiLCJpYXQiOjE3MTQ0MzI1ODU5MjF9.m5gHGCOHt_UgOs-JCdTdEHRcQUNftvLGWeKzK2o2pQ4"
+      },
+      {
+        "name": "Blog",
+        "icon": "newspaper",
+        "url": "https://unstructured.io/blog"
+      },
+
       {
         "name": "Product",
         "icon": "square-terminal",
@@ -57,12 +63,16 @@
         "url": "api-reference"
       },
       {
-          "name": "Open Source",
+          "name": "Open source",
           "url": "open-source"
       },
       {
-        "name": "Example Code",
+        "name": "Example code",
         "url": "examplecode"
+      },
+      {
+        "name": "Ingestion",
+        "url": "ingestion"
       },
       {
         "name": "FAQ",
@@ -79,13 +89,13 @@
         "pages": ["welcome"]
       },
       {
-        "group": "Unstructured Open Source",
+        "group": "Unstructured open source",
         "pages": [
           "open-source/introduction/overview"
         ]
       },
       {
-        "group": "Getting Started With Open Source",
+        "group": "Getting started with open source",
         "pages": [
           "open-source/introduction/quick-start",
           {
@@ -99,7 +109,7 @@
         ]
       },
       {
-        "group": "Using Unstructured Open Source",
+        "group": "Using Unstructured open source",
         "pages": [
           "open-source/core-functionality/overview",
           "open-source/core-functionality/partitioning",
@@ -111,14 +121,15 @@
         ]
       },
       {
-        "group": "Data Ingestion",
+        "group": "Data ingestion",
         "pages": [
           "open-source/ingest/overview",
           {
-            "group": "Source Connectors",
+            "group": "Source connectors",
             "pages": [
               "open-source/ingest/source-connectors/overview",
               "open-source/ingest/source-connectors/airtable",
+              "open-source/ingest/source-connectors/astradb",
               "open-source/ingest/source-connectors/azure",
               "open-source/ingest/source-connectors/biomed",
               "open-source/ingest/source-connectors/box",
@@ -148,10 +159,10 @@
             ]
           },
           {
-            "group": "Destination Connectors",
+            "group": "Destination connectors",
             "pages": [
               "open-source/ingest/destination-connectors/overview",
-              "open-source/ingest/destination-connectors/astra",
+              "open-source/ingest/destination-connectors/astradb",
               "open-source/ingest/destination-connectors/azure",
               "open-source/ingest/destination-connectors/azure-cognitive-search",
               "open-source/ingest/destination-connectors/box",
@@ -168,13 +179,14 @@
               "open-source/ingest/destination-connectors/pinecone",
               "open-source/ingest/destination-connectors/qdrant",
               "open-source/ingest/destination-connectors/s3",
+              "open-source/ingest/destination-connectors/singlestore",
               "open-source/ingest/destination-connectors/sql",
               "open-source/ingest/destination-connectors/vectara",
               "open-source/ingest/destination-connectors/weaviate"
             ]
           },
           {
-            "group": "Ingest Configuration",
+            "group": "Ingest configuration",
             "pages": [
               "open-source/ingest/ingest-configuration/overview",
               "open-source/ingest/ingest-configuration/processor-configuration",
@@ -187,6 +199,18 @@
               "open-source/ingest/ingest-configuration/fsspec-configuration"
             ]
           }
+        ]
+      },
+      { 
+        "group": "How to",
+        "pages": [
+          "open-source/how-to/set-ocr-agent"
+        ]
+      },
+      {
+        "group": "Best practices",
+        "pages": [
+          "open-source/best-practices/chunking"
         ]
       },
       {
@@ -205,13 +229,13 @@
         ]
       },
       {
-        "group": "Unstructured API Services",
+        "group": "Unstructured API services",
         "pages": [
           "api-reference/api-services/overview"
         ]
       },
       {
-        "group": "Getting Started With API Services",
+        "group": "Getting started with API services",
         "pages": [
           "api-reference/api-services/saas-api-development-guide",
           "api-reference/api-services/free-api",
@@ -220,25 +244,44 @@
         ]
       },
       {
-        "group": "Using Unstructured API",
+        "group": "Process individual files",
         "pages": [
           "api-reference/api-services/accessing-unstructured-api",
+          "api-reference/api-services/sdk-python",
+          "api-reference/api-services/sdk-jsts",
           "api-reference/api-services/post-requests",
-          "api-reference/api-services/sdk",
           "api-reference/api-services/partition-via-api",
-          "api-reference/api-services/examples",
           "api-reference/api-services/api-parameters",
-          "api-reference/api-services/api-validation-errors"
+          "api-reference/api-services/api-validation-errors",
+          "api-reference/api-services/examples"
         ]
       },
       {
-        "group": "Data Ingestion",
+        "group": "Batch processing and ingestion",
         "pages": [
+          "api-reference/ingest/overview",
+          "api-reference/ingest/ingest-cli",
+          "api-reference/ingest/python-ingest",
+          {
+            "group": "Ingest configuration",
+            "pages": [
+              "api-reference/ingest/ingest-configuration/overview",
+              "api-reference/ingest/ingest-configuration/processor-configuration",
+              "api-reference/ingest/ingest-configuration/read-configuration",
+              "api-reference/ingest/ingest-configuration/partition-configuration",
+              "api-reference/ingest/ingest-configuration/permissions-configuration",
+              "api-reference/ingest/ingest-configuration/retry-strategy-configuration",
+              "api-reference/ingest/ingest-configuration/chunking-configuration",
+              "api-reference/ingest/ingest-configuration/embedding-configuration",
+              "api-reference/ingest/ingest-configuration/fsspec-configuration"
+            ]
+          },
           {
             "group": "Source connectors",
             "pages": [
               "api-reference/ingest/source-connectors/overview",
               "api-reference/ingest/source-connectors/airtable",
+              "api-reference/ingest/source-connectors/astradb",
               "api-reference/ingest/source-connectors/azure",
               "api-reference/ingest/source-connectors/biomed",
               "api-reference/ingest/source-connectors/box",
@@ -271,7 +314,7 @@
             "group": "Destination connectors",
             "pages": [
               "api-reference/ingest/destination-connector/overview",
-              "api-reference/ingest/destination-connector/astra",
+              "api-reference/ingest/destination-connector/astradb",
               "api-reference/ingest/destination-connector/azure",
               "api-reference/ingest/destination-connector/azure-cognitive-search",
               "api-reference/ingest/destination-connector/box",
@@ -288,25 +331,36 @@
               "api-reference/ingest/destination-connector/pinecone",
               "api-reference/ingest/destination-connector/qdrant",
               "api-reference/ingest/destination-connector/s3",
+              "api-reference/ingest/destination-connector/singlestore",
               "api-reference/ingest/destination-connector/sql",
               "api-reference/ingest/destination-connector/vectara",
               "api-reference/ingest/destination-connector/weaviate"
             ]
-          },
-          {
-            "group": "Ingest configuration",
-            "pages": [
-              "api-reference/ingest/ingest-configuration/overview",
-              "api-reference/ingest/ingest-configuration/processor-configuration",
-              "api-reference/ingest/ingest-configuration/read-configuration",
-              "api-reference/ingest/ingest-configuration/partition-configuration",
-              "api-reference/ingest/ingest-configuration/permissions-configuration",
-              "api-reference/ingest/ingest-configuration/retry-strategy-configuration",
-              "api-reference/ingest/ingest-configuration/chunking-configuration",
-              "api-reference/ingest/ingest-configuration/embedding-configuration",
-              "api-reference/ingest/ingest-configuration/fsspec-configuration"
-            ]
           }
+        ]
+      },
+      { "group": "How to",
+        "pages": [
+          "api-reference/how-to/parse-simple-pdf-html",
+          "api-reference/how-to/change-partitioning-strategy",
+          "api-reference/how-to/change-chunking-strategy",
+          "api-reference/how-to/output-unique-element-ids",
+          "api-reference/how-to/output-bounding-box-coordinates",
+          "api-reference/how-to/set-document-language-ocr",
+          "api-reference/how-to/text-as-html",
+          "api-reference/how-to/extract-image-block-types",
+          "api-reference/how-to/change-element-coordinate-system",
+          "api-reference/how-to/powerpoint",
+          "api-reference/how-to/use-langchain-ollama",
+          "api-reference/how-to/use-langchain-llama-3",
+          "examplecode/notebooks"
+        ]
+      },
+      { 
+        "group": "Best practices",
+        "pages": [
+          "api-reference/best-practices/chunking",
+          "api-reference/best-practices/speed-up-large-files-batches"
         ]
       },
       {
@@ -331,7 +385,7 @@
        ]       
       },
       {
-        "group": "Getting Started With Platform",
+        "group": "Getting started with Platform",
         "pages": [
           "platform/saas-platform-guide"
         ]
@@ -344,10 +398,10 @@
           "platform/jobs-scheduling"
       ]},
       {
-        "group": "Data Ingestion",
+        "group": "Data ingestion",
         "pages": [
       {
-        "group": "Source Connectors",
+        "group": "Source connectors",
         "pages": [
           "platform/platform-source-connectors/overview",
           "platform/platform-source-connectors/s3",
@@ -363,7 +417,7 @@
         ]
       },
       {
-        "group": "Destination Connectors",
+        "group": "Destination connectors",
         "pages": [
           "platform/platform-destination-connectors/overview",
           "platform/platform-destination-connectors/s3",
@@ -386,12 +440,18 @@
         ]
       },
       {
-        "group": "Code Samples",
+        "group": "Code samples",
         "pages": [
           "examplecode/codesamples/oss/vector-database",
           "examplecode/codesamples/oss/table-source-connector",
           "examplecode/codesamples/oss/multi-files-api-processing",
           "examplecode/codesamples/apioss/table-extraction-from-pdf"
+        ]
+      },
+      {
+        "group": "Ingestion",
+        "pages": [
+          "ingestion/overview"
         ]
       },
       {

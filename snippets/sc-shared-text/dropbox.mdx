@@ -1,12 +1,7 @@
-Connect Dropbox to your preprocessing pipeline, and batch process all your documents using `unstructured-ingest` to store structured outputs locally on your filesystem.
+Connect Dropbox to your preprocessing pipeline, and use the Unstructured Ingest CLI or the Unstructured Ingest Python library to batch process all your documents and store structured outputs locally on your filesystem.
 
-First, install the Dropbox dependencies as shown here.
+You will need: 
 
-```bash
-pip install "unstructured[dropbox]"
-```
+import SharedDropbox from '/snippets/general-shared-text/dropbox.mdx';
 
-If you want to ingest files and folders from the root directory use `"dropbox:// /"` in `remote-url`,
-if your files and folders are in a subfolder, use `dropbox://nested-1` in `remote-url`.
-
-To programmatically get or refresh an access token refer to [dropbox_token.py](https://github.com/Unstructured-IO/unstructured/blob/main/examples/ingest/dropbox/dropbox_token.py) example script.
+<SharedDropbox />

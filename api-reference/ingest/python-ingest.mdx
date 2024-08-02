@@ -1,0 +1,37 @@
+---
+title: Process files in batches by using the Unstructured Ingest Python library
+sidebarTitle: Ingest Python library
+---
+
+The Unstructured Ingest Python library enables you to use Python code to send files in batches to Unstructured API services for processing, and to tell Unstructured API services where to deliver the processed data. [Learn more](/overview#unstructured-ingest-python).
+
+## Installation
+
+One approach to get started quickly with the Unstructured Ingest Python library is to install Python and then run the following command:
+
+```bash
+pip install unstructured
+```
+
+This default installation option enables the ingestion of plain text files, HTML, XML, JSON and emails that do not require any extra dependencies. This default option also enables you to specify local source and destination locations.
+
+For additional installation options and dependencies, and information about v2 and v1 implementations in this library, see the [Unstructed Ingest Python library](/ingestion/overview#unstructured-ingest-python-library) in the [Ingest](/ingestion/overview) section.
+
+## Usage
+
+For example, to use the Unstructured Ingest Python library to ingest files from a local source (input) location and to deliver the processed data to an Azure Storage account destination (output) location:
+
+import AzureAPIPyV2 from '/snippets/destination_connectors/azure.v2.py.mdx';
+import AzureAPIPyV1 from '/snippets/destination_connectors/azure.v1.py.mdx';
+
+<CodeGroup>
+
+  <AzureAPIPyV2 />
+
+  <AzureAPIPyV1 />
+
+</CodeGroup>
+
+To learn how to use the Unstructured Ingest Python library to work with a specific source (input) and destination (output) location, see the Python code examples for the [source](/api-reference/ingest/source-connectors/overview) and [destination](/api-reference/ingest/destination-connector/overview) connectors that are available for you to choose from.
+
+See also the [ingest configuration](/api-reference/ingest/ingest-configuration/overview) settings that enable you to further control how batches are sent and processed.
