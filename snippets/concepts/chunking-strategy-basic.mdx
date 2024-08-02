@@ -1,0 +1,9 @@
+### "basic" chunking strategy
+
+*   The basic strategy combines sequential elements to maximally fill each chunk while respecting both the specified `max_characters` (hard-max) and `new_after_n_chars` (soft-max) option values.
+
+*   A single element that by itself exceeds the hard-max is isolated (never combined with another element) and then divided into two or more chunks using text-splitting.
+
+*   A `Table` element is always isolated and never combined with another element. A `Table` can be oversized, like any other text element, and in that case is divided into two or more `TableChunk` elements using text-splitting.
+
+*   If specified, `overlap` is applied between chunks formed by splitting oversized elements and is also applied between other chunks when `overlap_all` is `True`.
