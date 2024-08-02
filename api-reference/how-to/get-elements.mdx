@@ -1,0 +1,158 @@
+---
+title: Get element contents
+---
+
+## Task
+
+You want to get, manipulate, and print or save, the contents of the [document elements and metadata](/api-reference/api-services/document-elements) from the processed data that Unstructured returns.
+
+## Approach
+
+Each element in the document elements contains fields for that element's type, its ID, the extracted text, and associated metadata.
+
+The programmatic approach you take to get these document elements will depend on whether you use the [Unstructured Python SDK](/api-reference/api-services/sdk-python), the [Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts), or the [Unstructured open source library](/open-source/introduction/overview).
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        Calling an `UnstructuredClient` object's `general.partition` method returns a `PartitionResponse` object. 
+        
+        This `PartitionResponse` object's `elements` variable contains a list of key-value dictionaries (`List[Dict[str, Any]]`). For example:
+
+        ```python Python
+        # ...
+
+        res = client.general.partition(request=req)
+
+        print(res.elements)
+
+        # ...
+        ```
+        
+        You can use standard Python [list operations](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) on this list.
+
+        You can also use standard Python [looping techniques](https://docs.python.org/3/tutorial/datastructures.html#looping-techniques) on this list to access each element in this list. 
+
+        To work with an individual element's contents, you can use standard [dictionary operations](https://docs.python.org/3/library/stdtypes.html#dict) on the element.
+
+        To serialize this list as JSON, you can use the standard [json](https://docs.python.org/3/library/json.html#module-json) `dumps` method to serialize it to JSON-formatted string or the `dump` method to save it as a JSON-formatted stream to a file.
+
+        For example:
+
+        ```python Python
+        # ...
+
+        res = client.general.partition(request=req)
+        json_elements = json.dumps(res.elements, indent=2)
+    
+        print(json_elements)
+
+        # ...
+        ```
+    </Accordion>
+    <Accordion title="JavaScript/TypeScript SDK">
+        Calling an `UnstructuredClient` object's `general.partition` method returns a `Promise<PartitionResponse>` object. 
+        
+        This `PartitionResponse` object's `elements` property contains an `Array` of string-value objects (`{ [k: string]: any; }[]`). For example:
+
+        ```typescript TypeScript
+        // ...
+
+        client.general.partition({
+            partitionParameters: {
+                files: {
+                    content: data,
+                    fileName: inputFilepath
+                },
+            strategy: Strategy.Auto
+            }
+        }).then((res) => {
+            if (res.statusCode == 200) {
+                console.log(res.elements)
+            }
+        } // ...
+        ```
+        
+        You can use standard [Array operations](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) on this array.
+
+        You can also use standard `Array` techniques such as [forEach](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach) to access each object in this array. 
+
+        To serialize this list as JSON, you can use the standard [JSON.stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) function to serialize it to JSON-formatted string and the Node.js [fs.WriteFileSync](https://nodejs.org/api/fs.html#fswritefilesyncfile-data-options) function to save it as a file.
+
+        For example:
+
+        ```typescript TypeScript
+        // ...
+
+        client.general.partition({
+            partitionParameters: {
+                files: {
+                    content: data,
+                    fileName: inputFilepath
+                },
+            strategy: Strategy.Auto
+            }
+        }).then((res) => {
+            if (res.statusCode == 200) {    
+                const jsonElements = JSON.stringify(res.elements, null, 2)
+       
+                console.log(jsonElements);
+            }
+        } // ...
+        ```
+    </Accordion>
+    <Accordion title="Open source library">
+        Calling the `partition_via_api` function returns a list of `Element` objects (`list[Element]`).
+
+        You can use standard Python [list operations](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) on this list.
+
+        You can also use standard Python [looping techniques](https://docs.python.org/3/tutorial/datastructures.html#looping-techniques) on this list to access each element in this list. 
+
+        For each individual element, you can call the following:
+
+        - `category` to get the element's `type` field value as a `str`. See [Element type](/open-source/concepts/document-elements#element-type).
+        - `convert_coordinates_to_new_system` to convert the element's location coordinates, if any, to a new coordinate system. See [Element's coordinates](/open-source/concepts/document-elements#elements-coordinates).
+        - `id` to get the element's `element_id` value as a `str`. See [Element ID](/open-source/concepts/document-elements#element-id).
+        - `id_to_hash(sequence_number)` to calculate and assign a deterministic hash as an ID. The hash ID is based on element's text, sequence number on page, page number and its filename.
+        - `metadata` to get the element's `metadata` field as an `ElementMetadata` object. See [Metadata](/open-source/concepts/document-elements#metadata).
+        - `text` to get the element's `text` field value as a `str`. See [Element example](/open-source/concepts/document-elements#element-example).
+        - `to_dict` to get the element's content as a standard Python key-value dictionary (`dict[str, Any]`).
+
+        To serialize this list as a Python dictionary, you can use Python [list comprehension]() and `to_dict`, for example:
+
+        ```python Python
+        # ...
+
+        elements = partition_via_api(
+            filename=input_filepath,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            api_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        element_dicts = [element.to_dict() for element in elements]
+        print(element_dicts)
+
+        # ...
+        ```
+
+        To serialize this list as JSON, you can use the standard [json](https://docs.python.org/3/library/json.html#module-json) `dumps` method to serialize it to JSON-formatted string or the `dump` method to save it as a JSON-formatted stream to a file.
+
+        For example:
+
+        ```python Python
+        # ...
+
+        elements = partition_via_api(
+            filename=input_filepath,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            api_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        element_dicts = [element.to_dict() for element in elements]
+        json_elements = json.dumps(element_dicts, indent=2)
+        
+        print(json_elements)
+
+        # ...
+        ```
+    </Accordion>
+</AccordionGroup>
