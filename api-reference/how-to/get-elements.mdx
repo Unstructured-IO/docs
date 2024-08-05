@@ -34,9 +34,22 @@ The programmatic approach you take to get these document elements will depend on
 
         To work with an individual element's contents, you can use standard [dictionary operations](https://docs.python.org/3/library/stdtypes.html#dict) on the element.
 
-        To serialize this list as JSON, you can use the standard [json](https://docs.python.org/3/library/json.html#module-json) `dumps` method to serialize it to JSON-formatted string or the `dump` method to save it as a JSON-formatted stream to a file.
-
         For example:
+
+        ```python Python
+        # ...
+
+        res = client.general.partition(request=req)
+
+        for element in res.elements:
+            print(f"ID: {element["element_id"]}")
+            print(f"Text: {element["text"]}")
+            print(f"Filename: {element["metadata"]["filename"]}\n")
+
+        # ...
+        ```
+
+        To serialize this list as JSON, you can use the standard [json](https://docs.python.org/3/library/json.html#module-json) `dumps` method to serialize it to a JSON-formatted string or the `dump` method to save it as a JSON-formatted stream to a file. For example:
 
         ```python Python
         # ...
@@ -62,8 +75,7 @@ The programmatic approach you take to get these document elements will depend on
                 files: {
                     content: data,
                     fileName: inputFilepath
-                },
-            strategy: Strategy.Auto
+                }
             }
         }).then((res) => {
             if (res.statusCode == 200) {
@@ -74,11 +86,7 @@ The programmatic approach you take to get these document elements will depend on
         
         You can use standard [Array operations](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) on this array.
 
-        You can also use standard `Array` techniques such as [forEach](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach) to access each object in this array. 
-
-        To serialize this list as JSON, you can use the standard [JSON.stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) function to serialize it to JSON-formatted string and the Node.js [fs.WriteFileSync](https://nodejs.org/api/fs.html#fswritefilesyncfile-data-options) function to save it as a file.
-
-        For example:
+        You can also use standard `Array` techniques such as [forEach](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach) to access each object in this array. For example:
 
         ```typescript TypeScript
         // ...
@@ -88,20 +96,56 @@ The programmatic approach you take to get these document elements will depend on
                 files: {
                     content: data,
                     fileName: inputFilepath
-                },
-            strategy: Strategy.Auto
+                }
+            }
+        }).then((res) => {
+            if (res.statusCode == 200) {
+                res.elements?.forEach(element => {
+                    console.log(`ID: ${element["element_id"]}`)
+                    console.log(`Text: ${element["text"]}`)
+                    console.log(`Filename: ${element["metadata"]["filename"]}`)
+                }
+            }
+        } // ...
+        ```
+
+        To serialize this list as JSON, you can use the standard [JSON.stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) function to serialize it to JSON-formatted string and the Node.js [fs.WriteFileSync](https://nodejs.org/api/fs.html#fswritefilesyncfile-data-options) function to save it as a file. For example:
+
+        ```typescript TypeScript
+        // ...
+
+        client.general.partition({
+            partitionParameters: {
+                files: {
+                    content: data,
+                    fileName: inputFilepath
+                }
             }
         }).then((res) => {
             if (res.statusCode == 200) {    
                 const jsonElements = JSON.stringify(res.elements, null, 2)
        
-                console.log(jsonElements);
+                console.log(jsonElements)
+
+                fs.writeFileSync(outputFilepath, jsonElements)
             }
         } // ...
         ```
     </Accordion>
     <Accordion title="Open source library">
-        Calling the `partition_via_api` function returns a list of `Element` objects (`list[Element]`).
+        Calling the `partition_via_api` function returns a list of `Element` objects (`list[Element]`). For example:
+
+        ```python Python
+        # ...
+
+        elements = partition_via_api(
+            filename=input_filepath,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            api_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        # ...
+        ```
 
         You can use standard Python [list operations](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) on this list.
 
@@ -117,7 +161,26 @@ The programmatic approach you take to get these document elements will depend on
         - `text` to get the element's `text` field value as a `str`. See [Element example](/open-source/concepts/document-elements#element-example).
         - `to_dict` to get the element's content as a standard Python key-value dictionary (`dict[str, Any]`).
 
-        To serialize this list as a Python dictionary, you can use Python [list comprehension]() and `to_dict`, for example:
+        For example:
+
+        ```python Python
+        # ...
+
+        elements = partition_via_api(
+            filename=input_filepath,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            api_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        for element in elements:
+            print(f"ID: {element.id}")
+            print(f"Text: {element.text}")
+            print(f"Filename: {element.metadata.filename}")
+
+        # ...
+        ```
+
+        To serialize this list as a Python dictionary, you can use Python [list comprehension](https://docs.python.org/2/tutorial/datastructures.html#list-comprehensions) and `to_dict`, for example:
 
         ```python Python
         # ...
@@ -134,9 +197,7 @@ The programmatic approach you take to get these document elements will depend on
         # ...
         ```
 
-        To serialize this list as JSON, you can use the standard [json](https://docs.python.org/3/library/json.html#module-json) `dumps` method to serialize it to JSON-formatted string or the `dump` method to save it as a JSON-formatted stream to a file.
-
-        For example:
+        To serialize this list as JSON, you can use the standard [json](https://docs.python.org/3/library/json.html#module-json) `dumps` method to serialize it to JSON-formatted string or the `dump` method to save it as a JSON-formatted stream to a file. For example:
 
         ```python Python
         # ...
