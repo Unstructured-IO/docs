@@ -1,0 +1,74 @@
+```python
+from unstructured_client import UnstructuredClient
+from unstructured_client.models import operations, shared
+
+import json, os, base64, zlib
+from typing import List, Dict, Any
+
+# Extract the contents of an orig_elements field.
+def extract_orig_elements(orig_elements):
+    decoded_orig_elements = base64.b64decode(orig_elements)
+    decompressed_orig_elements = zlib.decompress(decoded_orig_elements)
+    return decompressed_orig_elements.decode('utf-8')
+
+# Source file: https://www.fda.gov/files/drugs/published/Portable-Document-Format-Specifications.pdf
+input_filepath = "local-ingest-input-pdf/Portable-Document-Format-Specifications.pdf"
+output_filepath = "local-ingest-output-json/Portable-Document-Format-Specifications.json"
+
+client = UnstructuredClient(
+    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+    server_url=os.getenv("UNSTRUCTURED_API_URL"),
+)
+
+with open(input_filepath, "rb") as f:
+    files = shared.Files(
+        content=f.read(),
+        file_name=input_filepath
+    )
+
+# Chunk the document with a basic chunking strategy.
+# Create chunks that are at least around 200 characters (soft limit)
+# but never more than 300 characters (hard maximum).
+req = operations.PartitionRequest(
+    shared.PartitionParameters(
+        files=files,
+        strategy=shared.Strategy.HI_RES,
+        chunking_strategy="basic",
+        new_after_n_chars=200,
+        max_characters=300
+    )
+)
+
+try:
+    res = client.general.partition(request=req)
+
+    # Create a dictionary that will hold only
+    # a transposed version of the returned elements. 
+    # For instance, we just want to capture each element's ID,
+    # the chunk's text, and the chunk's associated elements in context.
+    orig_elemenents_dict: List[Dict[str, Any]] = []
+
+    for element in res.elements:
+        # For each chunk that has an "orig_elements" field...
+        if "orig_elements" in element["metadata"]:
+            # ...get the chunk's associated elements in context...
+            orig_elements = extract_orig_elements(element["metadata"]["orig_elements"])
+            # ...and then transpose it and other associated fields into a separate dictionary.
+            orig_elemenents_dict.append({
+                "element_id": element["element_id"],
+                "text": element["text"],
+                "orig_elements": orig_elements
+            })
+    
+    # Convert the elements into a JSON object.
+    orig_elements_json = json.dumps(orig_elemenents_dict, indent=2)
+    
+    # Print out the JSON.
+    print(orig_elements_json)
+
+    # Write the JSON to a file.
+    with open(output_filepath, "w") as file:
+        file.write(orig_elements_json)
+except Exception as e:
+    print(e)
+```
