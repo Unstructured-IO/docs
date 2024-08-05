@@ -54,14 +54,15 @@ The Unstructured Python Ingest library follows a modular architecture comprising
 
 ## Installation
 
-To install the Unstructured Python Ingest library, follow these steps:
+To install the Unstructured Ingest CLI and the Unstructured Ingest Python library, follow these steps:
 
-1.  Run `pip install unstructured` to install the latest version of the unstructured library which include the ingest code and the cli.
+1.  Run `pip install unstructured-ingest` to install the latest version of the Ingest CLI and Ingest Python library.
     
-2.  For specific connectors, run `pip install unstructured[CONNECTOR_DEPS]` where `CONNECTOR_DEPS` references the extra dependency label for a particular connector. For example, `pip install unstructured[s3]` will install the dependencies to interact with the s3 connectors. If these aren’t installed before hand, a convenient error message will be printed for you when you run the Unstructured Ingest CLI for the first time, prompting you with the correct pip command to run.
+2.  For specific connectors, run `pip install unstructured-ingest[CONNECTOR_DEPS]` where `CONNECTOR_DEPS` references the extra dependency label for a particular connector. For example, `pip install unstructured-ingest[s3]` will install the dependencies to interact with the s3 connectors. If these aren’t installed before hand, a convenient error message will be printed for you when you run the Unstructured Ingest CLI for the first time, prompting you with the correct pip command to run.
     
 3.  Once installed, you can run `unstructured-ingest --help` to get all the available commands.
     
+<Info>To migrate from older, deprecated versions of the Ingest CLI or Ingest Python library that used `pip install unstructured`, see the [migration guide](/ingestion/overview#migration-guide).</Info>
 
 ## Configuration
 

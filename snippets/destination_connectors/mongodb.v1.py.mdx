@@ -1,9 +1,9 @@
 ```python Python Ingest v1
 import os
 
-from unstructured.ingest.connector.local import SimpleLocalConfig
-from unstructured.ingest.connector.mongodb import SimpleMongoDBConfig
-from unstructured.ingest.interfaces import (
+from unstructured_ingest.connector.local import SimpleLocalConfig
+from unstructured_ingest.connector.mongodb import SimpleMongoDBConfig
+from unstructured_ingest.interfaces import (
     ChunkingConfig,
     EmbeddingConfig,
     PartitionConfig,
@@ -11,9 +11,9 @@ from unstructured.ingest.interfaces import (
     ReadConfig,
     WriteConfig,
 )
-from unstructured.ingest.runner import LocalRunner
-from unstructured.ingest.runner.writers.base_writer import Writer
-from unstructured.ingest.runner.writers.mongodb import (
+from unstructured_ingest.runner import LocalRunner
+from unstructured_ingest.runner.writers.base_writer import Writer
+from unstructured_ingest.runner.writers.mongodb import (
     MongodbWriter,
 )
 

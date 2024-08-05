@@ -1,24 +1,24 @@
 ```python Python
 import os
 
-from unstructured.ingest.connector.elasticsearch import (
+from unstructured_ingest.connector.elasticsearch import (
     ElasticsearchWriteConfig,
 )
-from unstructured.ingest.connector.local import SimpleLocalConfig
-from unstructured.ingest.connector.opensearch import (
+from unstructured_ingest.connector.local import SimpleLocalConfig
+from unstructured_ingest.connector.opensearch import (
     OpenSearchAccessConfig,
     SimpleOpenSearchConfig,
 )
-from unstructured.ingest.interfaces import (
+from unstructured_ingest.interfaces import (
     ChunkingConfig,
     EmbeddingConfig,
     PartitionConfig,
     ProcessorConfig,
     ReadConfig,
 )
-from unstructured.ingest.runner import LocalRunner
-from unstructured.ingest.runner.writers.base_writer import Writer
-from unstructured.ingest.runner.writers.opensearch import (
+from unstructured_ingest.runner import LocalRunner
+from unstructured_ingest.runner.writers.base_writer import Writer
+from unstructured_ingest.runner.writers.opensearch import (
     OpenSearchWriter,
 )
 

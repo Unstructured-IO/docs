@@ -1,13 +1,13 @@
 ```python Python
 import os
 
-from unstructured.ingest.connector.fsspec.box import BoxAccessConfig, SimpleBoxConfig
-from unstructured.ingest.interfaces import (
+from unstructured_ingest.connector.fsspec.box import BoxAccessConfig, SimpleBoxConfig
+from unstructured_ingest.interfaces import (
     PartitionConfig,
     ProcessorConfig,
     ReadConfig,
 )
-from unstructured.ingest.runner import BoxRunner
+from unstructured_ingest.runner import BoxRunner
 
 if __name__ == "__main__":
     runner = BoxRunner(
