@@ -285,23 +285,13 @@ curl http://<application-load-balancer-dns-name>/healthcheck
 
 ## Data processing
 
-Data processing can be performed by using `curl` commands. For example, run the following command, replacing:
+Data processing can be performed by using any of the available Unstructured API tools, libraries, or SDKs. For example, run one of the following, replacing:
 
-- `<application-load-balancer-dns-name>` with your application load balancer's DNS name.
+- `<load-balancer-address>` with `http://`, followed by your application load balancer's DNS name, followed by `/general/v0/general`.
 - `<path/to/input-file>` with the path on your local machine to a file to process. If you do not have any input files available, you can download any of the ones from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in GitHub.
 - `<path/to/output-file>` with the path on your local machine to the processed output in JSON format.
 
-```bash
-curl -q -X 'POST' http://<application-load-balancer-dns-name>/general/v0/general \
-     -H 'accept: application/json' \
-     -H 'Content-Type: multipart/form-data' \
-     -F files=@<path/to/input-file> \
-     -o <path/to/output-file>.json
-```
+import CodeExamplesAzure from '/snippets/how-to-api/azure-aws.mdx';
 
-![Data Processing Endpoint](/img/api/endpoint.png)
-
-import SharedPOSTSingleFile from '/snippets/general-shared-text/post-api-single-file.mdx';
-
-<SharedPOSTSingleFile />
+<CodeExamplesAzure/>
 
