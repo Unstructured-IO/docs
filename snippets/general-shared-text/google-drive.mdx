@@ -1,14 +1,9 @@
-The Google Drive connector dependencies:
+The Google Drive prerequisites:
 
-  ```bash CLI, Python
-  pip install "unstructured-ingest[google-drive]"
-  ```
+1. A Google Cloud service account and its related `credentials.json` key file or its contents in JSON format. [Learn how](https://developers.google.com/workspace/guides/create-credentials#service-account).
 
-A Google Cloud service account and its related `credentials.json` key file or its contents in JSON format. [Learn how](https://developers.google.com/workspace/guides/create-credentials#service-account).
+2. Note the path to the `credentials.json` key file or its contents in JSON format.
 
-Give the service account's email address access to the Google Drive folder.
+3. Give the service account's email address access to the Google Drive folder.
 
-These environment variables:
-
-- `GOOGLE_DRIVE_FOLDER_ID` - The folder ID. This is a part of the URL for your Google Drive folder represented in the following URL as `{folder_id}`: `https://drive.google.com/drive/folders/{folder-id}`.
-- `GCP_SERVICE_ACCOUNT_KEY` - The path to the `credentials.json` key file or its contents in JSON format.
+4. Note the folder ID. This is a part of the URL for your Google Drive folder represented in the following URL as `{folder_id}`: `https://drive.google.com/drive/folders/{folder-id}`.

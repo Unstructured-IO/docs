@@ -1,28 +1,21 @@
-1. The Box connector dependencies:
+The Box prerequisites:
 
-   ```bash CLI, Python
-   pip install "unstructured-ingest[box]"
-   ```
+1. Access to the [Developer Console](https://app.box.com/developers/console) from your [Box enterprise account](https://account.box.com/signup/enterprise-plan) or [Box developer account](https://account.box.com/signup/developer).
 
-2. Access to the [Developer Console](https://app.box.com/developers/console) from your [Box enterprise account](https://account.box.com/signup/enterprise-plan) or [Box developer account](https://account.box.com/signup/developer).
+2. A Box Custom App in your Box account, set up to use **Server Authentication (with JWT)**. See [Setup with JWT](https://developer.box.com/guides/authentication/jwt/jwt-setup/).
 
-3. A Box Custom App in your Box account, set up to use **Server Authentication (with JWT)**. See [Setup with JWT](https://developer.box.com/guides/authentication/jwt/jwt-setup/).
-
-4. The appropriate application scopes and advanced features set up for the Box Custom App, as follows:
+3. The appropriate application scopes and advanced features set up for the Box Custom App, as follows:
 
    - In the Box Custom App, on the **Configuration** tab, under **Application Scopes**, check the box titled **Write all files and folders stored in Box**.
    - In the Box Custom App, on the **Configuration** tab, under **Advanced Features**, check the box titled **Make API calls using the as-user header**.
    - Click **Save Changes** before continuing.
 
-5. Authorization by a Box Admin in your Box account for the Box Custom App. See [App Authorization](https://developer.box.com/guides/authentication/jwt/jwt-setup/#app-authorization).
+4. Authorization by a Box Admin in your Box account for the Box Custom App. See [App Authorization](https://developer.box.com/guides/authentication/jwt/jwt-setup/#app-authorization).
 
-6. Access by your Box account's source or target [folder](https://app.box.com/folder/0) to your Box Custom App, as follows:
+5. Access by your Box account's source or target [folder](https://app.box.com/folder/0) to your Box Custom App, as follows:
 
    - In the Box Custom App, on the **General Settings** tab, copy the **Service Account ID** (which takes the form `AutomationUser_<your-app-service-id>_<a-random-string@boxdevedition.com`).
    - **Share** your Box account's target folder with the copied service account's email address as a **Co-owner** or **Editor**. 
+   - Note the remote URL to the target folder, which takes the format `box://<path/to/folder/in/account>`.
 
-7. The private key configuration JSON file for the Box Custom App. To download this file, in the Box Custom App, on the **Configuration** tab, under **Add and Manage Public Keys**, click **Generate a Public/Private Keypair**. Store the downloaded private key configuration JSON file in a secure location. Do not share it with others.
-
-8. In your code, set `--box-app-config` (CLI) or `box_app_config` (Python) to the local path to the downloaded private key configuration JSON file for the Box Custom App, represented in the following example by the environment variable `BOX_APP_CONFIG_PATH`.
-
-9. In your code, set `--remote-url` (CLI) or `remote_url` (Python) to the remote URL to the target folder, which takes the format `box://<path/to/folder/in/account>`, represented in the following example by the environment variable `BOX_REMOTE_URL`.
+6. The private key configuration JSON file for the Box Custom App. To download this file, in the Box Custom App, on the **Configuration** tab, under **Add and Manage Public Keys**, click **Generate a Public/Private Keypair**. Store the downloaded private key configuration JSON file in a secure location. Do not share it with others.
