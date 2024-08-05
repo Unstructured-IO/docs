@@ -151,15 +151,17 @@ The programmatic approach you take to get these document elements will depend on
 
         You can also use standard Python [looping techniques](https://docs.python.org/3/tutorial/datastructures.html#looping-techniques) on this list to access each element in this list. 
 
-        For each individual element, you can call the following:
+        Each individual element has the following attributes:
 
-        - `category` to get the element's `type` field value as a `str`. See [Element type](/open-source/concepts/document-elements#element-type).
-        - `convert_coordinates_to_new_system` to convert the element's location coordinates, if any, to a new coordinate system. See [Element's coordinates](/open-source/concepts/document-elements#elements-coordinates).
-        - `id` to get the element's `element_id` value as a `str`. See [Element ID](/open-source/concepts/document-elements#element-id).
-        - `id_to_hash(sequence_number)` to calculate and assign a deterministic hash as an ID. The hash ID is based on element's text, sequence number on page, page number and its filename.
-        - `metadata` to get the element's `metadata` field as an `ElementMetadata` object. See [Metadata](/open-source/concepts/document-elements#metadata).
-        - `text` to get the element's `text` field value as a `str`. See [Element example](/open-source/concepts/document-elements#element-example).
-        - `to_dict` to get the element's content as a standard Python key-value dictionary (`dict[str, Any]`).
+        - `.text` provides the element's `text` field value as a `str`. See [Element example](/open-source/concepts/document-elements#element-example).
+        - `.metadata` provides the element's `metadata` field as an `ElementMetadata` object. See [Metadata](/open-source/concepts/document-elements#metadata).
+        - `.category` provides the element's `type` field value as a `str`. See [Element type](/open-source/concepts/document-elements#element-type).
+        - `.id` provides the element's `element_id` value as a `str`. See [Element ID](/open-source/concepts/document-elements#element-id).
+                
+        In addition, the following methods are available:
+
+        - `.convert_coordinates_to_new_system()` converts the element's location coordinates, if any, to a new coordinate system. See [Element's coordinates](/open-source/concepts/document-elements#elements-coordinates).
+        - `.to_dict()` gets the element's content as a standard Python key-value dictionary (`dict[str, Any]`).
 
         For example:
 
@@ -180,9 +182,11 @@ The programmatic approach you take to get these document elements will depend on
         # ...
         ```
 
-        To serialize this list as a Python dictionary, you can use Python [list comprehension](https://docs.python.org/2/tutorial/datastructures.html#list-comprehensions) and `to_dict`, for example:
+        To serialize this list as a Python dictionary, you can use the `elements_to_dicts` method, for example:
 
         ```python Python
+        from unstructured.staging.base import elements_to_dicts
+
         # ...
 
         elements = partition_via_api(
@@ -191,15 +195,16 @@ The programmatic approach you take to get these document elements will depend on
             api_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
-        element_dicts = [element.to_dict() for element in elements]
-        print(element_dicts)
+        print(elements_to_dicts(elements))
 
         # ...
         ```
 
-        To serialize this list as JSON, you can use the standard [json](https://docs.python.org/3/library/json.html#module-json) `dumps` method to serialize it to JSON-formatted string or the `dump` method to save it as a JSON-formatted stream to a file. For example:
+        To serialize this list as JSON, you can use the standard [json](https://docs.python.org/3/library/json.html#module-json) `dumps` method to serialize it to JSON-formatted string, or the `elements_to_json` method to save it as a JSON-formatted stream to a file. For example:
 
         ```python Python
+        from unstructured.staging.base import elements_to_dicts, elements_to_json
+
         # ...
 
         elements = partition_via_api(
@@ -208,10 +213,14 @@ The programmatic approach you take to get these document elements will depend on
             api_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
-        element_dicts = [element.to_dict() for element in elements]
-        json_elements = json.dumps(element_dicts, indent=2)
-        
+        json_elements = json.dumps(elements_to_dicts(elements), indent=2)
         print(json_elements)
+
+        elements_to_json(
+            elements=elements,
+            filename=output_filepath,
+            indent=2
+        )
 
         # ...
         ```
