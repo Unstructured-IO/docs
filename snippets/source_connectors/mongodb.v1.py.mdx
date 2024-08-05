@@ -1,11 +1,11 @@
 ```python Python Ingest v1
 import os
 
-from unstructured.ingest.connector.mongodb import (
+from unstructured_ingest.connector.mongodb import (
     SimpleMongoDBConfig,
 )
-from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-from unstructured.ingest.runner import MongoDBRunner
+from unstructured_ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
+from unstructured_ingest.runner import MongoDBRunner
 
 if __name__ == "__main__":
     runner = MongoDBRunner(

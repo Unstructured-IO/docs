@@ -1,24 +1,24 @@
 ```python Python Ingest v1
 import os
 
-from unstructured.ingest.connector.astradb import (
+from unstructured_ingest.connector.astradb import (
     AstraDBAccessConfig,
     AstraDBWriteConfig,
     SimpleAstraDBConfig,
 )
-from unstructured.ingest.connector.local import SimpleLocalConfig
-from unstructured.ingest.interfaces import (
+from unstructured_ingest.connector.local import SimpleLocalConfig
+from unstructured_ingest.interfaces import (
     ChunkingConfig,
     EmbeddingConfig,
     PartitionConfig,
     ProcessorConfig,
     ReadConfig,
 )
-from unstructured.ingest.runner import LocalRunner
-from unstructured.ingest.runner.writers.astradb import (
+from unstructured_ingest.runner import LocalRunner
+from unstructured_ingest.runner.writers.astradb import (
     AstraDBWriter,
 )
-from unstructured.ingest.runner.writers.base_writer import Writer
+from unstructured_ingest.runner.writers.base_writer import Writer
 
 
 def get_writer() -> Writer:

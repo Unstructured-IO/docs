@@ -93,7 +93,7 @@ The Unstructured Ingest CLI enables you to use command-line scripts to get all o
 One approach to using the CLI is installing Python and then running the following command to install the CLI:
 
 ```bash
-pip install unstructured
+pip install unstructured-ingest
 ```
 
 This default installation option enables the ingestion of plain text files, HTML, XML, JSON and emails that do not require any extra dependencies. This default option also enables you to specify local source and destination locations.
@@ -133,6 +133,8 @@ To begin using the CLI, see the quickstarts for the:
 - [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide#unstructured-cli)
 - [Free Unstructured API](/api-reference/api-services/free-api#unstructured-cli)
 
+<Info>To migrate from older, deprecated versions of the Ingest CLI that used `pip install unstructured`, see the [migration guide](#migration-guide).</Info>
+
 ## Unstructured Ingest Python library
 
 The Unstructured Ingest Python library enable you to use Python code to get all of your data ready for RAG and model fine-tuning.
@@ -140,7 +142,7 @@ The Unstructured Ingest Python library enable you to use Python code to get all 
 One approach to using the Unstructured Ingest Python library is installing Python and then running the following command to install the library and the default connectors:
 
 ```bash
-pip install unstructured
+pip install unstructured-ingest
 ```
 
 This default installation option enables the ingestion of plain text files, HTML, XML, JSON and emails that do not require any extra dependencies. This default option also enables you to specify local source and destination locations.
@@ -160,3 +162,13 @@ Some source and destination connectors provide newer v2 and older v1 implementat
 - [v1 Notion connector](https://github.com/Unstructured-IO/unstructured/tree/main/unstructured/ingest/connector/notion)
 
 To begin using the Unstructured Ingest Python library, see the code examples for the [source](/api-reference/ingest/source-connectors/overview) and [destination](/api-reference/ingest/destination-connector/overview) connectors.
+
+<Info>To migrate from older, deprecated versions of the Ingest Python library that used `pip install unstructured`, see the [migration guide](#migration-guide).</Info>
+
+## Migration guide
+
+import MigrationGuideSteps from '/snippets/general-shared-text/ingest-migration.mdx';
+
+<MigrationGuideSteps/>
+
+
