@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 from unstructured_ingest.connector.local import SimpleLocalConfig
 from unstructured_ingest.connector.weaviate import (
     SimpleWeaviateConfig,
@@ -18,13 +18,16 @@ from unstructured_ingest.runner.writers.weaviate import (
     WeaviateWriter,
 )
 
+import os
 
 def get_writer() -> Writer:
     return WeaviateWriter(
         connector_config=SimpleWeaviateConfig(
-            access_config=WeaviateAccessConfig(),
-            host_url="http://localhost:8080",
-            class_name="elements",
+            access_config=WeaviateAccessConfig(
+                api_key=os.getenv("WEAVIATE_API_KEY")
+            ),
+            host_url=os.getenv("WEAVIATE_URL"),
+            class_name=os.getenv("WEAVIATE_COLLECTION_CLASS_NAME"),
         ),
         write_config=WeaviateWriteConfig(),
     )
@@ -42,7 +45,10 @@ if __name__ == "__main__":
             input_path="example-docs/book-war-and-peace-1225p.txt",
         ),
         read_config=ReadConfig(),
-        partition_config=PartitionConfig(),
+        partition_config=PartitionConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")),
         chunking_config=ChunkingConfig(chunk_elements=True),
         embedding_config=EmbeddingConfig(
             provider="langchain-huggingface",
