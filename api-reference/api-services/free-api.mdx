@@ -126,7 +126,7 @@ Set the `UNSTRUCTURED_API_KEY` environment variable to your Free Unstructured AP
 
 Set the `UNSTRUCTURED_API_URL` environment variable to your Free Unstructured API URL, which is `https://api.unstructured.io/general/v0/general`
 
-<Tip>With the Unstructured SDKs, for the Free Unstructured API only, you can use the short string `free-api` instead of the Free Unstructured API URL.</Tip>
+<Tip>With the Unstructured SDKs, for the Free edition only, you can set the `server` parameter to use the short string `free-api` instead of setting `server_url` (Python) or `serverURL` (JavaScript/TypeScript) to the Free Unstructured API URL.</Tip>
 
 Now, call the API, replacing:
 
@@ -142,7 +142,7 @@ from unstructured_client import UnstructuredClient
 from unstructured_client.models import operations, shared
 
 client = unstructured_client.UnstructuredClient(
-    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
     server_url=os.getenv("UNSTRUCTURED_API_URL")
 )
 
