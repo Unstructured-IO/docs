@@ -1,12 +1,12 @@
 ```python Python Ingest v1
 import os
 
-from unstructured.ingest.connector.google_drive import (
+from unstructured_ingest.connector.google_drive import (
     GoogleDriveAccessConfig,
     SimpleGoogleDriveConfig,
 )
-from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-from unstructured.ingest.runner import GoogleDriveRunner
+from unstructured_ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
+from unstructured_ingest.runner import GoogleDriveRunner
 
 if __name__ == "__main__":
     runner = GoogleDriveRunner(

@@ -1,0 +1,223 @@
+<AccordionGroup>
+    <Accordion title="POST">
+
+        This example uses `curl`.
+
+        For better code portability, it is recommended to first set the environment variable `UNSTRUCTURED_API_URL` to `<load-balancer-address>`, instead of hard-coding it as the URL endpoint in this POST request.
+
+        ```bash POST
+        curl -q -X POST $UNSTRUCTURED_API_URL \
+          -H 'accept: application/json' \
+          -H 'Content-Type: multipart/form-data' \
+          -F files=@<path/to/input-file> \
+          -o <path/to/output-file>.json
+        ```
+
+        After this command runs successfully, check the contents of `<path/to/output-file>.json`.
+
+        [Learn more about POST requests](/api-reference/api-services/post-requests). 
+        
+        <Info>In this case, you do not need to specify an Unstructured API key with POST, because you are calling a private API.</Info>
+
+    </Accordion>
+
+    <Accordion title="Python SDK">
+
+        You must first [install the Unstructured Python SDK](/api-reference/api-services/sdk-python).
+
+        For better code portability, it is recommended to first set the environment variable `UNSTRUCTURED_API_URL` to `<load-balancer-address>`, instead of hard-coding it in the parameter `server_url`.
+
+        Because you are calling a private API and therefore do not need an Unstructured API key, you can omit the parameter `api_key_auth`. Or, for better code portability, it is recommended that you first set the environment variable `UNSTRUCTURED_API_KEY` to an empty string and then include the parameter `api_key_auth`.
+
+        ```python Python
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models import operations, shared
+
+        import json, os
+
+        input_filepath = "<path/to/input-file>"
+        output_filepath = "<path/to/output-file>.json"
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+            server_url=os.getenv("UNSTRUCTURED_API_URL"),
+        )
+
+        with open(input_filepath, "rb") as f:
+            files = shared.Files(
+                content=f.read(),
+                file_name=input_filepath
+            )
+
+        req = operations.PartitionRequest(
+            shared.PartitionParameters(
+                files=files,
+                strategy=shared.Strategy.AUTO
+            )
+        )
+
+        try:
+            res = client.general.partition(request=req)
+            element_dicts = [element for element in res.elements]
+            json_elements = json.dumps(element_dicts, indent=2)
+            
+            print(json_elements)
+
+            with open(output_filepath, "w") as file:
+            file.write(json_elements)
+        except Exception as e:
+            print(e)
+        ```
+
+    </Accordion>
+
+    <Accordion title="JavaScript/TypeScript SDK">
+
+        You must first [install the Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts).
+
+        For better code portability, it is recommended to first set the variable `url` to the environment variable `UNSTRUCTURED_API_URL` that is set to `<load-balancer-address>`, instead of hard-coding it in the parameter `serverUrl`.
+
+        Because you are calling a private API and therefore do not need an Unstructured API key, you can omit the variable `key` and the parameter `security`. Or, for better code portability, it is recommended that you first set the environment variable `UNSTRUCTURED_API_KEY` to an empty string and then include the variable `key` and parameter `security`.
+
+        ```typescript TypeScript
+        import { UnstructuredClient } from "unstructured-client";
+        import { Strategy } from "unstructured-client/sdk/models/shared/index.js";
+        import * as fs from "fs";
+
+        const inputFilepath = "<path/to/input-file>" || '';
+        const outputFilepath = "<path/to/output-file>.json" || ''
+
+        const key = process.env.UNSTRUCTURED_API_KEY || '';
+        const url = process.env.UNSTRUCTURED_API_URL || '';
+
+        const client = new UnstructuredClient({
+            security: { apiKeyAuth: key },
+            serverURL: url
+        });
+
+        const data = fs.readFileSync(inputFilepath);
+
+        client.general.partition({
+            partitionParameters: {
+                files: {
+                    content: data,
+                    fileName: inputFilepath
+                },
+                strategy: Strategy.Auto
+            }
+        }).then((res) => {
+            if (res.statusCode == 200) {
+            const jsonElements = JSON.stringify(res.elements, null, 2)
+            
+            console.log(jsonElements);
+
+            fs.writeFileSync(outputFilepath, jsonElements)
+            }
+        }).catch((e) => {
+            if (e.statusCode) {
+                console.log(e.statusCode);
+                console.log(e.body);
+            } else {
+                console.log(e);
+            }
+        });
+        ```
+
+    </Accordion>
+
+    <Accordion title="Ingest CLI">
+
+        You must first [install the Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli).
+
+        For better code portability, it is recommended to first set the environment variable `UNSTRUCTURED_API_URL` to `<load-balancer-address>`, instead of hard-coding it for the command-line option `--partition-endpoint`.
+
+        Because you are calling a private API and therefore do not need an Unstructured API key, you can omit the command-line option `--api-key` Or, for better code portability, it is recommended that you first set the environment variable `UNSTRUCTURED_API_KEY` to an empty string and then include the command-line option `--api-key`.
+
+        Because the Unstructured Ingest Python library can work with multiple files at a time, you specify the input and output directory paths instead of paths to individual input and output files.
+        
+        ```bash CLI
+        unstructured-ingest \
+          local \
+            --input-path <path/to/input-files/directory> \
+            --output-dir <path/to/output-files/director> \
+            --partition-by-api \
+            --api-key $UNSTRUCTURED_API_KEY \
+            --partition-endpoint $UNSTRUCTURED_API_URL
+        ```
+
+    </Accordion>
+
+    <Accordion title="Ingest Python library">
+
+        You must first [install the Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library).
+
+        For better code portability, it is recommended to first set the environment variable `UNSTRUCTURED_API_URL` to `<load-balancer-address>`, instead of hard-coding it for the parameter `partition_endpoint`.
+
+        Because you are calling a private API and therefore do not need an Unstructured API key, you can omit the parameter `api_key`. Or, for better code portability, it is recommended that you first set the environment variable `UNSTRUCTURED_API_KEY` to an empty string and then include the parameter `api_key`.
+
+        Because the Unstructured Ingest Python library can work with multiple files at a time, you specify the input and output directory paths instead of paths to individual input and output files.
+
+        ```python Python Ingest v2
+        import os
+
+        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+        from unstructured_ingest.v2.interfaces import ProcessorConfig
+        from unstructured_ingest.v2.processes.connectors.local import (
+            LocalIndexerConfig,
+            LocalDownloaderConfig,
+            LocalConnectionConfig,
+            LocalUploaderConfig
+        )
+        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+
+        if __name__ == "__main__":
+            Pipeline.from_configs(
+                context=ProcessorConfig(),
+                indexer_config=LocalIndexerConfig(input_path="<path/to/input-files/directory>"),
+                downloader_config=LocalDownloaderConfig(),
+                source_connection_config=LocalConnectionConfig(),
+                partitioner_config=PartitionerConfig(
+                    partition_by_api=True,
+                    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+                    partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")
+                ),
+                uploader_config=LocalUploaderConfig(output_dir="<path/to/output-files/directory>")
+            ).run()
+        ```
+
+    </Accordion>
+
+    <Accordion title="Open source library with Python">
+
+        You must first [install the Unstructured open source library](/open-source/introduction/quick-start).
+
+        For better code portability, it is recommended to first set the environment variable `UNSTRUCTURED_API_URL` to `<load-balancer-address>`, instead of hard-coding it for the parameter `api_url`.
+
+        Because you are calling a private API and therefore do not need an Unstructured API key, you can omit the parameter `api_key`. Or, for better code portability, it is recommended that you first set the environment variable `UNSTRUCTURED_API_KEY` to an empty string and then include the parameter `api_key`.
+
+        ```bash Python
+        import os, json
+
+        from unstructured.partition.api import partition_via_api
+
+        input_filepath = "<path/to/input-file>"
+        output_filepath = "<path/to/output-file>.json"
+
+        elements = partition_via_api(
+            filename=input_filepath,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            api_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        element_dicts = [element.to_dict() for element in elements]
+        json_elements = json.dumps(element_dicts, indent=2)
+            
+        print(json_elements)
+
+        with open(output_filepath, "w") as file:
+            file.write(json_elements)
+        ```
+
+    </Accordion>
+
+</AccordionGroup>

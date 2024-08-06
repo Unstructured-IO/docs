@@ -1,18 +1,18 @@
 ```python Python Ingest v1
 import os
 
-from unstructured.ingest.connector.fsspec.s3 import S3AccessConfig, S3WriteConfig, SimpleS3Config
-from unstructured.ingest.connector.local import SimpleLocalConfig
-from unstructured.ingest.interfaces import (
+from unstructured_ingest.connector.fsspec.s3 import S3AccessConfig, S3WriteConfig, SimpleS3Config
+from unstructured_ingest.connector.local import SimpleLocalConfig
+from unstructured_ingest.interfaces import (
     ChunkingConfig,
     EmbeddingConfig,
     PartitionConfig,
     ProcessorConfig,
     ReadConfig,
 )
-from unstructured.ingest.runner import LocalRunner
-from unstructured.ingest.runner.writers.base_writer import Writer
-from unstructured.ingest.runner.writers.fsspec.s3 import (
+from unstructured_ingest.runner import LocalRunner
+from unstructured_ingest.runner.writers.base_writer import Writer
+from unstructured_ingest.runner.writers.fsspec.s3 import (
     S3Writer,
 )
 

@@ -1,19 +1,19 @@
 ```python Python
-from unstructured.ingest.connector.local import SimpleLocalConfig
-from unstructured.ingest.connector.qdrant import (
+from unstructured_ingest.connector.local import SimpleLocalConfig
+from unstructured_ingest.connector.qdrant import (
     QdrantWriteConfig,
     SimpleQdrantConfig,
 )
-from unstructured.ingest.interfaces import (
+from unstructured_ingest.interfaces import (
     ChunkingConfig,
     EmbeddingConfig,
     PartitionConfig,
     ProcessorConfig,
     ReadConfig,
 )
-from unstructured.ingest.runner import LocalRunner
-from unstructured.ingest.runner.writers.base_writer import Writer
-from unstructured.ingest.runner.writers.qdrant import QdrantWriter
+from unstructured_ingest.runner import LocalRunner
+from unstructured_ingest.runner.writers.base_writer import Writer
+from unstructured_ingest.runner.writers.qdrant import QdrantWriter
 
 
 def get_writer() -> Writer:

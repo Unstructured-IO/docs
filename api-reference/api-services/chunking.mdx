@@ -19,10 +19,13 @@ text element that was too big to fit in one chunk and required splitting.
 * `Table`:  A table element is not combined with other elements and if it fits within `max_characters` it will remain as is.
 * `TableChunk`: large tables that exceed `max_characters` chunk size are split into special `TableChunk` elements.
 
+import SharedChunkingStrategyBasic from '/snippets/concepts/chunking-strategy-basic.mdx';
 
-import SharedChunkingStrategies from '/snippets/concepts/chunking-strategies.mdx';
+<SharedChunkingStrategyBasic/>
 
-<SharedChunkingStrategies/>
+import SharedChunkingStrategyByTitle from '/snippets/concepts/chunking-stategy-by-title.mdx';
+
+<SharedChunkingStrategyByTitle/>
 
 ### "by_page" chunking strategy
 
@@ -46,6 +49,8 @@ guarantee that two elements with low similarity will not be combined in a single
 You can control the level of topic similarity you require for elements to have by setting the `similarity_threshold` parameter.
 `similarity_threshold` expects a value between 0.0 and 1.0 specifying the minimum similarity text in consecutive elements
 must have to be included in the same chunk. The default is 0.5.
+
+### 
 
 ## Learn more
 

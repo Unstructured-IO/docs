@@ -1,24 +1,24 @@
 ```python Python
 import os
 
-from unstructured.ingest.connector.azure_cognitive_search import (
+from unstructured_ingest.connector.azure_cognitive_search import (
     AzureCognitiveSearchAccessConfig,
     AzureCognitiveSearchWriteConfig,
     SimpleAzureCognitiveSearchStorageConfig,
 )
-from unstructured.ingest.connector.local import SimpleLocalConfig
-from unstructured.ingest.interfaces import (
+from unstructured_ingest.connector.local import SimpleLocalConfig
+from unstructured_ingest.interfaces import (
     ChunkingConfig,
     EmbeddingConfig,
     PartitionConfig,
     ProcessorConfig,
     ReadConfig,
 )
-from unstructured.ingest.runner import LocalRunner
-from unstructured.ingest.runner.writers.azure_cognitive_search import (
+from unstructured_ingest.runner import LocalRunner
+from unstructured_ingest.runner.writers.azure_cognitive_search import (
     AzureCognitiveSearchWriter,
 )
-from unstructured.ingest.runner.writers.base_writer import Writer
+from unstructured_ingest.runner.writers.base_writer import Writer
 
 
 def get_writer() -> Writer:

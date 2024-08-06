@@ -1,13 +1,13 @@
 ```python Python
 import os
 
-from unstructured.ingest.connector.fsspec.gcs import GcsAccessConfig, SimpleGcsConfig
-from unstructured.ingest.interfaces import (
+from unstructured_ingest.connector.fsspec.gcs import GcsAccessConfig, SimpleGcsConfig
+from unstructured_ingest.interfaces import (
     PartitionConfig,
     ProcessorConfig,
     ReadConfig,
 )
-from unstructured.ingest.runner import GCSRunner
+from unstructured_ingest.runner import GCSRunner
 
 if __name__ == "__main__":
     runner = GCSRunner(
