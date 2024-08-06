@@ -3,17 +3,19 @@
 
 unstructured-ingest \
   local \
-  --input-path example-docs/fake-memo.pdf \
-  --anonymous \
-  --output-dir local-output-to-mongo \
-  --num-processes 2 \
-  --verbose \
-  --strategy fast \
+    --input-path example-docs/fake-memo.pdf \
+    --output-dir local-output-to-SQL \
+    --num-processes 2 \
+    --verbose \
+    --strategy fast \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
   sql \
-  --db-type postgresql \
-  --username postgres \
-  --password test \
-  --host localhost \
-  --port 5432 \
-  --database elements
+    --db-type $SQL_DB_TYPE \
+    --username $PGUSER \
+    --password $PGPASSWORD \
+    --host $PGHOST \
+    --port $PGPORT \
+    --database $PGDATABASE
 ```

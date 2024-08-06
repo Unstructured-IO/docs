@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured_ingest.connector.local import SimpleLocalConfig
@@ -24,12 +24,12 @@ from unstructured_ingest.runner.writers.sql import (
 def get_writer() -> Writer:
     return SqlWriter(
         connector_config=SimpleSqlConfig(
-            access_config=SqlAccessConfig(username=os.getenv("USERNAME"), 
-            password=os.getenv("DB_PASSWORD")),
-            db_type="postgresql",
-            host="localhost",
-            database="elements",
-            port=5432,
+            access_config=SqlAccessConfig(username=os.getenv("PGUSER"), 
+            password=os.getenv("PGPASSWORD")),
+            db_type=os.getenv("SQL_DB_TYPE"),
+            host=os.getenv("PGHOST"),
+            database=os.getenv("PGDATABASE"),
+            port=os.getenv("PGPORT"),
         ),
         write_config=WriteConfig(),
     )
@@ -52,5 +52,4 @@ if __name__ == "__main__":
         writer_kwargs={},
     )
     runner.run()
-
 ```

@@ -2,6 +2,32 @@
 title: SQL
 ---
 
-import SharedSQL from '/snippets/dc-shared-text/sql.mdx';
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
 
-<SharedSQL />
+<NewDocument />
+
+import SharedSQL from '/snippets/dc-shared-text/sql-cli-api.mdx';
+
+<SharedSQL/>
+
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library. The source connector can be any of the ones supported. This example uses the local source connector:
+
+import SQLAPISh from '/snippets/destination_connectors/sql.sh.mdx';
+import SQLAPIPyV2 from '/snippets/destination_connectors/sql.v2.py.mdx';
+import SQLAPIPyV1 from '/snippets/destination_connectors/sql.v1.py.mdx';
+
+<CodeGroup>
+  <SQLAPISh />
+  <SQLAPIPyV2 />
+  <SQLAPIPyV1 />
+</CodeGroup>
+
+import SharedSQLSampleIndexSchema from '/snippets/general-shared-text/sql-sample-index-schema.mdx';
+
+<SharedSQLSampleIndexSchema/>
+
+## Calling Unstuctured API services
+
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>
