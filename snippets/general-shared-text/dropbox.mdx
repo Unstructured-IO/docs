@@ -1,23 +1,17 @@
-1. The Dropbox connector dependencies:
+The Dropbox prerequisites:
 
-   ```bash CLI, Python
-   pip install "unstructured-ingest[dropbox]"
-   ```
+1. A Dropbox account. [Get an account](https://www.dropbox.com/try/teams).
 
-2. A Dropbox account. [Get an account](https://www.dropbox.com/try/teams).
+2. A target source or destination folder in your Dropbox account. [Create a folder](https://help.dropbox.com/create-upload/creating-using-folders-on-dropbox).
 
-3. A target source or destination folder in your Dropbox account. [Create a folder](https://help.dropbox.com/create-upload/creating-using-folders-on-dropbox).
+3. A Dropbox app for your Dropbox account. To learn how to create an app, click the **App Console** tab on the [Getting Started](https://www.dropbox.com/developers/reference/getting-started) page.
 
-4. A Dropbox app for your Dropbox account. To learn how to create an app, click the **App Console** tab on the [Getting Started](https://www.dropbox.com/developers/reference/getting-started) page.
-
-5. Permission for your Dropbox app to read from, and write to, the target folder in your Dropbox account as needed. To do this:
+4. Permission for your Dropbox app to read from, and write to, the target folder in your Dropbox account as needed. To do this:
 
    - On the **Permissions** tab of your Dropbox app, check the boxes **files.content.read** or **files.content.write** or both. [Learn more](https://developers.dropbox.com/oauth-guide).
 
    - On the **Settings** tab of your Dropbox app, for **App folder name**, set the name of the target folder in your Dropbox account for your Dropbox app to have access to.
 
-6. An access token for your Dropbox account. [Get a token](https://dropbox.tech/developers/generate-an-access-token-for-your-own-account). Save this token in a secure location. Do not share it with others.
+   - Note the remote URL to the target folder, which takes the format `dropbox://<path/to/folder/in/account>`.
 
-7. In your code, set `--token` (CLI) or `token` (Python) to the value of your access token, represented in the following example by the environment variable `DROPBOX_ACCESS_TOKEN`.
-
-8. In your code, set `--remote-url` (CLI) or `remote_url` (Python) to the remote URL to the target folder, which takes the format `dropbox://<path/to/folder/in/account>`, represented in the following example by the environment variable `DROPBOX_REMOTE_URL`.
+5. An access token for your Dropbox account. [Get a token](https://dropbox.tech/developers/generate-an-access-token-for-your-own-account). Save this token in a secure location. Do not share it with others.

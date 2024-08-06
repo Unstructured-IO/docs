@@ -1,0 +1,20 @@
+The MongoDB connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[mongodb]"
+```
+
+For a MongoDB Atlas deployment, the following environment variables:
+
+- `MONGODB_DATABASE` - The name of the database, represented by `--database` (CLI) or `database` (Python).
+
+- `MONGODB_COLLECTION` - The name of the collection in the database, represented by `--collection` (CLI) or `collection` (Python).
+
+- `MONGODB_URI` - The URI for the cluster, represented by `--uri` (CLI) or `uri` (Python). 
+
+For a local MongoDB server, the following environment variables:
+
+- `MONGODB_HOST` - The host for the local MongoDB server, represented by `--host` (CLI) or `host` (Python).
+
+- `MONGODB_PORT` - The port for the local MongoDB server, represented by `--port` (CLI) or `port` (Python).
+

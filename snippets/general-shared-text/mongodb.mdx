@@ -1,10 +1,4 @@
-The MongoDB connector dependencies:
-
-```bash CLI, Python
-pip install "unstructured-ingest[mongodb]"
-```
-
-A MongoDB Atlas deployment, or a local MongoDB server:
+The MongoDB prerequsites for a MongoDB Atlas deployment, or a local MongoDB server.
 
 For a MongoDB Atlas deployment:
 
@@ -16,22 +10,16 @@ For a MongoDB Atlas deployment:
 
 - The cluster must be configured to use your IP address. [Learn how](https://www.mongodb.com/docs/atlas/setup-cluster-security/#ip-access-list).
 
-- The cluster must have at least one database, the name of which is specified with `--database` (CLI) or `database` (Python) and represented in the following examples by the environment variable `MONGODB_DATABASE`.[Create a database](https://www.mongodb.com/docs/compass/current/databases/#create-a-database).
+- The cluster must have at least one database. [Create a database](https://www.mongodb.com/docs/compass/current/databases/#create-a-database).
 
 - The database must have at least one user, and that user must have sufficient access to the database. [Create a database user](https://www.mongodb.com/docs/atlas/security-add-mongodb-users/#add-database-users). [Give the user database access](https://www.mongodb.com/docs/manual/core/authorization/).
 
-- The database must have at least one collection, the name of which is specified with `--collection` (CLI) or `collection` (Python) and represented in the following examples by the environment variable `MONGODB_COLLECTION`. [Create a collection](https://www.mongodb.com/docs/compass/current/collections/#create-a-collection).
+- The database must have at least one collection. [Create a collection](https://www.mongodb.com/docs/compass/current/collections/#create-a-collection).
 
-- The URI for the cluster, specified with `--uri` (CLI) or `uri` (Python) and is represented in the following examples by the environment variable `MONGODB_URI`. This URI must include the protocol, username, password, and host. [Learn how to get this value](https://www.mongodb.com/resources/products/fundamentals/mongodb-connection-string).
+- The URI for the cluster. This URI must include the protocol, username, password, and host. [Learn how to get this value](https://www.mongodb.com/resources/products/fundamentals/mongodb-connection-string).
 
 For a local MongoDB server:
 
 - Installation of a local MongoDB server. [Learn how](https://www.mongodb.com/docs/manual/installation/).
 
-- The host and port for the local MongoDB server (instead of `--uri` (CLI) or `uri` (Python)), as follows:
-
-  - The host is specified with `--host` (CLI) or `host` (Python), represented by the environment variable `MONGODB_HOST`.
-
-  - The port is specified with `--port` (CLI) or `port` (Python), represented by the environment variable `MONGODB_PORT`.
-
-    [Learn how to get these values](https://www.mongodb.com/resources/products/fundamentals/mongodb-connection-string).
+- The host and port for the local MongoDB server. [Learn how to get these values](https://www.mongodb.com/resources/products/fundamentals/mongodb-connection-string).
