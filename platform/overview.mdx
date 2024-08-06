@@ -3,46 +3,52 @@ title: Unstructured Platform
 sidebarTitle: Overview
 ---
 
-<Warning>
-Platform is currently in private beta. [Click here](https://unstructured.io/platform) to join the waitlist.
-</Warning>
+<Note>To start using the Unstructured Platform right away, skip ahead to the [quickstart](/platform/saas-platform-guide).</Note>
 
-### What we do
-The ```Unstructured Platform``` is a **no-code platform** for **transforming unstructured data** to **RAG-ready data**. [Read the announcement](https://unstructured.io/blog/introducing-unstructured-platform)&nbsp;&nbsp;<Icon icon="blog"/>.
+## What is the Unstructured Platform?
 
+The Unstructured Platform is a no-code user interface, pay-as-you-go platform for transforming your unstructured data into data that is ready for Retrieval Augmented Generation (RAG). 
 
-To **get your data RAG-ready** our platform moves it through the following process:
+## How does it work?
+
+To get your data RAG-ready, the Unstructured Platform moves it through the following process:
 
 ```mermaid
   flowchart LR
-    Connect-->Route
-    Route-->Transform
-    Transform-->Chunk-->Embed-->Persist
+    Connect[1. Connect]-->Route[2. Route]-->Transform[3. Transform]-->Chunk[4. Chunk]-->Embed[5. Embed]-->Persist[6. Persist]
 ```
 <Steps>
   <Step title="Connect">
-    We offer multiple [Source Connectors](../platform/platform-source-connectors/overview). We can connect to your data in its existing location.
+    The Unstructured Platform offers multiple [source connectors](../platform/platform-source-connectors/overview) to connect to your data in its existing location.
   </Step>
   <Step title="Route">
-    **Routing** determines which strategy we will employ in **transforming your document to our canonical JSON schema**. There are three [Partioning Strategies](/api-reference/api-services/partitioning "partioning strategies") for document transformation, ```fast```, ```hires```, or ```ocr_only```. ```fast``` is great for when there is extractable text available, like in HTML files or in the Microsoft Office Document format. ```hires``` is best for PDFs and tables and where accurate classification of document elements is critical. ```ocr_only``` is useful when dealing with image-based files or PDFs that do not have extractable text. **If you're unsure, select ```auto``` and we'll handle the decision for you**.
+    Routing determines which strategy Unstructured Platform uses to transforming your documents into Unstructured's canonical JSON schema. There are four [partioning strategies](/api-reference/api-services/partitioning "partioning strategies") for document transformation: **Fast**, **Hi Res**, **OCR Only**, and **Auto**. Of these:
+    
+    - **Fast** is great for when there is extractable text available, like in HTML files or in the Microsoft Office Document format.
+    - **Hi Res** is best for PDFs and tables and where accurate classification of document elements is critical.
+    - **OCR Only** is useful when dealing with image-based files or PDFs that do not have extractable text.
+    - If you're unsure which strategy to use, choose **Auto**, and the Unstructured Platform will handle the decision for you.
+
   </Step>
   <Step title="Transform"> 
-    Your source document is **transformed to our canonical JSON schema**. Irrespective of the input document, the JSON schema we provide gives you a [standardized output to code against](/open-source/concepts/document-elements#element-id "Elements and Metadata"). It contains 20+ elements, such as ```Header```, ```Footer```, ```Title```, ```NarrativeText```, ```Table```, ```Image```, and more. Each document is wrapped in extensive metadata so you can understand languages, ```file_type```, ```source```, ```hierarchy``` and much more.
+    Your source document is transformed into Unstructured's canonical JSON schema. Regardless of the input document, this JSON schema we gives you a [standardized output](/open-source/concepts/document-elements#element-id "Elements and Metadata"). It contains more than 20 elements, such as `Header`, `Footer`, `Title`, `NarrativeText`, `Table`, `Image`, and many more. Each document is wrapped in extensive metadata so you can understand languages, file types, sources, hierarchies, and much more.
   </Step>
     <Step title="Chunk"> 
-    Initially platform comes with [two chunking strategies](/open-source/core-functionality/chunking#chunking-basics  "Chunking Strategies"). **Basic**: Combines sequential elements up to specified size limits. Oversized elements are split, while tables are isolated and divided if necessary. Overlap between chunks is optional. **By Title**: Semantic chunking, understands the layout of the document and makes intelligent splits.
+    Initially, the Unstructured Platform provides two [chunking strategies](/open-source/core-functionality/chunking#chunking-basics  "Chunking Strategies"): **Basic** and **By Title**. Of these:
+    
+    - **Basic** combines sequential elements up to specified size limits. Oversized elements are split, while tables are isolated and divided if necessary. Overlap between chunks is optional.
+    - **By Title** uses semantic chunking, understands the layout of the document, and makes intelligent splits.
+
   </Step>
-    <Step title="Embed">
-    Call out to third party embedding providers, ```Open AI```, ```AWS Bedrock```, and ```Octo ML```.
+  <Step title="Embed">
+    The Unstructured Platform uses third-party embedding providers such as OpenAI and AWS Bedrock.
   </Step>
-      <Step title="Persist">
-    We have multiple [Destination Connectors](../platform/platform-destination-connectors/overview). Including **all major vector databases**.
+  <Step title="Persist">
+    The Unstructured Platform offers multiple [destination connectors](../platform/platform-destination-connectors/overview), including all major vector databases.
   </Step>
 </Steps>
 
-### How we do it
-
-To simplify this  process and provide it as a no-code solution, platform consists of **4 key concepts**:
+To simplify this process and provide it as a no-code solution, the Unstructured Platform brings together four key concepts:
 
 ```mermaid
   flowchart LR
@@ -54,20 +60,28 @@ To simplify this  process and provide it as a no-code solution, platform consist
     Workflow[3. Workflow] --> Jobs[4. Jobs]
 ```
 
-1. [Source Connectors](../platform/platform-source-connectors/overview) to ingest your data.
-2. [Destination Connectors](../platform/platform-destination-connectors/overview) tell our system where to write your transformed data too..
-3. [Workflows](../platform/workflows-automation) connect sources to destinations and provide chunking, embedding, and scheduling options.
-4. [Jobs](../platform/jobs-scheduling) allow you to monitor data transformation progress.
+<Steps>
+  <Step title="Source Connector">
+    [Source connectors](../platform/platform-source-connectors/overview) to ingest your data into the Unstructured Platform for transformation.
+  </Step>
+  <Step title="Destination Connector">
+    [Destination connectors](../platform/platform-destination-connectors/overview) tell the Unstructured Platform where to write your transformed data to.
+  </Step>
+  <Step title="Workflow">
+    [Workflows](../platform/workflows-automation) connect sources to destinations and provide chunking, embedding, and scheduling options.
+  </Step>
+  <Step title="Jobs">
+    [Jobs](../platform/jobs-scheduling) enable you to monitor data transformation progress.
+  </Step>
+</Steps>
 
-
-### Compliance
+## What support is there for compliance?
 
 The platform is designed for global reach with SOC 2 type 2 compliance. It has support for over 50 languages.
 
-### Sign up
+## How do I get started?
 
-You can [sign-up here](https://unstructured.io/platform) to our private beta.
-
+Skip ahead to the [quickstart](/platform/saas-platform-guide).
 
 
 
