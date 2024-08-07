@@ -2,19 +2,27 @@
 title: OpenSearch
 ---
 
-import SharedContentOpenSearch from '/snippets/sc-shared-text/opensearch.mdx';
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentOpenSearch from '/snippets/sc-shared-text/opensearch-cli-api.mdx';
 
 <SharedContentOpenSearch/>
 
+Now call the Unstructured CLI or Python. The destination connector can be any of the ones supported. This example uses the local destination connector:
+
 import OpenSearchSh from '/snippets/source_connectors/opensearch.sh.mdx';
-import OpenSearchPy from '/snippets/source_connectors/opensearch.py.mdx';
+import OpenSearchPyV2 from '/snippets/source_connectors/opensearch.v2.py.mdx';
+import OpenSearchPyV1 from '/snippets/source_connectors/opensearch.v1.py.mdx';
 
 <CodeGroup>
-
   <OpenSearchSh />
-
-  <OpenSearchPy />
-
+  <OpenSearchPyV2 />
+  <OpenSearchPyV1 />
 </CodeGroup>
 
-For a full list of the options the Unstructured Ingest CLI accepts check `unstructured-ingest opensearch --help`.
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>
+

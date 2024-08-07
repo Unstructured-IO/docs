@@ -2,6 +2,33 @@
 title: OpenSearch
 ---
 
-import SharedOpenSearch from '/snippets/dc-shared-text/opensearch.mdx';
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedOpenSearch from '/snippets/dc-shared-text/opensearch-cli-api.mdx';
 
 <SharedOpenSearch />
+
+Now call the Unstructured CLI or Python. The source connector can be any of the ones supported. This example uses the local source connector:
+
+import OpenSearchAPISh from '/snippets/destination_connectors/opensearch.sh.mdx';
+import OpenSearchAPIPyV2 from '/snippets/destination_connectors/opensearch.v2.py.mdx';
+import OpenSearchAPIPyV1 from '/snippets/destination_connectors/opensearch.v1.py.mdx';
+
+<CodeGroup>
+  <OpenSearchAPISh />
+  <OpenSearchAPIPyV2 />
+  <OpenSearchAPIPyV1 />
+</CodeGroup>
+
+import VectorSearchSampleMapping from '/snippets/general-shared-text/vector-search-sample-mapping.mdx';
+
+<VectorSearchSampleMapping />
+
+## Calling Unstuctured API services
+
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>
+
