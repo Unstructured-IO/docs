@@ -6,12 +6,9 @@ from unstructured_ingest.v2.interfaces import ProcessorConfig
 
 from unstructured_ingest.v2.processes.connectors.opensearch import (
     OpenSearchConnectionConfig,
-    OpenSearchAccessConfig
-)
-
-from unstructured_ingest.v2.processes.connectors.elasticsearch import (
-    ElasticsearchUploadStagerConfig,
-    ElasticsearchUploaderConfig
+    OpenSearchAccessConfig,
+    OpensearchUploadStagerConfig,
+    OpensearchUploaderConfig
 )
 
 from unstructured_ingest.v2.processes.connectors.local import (
@@ -44,10 +41,10 @@ if __name__ == "__main__":
             hosts=[os.getenv("OPENSEARCH_HOST")],
             username=os.getenv("OPENSEARCH_USERNAME")
         ),
-        stager_config=ElasticsearchUploadStagerConfig(
+        stager_config=OpensearchUploadStagerConfig(
             index_name=os.getenv("OPENSEARCH_INDEX_NAME")
         ),
-        uploader_config=ElasticsearchUploaderConfig(
+        uploader_config=OpensearchUploaderConfig(
             index_name=os.getenv("OPENSEARCH_INDEX_NAME")
         )
     ).run()
