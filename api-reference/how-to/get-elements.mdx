@@ -49,16 +49,38 @@ The programmatic approach you take to get these document elements will depend on
         # ...
         ```
 
-        To serialize this list as JSON, you can use the standard [json](https://docs.python.org/3/library/json.html#module-json) `dumps` method to serialize it to a JSON-formatted string or the `dump` method to save it as a JSON-formatted stream to a file. For example:
+        To serialize this list as JSON, you can:
+        
+        1. Use the `elements_from_dicts` function to convert the list of key-value dictionaries (`Iterable[Dict[str, Any]]`) into a list of elements (`Iterable[Element]`).
+        2. Use the `elements_to_json` function to convert the list of elements into a JSON-formatted string and then print or save that string.
+
+        For example:
 
         ```python Python
+        from unstructured.staging.base import elements_from_dicts, elements_to_json
+
         # ...
 
         res = client.general.partition(request=req)
-        json_elements = json.dumps(res.elements, indent=2)
-    
+        
+        dict_elements = elements_from_dicts(
+            element_dicts=res.elements
+        )
+
+        # Print as JSON...
+        json_elements = elements_to_json(
+            elements=dict_elements,
+            indent=2
+        )
+
         print(json_elements)
 
+        # ...or save as JSON.
+        elements_to_json(
+            elements=dict_elements,
+            indent=2,
+            filename=output_filepath
+        )
         # ...
         ```
     </Accordion>
@@ -133,7 +155,7 @@ The programmatic approach you take to get these document elements will depend on
         ```
     </Accordion>
     <Accordion title="Open source library">
-        Calling the `partition_via_api` function returns a list of `Element` objects (`list[Element]`). For example:
+        Calling the `partition_via_api` function returns a list of elements (`list[Element]`). For example:
 
         ```python Python
         # ...
@@ -179,7 +201,6 @@ The programmatic approach you take to get these document elements will depend on
             print(f"Text: {element.text}")
             print(f"Filename: {element.metadata.filename}")
 
-        # ...
         ```
 
         To serialize this list as a Python dictionary, you can use the `elements_to_dicts` method, for example:
@@ -196,14 +217,12 @@ The programmatic approach you take to get these document elements will depend on
         )
 
         print(elements_to_dicts(elements))
-
-        # ...
         ```
 
-        To serialize this list as JSON, you can use the standard [json](https://docs.python.org/3/library/json.html#module-json) `dumps` method to serialize it to JSON-formatted string, or the `elements_to_json` method to save it as a JSON-formatted stream to a file. For example:
+        To serialize this list as JSON, you can use the `elements_to_json` function to convert the list of elements (`Iterable[Element]`) into a JSON-formatted string and then print or save that string. For example:
 
         ```python Python
-        from unstructured.staging.base import elements_to_dicts, elements_to_json
+        from unstructured.staging.base import elements_to_json
 
         # ...
 
@@ -213,16 +232,20 @@ The programmatic approach you take to get these document elements will depend on
             api_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
-        json_elements = json.dumps(elements_to_dicts(elements), indent=2)
-        print(json_elements)
-
-        elements_to_json(
+        # Print as JSON...
+        json_elements = elements_to_json(
             elements=elements,
-            filename=output_filepath,
             indent=2
         )
 
-        # ...
+        print(json_elements)
+
+        # ...or save as JSON.
+        elements_to_json(
+            elements=elements,
+            indent=2,
+            filename=output_filepath
+        )
         ```
     </Accordion>
 </AccordionGroup>
