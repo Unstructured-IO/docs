@@ -1,0 +1,19 @@
+The OpenSearch prerequisites:
+
+- An OpenSearch instance, such as an [AWS OpenSearch](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/setting-up.html) or [local](https://opensearch.org/downloads.html) instance. In all cases, the [OpenSearch version](https://github.com/opensearch-project/opensearch-py/blob/main/COMPATIBILITY.md) must be compatible with the client version of the [opensearch-py](https://github.com/opensearch-project/opensearch-py/blob/main/COMPATIBILITY.md) package on PyPI. 
+- The instance's hostname and port number.
+- The name of the search index on the instance.
+- If you're using basic authentication to the instance, the user's name and password.
+- If you're using certificates for authentication instead:
+
+  - The path to the Certificate Authority (CA) bundle, if you use intermediate CAs with your root CA.
+  - The path to the combined private key and certificate file, or
+  - The paths to the separate private key and certificate file. 
+
+  To learn more, see:
+
+  - For AWS OpenSearch instances, see [Tutorial: Configure a domain with the internal user database and HTTP basic authentication](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/fgac-http-auth.html) and [Creating a custom endpoint for Amazon OpenSearch Service](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/customendpoint.html).
+  - For local OpenSearch instances, see [Authentication backends](https://opensearch.org/docs/latest/security/authentication-backends/authc-index/), [HTTP basic authentication](https://opensearch.org/docs/latest/security/authentication-backends/basic-authc/), and [Client certificate authentication](https://opensearch.org/docs/latest/security/authentication-backends/client-auth/).
+
+
+

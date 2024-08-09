@@ -609,7 +609,7 @@ import weaviate
 from weaviate.util import generate_uuid5
 
 
-filename = "example-docs/layout-parser-paper-fast.pdf"
+filename = "example-docs/pdf/layout-parser-paper-fast.pdf"
 elements = partition_pdf(filename=filename, strategy="fast")
 data_objects = stage_for_weaviate(elements)
 
