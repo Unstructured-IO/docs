@@ -1,21 +1,18 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
-
-EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
 
 unstructured-ingest \
   local \
-  --input-path example-docs/book-war-and-peace-1225p.txt \
-  --output-dir local-output-to-opensearch \
-  --strategy fast \
-  --chunk-elements \
-  --embedding-provider "$EMBEDDING_PROVIDER" \
-  --num-processes 4 \
-  --verbose \
+    --input-path local-ingest-source \
+    --strategy fast \
+    --chunking-strategy by_title \
+    --embedding-provider langchain-huggingface \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
   opensearch \
-  --hosts "$OPENSEARCH_HOSTS" \
-  --username "$OPENSEARCH_USERNAME" \
-  --password "$OPENSEARCH_PASSWORD" \
-  --index-name "$OPENSEARCH_INDEX_NAME" \
-  --num-processes 2
+    --hosts $OPENSEARCH_HOST \
+    --username $OPENSEARCH_USERNAME \
+    --password $OPENSEARCH_PASSWORD \
+    --index-name $OPENSEARCH_INDEX_NAME
 ```
