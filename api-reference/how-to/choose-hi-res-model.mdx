@@ -22,9 +22,10 @@ Use the following decision-maker to help you determine which model to specify.
         - To specify a specific model, set `--strategy` or `strategy` to `hi_res`. Then set `--hi-res-model-name` or `hi_res_model_name` to one of the models in **Step 3**.
     </Step>
     <Step title="Specify one of the following models...">
-        - `detectron2_onnx` is a Computer Vision model by Facebook AI that provides object detection and segmentation algorithms with ONNX Runtime.
-        - `layout_v1.1.0` is a propietary Unstructured object detection model. It is used by default, as applicable, if `--hi-res-model-name` or `hi_res_model_name` is not specified.
-        - `yolox` is a single-stage real-time object detector that modifies YOLOv3 with a DarkNet53 backbone.
+        - `detectron2_onnx` generally underperforms the following models. However, it is still accessible to maintain backwards compatibility.
+        - `yolox` is also provided for backwards compatibility and originally was the replacement for `detectron2_onnx`.
+        - `layout_v1.1.0` generally performs better than `yolox` at bounding box definitions and element classification. `layout_v1.1.0` is a propietary Unstructured object detection model and is used by default, as applicable, if `--hi-res-model-name` or `hi_res_model_name` is not specified.
+        
     </Step>
 </Steps>
 
