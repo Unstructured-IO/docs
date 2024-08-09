@@ -1,12 +1,12 @@
 ```python Python SDK
 from unstructured_client import UnstructuredClient
 from unstructured_client.models import operations, shared
+from unstructured.staging.base import elements_from_dicts, elements_to_json
 
 import os
 import base64
 from PIL import Image
 import io
-import json
 
 if __name__ == "__main__":
     client = UnstructuredClient(
@@ -15,12 +15,15 @@ if __name__ == "__main__":
     )
 
     # Source: https://github.com/Unstructured-IO/unstructured/blob/main/example-docs/embedded-images-tables.pdf
-    local_filepath = "embedded-images-tables.pdf"
+    
+    # Where to get the input file and store the processed data, relative to this .py file.
+    local_input_filepath = "local-ingest-input-pdf/embedded-images-tables.pdf"
+    local_output_filepath = "local-ingest-output/embedded-images-tables.json"
 
     with open(local_filepath, "rb") as f:
         files = shared.Files(
             content=f.read(),
-            file_name=local_filepath
+            file_name=local_input_filepath
         )
 
     request = operations.PartitionRequest(
@@ -49,9 +52,20 @@ if __name__ == "__main__":
                 image = Image.open(io.BytesIO(image_data))
                 image.show()
 
-        # Also print the JSON representation of all elements for
-        # inspection and validation.
-        print(json.dumps(result.elements, indent=2))
+        # Print the elements as JSON...
+        json_elements = elements_to_json(
+            elements=dict_elements,
+            indent=2
+        )
+
+        print(json_elements)
+
+        # ...or save as JSON.
+        elements_to_json(
+            elements=dict_elements,
+            indent=2,
+            filename=local_output_filepath
+        )
     except Exception as e:
         print(e)
 ```

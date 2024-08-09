@@ -1,8 +1,9 @@
 ```python
 from unstructured_client import UnstructuredClient
 from unstructured_client.models import operations, shared
+from unstructured.staging.base import elements_from_dicts, elements_to_json
 
-import json, os, base64, zlib
+import os, base64, zlib
 from typing import List, Dict, Any
 
 # Extract the contents of an orig_elements field.
@@ -57,7 +58,7 @@ try:
             orig_elemenents_dict.append({
                 "element_id": element["element_id"],
                 "text": element["text"],
-                "orig_elements": orig_elements
+                "orig_elements": json.loads(orig_elements)
             })
     
     # Convert the elements into a JSON object.
