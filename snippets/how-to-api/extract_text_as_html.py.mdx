@@ -1,8 +1,9 @@
 ```python Python SDK
 from unstructured_client import UnstructuredClient
 from unstructured_client.models import operations, shared
+from unstructured.staging.base import elements_from_dicts, elements_to_json
 
-import os, webbrowser, json
+import os, webbrowser
 
 if __name__ == "__main__":
     client = UnstructuredClient(
@@ -13,10 +14,10 @@ if __name__ == "__main__":
     # Source: https://github.com/Unstructured-IO/unstructured/blob/main/example-docs/embedded-images-tables.pdf
 
     # Where to get the local file, relative to this .py file.
-    local_input_filepath = "local-ingest-pdf/embedded-images-tables.pdf"
+    local_input_filepath = "local-ingest-input-pdf/embedded-images-tables.pdf"
 
-    # Where to store the retrieved HTML, relative to this .py file.
-    local_html_output_path = "local-ingest-output"
+    # Where to store the retrieved HTML (and the processed JSON), relative to this .py file.
+    local_output_filepath = "local-ingest-output"
 
     with open(local_input_filepath, "rb") as f:
         files = shared.Files(
@@ -42,7 +43,7 @@ if __name__ == "__main__":
                 html_string = f"<!DOCTYPE html><html>{table_css}<body>{element["metadata"]["text_as_html"]}</body></html>"
 
                 # Save the element's HTML to a local file.
-                save_path = f"{local_html_output_path}/{element["element_id"]}.html"
+                save_path = f"{local_output_path}/{element["element_id"]}.html"
                 file = open(save_path, 'w')
                 file.write(html_string)
                 file.close()
@@ -50,9 +51,25 @@ if __name__ == "__main__":
                 # View the locally saved file in the local default web browser.
                 webbrowser.open_new(f"file:///{os.getcwd()}/{save_path}")
 
-        # Also print the JSON representation of all elements for
-        # inspection and validation.
-        print(json.dumps(result.elements, indent=2))
+        # Also get the elements for inspection and validation.
+        dict_elements = elements_from_dicts(
+            element_dicts=result.elements
+        )
+
+        # Print the elements as JSON...
+        json_elements = elements_to_json(
+            elements=dict_elements,
+            indent=2
+        )
+
+        print(json_elements)
+
+        # ...or save as JSON.
+        elements_to_json(
+            elements=dict_elements,
+            indent=2,
+            filename=f"{local_output_filepath}/embedded-images-tables.json"
+        )
     except Exception as e:
         print(e)
 ```
