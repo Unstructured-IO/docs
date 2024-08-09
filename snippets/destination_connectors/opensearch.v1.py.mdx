@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured_ingest.connector.elasticsearch import (
@@ -27,7 +27,7 @@ def get_writer() -> Writer:
     return OpenSearchWriter(
         connector_config=SimpleOpenSearchConfig(
             access_config=OpenSearchAccessConfig(
-                hosts=os.getenv("OPENSEARCH_HOSTS"),
+                hosts=os.getenv("OPENSEARCH_HOST"),
                 username=os.getenv("OPENSEARCH_USERNAME"),
                 password=os.getenv("OPENSEARCH_PASSWORD"),
             ),
@@ -52,7 +52,11 @@ if __name__ == "__main__":
             input_path="example-docs/book-war-and-peace-1225p.txt",
         ),
         read_config=ReadConfig(),
-        partition_config=PartitionConfig(),
+        partition_config=PartitionConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")
+        ),
         chunking_config=ChunkingConfig(chunk_elements=True),
         embedding_config=EmbeddingConfig(
             provider="langchain-huggingface",
