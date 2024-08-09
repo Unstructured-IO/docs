@@ -16,7 +16,7 @@ To extract the tables from PDF files using the [partition\_pdf](/open-source/cor
 ```python
 from unstructured.partition.pdf import partition_pdf
 
-fname = "example-docs/layout-parser-paper.pdf"
+fname = "example-docs/pdf/layout-parser-paper.pdf"
 
 elements = partition_pdf(filename=fname,
                          infer_table_structure=True,
@@ -40,7 +40,7 @@ By default, table extraction from all file types is enabled. To extract tables f
 ```python
 from unstructured.partition.auto import partition
 
-filename = "example-docs/layout-parser-paper.pdf"
+filename = "example-docs/pdf/layout-parser-paper.pdf"
 
 elements = partition(filename=filename,
                      strategy='hi_res',
