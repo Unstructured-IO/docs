@@ -1,0 +1,31 @@
+```python Python
+import os
+
+from unstructured.ingest.connector.couchbase import (
+    SimpleCouchbaseConfig,
+)
+from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
+from unstructured.ingest.runner import CouchbaseRunner
+
+if __name__ == "__main__":
+    runner = CouchbaseRunner(
+        processor_config=ProcessorConfig(
+            verbose=True,
+            output_dir="couchbase-ingest-output",
+            num_processes=2,
+        ),
+        read_config=ReadConfig(),
+        partition_config=PartitionConfig(
+            metadata_exclude=["filename", "file_directory", "metadata.data_source.date_processed"],
+        ),
+        connector_config=SimpleCouchbaseConfig(
+            connection_string=os.getenv("COUCHBASE_CONNECTION_STRING"),
+            username=os.getenv("COUCHBASE_USERNAME"),
+            password=os.getenv("COUCHBASE_PASSWORD"),
+            bucket=os.getenv("COUCHBASE_BUCKET"),
+            scope=os.getenv("COUCHBASE_SCOPE"),
+            collection=os.getenv("COUCHBASE_COLLECTION"),
+        ),
+    )
+    runner.run()
+```
