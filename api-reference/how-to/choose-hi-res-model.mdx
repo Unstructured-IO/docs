@@ -1,0 +1,33 @@
+---
+title: Choose a hi-res model
+---
+
+## Task
+
+You want to specify a high-resolution object detection model to be used when processing image files, or PDFs with embedded images or tables, but you are not sure which model to specify.
+
+## Approach
+
+Use the following decision-maker to help you determine which model to specify.
+
+<Steps>
+    <Step title="Are you processing image files, or PDFs with embedded images or tables?">
+        - If **Yes**, then continue with **Step 2**. 
+        - If **No**, then **stop**. Unstructured will not use a high-resolution object detection model when processing your files. See also [Choose a partitioning strategy](/api-reference/how-to/choose-partitioning-strategy).
+    </Step>
+    <Step title="To process image files, or PDFs with embedded images or tables...">
+        If you already have your scripts or code in place and just need help in choosing a model, then skip ahead to **Step 3**. Otherwise:
+
+        - To have Unsructured make its best choice on your behalf about the model to use, set the command's `--strategy` option (CLI) or `strategy` parameter (Python/JavaScript/TypeScript) to `auto`. You have completed this decision-maker. See also [Auto partitioning strategy logic](/api-reference/how-to/choose-partitioning-strategy#auto-partitioning-strategy-logic).
+        - To specify a specific model, set `--strategy` or `strategy` to `hi_res`. Then set `--hi-res-model-name` or `hi_res_model_name` to one of the models in **Step 3**.
+    </Step>
+    <Step title="Specify one of the following models...">
+        - `detectron2_onnx` is a Computer Vision model by Facebook AI that provides object detection and segmentation algorithms with ONNX Runtime.
+        - `layout_v1.1.0` is a propietary Unstructured object detection model. It is used by default, as applicable, if `--hi-res-model-name` or `hi_res_model_name` is not specified.
+        - `yolox` is a single-stage real-time object detector that modifies YOLOv3 with a DarkNet53 backbone.
+    </Step>
+</Steps>
+
+## Code examples
+
+See [Changing partition strategy for a PDF](/api-reference/api-services/examples#changing-partition-strategy-for-a-pdf).
