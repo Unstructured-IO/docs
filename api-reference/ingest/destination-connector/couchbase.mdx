@@ -1,0 +1,22 @@
+---
+title: Couchbase
+---
+
+import SharedCouchbase from '/snippets/dc-shared-text/couchbase.mdx';
+
+<SharedCouchbase />
+
+Now call the Unstructured CLI or Python SDK. The source connector can be any of the ones supported. This example uses the local destination connector:
+
+import CouchbaseSh from '/snippets/destination_connectors/couchbase.sh.mdx';
+import CouchbasePy from '/snippets/destination_connectors/couchbase.py.mdx';
+
+<CodeGroup>
+
+  <CouchbaseSh />
+
+  <CouchbasePy />
+
+</CodeGroup>
+
+To understand how [vector search](https://www.couchbase.com/products/vector-search/) works in Couchbase, refer to this [tutorial](https://developer.couchbase.com/tutorial-python-langchain-pdf-chat) and the [Couchbase docs](https://docs.couchbase.com/cloud/vector-search/vector-search.html)
