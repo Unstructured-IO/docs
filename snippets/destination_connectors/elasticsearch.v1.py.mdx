@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured_ingest.connector.elasticsearch import (
@@ -25,11 +25,12 @@ def get_writer() -> Writer:
     return ElasticsearchWriter(
         connector_config=SimpleElasticsearchConfig(
             access_config=ElasticsearchAccessConfig(
-                hosts=os.getenv("ELASTICSEARCH_HOSTS"),
-                username=os.getenv("ELASTICSEARCH_USERNAME"),
                 password=os.getenv("ELASTICSEARCH_PASSWORD"),
+                ssl_assert_fingerprint=os.getenv("ELASTICSEARCH_SSL_ASSERT_FINGERPRINT")
             ),
-            index_name=os.getenv("ELASTICSEARCH_INDEX_NAME"),
+            hosts=[os.getenv("ELASTICSEARCH_HOST")],
+            username=os.getenv("ELASTICSEARCH_USERNAME"),
+            ca_certs=os.getenv("ELASTICSEARCH_CA_CERTS"),
         ),
         write_config=ElasticsearchWriteConfig(
             batch_size_bytes=15_000_000,
@@ -50,7 +51,11 @@ if __name__ == "__main__":
             input_path="example-docs/book-war-and-peace-1225p.txt",
         ),
         read_config=ReadConfig(),
-        partition_config=PartitionConfig(),
+        partition_config=PartitionConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")
+        ),
         chunking_config=ChunkingConfig(chunk_elements=True),
         embedding_config=EmbeddingConfig(
             provider="langchain-huggingface",
