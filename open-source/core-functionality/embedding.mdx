@@ -247,3 +247,32 @@ print(query, query_embedding)
 print(embedding_encoder.is_unit_vector, embedding_encoder.num_of_dimensions)
 
 ```
+
+Mixedbreadai documentation here
+
+```python
+import os
+
+from unstructured.documents.elements import Text
+from unstructured.embed.mixedbreadai import (
+    MixedbreadAIEmbeddingConfig,
+    MixedbreadAIEmbeddingEncoder,
+)
+
+embedding_encoder = MixedbreadAIEmbeddingEncoder(
+    config=MixedbreadAIEmbeddingConfig(
+        api_key=os.environ["MXBAI_API_KEY"], model_name="mixedbread-ai/mxbai-embed-large-v1"
+    )
+)
+elements = embedding_encoder.embed_documents(
+    elements=[Text("This is sentence 1"), Text("This is sentence 2")],
+)
+
+query = "This is the query"
+query_embedding = embedding_encoder.embed_query(query=query)
+
+[print(e, e.embeddings) for e in elements]
+print(query, query_embedding)
+print(embedding_encoder.is_unit_vector, embedding_encoder.num_of_dimensions)
+
+```
