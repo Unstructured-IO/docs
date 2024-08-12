@@ -70,7 +70,7 @@ In Python, to specify the maximum number of available local logical CPUs that ca
 
 ## PDF files
 
-To speed up PDF file processing, the [Unstructured SDKs for Python and JavaScript/TypeScript](/api-reference/api-services/sdk) provide the following parameters to help speed up processing a large PDF file:
+To speed up PDF file processing, the [Unstructured SDK for Python](/api-reference/api-services/sdk-python) and the [Unstructured SDK for JavaScript/TypeScript](/api-reference/api-services/sdk-jsts) provide the following parameters to help speed up processing a large PDF file:
 
 - `split_pdf_page` (Python) or `splitPdfPage` (JavaScript/TypeScript), when set to true, splits the PDF file on the client side before sending it as batches to Unstructured for processing. The number of pages in each batch is determined internally. Batches can contain between 2 and 20 pages.
 - `split_pdf_concurrency_level` (Python) or `splitPdfConcurrencyLevel` (JavaScript/TypeScript) is an integer that specifies the number of parallel requests. The default is 5. The maximum is 15. This behavior is ignored unless `split_pdf_page` (Python) or `splitPdfPage` (JavaScript/TypeScript) is also set to true.
