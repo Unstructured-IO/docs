@@ -34,6 +34,9 @@ req = operations.PartitionRequest(
     shared.PartitionParameters(
         files=files,
         strategy=shared.Strategy.HI_RES,
+        split_pdf_page=True,
+        split_pdf_allow_failed=True,
+        split_pdf_concurrency_level=15,
         chunking_strategy="basic",
         new_after_n_chars=200,
         max_characters=300

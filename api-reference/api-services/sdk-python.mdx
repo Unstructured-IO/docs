@@ -70,6 +70,10 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
             # advised to use the defined enum classes as shown below.
             strategy=shared.Strategy.AUTO,  
             languages=['eng'],
+            # --- PDF partition parameters ---
+            split_pdf_page=True,            # If True, splits the PDF file into smaller chunks of pages.
+            split_pdf_allow_failed=True,    # If True, the partitioning continues even if some pages fail.
+            split_pdf_concurrency_level=15  # Set the number of concurrent request to the maximum value: 15.
         ),
     )
 
@@ -150,8 +154,9 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
                 content=file.read(),
                 file_name=filename,
             ),
-            split_pdf_page=True,  # Set to `False` to disable PDF splitting
-            split_pdf_concurrency_level=10,  # Modify split_pdf_concurrency_level to set the number of parallel requests
+            split_pdf_page=True,            # If True, splits the PDF file into smaller chunks of pages.
+            split_pdf_allow_failed=True,    # If True, the partitioning continues even if some pages fail.
+            split_pdf_concurrency_level=15  # Set the number of concurrent request to the maximum value: 15.
         )
     )
     res = client.general.partition(req)

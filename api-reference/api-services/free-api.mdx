@@ -63,6 +63,9 @@ curl -X POST $UNSTRUCTURED_API_URL \
      -H 'Content-Type: multipart/form-data' \
      -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
      -F 'files=@<local/path/to/input/file>' \
+     -F 'split-pdf-page True' \
+     -F 'split-pdf-allow-failed True' \
+     -F 'split-pdf-concurrency-level 15' \
      -o '<local/path/to/output/file>'
 ```
 
@@ -99,7 +102,8 @@ unstructured-ingest \
     --output-dir <local/path/to/output/file> \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
-    --partition-endpoint $UNSTRUCTURED_API_URL
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
 ```
 
 After the command successfully runs, see the results in the specified output path on your local machine.
@@ -158,7 +162,10 @@ with open(input_filepath, "rb") as f:
 req = operations.PartitionRequest(
     shared.PartitionParameters(
         files=files,
-        strategy=shared.Strategy.AUTO
+        strategy=shared.Strategy.AUTO,
+        split_pdf_page=True,
+        split_pdf_allow_failed=True,
+        split_pdf_concurrency_level=15
     )
 )
 

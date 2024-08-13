@@ -15,7 +15,8 @@ unstructured-ingest \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
     --partition-endpoint $UNSTRUCTURED_API_URL \
-    couchbase \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+  couchbase \
     --connection-string "$CB_CONN_STR" \
     --username "$CB_USERNAME" \
     --password "$CB_PASSWORD" \
