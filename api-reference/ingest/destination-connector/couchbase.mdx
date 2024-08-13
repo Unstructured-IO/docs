@@ -1,0 +1,25 @@
+---
+title: Couchbase
+---
+
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentCouchbase from '/snippets/dc-shared-text/couchbase-cli-api.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedContentCouchbase/>
+<SharedAPIKeyURL/>
+
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library. The source connector can be any of the ones supported. This example uses the local source connector:
+
+import CouchbaseAPISh from '/snippets/destination_connectors/couchbase.sh.mdx';
+import CouchbaseAPIPyV2 from '/snippets/destination_connectors/couchbase.v2.py.mdx';
+
+<CodeGroup>
+  <CouchbaseAPISh />
+  <CouchbaseAPIPyV2 />
+</CodeGroup>
+
+To understand how [vector search](https://www.couchbase.com/products/vector-search/) works in Couchbase, refer to this [tutorial](https://developer.couchbase.com/tutorial-python-langchain-pdf-chat) and the [Couchbase docs](https://docs.couchbase.com/cloud/vector-search/vector-search.html).
