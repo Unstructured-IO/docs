@@ -158,7 +158,9 @@ with open(input_filepath, "rb") as f:
 req = operations.PartitionRequest(
     shared.PartitionParameters(
         files=files,
-        strategy=shared.Strategy.AUTO
+        split_pdf_page=True,
+        split_pdf_allow_failed=True,
+        split_pdf_concurrency_level=15
     )
 )
 
@@ -203,7 +205,8 @@ client.general.partition({
             content: data,
             fileName: inputFilepath
         },
-        strategy: Strategy.Auto
+        splitPdfPage: true,
+        splitPdfConcurrencyLevel: 15
     }
 }).then((res) => {
     if (res.statusCode == 200) {

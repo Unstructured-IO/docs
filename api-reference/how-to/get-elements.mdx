@@ -97,7 +97,9 @@ The programmatic approach you take to get these document elements will depend on
                 files: {
                     content: data,
                     fileName: inputFilepath
-                }
+                },
+                splitPdfPage: true,
+                splitPdfConcurrencyLevel: 15
             }
         }).then((res) => {
             if (res.statusCode == 200) {
@@ -118,7 +120,9 @@ The programmatic approach you take to get these document elements will depend on
                 files: {
                     content: data,
                     fileName: inputFilepath
-                }
+                },
+                splitPdfPage: true,
+                splitPdfConcurrencyLevel: 15
             }
         }).then((res) => {
             if (res.statusCode == 200) {

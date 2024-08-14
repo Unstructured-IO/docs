@@ -71,8 +71,9 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
                 content: data,
                 fileName: filename,
             },
-            strategy: Strategy.Auto,
-            languages: ['eng'],
+            splitPdfPage: true,
+            splitPdfConcurrencyLevel: 15
+            languages: ['eng']
         }
     }).then((res: PartitionResponse) => {
         if (res.statusCode == 200) {

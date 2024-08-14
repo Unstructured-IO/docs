@@ -122,6 +122,18 @@ To work with the Unstructured Serverless API in Python, JavaScript, or TypeScrip
 [Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) or the 
 [Unstructured JavaScript/TypeScript SDK](https://github.com/Unstructured-IO/unstructured-js-client).
 
+To get started with the Unstructured Python SDK even faster than following the steps below, simply sign up for a 14-day trial of the Unstructured Serverless API at [https://app.unstructured.io](https://app.unstructured.io), and then follow along with this 3-minute video:
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/bi4yrImGbHc"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
+
 First, install your preferred SDK:
 <CodeGroup>
 
@@ -173,7 +185,9 @@ with open(input_filepath, "rb") as f:
 req = operations.PartitionRequest(
     shared.PartitionParameters(
         files=files,
-        strategy=shared.Strategy.AUTO
+        split_pdf_page=True,
+        split_pdf_allow_failed=True,
+        split_pdf_concurrency_level=15
     )
 )
 
@@ -216,7 +230,8 @@ client.general.partition({
             content: data,
             fileName: inputFilepath
         },
-        strategy: Strategy.Auto
+        splitPdfPage: true,
+        splitPdfConcurrencyLevel: 15
     }
 }).then((res) => {
     if (res.statusCode == 200) {

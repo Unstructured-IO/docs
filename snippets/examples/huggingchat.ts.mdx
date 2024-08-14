@@ -59,7 +59,8 @@ client.general.partition({
             content: data,
             fileName: inputFilepath
         },
-        strategy: Strategy.Fast
+        splitPdfPage: true,
+        splitPdfConcurrencyLevel: 15
     }
 }).then(async (res: PartitionResponse) => {
     if (res.statusCode == 200) {
