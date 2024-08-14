@@ -10,6 +10,7 @@ unstructured-ingest \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
     --partition-endpoint $UNSTRUCTURED_API_URL \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
   opensearch \
     --hosts $OPENSEARCH_HOST \
     --username $OPENSEARCH_USERNAME \

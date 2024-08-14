@@ -29,6 +29,9 @@ if __name__ == "__main__":
     request = operations.PartitionRequest(
         shared.PartitionParameters(
             files=files,
+            split_pdf_page=True,
+            split_pdf_allow_failed=True,
+            split_pdf_concurrency_level=15,
             # Extract the Base64-encoded representation of each
             # processed "Image" and "Table" element. Extract each into
             # an "image_base64" object, as a child of the

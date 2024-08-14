@@ -27,7 +27,10 @@ if __name__ == "__main__":
 
     request = operations.PartitionRequest(
         shared.PartitionParameters(
-            files=files
+            files=files,
+            split_pdf_page=True,
+            split_pdf_allow_failed=True,
+            split_pdf_concurrency_level=15
         )
     )
 

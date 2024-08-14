@@ -114,7 +114,10 @@ You will need:
         req = operations.PartitionRequest(
             shared.PartitionParameters(
                 files=files,
-                strategy=shared.Strategy.AUTO
+                strategy=shared.Strategy.AUTO,,
+                split_pdf_page=True,
+                split_pdf_allow_failed=True,
+                split_pdf_concurrency_level=15
             )
         )
 

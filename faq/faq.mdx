@@ -118,6 +118,9 @@ curl -X 'POST' \
   -F 'strategy=ocr_only' \
   -F 'languages=eng'  \
   -F 'languages=kor'  \
+  -F 'split-pdf-page True' \
+  -F 'split-pdf-allow-failed True' \
+  -F 'split-pdf-concurrency-level 15' \
   | jq -C . | less -R
 ```
 For comprehensive language support, refer to the [Tesseract documentation](https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html), which provides a detailed list of supported languages and installation guidelines.
