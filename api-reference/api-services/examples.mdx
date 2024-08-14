@@ -27,7 +27,7 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
   -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -F 'files=@sample-docs/layout-parser-paper.pdf' \
   -F 'strategy=hi_res' \
-  -F 'hi_res_model_name=yolox' \
+  -F 'hi_res_model_name=layout_v1.1.0' \
   -F 'split-pdf-page True' \
   -F 'split-pdf-allow-failed True' \
   -F 'split-pdf-concurrency-level 15'
@@ -54,7 +54,7 @@ req = shared.PartitionParameters(
         file_name=filename,
     ),
     strategy="hi_res",
-    hi_res_model_name="yolox",
+    hi_res_model_name="layout_v1.1.0",
 )
 
 try:
@@ -88,7 +88,7 @@ client.general.partition({
         fileName: filename,
     },
     strategy: "hi_res",
-    hiResModelName: "yolox",
+    hiResModelName: "layout_v1.1.0",
 }).then((res: PartitionResponse) => {
     if (res.statusCode == 200) {
         console.log(res.elements);
