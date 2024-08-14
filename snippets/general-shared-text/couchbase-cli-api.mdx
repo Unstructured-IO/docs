@@ -1,0 +1,18 @@
+The Couchbase DB connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[couchbase]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+These environment variables are required for the Couchbase Connector:
+
+- `CB_CONN_STR` - The Connection String for the Couchbase server, represented by `--connection-string` (CLI) or `connection_string` (Python).
+- `CB_USERNAME` - The username for the Couchbase server, represented by `--username` (CLI) or `username` (Python).
+- `CB_PASSWORD` - The password for the Couchbase server, represented by `--password` (CLI) or `password` (Python).
+- `CB_BUCKET` - The name of the bucket in the Couchbase server, represented by `--bucket` (CLI) or `bucket` (Python).
+- `CB_SCOPE` - The name of the scope in the bucket, represented by `--scope` (CLI) or `scope` (Python).
+- `CB_COLLECTION` - The name of the collection in the scope, represented by `--collection` (CLI) or `collection` (Python).

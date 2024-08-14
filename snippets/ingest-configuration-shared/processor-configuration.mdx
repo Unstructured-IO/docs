@@ -8,7 +8,7 @@ A common process configuration plays a pivotal role in overseeing the entire ing
 
 *   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`max_connections`: The maximum of connections allowed when running an asynchronous step in the ingest pipeline.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`max_docs`: The maximum number of documents to process.
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`max_docs`: The maximum number of documents to be pulled in for the entire ingest process.
 
 *   <Icon icon="v"/><Icon icon="2"/>,&nbsp;<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`num_processes`: Default: `2`. For every step that can use a pool of workers to increase throughput, how many workers to configure in the pool.
 
@@ -18,13 +18,13 @@ A common process configuration plays a pivotal role in overseeing the entire ing
 
 *   <Icon icon="v"/><Icon icon="2"/>,&nbsp;<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`raise_on_error`: `False `(default) for any single document that fails in the process, causes the error to be logged but allows for all other documents to proceed in the process. If `True`, causes the entire process to fail and raise the error if any one document fails.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`re_download`: When set to `False` (the default), will not re-download files if they are already present in the download directory.
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`re_download`: When set to `False` (the default), will not re-download files if they are already present in the download directory. Setting this to `True` downloads the files even if they exist in the download directory. `True` is useful in cases where for some reason you suspect that the files in the remote location might have changed, and you want to be sure that the file copies in the download directory are the most current ones. 
 
 *   <Icon icon="v"/><Icon icon="2"/>,&nbsp;<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`reprocess`: Default: `False`. If set to `True`, will ignore all content that may have been cached and rerun each step.
 
 *   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`tqdm`: When set to `False` (the default), will not show a progress bar.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`uncompress`: When set to `False` (the default), will not uncompress any archived ZIP or TAR files.
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`uncompress`: When set to `False` (the default), will not uncompress any archived ZIP or TAR files. If set to `True`, and the specified partitioner provides support for compressed ZIP and TAR files, these files will be uncompressed.
 
 *   <Icon icon="v"/><Icon icon="2"/>,&nbsp;<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`verbose`: Default: `False`. If set to `True`, debug logging should be included in the output.
 

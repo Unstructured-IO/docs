@@ -1,0 +1,28 @@
+```bash CLI
+#!/usr/bin/env bash
+
+EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
+
+unstructured-ingest \
+  local \
+    --input-path local-ingest-source \
+    --output-dir local-output-to-couchbase \
+    --strategy fast \
+    --chunk-elements \
+    --embedding-provider "$EMBEDDING_PROVIDER" \
+    --num-processes 2 \
+    --verbose \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+  couchbase \
+    --connection-string "$CB_CONN_STR" \
+    --username "$CB_USERNAME" \
+    --password "$CB_PASSWORD" \
+    --bucket "$CB_BUCKET" \
+    --scope "$CB_SCOPE" \
+    --collection "$CB_COLLECTION" \
+    --num-processes 2 \
+    --batch-size 80
+```
