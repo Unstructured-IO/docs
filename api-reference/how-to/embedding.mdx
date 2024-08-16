@@ -1,0 +1,55 @@
+---
+title: Embedding
+---
+
+[Embedding models](https://python.langchain.com/v0.2/docs/concepts/#embedding-models) create a vector representation of a piece of text.
+
+1. Choose an embedding provider that you want to use from among the following allowed providers, and note the provider's ID:
+
+   - `langchain-aws-bedrock` for [Amazon Bedrock](https://aws.amazon.com/bedrock/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/bedrock/).
+   - `langchain-huggingface` for Hugging Face. [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/huggingfacehub/).
+   - `langchain-openai` for OpenAI. [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/openai/).
+   - `langchain-vertexai` for [Google Vertex AI PaLM](https://cloud.google.com/vertex-ai/docs/generative-ai/learn/overview). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/google_vertex_ai_palm/).
+   - `langchain-voyageai` for [Voyage AI](https://www.voyageai.com/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/voyageai/).
+   - `octai` for Octo AI. [Learn more](https://octo.ai/docs/text-gen-solution/using-unstructured-io-for-embedding-documents).
+
+2. If the chosen provider offers different models, choose the model that you want to use, and note the model's name:
+
+   - For `langchain-aws-bedrock`, 
+   - For `langchain-huggingface`, 
+   - For `langchain-openai`, 
+   - For `langchain-vertexai`, 
+   - For `langchain-voyageai`, 
+   - For `octai`, 
+
+3. Note the special settings to connect to the provider:
+
+   - For `langchain-aws-bedrock`, you'll need an AWS access key value, the corresponding AWS secret access key value, and the corresponding AWS Region identifier. [Get an AWS access key and secret access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html).
+   - For `langchain-huggingface`, you'll need an HF inference API key value, beginning with `hf_`. [Get an HF inference API key](https://huggingface.co/docs/api-inference/en/quicktour#get-your-api-token).
+   - For `langchain-openai`, you'll need an OpenAI API key value. [Get an OpenAI API key](https://platform.openai.com/docs/quickstart/create-and-export-an-api-key).
+   - For `langchain-vertexai`, you'll need the path to a Google Cloud credentials JSON file. Learn more [here](https://cloud.google.com/docs/authentication/application-default-credentials#GAC) and [here](https://googleapis.dev/python/google-auth/latest/reference/google.auth.html#module-google.auth).
+   - For `langchain-voyageai`, you'll need a Voyage AI API key value. [Get a Voyage AI API key](https://docs.voyageai.com/docs/api-key-and-installation#authentication-with-api-keys).
+   - For `octai`, you'll need an Octo AI API token value. [Get an Octo AI API token](https://octo.ai/docs/getting-started/how-to-create-octoai-access-token).
+
+<AccordionGroup>
+    <Accordion title="Ingest CLI">
+        - Set the command's `--embedding-provider` to the provider's ID, for example `langchain-huggingface`.
+        - Set `--embedding-model-name` to the model name, as appropriate.
+        - Set `--embedding-api-key` to the provider's required API key value or credentials JSON file path, as appropriate.
+        - For `langchain-aws-bedrock`:
+        
+          - Set `--embedding-aws-access-key-id` to the AWS access key value.
+          - Set `--embedding-aws-secret-access-key` to the corresponding AWS secret access key value.
+          - Set `--embedding-aws-region` to the corresponding AWS Region identifier.
+    </Accordion>
+    <Accordion title="Ingest Python library">
+    </Accordion>
+    <Accordion title="Python SDK">
+    </Accordion>
+    <Accordion title="JavaScript/TypeScript SDK">
+    </Accordion>
+    <Accordion title="POST request">
+    </Accordion>
+    <Accordion title="Open source library">
+    </Accordion>
+</AccordionGroup>
