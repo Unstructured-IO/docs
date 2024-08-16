@@ -27,7 +27,10 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
   -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -F 'files=@sample-docs/layout-parser-paper.pdf' \
   -F 'strategy=hi_res' \
-  -F 'hi_res_model_name=yolox'
+  -F 'hi_res_model_name=layout_v1.1.0' \
+  -F 'split-pdf-page True' \
+  -F 'split-pdf-allow-failed True' \
+  -F 'split-pdf-concurrency-level 15'
 ```
 
 ```python Python
@@ -38,7 +41,7 @@ from unstructured_client.models import shared
 from unstructured_client.models.errors import SDKError
 
 client = UnstructuredClient(
-    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
     api_url=os.getenv("UNSTRUCTURED_API_URL"),
 )
 
@@ -51,7 +54,7 @@ req = shared.PartitionParameters(
         file_name=filename,
     ),
     strategy="hi_res",
-    hi_res_model_name="yolox",
+    hi_res_model_name="layout_v1.1.0",
 )
 
 try:
@@ -85,7 +88,7 @@ client.general.partition({
         fileName: filename,
     },
     strategy: "hi_res",
-    hiResModelName: "yolox",
+    hiResModelName: "layout_v1.1.0",
 }).then((res: PartitionResponse) => {
     if (res.statusCode == 200) {
         console.log(res.elements);
@@ -113,7 +116,10 @@ curl -X 'POST' $UNSTRUCTURED_API_URL \
   -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -F 'files=@sample-docs/korean.png' \
   -F 'strategy=hi_res' \
-  -F 'languages=kor'
+  -F 'languages=kor' \
+  -F 'split-pdf-page True' \
+  -F 'split-pdf-allow-failed True' \
+  -F 'split-pdf-concurrency-level 15'
 ```
 
 ```python Python
@@ -197,7 +203,10 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
   -H 'Content-Type: multipart/form-data' \
   -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -F 'files=@sample-docs/layout-parser-paper.pdf' \
-  -F 'coordinates=true'
+  -F 'coordinates=true' \
+  -F 'split-pdf-page True' \
+  -F 'split-pdf-allow-failed True' \
+  -F 'split-pdf-concurrency-level 15'
 ```
 
 ```python Python
@@ -283,7 +292,10 @@ curl -X 'POST' $UNSTRUCTURED_API_URL \
  -H 'Content-Type: multipart/form-data' \
  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
  -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
- -F 'unique_element_ids=true'
+ -F 'unique_element_ids=true' \
+ -F 'split-pdf-page True' \
+ -F 'split-pdf-allow-failed True' \
+ -F 'split-pdf-concurrency-level 15'
 ```
 
 ```python Python
@@ -368,7 +380,10 @@ curl -X 'POST' $UNSTRUCTURED_API_URL \
  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
  -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
  -F 'chunking_strategy=by_title' \
- -F 'max_characters=1024'
+ -F 'max_characters=1024' \
+ -F 'split-pdf-page True' \
+ -F 'split-pdf-allow-failed True' \
+ -F 'split-pdf-concurrency-level 15'
 ```
 
 ```python Python

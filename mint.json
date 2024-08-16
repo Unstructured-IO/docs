@@ -91,7 +91,8 @@
       {
         "group": "Unstructured open source",
         "pages": [
-          "open-source/introduction/overview"
+          "open-source/introduction/overview",
+          "open-source/introduction/supported-file-types"
         ]
       },
       {
@@ -124,6 +125,20 @@
         "group": "Data ingestion",
         "pages": [
           "open-source/ingest/overview",
+          {
+            "group": "Ingest configuration",
+            "pages": [
+              "open-source/ingest/ingest-configuration/overview",
+              "open-source/ingest/ingest-configuration/processor-configuration",
+              "open-source/ingest/ingest-configuration/read-configuration",
+              "open-source/ingest/ingest-configuration/partition-configuration",
+              "open-source/ingest/ingest-configuration/permissions-configuration",
+              "open-source/ingest/ingest-configuration/retry-strategy-configuration",
+              "open-source/ingest/ingest-configuration/chunking-configuration",
+              "open-source/ingest/ingest-configuration/embedding-configuration",
+              "open-source/ingest/ingest-configuration/fsspec-configuration"
+            ]
+          },
           {
             "group": "Source connectors",
             "pages": [
@@ -168,6 +183,7 @@
               "open-source/ingest/destination-connectors/box",
               "open-source/ingest/destination-connectors/chroma",
               "open-source/ingest/destination-connectors/clarifai",
+              "open-source/ingest/destination-connectors/couchbase",
               "open-source/ingest/destination-connectors/databricks-volumes",
               "open-source/ingest/destination-connectors/delta-table",
               "open-source/ingest/destination-connectors/dropbox",
@@ -184,20 +200,6 @@
               "open-source/ingest/destination-connectors/vectara",
               "open-source/ingest/destination-connectors/weaviate"
             ]
-          },
-          {
-            "group": "Ingest configuration",
-            "pages": [
-              "open-source/ingest/ingest-configuration/overview",
-              "open-source/ingest/ingest-configuration/processor-configuration",
-              "open-source/ingest/ingest-configuration/read-configuration",
-              "open-source/ingest/ingest-configuration/partition-configuration",
-              "open-source/ingest/ingest-configuration/permissions-configuration",
-              "open-source/ingest/ingest-configuration/retry-strategy-configuration",
-              "open-source/ingest/ingest-configuration/chunking-configuration",
-              "open-source/ingest/ingest-configuration/embedding-configuration",
-              "open-source/ingest/ingest-configuration/fsspec-configuration"
-            ]
           }
         ]
       },
@@ -210,7 +212,8 @@
       {
         "group": "Best practices",
         "pages": [
-          "open-source/best-practices/chunking"
+          "open-source/best-practices/chunking",
+          "open-source/best-practices/embedding"
         ]
       },
       {
@@ -231,7 +234,8 @@
       {
         "group": "Unstructured API services",
         "pages": [
-          "api-reference/api-services/overview"
+          "api-reference/api-services/overview",
+          "api-reference/api-services/supported-file-types"
         ]
       },
       {
@@ -262,6 +266,7 @@
           "api-reference/ingest/overview",
           "api-reference/ingest/ingest-cli",
           "api-reference/ingest/python-ingest",
+          "api-reference/ingest/ingest-dependencies",
           {
             "group": "Ingest configuration",
             "pages": [
@@ -320,6 +325,7 @@
               "api-reference/ingest/destination-connector/box",
               "api-reference/ingest/destination-connector/chroma",
               "api-reference/ingest/destination-connector/clarifai",
+              "api-reference/ingest/destination-connector/couchbase",
               "api-reference/ingest/destination-connector/databricks-volumes",
               "api-reference/ingest/destination-connector/delta-table",
               "api-reference/ingest/destination-connector/dropbox",
@@ -341,6 +347,8 @@
       },
       { "group": "How to",
         "pages": [
+          "api-reference/how-to/choose-partitioning-strategy",
+          "api-reference/how-to/choose-hi-res-model",
           "api-reference/how-to/get-elements",
           "api-reference/how-to/parse-simple-pdf-html",
           "api-reference/how-to/change-partitioning-strategy",
@@ -354,15 +362,21 @@
           "api-reference/how-to/change-element-coordinate-system",
           "api-reference/how-to/powerpoint",
           "api-reference/how-to/use-langchain-ollama",
-          "api-reference/how-to/use-langchain-llama-3",
-          "examplecode/notebooks"
+          "api-reference/how-to/use-langchain-llama-3"
         ]
       },
       { 
         "group": "Best practices",
         "pages": [
           "api-reference/best-practices/chunking",
+          "api-reference/best-practices/embedding",
           "api-reference/best-practices/speed-up-large-files-batches"
+        ]
+      },
+      {
+        "group": "Troubleshooting",
+        "pages": [
+          "api-reference/troubleshooting/api-key-url"
         ]
       },
       {
@@ -444,7 +458,8 @@
           "examplecode/codesamples/oss/vector-database",
           "examplecode/codesamples/oss/table-source-connector",
           "examplecode/codesamples/oss/multi-files-api-processing",
-          "examplecode/codesamples/apioss/table-extraction-from-pdf"
+          "examplecode/codesamples/apioss/table-extraction-from-pdf",
+          "examplecode/codesamples/api/huggingchat"
         ]
       },
       {

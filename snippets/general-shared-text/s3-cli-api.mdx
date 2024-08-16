@@ -1,0 +1,19 @@
+The S3 connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[s3]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `AWS_S3_URL` - The S3 remote URL, formatted as `protocol://dir/path/` (for example, `s3://my-bucket/my-folder/`).
+- If the S3 bucket doesn't allow anonymous access, provide the AWS credentials:
+
+  - `AWS_ACCESS_KEY_ID` - The AWS access key ID, represented by `--key` (CLI) or `key` (Python).
+  - `AWS_SECRET_ACCESS_KEY` - The AWS secret access key, represented by `--secret` (CLI) or `secret` (Python).
+
+- If the S3 bucket allows access without local AWS credentials, set `--anonymous` (CLI) or `anonymous=True` (Python) instead.

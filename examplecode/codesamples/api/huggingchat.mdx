@@ -1,0 +1,31 @@
+---
+title: Query processed PDF with HuggingChat
+---
+
+This example uses the [Unstructured JavaScript/TypeScript SDK](http://localhost:3000/api-reference/api-services/sdk-jsts) to send a PDF file to 
+[Unstructured API services](/api-reference/api-services/overview) for processing. Unstructured processes the PDF and extracts the PDF's content. 
+This example then sends some of the content to [HuggingChat](https://huggingface.co/chat/), Hugging Face's open-source AI chatbot, 
+along with some queries about this content.
+
+To run this example, you'll need:
+
+- The [huggingface-chat](https://www.npmjs.com/package/huggingface-chat) pacakge.
+- Your Unstructured API key and API URL. [Get an API key and API URL](/api-reference/api-services/saas-api-development-guide#get-started). 
+- Your Hugging Face account's email address and account password. [Get an account](https://huggingface.co/join).
+- A PDF file for Unstructured to process. This example uses a sample PDF file containing the text of the United States Constitution, 
+available for download from [https://constitutioncenter.org/media/files/constitution.pdf](https://constitutioncenter.org/media/files/constitution.pdf).
+
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedAPIKeyURL />
+
+These environment variables:
+
+- `HUGGING_FACE_EMAIL`, representing your Hugging Face account's email address. 
+- `HUGGING_FACE_PASSWORD`, representing your Hugging Face account's email address.
+
+This example's code is as follows:
+
+import HuggingChatExampleCode from '/snippets/examples/huggingchat.ts.mdx';
+
+<HuggingChatExampleCode />

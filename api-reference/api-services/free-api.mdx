@@ -63,12 +63,15 @@ curl -X POST $UNSTRUCTURED_API_URL \
      -H 'Content-Type: multipart/form-data' \
      -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
      -F 'files=@<local/path/to/input/file>' \
+     -F 'split-pdf-page True' \
+     -F 'split-pdf-allow-failed True' \
+     -F 'split-pdf-concurrency-level 15' \
      -o '<local/path/to/output/file>'
 ```
 
 After the command successfully runs, see the results in the specified output path on your local machine.
 
-If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 
 [Learn more about how to use POST requests](/api-reference/api-services/post-requests).
 
@@ -99,12 +102,13 @@ unstructured-ingest \
     --output-dir <local/path/to/output/file> \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
-    --partition-endpoint $UNSTRUCTURED_API_URL
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
 ```
 
 After the command successfully runs, see the results in the specified output path on your local machine.
 
-If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 
 ### Unstructured Python SDK and JavaScript/TypeScript SDK
 
@@ -126,6 +130,8 @@ Set the `UNSTRUCTURED_API_KEY` environment variable to your Free Unstructured AP
 
 Set the `UNSTRUCTURED_API_URL` environment variable to your Free Unstructured API URL, which is `https://api.unstructured.io/general/v0/general`
 
+<Tip>With the Unstructured SDKs, for the Free edition only, you can set the `server` parameter to use the short string `free-api` instead of setting `server_url` (Python) or `serverURL` (JavaScript/TypeScript) to the Free Unstructured API URL.</Tip>
+
 Now, call the API, replacing:
 
 - `<local/path/to/input/file>` with the path to the source (input) file on your local machine.
@@ -140,7 +146,7 @@ from unstructured_client import UnstructuredClient
 from unstructured_client.models import operations, shared
 
 client = unstructured_client.UnstructuredClient(
-    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
     server_url=os.getenv("UNSTRUCTURED_API_URL")
 )
 
@@ -156,7 +162,9 @@ with open(input_filepath, "rb") as f:
 req = operations.PartitionRequest(
     shared.PartitionParameters(
         files=files,
-        strategy=shared.Strategy.AUTO
+        split_pdf_page=True,
+        split_pdf_allow_failed=True,
+        split_pdf_concurrency_level=15
     )
 )
 
@@ -201,7 +209,9 @@ client.general.partition({
             content: data,
             fileName: inputFilepath
         },
-        strategy: Strategy.Auto
+        splitPdfPage: true,
+        splitPdfAllowFailed: true,
+        splitPdfConcurrencyLevel: 15
     }
 }).then((res) => {
     if (res.statusCode == 200) {
@@ -224,7 +234,7 @@ client.general.partition({
 ```
 </CodeGroup>
 
-If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 
 Learn more about how to use the [Unstructured Python SDK](/api-reference/api-services/sdk-python) and [Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts).
 
@@ -273,7 +283,7 @@ with open(output_filepath, "w") as file:
     file.write(json_elements)
 ```
 
-If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 
 [Learn more about how to use the Unstructured open source library](/open-source/introduction/overview).
 

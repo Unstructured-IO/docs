@@ -98,7 +98,11 @@ pip install unstructured-ingest
 
 This default installation option enables the ingestion of plain text files, HTML, XML, JSON and emails that do not require any extra dependencies. This default option also enables you to specify local source and destination locations.
 
-For additional installation options and dependencies, see:
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+For additional installation options, see:
 
 - [Run the library in a container](https://github.com/Unstructured-IO/unstructured/tree/main?tab=readme-ov-file#run-the-library-in-a-container)
 - [Installing the library](https://github.com/Unstructured-IO/unstructured/tree/main?tab=readme-ov-file#installing-the-library)
@@ -139,6 +143,18 @@ To begin using the CLI, see the quickstarts for the:
 
 The Unstructured Ingest Python library enable you to use Python code to get all of your data ready for RAG and model fine-tuning.
 
+The following 3-minute video shows how to use the Unstructured Ingest Python library to send multiple PDFs from a local directory in batches to be ingested by Unstructured API services for processing:
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/tSKHFXsBQ-c"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
+
 One approach to using the Unstructured Ingest Python library is installing Python and then running the following command to install the library and the default connectors:
 
 ```bash
@@ -147,7 +163,9 @@ pip install unstructured-ingest
 
 This default installation option enables the ingestion of plain text files, HTML, XML, JSON and emails that do not require any extra dependencies. This default option also enables you to specify local source and destination locations.
 
-For additional installation options and dependencies, see:
+<AdditionalIngestDependencies />
+
+For additional installation options, see:
 
 - [Run the library in a container](https://github.com/Unstructured-IO/unstructured/tree/main?tab=readme-ov-file#run-the-library-in-a-container)
 - [Installing the library](https://github.com/Unstructured-IO/unstructured/tree/main?tab=readme-ov-file#installing-the-library)
@@ -155,11 +173,11 @@ For additional installation options and dependencies, see:
 
 Some source and destination connectors provide newer v2 and older v1 implementations, while some provide only older v1 implementations. You should use the v2 implementations wherever they are available, to help ensure better forward-compatibility of your code. For the lists of available v2 and v1 connectors, see:
 
-- [v2 non-fsspec connectors](https://github.com/Unstructured-IO/unstructured/tree/main/unstructured/ingest/v2/processes/connectors)
-- [v2 fsspec connectors](https://github.com/Unstructured-IO/unstructured/tree/main/unstructured/ingest/v2/processes/connectors/fsspec)
-- [v1 non-fsspec connectors](https://github.com/Unstructured-IO/unstructured/tree/main/unstructured/ingest/connector)
-- [v1 fsspec connectors](https://github.com/Unstructured-IO/unstructured/tree/main/unstructured/ingest/connector/fsspec)
-- [v1 Notion connector](https://github.com/Unstructured-IO/unstructured/tree/main/unstructured/ingest/connector/notion)
+- [v2 non-fsspec connectors](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/unstructured_ingest/v2/processes/connectors)
+- [v2 fsspec connectors](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/unstructured_ingest/v2/processes/connectors/fsspec)
+- [v1 non-fsspec connectors](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/unstructured_ingest/connector)
+- [v1 fsspec connectors](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/unstructured_ingest/connector/fsspec)
+- [v1 Notion connector](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/unstructured_ingest/connector/notion)
 
 To begin using the Unstructured Ingest Python library, see the code examples for the [source](/api-reference/ingest/source-connectors/overview) and [destination](/api-reference/ingest/destination-connector/overview) connectors.
 

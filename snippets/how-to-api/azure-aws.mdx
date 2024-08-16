@@ -10,6 +10,9 @@
           -H 'accept: application/json' \
           -H 'Content-Type: multipart/form-data' \
           -F files=@<path/to/input-file> \
+          -F 'split-pdf-page True' \
+          -F 'split-pdf-allow-failed True' \
+          -F 'split-pdf-concurrency-level 15' \
           -o <path/to/output-file>.json
         ```
 
@@ -52,7 +55,10 @@
         req = operations.PartitionRequest(
             shared.PartitionParameters(
                 files=files,
-                strategy=shared.Strategy.AUTO
+                strategy=shared.Strategy.AUTO,
+                split_pdf_page=True,
+                split_pdf_allow_failed=True,
+                split_pdf_concurrency_level=15
             )
         )
 
@@ -142,7 +148,8 @@
             --output-dir <path/to/output-files/director> \
             --partition-by-api \
             --api-key $UNSTRUCTURED_API_KEY \
-            --partition-endpoint $UNSTRUCTURED_API_URL
+            --partition-endpoint $UNSTRUCTURED_API_URL \
+            --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
         ```
 
     </Accordion>
@@ -179,7 +186,12 @@
                 partitioner_config=PartitionerConfig(
                     partition_by_api=True,
                     api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-                    partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")
+                    partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+                    additional_partition_args={
+                        "split_pdf_page": True,
+                        "split_pdf_allow_failed": True,
+                        "split_pdf_concurrency_level": 15
+                    }
                 ),
                 uploader_config=LocalUploaderConfig(output_dir="<path/to/output-files/directory>")
             ).run()

@@ -6,11 +6,13 @@ import NewDocument from '/snippets/general-shared-text/new-document.mdx';
 
 <NewDocument />
 
-import SharedS3 from '/snippets/dc-shared-text/s3.mdx';
+import SharedS3 from '/snippets/dc-shared-text/s3-cli-api.mdx';
 
 <SharedS3 />
 
-Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library.  The source connector can be any of the ones supported. This example uses the local source connector:
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library.  The source connector can be any of the ones supported. This example uses the local source connector.
+
+This example sends files to Unstructured API services for processing by default. To process files locally instead, see the instructions at the end of this page.
 
 import S3APISh from '/snippets/destination_connectors/s3.sh.mdx';
 import S3APIPyV2 from '/snippets/destination_connectors/s3.v2.py.mdx';

@@ -1,0 +1,33 @@
+---
+title: Choose a hi-res model
+---
+
+## Task
+
+You want to specify a high-resolution object detection model to be used when processing image files, or PDFs with embedded images or tables, but you are not sure which model to specify.
+
+## Approach
+
+Use the following decision-maker to help you determine which model to specify.
+
+<Steps>
+    <Step title="Are you processing image files, or PDFs with embedded images or tables?">
+        - If **Yes**, then continue with **Step 2**. 
+        - If **No**, then Unstructured will not use a high-resolution object detection model when processing your files. Set the command's `--strategy` option (CLI) or `strategy` parameter (Python/JavaScript/TypeScript) to `fast`. See also [Choose a partitioning strategy](/api-reference/how-to/choose-partitioning-strategy).
+    </Step>
+    <Step title="To process image files, or PDFs with embedded images or tables...">
+        If you already have your scripts or code in place and just need help in choosing a model, then skip ahead to **Step 3**. Otherwise:
+
+        - To have Unstructured make its best choice on your behalf about the model to use, set the command's `--strategy` option (CLI) or `strategy` parameter (Python/JavaScript/TypeScript) to `auto`. You have completed this decision-maker. See also [Auto partitioning strategy logic](/api-reference/how-to/choose-partitioning-strategy#auto-partitioning-strategy-logic).
+        - To specify a specific model, set `--strategy` or `strategy` to `hi_res`. Then set `--hi-res-model-name` (CLI), `hi_res_model_name` (Python), or `hiResModelName` (JavaScript/TypeScript) to one of the models in **Step 3**.
+    </Step>
+    <Step title="Specify one of the following models...">
+        - `layout_v1.1.0` generally performs better than `yolox` at bounding box definitions and element classification. `layout_v1.1.0` is a proprietary Unstructured object detection model and is used by default, as applicable, if `--hi-res-model-name`, `hi_res_model_name`, or `hiResModelName` is not specified.
+        - `yolox` is also provided for backwards compatibility and originally was the replacement for `detectron2_onnx`.
+        - `detectron2_onnx` generally underperforms the preceding models. However, it is still accessible to maintain backwards compatibility.
+    </Step>
+</Steps>
+
+## Code examples
+
+See [Changing partition strategy for a PDF](/api-reference/api-services/examples#changing-partition-strategy-for-a-pdf).

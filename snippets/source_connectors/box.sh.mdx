@@ -8,5 +8,9 @@ unstructured-ingest \
     --output-dir box-ingest-output \
     --num-processes 2 \
     --recursive \
-    --verbose
+    --verbose \
+    --partition-by-api \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
 ```

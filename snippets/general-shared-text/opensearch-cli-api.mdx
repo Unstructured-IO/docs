@@ -1,0 +1,31 @@
+The OpenSearch connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[opensearch]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `OPENSEARCH_HOST` - The hostname and port number, defined as `<hostname>:<port-number>` and represented by `--hosts` (CLI) or `hosts` (Python).
+- `OPENSEARCH_INDEX_NAME` - The name of the search index, represented by `--index-name` (CLI) or `index_name` (Python).
+
+If you're using basic authentication to the instance:
+
+- `OPENSEARCH_USERNAME` - The user's name, represented by `--username` (CLI) or `username` (Python).
+- `OPENSEARCH_PASSWORD` - The user's password, represented by `--password` (CLI) or `password` (Python).
+
+If you're using certificates for authentication instead:
+
+- `OPENSEARCH_CA_CERTS` - The path to the Certificate Authority (CA) bundle, if you use intermediate CAs with your root CA. This is represented by `--ca-certs` (CLI) or `ca_certs` (Python).
+- `OPENSEARCH_CLIENT_CERT` - The path to the combined private key and certificate file, or the path to just the certificate file. This is represented by `--client-cert` (CLI) or `client_cert` (Python).
+- `OPENSEARCH_CLIENT_KEY` - The path to the private key file, if `OPENSEARCH_CLIENT_CERT` refers to just the certificate file. This is represented by `--client-key` (CLI) or `client_key` (Python).
+
+Additional related settings include:
+
+- `--use-ssl` (CLI) or `use_ssl=True` (Python) to use SSL for the connection.
+- `--verify-certs` (CLI) or `verify_certs=True` (Python) to verify SSL certificates.
+- `--ssl-show-warn` (CLI) or `ssl_show_warn=True` (Python) to show a warning when verifying SSL certificates is disabled.
