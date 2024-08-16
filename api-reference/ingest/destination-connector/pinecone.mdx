@@ -2,6 +2,25 @@
 title: Pinecone
 ---
 
-import SharedPinecone from '/snippets/dc-shared-text/pinecone.mdx';
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
 
-<SharedPinecone />
+<NewDocument />
+
+import SharedContentPinecone from '/snippets/dc-shared-text/pinecone-cli-api.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedContentPinecone/>
+<SharedAPIKeyURL/>
+
+Now call the Unstructured CLI or Python SDK. The source connector can be any of the ones supported. This example uses the local source connector:
+
+import PineconeAPISh from '/snippets/destination_connectors/pinecone.sh.mdx';
+import PineconeAPIPyV2 from '/snippets/destination_connectors/pinecone.v2.py.mdx';
+import PineconeAPIPyV1 from '/snippets/destination_connectors/pinecone.v1.py.mdx';
+
+<CodeGroup>
+  <PineconeAPISh />
+  <PineconeAPIPyV2 />
+  <PineconeAPIPyV1 />
+</CodeGroup>
+
