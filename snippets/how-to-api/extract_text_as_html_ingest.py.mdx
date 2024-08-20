@@ -1,0 +1,37 @@
+```python Python
+import json, os, webbrowser
+
+def get_tables_as_html(
+        input_json_file_path: str,
+        output_html_dir_path: str
+    ):
+    with open(input_json_file_path, 'r') as file:
+        file_elements = json.load(file)
+
+    # Provide some minimal CSS for better table readability.
+    table_css = "<head><style>table, th, td { border: 1px solid; }</style></head>"
+
+    for element in file_elements:
+        if "text_as_html" in element["metadata"]:
+            # Surround the element's HTML with basic <html> and <body> tags, and add the minimal CSS.
+            html_string = f"<!DOCTYPE html><html>{table_css}<body>{element["metadata"]["text_as_html"]}</body></html>"
+
+            # Save the element's HTML to a local file.
+            save_path = f"{output_html_dir_path}/{element["element_id"]}.html"
+            file = open(save_path, 'w')
+            file.write(html_string)
+            file.close()
+
+            # View the locally saved file in the local default web browser.
+            webbrowser.open_new(f"file:///{os.getcwd()}/{save_path}")
+
+if __name__ == "__main__":
+    # Source: https://github.com/Unstructured-IO/unstructured-ingest/blob/main/example-docs/pdf/embedded-images-tables.pdf
+
+    # Specify where to get the local file, relative to this .py file, and
+    # where to store the retrieved HTML, relative to this .py file.
+    get_tables_as_html(
+        input_json_file_path="local-ingest-output/embedded-images-tables.pdf.json",
+        output_html_dir_path="local-ingest-output/html/"
+    )
+```
