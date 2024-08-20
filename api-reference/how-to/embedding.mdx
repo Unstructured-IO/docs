@@ -1,16 +1,16 @@
 ---
-title: Embedding
+title: Set embedding behavior
 ---
 
 <Note>
-   The following information applies only to the [Unstructured Ingest CLI]() and the [Unstructured Ingest Python library]().
+   The following information applies only to the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli) and the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library).
 
    For the Unstructured open-source library, see [Embedding](/open-source/core-functionality/embedding) instead.
    
    The Unstructured SDKs for Python and JavaScript/TypeScript do not support this functionality.
 </Note>
 
-You can use the [Unstructured Ingest CLI]() or the [Unstructured Ingest Python library]() to generate embeddings after the partitioning step in an ingest pipeline. You do this by 
+You can use the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli) or the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library) to generate embeddings after the partitioning step in an ingest pipeline. You do this by 
 specifying an _embedding model_ that is provided or used by an _embedding provider_. An [embedding model](https://python.langchain.com/v0.2/docs/concepts/#embedding-models) creates a complex mathematical representation 
 known as a _vector_ that captures inherent properties and relationships between data. (In this case, this data is the text that is extracted by Unstructured.) 
 These vector embeddings allow _large language models_ (LLMs) and _vector databases_ to more quickly and efficiently analyze and process these inherent properties and relationships. 
@@ -70,5 +70,7 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
     </Accordion>
 </AccordionGroup>
 
-## Next steps
+## See also
+
+<Icon icon="blog"/>&nbsp;&nbsp;[Understanding embedding models: make an informed choice for your RAG](https://unstructured.io/blog/understanding-embedding-models-make-an-informed-choice-for-your-rag)
 
