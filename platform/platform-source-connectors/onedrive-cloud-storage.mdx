@@ -1,53 +1,24 @@
 ---
-title: OneDrive Cloud Storage 
-description: This page contains the information to ingest your data from OneDrive.
+title: OneDrive
 ---
 
-## Prerequisites
+Ingest your files into Unstructured from OneDrive.
 
-*   Microsoft OneDrive Account
-    
-*   Client ID and Client Credential with Azure AD
-    
-*   Tenant ID for Azure AD
-    
-*   Principle Name (usually Azure AD email)
-    
-*   Path to the OneDrive folder to ingest from
-    
+You'll need:
 
-For more information, please refer to [OneDrive API documentation](https://docs.microsoft.com/en-us/onedrive/developer/rest-api/).
+import OneDrivePrerequisites from '/snippets/general-shared-text/onedrive.mdx';
 
-## Step-by-Step Guide
+<OneDrivePrerequisites />
 
-![Source Connector OneDrive](/img/platform/Source-OneDrive.png)
+To create the source connector:
 
-1.  **Access the Create Source Page**. Navigate to the “Sources” section on the left sidebar and click the “New Source” button.
-    
-2.  **Select Source Type**. Select **OneDrive Cloud Storage** from the `Type` dropdown menu.
-    
-3.  **Configure Source Details to connect to OneDrive**
-    
-<Note>
-*   `Name` (_required_): Enter a unique name for the OneDrive source connector.
-    
-*   `Client ID` (_required_): Input the Client ID associated with Azure AD.
-    
-*   `Client Credential` (_required_): Enter the Client Credential associated with the Client ID.
-    
-*   `Tenant ID` (_required_): Specify the Tenant ID associated with Azure AD.
-    
-*   `Authority URL`: Provide the URL for the authentication token provider for Microsoft apps.
-    
-*   `Principle Name` (_required_): Input the Principle Name associated with Azure AD, usually your Azure AD email.
-    
-*   `Path`: Specify the path within OneDrive from which to start parsing files.
-</Note>
+1. On the sidebar, click **Sources**.
+2. Click **New Source**.
+3. In the **Type** drop-down list, select **OneDrive**.
+4. Fill in the fields as described later on this page.
+5. Click **Save and Test**.
+6. Click **Submit**.
 
-4.  **Additional Settings**
-    
-<Note>
-*   Check `Recursive` if you want the platform to recursively ingest files from sub-folders within the specified OneDrive path.
-</Note>
+import OneDriveFields from '/snippets/general-shared-text/onedrive-platform.mdx';
 
-5.  **Submit**. After filling in the necessary information, click ‘Submit’ to create the Source Connector. The newly completed OneDrive connector will be listed on the Sources dashboard.
+<OneDriveFields />

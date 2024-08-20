@@ -1,49 +1,24 @@
 ---
 title: OpenSearch
-description: This page contains the information to ingest your data from OpenSearch.
 ---
 
-## Prerequisites
+Ingest your files into Unstructured from OpenSearch.
 
-*   OpenSearch Hosts
-    
-*   Index Name
-    
-*   Username and Password (if required)
-    
-*   SSL configuration (if required)
-    
+You'll need:
 
-For more information, please refer to [OpenSearch documentation](https://opensearch.org/docs/latest/).
+import OpenSearchPrerequisites from '/snippets/general-shared-text/opensearch.mdx';
 
-## Step-by-Step Guide
+<OpenSearchPrerequisites />
 
-![Source Connector OpenSearch](/img/platform/Source-OpenSearch.png)
+To create the source connector:
 
-1.  **Access the Create Source Page**. Navigate to the “Sources” section on the left sidebar and click the “New Source” button.
-    
-2.  **Select Source Type**. Select **OpenSearch** from the `Type` dropdown menu.
-    
-3.  **Configure Source Details to connect to OpenSearch**
-    
-<Note>
-*   `Name` (_required_): Enter a unique name for the OpenSearch source connector.
-    
-*   `Hosts` (_required_): Specify the OpenSearch cluster hosts, including the protocol and port, separated by commas.
-    
-*   `Index Name` (_required_): Provide the name of the index from which to start ingesting data.
-    
-*   `Username`: Input the username for the OpenSearch cluster if authentication is enabled.
-    
-*   `Password`: Enter the password associated with the username for the OpenSearch cluster.
-    
-*   `Fields`: List the specific fields to be ingested from the OpenSearch index, separated by commas.
-</Note>  
+1. On the sidebar, click **Sources**.
+2. Click **New Source**.
+3. In the **Type** drop-down list, select **OpenSearch**.
+4. Fill in the fields as described later on this page.
+5. Click **Save and Test**.
+6. Click **Submit**.
 
-4.  **Additional Settings**
-    
-<Note>
-*   Check `Use SSL for the connection` if the OpenSearch cluster requires an SSL connection for security purposes.
-</Note> 
+import OpenSearchFields from '/snippets/general-shared-text/opensearch-platform.mdx';
 
-5.  **Submit**. After filling in the necessary information, click ‘Submit’ to create the Source Connector. The newly completed OpenSearch connector will be listed on the Sources dashboard.
+<OpenSearchFields />

@@ -1,43 +1,24 @@
 ---
 title: Google Drive 
-description: This page contains the information to ingest your data from Google Drive.
 ---
 
-## Prerequisites
+Ingest your files into Unstructured from Google Drive.
 
-*   Google Account
-    
-*   Google Drive Folders and Files
-    
-*   Service Account Key with permissions to access the Google Drive
-    
+You'll need:
 
-For more information, please refer to [Google Drive API documentation](https://developers.google.com/drive/api/v3/about-sdk).
+import GoogleDrivePrerequisites from '/snippets/general-shared-text/google-drive.mdx';
 
-## Step-by-Step Guide
+<GoogleDrivePrerequisites />
 
-![Source Connector Google Drive](/img/platform/Source-Google-Drive.png)
+To create the source connector:
 
-1.  **Access the Create Source Page**. Navigate to the “Sources” section on the left sidebar and click the “New Source” button.
-    
-2.  **Select Source Type**. Select **Google Drive** from the `Type` dropdown menu.
-    
-3.  **Configure Source Details to connect to Google Drive**
-    
-<Note>
-*   `Name` (_required_): Enter a unique name for the Google Drive source connector.
-    
-*   `Drive ID` (_required_): Input the Drive ID associated with the Google Drive you wish to connect.
-    
-*   `Service Account Key` (_required_): Provide the Service Account Key that has been granted access to the specified Google Drive.
-    
-*   `Extension`: Specify the file extensions to be included in the ingestion process, if filtering is required.
-</Note>  
+1. On the sidebar, click **Sources**.
+2. Click **New Source**.
+3. In the **Type** drop-down list, select **Google Drive**.
+4. Fill in the fields as described later on this page.
+5. Click **Save and Test**.
+6. Click **Submit**.
 
-4.  **Additional Settings**
-    
-<Note>
-*   Check `Recursive` if you want the platform to recursively ingest files from sub-folders within the specified Google Drive.
-</Note> 
+import GoogleDriveFields from '/snippets/general-shared-text/google-drive-platform.mdx';
 
-5.  **Submit**. After filling in the necessary information, click ‘Submit’ to create the Source Connector. The newly completed Google Drive connector will be listed on the Sources dashboard.
+<GoogleDriveFields />
