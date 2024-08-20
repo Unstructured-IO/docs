@@ -50,7 +50,7 @@ try:
     # a transposed version of the returned elements. 
     # For instance, we just want to capture each element's ID,
     # the chunk's text, and the chunk's associated elements in context.
-    orig_elemenents_dict: List[Dict[str, Any]] = []
+    orig_elements_dict: List[Dict[str, Any]] = []
 
     for element in res.elements:
         # For each chunk that has an "orig_elements" field...
@@ -58,14 +58,14 @@ try:
             # ...get the chunk's associated elements in context...
             orig_elements = extract_orig_elements(element["metadata"]["orig_elements"])
             # ...and then transpose it and other associated fields into a separate dictionary.
-            orig_elemenents_dict.append({
+            orig_elements_dict.append({
                 "element_id": element["element_id"],
                 "text": element["text"],
                 "orig_elements": json.loads(orig_elements)
             })
     
     # Convert the elements into a JSON object.
-    orig_elements_json = json.dumps(orig_elemenents_dict, indent=2)
+    orig_elements_json = json.dumps(orig_elements_dict, indent=2)
     
     # Print out the JSON.
     print(orig_elements_json)

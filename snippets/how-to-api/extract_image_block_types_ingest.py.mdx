@@ -1,0 +1,25 @@
+```python Python
+import json, base64, io
+from PIL import Image
+
+def get_image_block_types(input_json_file_path: str):
+    with open(input_json_file_path, 'r') as file:
+        file_elements = json.load(file)
+
+    for element in file_elements:
+        if "image_base64" in element["metadata"]:
+            # Decode the Base64-encoded representation of the 
+            # processed "Image" or "Table" element into its original
+            # visual representation, and then show it.
+            image_data = base64.b64decode(element["metadata"]["image_base64"])
+            image = Image.open(io.BytesIO(image_data))
+            image.show()
+
+if __name__ == "__main__":
+    # Source: https://github.com/Unstructured-IO/unstructured-ingest/blob/main/example-docs/pdf/embedded-images-tables.pdf
+
+    # Specify where to get the local file, relative to this .py file.
+    get_image_block_types(
+        input_json_file_path="local-ingest-output/embedded-images-tables.json"
+    )
+```

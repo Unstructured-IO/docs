@@ -8,7 +8,7 @@ You want to get, decode, and show elements, such as images and tables, that are 
 
 ## Approach
 
-Use the Unstructured Python SDK to extract the Base64-encoded representation of specific elements, such as images and tables, in the document. 
+Extract the Base64-encoded representation of specific elements, such as images and tables, in the document. 
 For each of these extracted elements, decode the Base64-encoded representation of the element into its original visual representation 
 and then show it.
 
@@ -18,15 +18,25 @@ You will need a document that is one of the document types supported by the `ext
 See the `extract_image_block_types` entry in [API Parameters](/api-reference/api-services/api-parameters). 
 This example uses a PDF file with embedded images and tables.
 
+import ExtractImageBlockTypesIngestPy from '/snippets/how-to-api/extract_image_block_types_ingest.py.mdx';
 import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
-
-<SharedAPIKeyURL />
+import ExtractImageBlockTypesPy from '/snippets/how-to-api/extract_image_block_types.py.mdx';
 
 ## Code
 
-import ExtractImageBlockTypesPy from '/snippets/how-to-api/extract_image_block_types.py.mdx';
-
-<ExtractImageBlockTypesPy />
+<AccordionGroup>
+    <Accordion title="Ingest Python library">
+        For the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library), you can use the standard Python 
+        [json.load](https://docs.python.org/3/library/json.html#json.load) function to load into a Python dictionary the contents of a JSON 
+        file that the Ingest Python library outputs.
+        <ExtractImageBlockTypesIngestPy />
+    </Accordion>
+    <Accordion title="Python SDK">
+        For the [Unstructured Python SDK](/api-reference/api-services/sdk-python), you'll need:
+        <SharedAPIKeyURL />
+        <ExtractImageBlockTypesPy />
+    </Accordion>
+</AccordionGroup>
 
 ## See also 
 
