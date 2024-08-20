@@ -41,56 +41,16 @@ import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx'
 
 ## Quickstart
 
-These examples use your local machine. They preprocess a single-file source (input) file on your local machine, and the Unstructured Serverless API delivers the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
-
-<Info>
-    These examples work with only a single file at a time and only with local source and destination locations. To process multiple files at a time, or to use non-local source or destination locations, use the [Unstructured Python Ingest CLI](/ingestion/overview#unstructured-ingest-cli) or the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library) instead.
-</Info>
-
-There are several ways to use the Unstructured Serverless API, which all lead to the same result, so pick your preferred method: [POST](#post-request), [CLI](#unstructured-ingest-cli), [SDK](#unstructured-python-sdk-and-javascript-typescript-sdk), or [open source](#calling-the-unstructured-api-from-the-unstructured-open-source-library).
-
-### POST request
-
-To work with the Unstructured Serverless API by calling the Unstructured REST API POST with `curl`, you will need to:
-
-- Set the `UNSTRUCTURED_API_KEY` environment variable to your Unstructured Serverless API key.
-- Set the `UNSTRUCTURED_API_URL` environment variable to your Unstructured Serverless API URL.
-
-[Get your API key and API URL](#get-started).
-
-Now, use `curl` to call the API, replacing:
-
-- `<local/path/to/input/file>` with the path to the source (input) file on your local machine.
-- `<local/path/to/output/file>` with the path to the destination (output) on your local machine where Unstructured will deliver the processed data. 
-
-```bash
-curl -X POST $UNSTRUCTURED_API_URL \
-     -H 'accept: application/json' \
-     -H 'Content-Type: multipart/form-data' \
-     -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
-     -F 'files=@<local/path/to/input/file>' \
-     -F 'split-pdf-page True' \
-     -F 'split-pdf-allow-failed True' \
-     -F 'split-pdf-concurrency-level 15' \
-     -o '<local/path/to/output/file>'
-```
-
-After the command successfully runs, see the results in the specified output path on your local machine.
-
-If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
-
-[Learn more about how to use POST requests](/api-reference/api-services/post-requests).
+These examples use your local machine. They send source (input) files from your local machine to the Unstructured Serverless API which delivers the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
 
 ### Unstructured Ingest CLI
-
-<Info>Although this example works with only a single file at a time and only with local source and destination locations, the Unstructured Ingest CLI works with multiple files at a time and with non-local source and destination locations. [Learn more](/ingestion/overview#unstructured-ingest-cli).</Info>
 
 To work with the Unstructured Serverless API by using the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli), you will need to:
 
 - Install Python, and then install the CLI package:
 
   ```bash
-  pip install unstructured
+  pip install unstructured-ingest
   ```
 
 - Set the following environment variables:
@@ -100,16 +60,18 @@ To work with the Unstructured Serverless API by using the [Unstructured Ingest C
   
   [Get your API key and API URL](#get-started).
 
+- Have some compatible files on your local machine to be processed. [See the list of supported file types](/api-reference/api-services/supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+
 Now, use the CLI to call the API, replacing:
 
-- `<local/path/to/input/files>` with the path to the source (input) file on your local machine.
-- `<local/path/to/output/file>` with the path to the destination (output) on your local machine where Unstructured will deliver the processed data. 
+- `<path/to/input>` with the source (input) path to the directory on your local machine that contains the compatible files for Unstructured to process on its hosted compute resources.
+- `<path/to/output>` with the destination (output) path to the directory on your local machine that will contain the processed data that Unstructured returns from its hosted compute resources.
 
 ```bash CLI
 unstructured-ingest \
   local \
-    --input-path <local/path/to/input/file> \
-    --output-dir <local/path/to/output/file> \
+    --input-path <path/to/input> \
+    --output-dir <path/to/output> \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
     --partition-endpoint $UNSTRUCTURED_API_URL \
@@ -118,158 +80,15 @@ unstructured-ingest \
 
 After the command successfully runs, see the results in the specified output path on your local machine.
 
-If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+### Unstructured Ingest Python library
 
-### Unstructured Python SDK and JavaScript/TypeScript SDK
+To work with the Unstructured Serverless API by using the [Unstructured Python library](/ingestion/overview#unstructured-ingest-python-library), you will need to:
 
-To work with the Unstructured Serverless API in Python, JavaScript, or TypeScript, use the
-[Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) or the 
-[Unstructured JavaScript/TypeScript SDK](https://github.com/Unstructured-IO/unstructured-js-client).
+- Install Python, and then install the CLI package:
 
-To get started with the Unstructured Python SDK even faster than following the steps below, simply sign up for a 14-day trial of the Unstructured Serverless API at [https://app.unstructured.io](https://app.unstructured.io), and then follow along with this 3-minute video:
-
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/bi4yrImGbHc"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-></iframe>
-
-First, install your preferred SDK:
-<CodeGroup>
-
-```bash  Python
-pip install unstructured-client
-```
-
-```bash  JavaScript/TypeScript
-npm install unstructured-client
-```
-</CodeGroup>
-
-Next, set the following environment variables:
-
-- Set `UNSTRUCTURED_API_URL` environment variable to your API URL.
-- Set the `UNSTRUCTURED_API_KEY` environment variable to your API key.
-
-[Get your API key and API URL](#get-started). 
-
-Now, call the API, replacing:
-
-- `<local/path/to/input/file>` with the path to the source (input) file on your local machine.
-- `<local/path/to/output/file>` with the path to the destination (output) on your local machine where Unstructured will deliver the processed data.
-
-<NoURLForServerlessAPI/>
-
-<CodeGroup>
-
-```python Python
-import json, os
-
-from unstructured_client import UnstructuredClient
-from unstructured_client.models import operations, shared
-
-input_filepath = "<local/path/to/input/file>"
-output_filepath = "<local/path/to/output/file>"
-
-client = UnstructuredClient(
-    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-    server_url=os.getenv("UNSTRUCTURED_API_URL"),
-)
-
-with open(input_filepath, "rb") as f:
-    files = shared.Files(
-        content=f.read(),
-        file_name=input_filepath
-    )
-
-req = operations.PartitionRequest(
-    shared.PartitionParameters(
-        files=files,
-        split_pdf_page=True,
-        split_pdf_allow_failed=True,
-        split_pdf_concurrency_level=15
-    )
-)
-
-try:
-    res = client.general.partition(request=req)
-    element_dicts = [element for element in res.elements]
-    json_elements = json.dumps(element_dicts, indent=2)
-    
-    # Print the processed data.
-    print(json_elements)
-
-    # Write the processed data to a local file.
-    with open(output_filepath, "w") as file:
-      file.write(json_elements)
-except Exception as e:
-    print(e)
-```
-
-```typescript TypeScript
-import { UnstructuredClient } from "unstructured-client";
-import { Strategy } from "unstructured-client/sdk/models/shared/index.js";
-import * as fs from "fs";
-
-const inputFilepath = "<local/path/to/input/file>" || '';
-const outputFilepath = "<local/path/to/output/file>" || ''
-
-const key = process.env.UNSTRUCTURED_API_KEY || '';
-const url = process.env.UNSTRUCTURED_API_URL || '';
-
-const client = new UnstructuredClient({
-    security: { apiKeyAuth: key },
-    serverURL: url
-});
-
-const data = fs.readFileSync(inputFilepath);
-
-client.general.partition({
-    partitionParameters: {
-        files: {
-            content: data,
-            fileName: inputFilepath
-        },
-        splitPdfPage: true,
-        splitPdfAllowFailed: true,
-        splitPdfConcurrencyLevel: 15
-    }
-}).then((res) => {
-    if (res.statusCode == 200) {
-       const jsonElements = JSON.stringify(res.elements, null, 2)
-       
-       // Print the processed data.
-       console.log(jsonElements);
-
-       // Write the processed data to a local file.
-       fs.writeFileSync(outputFilepath, jsonElements)
-    }
-}).catch((e) => {
-    if (e.statusCode) {
-        console.log(e.statusCode);
-        console.log(e.body);
-    } else {
-        console.log(e);
-    }
-});
-```
-</CodeGroup>
-
-After the code successfully runs, see the results in the specified output path on your local machine.
-
-If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
-
-Learn more about how to use the [Unstructured Python SDK](/api-reference/api-services/sdk-python) and the [Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts).
-
-### Calling the Unstructured API from the Unstructured open source library
-
-You can call the Unstructured Serverless API directly from the Unstructured open source library. Unstructured recommends this approach only for rapid local script or code prototyping or simple proofs-of-concept, not for production scenarios.
-
-You will need to: 
+  ```bash
+  pip install unstructured-ingest
+  ```
 
 - Set the following environment variables:
 
@@ -278,41 +97,18 @@ You will need to:
   
   [Get your API key and API URL](#get-started).
 
-Now, call the API, replacing:
+- Have some compatible files on your local machine to be processed. [See the list of supported file types](/api-reference/api-services/supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 
-- `<local/path/to/input/file>` with the path to the source (input) file on your local machine.
-- `<local/path/to/output/file>` with the path to the destination (output) on your local machine where Unstructured will deliver the processed data. 
+Now, use the CLI to call the API, replacing:
 
-```python
-import os, json
+- `<path/to/input>` with the source (input) path to the directory on your local machine that contains the compatible files for Unstructured to process on its hosted compute resources.
+- `<path/to/output>` with the destination (output) path to the directory on your local machine that will contain the processed data that Unstructured returns from its hosted compute resources.
 
-from unstructured.partition.api import partition_via_api
+import LocalToLocalPythonIngestLibrary from '/snippets/ingestion/local-to-local.v2.py.mdx';
 
-input_filepath = "<local/path/to/input/file>"
-output_filepath = "<local/path/to/output/file>"
+<LocalToLocalPythonIngestLibrary />
 
-elements = partition_via_api(
-  filename=input_filepath,
-  api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-  api_url=os.getenv("UNSTRUCTURED_API_URL")
-)
-
-element_dicts = [element.to_dict() for element in elements]
-json_elements = json.dumps(element_dicts, indent=2)
-
-# Print the processed data.
-print(json_elements)
-
-# Write the processed data to a local file.
-with open(output_filepath, "w") as file:
-    file.write(json_elements)
-```
-
-After the code successfully runs, see the results in the specified output path on your local machine.
-
-If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
-
-[Learn more about how to use the Unstructured open source library](/open-source/introduction/overview).
+After the command successfully runs, see the results in the specified output path on your local machine.
 
 ## Manage your account
 
