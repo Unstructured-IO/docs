@@ -48,19 +48,27 @@ The contents of the `orig_elements` field is in compressed Base64 gzipped format
 
 ## To run this example
 
-You will need to chunk a document during processing. This example chunks a PDF file into 200- to 300-character elements.
-
-import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
-
-<SharedAPIKeyURL />
+You will need to chunk a document during processing. This example uses a PDF file chunked into 200- to 300-character elements.
 
 ## Code
 
-This example uses the Unstructured SDK for Python.
-
+import GetChunkedElementsIngestPy from '/snippets/how-to-api/get_chunked_elements_ingest.py.mdx';
 import GetChunkedElementsPy from '/snippets/how-to-api/get_chunked_elements.py.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
-<GetChunkedElementsPy />
+<AccordionGroup>
+    <Accordion title="Ingest Python library">
+        For the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library), you can use the standard Python 
+        [json.load](https://docs.python.org/3/library/json.html#json.load) function to load into a Python dictionary the contents of a JSON 
+        file that the Ingest Python library outputs after the processing is complete.
+        <GetChunkedElementsIngestPy />
+    </Accordion>
+    <Accordion title="Python SDK">
+        For the [Unstructured Python SDK](/api-reference/api-services/sdk-python), you'll need:
+        <SharedAPIKeyURL />
+        <GetChunkedElementsPy />
+    </Accordion>
+</AccordionGroup>
 
 ## See also 
 

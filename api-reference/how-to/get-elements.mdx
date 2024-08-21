@@ -10,11 +10,51 @@ You want to get, manipulate, and print or save, the contents of the [document el
 
 Each element in the document elements contains fields for that element's type, its ID, the extracted text, and associated metadata.
 
-The programmatic approach you take to get these document elements will depend on whether you use the [Unstructured Python SDK](/api-reference/api-services/sdk-python), the [Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts), or the [Unstructured open source library](/open-source/introduction/overview).
+The programmatic approach you take to get these document elements will depend on which tool, SDK, or library you use:
 
 <AccordionGroup>
+    <Accordion title="Ingest CLI">
+        For the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli), you can use a tool such as [jq](https://jqlang.github.io/jq/) 
+        to work with a JSON file that the CLI outputs after the processing is complete. 
+        
+        For example, the following script uses `jq` to access and print each element's ID, text, and originating file name:
+
+        ```bash Shell
+        #!/usr/bin/env bash
+        
+        JSON_FILE="local-ingest-output/my-file.json"
+
+        jq -r '.[] | "ID: \(.element_id)\nText: \(.text)\nFilename: \(.metadata.filename)\n"' \
+            "$JSON_FILE"
+        ```
+    </Accordion>
+    <Accordion title="Ingest Python library">
+        For the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library), you can use the standard Python 
+        [json.load](https://docs.python.org/3/library/json.html#json.load) function to load into a Python dictionary the contents of a JSON 
+        file that the Ingest Python library outputs after the processing is complete.
+
+        For example, the following code example uses standard Python to access and print each element's ID, text, and originating file name:
+
+        ```python Python
+        import json
+
+        def parse_json_file(input_file_path: str):
+            with open(input_file_path, 'r') as file:
+                file_elements = json.load(file)
+
+            for element in file_elements:
+                print(f"ID: {element["element_id"]}")
+                print(f"Text: {element["text"]}")
+                print(f"Filename: {element["metadata"]["filename"]}\n")
+
+        if __name__ == "__main__":
+            parse_json_file(
+                input_file_path="local-ingest-output/my-file.json"
+            )
+        ```
+    </Accordion>
     <Accordion title="Python SDK">
-        Calling an `UnstructuredClient` object's `general.partition` method returns a `PartitionResponse` object. 
+        For the [Unstructured Python SDK](/api-reference/api-services/sdk-python), calling an `UnstructuredClient` object's `general.partition` method returns a `PartitionResponse` object. 
         
         This `PartitionResponse` object's `elements` variable contains a list of key-value dictionaries (`List[Dict[str, Any]]`). For example:
 
@@ -85,7 +125,7 @@ The programmatic approach you take to get these document elements will depend on
         ```
     </Accordion>
     <Accordion title="JavaScript/TypeScript SDK">
-        Calling an `UnstructuredClient` object's `general.partition` method returns a `Promise<PartitionResponse>` object. 
+        For the [Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts), calling an `UnstructuredClient` object's `general.partition` method returns a `Promise<PartitionResponse>` object. 
         
         This `PartitionResponse` object's `elements` property contains an `Array` of string-value objects (`{ [k: string]: any; }[]`). For example:
 
@@ -160,8 +200,8 @@ The programmatic approach you take to get these document elements will depend on
         } // ...
         ```
     </Accordion>
-    <Accordion title="Open source library">
-        Calling the `partition_via_api` function returns a list of elements (`list[Element]`). For example:
+    <Accordion title="Open-source library">
+        For the [Unstructured open-source library](/api-reference/api-services/partition-via-api), calling the `partition_via_api` function returns a list of elements (`list[Element]`). For example:
 
         ```python Python
         # ...

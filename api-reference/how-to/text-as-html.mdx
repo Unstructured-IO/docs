@@ -8,7 +8,7 @@ You want to get, save, or show the contents of elements that are represented as 
 
 ## Approach
 
-Use the Unstructured Python SDK to extract the contents of an element's `text_as_html` JSON object, which is nested inside of its parent `metadata` object.
+Extract the contents of an element's `text_as_html` JSON object, which is nested inside of its parent `metadata` object.
 
 ## To run this example
 
@@ -16,15 +16,25 @@ You will need a document that is one of the document types that can output the `
 
 This example uses a PDF file with an embedded table.
 
+import ExtractTextAsHTMLIngestPy from '/snippets/how-to-api/extract_text_as_html_ingest.py.mdx';
 import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
-
-<SharedAPIKeyURL />
+import ExtractTextAsHTMLPy from '/snippets/how-to-api/extract_text_as_html.py.mdx';
 
 ## Code
 
-import ExtractImageBlockTypesPy from '/snippets/how-to-api/extract_text_as_html.py.mdx';
-
-<ExtractImageBlockTypesPy />
+<AccordionGroup>
+    <Accordion title="Ingest Python library">
+        For the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library), you can use the standard Python 
+        [json.load](https://docs.python.org/3/library/json.html#json.load) function to load into a Python dictionary the contents of a JSON 
+        file that the Ingest Python library outputs after the processing is complete.
+        <ExtractTextAsHTMLIngestPy />
+    </Accordion>
+    <Accordion title="Python SDK">
+        For the [Unstructured Python SDK](/api-reference/api-services/sdk-python), you'll need:
+        <SharedAPIKeyURL />
+        <ExtractTextAsHTMLIngestPy />
+    </Accordion>
+</AccordionGroup>
 
 ## See also 
 
