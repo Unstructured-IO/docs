@@ -30,17 +30,18 @@ def get_writer() -> Writer:
         write_config=ClarifaiWriteConfig(),
     )
 
+# Chunking is optional.
 
 if __name__ == "__main__":
     writer = get_writer()
     runner = LocalRunner(
         processor_config=ProcessorConfig(
             verbose=True,
-            output_dir="local-output-to-clarifai-app",
+            output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"),
             num_processes=2,
         ),
         connector_config=SimpleLocalConfig(
-            input_path="example-docs/book-war-and-peace-1225p.txt",
+            input_path=os.getenv("LOCAL_FILE_INPUT_DIR"),
         ),
         read_config=ReadConfig(),
         partition_config=PartitionConfig(),

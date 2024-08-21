@@ -4,10 +4,10 @@
 unstructured-ingest \
   mongodb \
     --metadata-exclude filename,file_directory,metadata.data_source.date_processed \
-    --uri "$MONGODB_URI" \
-    --database "$MONGODB_DATABASE" \
-    --collection "$MONGODB_COLLECTION" \
-    --output-dir mongodb-ingest-output \
+    --uri $MONGODB_URI \
+    --database $MONGODB_DATABASE \
+    --collection $MONGODB_COLLECTION \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
     --num-processes 2 \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \

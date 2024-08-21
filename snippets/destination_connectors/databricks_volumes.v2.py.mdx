@@ -18,10 +18,12 @@ from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
 from unstructured_ingest.v2.processes.chunker import ChunkerConfig
 from unstructured_ingest.v2.processes.embedder import EmbedderConfig
 
+# Chunking and embedding are optional.
+
 if __name__ == "__main__":
     Pipeline.from_configs(
         context=ProcessorConfig(),
-        indexer_config=LocalIndexerConfig(input_path="local-ingest-source"),
+        indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
         downloader_config=LocalDownloaderConfig(),
         source_connection_config=LocalConnectionConfig(),
         partitioner_config=PartitionerConfig(

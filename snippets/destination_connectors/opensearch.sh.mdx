@@ -1,9 +1,11 @@
 ```bash CLI
 #!/usr/bin/env bash
 
+# Chunking and embedding are optional.
+
 unstructured-ingest \
   local \
-    --input-path local-ingest-source \
+    --input-path $LOCAL_FILE_INPUT_DIR \
     --strategy fast \
     --chunking-strategy by_title \
     --embedding-provider langchain-huggingface \

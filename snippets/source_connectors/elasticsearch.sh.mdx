@@ -11,7 +11,7 @@ unstructured-ingest \
     --ca-certs $ELASTICSEARCH_CA_CERTS \
     --ssl-assert-fingerprint $ELASTICSEARCH_SSL_ASSERT_FINGERPRINT \
     --fields 'ethnicity, director, plot' \
-    --output-dir elasticsearch-ingest-output \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
     --num-processes 2
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \

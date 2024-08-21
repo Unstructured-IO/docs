@@ -14,11 +14,13 @@ from unstructured_ingest.v2.processes.chunker import ChunkerConfig
 from unstructured_ingest.v2.processes.embedder import EmbedderConfig
 from unstructured_ingest.v2.processes.connectors.local import LocalUploaderConfig
 
+# Chunking and embedding are optional.
+
 if __name__ == "__main__":
     Pipeline.from_configs(
         context=ProcessorConfig(),
         indexer_config=S3IndexerConfig(remote_url=os.getenv("AWS_S3_URL")),
-        downloader_config=S3DownloaderConfig(download_dir="s3-ingest-download"),
+        downloader_config=S3DownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
         source_connection_config=S3ConnectionConfig(
             access_config=S3AccessConfig(
                 key=os.getenv("AWS_ACCESS_KEY_ID"),
@@ -37,6 +39,6 @@ if __name__ == "__main__":
         ),
         chunker_config=ChunkerConfig(chunking_strategy="by_title"),
         embedder_config=EmbedderConfig(embedding_provider="langchain-huggingface"),
-        uploader_config=LocalUploaderConfig(output_dir="s3-ingest-output")        
+        uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))        
     ).run()
 ```

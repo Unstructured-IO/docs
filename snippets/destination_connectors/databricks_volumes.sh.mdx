@@ -1,10 +1,12 @@
 ```bash CLI
 #!/usr/bin/env bash
 
+# Chunking and embedding are optional.
+
 unstructured-ingest \
   local \
-    --input-path local-input \
-    --output-dir local-to-databricks-volume \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
     --strategy fast \
     --chunk-elements \
     --embedding-provider langchain-huggingface \
