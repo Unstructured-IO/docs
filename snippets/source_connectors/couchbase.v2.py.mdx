@@ -18,11 +18,13 @@ from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
 from unstructured_ingest.v2.processes.chunker import ChunkerConfig
 from unstructured_ingest.v2.processes.embedder import EmbedderConfig
 
+# Chunking and embedding are optional.
+
 if __name__ == "__main__":
     Pipeline.from_configs(
         context=ProcessorConfig(),
         indexer_config=CouchbaseIndexerConfig(batch_size=100),
-        downloader_config=CouchbaseDownloaderConfig(download_dir="local-ingest-output"),
+        downloader_config=CouchbaseDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
         source_connection_config=CouchbaseConnectionConfig(
             access_config=CouchbaseAccessConfig(
                 password=os.getenv("CB_PASSWORD")
