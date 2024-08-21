@@ -1,0 +1,45 @@
+```python Python Ingest v2
+import os
+
+from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+from unstructured_ingest.v2.interfaces import ProcessorConfig
+
+from unstructured_ingest.v2.processes.connectors.couchbase import (
+    CouchbaseIndexerConfig,
+    CouchbaseDownloaderConfig,
+    CouchbaseConnectionConfig,
+    CouchbaseAccessConfig,
+)
+
+from unstructured_ingest.v2.processes.connectors.local import (
+    LocalConnectionConfig
+)
+from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+from unstructured_ingest.v2.processes.chunker import ChunkerConfig
+from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=CouchbaseIndexerConfig(batch_size=100),
+        downloader_config=CouchbaseDownloaderConfig(download_dir="local-ingest-output"),
+        source_connection_config=CouchbaseConnectionConfig(
+            access_config=CouchbaseAccessConfig(
+                password=os.getenv("CB_PASSWORD")
+            ),
+            username=os.getenv("CB_USERNAME"),
+            connection_string=os.getenv("CB_CONN_STR"),
+            bucket=os.getenv("CB_BUCKET"),
+            scope=os.getenv("CB_SCOPE"),
+            collection=os.getenv("CB_COLLECTION")
+        ),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="langchain-huggingface"),
+        destination_connection_config=LocalConnectionConfig()
+    ).run()
+```
