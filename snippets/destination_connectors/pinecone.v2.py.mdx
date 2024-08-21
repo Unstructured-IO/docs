@@ -41,8 +41,7 @@ if __name__ == "__main__":
             access_config=PineconeAccessConfig(
                 api_key=os.getenv("PINECONE_API_KEY")
             ),
-            index_name=os.getenv("PINECONE_INDEX_NAME"),
-            environment=os.getenv("PINECONE_ENVIRONMENT_NAME")
+            index_name=os.getenv("PINECONE_INDEX_NAME")
         ),
         stager_config=PineconeUploadStagerConfig(),
         uploader_config=PineconeUploaderConfig()
