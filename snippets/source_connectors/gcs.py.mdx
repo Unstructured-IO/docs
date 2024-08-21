@@ -11,7 +11,7 @@ if __name__ == "__main__":
     runner = GCSRunner(
         processor_config=ProcessorConfig(
             verbose=True,
-            output_dir="gcs-output",
+            output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"),
             num_processes=2,
         ),
         read_config=ReadConfig(),

@@ -3,11 +3,11 @@
 
 unstructured-ingest \
   airtable \
-  --metadata-exclude filename,file_directory,metadata.data_source.date_processed \
-  --personal-access-token "$AIRTABLE_PERSONAL_ACCESS_TOKEN" \
-  --output-dir airtable-ingest-output \
-  --num-processes 2 \
-  --reprocess \
-  --partition-by-api \
-  --api-key "$UNSTRUCTURED_API_KEY"
+    --metadata-exclude filename,file_directory,metadata.data_source.date_processed \
+    --personal-access-token $AIRTABLE_PERSONAL_ACCESS_TOKEN \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --num-processes 2 \
+    --reprocess \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY
 ```

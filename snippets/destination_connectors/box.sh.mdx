@@ -1,15 +1,15 @@
 ```bash CLI
 #!/usr/bin/env bash
 
-EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
+# Chunking and embedding are optional.
 
 unstructured-ingest \
   local \
-    --input-path example-docs/book-war-and-peace-1225p.txt \
-    --output-dir box-ingest-output \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
     --strategy fast \
     --chunk-elements \
-    --embedding-provider "$EMBEDDING_PROVIDER" \
+    --embedding-provider langchain-huggingface \
     --num-processes 2 \
     --verbose \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \

@@ -63,7 +63,7 @@ Configure and run the S3Runner for processing the data.
 runner = S3Runner(
      processor_config=ProcessorConfig(
          verbose=True,
-         output_dir="Connector-Output",
+         output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"),
          num_processes=8,
      ),
      read_config=ReadConfig(),

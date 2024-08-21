@@ -3,12 +3,12 @@
 
 unstructured-ingest \
   discord \
-  --channels 12345678 \
-  --token "$DISCORD_TOKEN" \
-  --download-dir discord-ingest-download \
-  --output-dir discord-example \
-  --preserve-downloads \
-  --verbose \
-  --partition-by-api \
-  --api-key "$UNSTRUCTURED_API_KEY"
+    --channels 12345678 \
+    --token $DISCORD_TOKEN \
+    --download-dir $LOCAL_FILE_DOWNLOAD_DIR \
+    --output-dir discord-example \
+    --preserve-downloads \
+    --verbose \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY
 ```

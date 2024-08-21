@@ -16,12 +16,14 @@ from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
 from unstructured_ingest.v2.processes.chunker import ChunkerConfig
 from unstructured_ingest.v2.processes.embedder import EmbedderConfig
 
+# Chunking and embedding are optional.
+
 if __name__ == "__main__":
     Pipeline.from_configs(
         context=ProcessorConfig(),
         indexer_config=OpensearchIndexerConfig(index_name=os.getenv("OPENSEARCH_INDEX_NAME")),
         downloader_config=OpensearchDownloaderConfig(
-            download_dir="opensearch-ingest-download",
+            download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR"),
             fields=["director", "plot"]
         ),
         source_connection_config=OpenSearchConnectionConfig(

@@ -1,10 +1,12 @@
 ```bash CLI
 #!/usr/bin/env bash
 
+# Chunking and embedding are optional.
+
 unstructured-ingest \
   s3 \
     --remote-url $AWS_S3_URL \
-    --download-dir s3-ingest-download \
+    --download-dir $LOCAL_FILE_DOWNLOAD_DIR \
     --key $AWS_ACCESS_KEY_ID \
     --secret $AWS_SECRET_ACCESS_KEY \
     --partition-by-api \
@@ -15,5 +17,5 @@ unstructured-ingest \
     --embedding-provider langchain-huggingface \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
   local \
-    --output-dir s3-ingest-output
+    --output-dir $LOCAL_FILE_OUTPUT_DIR
 ```

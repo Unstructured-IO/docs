@@ -3,10 +3,10 @@
 
 unstructured-ingest \
   delta-table \
-  --table-uri s3://utic-dev-tech-fixtures/sample-delta-lake-data/deltatable/ \
-  --output-dir delta-table-example \
-  --storage_options "AWS_REGION=us-east-2,AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" \
-  --verbose \
-  --partition-by-api \
-  --api-key "$UNSTRUCTURED_API_KEY"
+    --table-uri s3://utic-dev-tech-fixtures/sample-delta-lake-data/deltatable/ \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --storage_options "AWS_REGION=us-east-2,AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" \
+    --verbose \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY
 ```

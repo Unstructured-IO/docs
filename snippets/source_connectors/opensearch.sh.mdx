@@ -5,7 +5,7 @@ unstructured-ingest \
   opensearch \
     --index-name $OPENSEARCH_INDEX_NAME \
     --fields "director,plot" \
-    --output-dir opensearch-ingest-output \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
     --hosts $OPENSEARCH_HOST \
     --username $OPENSEARCH_USERNAME \
     --password $OPENSEARCH_PASSWORD \

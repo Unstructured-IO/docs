@@ -1,26 +1,26 @@
 ```bash Shell
 #!/usr/bin/env bash
 
-EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
+# Chunking and embedding are optional.
 
 unstructured-ingest \
   local \
-    --input-path example-docs/book-war-and-peace-1225p.txt \
-    --output-dir local-output-to-elasticsearch \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
     --strategy fast \
     --chunk-elements \
-    --embedding-provider "$EMBEDDING_PROVIDER" \
+    --embedding-provider langchain-huggingface \
     --num-processes 4 \
     --verbose \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
     --partition-endpoint $UNSTRUCTURED_API_URL \
   elasticsearch \
-    --hosts "$ELASTICSEARCH_HOST" \
-    --username "$ELASTICSEARCH_USERNAME" \
-    --password "$ELASTICSEARCH_PASSWORD" \
-    --index-name "$ELASTICSEARCH_INDEX_NAME" \
-    --ca-certs "$ELASTICSEARCH_CA_CERTS" \
-    --ssl-assert-fingerprint "$ELASTICSEARCH_SSL_ASSERT_FINGERPRINT" \
+    --hosts $ELASTICSEARCH_HOST \
+    --username $ELASTICSEARCH_USERNAME \
+    --password $ELASTICSEARCH_PASSWORD \
+    --index-name $ELASTICSEARCH_INDEX_NAME \
+    --ca-certs $ELASTICSEARCH_CA_CERTS \
+    --ssl-assert-fingerprint $ELASTICSEARCH_SSL_ASSERT_FINGERPRINT \
     --num-processes 2
 ```

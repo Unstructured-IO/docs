@@ -14,7 +14,7 @@ from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
 if __name__ == "__main__":
     Pipeline.from_configs(
         context=ProcessorConfig(),
-        indexer_config=LocalIndexerConfig(input_path="<path/to/input>"),
+        indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
         downloader_config=LocalDownloaderConfig(),
         source_connection_config=LocalConnectionConfig(),
         partitioner_config=PartitionerConfig(
@@ -27,6 +27,6 @@ if __name__ == "__main__":
                 "split_pdf_concurrency_level": 15
             }
         ),
-        uploader_config=LocalUploaderConfig(output_dir="<path/to/output>")
+        uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
     ).run()
 ```

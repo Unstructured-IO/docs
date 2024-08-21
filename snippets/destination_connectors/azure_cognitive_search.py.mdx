@@ -25,22 +25,23 @@ def get_writer() -> Writer:
     return AzureCognitiveSearchWriter(
         connector_config=SimpleAzureCognitiveSearchStorageConfig(
             access_config=AzureCognitiveSearchAccessConfig(key=os.getenv("AZURE_SEARCH_API_KEY")),
-            endpoint=os.getenv("$AZURE_SEARCH_ENDPOINT"),
+            endpoint=os.getenv("AZURE_SEARCH_ENDPOINT"),
         ),
         write_config=AzureCognitiveSearchWriteConfig(index="utic-test-ingest-fixtures-output"),
     )
 
+# Chunking and embedding are optional.
 
 if __name__ == "__main__":
     writer = get_writer()
     runner = LocalRunner(
         processor_config=ProcessorConfig(
             verbose=True,
-            output_dir="local-output-to-azure-cog-search",
+            output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR")",
             num_processes=2,
         ),
         connector_config=SimpleLocalConfig(
-            input_path="example-docs/book-war-and-peace-1225p.txt",
+            input_path=os.getenv("LOCAL_FILE_INPUT_DIR"),
         ),
         read_config=ReadConfig(),
         partition_config=PartitionConfig(),

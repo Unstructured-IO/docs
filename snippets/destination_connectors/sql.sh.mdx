@@ -14,8 +14,8 @@ text_as_html,regex_metadata,detection_class_prob"
 
 unstructured-ingest \
   local \
-    --input-path example-docs/pdf/fake-memo.pdf \
-    --output-dir local-output-to-SQL \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
     --num-processes 2 \
     --verbose \
     --strategy fast \

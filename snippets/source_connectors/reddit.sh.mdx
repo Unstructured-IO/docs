@@ -3,13 +3,13 @@
 
 unstructured-ingest \
   reddit \
-  --subreddit-name machinelearning \
-  --client-id "$REDDIT_CLIENT_ID" \
-  --client-secret "$REDDIT_CLIENT_SECRET" \
-  --user-agent "Unstructured Ingest Subreddit fetcher by \u\..." \
-  --search-query "Unstructured" \
-  --num-posts 10 \
-  --output-dir reddit-ingest-output \
-  --num-processes 2 \
-  --verbose
+    --subreddit-name machinelearning \
+    --client-id $REDDIT_CLIENT_ID \
+    --client-secret $REDDIT_CLIENT_SECRET \
+    --user-agent "Unstructured Ingest Subreddit fetcher by \u\..." \
+    --search-query "Unstructured" \
+    --num-posts 10 \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --num-processes 2 \
+    --verbose
 ```

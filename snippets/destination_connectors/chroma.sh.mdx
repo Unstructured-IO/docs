@@ -1,21 +1,23 @@
 ```bash Shell
 #!/usr/bin/env bash
 
+# Chunking and embedding are optional.
+
 unstructured-ingest \
   local \
-  --input-path example-docs/book-war-and-peace-1p.txt \
-  --output-dir local-to-chroma \
-  --strategy fast \
-  --chunk-elements \
-  --embedding-provider "<unstructured embedding provider, ie. langchain-huggingface>" \
-  --num-processes 2 \
-  --verbose \
-  --work-dir "<directory for intermediate outputs to be saved>" \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --strategy fast \
+    --chunk-elements \
+    --embedding-provider langchain-huggingface \
+    --num-processes 2 \
+    --verbose \
+    --work-dir $WORK_DIR \
   chroma \
-  --host "localhost" \
-  --port 8000 \
-  --collection-name "collection name" \
-  --tenant "default_tenant" \
-  --database "default_database" \
-  --batch-size 80
+    --host "localhost" \
+    --port 8000 \
+    --collection-name "collection name" \
+    --tenant "default_tenant" \
+    --database "default_database" \
+    --batch-size 80
 ```

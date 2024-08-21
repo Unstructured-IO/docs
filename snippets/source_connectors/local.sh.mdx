@@ -1,9 +1,11 @@
 ```bash CLI
 #!/usr/bin/env bash
 
+# Chunking and embedding are optional.
+
 unstructured-ingest \
   local \
-    --input-path local-ingest-source \
+    --input-path $LOCAL_FILE_INPUT_DIR \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
     --partition-endpoint $UNSTRUCTURED_API_URL \
@@ -12,5 +14,5 @@ unstructured-ingest \
     --embedding-provider langchain-huggingface \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
   local \
-    --output-dir local-ingest-output
+    --output-dir $LOCAL_FILE_OUTPUT_DIR
 ```
