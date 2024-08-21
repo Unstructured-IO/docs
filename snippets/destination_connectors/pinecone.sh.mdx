@@ -16,8 +16,7 @@ unstructured-ingest \
     --partition-endpoint $UNSTRUCTURED_API_URL \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
   pinecone \
-    --api-key $PINECONE_API_KEY \
-    --index-name $PINECONE_INDEX_NAME \
-    --environment $PINECONE_ENVIRONMENT \
+    --api-key "$PINECONE_API_KEY" \
+    --index-name "$PINECONE_INDEX_NAME" \
     --batch-size 80
 ```

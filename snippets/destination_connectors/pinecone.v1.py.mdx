@@ -25,8 +25,7 @@ def get_writer() -> Writer:
     return PineconeWriter(
         connector_config=SimplePineconeConfig(
             access_config=PineconeAccessConfig(api_key=os.getenv("PINECONE_API_KEY")),
-            index_name=os.getenv("PINECONE_INDEX_NAME"),
-            environment=os.getenv("PINECONE_ENVIRONMENT_NAME"),
+            index_name=os.getenv("PINECONE_INDEX_NAME")
         ),
         write_config=PineconeWriteConfig(batch_size=80),
     )
