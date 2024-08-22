@@ -30,12 +30,31 @@ To create a workflow:
 
 1. On the sidebar, click **Workflows**.
 2. Click **New Workflow**.
-3. Specify the workflow's settings, as described later in this section.
-4. Click **Submit**.
+3. Enter a unique **Name** for this workflow.
+4. Specify the workflow's settings as follows, and then click **Save**.
 
-The key components of a workflow include:
-
-*   **Name**: A unique identifier for the workflow for easy recognition and management.
+<AccordionGroup>
+    <Accordion title="Transform section">
+        1. For **Strategy**,
+        2. For **Image summarization**,
+        3. For **Table summarization**,
+        4. For **ConnectorSettings**,
+        5. For **Elements to Exclude**,
+    </Accordion>
+    <Accordion title="Chunk section">
+        For **Chunker Type**, select one of the following:
+    </Accordion>
+    <Accordion title="Embed section">
+        For **Vendor**, select one of the the following:
+    </Accordion>
+    <Accordion title="Connect section">
+        1. For **Sources**,
+        2. For **Destination**,
+    </Accordion>
+    <Accordion title="Schedule section">
+        For **Schedule Type**,
+    </Accordion>
+</AccordionGroup>
     
 *   **Schedule Type**: How frequently the workflow runs. While scheduling is available for regular automated execution daily or weekly, workflows can also be triggered on a one-off basis as needed: see [Run a Job](/platform/jobs-scheduling#run-a-job).
     
@@ -97,7 +116,7 @@ To run a workflow, [run a job](/platform/jobs-scheduling#run-a-job) for that wor
 
 ![workflow actions](/img/platform/03c-Workflows-Actions.png)
 
-For each of the workflows on the **Workflows** list page, the following actions are available in the **Actions** dropdown menu next to the respective workflow name:
+For each of the workflows on the **Workflows** list page, the following actions are available by clicking the ellipses (the three dots) next to the respective workflow name:
 
 *   **Edit**: Changes the existing configuration of your workflow. This can include changing the source, destination, scheduling, and chunking strategies, among other settings.
     
