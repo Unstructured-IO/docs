@@ -3,7 +3,7 @@ title: Jobs
 ---
 ## Jobs dashboard
 
-![job dashboard](/img/platform/04a-Job-Dashboard.png)
+![Jobs in the sidebar](/img/platform/Jobs-Sidebar.png)
 
 To view the jobs dashboard, on the sidebar, click **Jobs**.
 
@@ -25,7 +25,7 @@ Each job's status, shown in the **Status** column, can be:
 
 ## Run a job
 
-![create adhoc job](/img/platform/04b-Create-Adhoc-Job.png)
+![Run a job](/img/platform/Run-Job.png)
 
 <Warning>
     You must first have an existing workflow to run a job against.
@@ -41,24 +41,20 @@ Each job's status, shown in the **Status** column, can be:
 
 ## Monitor a job
 
-![job detail status](/img/platform/04c-Jobs-Detail-Status.png)
+![Job details](/img/platform/Job-Details.png)
 
 The **Job Details** page is a comprehensive section for monitoring the specific details of jobs executed within a particular workflow. To access this page, click the specific job's **ID** link on the jobs dashboard.
 
 The **Job Details** page shows:
 
-*   **Documents**: The number of documents by workflow status:
+*   **Execution Time**: When the job started.
 
-    *   **Documents**: The total number of documents included in the workflow.
-        
-    *   **New**: The number of new documents to be processed.
-        
-    *   **Partitioning**: The number of documents being processed.
-        
-    *   **Finished**: The number of documents that have completed.
-        
-    *   **Failed**: The number of documents that have failed to be processed.
-        
-*   Other information about the job, such as its overall **Status**, **Scheduled Execution Time**, **Sources**, and **Destinations**.
+*   **Documents**: The number of documents that were attempted to be processed.
 
-*   The job's activity logs. These logs are visible only while the job is running.
+*   **Success**: The number of successfully processed documents.
+
+*   **Failed**: The number of documents that failed to process.
+
+*   **Status**: The status of each step in the job, including each step's **Ready**, **In Progress**, **Success**, and **Failure** state.
+
+To see the job detail's metadata, click **View Payload**.
