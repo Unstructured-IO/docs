@@ -310,10 +310,51 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
 
 <AccordionGroup>
     <Accordion title="Ingest CLI">
-
+        ```bash CLI
+        unstructured-ingest \
+          local \
+            --input-path $LOCAL_FILE_INPUT_DIR \
+            --output-dir $LOCAL_FILE_OUTPUT_DIR \
+            --partition-by-api \
+            --api-key $UNSTRUCTURED_API_KEY \
+            --partition-endpoint $UNSTRUCTURED_API_URL \
+            --additional-partition-args="{\"coordinates\":\"true\", \"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
+        ```
     </Accordion>
     <Accordion title="Ingest Python">
-        
+        ```python Python
+        import os
+
+        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+        from unstructured_ingest.v2.interfaces import ProcessorConfig
+        from unstructured_ingest.v2.processes.connectors.local import (
+            LocalIndexerConfig,
+            LocalDownloaderConfig,
+            LocalConnectionConfig,
+            LocalUploaderConfig
+        )
+        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+
+        if __name__ == "__main__":
+            Pipeline.from_configs(
+                context=ProcessorConfig(),
+                indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
+                downloader_config=LocalDownloaderConfig(),
+                source_connection_config=LocalConnectionConfig(),
+                partitioner_config=PartitionerConfig(
+                    partition_by_api=True,
+                    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+                    partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+                    additional_partition_args={
+                        "coordinates": True,
+                        "split_pdf_page": True,
+                        "split_pdf_allow_failed": True,
+                        "split_pdf_concurrency_level": 15
+                    }
+                ),
+                uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
+            ).run()
+        ```
     </Accordion>
     <Accordion title="POST">
         <UseIngestInstead />
@@ -410,10 +451,51 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
 
 <AccordionGroup>
     <Accordion title="Ingest CLI">
-
+        ```bash CLI
+        unstructured-ingest \
+          local \
+            --input-path $LOCAL_FILE_INPUT_DIR \
+            --output-dir $LOCAL_FILE_OUTPUT_DIR \
+            --partition-by-api \
+            --api-key $UNSTRUCTURED_API_KEY \
+            --partition-endpoint $UNSTRUCTURED_API_URL \
+            --additional-partition-args="{\"unique_element_ids\":\"true\", \"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
+        ```
     </Accordion>
     <Accordion title="Ingest Python">
-        
+        ```python Python
+        import os
+
+        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+        from unstructured_ingest.v2.interfaces import ProcessorConfig
+        from unstructured_ingest.v2.processes.connectors.local import (
+            LocalIndexerConfig,
+            LocalDownloaderConfig,
+            LocalConnectionConfig,
+            LocalUploaderConfig
+        )
+        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+
+        if __name__ == "__main__":
+            Pipeline.from_configs(
+                context=ProcessorConfig(),
+                indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
+                downloader_config=LocalDownloaderConfig(),
+                source_connection_config=LocalConnectionConfig(),
+                partitioner_config=PartitionerConfig(
+                    partition_by_api=True,
+                    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+                    partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+                    additional_partition_args={
+                        "unique_element_ids": True,
+                        "split_pdf_page": True,
+                        "split_pdf_allow_failed": True,
+                        "split_pdf_concurrency_level": 15
+                    }
+                ),
+                uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
+            ).run()
+        ```
     </Accordion>
     <Accordion title="POST">
         <UseIngestInstead />
