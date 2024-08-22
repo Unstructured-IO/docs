@@ -22,6 +22,68 @@ The following 3-minute video shows how to use the Unstructured Ingest Python lib
   allowfullscreen
 ></iframe>
 
+## Ingest flow
+
+The Unstructured ingest flow is similar to an extract, transform and load (ETL) data pipeline. 
+Because of this, a customer-defined implementation of the Unstructured ingest flow is sometimes referred to an an _ingest pipeline_ or simply a _pipline_. 
+An Unstructured ingest pipeline contains the following logical steps:
+
+```mermaid
+  flowchart TB
+    Index[1. Ingest]-->Download
+    Download[2. Download]-->Uncompress
+    Uncompress[3. Uncompress]-->Partition
+    Partition[4. Partition]-->Chunk
+    Chunk[5. Chunk]-->Embed
+    Embed[6. Embed]-->Stage
+    Stage[7. Stage]-->Upload[8. Upload]
+```
+<Steps>
+    <Step title="Index">
+        Reaches out to the source location and pulls in metadata for each document to be downloaded and processed.
+
+        For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior, where available for a connector, through its `<Prefix>IndexerConfig` class (where `<Prefex>` represents the connector provider's name, such as `Azure` for Azure.)
+    </Step>
+    <Step title="Download">
+        Using the information generated from the indexer, downloads the content as files on the local file system for processing. This may require manipulation of the data to prepare it for partitioning.
+    
+        For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through a connector's `<Prefix>DownloaderConfig` class.
+    </Step>
+    <Step title="Uncompress"> 
+        If enabled, searches for any compressed files (Unstructured supports TAR and ZIP) and uncompresses them.
+
+        For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `UncompressConfig` class.
+    </Step>
+    <Step title="Partition"> 
+        Generates the structured enriched content from the local files that have been pulled down. Both local-based partitioning and Unstructured API services-based partitioning is supported, with API services-based partitioning set to run asynchronously and local-based partitioning set to run through multiprocessing.
+
+        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `PartitionerConfig` class.
+        - For the Unstructured Ingest Python library's v1 calling pattern, you can control this behavior through the `PartitionConfig` class.
+    </Step>
+    <Step title="Chunk">
+        Optionally chunks the partitioned content. Chunking can also be run locally or through Unstructured API services, with asynchronous or multiprocessing behaviors set in the same approach as the partitioner.
+    
+        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `ChunkerConfig` class.
+        - For the Unstructured Ingest Python library's v1 calling pattern, you can control this behavior through the `ChunkingConfig` class.
+    </Step>
+    <Step title="Embed">
+        Optionally generates vector embeddings for each element in the structured output. Most of the time, this is done through API calls to a third-party embedding vendor and therefore runs asynchronously. But it can also use a locally available Hugging Face model, which will run through multiprocessing.
+    
+        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `EmbedderConfig` class.
+        - For the Unstructured Ingest Python library's v1 calling pattern, you can control this behavior through the `EmbeddingConfig` class.
+    </Step>
+    <Step title="Stage">
+        This is an optional step that does not apply most of the time. However, sometimes the data needs to be modified from the existing structure to better support the upload step, such as converting it to a CSV file for tabular-based destinations.
+    
+        For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior, where available for a connector, through its `<Prefix>UploadStagerConfig` class.
+    </Step>
+    <Step title="Upload">
+        Writes the local content to the destination. If none if provided, the local one will be used, which writes the final result to a location on the local filesystem. If batch uploads are needed, this will run in a single process with access to all documents. If batch uploads are not supported, all documents can be uploaded concurrently by using the asynchronous approach.
+    
+        For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through a connector's `<Prefix>UploaderConfig` class.
+    </Step>
+</Steps>
+
 ## Learn more
 
 - [Ingest configuration](/api-reference/ingest/ingest-configuration/overview) settings enable you to control how batches are sent and processed.
