@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured_ingest.connector.fsspec.gcs import GcsAccessConfig, SimpleGcsConfig
@@ -20,11 +20,12 @@ if __name__ == "__main__":
         partition_config=PartitionConfig(
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")
         ),
         connector_config=SimpleGcsConfig(
-            access_config=GcsAccessConfig(),
-            remote_url="gs://utic-test-ingest-fixtures-public/",
-            recursive=True,
+            access_config=GcsAccessConfig(token=os.getenv("GCS_SERVICE_ACCOUNT_KEY")),
+            remote_url=os.getenv("GCS_REMOTE_URL"),
+            recursive=True
         ),
     )
     runner.run()

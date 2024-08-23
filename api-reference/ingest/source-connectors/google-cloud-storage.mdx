@@ -2,22 +2,24 @@
 title: Google Cloud Storage
 ---
 
-import SharedContentGCS from '/snippets/sc-shared-text/google-cloud-storage.mdx';
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
 
-<SharedContentGCS/>
+<NewDocument />
 
-Make sure to set the `--partition-by-api` flag and pass in your API key with `--api-key`:
+import SharedContentGoogleCloudStorage from '/snippets/sc-shared-text/gcs-cli-api.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
-import GCSAPISh from '/snippets/source_connectors/gcs_api.sh.mdx';
-import GCSAPIPy from '/snippets/source_connectors/gcs_api.py.mdx';
+<SharedContentGoogleCloudStorage/>
+<SharedAPIKeyURL/>
+
+Now call the Unstructured CLI or Python SDK. The destination connector can be any of the ones supported. This example uses the local destination connector:
+
+import GoogleCloudStorageAPISh from '/snippets/source_connectors/gcs.sh.mdx';
+import GoogleCloudStorageAPIPyV2 from '/snippets/source_connectors/gcs.v2.py.mdx';
+import GoogleCloudStorageAPIPyV1 from '/snippets/source_connectors/gcs.v1.py.mdx';
 
 <CodeGroup>
-
-  <GCSAPISh />
-
-  <GCSAPIPy />
-
+  <GoogleCloudStorageAPISh />
+  <GoogleCloudStorageAPIPyV2 />
+  <GoogleCloudStorageAPIPyV1 />
 </CodeGroup>
-
-Additionally, if you're using Unstructured Serverless API, your locally deployed Unstructured API, or an Unstructured API
-deployed on Azure or AWS, you also need to specify the API URL via the `--partition-endpoint` argument.
