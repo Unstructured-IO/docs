@@ -1,48 +1,24 @@
 ---
 title: OpenSearch 
-description: This page contains the information to store processed data to an OpenSearch cluster.
 ---
 
-## Prerequisites
+Send processed data from Unstructured to OpenSearch.
 
-*   OpenSearch Hosts
-    
-*   Index Name
-    
-*   Username and Password (if required)
-    
-*   SSL configuration (if required)
-    
+You'll need:
 
-For more information, please refer to [OpenSearch documentation](https://opensearch.org/docs/latest/).
+import OpenSearchPrerequisites from '/snippets/general-shared-text/opensearch.mdx';
 
-<Warning>
+<OpenSearchPrerequisites />
 
-Ensure that the index schema is compatible with the data you intend to write. If you need guidance on structuring your schema, consult the [Vector Search Sample Mapping](/open-source/ingest/destination-connectors/opensearch#vector-search-sample-mapping) for reference.
-</Warning>
+To create the destination connector:
 
-## Step-by-Step Guide
+1. On the sidebar, click **Destinations**.
+2. Click **New Destination**.
+3. In the **Type** drop-down list, select **OpenSearch**.
+4. Fill in the fields as described later on this page.
+5. Click **Save and Test**.
+6. Click **Close**.
 
-![Destination Connector OpenSearch](/img/platform/Destination-OpenSearch.png)
+import OpenSearchFields from '/snippets/general-shared-text/opensearch-platform.mdx';
 
-1.  **Access the Create Destination Page**. Navigate to the “Destinations” section within the platform’s side navigation menu and click on “New Destination” to initiate the setup of a new destination for your processed data.
-    
-2.  **Select Destination Type**. Select **OpenSearch** destination connector from the `Type` dropdown menu.
-    
-3.  **Configure Destination Details**
-    
-<Note>
-*   `Name` (_required_): Assign a descriptive name to the new destination connector.
-    
-*   `Hosts` (_required_): Enter the comma-delimited list of OpenSearch hosts.
-    
-*   `Index Name` (_required_): Provide the name of the index where the data will be stored.
-    
-*   `Username`: Input the username for the OpenSearch cluster if authentication is enabled.
-    
-*   `Password`: Enter the password associated with the username.
-    
-*   Check `Use SSL for the connection` if the OpenSearch cluster requires an SSL connection for security purposes.
-</Note> 
-
-4.  **Submit**. Review all the details entered to ensure accuracy. Click ‘Submit’ to finalize the creation of the Destination Connector. The newly completed OpenSearch connector will be listed on the Destinations dashboard.
+<OpenSearchFields />

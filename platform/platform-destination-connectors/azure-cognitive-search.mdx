@@ -1,38 +1,24 @@
 ---
 title: Azure Cognitive Search 
-description: This page contains the information to store processed data to Azure Cognitive Search.
 ---
-## Prerequisites
 
-*   API Key for Azure Cognitive Search
-    
-*   Azure Cognitive Search Index and Endpoint
-    
+Send processed data from Unstructured to Azure AI Search (formerly Azure Cognitive Search).
 
-For more information, please refer to [Azure Cognitive Search documentation](https://docs.microsoft.com/en-us/azure/search/).
+You'll need:
 
-<Warning>
+import AzureCognitiveSearchPrerequisites from '/snippets/general-shared-text/azure-cognitive-search.mdx';
 
-Ensure that the index schema is compatible with the data you intend to write. If you need guidance on structuring your schema, consult the [sample index schema](/open-source/ingest/destination-connectors/azure-cognitive-search#sample-index-schema) for reference.
-</Warning>
-## Step-by-Step Guide
+<AzureCognitiveSearchPrerequisites />
 
-![Destination Connector Azure Cognitive Search](/img/platform/Destination-Azure-Cognitive-Search.png)
+To create the destination connector:
 
-1.  **Access the Create Destination Page**. Navigate to the “Destinations” section within the platform’s side navigation menu and click on “New Destination” to initiate the setup of a new destination for your processed data.
-    
-2.  **Select Destination Type**. Select **Azure Cognitive Search** destination connector from the `Type` dropdown menu.
-    
-3.  **Configure Destination Details**
-    
-<Note>
-*   `Name` (_required_): Assign a descriptive name to the new destination connector.
-    
-*   `Endpoint` (_required_): Enter the endpoint URL for your Azure Cognitive Search service.
-    
-*   `API Key` (_required_): Provide the API key for your Azure Cognitive Search service.
-    
-*   `Index Name` (_required_): Input the name of the index where the data will be stored.
-</Note> 
+1. On the sidebar, click **Destinations**.
+2. Click **New Destination**.
+3. In the **Type** drop-down list, select **Azure Cognitive Search**.
+4. Fill in the fields as described later on this page.
+5. Click **Save and Test**.
+6. Click **Close**.
 
-4.  **Submit**. Review all the details entered to ensure accuracy. Click ‘Submit’ to finalize the creation of the Destination Connector. The newly completed Azure Cognitive Search connector will be listed on the Destinations dashboard.
+import AzureCognitiveSearchFields from '/snippets/general-shared-text/azure-cognitive-search-platform.mdx';
+
+<AzureCognitiveSearchFields />

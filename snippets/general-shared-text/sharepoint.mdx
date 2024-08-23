@@ -1,0 +1,12 @@
+The SharePoint prerequisites:
+
+- The SharePoint site URL.
+
+  - Site URLs typically have the format `https://[tenant].sharepoint.com`.
+  - Relative site URLs typically have the format `https://[tenant].sharepoint.com/sites/<site_name>`. 
+  - To process all sites within a tenant, use a site URL of `https://[tenant]-admin.sharepoint.com`. This requires the app to be registered at a tenant level.
+
+  [Learn more](https://learn.microsoft.com/microsoft-365/community/query-string-url-tricks-sharepoint-m365).
+
+- The path from which to start parsing files. If the connector is to process all sites within the tenant, this filter will be applied to all site document libraries. The default is `Shared Documents`.
+- The client ID and client credential with access to the SharePoint instance. [Get a client ID and credential](https://learn.microsoft.com/en-us/answers/questions/888889/generate-sharepoint-client-id-and-secret).

@@ -1,71 +1,60 @@
 ---
-title: Using jobs
+title: Jobs
 ---
-## Job dashboard
-The job dashboard provides a centralized view for managing and monitoring the execution of data processing tasks within your workflows.
+## Jobs dashboard
 
-![job dashboard](/img/platform/04a-Job-Dashboard.png)
+![Jobs in the sidebar](/img/platform/Jobs-Sidebar.png)
 
-**Here is how to navigate and view job status:**
+To view the jobs dashboard, on the sidebar, click **Jobs**.
 
-*   The central panel lists all jobs with their associated workflow’s **Name**, **ID**, **Status**, and **Execution Start Time**.
+The jobs dashboard provides a centralized view for managing and monitoring the execution of data processing tasks within your workflows.
+
+The jobs dashboard lists each job and its associated **Workflow** name, **ID**, **Status**, and **Execution Start Time**.
+
+Each job's status, shown in the **Status** column, can be:
     
-*   The **Status** column provides at-a-glance information:
+*   **New**: The job has been created but has not yet run.
     
-    *   A `New` status indicates a job has been created but has yet to run.
-        
-    *   A `Scheduled` status shows that a job is set to run at a future date and time, as indicated in the ‘Execution Start Time’ column.
-        
-    *   A `Partitioning` status means that documents are currently being processed.
-        
-    *   A `Finished` status indicates the job has been completed.
-        
-    *   A `Failed` status indicates the job has encountered some errors.
-        
+*   **Scheduled**: The job is set to run at a future date and time, as shown in the **Execution Start Time** column.
+    
+*   **Partitioning**: The job's documents are being processed.
+    
+*   **Finished**: The job has completed.
+    
+*   **Failed**: The job has some errors.
 
 ## Run a job
 
-![create adhoc job](/img/platform/04b-Create-Adhoc-Job.png)
+![Run a job](/img/platform/Run-Job.png)
 
-**To run a workflow, follow these steps:**
+<Warning>
+    You must first have an existing workflow to run a job against.
 
-1.  Click on the “Jobs” tab in the side navigation menu and click the **Run Job** button to open the job configuration pop-up window.
+    If you do not have an existing workflow, stop. [Create a workflow](/platform/workflows-automation#create-a-workflow), and then return here.
+
+    To see your existing workflows, on the sidebar, click **Workflows**.
+</Warning>
+
+1.  On the sidebar, click **Jobs**, and then click **Run Job**.
     
-2.  From the **Select a Workflow or create a new one** dropdown menu, you can **select a workflow** that you have previously created.
-    
-3.  Alternatively, you can select to **create a new workflow** by completing the following fields:
-    
-    *   `Sources`: Specify the source connector for the job.
-        
-    *   `Destination`: Determine the destination connector where the processed data will be sent.
-        
-    *   `Strategy`: Select the processing strategy for the data.
-        
-    *   `Settings`: Configure additional job settings.
-        
-4.  After you click the ‘Run’ button, the system will run the workflow immediately.
-    
+2.  In the **Select a Workflow** dropdown list, select an existing workflow, and then click **Run**.
 
-## Monitor job activity logs
+## Monitor a job
 
-![job detail status](/img/platform/04c-Jobs-Detail-Status.png)
+![Job details](/img/platform/Job-Details.png)
 
-The Job Details page is a comprehensive section for monitoring the specific details of jobs executed within a particular workflow. To access this page, click the specific _Workflow_ or _ID_ on the Job Dashboard.
+The **Job Details** page is a comprehensive section for monitoring the specific details of jobs executed within a particular workflow. To access this page, click the specific job's **ID** link on the jobs dashboard.
 
-Here is the information provided by the Job Details page:
+The **Job Details** page shows:
 
-*   **Job Summary**: At the top of the dashboard, you will see the following document status:
-    
-    *   `Documents`: Total number of documents included in the workflow.
-        
-    *   `New`: number of new documents to be processed.
-        
-    *   `Partitioning`: number of documents being processed.
-        
-    *   `Finished`: number of documents that have been completed.
-        
-    *   `Failed`: number of documents that failed to be processed.
-        
-*   **Job Status and Execution Information**: The page provides a detailed log of the job’s execution, including `status`, `expected execution time`, and `Job ID` for reference.
-    
-*   **Activity Logs**: The activity logs display a timestamped sequence of events during the job’s execution. This can include when new documents are found, when documents are processed, and any errors or messages related to the job.
+*   **Execution Time**: When the job started.
+
+*   **Documents**: The number of documents that were attempted to be processed.
+
+*   **Success**: The number of successfully processed documents.
+
+*   **Failed**: The number of documents that failed to process.
+
+*   **Status**: The status of each step in the job, including each step's **Ready**, **In Progress**, **Success**, and **Failure** state.
+
+To see the job detail's metadata, click **View Payload**.
