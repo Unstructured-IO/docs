@@ -13,92 +13,150 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
 
 <NoURLForServerlessAPI/>
 
+import UseIngestInstead from '/snippets/general-shared-text/use-ingest-instead.mdx';
+
 ### Changing partition strategy for a PDF
 
 Here's how you can modify partition strategy for a pdf file, and select an alternative model to use with Unstructured API.
 The `hi_res` strategy supports different models, and the default is `layout_v1.1.0`.
 
-<CodeGroup>
+<AccordionGroup>
+    <Accordion title="Ingest CLI">
+        ```bash CLI
+        unstructured-ingest \
+          local \
+            --input-path $LOCAL_FILE_INPUT_DIR \
+            --output-dir $LOCAL_FILE_OUTPUT_DIR \
+            --strategy hi_res \
+            --hi-res-model-name layout_v1.1.0 \
+            --partition-by-api \
+            --api-key $UNSTRUCTURED_API_KEY \
+            --partition-endpoint $UNSTRUCTURED_API_URL \
+            --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
+        ```
+    </Accordion>
+    <Accordion title="Ingest Python">
+        ```python Python
+        import os
 
-```bash POST
- curl -X 'POST' $UNSTRUCTURED_API_URL \
-  -H 'accept: application/json' \
-  -H 'Content-Type: multipart/form-data' \
-  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
-  -F 'files=@sample-docs/layout-parser-paper.pdf' \
-  -F 'strategy=hi_res' \
-  -F 'hi_res_model_name=layout_v1.1.0' \
-  -F 'split-pdf-page True' \
-  -F 'split-pdf-allow-failed True' \
-  -F 'split-pdf-concurrency-level 15'
-```
+        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+        from unstructured_ingest.v2.interfaces import ProcessorConfig
+        from unstructured_ingest.v2.processes.connectors.local import (
+            LocalIndexerConfig,
+            LocalDownloaderConfig,
+            LocalConnectionConfig,
+            LocalUploaderConfig
+        )
+        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
 
-```python Python
-import os
+        if __name__ == "__main__":
+            Pipeline.from_configs(
+                context=ProcessorConfig(),
+                indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
+                downloader_config=LocalDownloaderConfig(),
+                source_connection_config=LocalConnectionConfig(),
+                partitioner_config=PartitionerConfig(
+                    strategy="hi_res",
+                    hi_res_model_name="layout_v1.0.0",
+                    partition_by_api=True,
+                    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+                    partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+                    additional_partition_args={
+                        "split_pdf_page": True,
+                        "split_pdf_allow_failed": True,
+                        "split_pdf_concurrency_level": 15
+                    }
+                ),
+                uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
+            ).run()
+        ```
+    </Accordion>
+    <Accordion title="POST">
+        <UseIngestInstead />
+        ```bash POST
+        curl -X 'POST' $UNSTRUCTURED_API_URL \
+        -H 'accept: application/json' \
+        -H 'Content-Type: multipart/form-data' \
+        -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
+        -F 'files=@sample-docs/layout-parser-paper.pdf' \
+        -F 'strategy=hi_res' \
+        -F 'hi_res_model_name=layout_v1.1.0' \
+        -F 'split-pdf-page True' \
+        -F 'split-pdf-allow-failed True' \
+        -F 'split-pdf-concurrency-level 15'
+        ```
+    </Accordion>
+    <Accordion title="Python SDK">
+        <UseIngestInstead />
+        ```python Python
+        import os
 
-from unstructured_client import UnstructuredClient
-from unstructured_client.models import shared
-from unstructured_client.models.errors import SDKError
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models import shared
+        from unstructured_client.models.errors import SDKError
 
-client = UnstructuredClient(
-    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-    api_url=os.getenv("UNSTRUCTURED_API_URL"),
-)
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+            api_url=os.getenv("UNSTRUCTURED_API_URL"),
+        )
 
-filename = "sample-docs/layout-parser-paper.pdf"
-file = open(filename, "rb")
-req = shared.PartitionParameters(
-    # Note that this currently only supports a single file
-    files=shared.Files(
-        content=file.read(),
-        file_name=filename,
-    ),
-    strategy="hi_res",
-    hi_res_model_name="layout_v1.1.0",
-)
+        filename = "sample-docs/layout-parser-paper.pdf"
+        file = open(filename, "rb")
+        req = shared.PartitionParameters(
+            # Note that this currently only supports a single file
+            files=shared.Files(
+                content=file.read(),
+                file_name=filename,
+            ),
+            strategy="hi_res",
+            hi_res_model_name="layout_v1.1.0",
+        )
 
-try:
-    res = client.general.partition(req)
-    print(res.elements[0])
-except SDKError as e:
-    print(e)
-```
+        try:
+            res = client.general.partition(req)
+            print(res.elements[0])
+        except SDKError as e:
+            print(e)
+        ```
+    </Accordion>
+    <Accordion title="JavaScript/TypeScript SDK">
+        <UseIngestInstead />
+        ```typescript TypeScript
+        import { UnstructuredClient } from "unstructured-client";
+        import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
+        import * as fs from "fs";
 
-```typescript TypeScript
-import { UnstructuredClient } from "unstructured-client";
-import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
-import * as fs from "fs";
+        const key = process.env.UNSTRUCTURED_API_KEY;
+        const url = process.env.UNSTRUCTURED_API_URL;
 
-const key = process.env.UNSTRUCTURED_API_KEY;
-const url = process.env.UNSTRUCTURED_API_URL;
+        const client = new UnstructuredClient({
+            serverURL: url,
+            security: {
+                apiKeyAuth: key,
+            },
+        });
 
-const client = new UnstructuredClient({
-    serverURL: url,
-    security: {
-        apiKeyAuth: key,
-    },
-});
+        const filename = "sample-docs/layout-parser-paper.pdf";
+        const data = fs.readFileSync(filename);
 
-const filename = "sample-docs/layout-parser-paper.pdf";
-const data = fs.readFileSync(filename);
-
-client.general.partition({
-    files: {
-        content: data,
-        fileName: filename,
-    },
-    strategy: "hi_res",
-    hiResModelName: "layout_v1.1.0",
-}).then((res: PartitionResponse) => {
-    if (res.statusCode == 200) {
-        console.log(res.elements);
-    }
-}).catch((e) => {
-    console.log(e.statusCode);
-    console.log(e.body);
-});
-```
-</CodeGroup>
+        client.general.partition({
+            files: {
+                content: data,
+                fileName: filename,
+            },
+            strategy: "hi_res",
+            hiResModelName: "layout_v1.1.0",
+        }).then((res: PartitionResponse) => {
+            if (res.statusCode == 200) {
+                console.log(res.elements);
+            }
+        }).catch((e) => {
+            console.log(e.statusCode);
+            console.log(e.body);
+        });
+        ```
+    </Accordion>
+</AccordionGroup>
 
 If you have a local deployment of the Unstructured API, you can use other supported models, such as `yolox`.
 
@@ -107,173 +165,280 @@ If you have a local deployment of the Unstructured API, you can use other suppor
 For better OCR results, you can specify what languages your document is in using the `languages` parameter. 
 [View the list of available languages](https://github.com/tesseract-ocr/tessdata).
 
-<CodeGroup>
+<AccordionGroup>
+    <Accordion title="Ingest CLI">
+        ```bash CLI
+        unstructured-ingest \
+          local \
+            --input-path $LOCAL_FILE_INPUT_DIR \
+            --output-dir $LOCAL_FILE_OUTPUT_DIR \
+            --strategy ocr_only \
+            --ocr-languages kor \
+            --partition-by-api \
+            --api-key $UNSTRUCTURED_API_KEY \
+            --partition-endpoint $UNSTRUCTURED_API_URL \
+            --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
+        ```
+    </Accordion>
+    <Accordion title="Ingest Python">
+        ```python Python
+        import os
 
-```bash POST
-curl -X 'POST' $UNSTRUCTURED_API_URL \
-  -H 'accept: application/json' \
-  -H 'Content-Type: multipart/form-data' \
-  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
-  -F 'files=@sample-docs/korean.png' \
-  -F 'strategy=hi_res' \
-  -F 'languages=kor' \
-  -F 'split-pdf-page True' \
-  -F 'split-pdf-allow-failed True' \
-  -F 'split-pdf-concurrency-level 15'
-```
+        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+        from unstructured_ingest.v2.interfaces import ProcessorConfig
+        from unstructured_ingest.v2.processes.connectors.local import (
+            LocalIndexerConfig,
+            LocalDownloaderConfig,
+            LocalConnectionConfig,
+            LocalUploaderConfig
+        )
+        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
 
-```python Python
-import os
+        if __name__ == "__main__":
+            Pipeline.from_configs(
+                context=ProcessorConfig(),
+                indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
+                downloader_config=LocalDownloaderConfig(),
+                source_connection_config=LocalConnectionConfig(),
+                partitioner_config=PartitionerConfig(
+                    strategy="ocr_only",
+                    ocr_languages=["kor"],
+                    partition_by_api=True,
+                    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+                    partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+                    additional_partition_args={
+                        "split_pdf_page": True,
+                        "split_pdf_allow_failed": True,
+                        "split_pdf_concurrency_level": 15
+                    }
+                ),
+                uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
+            ).run()
+            ```
+    </Accordion>
+    <Accordion title="POST">
+        <UseIngestInstead />
+        ```bash POST
+        curl -X 'POST' $UNSTRUCTURED_API_URL \
+        -H 'accept: application/json' \
+        -H 'Content-Type: multipart/form-data' \
+        -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
+        -F 'files=@sample-docs/korean.png' \
+        -F 'strategy=hi_res' \
+        -F 'languages=kor' \
+        -F 'split-pdf-page True' \
+        -F 'split-pdf-allow-failed True' \
+        -F 'split-pdf-concurrency-level 15'
+        ```
+    </Accordion>
+    <Accordion title="Python SDK">
+        <UseIngestInstead />
+        ```python Python
+        import os
 
-from unstructured_client import UnstructuredClient
-from unstructured_client.models import shared
-from unstructured_client.models.errors import SDKError
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models import shared
+        from unstructured_client.models.errors import SDKError
 
-client = UnstructuredClient(
-    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-    server_url=os.getenv("UNSTRUCTURED_API_URL"),
-)
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+            server_url=os.getenv("UNSTRUCTURED_API_URL"),
+        )
 
-filename = "sample-docs/korean.png"
-file = open(filename, "rb")
-req = shared.PartitionParameters(
-    # Note that this currently only supports a single file
-    files=shared.Files(
-        content=file.read(),
-        file_name=filename,
-    ),
-    strategy="hi_res",
-    languages=["kor"],
-)
+        filename = "sample-docs/korean.png"
+        file = open(filename, "rb")
+        req = shared.PartitionParameters(
+            # Note that this currently only supports a single file
+            files=shared.Files(
+                content=file.read(),
+                file_name=filename,
+            ),
+            strategy="hi_res",
+            languages=["kor"],
+        )
 
-try:
-    res = client.general.partition(req)
-    print(res.elements[0])
-except SDKError as e:
-    print(e)
-```
+        try:
+            res = client.general.partition(req)
+            print(res.elements[0])
+        except SDKError as e:
+            print(e)
+        ```
+    </Accordion>
+    <Accordion title="JavaScript/TypeScript SDK">
+        <UseIngestInstead />
+        ```typescript TypeScript
+        import { UnstructuredClient } from "unstructured-client";
+        import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
+        import * as fs from "fs";
 
-```typescript TypeScript
-import { UnstructuredClient } from "unstructured-client";
-import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
-import * as fs from "fs";
+        const key = process.env.UNSTRUCTURED_API_KEY;
+        const url = process.env.UNSTRUCTURED_API_URL;
 
-const key = process.env.UNSTRUCTURED_API_KEY;
-const url = process.env.UNSTRUCTURED_API_URL;
+        const client = new UnstructuredClient({
+            serverURL: url,
+            security: {
+                apiKeyAuth: key,
+            },
+        });
 
-const client = new UnstructuredClient({
-    serverURL: url,
-    security: {
-        apiKeyAuth: key,
-    },
-});
+        const filename = "sample-docs/korean.png";
+        const data = fs.readFileSync(filename);
 
-const filename = "sample-docs/korean.png";
-const data = fs.readFileSync(filename);
-
-client.general.partition({
-    files: {
-        content: data,
-        fileName: filename,
-    },
-    strategy: "hi_res",
-    languages: ["kor"],
-}).then((res: PartitionResponse) => {
-    if (res.statusCode == 200) {
-        console.log(res.elements);
-    }
-}).catch((e) => {
-    console.log(e.statusCode);
-    console.log(e.body);
-});
-```
-
-</CodeGroup>
+        client.general.partition({
+            files: {
+                content: data,
+                fileName: filename,
+            },
+            strategy: "hi_res",
+            languages: ["kor"],
+        }).then((res: PartitionResponse) => {
+            if (res.statusCode == 200) {
+                console.log(res.elements);
+            }
+        }).catch((e) => {
+            console.log(e.statusCode);
+            console.log(e.body);
+        });
+        ```
+    </Accordion>
+</AccordionGroup>
 
 ### Saving bounding box coordinates
 
 When elements are extracted from PDFs or images, it may be useful to get their bounding boxes as well.
 Set the `coordinates` parameter to `true` to add this field to the elements in the response.
 
-<CodeGroup>
+<AccordionGroup>
+    <Accordion title="Ingest CLI">
+        ```bash CLI
+        unstructured-ingest \
+          local \
+            --input-path $LOCAL_FILE_INPUT_DIR \
+            --output-dir $LOCAL_FILE_OUTPUT_DIR \
+            --partition-by-api \
+            --api-key $UNSTRUCTURED_API_KEY \
+            --partition-endpoint $UNSTRUCTURED_API_URL \
+            --additional-partition-args="{\"coordinates\":\"true\", \"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
+        ```
+    </Accordion>
+    <Accordion title="Ingest Python">
+        ```python Python
+        import os
 
-```bash POST
- curl -X 'POST' $UNSTRUCTURED_API_URL \
-  -H 'accept: application/json' \
-  -H 'Content-Type: multipart/form-data' \
-  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
-  -F 'files=@sample-docs/layout-parser-paper.pdf' \
-  -F 'coordinates=true' \
-  -F 'split-pdf-page True' \
-  -F 'split-pdf-allow-failed True' \
-  -F 'split-pdf-concurrency-level 15'
-```
+        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+        from unstructured_ingest.v2.interfaces import ProcessorConfig
+        from unstructured_ingest.v2.processes.connectors.local import (
+            LocalIndexerConfig,
+            LocalDownloaderConfig,
+            LocalConnectionConfig,
+            LocalUploaderConfig
+        )
+        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
 
-```python Python
-import os
+        if __name__ == "__main__":
+            Pipeline.from_configs(
+                context=ProcessorConfig(),
+                indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
+                downloader_config=LocalDownloaderConfig(),
+                source_connection_config=LocalConnectionConfig(),
+                partitioner_config=PartitionerConfig(
+                    partition_by_api=True,
+                    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+                    partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+                    additional_partition_args={
+                        "coordinates": True,
+                        "split_pdf_page": True,
+                        "split_pdf_allow_failed": True,
+                        "split_pdf_concurrency_level": 15
+                    }
+                ),
+                uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
+            ).run()
+        ```
+    </Accordion>
+    <Accordion title="POST">
+        <UseIngestInstead />
+        ```bash POST
+        curl -X 'POST' $UNSTRUCTURED_API_URL \
+        -H 'accept: application/json' \
+        -H 'Content-Type: multipart/form-data' \
+        -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
+        -F 'files=@sample-docs/layout-parser-paper.pdf' \
+        -F 'coordinates=true' \
+        -F 'split-pdf-page True' \
+        -F 'split-pdf-allow-failed True' \
+        -F 'split-pdf-concurrency-level 15'
+        ```
+    </Accordion>
+    <Accordion title="Python SDK">
+        <UseIngestInstead />
+        ```python Python
+        import os
 
-from unstructured_client import UnstructuredClient
-from unstructured_client.models import shared
-from unstructured_client.models.errors import SDKError
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models import shared
+        from unstructured_client.models.errors import SDKError
 
-client = UnstructuredClient(
-    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-    server_url=os.getenv("UNSTRUCTURED_API_URL"),
-)
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+            server_url=os.getenv("UNSTRUCTURED_API_URL"),
+        )
 
-filename = "sample-docs/layout-parser-paper.pdf"
-file = open(filename, "rb")
-req = shared.PartitionParameters(
-    # Note that this currently only supports a single file
-    files=shared.Files(
-        content=file.read(),
-        file_name=filename,
-    ),
-    coordinates=True,
-)
+        filename = "sample-docs/layout-parser-paper.pdf"
+        file = open(filename, "rb")
+        req = shared.PartitionParameters(
+            # Note that this currently only supports a single file
+            files=shared.Files(
+                content=file.read(),
+                file_name=filename,
+            ),
+            coordinates=True,
+        )
 
-try:
-    res = client.general.partition(req)
-    print(res.elements[0])
-except SDKError as e:
-    print(e)
-```
+        try:
+            res = client.general.partition(req)
+            print(res.elements[0])
+        except SDKError as e:
+            print(e)
+        ```
+    </Accordion>
+    <Accordion title="JavaScript/TypeScript SDK">
+        <UseIngestInstead />
+        ```typescript TypeScript
+        import { UnstructuredClient } from "unstructured-client";
+        import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
+        import * as fs from "fs";
 
-```typescript TypeScript
-import { UnstructuredClient } from "unstructured-client";
-import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
-import * as fs from "fs";
+        const key = process.env.UNSTRUCTURED_API_KEY;
+        const url = process.env.UNSTRUCTURED_API_URL;
 
-const key = process.env.UNSTRUCTURED_API_KEY;
-const url = process.env.UNSTRUCTURED_API_URL;
+        const client = new UnstructuredClient({
+            serverURL: url,
+            security: {
+                apiKeyAuth: key,
+            },
+        });
 
-const client = new UnstructuredClient({
-    serverURL: url,
-    security: {
-        apiKeyAuth: key,
-    },
-});
+        const filename = "sample-docs/layout-parser-paper.pdf";
+        const data = fs.readFileSync(filename);
 
-const filename = "sample-docs/layout-parser-paper.pdf";
-const data = fs.readFileSync(filename);
-
-client.general.partition({
-    files: {
-        content: data,
-        fileName: filename,
-    },
-    coordinates: true,
-}).then((res: PartitionResponse) => {
-    if (res.statusCode == 200) {
-        console.log(res.elements);
-    }
-}).catch((e) => {
-    console.log(e.statusCode);
-    console.log(e.body);
-});
-```
-
-</CodeGroup>
+        client.general.partition({
+            files: {
+                content: data,
+                fileName: filename,
+            },
+            coordinates: true,
+        }).then((res: PartitionResponse) => {
+            if (res.statusCode == 200) {
+                console.log(res.elements);
+            }
+        }).catch((e) => {
+            console.log(e.statusCode);
+            console.log(e.body);
+        });
+        ```
+    </Accordion>
+</AccordionGroup>
 
 ### Returning unique element IDs
 
@@ -284,85 +449,137 @@ To use UUIDs in the output instead, set `unique_element_ids=true`. Note: this me
 will be random, so with every partition of the same file, you will get different IDs.
 This can be helpful if you'd like to use the IDs as a primary key in a database, for example.
 
-<CodeGroup>
+<AccordionGroup>
+    <Accordion title="Ingest CLI">
+        ```bash CLI
+        unstructured-ingest \
+          local \
+            --input-path $LOCAL_FILE_INPUT_DIR \
+            --output-dir $LOCAL_FILE_OUTPUT_DIR \
+            --partition-by-api \
+            --api-key $UNSTRUCTURED_API_KEY \
+            --partition-endpoint $UNSTRUCTURED_API_URL \
+            --additional-partition-args="{\"unique_element_ids\":\"true\", \"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
+        ```
+    </Accordion>
+    <Accordion title="Ingest Python">
+        ```python Python
+        import os
 
-```bash POST
-curl -X 'POST' $UNSTRUCTURED_API_URL \
- -H 'accept: application/json'  \
- -H 'Content-Type: multipart/form-data' \
- -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
- -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
- -F 'unique_element_ids=true' \
- -F 'split-pdf-page True' \
- -F 'split-pdf-allow-failed True' \
- -F 'split-pdf-concurrency-level 15'
-```
+        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+        from unstructured_ingest.v2.interfaces import ProcessorConfig
+        from unstructured_ingest.v2.processes.connectors.local import (
+            LocalIndexerConfig,
+            LocalDownloaderConfig,
+            LocalConnectionConfig,
+            LocalUploaderConfig
+        )
+        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
 
-```python Python
-import os
+        if __name__ == "__main__":
+            Pipeline.from_configs(
+                context=ProcessorConfig(),
+                indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
+                downloader_config=LocalDownloaderConfig(),
+                source_connection_config=LocalConnectionConfig(),
+                partitioner_config=PartitionerConfig(
+                    partition_by_api=True,
+                    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+                    partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+                    additional_partition_args={
+                        "unique_element_ids": True,
+                        "split_pdf_page": True,
+                        "split_pdf_allow_failed": True,
+                        "split_pdf_concurrency_level": 15
+                    }
+                ),
+                uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
+            ).run()
+        ```
+    </Accordion>
+    <Accordion title="POST">
+        <UseIngestInstead />
+        ```bash POST
+        curl -X 'POST' $UNSTRUCTURED_API_URL \
+        -H 'accept: application/json'  \
+        -H 'Content-Type: multipart/form-data' \
+        -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
+        -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
+        -F 'unique_element_ids=true' \
+        -F 'split-pdf-page True' \
+        -F 'split-pdf-allow-failed True' \
+        -F 'split-pdf-concurrency-level 15'
+        ```
+    </Accordion>
+    <Accordion title="Python SDK">
+        <UseIngestInstead />
+        ```python Python
+        import os
 
-from unstructured_client import UnstructuredClient
-from unstructured_client.models import shared
-from unstructured_client.models.errors import SDKError
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models import shared
+        from unstructured_client.models.errors import SDKError
 
-client = UnstructuredClient(
-    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-    server_url=os.getenv("UNSTRUCTURED_API_URL"),
-)
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+            server_url=os.getenv("UNSTRUCTURED_API_URL"),
+        )
 
-filename = "sample-docs/layout-parser-paper-fast.pdf"
-file = open(filename, "rb")
-req = shared.PartitionParameters(
-    # Note that this currently only supports a single file
-    files=shared.Files(
-        content=file.read(),
-        file_name=filename,
-    ),
-    unique_element_ids=True,
-)
+        filename = "sample-docs/layout-parser-paper-fast.pdf"
+        file = open(filename, "rb")
+        req = shared.PartitionParameters(
+            # Note that this currently only supports a single file
+            files=shared.Files(
+                content=file.read(),
+                file_name=filename,
+            ),
+            unique_element_ids=True,
+        )
 
-try:
-    res = client.general.partition(req)
-    print(res.elements[0])
-except SDKError as e:
-    print(e)
-```
+        try:
+            res = client.general.partition(req)
+            print(res.elements[0])
+        except SDKError as e:
+            print(e)
+        ```
+    </Accordion>
+    <Accordion title="JavaScript/TypeScript SDK">
+        <UseIngestInstead />
+        ```typescript TypeScript
+        import { UnstructuredClient } from "unstructured-client";
+        import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
+        import * as fs from "fs";
 
-```typescript TypeScript
-import { UnstructuredClient } from "unstructured-client";
-import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
-import * as fs from "fs";
+        const key = process.env.UNSTRUCTURED_API_KEY;
+        const url = process.env.UNSTRUCTURED_API_URL;
 
-const key = process.env.UNSTRUCTURED_API_KEY;
-const url = process.env.UNSTRUCTURED_API_URL;
+        const client = new UnstructuredClient({
+            serverURL: url,
+            security: {
+                apiKeyAuth: key,
+            },
+        });
 
-const client = new UnstructuredClient({
-    serverURL: url,
-    security: {
-        apiKeyAuth: key,
-    },
-});
+        const filename = "sample-docs/layout-parser-paper-fast.pdf";
+        const data = fs.readFileSync(filename);
 
-const filename = "sample-docs/layout-parser-paper-fast.pdf";
-const data = fs.readFileSync(filename);
-
-client.general.partition({
-    files: {
-        content: data,
-        fileName: filename,
-    },
-    uniqueElementIds: true,
-}).then((res: PartitionResponse) => {
-    if (res.statusCode == 200) {
-        console.log(res.elements);
-    }
-}).catch((e) => {
-    console.log(e.statusCode);
-    console.log(e.body);
-});
-```
-
-</CodeGroup>
+        client.general.partition({
+            files: {
+                content: data,
+                fileName: filename,
+            },
+            uniqueElementIds: true,
+        }).then((res: PartitionResponse) => {
+            if (res.statusCode == 200) {
+                console.log(res.elements);
+            }
+        }).catch((e) => {
+            console.log(e.statusCode);
+            console.log(e.body);
+        });
+        ```
+    </Accordion>
+</AccordionGroup>
 
 ### Adding the chunking step after partitioning
 
@@ -371,85 +588,143 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
 
 [//]: # (TODO: add a link to the concepts section about chunking strategies. Need to create the shared Concepts section first)
 
-<CodeGroup>
+<AccordionGroup>
+    <Accordion title="Ingest CLI">
+        ```bash CLI
+        unstructured-ingest \
+          local \
+            --input-path $LOCAL_FILE_INPUT_DIR \
+            --output-dir $LOCAL_FILE_OUTPUT_DIR \
+            --chunking-strategy by_title \
+            --chunk-max-characters 1024 \
+            --partition-by-api \
+            --api-key $UNSTRUCTURED_API_KEY \
+            --partition-endpoint $UNSTRUCTURED_API_URL \
+            --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
+        ```
+    </Accordion>
+    <Accordion title="Ingest Python">
+        ```python Python
+        import os
 
-```bash POST
-curl -X 'POST' $UNSTRUCTURED_API_URL \
- -H 'accept: application/json'  \
- -H 'Content-Type: multipart/form-data' \
- -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
- -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
- -F 'chunking_strategy=by_title' \
- -F 'max_characters=1024' \
- -F 'split-pdf-page True' \
- -F 'split-pdf-allow-failed True' \
- -F 'split-pdf-concurrency-level 15'
-```
+        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+        from unstructured_ingest.v2.interfaces import ProcessorConfig
+        from unstructured_ingest.v2.processes.connectors.local import (
+            LocalIndexerConfig,
+            LocalDownloaderConfig,
+            LocalConnectionConfig,
+            LocalUploaderConfig
+        )
+        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+        from unstructured_ingest.v2.processes.chunker import ChunkerConfig
 
-```python Python
-import os
+        if __name__ == "__main__":
+            Pipeline.from_configs(
+                context=ProcessorConfig(),
+                indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
+                downloader_config=LocalDownloaderConfig(),
+                source_connection_config=LocalConnectionConfig(),
+                partitioner_config=PartitionerConfig(
+                    partition_by_api=True,
+                    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+                    partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+                    additional_partition_args={
+                        "split_pdf_page": True,
+                        "split_pdf_allow_failed": True,
+                        "split_pdf_concurrency_level": 15
+                    }
+                ),
+                chunker_config=ChunkerConfig(
+                    chunking_strategy="by_title",
+                    chunk_max_characters=1024
+                ),
+                uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
+            ).run()
+        ```
+    </Accordion>
+    <Accordion title="POST">
+        <UseIngestInstead />
+        ```bash POST
+        curl -X 'POST' $UNSTRUCTURED_API_URL \
+        -H 'accept: application/json'  \
+        -H 'Content-Type: multipart/form-data' \
+        -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
+        -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
+        -F 'chunking_strategy=by_title' \
+        -F 'max_characters=1024' \
+        -F 'split-pdf-page True' \
+        -F 'split-pdf-allow-failed True' \
+        -F 'split-pdf-concurrency-level 15'
+        ```
+    </Accordion>
+    <Accordion title="Python SDK">
+        <UseIngestInstead />
+        ```python Python
+        import os
 
-from unstructured_client import UnstructuredClient
-from unstructured_client.models import shared
-from unstructured_client.models.errors import SDKError
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models import shared
+        from unstructured_client.models.errors import SDKError
 
-client = UnstructuredClient(
-    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-    server_url=os.getenv("UNSTRUCTURED_API_URL"),
-)
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+            server_url=os.getenv("UNSTRUCTURED_API_URL"),
+        )
 
-filename = "sample-docs/layout-parser-paper-fast.pdf"
-file = open(filename, "rb")
-req = shared.PartitionParameters(
-    # Note that this currently only supports a single file
-    files=shared.Files(
-        content=file.read(),
-        file_name=filename,
-    ),
-    chunking_strategy="by_title",
-    max_characters=1024,
-)
+        filename = "sample-docs/layout-parser-paper-fast.pdf"
+        file = open(filename, "rb")
+        req = shared.PartitionParameters(
+            # Note that this currently only supports a single file
+            files=shared.Files(
+                content=file.read(),
+                file_name=filename,
+            ),
+            chunking_strategy="by_title",
+            max_characters=1024,
+        )
 
-try:
-    res = client.general.partition(req)
-    print(res.elements[0])
-except SDKError as e:
-    print(e)
-```
+        try:
+            res = client.general.partition(req)
+            print(res.elements[0])
+        except SDKError as e:
+            print(e)
+        ```
+    </Accordion>
+    <Accordion title="JavaScript/TypeScript SDK">
+        <UseIngestInstead />
+        ```typescript TypeScript
+        import { UnstructuredClient } from "unstructured-client";
+        import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
+        import * as fs from "fs";
 
-```typescript TypeScript
-import { UnstructuredClient } from "unstructured-client";
-import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
-import * as fs from "fs";
+        const key = process.env.UNSTRUCTURED_API_KEY;
+        const url = process.env.UNSTRUCTURED_API_URL;
 
-const key = process.env.UNSTRUCTURED_API_KEY;
-const url = process.env.UNSTRUCTURED_API_URL;
+        const client = new UnstructuredClient({
+            serverURL: url,
+            security: {
+                apiKeyAuth: key,
+            },
+        });
 
-const client = new UnstructuredClient({
-    serverURL: url,
-    security: {
-        apiKeyAuth: key,
-    },
-});
+        const filename = "sample-docs/layout-parser-paper-fast.pdf";
+        const data = fs.readFileSync(filename);
 
-const filename = "sample-docs/layout-parser-paper-fast.pdf";
-const data = fs.readFileSync(filename);
-
-client.general.partition({
-    files: {
-        content: data,
-        fileName: filename,
-    },
-    chunkingStrategy: "by_title",
-    maxCharacters: 1024,
-}).then((res: PartitionResponse) => {
-    if (res.statusCode == 200) {
-        console.log(res.elements);
-    }
-}).catch((e) => {
-    console.log(e.statusCode);
-    console.log(e.body);
-});
-```
-
-</CodeGroup>
+        client.general.partition({
+            files: {
+                content: data,
+                fileName: filename,
+            },
+            chunkingStrategy: "by_title",
+            maxCharacters: 1024,
+        }).then((res: PartitionResponse) => {
+            if (res.statusCode == 200) {
+                console.log(res.elements);
+            }
+        }).catch((e) => {
+            console.log(e.statusCode);
+            console.log(e.body);
+        });
+        ```
+    </Accordion>
+</AccordionGroup>
