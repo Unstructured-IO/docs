@@ -28,10 +28,6 @@ The Unstructured ingest flow is similar to an extract, transform and load (ETL) 
 Because of this, a customer-defined implementation of the Unstructured ingest flow is sometimes referred to an an _ingest pipeline_ or simply a _pipline_. 
 An Unstructured ingest pipeline contains the following logical steps:
 
-```mermaid
-  flowchart TB
-    id1[1. Ingest]-->id2[2. Post-Index Filter]-->id3[3. Download]-->id4[4. Post-Download Filter]-->id5[5. Uncompress]-->id6[6. Post-Uncompress Filter]-->id7[7. Partition]-->id8[8. Chunk]-->id9[9. Embed]-->id10[10. Stage]-->id11[11. Upload]
-```
 <Steps>
     <Step title="Index">
         Reaches out to the source location and pulls in metadata for each document.
