@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured_ingest.connector.fsspec.sftp import SftpAccessConfig, SimpleSftpConfig
@@ -17,13 +17,19 @@ if __name__ == "__main__":
             num_processes=2,
         ),
         read_config=ReadConfig(),
-        partition_config=PartitionConfig(),
+        partition_config=PartitionConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+        ),
         connector_config=SimpleSftpConfig(
             access_config=SftpAccessConfig(
+                host=os.getenv("SFTP_HOST"),
+                port=os.getenv("SFTP_PORT"),
                 username=os.getenv("SFTP_USERNAME"),
                 password=os.getenv("SFTP_PASSWORD"),
             ),
-            remote_url="sftp://address:port/upload",
+            remote_url=os.getenv("SFTP_REMOTE_URL"),
             recursive=True,
         ),
     )
