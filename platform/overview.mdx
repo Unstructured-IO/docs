@@ -34,14 +34,16 @@ To get your data RAG-ready, the Unstructured Platform moves it through the follo
     Your source document is transformed into Unstructured's canonical JSON schema. Regardless of the input document, this JSON schema we gives you a [standardized output](/open-source/concepts/document-elements#element-id "Elements and Metadata"). It contains more than 20 elements, such as `Header`, `Footer`, `Title`, `NarrativeText`, `Table`, `Image`, and many more. Each document is wrapped in extensive metadata so you can understand languages, file types, sources, hierarchies, and much more.
   </Step>
     <Step title="Chunk"> 
-    Initially, the Unstructured Platform provides two [chunking strategies](/open-source/core-functionality/chunking#chunking-basics  "Chunking Strategies"): **Basic** and **By Title**. Of these:
+    Initially, the Unstructured Platform provides two optional [chunking strategies](/open-source/core-functionality/chunking#chunking-basics  "Chunking Strategies"): **Basic** and **By Title**. Of these:
     
     - **Basic** combines sequential elements up to specified size limits. Oversized elements are split, while tables are isolated and divided if necessary. Overlap between chunks is optional.
     - **By Title** uses semantic chunking, understands the layout of the document, and makes intelligent splits.
 
+  <Step title="Enrich">
+    Images and tables can be optionally summarized. This generates enriched content around the images or tables that were parsed during the transformation process.
   </Step>
   <Step title="Embed">
-    The Unstructured Platform uses third-party embedding providers such as OpenAI and AWS Bedrock.
+    The Unstructured Platform uses optional third-party embedding providers such as OpenAI and AWS Bedrock.
   </Step>
   <Step title="Persist">
     The Unstructured Platform offers multiple [destination connectors](../platform/platform-destination-connectors/overview), including all major vector databases.
