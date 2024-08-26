@@ -1,14 +1,21 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
 
 unstructured-ingest \
   sftp \
-    --remote-url sftp://address:port/upload \
+    --host $SFTP_HOST \
+    --port $SFTP_PORT \
     --username $SFTP_USERNAME \
     --password $SFTP_PASSWORD \
     --output-dir $LOCAL_FILE_OUTPUT_DIR \
     --num-processes 2 \
     --recursive \
     --verbose \
-    --strategy hi_res
+    --strategy hi_res \
+    --remote-url $SFTP_REMOTE_URL \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --download-dir $LOCAL_FILE_DOWNLOAD_DIR \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR
 ```

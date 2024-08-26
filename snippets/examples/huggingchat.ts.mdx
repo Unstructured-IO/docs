@@ -12,6 +12,7 @@ const key = process.env.UNSTRUCTURED_API_KEY || '';
 const url = process.env.UNSTRUCTURED_API_URL || '';
 const username = process.env.HUGGING_FACE_EMAIL || '';
 const userpassword = process.env.HUGGING_FACE_PASSWORD || '';
+const cookieDirPath = process.env.HUGGING_FACE_COOKIE_DIR_PATH || '';
 
 const inputFilepath = path.dirname(fileURLToPath(import.meta.url)) + 
                       "/local-ingest-pdf-source/constitution.pdf"
@@ -75,7 +76,7 @@ client.general.partition({
                 }
         }
 
-        let chat = await getChatBot(username, userpassword, './login_cache/')
+        let chat = await getChatBot(username, userpassword, cachePath)
         
         await chat.intialize()
 

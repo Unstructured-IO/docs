@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured_ingest.connector.fsspec.gcs import (
@@ -24,8 +24,8 @@ from unstructured_ingest.runner.writers.fsspec.gcs import (
 def get_writer() -> Writer:
     return GcsWriter(
         connector_config=SimpleGcsConfig(
-            access_config=GcsAccessConfig(token=os.getenv("SERVICE_ACCOUNT_KEY")),
-            remote_url="gcs://unstructured/war-and-peace-output",
+            access_config=GcsAccessConfig(token=os.getenv("GCS_SERVICE_ACCOUNT_KEY")),
+            remote_url=os.getenv("GCS_REMOTE_URL"),
         ),
         write_config=GcsWriteConfig(),
     )
