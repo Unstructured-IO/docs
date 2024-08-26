@@ -184,7 +184,6 @@ For better OCR results, you can specify what languages your document is in using
             --partition-by-api \
             --api-key $UNSTRUCTURED_API_KEY \
             --partition-endpoint $UNSTRUCTURED_API_URL \
-            --strategy hi_res \
             --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
         ```
     </Accordion>
@@ -214,7 +213,6 @@ For better OCR results, you can specify what languages your document is in using
                     partition_by_api=True,
                     api_key=os.getenv("UNSTRUCTURED_API_KEY"),
                     partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
-                    strategy="hi_res",
                     additional_partition_args={
                         "split_pdf_page": True,
                         "split_pdf_allow_failed": True,
@@ -233,7 +231,7 @@ For better OCR results, you can specify what languages your document is in using
         -H 'Content-Type: multipart/form-data' \
         -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
         -F 'files=@sample-docs/korean.png' \
-        -F 'strategy=hi_res' \
+        -F 'strategy=ocr_only' \
         -F 'languages=kor' \
         -F 'split-pdf-page True' \
         -F 'split-pdf-allow-failed True' \
@@ -262,7 +260,7 @@ For better OCR results, you can specify what languages your document is in using
                 content=file.read(),
                 file_name=filename,
             ),
-            strategy=shared.Strategy.HI_RES,
+            strategy=shared.Strategy.OCR_ONLY,
             languages=["kor"],
             split_pdf_page=True,
             split_pdf_allow_failed=True,
@@ -302,7 +300,7 @@ For better OCR results, you can specify what languages your document is in using
                 content: data,
                 fileName: filename,
             },
-            strategy: Strategy.HiRes,
+            strategy: Strategy.OcrOnly,
             languages: ["kor"],
             splitPdfPage: true,
             splitPdfConcurrencyLevel: 15,
@@ -452,10 +450,10 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
                 fileName: filename,
             },
             coordinates: true,
-            strategy=shared.Strategy.HI_RES,
-            split_pdf_page=True,
-            split_pdf_allow_failed=True,
-            split_pdf_concurrency_level=15
+            strategy: Strategy.HiRes,
+            splitPdfPage: true,
+            splitPdfConcurrencyLevel: 15,
+            splitPdfAllowFailed: true
         }).then((res: PartitionResponse) => {
             if (res.statusCode == 200) {
                 console.log(res.elements);
@@ -604,10 +602,10 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
                 fileName: filename,
             },
             uniqueElementIds: true,
-            strategy=shared.Strategy.HI_RES,
-            split_pdf_page=True,
-            split_pdf_allow_failed=True,
-            split_pdf_concurrency_level=15
+            strategy: Strategy.HiRes,
+            splitPdfPage: true,
+            splitPdfConcurrencyLevel: 15,
+            splitPdfAllowFailed: true
         }).then((res: PartitionResponse) => {
             if (res.statusCode == 200) {
                 console.log(res.elements);
@@ -764,10 +762,10 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
             },
             chunkingStrategy: "by_title",
             maxCharacters: 1024,
-            strategy=shared.Strategy.HI_RES,
-            split_pdf_page=True,
-            split_pdf_allow_failed=True,
-            split_pdf_concurrency_level=15
+            strategy: Strategy.HiRes,
+            splitPdfPage: true,
+            splitPdfConcurrencyLevel: 15,
+            splitPdfAllowFailed: true
         }).then((res: PartitionResponse) => {
             if (res.statusCode == 200) {
                 console.log(res.elements);
