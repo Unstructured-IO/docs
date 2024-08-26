@@ -38,10 +38,12 @@ import os, json
 from unstructured.partition.api import partition_via_api
 
 elements = partition_via_api(
-    filename="example-docs/eml/fake-email.eml",
+    filename="example-docs/pdf/DA-1p.pdf",
     api_key=os.getenv("UNSTRUCTURED_API_KEY"),
     api_url=os.getenv("UNSTRUCTURED_API_URL"),
-    content_type="message/rfc822"
+    strategy="hi_res",
+    split_pdf_page=True,
+    split_pdf_concurrency_level=15
 )
 
 element_dicts = [element.to_dict() for element in elements]
@@ -51,7 +53,7 @@ json_elements = json.dumps(element_dicts, indent=2)
 print(json_elements)
 
 # Write the processed data to a local file.
-with open("example-docs/eml/fake-email-output.json", "w") as file:
+with open("example-docs/pdf/DA-1p.pdf.json", "w") as file:
     file.write(json_elements)
 ```
 

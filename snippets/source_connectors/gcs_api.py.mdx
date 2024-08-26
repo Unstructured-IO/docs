@@ -20,6 +20,7 @@ if __name__ == "__main__":
         partition_config=PartitionConfig(
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            strategy="hi_res",
         ),
         connector_config=SimpleGcsConfig(
             access_config=GcsAccessConfig(),

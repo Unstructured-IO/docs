@@ -15,7 +15,9 @@ if __name__ == "__main__":
             num_processes=2,
         ),
         read_config=ReadConfig(),
-        partition_config=PartitionConfig(),
+        partition_config=PartitionConfig(
+            strategy="hi_res",
+        ),
         connector_config=SimpleGcsConfig(
             access_config=GcsAccessConfig(),
             remote_url="gs://utic-test-ingest-fixtures-public/",

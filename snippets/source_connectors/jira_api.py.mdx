@@ -17,6 +17,7 @@ if __name__ == "__main__":
             metadata_exclude=["filename", "file_directory", "metadata.data_source.date_processed"],
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            strategy="hi_res",
         ),
         connector_config=SimpleJiraConfig(
             access_config=JiraAccessConfig(api_token=os.getenv("JIRA_API_TOKEN")),

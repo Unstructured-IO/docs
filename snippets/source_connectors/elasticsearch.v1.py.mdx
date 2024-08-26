@@ -21,6 +21,7 @@ if __name__ == "__main__":
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
             partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            strategy="hi_res",
         ),
         connector_config=SimpleElasticsearchConfig(
             access_config=ElasticsearchAccessConfig(

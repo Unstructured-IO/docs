@@ -21,7 +21,8 @@ if __name__ == "__main__":
         partition_config=PartitionConfig(
             partition_by_api=True,
             partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
-            api_key=os.getenv("UNSTRUCTURED_API_KEY")
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            strategy="hi_res",
         ),
         connector_config=SimpleAstraDBConfig(
             access_config=AstraDBAccessConfig(

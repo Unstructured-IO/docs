@@ -11,7 +11,9 @@ if __name__ == "__main__":
             num_processes=2,
         ),
         read_config=ReadConfig(),
-        partition_config=PartitionConfig(),
+        partition_config=PartitionConfig(
+            strategy="hi_res",
+        ),
         connector_config=SimpleOneDriveConfig(
             access_config=OneDriveAccessConfig(client_credential="<Azure AD app client-id>"),
             client_id="<Azure AD app client-id>",

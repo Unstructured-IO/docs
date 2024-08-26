@@ -14,6 +14,7 @@
             --partition-by-api \
             --api-key $UNSTRUCTURED_API_KEY \
             --partition-endpoint $UNSTRUCTURED_API_URL \
+            --strategy hi_res \
             --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
         ```
     </Accordion>
@@ -47,6 +48,7 @@
                     partition_by_api=True,
                     api_key=os.getenv("UNSTRUCTURED_API_KEY"),
                     partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+                    strategy="hi_res",
                     additional_partition_args={
                         "split_pdf_page": True,
                         "split_pdf_allow_failed": True,

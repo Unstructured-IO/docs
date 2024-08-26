@@ -17,7 +17,9 @@ if __name__ == "__main__":
             num_processes=2,
         ),
         read_config=ReadConfig(),
-        partition_config=PartitionConfig(),
+        partition_config=PartitionConfig(
+            strategy="hi_res",
+        ),
         connector_config=SimpleBiomedConfig(path="oa_pdf/07/07/sbaa031.073.PMC7234218.pdf"),
     )
     runner.run()

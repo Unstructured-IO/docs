@@ -16,6 +16,7 @@ if __name__ == "__main__":
         partition_config=PartitionConfig(
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            strategy="hi_res",
         ),
         connector_config=SimpleDeltaTableConfig(
             table_uri="s3://utic-dev-tech-fixtures/sample-delta-lake-data/deltatable/",

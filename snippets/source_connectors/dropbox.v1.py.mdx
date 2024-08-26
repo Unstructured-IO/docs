@@ -20,7 +20,8 @@ if __name__ == "__main__":
         partition_config=PartitionConfig(
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            strategy="hi_res",
         ),
         connector_config=SimpleDropboxConfig(
             access_config=DropboxAccessConfig(token=os.getenv("DROPBOX_ACCESS_TOKEN")),
