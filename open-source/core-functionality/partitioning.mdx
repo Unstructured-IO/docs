@@ -671,7 +671,7 @@ For more information about the `partition_tsv` function, you can check the [sour
 
 ## `partition_via_api`
 
-`partition_via_api` allows users to partition documents using the hosted Unstructured API. The API partitions documents using the automatic `partition` function. This is helpful if you’re hosting the API yourself or running it locally through a container. You can pass in your API key using the `api_key` kwarg. You can use the `content_type` kwarg to pass in the MIME type for the file. If you do not explicitly pass it, the MIME type will be inferred.
+`partition_via_api` allows users to partition documents using the hosted Unstructured API. The API partitions documents using the automatic `partition` function through the [Unstructured SDK Client](https://docs.unstructured.io/api-reference/api-services/accessing-unstructured-api. This is helpful if you’re hosting the API yourself or running it locally through a container. You can pass in your API key using the `api_key` kwarg. You can use the `content_type` kwarg to pass in the MIME type for the file. If you do not explicitly pass it, the MIME type will be inferred.
 
 ```python
 from unstructured.partition.api import partition_via_api
