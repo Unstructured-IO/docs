@@ -1,10 +1,7 @@
 The Kafka prerequisites:
 
-bootstrap_server: The hostname of the bootstrap Kafka cluster to connect to.  
-port: The port number of the cluster, typically `9092`.
-topic: The unique name of the category to read messages from and write messgages to on the cluster. 
-confluent: True to indicate that the cluster is running Confluent Kafka.
-num_messages_to_consume: The maximum number of messages to get from the topic. The default is `1`.
-timeout: The maximum amount of time to wait for the response of a request to the topic, expressed in seconds. The default is `1.0`.
-
-
+- A Kafka cluster, such as ones provided by [Confluent Cloud](https://www.confluent.io/confluent-cloud), [Amazon Managed Streaming for Apache Kafka (Amazon MSK)](https://aws.amazon.com/msk/), or [Google Cloud Managed Service for Apache Kafka](https://cloud.google.com/products/managed-service-for-apache-kafka).
+- The hostname of the bootstrap Kafka cluster to connect to.  
+- The port number of the cluster.
+- The name of the topic to read messages from and write messgages to on the cluster. 
+- If you use Kafka API keys and secrets for authentication, the key and secret values.
