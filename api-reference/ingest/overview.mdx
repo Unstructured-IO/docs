@@ -76,6 +76,9 @@ An Unstructured ingest pipeline contains the following logical steps:
         - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `ChunkerConfig` class.
         - For the Unstructured Ingest Python library's v1 calling pattern, you can control this behavior through the `ChunkingConfig` class.
     </Step>
+    <Step title="Enrich">
+        Images and tables can be optionally summarized. This generates enriched content around the images or tables that were parsed during the transformation process.
+    </Step>
     <Step title="Embed">
         Optionally, generates vector embeddings for each element in the structured output. Most of the time, this is done through API calls to a third-party embedding vendor and therefore runs asynchronously. But it can also use a locally available Hugging Face model, which will run through multiprocessing.
     
