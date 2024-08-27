@@ -46,6 +46,7 @@ if __name__ == "__main__":
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
             partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
             metadata_include=metadata_includes,
+            strategy="hi_res",
             additional_partition_args={
                 "split_pdf_page": True,
                 "split_pdf_allow_failed": True,

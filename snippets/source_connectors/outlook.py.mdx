@@ -13,7 +13,9 @@ if __name__ == "__main__":
             num_processes=2,
         ),
         read_config=ReadConfig(),
-        partition_config=PartitionConfig(),
+        partition_config=PartitionConfig(
+            strategy="hi_res",
+        ),
         connector_config=SimpleOutlookConfig(
             access_config=OutlookAccessConfig(
                 client_credential=os.getenv("MS_CLIENT_CRED"),

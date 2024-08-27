@@ -15,6 +15,7 @@ if __name__ == "__main__":
         read_config=ReadConfig(),
         partition_config=PartitionConfig(
             metadata_exclude=["filename", "file_directory", "metadata.data_source.date_processed"],
+            strategy="hi_res",
         ),
         connector_config=SimpleConfluenceConfig(
             access_config=ConfluenceAccessConfig(

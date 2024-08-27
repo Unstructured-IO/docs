@@ -56,12 +56,13 @@ if __name__ == "__main__":
         partition_config=PartitionConfig(
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            strategy="hi_res",
         ),
         chunking_config=ChunkingConfig(chunk_elements=True),
         embedding_config=EmbeddingConfig(
             provider="langchain-huggingface",
-            api_key=None
+            api_key=None,
         ),
         writer=writer,
         writer_kwargs={},

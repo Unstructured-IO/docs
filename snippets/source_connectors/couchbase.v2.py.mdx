@@ -38,7 +38,13 @@ if __name__ == "__main__":
         partitioner_config=PartitionerConfig(
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            strategy="hi_res",
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
         ),
         chunker_config=ChunkerConfig(chunking_strategy="by_title"),
         embedder_config=EmbedderConfig(embedding_provider="langchain-huggingface"),

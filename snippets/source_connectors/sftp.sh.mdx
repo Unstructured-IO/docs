@@ -7,6 +7,11 @@ unstructured-ingest \
     --port $SFTP_PORT \
     --username $SFTP_USERNAME \
     --password $SFTP_PASSWORD \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --num-processes 2 \
+    --recursive \
+    --verbose \
+    --strategy hi_res \
     --remote-url $SFTP_REMOTE_URL \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \

@@ -11,7 +11,9 @@ if __name__ == "__main__":
             num_processes=2,
         ),
         read_config=ReadConfig(),
-        partition_config=PartitionConfig(),
+        partition_config=PartitionConfig(
+            strategy="hi_res",
+        ),
         connector_config=SimpleNotionConfig(
             access_config=NotionAccessConfig(
                 notion_api_key="POPULATE API KEY",
