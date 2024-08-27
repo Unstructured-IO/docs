@@ -36,7 +36,8 @@ with a mixture of files, including at least one `.pdf` file and one `.eml` file,
         --max-file-size 100000 \
         --partition-by-api \
         --partition-endpoint $UNSTRUCTURED_API_URL \
-        --api-key $UNSTRUCTURED_API_KEY
+        --api-key $UNSTRUCTURED_API_KEY \
+        --strategy hi_res
     ```
 
     ```python Python Ingest v2
@@ -67,6 +68,7 @@ with a mixture of files, including at least one `.pdf` file and one `.eml` file,
                 partition_by_api=True,
                 api_key=os.getenv("UNSTRUCTURED_API_KEY"),
                 partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+                strategy="hi_res",
                 additional_partition_args={
                     "unique_element_ids": True,
                     "split_pdf_page": True,
