@@ -2,22 +2,24 @@
 title: OneDrive
 ---
 
-import SharedContentOneDrive from '/snippets/sc-shared-text/one-drive.mdx';
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentOneDrive from '/snippets/sc-shared-text/onedrive-cli-api.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
 <SharedContentOneDrive/>
+<SharedAPIKeyURL/>
 
-Make sure to set the `--partition-by-api` flag and pass in your API key with `--api-key`:
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library. The destination connector can be any of the ones supported. This example uses the local destination connector:
 
-import OneDriveAPISh from '/snippets/source_connectors/onedrive_api.sh.mdx';
-import OneDriveAPIPy from '/snippets/source_connectors/onedrive_api.py.mdx';
+import OneDriveAPISh from '/snippets/source_connectors/onedrive.sh.mdx';
+import OneDriveAPIPyV1 from '/snippets/source_connectors/onedrive.v1.py.mdx';
+import OneDriveAPIPyV2 from '/snippets/source_connectors/onedrive.v2.py.mdx';
 
 <CodeGroup>
-
   <OneDriveAPISh />
-
-  <OneDriveAPIPy />
-
+  <OneDriveAPIPyV1 />
+  <OneDriveAPIPyV2 />
 </CodeGroup>
-
-Additionally, if you're using Unstructured Serverless API, your locally deployed Unstructured API, or an Unstructured API
-deployed on Azure or AWS, you also need to specify the API URL via the `--partition-endpoint` argument.
