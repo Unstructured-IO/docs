@@ -1,0 +1,29 @@
+The HubSpot connector dependencies:
+
+  ```bash CLI, Python
+  pip install "unstructured-ingest[hubspot]"
+  ```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `HUBSPOT_API_TOKEN`
+- `HUBSPOT_PARAMS`
+- `HUBSPOT_PROPERTIES` - A Comma-sepated list of strings (CLI) or an array of strings (Python) representing the 
+  [properties](https://developers.hubspot.com/docs/api/crm/properties) to access. 
+- `HUBSPOT_OBJECT_TYPES` - This must be a subset of 
+  [tickets](https://developers.hubspot.com/docs/api/crm/tickets), 
+  [calls](https://developers.hubspot.com/docs/api/crm/calls), 
+  [emails](https://developers.hubspot.com/docs/api/crm/email), 
+  [notes](https://developers.hubspot.com/docs/api/crm/notes), 
+  [tasks](https://developers.hubspot.com/docs/api/crm/tasks), 
+  [products](https://developers.hubspot.com/docs/api/crm/products), and 
+  [communications](https://developers.hubspot.com/docs/api/crm/communications). 
+  By default, all of these will be accessed. 
+- `HUBSPOT_CUSTOM_PROPERTIES` - [custom properties](https://developers.hubspot.com/docs/api/crm/properties) to access. 
+  A JSON-like string in the form `<object_type>:[<custom_property_id>, ..., <custom_property_id>]`. 
+  This must map to the internal name of the variable. If the property is missing, 
+  it will be omitted.
