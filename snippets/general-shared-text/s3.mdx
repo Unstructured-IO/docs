@@ -2,11 +2,19 @@ The Amzon S3 prerequisites:
 
 - An AWS account. [Create an AWS account](https://aws.amazon.com/free).
 - An S3 bucket. [Create an S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html).
-- Anonymous or authenticated access to the bucket. [Enable anonymous bucket access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html#example-bucket-policies-anonymous-user). 
-  [Enable authenticated bucket access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/walkthrough1.html).
-- For authenticated bucket read access, the authenticated AWS IAM user must have at minimum the permissions of `s3:ListBucket` and `s3:GetObject` for that bucket. 
+- Anonymous or authenticated access to the bucket. 
+
+  - [Enable anonymous bucket access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html#example-bucket-policies-anonymous-user). 
+
+    ![Enable anonymous bucket access](/img/connectors/s3-anon-access.gif)
+
+  - [Enable authenticated bucket access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/walkthrough1.html).
+
+    ![Enable authenticated bucket access](/img/connectors/s3-auth-access.gif)
+
+- For authenticated bucket read access, the authenticated AWS IAM user must have at minimum the permissions of `s3:ListBucket` and `s3:GetObject` for that bucket. [Learn how](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-policies-s3.html).
 - For bucket write access, authenticated access to the bucket must be enabled (anonymous access must not be enabled), and the authenticated AWS IAM user must have at 
-  minimum the permission of `s3:PutObject` for that bucket. 
+  minimum the permission of `s3:PutObject` for that bucket. [Learn how](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-policies-s3.html).
 - For authenticated access, an AWS access key and secret access key for the autenticated AWS IAM user in the account. 
   [Create an AWS access key and secret access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
 - For authenticated access in untrusted environments or enhanced security scenarios, an AWS STS session token for temporary access, in addition to an AWS access key and secret access key. [Create a session token](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.html#api_getsessiontoken). 
