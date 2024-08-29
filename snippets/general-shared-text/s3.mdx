@@ -1,6 +1,16 @@
 The Amzon S3 prerequisites:
 
 - An AWS account. [Create an AWS account](https://aws.amazon.com/free).
-- An AWS access key and secret access key for the account. [Create an AWS access key and secret access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
 - An S3 bucket. [Create an S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html).
-- The path to the target folder in the S3 bucket, formatted as `protocol://dir/path/` (for example, `s3://my-bucket/my-folder/`).
+- Anonymous or authenticated access to the bucket. [Enable anonymous bucket access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html#example-bucket-policies-anonymous-user). 
+  [Enable authenticated bucket access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/walkthrough1.html).
+- For authenticated bucket read access, the authenticated AWS IAM user must have at minimum the permissions of `s3:ListBucket` and `s3:GetObject` for that bucket. 
+- For bucket write access, authenticated access to the bucket must be enabled (anonymous access must not be enabled), and the authenticated AWS IAM user must have at 
+  minimum the permission of `s3:PutObject` for that bucket. 
+- For authenticated access, an AWS access key and secret access key for the autenticated AWS IAM user in the account. 
+  [Create an AWS access key and secret access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
+- For authenticated access in untrusted environments or enhanced security scenarios, an AWS STS session token for temporary access, in addition to an AWS access key and secret access key. [Create a session token](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.html#api_getsessiontoken). 
+- If the target files are in the root of the bucket, the path to the bucket, formatted as `protocol://bucket/` (for example, `s3://my-bucket/`). 
+  If the target files are in a folder, the path to the target folder in the S3 bucket, formatted as `protocol://bucket/path/to/folder/` (for example, `s3://my-bucket/my-folder/`). 
+- If the target files are in a folder, and authenticated bucket access is enabled, make sure the authenticated AWS IAM user has 
+  authenticated access to the folder as well. [Enable authenticated folder access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html#example-bucket-policies-folders).
