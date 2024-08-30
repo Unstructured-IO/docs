@@ -1,16 +1,20 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
 
 unstructured-ingest \
   onedrive \
-  --client-id "<Azure AD app client-id>" \
-  --client-cred "<Azure AD app client-secret>" \
-  --authority-url "<Authority URL, default is https://login.microsoftonline.com>" \
-  --tenant "<Azure AD tenant_id, default is 'common'>" \
-  --user-pname "<Azure AD principal name, in most cases is the email linked to the drive>" \
-  --path "<Path to start parsing files from>" \
-  --output-dir $LOCAL_FILE_OUTPUT_DIR \
-  --num-processes 2 \
-  --verbose \
-  --strategy hi_res
+    --client-id $ONEDRIVE_CLIENT_ID \
+    --client-cred $ONEDRIVE_CLIENT_CRED \
+    --authority-url $ONEDRIVE_AUTHORITY_URL \
+    --tenant $ONEDRIVE_TENANT \
+    --user-pname $ONEDRIVE_USER_PNAME \
+    --path $ONEDRIVE_PATH \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --num-processes 2 \
+    --verbose \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --strategy hi_res \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
 ```
