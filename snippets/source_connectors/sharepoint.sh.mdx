@@ -1,4 +1,4 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
 
 unstructured-ingest \
@@ -14,5 +14,7 @@ unstructured-ingest \
     --num-processes 2 \
     --path "Shared Documents" \
     --verbose \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
     --strategy hi_res
 ```
