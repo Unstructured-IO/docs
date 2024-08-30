@@ -285,11 +285,11 @@ curl http://<application-load-balancer-dns-name>/healthcheck
 
 ## Data processing
 
-For example, run one of the following, replacing:
+For example, run one of the following, setting the following environment variables to make your code more portable:
 
-- `<load-balancer-address>` with `http://`, followed by your application load balancer's DNS name, followed by `/general/v0/general`.
-- `<path/to/input>` with the path on your local machine to the files to process. If you do not have any input files available, you can download any of the ones from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in GitHub.
-- `<path/to/output>` with the path on your local machine to the processed output in JSON format.
+- Set `UNSTRUCTURED_API_URL` to `http://`, followed by your load balancer's DNS name, followed by `/general/v0/general`.
+- Set `LOCAL_FILE_INPUT_DIR` to the path on your local machine to the files for the Unstructured API to process. If you do not have any input files available, you can download any of the ones from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in GitHub.
+- Set `LOCAL_FILE_OUTPUT_DIR` to the path on your local machine for Unstructured API to send the processed output in JSON format.:
 
 import CodeExamplesAzure from '/snippets/how-to-api/azure-aws.mdx';
 
