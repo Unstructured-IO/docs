@@ -60,15 +60,7 @@ if __name__ == "__main__":
             element_dicts=result.elements
         )
 
-        # Print the elements as JSON...
-        json_elements = elements_to_json(
-            elements=dict_elements,
-            indent=2
-        )
-
-        print(json_elements)
-
-        # ...or save as JSON.
+        # Save the elements as JSON.
         elements_to_json(
             elements=dict_elements,
             indent=2,

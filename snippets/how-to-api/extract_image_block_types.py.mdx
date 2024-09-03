@@ -56,20 +56,6 @@ if __name__ == "__main__":
                 image = Image.open(io.BytesIO(image_data))
                 image.show()
 
-        # Print the elements as JSON...
-        json_elements = elements_to_json(
-            elements=dict_elements,
-            indent=2
-        )
-
-        print(json_elements)
-
-        # ...or save as JSON.
-        elements_to_json(
-            elements=dict_elements,
-            indent=2,
-            filename=local_output_filepath
-        )
     except Exception as e:
         print(e)
 ```

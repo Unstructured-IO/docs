@@ -63,7 +63,8 @@ The programmatic approach you take to get these document elements will depend on
 
         res = client.general.partition(request=req)
 
-        print(res.elements)
+        # Do something with the elements, for example:
+        save_elements_to_file(res.elements)
 
         # ...
         ```
@@ -82,9 +83,10 @@ The programmatic approach you take to get these document elements will depend on
         res = client.general.partition(request=req)
 
         for element in res.elements:
-            print(f"ID: {element["element_id"]}")
-            print(f"Text: {element["text"]}")
-            print(f"Filename: {element["metadata"]["filename"]}\n")
+            # Do something with each element, for example:
+            save_element_to_database(f"{element["element_id"]}")
+            save_element_to_database(f"{element["text"]}")
+            save_element_to_database(f"{element["metadata"]["filename"]}\n")
 
         # ...
         ```
@@ -107,15 +109,6 @@ The programmatic approach you take to get these document elements will depend on
             element_dicts=res.elements
         )
 
-        # Print as JSON...
-        json_elements = elements_to_json(
-            elements=dict_elements,
-            indent=2
-        )
-
-        print(json_elements)
-
-        # ...or save as JSON.
         elements_to_json(
             elements=dict_elements,
             indent=2,
@@ -145,7 +138,8 @@ The programmatic approach you take to get these document elements will depend on
             }
         }).then((res) => {
             if (res.statusCode == 200) {
-                console.log(res.elements)
+                // Do something with the elements, for example:
+                saveElementsToFile(res.elements)
             }
         } // ...
         ```
@@ -171,9 +165,10 @@ The programmatic approach you take to get these document elements will depend on
         }).then((res) => {
             if (res.statusCode == 200) {
                 res.elements?.forEach(element => {
-                    console.log(`ID: ${element["element_id"]}`)
-                    console.log(`Text: ${element["text"]}`)
-                    console.log(`Filename: ${element["metadata"]["filename"]}`)
+                    // Do something with each element, for example:
+                    saveElementToDatabase(`${element["element_id"]}`)
+                    saveElementToDatabase(`${element["text"]}`)
+                    saveElementToDatabase(`${element["metadata"]["filename"]}`)
                 }
             }
         } // ...
@@ -198,8 +193,6 @@ The programmatic approach you take to get these document elements will depend on
         }).then((res) => {
             if (res.statusCode == 200) {    
                 const jsonElements = JSON.stringify(res.elements, null, 2)
-       
-                console.log(jsonElements)
 
                 fs.writeFileSync(outputFilepath, jsonElements)
             }
@@ -251,9 +244,10 @@ The programmatic approach you take to get these document elements will depend on
         )
 
         for element in elements:
-            print(f"ID: {element.id}")
-            print(f"Text: {element.text}")
-            print(f"Filename: {element.metadata.filename}")
+            # Do something with each element, for example:
+            save_element_to_database(f"{element.id}")
+            save_element_to_database(f"{element.text}")
+            save_element_to_database(f"{element.metadata.filename}")
 
         ```
 
@@ -271,7 +265,7 @@ The programmatic approach you take to get these document elements will depend on
             strategy="hi_res"
         )
 
-        print(elements_to_dicts(elements))
+        elements_dicts = elements_to_dicts(elements)
         ```
 
         To serialize this list as JSON, you can use the `elements_to_json` function to convert the list of elements (`Iterable[Element]`) into a JSON-formatted string and then print or save that string. For example:
@@ -288,15 +282,11 @@ The programmatic approach you take to get these document elements will depend on
             strategy="hi_res"
         )
 
-        # Print as JSON...
         json_elements = elements_to_json(
             elements=elements,
             indent=2
         )
 
-        print(json_elements)
-
-        # ...or save as JSON.
         elements_to_json(
             elements=elements,
             indent=2,

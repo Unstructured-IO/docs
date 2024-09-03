@@ -47,12 +47,13 @@ elements = partition_via_api(
 )
 
 element_dicts = [element.to_dict() for element in elements]
-json_elements = json.dumps(element_dicts, indent=2)
 
-# Print the processed data.
-print(json_elements)
+# Print the processed data's first element only.
+print(element_dicts[0])
 
 # Write the processed data to a local file.
+json_elements = json.dumps(element_dicts, indent=2)
+
 with open("example-docs/pdf/DA-1p.pdf.json", "w") as file:
     file.write(json_elements)
 ```
