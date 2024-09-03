@@ -89,33 +89,40 @@ Follow these steps to deploy the Unstructured API service into your Azure accoun
         1. If the virtual machine is not already running from earlier, click the **Start** icon.
         2. After the virtual machine starts, click the **Connect** icon, and then click **Connect** from the drop-down list.
         3. Follow the on-screen directions for one of the available options to connect to the virtual machine and display a connected terminal.
-        5. In the connected terminal, run the following command: `sudo docker images`.
-        6. Note the following values:
-
-           - `REPOSITORY` - For example, `111111111111.dkr.ecr.us-east-2.amazonaws.com/aaaa-aaa-aaaaaaaaa`
-           - `TAG` - For example, `core-product-api-v1.1.11`
-
-        5. In the connect terminal, run the following Docker container on the instance, replacing `<repository>` with the `REPOSITORY` value and `<tag>` with the `TAG` value:
+        5. Stop the running container in the virtual machine, so that you can restart it later with the environment variables set: In the connected terminal, run the following command: `sudo docker container ls`.
+        6. Note the `CONTAINER ID` value for the running container.
+        7. Run the following command, replacing `<CONTAINER ID>` with the `CONTAINER ID` value:
 
            ```bash
-           sudo docker run -d --restart unless-stopped \
-           -p 80:5000 \
-           <repository>:<tag> 
+           sudo docker container rm --force <CONTAINER ID>
            ```
 
-           For example:
+        8. Now run the container again, setting the environment variables at the same time: Run the following command: `sudo docker image ls`.
+        9. Note the `RESPOSITORY` and `TAG` value for the Docker image.
+        10. Run the following command, replacing `<REPOSITORY>` and `<TAG>` with the `RESPOSITORY` and `TAG` values for the Docker image, and replacing 
+            `<VAR1>=<value1>`, `<VAR2>=<value2>` and so on with the environment variable name and value pairs:
+
+            ```bash
+            sudo docker run -d --restart unless-stopped \
+            -p 80:5000 \
+            -e <VAR1>=<value1> -e <VAR2>=<value2> -e <VAR3>=<value3> \
+            <REPOSITORY>:<TAG>
+            ```
+
+        11. Verify that the environment variables were set correctly: Run the following command:
+
+            ```bash
+            sudo docker container ls
+            ```
+
+        12. Note the `CONTAINER ID` value for the running container.
+        13. Run the following command, replacing `<CONTAINER ID>` with the `CONTAINER ID` value:
 
            ```bash
-           sudo docker run -d --restart unless-stopped \
-           -p 80:5000 \
-           111111111111.dkr.ecr.us-east-2.amazonaws.com/aaaa-aaa-aaaaaaaaa:core-product-api-v1.1.11
+           sudo docker exec <CONTAINER ID> bash -c 'printenv'
            ```
 
-        6. Run the following command as needed to set each envrionment variable, as needed:
-
-           ```bash
-           docker run -e <variable-name>=<variable-value> <image-name>
-           ```
+        14. The environment variables should be in the list that appears.
 
         <Note>To help manage your overall costs, you should click the **Stop** icon whenever you are not using this virtual machine to call the Unstructured API.</Note>
     </Step>
