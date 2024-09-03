@@ -81,12 +81,12 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
         }
     }).then((res: PartitionResponse) => {
         if (res.statusCode == 200) {
-            const jsonElements = JSON.stringify(res.elements, null, 2)
-       
-            // Print the processed data.
-            console.log(jsonElements);
+            // Print the processed data's first element only.
+            console.log(res.elements?.[0])
 
             // Write the processed data to a local file.
+            const jsonElements = JSON.stringify(res.elements, null, 2)
+
             fs.writeFileSync("PATH_TO_OUTPUT_FILE", jsonElements)
         }
     }).catch((e) => {
@@ -125,7 +125,7 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
         languages: ['eng']
     }).then((res: PartitionResponse) => {
         if (res.statusCode == 200) {
-            console.log(res.elements);
+            console.log(res.elements?.[0]);
         }
     }).catch((e) => {
       if (e.statusCode) {

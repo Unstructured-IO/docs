@@ -155,7 +155,7 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
             splitPdfAllowFailed: true
         }).then((res: PartitionResponse) => {
             if (res.statusCode == 200) {
-                console.log(res.elements);
+                console.log(res.elements?.[0]);
             }
         }).catch((e) => {
             console.log(e.statusCode);
@@ -307,7 +307,7 @@ For better OCR results, you can specify what languages your document is in using
             splitPdfAllowFailed: true
         }).then((res: PartitionResponse) => {
             if (res.statusCode == 200) {
-                console.log(res.elements);
+                console.log(res.elements?.[0]);
             }
         }).catch((e) => {
             console.log(e.statusCode);
@@ -456,7 +456,7 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
             splitPdfAllowFailed: true
         }).then((res: PartitionResponse) => {
             if (res.statusCode == 200) {
-                console.log(res.elements);
+                console.log(res.elements?.[0]);
             }
         }).catch((e) => {
             console.log(e.statusCode);
@@ -608,7 +608,7 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
             splitPdfAllowFailed: true
         }).then((res: PartitionResponse) => {
             if (res.statusCode == 200) {
-                console.log(res.elements);
+                console.log(res.elements?.[0]);
             }
         }).catch((e) => {
             console.log(e.statusCode);
@@ -768,7 +768,7 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
             splitPdfAllowFailed: true
         }).then((res: PartitionResponse) => {
             if (res.statusCode == 200) {
-                console.log(res.elements);
+                console.log(res.elements?.[0]);
             }
         }).catch((e) => {
             console.log(e.statusCode);

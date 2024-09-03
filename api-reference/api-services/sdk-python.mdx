@@ -77,12 +77,13 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
     try:
         res = client.general.partition(request=req)
         element_dicts = [element for element in res.elements]
-        json_elements = json.dumps(element_dicts, indent=2)
-    
-        # Print the processed data.
-        print(json_elements)
+        
+        # Print the processed data's first element only.
+        print(element_dicts[0])
 
         # Write the processed data to a local file.
+        json_elements = json.dumps(element_dicts, indent=2)
+
         with open("PATH_TO_OUTPUT_FILE", "w") as file:
             file.write(json_elements)
     except Exception as e:
