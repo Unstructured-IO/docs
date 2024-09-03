@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured_ingest.connector.onedrive import OneDriveAccessConfig, SimpleOneDriveConfig
@@ -16,15 +16,16 @@ if __name__ == "__main__":
         partition_config=PartitionConfig(
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
             strategy="hi_res",
         ),
         connector_config=SimpleOneDriveConfig(
-            access_config=OneDriveAccessConfig(client_credential="<Azure AD app client-id>"),
-            client_id="<Azure AD app client-id>",
-            authority_url="<Authority URL, default is https://login.microsoftonline.com>",
-            tenant="<Azure AD tenant_id, default is 'common'>",
-            user_pname="<Azure AD principal name, in most cases is the email linked to the drive>",
-            path="<Path to start parsing files from>",
+            access_config=OneDriveAccessConfig(client_cred=os.getenv("ONEDRIVE_CLIENT_CRED")),
+            path=os.getenv("ONEDRIVE_PATH"),
+            client_id=os.getenv("ONEDRIVE_CLIENT_ID"),
+            tenant=os.getenv("ONEDRIVE_TENANT"),
+            authority_url=os.getenv("ONEDRIVE_AUTHORITY_URL"),
+            user_pname=os.getenv("ONEDRIVE_USER_PNAME"),
             recursive=False,
         ),
     )
