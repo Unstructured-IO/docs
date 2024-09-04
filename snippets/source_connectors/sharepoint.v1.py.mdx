@@ -1,4 +1,6 @@
-```python Python
+```python Python Ingest v1
+import os
+
 from unstructured_ingest.connector.sharepoint import (
     SharepointAccessConfig,
     SharepointPermissionsConfig,
@@ -16,24 +18,23 @@ if __name__ == "__main__":
         ),
         read_config=ReadConfig(),
         partition_config=PartitionConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
             strategy="hi_res",
         ),
         connector_config=SimpleSharepointConfig(
             access_config=SharepointAccessConfig(
-                client_cred="<Microsoft Sharepoint app client-secret>",
+                client_cred=os.getenv("SHAREPOINT_APP_CLIENT_SECRET"),
             ),
             permissions_config=SharepointPermissionsConfig(
-                application_id="<Microsoft Graph API application id>",
-                client_cred="<Microsoft Graph API application credentials>",
-                tenant="<e.g https://contoso.onmicrosoft.com to process "
-                "permission info within tenant>",
+                application_id=os.getenv("SHAREPOINT_APP_PERMISSIONS_CLIENT_ID"),
+                client_cred=os.getenv("SHAREPOINT_APP_PERMISSIONS_CLIENT_SECRET"),
+                tenant=os.getenv("SHAREPOINT_APP_TENANT_ID"),
             ),
-            client_id="<Microsoft Sharepoint app client-id>",
-            site="<e.g https://contoso.sharepoint.com to process all sites within tenant>",
-            # Credentials to process data about permissions (rbac) within the tenant
-            # Flag to process only files within the site(s)
+            client_id=os.getenv("SHAREPOINT_APP_CLIENT_ID"),
+            site=os.getenv("SHAREPOINT_SITE"),
             files_only=True,
-            path="Shared Documents",
+            path=os.getenv("SHAREPOINT_PATH"),
         ),
     )
     runner.run()
