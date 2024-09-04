@@ -3,18 +3,23 @@
 
 unstructured-ingest \
   sharepoint \
-    --client-id "<Microsoft Sharepoint app client-id>" \
-    --client-cred "<Microsoft Sharepoint app client-secret>" \
-    --site "<e.g https://contoso.sharepoint.com or https://contoso.admin.sharepoint.com to process all sites within tenant>" \
-    --permissions-application-id "<Microsoft Graph API application id, to process per-file access permissions>" \
-    --permissions-client-cred "<Microsoft Graph API application credentials, to process per-file access permissions>" \
-    --permissions-tenant "<e.g https://contoso.onmicrosoft.com (tenant URL) to process per-file access permissions>" \
-    --files-only "Flag to process only files within the site(s)" \
+    --client-id $SHAREPOINT_APP_CLIENT_ID \
+    --client-cred $SHAREPOINT_APP_CLIENT_SECRET \
+    --site $SHAREPOINT_SITE \
+    --permissions-application-id $SHAREPOINT_APP_PERMISSIONS_CLIENT_ID \
+    --permissions-client-cred $SHAREPOINT_APP_PERMISSIONS_CLIENT_SECRET \
+    --permissions-tenant $SHAREPOINT_APP_TENANT_ID \
+    --permissions-authority-url https://login.microsoftonline.com \
+    --no-omit-files \
+    --omit-pages \
+    --omit-lists \
     --output-dir $LOCAL_FILE_OUTPUT_DIR \
     --num-processes 2 \
-    --path "Shared Documents" \
+    --path $SHAREPOINT_PATH \
     --verbose \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
-    --strategy hi_res
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --strategy hi_res \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
 ```

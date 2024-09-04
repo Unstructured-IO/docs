@@ -8,9 +8,20 @@ The SharePoint prerequisites:
 
   [Learn more](https://learn.microsoft.com/microsoft-365/community/query-string-url-tricks-sharepoint-m365).
 
-- The path from which to start parsing files. If the connector is to process all sites within the tenant, this filter will be applied to all site document libraries. The default is `Shared Documents`.
-- The application (client) ID, along with its correpsonding directory (tenant) ID and client secret with access permissions to the SharePoint instance. [Get a client ID and credential](https://github.com/vgrem/Office365-REST-Python-Client/wiki/How-to-connect-to-SharePoint-Online-and-and-SharePoint-2013-2016-2019-on-premises--with-app-principal) 
-  and [set access permissions](https://tsmatz.wordpress.com/2016/10/07/application-permission-with-v2-endpoint-and-microsoft-graph/).
+- The path in the SharePoint site from which to start parsing files. If the connector is to process all sites within the tenant, this filter will be applied to all site document libraries. The default is `Shared Documents`.
+- A SharePoint application (client) ID, along with its client secret with access permissions to the SharePoint instance. [Get a client ID and client secret, and set access permissions](https://github.com/vgrem/Office365-REST-Python-Client/wiki/How-to-connect-to-SharePoint-Online-and-and-SharePoint-2013-2016-2019-on-premises--with-app-principal).
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/Tn-jB7vdnOE"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
+
+- To process per-file access permissions, an associated Azure application (client) ID, along with its correpsonding directory (tenant) ID and client secret with access to the backing Azure account for SharePoint. [Get a client ID, tenant ID, and client secret, and set access permissions](https://tsmatz.wordpress.com/2016/10/07/application-permission-with-v2-endpoint-and-microsoft-graph/).
 
   <iframe
   width="560"
