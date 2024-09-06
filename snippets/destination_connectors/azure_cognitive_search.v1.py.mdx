@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured_ingest.connector.azure_cognitive_search import (
@@ -27,7 +27,7 @@ def get_writer() -> Writer:
             access_config=AzureCognitiveSearchAccessConfig(key=os.getenv("AZURE_SEARCH_API_KEY")),
             endpoint=os.getenv("AZURE_SEARCH_ENDPOINT"),
         ),
-        write_config=AzureCognitiveSearchWriteConfig(index="utic-test-ingest-fixtures-output"),
+        write_config=AzureCognitiveSearchWriteConfig(index=os.getenv("AZURE_SEARCH_INDEX")),
     )
 
 # Chunking and embedding are optional.
@@ -45,6 +45,9 @@ if __name__ == "__main__":
         ),
         read_config=ReadConfig(),
         partition_config=PartitionConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
             strategy="hi_res",
         ),
         chunking_config=ChunkingConfig(chunk_elements=True),
