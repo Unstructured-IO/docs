@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured_ingest.connector.salesforce import SalesforceAccessConfig, SimpleSalesforceConfig
@@ -16,6 +16,7 @@ if __name__ == "__main__":
         partition_config=PartitionConfig(
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
             strategy="hi_res",
         ),
         connector_config=SimpleSalesforceConfig(
@@ -23,7 +24,7 @@ if __name__ == "__main__":
                 consumer_key=os.getenv("SALESFORCE_CONSUMER_KEY"),
             ),
             username=os.getenv("SALESFORCE_USERNAME"),
-            private_key=os.getenv("SALESFORCE_PRIVATE_KEY_PATH"),
+            private_key=os.getenv("SALESFORCE_PRIVATE_KEY"),
             categories=["EmailMessage", "Account", "Lead", "Case", "Campaign"],
             recursive=True,
         ),
