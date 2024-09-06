@@ -7,7 +7,8 @@ unstructured-ingest \
   google-drive \
     --download-dir $LOCAL_FILE_DOWNLOAD_DIR \
     --drive-id $GOOGLE_DRIVE_FOLDER_ID \
-    --service-account-key $GCP_SERVICE_ACCOUNT_KEY \
+    --service-account-key-path $GCP_SERVICE_ACCOUNT_KEY_FILEPATH \ # Or
+    --service-account-key $GCP_SERVICE_ACCOUNT_KEY_STRING \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
     --partition-endpoint $UNSTRUCTURED_API_URL \
