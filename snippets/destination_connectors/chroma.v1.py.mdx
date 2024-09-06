@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured_ingest.connector.chroma import (
@@ -25,11 +25,11 @@ def get_writer() -> Writer:
     return ChromaWriter(
         connector_config=SimpleChromaConfig(
             access_config=ChromaAccessConfig(),
-            host="localhost",
-            port=8000,
-            collection_name="elements",
-            tenant="default_tenant",
-            database="default_database",
+            host=os.getenv("CHROMA_HOST"),
+            port=os.getenv("CHROMA_PORT"),
+            collection_name=os.getenv("CHROMA_COLLECTION"),
+            tenant=os.getenv("CHROMA_TENANT"),
+            database=os.getenv("CHROMA_DATABASE"),
         ),
         write_config=ChromaWriteConfig(),
     )
@@ -49,6 +49,9 @@ if __name__ == "__main__":
         ),
         read_config=ReadConfig(),
         partition_config=PartitionConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
             strategy="hi_res",
         ),
         chunking_config=ChunkingConfig(chunk_elements=True),
