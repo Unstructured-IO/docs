@@ -49,7 +49,7 @@ if __name__ == "__main__":
             user=os.getenv("MILVUS_USER"),
             db_name=os.getenv("MILVUS_DB")
         ),
-        stager_config=MilvusUploadStagerConfig(),
+        stager_config=MilvusUploadStagerConfig(fields_to_include=["type", "element_id", "text", "embeddings"]),
         uploader_config=MilvusUploaderConfig(collection_name=os.getenv("MILVUS_COLLECTION"))
     ).run()
 ```
