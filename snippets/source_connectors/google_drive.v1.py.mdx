@@ -24,7 +24,7 @@ if __name__ == "__main__":
         ),
         connector_config=SimpleGoogleDriveConfig(
             access_config=GoogleDriveAccessConfig(
-                service_account_key=os.getenv("GCP_SERVICE_ACCOUNT_KEY")
+                service_account_key=os.getenv("GCP_SERVICE_ACCOUNT_KEY_STRING")
             ),
             recursive=True,
             drive_id=os.getenv("GOOGLE_DRIVE_FOLDER_ID"),

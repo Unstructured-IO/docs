@@ -23,7 +23,8 @@ if __name__ == "__main__":
         downloader_config=GoogleDriveDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
         source_connection_config=GoogleDriveConnectionConfig(
             access_config=GoogleDriveAccessConfig(
-                service_account_key=os.getenv("GCP_SERVICE_ACCOUNT_KEY")
+                service_account_key_path=os.getenv("GCP_SERVICE_ACCOUNT_KEY_FILEPATH"), # Or
+                service_account_key=os.getenv("GCP_SERVICE_ACCOUNT_KEY_STRING")
             ),
             drive_id=os.getenv("GOOGLE_DRIVE_FOLDER_ID"),
         ),
