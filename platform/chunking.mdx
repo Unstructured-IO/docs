@@ -1,0 +1,177 @@
+---
+title: Chunking
+---
+
+After partitioning, _chunking_ rearranges the resulting document elements into manageable "chunks" in order to store data more efficiently. You can 
+specify if and how Unstructured chunks those elements, based on your intended end use. 
+This is especially critical for retrieval augmented generation (RAG), where LLMs typicaly have maximum 
+[context window](https://simple.ai/p/tokens-and-context-windows) lengths for performing operations such as a 
+[similarity search](https://www.pinecone.io/learn/what-is-similarity-search/).
+
+If you choose something other than **None** for **Chunker Type** in the **Chunk** section of a workflow, Unstructured will attempt to chunk 
+the partitioned elements. 
+To determine the best **Max Characters** length, see the documentation for the LLM that you want to use.
+
+During chunking, Unstructured uses a basic chunking strategy that attempts to combine two or more consecutive text elements 
+into each chunk that fits together within **Max Characters**. You can further control this behavior with by-title, by-page, or by-similarity chunking strategies. 
+In all cases, Unstructured will only split individual elements if they exceed the specified **Max Characters** length. 
+After chunking, you will have document elements of only the following types:
+
+- `CompositeElement`: Any text element will become a `CompositeElement` after chunking. A composite element can be a
+combination of two or more original text elements that together fit within the **Max Characters** length. It can also be a single
+element that doesn't leave room in the chunk for any others but fits by itself. Or it can be a fragment of an original
+text element that was too big to fit in one chunk and required splitting.
+- `Table`: A table element is not combined with other elements, and if it fits within **Max Characters** it will remain as is.
+- `TableChunk`: Large tables that exceed **Max Characters** are split into special `TableChunk` elements.
+
+Here are a few examples:
+
+```json
+{
+    "type": "CompositeElement",
+    "element_id": "3e891e70121efac5f8374e4f1d41f25c",
+    "text": "PORTABLE DOCUMENT FORMAT (PDF) SPECIFICATIONS...<full-content-redacted-for-brevity>...",
+    "metadata": {
+      "filetype": "application/pdf",
+      "languages": [
+        "eng"
+      ],
+      "page_number": 1,
+      "orig_elements": "eJy...<full-content-redacted-for-brevity>...tY0=",
+      "filename": "Portable-Document-Format-Specifications.pdf"
+    }
+}
+```
+
+```json
+{
+    "type": "Table",
+    "element_id": "2abca97d9f7dde6557cda4731f5e1d01",
+    "text": "Date 2005-04-08 2008-06-04 2011-12-20 2012-1-13 2014-9-26 2016-9-14...<full-content-redacted-for-brevity>...",
+    "metadata": {
+      "text_as_html": "<table><thead><tr><th>Date</th><th>Version</th><th>Summary of Revisions</th></tr></thead><tbody>...<full-content-redacted-for-brevity>...",
+      "filetype": "application/pdf",
+      "languages": [
+        "eng"
+      ],
+      "page_number": 3,
+      "orig_elements": "eJz...<full-content-redacted-for-brevity>...r8=",
+      "filename": "Portable-Document-Format-Specifications.pdf"
+    }
+}
+```
+
+The following sections provides information about the available chunking strategies and their settings. 
+
+## Basic chunking strategy
+
+The basic chunking strategy uses only **Max Characters** and **New After N Characters** to combine sequential elements to maximally fill each chunk. 
+This strategy does not use section boundaries, page boundaries, or content similarities to determine the chunks' contents.
+
+To use this chunking strategy, choose **Basic** for **Chunker Type** in the **Chunk** section of a workflow.
+
+## Chunk By Title strategy
+
+The by-title chunking strategy attempts to preserve section boundaries when determining the chunks' contents. 
+A single chunk should not contain text that occurred in two different sections. When a new section starts, the existing 
+chunk is closed and a new one is started, even if the next element would fit in the prior chunk.
+
+To use this chunking strategy, choose **Chunk By Title** for **Chunker Type** in the **Chunk** section of a workflow.
+
+## Chunk By Page strategy
+
+The by-page chunking strategy attempts to preserve page boundaries when determining the chunks' contents. 
+A single chunk should not contain text that occurred in two different page. When a new page starts, the existing 
+chunk is closed and a new one is started, even if the next element would fit in the prior chunk.
+
+To use this chunking strategy, choose **Chunk By Page** for **Chunker Type** in the **Chunk** section of a workflow.
+
+## Chunk By Similarity strategy
+
+The by-similarity chunking strategy uses the 
+[sentence-transformers/multi-qa-mpnet-base-dot-v1](https://huggingface.co/sentence-transformers/multi-qa-mpnet-base-dot-v1) embedding model 
+to identify topically similar sequential elements and combines them into chunks.
+
+As with the other chunking strategies, chunks will never exceed the absolute maximum chunk size set by **Max Characters**. For this reason,
+not all elements that share a topic will necessarily appear in the same chunk. However, with this strategy you can
+guarantee that two elements with low similarity will not be combined in a single chunk.
+
+To use this chunking strategy, choose **Chunk By Similarity** for **Chunker Type** in the **Chunk** section of a workflow.
+
+You can control the level of topic similarity you require for elements to have by setting [Similarity Threshold](#similarity-threshold).
+
+## Max Characters setting
+
+Specifies the absolute maximum number of characters in a chunk.
+
+To specify this setting, enter a number into the **Max Characters** field in the **Chunk** section of a workflow.
+
+This setting applies to all of the chunking strategies: **Basic**, **Chunk By Title**, **Chunk By Page**, and **Chunk By Similarity**.
+
+## Combine Text Under N Characters setting
+
+Combines elements from a section into a chunk until a section reaches a length of this many characters.
+
+To specify this setting, enter a number into the **Combine Text Under N Characters** field in the **Chunk** section of a workflow.
+
+This setting applies only to the chunking strategy **Chunk By Title**.
+
+## Include Original Elements setting
+
+If this box is checked, the elements that were used to form a chunk appear in the `metadata` field's `orig_elements` field for that chunk.
+
+The **Include Original Elements** check box is in the **Chunk** section of a workflow.
+
+This setting applies to all of the chunking strategies: **Basic**, **Chunk By Title**, **Chunk By Page**, and **Chunk By Similarity**.
+
+## Multipage Sections setting
+
+If this box is checked, this allows sections to span multiple pages.
+
+The **Multipage Sections** check box is in the **Chunk** section of a workflow.
+
+This setting applies only to the chunking strategy **Chunk By Title**.
+
+## New After N Characters setting
+
+Closes new sections after reaching a length of this many characters. This is an approximate limit.
+
+To specify this setting, enter a number into the **New After N Characters** field in the **Chunk** section of a workflow.
+
+This setting applies only to the chunking strategies **Basic**, **Chunk By Title**, and **Chunk By Page**.
+
+## Overlap setting
+
+Applies a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting.
+
+To specify this setting, enter a number into the **Overlap** field in the **Chunk** section of a workflow.
+
+This setting applies only to the chunking strategies **Basic**, **Chunk By Title**, and **Chunk By Page**.
+
+## Overlap All setting
+
+If this box is checked, applies overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units.
+
+The **Overlap All** check box is in the **Chunk** section of a workflow.
+
+This setting applies only to the chunking strategies **Basic**, **Chunk By Title**, and **Chunk By Page**.
+
+## Similarity Threshold setting
+
+Specifies the minimum similarity that text in consecutive elements must have to be included in the same chunk. 
+This must be a value between `0.0` and `1.0`, exclusive (`0.01` to `0.99`). The default is `0.5` if not otherwise specified.
+
+To specify this setting, enter a number into the **Similarity Threshold** field in the **Chunk** section of a workflow.
+
+This setting applies only to the chunking strategy **Chunk By Similarity**.
+
+## Learn more
+
+<Icon icon="blog" />&nbsp;&nbsp;[Chunking for RAG: best practices](https://unstructured.io/blog/chunking-for-rag-best-practices).
+
+
+
+
+
+
+
