@@ -26,9 +26,6 @@ Let's start with a simple example in which you send a PDF file (`*.pdf`) to part
   -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
   -F 'files=@sample-docs/report.pdf' \
   -F 'strategy=hi_res' \
-  -F 'split-pdf-page=True' \
-  -F 'split-pdf-allow-failed=True' \
-  -F 'split-pdf-concurrency-level=15' \
   -o 'sample-docs/report.json'
 ```
 
