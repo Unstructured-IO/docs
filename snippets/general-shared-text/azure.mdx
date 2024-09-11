@@ -34,7 +34,11 @@ The Azure Storage account prerequisites:
   allowfullscreen
   ></iframe>
 
-- The Azure Storage remote URL, using the format `abfs://<container-name>@<storage-account-name>.blob.core.windows.net/<path/to/file/or/folder/in/container/as/needed>`
+- The Azure Storage remote URL, using the format `az://<container-name>/<path/to/file/or/folder/in/container/as/needed>`
+
+  For example, if your container is named `my-container`, and there is a folder in the container named `my-folder`, the 
+  Azure Storage remote URL would be `az://my-container/my-folder/`.
+
 - An SAS token (recommended), access key, or connection string for the Azure Storage account.  [Create an SAS token (recommended)](https://learn.microsoft.com/azure/ai-services/translator/document-translation/how-to-guides/create-sas-tokens). [Get an access key](https://learn.microsoft.com/azure/storage/common/storage-account-keys-manage#view-account-access-keys). [Get a connection string](https://learn.microsoft.com/azure/storage/common/storage-configure-connection-string#configure-a-connection-string-for-an-azure-storage-account).
 
   Create an SAS token (recommended):
