@@ -20,7 +20,7 @@ from unstructured_ingest.v2.processes.connectors.local import LocalUploaderConfi
 if __name__ == "__main__":
     Pipeline.from_configs(
         context=ProcessorConfig(),
-        indexer_config=AzureIndexerConfig(remote_url=os.getenv("AZURE_STORAGE_ACCOUNT_URL")),
+        indexer_config=AzureIndexerConfig(remote_url=os.getenv("AZURE_STORAGE_REMOTE_URL")),
         downloader_config=AzureDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
         source_connection_config=AzureConnectionConfig(
             access_config=AzureAccessConfig(
