@@ -13,7 +13,7 @@ def get_chunked_elements(input_json_file_path: str) -> List[Dict[str, Any]]:
     # a transposed version of the returned elements. 
     # For instance, we just want to capture each element's ID,
     # the chunk's text, and the chunk's associated elements in context.
-    orig_elemenents_dict: List[Dict[str, Any]] = []
+    orig_elements_dict: List[Dict[str, Any]] = []
 
     with open(input_json_file_path, 'r') as file:
         file_elements = json.load(file)
@@ -24,13 +24,13 @@ def get_chunked_elements(input_json_file_path: str) -> List[Dict[str, Any]]:
             # ...get the chunk's associated elements in context...
             orig_elements = extract_orig_elements(element["metadata"]["orig_elements"])
             # ...and then transpose it and other associated fields into a separate dictionary.
-            orig_elemenents_dict.append({
+            orig_elements_dict.append({
                 "element_id": element["element_id"],
                 "text": element["text"],
                 "orig_elements": json.loads(orig_elements)
             })
     
-    return orig_elemenents_dict
+    return orig_elements_dict
 
 if __name__ == "__main__":
     # Source file: https://www.fda.gov/files/drugs/published/Portable-Document-Format-Specifications.pdf
