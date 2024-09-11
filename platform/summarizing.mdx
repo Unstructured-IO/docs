@@ -1,0 +1,85 @@
+---
+title: Summarizing
+---
+
+After partitioning and chunking, _summarizing_ generates text-based summaries of images and tables. 
+This summarization is done by using the [GPT-4o](https://openai.com/index/hello-gpt-4o/) or 
+[Claude 3.5 Sonnet](https://www.anthropic.com/news/claude-3-5-sonnet) models. 
+
+Here is an example of the output of image summarization using GPT-4o. Note specifically the `text` field that is added. 
+Line breaks have been inserted here for readability. The output will not contain these line breaks. 
+
+```json
+{
+    "type": "Image",
+    "element_id": "3303aa13098f5a26b9845bd18ee8c881",
+    "text": "{\n  \"type\": \"graph\",\n  \"description\": \"The graph shows 
+        the relationship between Potential (V) and Current Density (A/cm2). 
+        The x-axis is labeled 'Current Density (A/cm2)' and ranges from 
+        0.0000001 to 0.1. The y-axis is labeled 'Potential (V)' and ranges 
+        from -2.5 to 1.5. There are six different data series represented 
+        by different colors: blue (10g), red (4g), green (6g), purple (2g), 
+        orange (Control), and light blue (8g). The data points for each series 
+        show how the potential changes with varying current density.\"\n}",
+    "metadata": {
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 1,
+        "image_base64": "/9j...<full results omitted for brevity>...Q==",
+        "image_mime_type": "image/jpeg",
+        "filename": "7f239e1d4ef3556cc867a4bd321bbc41.pdf",
+        "data_source": {}
+    }
+}
+```
+
+Here is an example of the output of table summarization using GPT-4o. Note specifically the `text` field that is added.
+Line breaks have been inserted here for readability. The output will not contain these line breaks.
+
+```json
+{
+    "type": "Table",
+    "element_id": "5713c0e90194ac7f0f2c60dd614bd24d",
+    "text": "The table consists of 6 rows and 7 columns. The columns represent 
+        inhibitor concentration (g), bc (V/dec), ba (V/dec), Ecorr (V), icorr 
+        (A/cm\u00b2), polarization resistance (\u03a9), and corrosion rate 
+        (mm/year). As the inhibitor concentration increases, the corrosion 
+        rate generally decreases, indicating the effectiveness of the 
+        inhibitor. Notably, the polarization resistance increases with higher 
+        inhibitor concentrations, peaking at 6 grams before slightly 
+        decreasing. This suggests that the inhibitor is most effective at 
+        6 grams, significantly reducing the corrosion rate and increasing 
+        polarization resistance. The data provides valuable insights into the 
+        optimal concentration of the inhibitor for corrosion prevention.",
+    "metadata": {
+        "text_as_html": "<table>...<full results omitted for brevity>...</table>",
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 1,
+        "image_base64": "/9j...<full results omitted for brevity>...//Z",
+        "image_mime_type": "image/jpeg",
+        "filename": "7f239e1d4ef3556cc867a4bd321bbc41.pdf",
+        "data_source": {}
+    }
+}
+```
+
+## Summarize images and tables
+
+To summarize images and tables, in the **Transform** section of a workflow, specify the following:
+
+For image summarization, in the **Image summarization** area, choose one of the following:
+
+- **None**: No image summarization. This is the default.
+- **GPT-4o**: Use GPT-4o to summarize images. [Learn more](https://openai.com/index/hello-gpt-4o/).
+- **Claude 3.5 Sonnet**: Use Claude 3.5 Sonnet to summarize images. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+
+For table summarization, in the **Table summarization** area, choose one of the following:
+
+- **None**: No table summarization. This is the default.
+- **GPT-4o**: Use GPT-4o to summarize tables. [Learn more](https://openai.com/index/hello-gpt-4o/).
+- **Claude 3.5 Sonnet**: Use Claude 3.5 Sonnet to summarize tables. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
