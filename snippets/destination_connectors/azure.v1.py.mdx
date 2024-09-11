@@ -24,7 +24,7 @@ def get_writer() -> Writer:
     return AzureWriter(
         connector_config=SimpleAzureBlobStorageConfig(
             access_config=AzureAccessConfig(account_name=os.getenv("AZURE_STORAGE_ACCOUNT_NAME")),
-            remote_url=os.getenv("AZURE_STORAGE_ACCOUNT_URL"),
+            remote_url=os.getenv("AZURE_STORAGE_REMOTE_URL"),
         ),
         write_config=AzureWriteConfig(),
     )

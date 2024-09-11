@@ -63,9 +63,6 @@ curl -X 'POST' \
     -H 'Content-Type: multipart/form-data' \
     -F 'files=@sample-docs/layout-parser-paper-with-table.jpg' \
     -F 'strategy=hi_res' \
-    -F 'split-pdf-page True' \
-    -F 'split-pdf-allow-failed True' \
-    -F 'split-pdf-concurrency-level 15' \
     | jq -C . | less -R
 
 ```

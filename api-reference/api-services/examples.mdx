@@ -90,10 +90,7 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
         -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
         -F 'files=@sample-docs/layout-parser-paper.pdf' \
         -F 'strategy=hi_res' \
-        -F 'hi_res_model_name=layout_v1.1.0' \
-        -F 'split-pdf-page True' \
-        -F 'split-pdf-allow-failed True' \
-        -F 'split-pdf-concurrency-level 15'
+        -F 'hi_res_model_name=layout_v1.1.0'
         ```
     </Accordion>
     <Accordion title="Python SDK">
@@ -242,10 +239,7 @@ For better OCR results, you can specify what languages your document is in using
         -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
         -F 'files=@sample-docs/korean.png' \
         -F 'strategy=ocr_only' \
-        -F 'languages=kor' \
-        -F 'split-pdf-page True' \
-        -F 'split-pdf-allow-failed True' \
-        -F 'split-pdf-concurrency-level 15'
+        -F 'languages=kor'
         ```
     </Accordion>
     <Accordion title="Python SDK">
@@ -391,10 +385,7 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
         -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
         -F 'files=@sample-docs/layout-parser-paper.pdf' \
         -F 'coordinates=true' \
-        -F 'strategy hi_res' \
-        -F 'split-pdf-page True' \
-        -F 'split-pdf-allow-failed True' \
-        -F 'split-pdf-concurrency-level 15'
+        -F 'strategy=hi_res'
         ```
     </Accordion>
     <Accordion title="Python SDK">
@@ -543,10 +534,7 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
         -H 'Content-Type: multipart/form-data' \
         -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
         -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
-        -F 'unique_element_ids=true' \
-        -F 'split-pdf-page True' \
-        -F 'split-pdf-allow-failed True' \
-        -F 'split-pdf-concurrency-level 15'
+        -F 'unique_element_ids=true'
         ```
     </Accordion>
     <Accordion title="Python SDK">
@@ -701,10 +689,7 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
         -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
         -F 'chunking_strategy=by_title' \
         -F 'max_characters=1024' \
-        -F 'strategy hi_res' \
-        -F 'split-pdf-page True' \
-        -F 'split-pdf-allow-failed True' \
-        -F 'split-pdf-concurrency-level 15'
+        -F 'strategy=hi_res'
         ```
     </Accordion>
     <Accordion title="Python SDK">
