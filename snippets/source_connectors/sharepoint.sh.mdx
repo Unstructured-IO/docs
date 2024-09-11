@@ -6,16 +6,16 @@ unstructured-ingest \
     --client-id $SHAREPOINT_APP_CLIENT_ID \
     --client-cred $SHAREPOINT_APP_CLIENT_SECRET \
     --site $SHAREPOINT_SITE \
+    --path $SHAREPOINT_PATH \
     --permissions-application-id $SHAREPOINT_APP_PERMISSIONS_CLIENT_ID \
     --permissions-client-cred $SHAREPOINT_APP_PERMISSIONS_CLIENT_SECRET \
-    --permissions-tenant $SHAREPOINT_APP_TENANT_ID \
+    --permissions-tenant $SHAREPOINT_APP_PERMISSIONS_TENANT \
     --permissions-authority-url https://login.microsoftonline.com \
     --no-omit-files \
     --omit-pages \
     --omit-lists \
     --output-dir $LOCAL_FILE_OUTPUT_DIR \
     --num-processes 2 \
-    --path $SHAREPOINT_PATH \
     --verbose \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
