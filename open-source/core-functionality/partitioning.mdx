@@ -142,7 +142,7 @@ For more information about the `partition_csv` function, you can check the [sour
 
 ## `partition_doc`
 
-The `partition_doc` partitioning function pre-processes Microsoft Word documents saved in the `.doc` format. This partition function uses a combination of the styling information in the document and the structure of the text to determine the type of a text element. The `partition_doc` can take a filename or file-like object as input. `partiton_doc` uses `libreoffice` to convert the file to `.docx` and then calls `partition_docx`. Ensure you have `libreoffice` installed before using `partition_doc`.
+The `partition_doc` partitioning function pre-processes Microsoft Word documents saved in the `.doc` format. This partition function uses a combination of the styling information in the document and the structure of the text to determine the type of a text element. The `partition_doc` can take a filename or file-like object as input. `partition_doc` uses `libreoffice` to convert the file to `.docx` and then calls `partition_docx`. Ensure you have `libreoffice` installed before using `partition_doc`.
 
 Examples:
 
@@ -330,7 +330,7 @@ The `"auto"` strategy will choose the partitioning strategy based on document ch
 
 The `"hi_res"` strategy will identify the layout of the document using `detectron2_onnx`. The advantage of “hi\_res” is that it uses the document layout to gain additional information about document elements. We recommend using this strategy if your use case is highly sensitive to correct classifications for document elements. If `detectron2_onnx` is not available, the `"hi_res"` strategy will fall back to the `"ocr_only"` strategy.
 
-The `"ocr_only"` strategy runs the document through Tesseract for OCR and then runs the raw text through `partition_text`. Currently, `"hi_res"` has difficulty ordering elements for documents with multiple columns. If you have a document with multiple columns that does not have extractable text, we recoomend using the `"ocr_only"` strategy.
+The `"ocr_only"` strategy runs the document through Tesseract for OCR and then runs the raw text through `partition_text`. Currently, `"hi_res"` has difficulty ordering elements for documents with multiple columns. If you have a document with multiple columns that does not have extractable text, we recommend using the `"ocr_only"` strategy.
 
 It is helpful to use `"ocr_only"` instead of `"hi_res"` if `detectron2_onnx` does not detect a text element in the image. To run example below, ensure you have the Korean language pack for Tesseract installed on your system.
 
@@ -757,7 +757,7 @@ For more information about the `partition_xlsx` function, you can check the [sou
 
 ## `partition_xml`
 
-The `partition_xml` function processes XML documents. If `xml_keep_tags=False`, the function only returns the text attributes from the tags. You can use `xml_path` in conjuntion with `xml_keep_tags=False` to restrict the text extraction to specific tags. If `xml_keep_tags=True`, the function returns tag information in addition to tag text. `xml_keep_tags` is `False` be default.
+The `partition_xml` function processes XML documents. If `xml_keep_tags=False`, the function only returns the text attributes from the tags. You can use `xml_path` in conjunction with `xml_keep_tags=False` to restrict the text extraction to specific tags. If `xml_keep_tags=True`, the function returns tag information in addition to tag text. `xml_keep_tags` is `False` be default.
 
 ```python
 from unstructured.partition.xml import partition_xml

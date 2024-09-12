@@ -25,7 +25,7 @@ The following 3-minute video shows how to use the Unstructured Ingest Python lib
 ## Ingest flow
 
 The Unstructured ingest flow is similar to an extract, transform and load (ETL) data pipeline. 
-Because of this, a customer-defined implementation of the Unstructured ingest flow is sometimes referred to an an _ingest pipeline_ or simply a _pipline_. 
+Because of this, a customer-defined implementation of the Unstructured ingest flow is sometimes referred to as an _ingest pipeline_ or simply a _pipeline_. 
 An Unstructured ingest pipeline contains the following logical steps:
 
 <Steps>
@@ -35,7 +35,7 @@ An Unstructured ingest pipeline contains the following logical steps:
         For example, this could include information such as the path to the files to be analyzed.
 
         - For the Unstructured CLI, you can control this behavior, where available for a connector, through its `--input-path` command option.
-        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior, where available for a connector, through its `<Prefix>IndexerConfig` class (where `<Prefex>` represents the connector provider's name, such as `Azure` for Azure.)
+        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior, where available for a connector, through its `<Prefix>IndexerConfig` class (where `<Prefix>` represents the connector provider's name, such as `Azure` for Azure.)
     </Step>
     <Step title="Post-Index Filter">
         After indexing, you might not want to download everything that was indexed.
@@ -47,7 +47,7 @@ An Unstructured ingest pipeline contains the following logical steps:
     <Step title="Download">
         Using the information generated from the indexer and the filter, downloads the content as files on the local file system for processing. This may require manipulation of the data to prepare it for partitioning.
 
-        For example, this could incude information such as the path to a local directory to download files to.
+        For example, this could include information such as the path to a local directory to download files to.
     
         - For the Unstructured CLI, you can control this behavior through a connector's `--download-dir` command option.
         - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through a connector's `<Prefix>DownloaderConfig` class.
