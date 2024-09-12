@@ -5,9 +5,7 @@ title: Set embedding behavior
 <Note>
    The following information applies only to the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli) and the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library).
 
-   For the Unstructured open-source library, see [Embedding](/open-source/core-functionality/embedding) instead.
-   
-   The Unstructured SDKs for Python and JavaScript/TypeScript do not support this functionality.
+   The Unstructured SDKs for Python and JavaScript/TypeScript, and the Unstructured open-source library, do not support this functionality.
 </Note>
 
 ## Concepts
@@ -51,6 +49,7 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
    - `langchain-openai` for [OpenAI](https://openai.com/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/openai/).
    - `langchain-vertexai` for [Google Vertex AI PaLM](https://cloud.google.com/vertex-ai/docs/generative-ai/learn/overview). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/google_vertex_ai_palm/).
    - `langchain-voyageai` for [Voyage AI](https://www.voyageai.com/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/voyageai/).
+   - `mixedbread-ai` for [Mixedbread](https://www.mixedbread.ai/). [Learn more](https://www.mixedbread.ai/docs/embeddings/overview).
    - `octoai` for [Octo AI](https://octo.ai/). [Learn more](https://octo.ai/docs/text-gen-solution/using-unstructured-io-for-embedding-documents).
 
 2. Run the following command to install the required Python pacakge for the embedding provider:
@@ -60,6 +59,7 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
    - For `langchain-openai`, run `pip install "unstructured-ingest[openai]"`.
    - For `langchain-vertexai`, run `pip install "unstructured-ingest[embed-vertexai]"`.
    - For `langchain-voyageai`, run `pip install "unstructured-ingest[embed-voyageai]"`.
+   - For `mixedbread-ai`, run `pip install "unstructured-ingest[embed-mixedbreadai]"`.
    - For `octoai`, run `pip install "unstructured-ingest[embed-octoai]"`.
 
 3. For the following embedding providers, you can choose the model that you want to use. If you do choose a model, note the model's name:
@@ -69,15 +69,17 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
    - `langchain-openai`. [Choose a model](https://platform.openai.com/docs/guides/embeddings/embedding-models), or use the default model `text-embedding-ada-002`.
    - `langchain-vertexai`. [Choose a model](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/text-embeddings-api), or use the default model `textembedding-gecko@001`.
    - `langchain-voyageai`.  [Choose a model](https://docs.voyageai.com/docs/embeddings). No default model is provided.
+   - `mixedbread-ai`. [Choose a model](https://www.mixedbread.ai/docs/embeddings/models), or use the default model [mixedbread-ai/mxbai-embed-large-v1](https://www.mixedbread.ai/docs/embeddings/mxbai-embed-large-v1).
    - `octoai`. [Choose a model](https://octo.ai/blog/supercharge-rag-performance-using-octoai-and-unstructured-embeddings/), or use the default model `thenlper/gte-large`.
 
 4. Note the special settings to connect to the provider:
 
    - For `langchain-aws-bedrock`, you'll need an AWS access key value, the corresponding AWS secret access key value, and the corresponding AWS Region identifier. [Get an AWS access key and secret access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html).
-   - For `langchain-huggingface`, if you use a gated model (a model with special conditions that you must accept before you can use it, or a privately published model), you'll need an HF inference API key value, beginning with `hf_`. [Get an HF inference API key](https://huggingface.co/docs/api-inference/en/quicktour#get-your-api-token). To learn whether your model requires an HF inference API key, see your model provider's documentation 
+   - For `langchain-huggingface`, if you use a gated model (a model with special conditions that you must accept before you can use it, or a privately published model), you'll need an HF inference API key value, beginning with `hf_`. [Get an HF inference API key](https://huggingface.co/docs/api-inference/en/quicktour#get-your-api-token). To learn whether your model requires an HF inference API key, see your model provider's documentation. 
    - For `langchain-openai`, you'll need an OpenAI API key value. [Get an OpenAI API key](https://platform.openai.com/docs/quickstart/create-and-export-an-api-key).
    - For `langchain-vertexai`, you'll need the path to a Google Cloud credentials JSON file. Learn more [here](https://cloud.google.com/docs/authentication/application-default-credentials#GAC) and [here](https://googleapis.dev/python/google-auth/latest/reference/google.auth.html#module-google.auth).
    - For `langchain-voyageai`, you'll need a Voyage AI API key value. [Get a Voyage AI API key](https://docs.voyageai.com/docs/api-key-and-installation#authentication-with-api-keys).
+   - For `mixedbread-ai`, you'll need a Mixedbread API key value. [Get a Mixedbread API key](https://www.mixedbread.ai/dashboard?next=api-keys).
    - For `octoai`, you'll need an Octo AI API token value. [Get an Octo AI API token](https://octo.ai/docs/getting-started/how-to-create-octoai-access-token).
 
 5. Now, apply all of this information as follows, and then run your command or code:
