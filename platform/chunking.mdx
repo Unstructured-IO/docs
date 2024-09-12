@@ -2,18 +2,19 @@
 title: Chunking
 ---
 
-After partitioning, _chunking_ rearranges the resulting document elements into manageable "chunks" in order to store data more efficiently. You can 
-specify if and how Unstructured chunks those elements, based on your intended end use. 
-This is especially critical for retrieval augmented generation (RAG), where LLMs typicaly have maximum 
-[context window](https://simple.ai/p/tokens-and-context-windows) lengths for performing operations such as a 
-[similarity search](https://www.pinecone.io/learn/what-is-similarity-search/).
+After partitioning, _chunking_ rearranges the resulting document elements into manageable "chunks" to stay within 
+the limits of an embedding model and to improve retrieval precision. The goal is to retrieve only parts of documents 
+that contain only the information that is relevant to a user's query. You can specify if and how Unstructured chunks 
+those elements, based on your intended end use. 
 
 If you choose something other than **None** for **Chunker Type** in the **Chunk** section of a workflow, Unstructured will attempt to chunk 
-the partitioned elements. 
-To determine the best **Max Characters** length, see the documentation for the LLM that you want to use.
+the partitioned elements.
 
 During chunking, Unstructured uses a basic chunking strategy that attempts to combine two or more consecutive text elements 
-into each chunk that fits together within **Max Characters**. You can further control this behavior with by-title, by-page, or by-similarity chunking strategies. 
+into each chunk that fits together within **Max Characters**. To determine the best **Max Characters** length, see the documentation 
+for the embedding model that you want to use.
+
+You can further control this behavior with by-title, by-page, or by-similarity chunking strategies. 
 In all cases, Unstructured will only split individual elements if they exceed the specified **Max Characters** length. 
 After chunking, you will have document elements of only the following types:
 
@@ -61,7 +62,7 @@ Here are a few examples:
 }
 ```
 
-The following sections provides information about the available chunking strategies and their settings. 
+The following sections provide information about the available chunking strategies and their settings. 
 
 ## Basic chunking strategy
 
