@@ -39,12 +39,6 @@ if __name__ == "__main__":
             access_config=SharepointAccessConfig(client_cred=os.getenv("SHAREPOINT_APP_CLIENT_SECRET")),
             client_id=os.getenv("SHAREPOINT_APP_CLIENT_ID"),
             site=os.getenv("SHAREPOINT_SITE"),
-            permissions_config=SharepointPermissionsConfig(
-                permissions_application_id=os.getenv("SHAREPOINT_APP_PERMISSIONS_CLIENT_ID"),
-                permissions_tenant=os.getenv("SHAREPOINT_APP_PERMISSIONS_TENANT"),
-                permissions_client_cred=os.getenv("SHAREPOINT_APP_PERMISSIONS_CLIENT_SECRET"),
-                authority_url="https://login.microsoftonline.com"
-            )
         ),
         partitioner_config=PartitionerConfig(
             partition_by_api=True,
