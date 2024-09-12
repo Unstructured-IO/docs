@@ -29,22 +29,16 @@ if __name__ == "__main__":
         context=ProcessorConfig(),
         indexer_config=SharepointIndexerConfig(
             path=os.getenv("SHAREPOINT_PATH"),
-            recursive=False,
-            omit_lists=True,
-            omit_pages=True,
-            omit_files=False
+            recursive=True,  # Recursively process files in their respective folders. (False (default) for no recursion.)
+            omit_lists=True, # Do not process lists. (False (default) to process lists.)
+            omit_pages=True, # Do not process site pages. (False (default) to process site pages.)
+            omit_files=False # Process files (default). (True to not process files.)
         ),
         downloader_config=SharepointDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
         source_connection_config=SharepointConnectionConfig(
             access_config=SharepointAccessConfig(client_cred=os.getenv("SHAREPOINT_APP_CLIENT_SECRET")),
             client_id=os.getenv("SHAREPOINT_APP_CLIENT_ID"),
             site=os.getenv("SHAREPOINT_SITE"),
-            permissions_config=SharepointPermissionsConfig(
-                permissions_application_id=os.getenv("SHAREPOINT_APP_PERMISSIONS_CLIENT_ID"),
-                permissions_tenant=os.getenv("SHAREPOINT_APP_TENANT_ID"),
-                permissions_client_cred=os.getenv("SHAREPOINT_APP_PERMISSIONS_CLIENT_SECRET"),
-                authority_url="https://login.microsoftonline.com"
-            )
         ),
         partitioner_config=PartitionerConfig(
             partition_by_api=True,

@@ -1,0 +1,43 @@
+---
+title: Partitioning
+---
+
+_Partitioning_ extracts content from raw unstructured files and outputs that content as structured [document elements](/platform/document-elements).
+
+For specific file types, such as image files and PDF files, the Unstructured Platform offers special strategies to partition them. Each of these 
+strategies has trade-offs for output speed, cost to output, and quality of output.
+
+PDF files, for example, vary in quality and complexity. In simple cases, traditional natural language processing (NLP) extraction techniques might 
+be enough to extract all the text out of a document. In other cases, advanced image-to-text models are required 
+to process a PDF file. Some of these strategies implement rule-based workflows, which can be faster and cheaper, because they always 
+extract in the same way, but you might sometimes get lower-quality resolution. Other strategies implement 
+model-based workflows, which can be slower and costlier because they require a model that performs inference, but you can get higher-quality resolution. 
+When you choose a partitioning strategy for your files, you should be mindful of these speed, cost, and quality trade-offs. 
+For example, the **Fast** strategy can be about 100 times faster than leading image-to-text models.
+
+To choose one of these strategies, select one of the **Strategy** options in the **Transform** section of a workflow:
+
+- **High Res** (_default_): This strategy uses an image-to-text model for inference. It is slower and costlier than **Fast** but can provide 
+  higher-quality resolution. You should choose this strategy if you know that:
+
+  - All of the files are only image files, or
+  - All of the files are only PDF files, and they have embedded images or tables in them, or
+  - All of the files are a combination of only these two kinds of files.
+
+- **Fast**: This strategy is rule-based. It is faster and cheaper than **High Res** but might provide lower-quality resolution. 
+  You should choose this strategy if you know that:
+
+  - You have only PDF files, and you know that none of them have embedded images or tables in them, or 
+  - You have no PDF files or image files at all.
+
+- **Auto**: This strategy leaves the choice of using **High Res** or **Fast** to Unstructured to determine on a file-by-file basis as it goes along. 
+  Unstructured will use **High Res** if it can determine that the current file under analysis is an image file or a PDF file with embedded images or tables. 
+  Otherwise, Unstructured will use **Fast** on the current file. 
+  You should choose this strategy if you know that all of the files are a combination of:
+
+  - At least one image file; or at least one PDF file with embedded images or tables in it; and any number of other kinds of files.
+
+  Choosing **Auto** can be an effective choice with a reasonable balance of speed, cost, and quality 
+  when you have a mixture of these types of files. 
+
+- **OCR Only**: You should choose this strategy if you know that you have only image files, and you want to extract text from them.
