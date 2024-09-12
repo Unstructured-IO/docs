@@ -1,7 +1,11 @@
 Fill in the following fields:
 
 - **Name** (_required_): A unique name for this connector.
-- **Remote URL** (_required_): The Azure Storage remote URL.
+- **Remote URL** (_required_): The Azure Storage remote URL, with the format `az://<container-name>/<path/to/file/or/folder/in/container/as/needed>`
+
+  For example, if your container is named `my-container`, and there is a folder in the container named `my-folder`, the 
+  Azure Storage remote URL would be `az://my-container/my-folder/`.
+
 - **Azure Account Name**: The Azure Storage account name.
 - **Azure Account Key**: The key for the Azure Storage account, or...
 - **Azure Connection String**: The connection string for the Azure Storage account, or...

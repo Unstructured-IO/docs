@@ -14,7 +14,7 @@ unstructured-ingest \
     --embedding-provider langchain-huggingface \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
   azure \
-    --remote-url $AZURE_STORAGE_ACCOUNT_URL \
+    --remote-url $AZURE_STORAGE_REMOTE_URL \
     --account-name $AZURE_STORAGE_ACCOUNT_NAME \
     --account-key $AZURE_STORAGE_ACCOUNT_KEY
 ```

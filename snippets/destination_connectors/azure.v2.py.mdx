@@ -45,6 +45,6 @@ if __name__ == "__main__":
                 account_key=os.getenv("AZURE_STORAGE_ACCOUNT_KEY")
             )
         ),
-        uploader_config=AzureUploaderConfig(remote_url=os.getenv("AZURE_STORAGE_ACCOUNT_URL"))
+        uploader_config=AzureUploaderConfig(remote_url=os.getenv("AZURE_STORAGE_REMOTE_URL"))
     ).run()
 ```
