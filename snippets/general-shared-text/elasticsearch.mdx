@@ -2,6 +2,19 @@ The Elasticsearch prerequisites:
 
 - An Elasticsearch instance, such as an [Elastic Cloud](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html#hosted-elasticsearch-service) service instance, or a [self-managed Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html#elasticsearch-deployment-options) instance.
 - The name of the index on the instance. See [Create index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html) and [Get index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-index.html).
+
+  The Elasticsearch index that you use must have a schema that is compatible with the schema of the documents 
+  that Unstructured produces for you. Unstructured cannot provide a schema that is guaranteed to work in all 
+  circumstances. This is because these schemas will vary based on your source files' types; how you 
+  want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors. 
+
+  See: 
+
+  - [An Introduction to Elasticsearch Mapping](https://www.elastic.co/blog/found-elasticsearch-mapping-introduction)
+  - [Explicit mapping](https://www.elastic.co/guide/en/elasticsearch/reference/current/explicit-mapping.html)
+  - [Dynamic field mapping](https://www.elastic.co/guide/en/elasticsearch/reference/current/dynamic-field-mapping.html)
+  - [Unstructured document elements and metadata](/api-reference/api-services/document-elements)
+
 - If you're connecting to an Elastic Cloud instance, the Cloud ID and API key. To get these, see your Elasticsearch Service web console.
 - If you're connecting to a self-managed instance, the instance's hostname and port number. See [Networking](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html).
 - If you're using basic authentication to the instance, the user's name and password.

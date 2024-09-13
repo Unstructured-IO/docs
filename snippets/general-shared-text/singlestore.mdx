@@ -8,6 +8,15 @@ The SingleStore prerequisites:
 - The name of the database in the deployment.
 - The name of the table in the database.
 
+  The table's schema must match the schema of the documents that Unstructured produces. 
+  Unstructured cannot provide a schema that is guaranteed to work in all 
+  circumstances. This is because these schemas will vary based on your source files' types; how you 
+  want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors. See:
+
+  - [CREATE TABLE](https://docs.singlestore.com/cloud/reference/sql-reference/data-definition-language-ddl/create-table/) 
+    in the SingleStore documentation
+  - [Unstructured document elements and metadata](/api-reference/api-services/document-elements)
+
 To get the values for the hostname, port, username, and password:
 
 1. In your SingleStore account's dashboard sidebar, click **Deployments**.

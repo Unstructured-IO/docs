@@ -1,8 +1,25 @@
 The OpenSearch prerequisites:
 
 - An OpenSearch instance, such as an [AWS OpenSearch](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/setting-up.html) or [local](https://opensearch.org/downloads.html) instance. In all cases, the [OpenSearch version](https://github.com/opensearch-project/opensearch-py/blob/main/COMPATIBILITY.md) must be compatible with the client version of the [opensearch-py](https://github.com/opensearch-project/opensearch-py/blob/main/COMPATIBILITY.md) package on PyPI. 
-- The instance's hostname and port number.
-- The name of the search index on the instance.
+- The instance's hostname and port number. To learn how, see:
+
+  - [Creating and managing Amazon OpenSearch Service domains](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/createupdatedomains.html) for AWS OpenSearch instances.
+  - [Communicate with OpenSearch](https://opensearch.org/docs/latest/getting-started/communicate/) for local OpenSearch instances.
+
+- The name of the search index on the instance. [Create an index](https://opensearch.org/docs/latest/api-reference/index-apis/create-index/).
+
+  The OpenSearch index that you use must have a schema that is compatible with the schema of the documents 
+  that Unstructured produces for you. Unstructured cannot provide a schema that is guaranteed to work in all 
+  circumstances. This is because these schemas will vary based on your source files' types; how you 
+  want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors. 
+
+  See: 
+
+  - [Mappings and field types](https://opensearch.org/docs/latest/field-types/)
+  - [Explicit mapping](https://opensearch.org/docs/latest/field-types/#explicit-mapping)
+  - [Dynamic mapping](https://opensearch.org/docs/latest/field-types/#dynamic-mapping)
+  - [Unstructured document elements and metadata](/api-reference/api-services/document-elements)
+ 
 - If you're using basic authentication to the instance, the user's name and password.
 - If you're using certificates for authentication instead:
 

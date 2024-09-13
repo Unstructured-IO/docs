@@ -1,11 +1,17 @@
 The Azure AI Search (formerly Azure Cognitive Search) prerequisites:
 
-- The API key for Azure AI Search.
-- The endpoint for Azure AI Search.
-- The name of the index in Azure AI Search.
+- The endpoint for Azure AI Search. [Get a search service endpoint](https://learn.microsoft.com/azure/search/search-get-started-vector#get-a-search-service-endpoint).
+- The API key for Azure AI Search. [Get an admin API key](https://learn.microsoft.com/azure/search/search-get-started-vector#option-1-use-keys).
+- The name of the index in Azure AI Search. [Create an index](https://learn.microsoft.com/rest/api/searchservice/create-index).
 
-See the [Azure AI Search documentation](https://docs.microsoft.com/azure/search/).
+  The Azure AI Search index that you use must have an index schema that is compatible with the schema of the documents 
+  that Unstructured produces for you. Unstructured cannot provide a schema that is guaranteed to work in all 
+  circumstances. This is because these schemas will vary based on your source files' types; how you 
+  want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors. 
 
-<Warning>
-    Make sure that you use a compatible index schema. For reference, see the [sample index schema](/api-reference/ingest/destination-connector/azure-cognitive-search#sample-index-schema).
-</Warning>
+  See:
+
+  - [Search indexes in Azure AI Search](https://learn.microsoft.com/azure/search/search-what-is-an-index)
+  - [Schema of a search index](https://learn.microsoft.com/azure/search/search-what-is-an-index#schema-of-a-search-index)
+  - [Example index schema](https://learn.microsoft.com/rest/api/searchservice/create-index#examples)
+  - [Unstructured document elements and metadata](/api-reference/api-services/document-elements)
