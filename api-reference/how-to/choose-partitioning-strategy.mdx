@@ -44,7 +44,7 @@ See [Changing partition strategy for a PDF](/api-reference/api-services/examples
 
 Setting `--strategy` or `strategy` to `auto` leaves the decision up to Unstructured on a file-by-file basis about which partitioning strategy to use. Specifically:
 
-- If the file is an image, the `hi_res` stategy is used for that file. The `layout_v1.0.0` high-resolution object detection model is used.
+- If the file is an image, the `hi_res` strategy is used for that file. The `layout_v1.0.0` high-resolution object detection model is used.
 - If the file is a PDF, the local processing logic or Unstructured tries to detect whether there are any embedded tables or images in that file.
 
   - If no embedded tables or images are detected, the `fast` strategy is used for that file. No high-resolution object detection model is used.

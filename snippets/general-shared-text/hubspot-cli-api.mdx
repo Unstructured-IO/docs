@@ -10,7 +10,7 @@ import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-d
 
 The following environment variables:
 
-- `HUBSPOT_API_TOKEN` - The access token value for the HubSpot private app, represeted by `--api-token` (CLI) or `api_token` (Python).
+- `HUBSPOT_API_TOKEN` - The access token value for the HubSpot private app, represented by `--api-token` (CLI) or `api_token` (Python).
 - `HUBSPOT_OBJECT_TYPES` - A comma-separated list of strings (CLI) or an array of strings (Python) specifying one or more of the 
   object types to access. This must be a subset of 
   [tickets](https://developers.hubspot.com/docs/api/crm/tickets), 
@@ -21,7 +21,7 @@ The following environment variables:
   [products](https://developers.hubspot.com/docs/api/crm/products), and 
   [communications](https://developers.hubspot.com/docs/api/crm/communications). These are represented by 
   `--object-types` (CLI) or `object_types` (Python); if not specified, all of these object types are accessed by default.
-- `HUBSPOT_PROPERTIES` - Any filtering to be applied to specified object types, declared as a a dictionary of key-value pairs (Python) specifying one or more of the default 
+- `HUBSPOT_PROPERTIES` - Any filtering to be applied to specified object types, declared as a dictionary of key-value pairs (Python) specifying one or more of the default 
   [properties](https://developers.hubspot.com/docs/api/crm/properties) and their desired property values, represented by 
   `properties` (Python). Not available in the CLI. 
 - `HUBSPOT_CUSTOM_PROPERTIES` - Any [custom properties](https://developers.hubspot.com/docs/api/crm/properties) to access. 

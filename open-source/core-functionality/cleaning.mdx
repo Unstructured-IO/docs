@@ -151,9 +151,9 @@ Examples:
 ```python
 from unstructured.cleaners.core import clean_non_ascii_chars
 
-text = "\x88This text contains®non-ascii characters!●"
+text = "\x88This text contains ®non-ascii characters!●"
 
-# Returns "This text containsnon-ascii characters!"
+# Returns "This text contains non-ascii characters!"
 clean_non_ascii_chars(text)
 
 ```

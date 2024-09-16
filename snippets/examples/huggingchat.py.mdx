@@ -16,7 +16,7 @@ from hugchat.login import Login
 def generate_json_from_local(
         input_path: str,
         output_dir: str,
-        parition_by_api: bool = False,
+        partition_by_api: bool = False,
         api_key: str = None,
         partition_endpoint: str = None,
         split_pdf_page: bool = True,
@@ -29,7 +29,7 @@ def generate_json_from_local(
         downloader_config=LocalDownloaderConfig(),
         source_connection_config=LocalConnectionConfig(),
         partitioner_config=PartitionerConfig(
-            partition_by_api=parition_by_api,
+            partition_by_api=partition_by_api,
             api_key=api_key,
             partition_endpoint=partition_endpoint,
             additional_partition_args={
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     generate_json_from_local(
         input_path=os.getenv("LOCAL_FILE_INPUT_DIR"),
         output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"),
-        parition_by_api=True,
+        partition_by_api=True,
         api_key=os.getenv("UNSTRUCTURED_API_KEY"),
         partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")
     )
