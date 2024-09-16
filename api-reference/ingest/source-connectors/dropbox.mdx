@@ -1,22 +1,29 @@
 ---
 title: Dropbox
 ---
-import SharedContentDropbox from '/snippets/sc-shared-text/dropbox.mdx';
+
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentDropbox from '/snippets/sc-shared-text/dropbox-cli-api.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
 <SharedContentDropbox/>
+<SharedAPIKeyURL/>
 
-Make sure to set the `--partition-by-api` flag and pass in your API key with `--api-key`:
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library. The source connector can be any of the ones supported. This example uses the local source connector:
 
-import DropboxAPISh from '/snippets/source_connectors/dropbox_api.sh.mdx';
-import DropboxAPIPy from '/snippets/source_connectors/dropbox_api.py.mdx';
+import DropboxAPISh from '/snippets/source_connectors/dropbox.sh.mdx';
+import DropboxAPIPyV2 from '/snippets/source_connectors/dropbox.v2.py.mdx';
+import DropboxAPIPyV1 from '/snippets/source_connectors/dropbox.v1.py.mdx';
 
 <CodeGroup>
 
   <DropboxAPISh />
 
-  <DropboxAPIPy />
+  <DropboxAPIPyV2 />
+
+  <DropboxAPIPyV1 />
 
 </CodeGroup>
-
-Additionally, if you're using Unstructured SaaS API, your locally deployed Unstructured API, or an Unstructured API
-deployed on Azure or AWS, you also need to specify the API URL via the `--partition-endpoint` argument.

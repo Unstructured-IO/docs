@@ -1,21 +1,21 @@
 ```python Python
 import os
 
-from unstructured.ingest.connector.clarifai import (
+from unstructured_ingest.connector.clarifai import (
     ClarifaiAccessConfig,
     ClarifaiWriteConfig,
     SimpleClarifaiConfig,
 )
-from unstructured.ingest.connector.local import SimpleLocalConfig
-from unstructured.ingest.interfaces import (
+from unstructured_ingest.connector.local import SimpleLocalConfig
+from unstructured_ingest.interfaces import (
     ChunkingConfig,
     PartitionConfig,
     ProcessorConfig,
     ReadConfig,
 )
-from unstructured.ingest.runner import LocalRunner
-from unstructured.ingest.runner.writers.base_writer import Writer
-from unstructured.ingest.runner.writers.clarifai import (
+from unstructured_ingest.runner import LocalRunner
+from unstructured_ingest.runner.writers.base_writer import Writer
+from unstructured_ingest.runner.writers.clarifai import (
     ClarifaiWriter,
 )
 
@@ -30,20 +30,23 @@ def get_writer() -> Writer:
         write_config=ClarifaiWriteConfig(),
     )
 
+# Chunking is optional.
 
 if __name__ == "__main__":
     writer = get_writer()
     runner = LocalRunner(
         processor_config=ProcessorConfig(
             verbose=True,
-            output_dir="local-output-to-clarifai-app",
+            output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"),
             num_processes=2,
         ),
         connector_config=SimpleLocalConfig(
-            input_path="example-docs/book-war-and-peace-1225p.txt",
+            input_path=os.getenv("LOCAL_FILE_INPUT_DIR"),
         ),
         read_config=ReadConfig(),
-        partition_config=PartitionConfig(),
+        partition_config=PartitionConfig(
+            strategy="hi_res",
+        ),
         chunking_config=ChunkingConfig(chunk_elements=True),
         writer=writer,
         writer_kwargs={},

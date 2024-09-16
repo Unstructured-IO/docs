@@ -1,0 +1,20 @@
+The Databricks Volumes connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[databricks-volumes]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `DATABRICKS_HOST` - The Databricks compute resource's host name, represented by `--host` (CLI) or `host` (Python).
+- `DATABRICKS_CATALOG` - The Databricks catalog name for the Volume, represented by `--catalog` (CLI) or `catalog` (Python).
+- `DATABRICKS_VOLUME` - The Databricks Volume name, represented by `--volume` (CLI) or `volume` (Python).
+
+Environment variables based on your authentication type, depending which types are supported by your cloud provider. For example, for username and password authentication:
+
+- `DATABRICKS_USERNAME` - The Databricks account user's name, represented by `--username` (CLI) or `username` (Python).
+- `DATABRICKS_PASSWORD` - The Databricks account user's password, represented by `--password` (CLI) or `password` (Python).

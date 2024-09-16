@@ -1,108 +1,132 @@
 ---
 title: Unstructured
 sidebarTitle: Overview
-description: "**Unstructured** provides tools to ingest and preprocess unstructured documents for `Retrieval Augmented Generation (RAG)` and `Fine Tuning`."
 ---
 
-### We Offer 3 Products
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/b2AcxJDXOLs"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
 
-1. [API](/api-reference/api-services/overview "API") - The quickest way to get started for document transformation.
-2. [Platform](/platform/overview "Platform") - Entirely no code enterprise platform to get **all** your data RAG-ready.
-3. [Open Source](/open-source/introduction/overview/ "OSS") - Best for prototyping.
+Unstructured provides a platform and tools to ingest and process unstructured documents for Retrieval Augmented Generation (RAG) and model fine-tuning.
 
-### TLDR
+This 40-second video demonstrates a simple use case that Unstructured helps solve:
 
-If you're here to quickly transform your unstructured documents into understandable JSON, here's the too long didn't read version:
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/E-tupjji22U"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
 
-1. **Get an API Key** and **Server URL** by signing up to the [SaaS Unstructured API](https://unstructured.io/api-key-hosted) page on our website.
-2. Copy and run this code to **install** the Unstructured Python/JavaScript API SDK.
-<CodeGroup>
+### Product offerings
 
-```bash  Python
-pip install unstructured-client
-```
+<Icon icon="dash" iconType="duotone"/>&nbsp;&nbsp;<Icon icon="computer" />&nbsp;&nbsp;[Unstructured Platform](/platform/overview) - No-code UI. Production-ready. Pay as you go.<br/><br/>
+<Icon icon="dash" iconType="duotone"/>&nbsp;&nbsp;<Icon icon="square-terminal" />&nbsp;&nbsp;[Unstructured Serverless API services](/api-reference/api-services/overview) - Use scripts or code. Production-ready. Pay as you go. (There is also a non-production, free edition with [limits](/api-reference/api-services/free-api#free-unstructured-api-limitations).)<br/><br/>
 
-```bash  JavaScript
-npm install unstructured-client
-```
-</CodeGroup>
-3. Copy and run this code, replacing `api_key_auth`, `server_url`, and `filename` with actual values.
+Learn more about these products:
 
-<CodeGroup>
+<Card title="Unstructured Platform" icon="computer" href="/platform/overview">
+  <br/>No-code user interface, pay-as-you-go platform to get all of your data RAG-ready.<br/><br/>
+  Data is processed on Unstructured-hosted compute resources.<br/><br/>
+  [Try the quickstart](#quickstart-unstructured-platform).<br/><br/>
+  [Learn more](/platform/overview).<br/><br/>
+  <Icon icon="blog"/>&nbsp;&nbsp;[Read the announcement](https://unstructured.io/blog/introducing-unstructured-platform).
+</Card>
+<Card title="Unstructured Serverless API services" icon="square-terminal" href="/api-reference/api-services/overview">
+  <br/>Use scripts or code to call the Unstructured Ingest CLI or Ingest Python library, to get all of your data RAG-ready.<br/><br/>
+  Unstructured Serverless API services have a [Serverless](api-reference/api-services/saas-api-development-guide) pay-as-you-go edition and a [Free](/api-reference/api-services/free-api_) [limited](/api-reference/api-services/free-api#free-unstructured-api-limitations) edition that process data on Unstructured-hosted compute resources.<br/><br/>
+  If you need to use compute resources that you host instead, there are also [Azure](/api-reference/api-services/azure) pay-as-you-go and [AWS](/api-reference/api-services/aws) pay-as-you-go editions; these editions process data by using the Unstructured API installed on compute resources hosted in your own Azure or AWS account.<br/><br/>
+  [Try the quickstart](#quickstart-unstructured-serverless-api).<br/><br/>
+  [Learn more](/api-reference/api-services/overview).<br/><br/>
+  <Icon icon="blog"/>&nbsp;&nbsp;[Read the launch announcement](https://unstructured.io/blog/introducing-unstructured-serverless-api).
+</Card>
 
-```python Python
-from unstructured_client import UnstructuredClient
-from unstructured_client.models import shared
-from unstructured_client.models.errors import SDKError
+---
 
-# Update here with your api key and server url
-client = UnstructuredClient(
-    api_key_auth="YOUR_API_KEY",
-    server_url="YOUR_API_URL",
-)
+### <Icon icon="files" />   Supported file types 
 
-# Update here with your filename
-filename = "sample-docs/YOUR_FILE_NAME.pdf"
+import SupportedFileTypes from '/snippets/general-shared-text/supported-file-types.mdx';
 
-with open(filename, "rb") as f:
-    files=shared.Files(
-        content=f.read(),
-        file_name=filename,
-    )
+<SupportedFileTypes />
 
-# You can choose fast, hi_res or ocr_only for strategy, learn more in the docs at step 4
-req = shared.PartitionParameters(files=files, strategy="auto")
+---
 
-try:
-    resp = client.general.partition(req)
-    pprint(json.dumps(resp.elements, indent=2))
-except SDKError as e:
-    print(e)
-```
+### <Icon icon="computer" />   Quickstart: Unstructured Platform
 
-```javascript JavaScript
-import { UnstructuredClient } from "unstructured-client";
-import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
-import * as fs from "fs";
+<Info>If you want to use your local machine for either your source (input) files, or the destination (output) location for Unstructured to deliver the processed data, you cannot use this quickstart. You must run code on your local machine instead: skip to the [Quickstart: Unstructured Serverless API](#quickstart-unstructured-serverless-api), later in this article.</Info>
 
-// Update here with your api 
-const key = "YOUR-API-KEY";
+import SharedPlatform from '/snippets/quickstarts/platform.mdx';
 
-// Update here with your serverURL
-const client = new UnstructuredClient({
-    serverURL: "YOUR_API_URL",
-    security: {
-        apiKeyAuth: key,
-    },
-});
+<SharedPlatform />
 
-// Update here with your filename
-filename = "sample-docs/YOUR_FILE_NAME.pdf"
-const data = fs.readFileSync(filename);
+[Learn more about the Unstructured Platform](/platform/overview).
 
-client.general.partition({
-    files: {
-        content: data,
-        fileName: filename,
-    },
-}).then((res: PartitionResponse) => {
-    if (res.statusCode == 200) {
-        console.log(res.elements);
-    }
-}).catch((e) => {
-    console.log(e.statusCode);
-    console.log(e.body);
-});
-```
-</CodeGroup>
+---
 
-4. **Done!** If you'd like a deeper dive on the API, see the detailed [API Documentation](/api-reference/api-services/overview "API"). For more on what partitioning strategies are and why they are important, check out the  [Partioning Strategies](/api-reference/api-services/partitioning "Partioning Strategies") guide.
+import LocalToLocalPythonIngestLibrary from '/snippets/ingestion/local-to-local.v2.py.mdx';
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
 
+### <Icon icon="square-terminal" />   Quickstart: Unstructured Serverless API
 
-   
+This quickstart uses your local machine, with the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library) installed. It preprocesses source (input) files on your local machine, and it uses the Unstructured Serverless API to deliver the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
 
-### Get in touch
+You will need:
 
-If you don't find the information you're looking for in the documentation, or require assistance,
+- Python installed on your local machine.
+- Compatible files on your local machine to be processed. [See the list of supported file types](#supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+
+<Steps>
+    <Step title="Sign up">
+        Sign up for a 14-day trial of the Unstructured Serverless API at [https://app.unstructured.io](https://app.unstructured.io).
+    </Step>
+    <Step title="Sign in">
+        1. Enter your email address and then click **Sign In** to receive a magic link to sign in to your personalized dashboard, or authenticate yourself with your Google or GitHub account.
+        2. Once you authenticate with the magic link or with your Google or GitHub account, your dashboard appears.
+    </Step> 
+    <Step title="Get your API key and API URL">
+        1. On the sidebar, click **API Keys**, if it is not already selected.
+        2. To get your API key, click the copy icon in the **Actions** column for your API key, and then click **Key Only**. Store your copied API key in a secure location. Do not share it with others.
+        3. To get your API URL, click the copy icon next to the URL next to **API URL**. Store your copied API URL in a secure location. Do not share it with others.
+    </Step>
+    <Step title="Set environment variables">
+        1. Set an environment variable named `UNSTRUCTURED_API_KEY` to the value of your Unstructured API key.
+        2. Set another environment variable named `UNSTRUCTURED_API_URL` to the value of your Unstructured API URL.
+    </Step>
+    <Step title="Install the Ingest Python library">
+        Run the following command:
+        ```bash
+        pip install unstructured-ingest
+        ```
+        <AdditionalIngestDependencies />
+    </Step>
+    <Step title="Run the code">
+        Run the following code, replacing:
+
+        - `<path/to/input>` with the source (input) path to the directory on your local machine that contains the compatible files for Unstructured to process on its hosted compute resources.
+        - `<path/to/output>` with the destination (output) path to the directory on your local machine that will contain the processed data that Unstructured returns from its hosted compute resources.
+
+        <LocalToLocalPythonIngestLibrary />
+    </Step>
+    <Step title="View the processed data">
+        Go to your destination location to view the processed data.
+    </Step>
+</Steps>
+
+[Learn more about the Unstructured Serverless API](/api-reference/api-services/overview).
+
+---
+
+## Get in touch
+
+If you can't find the information you're looking for in the documentation, or if you need help,
 get in touch with our Support team at [support@unstructured.io](mailto:support%40unstructured.io),
 or [join our Slack](https://short.unstructured.io/pzw05l7) where our team and community can help you.

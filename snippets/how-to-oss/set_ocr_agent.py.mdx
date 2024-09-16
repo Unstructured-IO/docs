@@ -1,0 +1,28 @@
+```python Python
+import json
+
+from unstructured.partition.image import partition_image
+
+# Source: https://github.com/Unstructured-IO/unstructured-ingest/blob/main/example-docs/img/english-and-korean.png
+# Path to the local file to process, relative to this .py file.
+filename = "local-ingest-png/english-and-korean.png"
+
+elements = partition_image(
+  filename=filename,
+  strategy="ocr_only",
+  languages=["eng", "kor"] # Language codes differ by the OCR agent used.
+)
+
+# Convert the list of returned elements into a list of dictionaries for printing or saving.
+element_dicts = [element.to_dict() for element in elements]
+
+# Print the list.
+print(json.dumps(element_dicts, indent=2))
+
+# Or, save the list locally:
+#
+# file = "local-ingest-output/english-and-korean.json"
+#
+# with open(file, "w") as file:
+#     json.dump(element_dicts, file, indent=2)
+```

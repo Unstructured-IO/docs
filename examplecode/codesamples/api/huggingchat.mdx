@@ -1,0 +1,46 @@
+---
+title: Query processed PDF with HuggingChat
+---
+
+This example uses the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library) or the 
+[Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts) to send a PDF file to 
+[Unstructured API services](/api-reference/api-services/overview) for processing. Unstructured processes the PDF and extracts the PDF's content. 
+This example then sends some of the content to [HuggingChat](https://huggingface.co/chat/), Hugging Face's open-source AI chatbot, 
+along with some queries about this content.
+
+To run this example, you'll need:
+
+- The [hugchat](https://pypi.org/project/hugchat/) package for Python, or the [huggingface-chat](https://www.npmjs.com/package/huggingface-chat) package for JavaScript/TypeScript.
+- Your Unstructured API key and API URL. [Get an API key and API URL](/api-reference/api-services/saas-api-development-guide#get-started). 
+- Your Hugging Face account's email address and account password. [Get an account](https://huggingface.co/join).
+- A PDF file for Unstructured to process. This example uses a sample PDF file containing the text of the United States Constitution, 
+available for download from [https://constitutioncenter.org/media/files/constitution.pdf](https://constitutioncenter.org/media/files/constitution.pdf).
+
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedAPIKeyURL />
+
+These environment variables:
+
+- `HUGGING_FACE_EMAIL`, representing your Hugging Face account's email address. 
+- `HUGGING_FACE_PASSWORD`, representing your Hugging Face account's email address.
+- `HUGGING_FACE_COOKIE_DIR_PATH`, representing a login cookie cache path, typically `./cookies/` or `./login_cache/`.
+
+This example's code is as follows:
+
+import HuggingChatPyExampleCode from '/snippets/examples/huggingchat.py.mdx';
+import HuggingChatTSExampleCode from '/snippets/examples/huggingchat.ts.mdx';
+
+<AccordionGroup>
+    <Accordion title="Ingest Python library">
+        <HuggingChatPyExampleCode />
+    </Accordion>
+    <Accordion title="JavaScript/TypeScript SDK">
+        <Warning>
+            Unstructured recommends that you use the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library) instead. 
+    
+            The Ingest Python library provides faster processing of larger individual files, and faster and easier processing of multiple files at a time in batches.
+        </Warning>
+        <HuggingChatTSExampleCode />
+    </Accordion>
+</AccordionGroup>

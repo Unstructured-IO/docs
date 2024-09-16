@@ -1,0 +1,60 @@
+```python Python Ingest v1
+import os
+
+from unstructured_ingest.connector.local import SimpleLocalConfig
+from unstructured_ingest.connector.mongodb import SimpleMongoDBConfig
+from unstructured_ingest.interfaces import (
+    ChunkingConfig,
+    EmbeddingConfig,
+    PartitionConfig,
+    ProcessorConfig,
+    ReadConfig,
+    WriteConfig,
+)
+from unstructured_ingest.runner import LocalRunner
+from unstructured_ingest.runner.writers.base_writer import Writer
+from unstructured_ingest.runner.writers.mongodb import (
+    MongodbWriter,
+)
+
+
+def get_writer() -> Writer:
+    return MongodbWriter(
+        connector_config=SimpleMongoDBConfig(
+            uri=os.getenv("MONGODB_URI"),
+            database=os.getenv("MONGODB_DATABASE"),
+            collection=os.getenv("MONGODB_COLLECTION"),
+        ),
+        write_config=WriteConfig(),
+    )
+
+# Chunking and embedding are optional.
+
+if __name__ == "__main__":
+    writer = get_writer()
+    runner = LocalRunner(
+        processor_config=ProcessorConfig(
+            verbose=True,
+            output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"),
+            num_processes=2,
+        ),
+        connector_config=SimpleLocalConfig(
+            input_path=os.getenv("LOCAL_FILE_INPUT_DIR"),
+        ),
+        read_config=ReadConfig(),
+        partition_config=PartitionConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            strategy="hi_res",
+        ),
+        chunking_config=ChunkingConfig(chunk_elements=True),
+        embedding_config=EmbeddingConfig(
+            provider="langchain-huggingface",
+            api_key=None,
+        ),
+        writer=writer,
+        writer_kwargs={},
+    )
+    runner.run()
+```

@@ -1,0 +1,100 @@
+```typescript TypeScript
+import { UnstructuredClient } from "unstructured-client";
+import { Strategy } from "unstructured-client/sdk/models/shared/index.js";
+import { PartitionResponse } from "unstructured-client/sdk/models/operations";
+
+import * as fs from "fs";
+import * as path from 'path';
+import { fileURLToPath } from 'url';
+import { Login, ChatBot} from "huggingface-chat";
+
+const key = process.env.UNSTRUCTURED_API_KEY || '';
+const url = process.env.UNSTRUCTURED_API_URL || '';
+const username = process.env.HUGGING_FACE_EMAIL || '';
+const userpassword = process.env.HUGGING_FACE_PASSWORD || '';
+const cookieDirPath = process.env.HUGGING_FACE_COOKIE_DIR_PATH || '';
+
+const inputFilepath = path.dirname(fileURLToPath(import.meta.url)) + 
+                      "/local-ingest-pdf-source/constitution.pdf"
+
+async function getChatBot(email: string, password: string, cachePath: string): Promise<ChatBot> {
+    const signin = new Login(email, password)
+    const result = await signin.login(cachePath)
+    const chat = new ChatBot(result)
+
+    return chat
+}
+
+async function queryAndResponse(chatbot: ChatBot, query: string) {
+    let data = await chatbot.chat(query)
+
+    if (! data) {
+        console.log("No data available.");
+        return;
+    }
+    
+    let reader = data.stream?.getReader();
+
+    if (! reader) {
+        console.log("No stream available.");
+        return;
+    }
+
+    while (true) {
+        const { done, value } = await reader?.read();
+        if (done) break;
+        process.stdout.write(value);
+    }    
+}
+
+const client = new UnstructuredClient({
+    security: { apiKeyAuth: key },
+    serverURL: new URL(url).origin
+});
+
+const data = fs.readFileSync(inputFilepath);
+
+client.general.partition({
+    partitionParameters: {
+        files: {
+            content: data,
+            fileName: inputFilepath
+        },
+        strategy: Strategy.HiRes,
+        splitPdfPage: true,
+        splitPdfAllowFailed: true,
+        splitPdfConcurrencyLevel: 15
+    }
+}).then(async (res: PartitionResponse) => {
+    if (res.statusCode == 200) {
+        let voting_texts = ""
+
+        if (res.elements)
+            for (const element of res.elements) {
+                if (element.text.includes("vot")) {
+                    voting_texts += " " + element.text;
+                }
+        }
+
+        let chat = await getChatBot(username, userpassword, cachePath)
+        
+        await chat.initialize()
+
+        const firstQuery = 'Given the following information, what is the minimum voting age in the United States?'
+        const secondQuery = 'And when were women given the right to vote in the United States?'
+
+        console.log(`${firstQuery} ${voting_texts}\n\n-----\n`)
+        await queryAndResponse(chat, firstQuery)
+        console.log(`\n\n-----\n`)
+        console.log(`${secondQuery}\n\n-----\n`)
+        await queryAndResponse(chat, secondQuery)
+    }    
+}).catch((e) => {
+    if (e.statusCode) {
+        console.log(e.statusCode);
+        console.log(e.body);
+    } else {
+        console.log(e);
+    }
+});
+```

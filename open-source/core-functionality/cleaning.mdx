@@ -151,9 +151,9 @@ Examples:
 ```python
 from unstructured.cleaners.core import clean_non_ascii_chars
 
-text = "\x88This text contains®non-ascii characters!●"
+text = "\x88This text contains ®non-ascii characters!●"
 
-# Returns "This text containsnon-ascii characters!"
+# Returns "This text contains non-ascii characters!"
 clean_non_ascii_chars(text)
 
 ```
@@ -171,10 +171,10 @@ Examples:
 from unstructured.cleaners.core import clean_ordered_bullets
 
 # Returns "This is a very important point"
-clean_bullets("1.1 This is a very important point")
+clean_ordered_bullets("1.1 This is a very important point")
 
 # Returns "This is a very important point ●"
-clean_bullets("a.b This is a very important point ●")
+clean_ordered_bullets("a.b This is a very important point ●")
 
 ```
 

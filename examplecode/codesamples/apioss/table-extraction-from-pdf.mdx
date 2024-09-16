@@ -1,10 +1,10 @@
 ---
-title: Table Extraction from PDF 
+title: Table extraction from PDF 
 description: This section describes two methods for extracting tables from PDF files.
 ---
 
 <Note>
-This sample code utilizes the [Unstructured Open Source](/open-source/introduction/overview "Open Source") library and also provides an alternative method the utilizing the [Unstructured SaaS API](api-reference/api-services/overview "SaaS API"). 
+This sample code utilizes the [Unstructured Open Source](/open-source/introduction/overview "Open Source") library and also provides an alternative method the utilizing the [Unstructured Serverless API](api-reference/api-services/overview "Serverless API"). 
 </Note>
 
 ## Method 1: Using partition\_pdf
@@ -16,7 +16,7 @@ To extract the tables from PDF files using the [partition\_pdf](/open-source/cor
 ```python
 from unstructured.partition.pdf import partition_pdf
 
-fname = "example-docs/layout-parser-paper.pdf"
+fname = "example-docs/pdf/layout-parser-paper.pdf"
 
 elements = partition_pdf(filename=fname,
                          infer_table_structure=True,
@@ -40,7 +40,7 @@ By default, table extraction from all file types is enabled. To extract tables f
 ```python
 from unstructured.partition.auto import partition
 
-filename = "example-docs/layout-parser-paper.pdf"
+filename = "example-docs/pdf/layout-parser-paper.pdf"
 
 elements = partition(filename=filename,
                      strategy='hi_res',
@@ -58,7 +58,7 @@ print(tables[0].metadata.text_as_html)
 
 ```bash
 curl -X 'POST' \
-    'https://api.unstructured.io/general/v0/general' \
+    'https://api.unstructured.io' \
     -H 'accept: application/json' \
     -H 'Content-Type: multipart/form-data' \
     -F 'files=@sample-docs/layout-parser-paper-with-table.jpg' \

@@ -2,19 +2,28 @@
 title: Salesforce
 ---
 
-import SharedContentSalesforce from '/snippets/sc-shared-text/salesforce.mdx';
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentSalesforce from '/snippets/sc-shared-text/salesforce-cli-api.mdx';
 
 <SharedContentSalesforce/>
 
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library. The destination connector can be any of the ones supported. This example uses the local destination connector.
+
+This example sends data to Unstructured API services for processing by default. To process data locally instead, see the instructions at the end of this page.
+
 import SalesforceSh from '/snippets/source_connectors/salesforce.sh.mdx';
-import SalesforcePy from '/snippets/source_connectors/salesforce.py.mdx';
+import SalesforcePyV2 from '/snippets/source_connectors/salesforce.v2.py.mdx';
+import SalesforcePyV1 from '/snippets/source_connectors/salesforce.v1.py.mdx';
 
 <CodeGroup>
-
   <SalesforceSh />
-
-  <SalesforcePy />
-
+  <SalesforcePyV2 />
+  <SalesforcePyV1 />
 </CodeGroup>
 
-For a full list of the options the CLI accepts check `unstructured-ingest salesforce --help`.
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>

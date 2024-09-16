@@ -1,30 +1,40 @@
 ---
-title: Sending POST requests to Unstructured API
-description: This page provides some examples of accessing Unstructured API via direct calls.
+title: Process an individual file by making a direct POST request
+sidebarTitle: POST request
 ---
 
-## Basics
+Whether you're using the free Unstructured API, the Unstructured Serverless API, Unstructured API on Azure/AWS, or your local
+deployment of Unstructured API, you can work with the API by sending single-file POST requests to it. 
 
-Whether you're using the free Unstructured API, the SaaS Unstructured API, Unstructured API on Azure/AWS or your local
-deployment of Unstructured API, you can work with the API by sending POST requests to it.
+import UseIngestInstead from '/snippets/general-shared-text/use-ingest-instead.mdx';
 
-Let's start with a simple example in which you send an email file (`*.eml`) to partition via Unstructured API:
+<UseIngestInstead />
+
+To make POST requests, you will need:
+
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedAPIKeyURL />
+
+Let's start with a simple example in which you send a PDF file (`*.pdf`) to partition via Unstructured API. 
 
 ```bash
  curl -X 'POST' \
-  'https://api.unstructured.io/general/v0/general' \
+  '$UNSTRUCTURED_API_URL' \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
-  -H 'unstructured-api-key: <YOUR_API_KEY>' \
-  -F 'files=@sample-docs/family-day.eml'
+  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
+  -F 'files=@sample-docs/report.pdf' \
+  -F 'strategy=hi_res' \
+  -o 'sample-docs/report.json'
 ```
 
-In the example above we're sending the request to the free Unstructured API, in which case the API URL is the same for all
-users: `https://api.unstructured.io/general/v0/general`. Note, however, that you still need to authenticate yourself with
-your individual API Key. Learn how to obtain an API key in the Getting Started section of the documentation:
-[Free Unstructured API guide](/api-reference/api-services/free-api) and [SaaS Unstructured API guide](/api-reference/api-services/saas-api-development-guide).
+In the example above we're sending the request to the Free Unstructured API, in which case the API URL is the same for all
+users: `https://api.unstructured.io/general/v0/general` and is represented by the environment variable `UNSTRUCTURED_API_URL`. Note, however, that you still need to authenticate yourself with
+your individual API Key, represented by the environment variable `UNSTRUCTURED_API_KEY`. Learn how to obtain an API key in the Getting Started section of the documentation:
+[Free Unstructured API guide](/api-reference/api-services/free-api) and [Unstructured Serverless API guide](/api-reference/api-services/saas-api-development-guide).
 
-If you are using the SaaS Unstructured API, you need to replace the URL in this example with the unique API URL that you have
+If you are using the Unstructured Serverless API, you need to replace the URL in this example with the unique API URL that you have
 received in the same email as your API key. For Unstructured API on Azure/AWS, use the API URL that you
 configured through those services.
 

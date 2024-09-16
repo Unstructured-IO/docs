@@ -1,0 +1,48 @@
+```python Python
+import json, base64, zlib
+from typing import List, Dict, Any
+
+# Extract the contents of an orig_elements field.
+def extract_orig_elements(orig_elements):
+    decoded_orig_elements = base64.b64decode(orig_elements)
+    decompressed_orig_elements = zlib.decompress(decoded_orig_elements)
+    return decompressed_orig_elements.decode('utf-8')
+
+def get_chunked_elements(input_json_file_path: str) -> List[Dict[str, Any]]:
+    # Create a dictionary that will hold only
+    # a transposed version of the returned elements. 
+    # For instance, we just want to capture each element's ID,
+    # the chunk's text, and the chunk's associated elements in context.
+    orig_elements_dict: List[Dict[str, Any]] = []
+
+    with open(input_json_file_path, 'r') as file:
+        file_elements = json.load(file)
+
+    for element in file_elements:
+        # For each chunk that has an "orig_elements" field...
+        if "orig_elements" in element["metadata"]:
+            # ...get the chunk's associated elements in context...
+            orig_elements = extract_orig_elements(element["metadata"]["orig_elements"])
+            # ...and then transpose it and other associated fields into a separate dictionary.
+            orig_elements_dict.append({
+                "element_id": element["element_id"],
+                "text": element["text"],
+                "orig_elements": json.loads(orig_elements)
+            })
+    
+    return orig_elements_dict
+
+if __name__ == "__main__":
+    # Source file: https://www.fda.gov/files/drugs/published/Portable-Document-Format-Specifications.pdf
+    input_filepath = "local-ingest-output-json/Portable-Document-Format-Specifications.json"
+    output_filepath = "local-ingest-output-orig/Portable-Document-Format-Specifications-Orig-Elements-Only.json"
+
+    orig_elements_dict = get_chunked_elements(input_json_file_path = input_filepath)
+
+    # Convert the elements into a JSON object.
+    orig_elements_json = json.dumps(orig_elements_dict, indent=2)
+
+    # Write the JSON to a file.
+    with open(output_filepath, "w") as file:
+        file.write(orig_elements_json)
+```

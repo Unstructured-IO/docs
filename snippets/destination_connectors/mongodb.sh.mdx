@@ -1,19 +1,23 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
 
-EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
+# Chunking and embedding are optional.
 
 unstructured-ingest \
   local \
-  --input-path example-docs/book-war-and-peace-1225p.txt \
-  --output-dir local-output-to-mongodb \
-  --strategy fast \
-  --chunk-elements \
-  --embedding-provider "$EMBEDDING_PROVIDER" \
-  --num-processes 2 \
-  --verbose \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --strategy hi_res \
+    --chunk-elements \
+    --embedding-provider langchain-huggingface \
+    --num-processes 2 \
+    --verbose \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
   mongodb \
-  --uri "$MONGODB_URI" \
-  --database "$MONGODB_DATABASE_NAME" \
-  --collection "$DESTINATION_MONGO_COLLECTION"
+    --uri $MONGODB_URI \
+    --database $MONGODB_DATABASE \
+    --collection $MONGODB_COLLECTION
 ```

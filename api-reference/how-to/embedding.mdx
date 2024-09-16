@@ -1,0 +1,112 @@
+---
+title: Set embedding behavior
+---
+
+<Note>
+   The following information applies only to the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli) and the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library).
+
+   The Unstructured SDKs for Python and JavaScript/TypeScript, and the Unstructured open-source library, do not support this functionality.
+</Note>
+
+## Concepts
+
+You can use the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli) or the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library) 
+to generate _embeddings_ after the partitioning and chunking steps in an ingest pipeline. The chunking step is particularly important to ensure that the text pieces 
+(also known as the _documents_ or _elements_) can fit the input limits of an _embedding model_.
+
+You generate embeddings by specifying an embedding model that is provided or used by an _embedding provider_. 
+An [embedding model](https://python.langchain.com/v0.2/docs/concepts/#embedding-models) creates lists of numbers 
+known as _vectors_, with each number representing a specific feature, attribute, or relationship of the data. 
+(In this case, this data is the text that is extracted by Unstructured.) 
+These vectors are stored or _embedded_ next to the data itself. 
+
+These vector embeddings allow _large language models_ (LLMs) and _vector databases_ to more quickly and efficiently analyze and process these inherent 
+properties and relationships between data. For example, you can save the extracted text along with its embeddings in a _vector store_. 
+When a user queries a retrieval augmented generation (RAG) application, the application can use a vector database to perform a similarity search in that vector store 
+and then return the documents whose embeddings are the closest to that user's query.
+
+Learn more about [chunking](https://unstructured.io/blog/chunking-for-rag-best-practices) and 
+[embedding](https://unstructured.io/blog/understanding-embedding-models-make-an-informed-choice-for-your-rag).
+
+## Generate embeddings
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/ulMrzxNGc7A"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
+
+To use the Ingest CLI or Ingest Python library to generate embeddings, do the following:
+
+1. Choose an embedding provider that you want to use from among the following allowed providers, and note the provider's ID:
+
+   - The provider ID `langchain-aws-bedrock` for [Amazon Bedrock](https://aws.amazon.com/bedrock/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/bedrock/).
+   - `langchain-huggingface` for [Hugging Face](https://huggingface.co/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/huggingfacehub/).
+   - `langchain-openai` for [OpenAI](https://openai.com/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/openai/).
+   - `langchain-vertexai` for [Google Vertex AI PaLM](https://cloud.google.com/vertex-ai/docs/generative-ai/learn/overview). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/google_vertex_ai_palm/).
+   - `langchain-voyageai` for [Voyage AI](https://www.voyageai.com/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/voyageai/).
+   - `mixedbread-ai` for [Mixedbread](https://www.mixedbread.ai/). [Learn more](https://www.mixedbread.ai/docs/embeddings/overview).
+   - `octoai` for [Octo AI](https://octo.ai/). [Learn more](https://octo.ai/docs/text-gen-solution/using-unstructured-io-for-embedding-documents).
+
+2. Run the following command to install the required Python package for the embedding provider:
+
+   - For `langchain-aws-bedrock`, run `pip install "unstructured-ingest[bedrock]"`.
+   - For `langchain-huggingface`, run `pip install "unstructured-ingest[embed-huggingface]"`.
+   - For `langchain-openai`, run `pip install "unstructured-ingest[openai]"`.
+   - For `langchain-vertexai`, run `pip install "unstructured-ingest[embed-vertexai]"`.
+   - For `langchain-voyageai`, run `pip install "unstructured-ingest[embed-voyageai]"`.
+   - For `mixedbread-ai`, run `pip install "unstructured-ingest[embed-mixedbreadai]"`.
+   - For `octoai`, run `pip install "unstructured-ingest[embed-octoai]"`.
+
+3. For the following embedding providers, you can choose the model that you want to use. If you do choose a model, note the model's name:
+
+   - `langchain-aws-bedrock`. [Choose a model](https://docs.aws.amazon.com/bedrock/latest/userguide/model-ids.html). No default model is provided. [Learn more about the supported models](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html).
+   - `langchain-huggingface`. [Choose a model](https://huggingface.co/models?other=embeddings), or use the default model [sentence-transformers/all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2).
+   - `langchain-openai`. [Choose a model](https://platform.openai.com/docs/guides/embeddings/embedding-models), or use the default model `text-embedding-ada-002`.
+   - `langchain-vertexai`. [Choose a model](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/text-embeddings-api), or use the default model `textembedding-gecko@001`.
+   - `langchain-voyageai`.  [Choose a model](https://docs.voyageai.com/docs/embeddings). No default model is provided.
+   - `mixedbread-ai`. [Choose a model](https://www.mixedbread.ai/docs/embeddings/models), or use the default model [mixedbread-ai/mxbai-embed-large-v1](https://www.mixedbread.ai/docs/embeddings/mxbai-embed-large-v1).
+   - `octoai`. [Choose a model](https://octo.ai/blog/supercharge-rag-performance-using-octoai-and-unstructured-embeddings/), or use the default model `thenlper/gte-large`.
+
+4. Note the special settings to connect to the provider:
+
+   - For `langchain-aws-bedrock`, you'll need an AWS access key value, the corresponding AWS secret access key value, and the corresponding AWS Region identifier. [Get an AWS access key and secret access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html).
+   - For `langchain-huggingface`, if you use a gated model (a model with special conditions that you must accept before you can use it, or a privately published model), you'll need an HF inference API key value, beginning with `hf_`. [Get an HF inference API key](https://huggingface.co/docs/api-inference/en/quicktour#get-your-api-token). To learn whether your model requires an HF inference API key, see your model provider's documentation. 
+   - For `langchain-openai`, you'll need an OpenAI API key value. [Get an OpenAI API key](https://platform.openai.com/docs/quickstart/create-and-export-an-api-key).
+   - For `langchain-vertexai`, you'll need the path to a Google Cloud credentials JSON file. Learn more [here](https://cloud.google.com/docs/authentication/application-default-credentials#GAC) and [here](https://googleapis.dev/python/google-auth/latest/reference/google.auth.html#module-google.auth).
+   - For `langchain-voyageai`, you'll need a Voyage AI API key value. [Get a Voyage AI API key](https://docs.voyageai.com/docs/api-key-and-installation#authentication-with-api-keys).
+   - For `mixedbread-ai`, you'll need a Mixedbread API key value. [Get a Mixedbread API key](https://www.mixedbread.ai/dashboard?next=api-keys).
+   - For `octoai`, you'll need an Octo AI API token value. [Get an Octo AI API token](https://octo.ai/docs/getting-started/how-to-create-octoai-access-token).
+
+5. Now, apply all of this information as follows, and then run your command or code:
+
+<AccordionGroup>
+    <Accordion title="Ingest CLI">
+        For the [source connector](/api-reference/ingest/source-connectors/overview) command:
+
+        - Set the command's `--embedding-provider` to the provider's ID, for example `langchain-huggingface`.
+        - Set `--embedding-model-name` to the model name, as applicable, for example `sentence-transformers/sentence-t5-xl`. Or omit this to use the default model, as applicable.
+        - Set `--embedding-api-key` to the provider's required API key value or credentials JSON file path, as appropriate.
+        - For `langchain-aws-bedrock`:
+        
+          - Set `--embedding-aws-access-key-id` to the AWS access key value.
+          - Set `--embedding-aws-secret-access-key` to the corresponding AWS secret access key value.
+          - Set `--embedding-aws-region` to the corresponding AWS Region identifier.
+    </Accordion>
+    <Accordion title="Ingest Python library">
+        For the [source connector's](/api-reference/ingest/source-connectors/overview) `EmbedderConfig` object:
+
+        - Set the `embedding_provider` parameter to the provider's ID, for example `langchain-huggingface`.
+        - Set `embedding_model_name` to the model name, as applicable, for example `sentence-transformers/sentence-t5-xl`. Or omit this to use the default model, as applicable.
+        - Set `embedding_api_key` to the provider's required API key value or credentials JSON file path, as appropriate.
+        - For `langchain-aws-bedrock`:
+        
+          - Set `embedding_aws_access_key_id` to the AWS access key value.
+          - Set `embedding_aws_secret_access_key` to the corresponding AWS secret access key value.
+          - Set `embedding_aws_region` to the corresponding AWS Region identifier.
+    </Accordion>
+</AccordionGroup>

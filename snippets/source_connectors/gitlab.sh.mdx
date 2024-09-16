@@ -3,9 +3,10 @@
 
 unstructured-ingest \
   gitlab \
-  --url https://gitlab.com/gitlab-com/content-sites/docsy-gitlab \
-  --git-branch 'v0.0.7' \
-  --output-dir gitlab-ingest-output \
-  --num-processes 2 \
-  --verbose
+    --url https://gitlab.com/gitlab-com/content-sites/docsy-gitlab \
+    --git-branch 'v0.0.7' \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --num-processes 2 \
+    --verbose \
+    --strategy hi_res
 ```

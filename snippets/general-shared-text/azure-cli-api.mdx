@@ -1,0 +1,21 @@
+The Azure Storage account connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[azure]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+These environment variables:
+
+- `AZURE_STORAGE_REMOTE_URL` - The Azure Storage remote URL, represented by `--remote-url` (CLI) or `remote_url` (Python).
+
+  The remote URL takes the format `az://<container-name>/<path/to/file/or/folder/in/container/as/needed>`
+
+  For example, if your container is named `my-container`, and there is a folder in the container named `my-folder`, the 
+  Azure Storage remote URL would be `az://my-container/my-folder/`.
+
+- `AZURE_STORAGE_ACCOUNT_NAME` - The name of the Azure Storage account, represented by `--account-name` (CLI) or `account_name` (Python).
+- `AZURE_STORAGE_ACCOUNT_KEY`, `AZURE_STORAGE_CONNECTION_STRING`, or `AZURE_STORAGE_SAS_TOKEN` - The name of the key, connection string, or SAS token for the Azure Storage account, depending on your security configuration, represented by `--account-key` (CLI) or `account_key` (Python), `--connection-string` (CLI) or `connection_string` (Python), and `--sas_token` (CLI) or `sas_token` (Python), respectively.

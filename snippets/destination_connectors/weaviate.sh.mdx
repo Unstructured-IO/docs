@@ -1,19 +1,24 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
 
-EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
+# Chunking and embedding is optional.
 
 unstructured-ingest \
   local \
-  --input-path example-docs/book-war-and-peace-1225p.txt \
-  --output-dir local-output-to-weaviate \
-  --strategy fast \
-  --chunk-elements \
-  --embedding-provider "$EMBEDDING_PROVIDER" \
-  --num-processes 2 \
-  --verbose \
-  --strategy fast \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --strategy hi_res \
+    --chunk-elements \
+    --embedding-provider langchain-huggingface \
+    --num-processes 2 \
+    --verbose \
+    --strategy fast \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
   weaviate \
-  --host-url http://localhost:8080 \
-  --class-name elements
+    --host-url $WEAVIATE_URL \
+    --api-key $WEAVIATE_API_KEY \
+    --class-name $WEAVIATE_COLLECTION_CLASS_NAME
 ```

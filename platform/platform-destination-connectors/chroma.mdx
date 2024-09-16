@@ -1,47 +1,24 @@
 ---
 title: Chroma 
-description: This page contains the information to store processed data to a Chroma instance.
 ---
 
-## Prerequisites
+Send processed data from Unstructured to Chroma.
 
-*   ChromaDB Installation
-    
+You'll need:
 
-For more information, please refer to [Chroma documentation](https://docs.trychroma.com/getting-started).
+import ChromaPrerequisites from '/snippets/general-shared-text/chroma.mdx';
 
-## Step-by-Step Guide
+<ChromaPrerequisites />
 
-![Destination Connector Chroma](/img/platform/Destination-Chroma.png)
+To create the destination connector:
 
-1.  **Access the Create Destination Page**. Navigate to the “Destinations” section within the platform’s side navigation menu and click on “New Destination” to initiate the setup of a new destination for your processed data.
-    
-2.  **Select Destination Type**. Select **Chroma** destination connector from the `Type` dropdown menu.
-    
-3.  **Configure Destination Details**
-    
-<Note>
-*   `Name` (_required_): Assign a descriptive name to the new destination connector.
-    
-*   `Settings JSON`: Input the JSON string of settings to communicate with the Chroma server.
-    
-*   `Tenant`: Specify the tenant to use for this client.
-    
-*   `Database`: Enter the name of the database to use for this client.
-    
-*   `Host`: Provide the hostname of the Chroma server.
-    
-*   `Port`: Indicate the port of the Chroma server.
-    
-*   Check `SSL` if an SSL connection is required.
-    
-*   `Headers JSON`: Enter a JSON string of headers to send to the Chroma server.
-    
-*   `Collection Name` (_required_): Specify the name of the collection to write into.
-    
-*   `Batch Size` (_required_): Define the number of records per batch to write into Chroma.    
-</Note>
+1. On the sidebar, click **Destinations**.
+2. Click **New Destination**.
+3. In the **Type** drop-down list, select **Chroma**.
+4. Fill in the fields as described later on this page.
+5. Click **Save and Test**.
+6. Click **Close**.
 
-    
+import ChromaFields from '/snippets/general-shared-text/chroma-platform.mdx';
 
-4.  **Submit**. Review all the details entered to ensure accuracy. Click ‘Submit’ to finalize the creation of the Destination Connector. The newly completed Chroma connector will be listed on the Destinations dashboard.
+<ChromaFields />

@@ -3,11 +3,12 @@
 
 unstructured-ingest \
   gcs \
-  --remote-url gs://utic-test-ingest-fixtures-public/ \
-  --output-dir gcs-output \
-  --num-processes 2 \
-  --recursive \
-  --verbose \
-  --partition-by-api \
-  --api-key "$UNSTRUCTURED_API_KEY"
+    --remote-url gs://utic-test-ingest-fixtures-public/ \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --num-processes 2 \
+    --recursive \
+    --verbose \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --strategy hi_res
 ```

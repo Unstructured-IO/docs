@@ -1,0 +1,16 @@
+The Salesforce connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[salesforce]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `SALESFORCE_USERNAME` - The Salesforce username that has access to the required Salesforce categories, represented by `--username` (CLI) or `username` (Python).
+- `SALESFORCE_CONSUMER_KEY` - The consumer key (client ID) for the Salesforce connected app, represented by `--consumer-key` (CLI) or `consumer_key` (Python).
+- `SALESFORCE_PRIVATE_KEY` - The contents of the private key (PEM) associated with the consumer key for the Salesforce connected app, represented by `--private-key` (CLI) or `private_key` (Python), or
+- `SALESFORCE_PRIVATE_KEY_PATH` - The local path to the (PEM) associated with the consumer key for the Salesforce connected app, represented by `--private-key-path` (CLI) or `private_key_path` (Python).

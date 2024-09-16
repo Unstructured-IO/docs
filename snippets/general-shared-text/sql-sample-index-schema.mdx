@@ -1,0 +1,141 @@
+## Sample index schema
+
+To make sure the schema of the index matches the data being written to it, a sample schema can be used.
+
+<CodeGroup>
+    ```sql PostgreSQL
+    CREATE TABLE elements (
+        id UUID PRIMARY KEY,
+        element_id VARCHAR,
+        text TEXT,
+        embeddings DECIMAL [],
+        type VARCHAR,
+        system VARCHAR,
+        layout_width DECIMAL,
+        layout_height DECIMAL,
+        points TEXT,
+        url TEXT,
+        version VARCHAR,
+        date_created TIMESTAMPTZ,
+        date_modified TIMESTAMPTZ,
+        date_processed TIMESTAMPTZ,
+        permissions_data TEXT,
+        record_locator TEXT,
+        category_depth INTEGER,
+        parent_id VARCHAR,
+        attached_filename VARCHAR,
+        filetype VARCHAR,
+        last_modified TIMESTAMPTZ,
+        file_directory VARCHAR,
+        filename VARCHAR,
+        languages VARCHAR [],
+        page_number VARCHAR,
+        links TEXT,
+        page_name VARCHAR,
+        link_urls VARCHAR [],
+        link_texts VARCHAR [],
+        sent_from VARCHAR [],
+        sent_to VARCHAR [],
+        subject VARCHAR,
+        section VARCHAR,
+        header_footer_type VARCHAR,
+        emphasized_text_contents VARCHAR [],
+        emphasized_text_tags VARCHAR [],
+        text_as_html TEXT,
+        regex_metadata TEXT,
+        detection_class_prob DECIMAL
+    );
+    
+    ```
+    
+    ```sql PostgreSQL with pgvector 
+    CREATE EXTENSION vector;
+    
+    CREATE TABLE elements (
+        id UUID PRIMARY KEY,
+        element_id VARCHAR,
+        text TEXT,
+        embeddings vector(384),
+        type VARCHAR,
+        system VARCHAR,
+        layout_width DECIMAL,
+        layout_height DECIMAL,
+        points TEXT,
+        url TEXT,
+        version VARCHAR,
+        date_created TIMESTAMPTZ,
+        date_modified TIMESTAMPTZ,
+        date_processed TIMESTAMPTZ,
+        permissions_data TEXT,
+        record_locator TEXT,
+        category_depth INTEGER,
+        parent_id VARCHAR,
+        attached_filename VARCHAR,
+        filetype VARCHAR,
+        last_modified TIMESTAMPTZ,
+        file_directory VARCHAR,
+        filename VARCHAR,
+        languages VARCHAR [],
+        page_number VARCHAR,
+        links TEXT,
+        page_name VARCHAR,
+        link_urls VARCHAR [],
+        link_texts VARCHAR [],
+        sent_from VARCHAR [],
+        sent_to VARCHAR [],
+        subject VARCHAR,
+        section VARCHAR,
+        header_footer_type VARCHAR,
+        emphasized_text_contents VARCHAR [],
+        emphasized_text_tags VARCHAR [],
+        text_as_html TEXT,
+        regex_metadata TEXT,
+        detection_class_prob DECIMAL
+    );
+    ```
+    
+    
+    ```sql Sqlite
+    CREATE TABLE elements (
+        id TEXT PRIMARY KEY,
+        element_id TEXT,
+        text TEXT,
+        embeddings TEXT,
+        type TEXT,
+        system TEXT,
+        layout_width REAL,
+        layout_height REAL,
+        points TEXT,
+        url TEXT,
+        version TEXT,
+        date_created TEXT,
+        date_modified TEXT,
+        date_processed TEXT,
+        permissions_data TEXT,
+        record_locator TEXT,
+        category_depth INTEGER,
+        parent_id TEXT,
+        attached_filename TEXT,
+        filetype TEXT,
+        last_modified TEXT,
+        file_directory TEXT,
+        filename TEXT,
+        languages TEXT,
+        page_number TEXT,
+        links TEXT,
+        page_name TEXT,
+        link_urls TEXT,
+        link_texts TEXT,
+        sent_from TEXT,
+        sent_to TEXT,
+        subject TEXT,
+        section TEXT,
+        header_footer_type TEXT,
+        emphasized_text_contents TEXT,
+        emphasized_text_tags TEXT,
+        text_as_html TEXT,
+        regex_metadata TEXT,
+        detection_class_prob DECIMAL
+    );
+    ```
+</CodeGroup>

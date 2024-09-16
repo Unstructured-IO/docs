@@ -1,6 +1,6 @@
 ---
 title: Chunking
-description: Chunking functions in `unstructured` use metadata and document elements detected with `partition` functions to split a document into smaller parts for uses cases such as Retrieval Augmented Generation (RAG).
+description: Chunking functions in `unstructured` use metadata and document elements detected with `partition` functions to post-process elements into more useful "chunks" for uses cases such as Retrieval Augmented Generation (RAG).
 ---
 
 ## Chunking Basics
@@ -22,7 +22,7 @@ A few concepts about chunking are worth introducing before discussing the detail
 
 ## Chunking Options
 
-The following options are available to tune chunking behaviors. These are keyword arguments that can be used in a partitioning or chunking function call. All these options have defaults and need only be specified when a non-default setting is required. Specific chunking strategies (such as “by-title”) may have additional options.
+The following options are available to tune chunking behaviors. These are keyword arguments that can be used in a partitioning or chunking function call. All these options have defaults and need only be specified when a non-default setting is required. Specific chunking strategies (such as `by_title`) may have additional options.
 
 *   `max_characters: int (default=500)` - the hard maximum size for a chunk. No chunk will exceed this number of characters. A single element that by itself exceeds this size will be divided into two or more chunks using text-splitting.
     
@@ -39,7 +39,7 @@ Chunking can be performed as part of partitioning or as a separate step after pa
 
 ### Specifying a chunking strategy while partitioning
 
-Chunking can be performed as part of partitioning by specifying a value for the `chunking_strategy` argument. The current options are `basic` and `by-title` (described below).
+Chunking can be performed as part of partitioning by specifying a value for the `chunking_strategy` argument. The current options are `basic` and `by_title` (described below).
 
 ```python
 from unstructured.partition.html import partition_html
@@ -80,9 +80,13 @@ for chunk in chunks:
 There are currently two chunking strategies, _basic_ and _by\_title_. The `by_title` strategy shares most behaviors with
 the basic strategy so we'll describe the baseline strategy first:
 
-import SharedChunkingStrategies from '/snippets/concepts/chunking-strategies.mdx';
+import SharedChunkingStrategyBasic from '/snippets/concepts/chunking-strategy-basic.mdx';
 
-<SharedChunkingStrategies/>
+<SharedChunkingStrategyBasic/>
+
+import SharedChunkingStrategyByTitle from '/snippets/concepts/chunking-strategy-by-title.mdx';
+
+<SharedChunkingStrategyByTitle/>
 
 ## Recovering Chunk Elements
 
@@ -130,3 +134,53 @@ These elements will contain all their original metadata so can be used to access
 ['/tmp/lorem.jpg', '/tmp/ipsum.png']
 
 ```
+
+During serialization, `.metadata.orig_elements` is compressed into Base64 gzipped format. To deserialize `.metadata.orig_elements`, you can use the `elements_from_base64_gzipped_json`. For example:
+
+```python
+from unstructured.partition.auto import partition
+from unstructured.staging.base import elements_from_base64_gzipped_json
+
+elements = partition('local-ingest-source/fake-email.eml', chunking_strategy='basic', include_orig_elements=True)
+
+print("Before:\n")
+
+for element in elements:
+    metadata = element.metadata.to_dict()
+    print(f"Element ID: {element.id}")
+    print(f"  Compressed orig_elements: {metadata["orig_elements"]}")
+    print("\n")
+
+# Output:
+# -------
+# Before:
+#
+# Element ID: 083776ca703b1925e5fef69bb2635f1f
+#   Compressed orig_elements: eJztlM1uGyEUhV8Fzbq2GGbwDFZUZdNFpDaLyOomiix+Lg7tABbcaRtFfffCJFXSyiuvLbFA3HsOHD7B/XMDE3gIuHem2ZJGmLaDnmnBGTfajF0/aqm6zSi4gnEwzQfSeEBpJMrS/9xYN8HeuAQaY3qqFlPUclq5cICMqxznpKGqamOQHmqLld9hBV66aQ1+qtVJhsMsi6SU7xsIh+ZhWc2499E462A5HqOMrdoyNrt22NJ+225WlG8prR65xrAp+sXji0R8hJ/kLioXcgzkyqfX6fUcMqZZ45zArF38uGy2yDEu4tuIf/VXb/PrEPEfqY7+VTurb+UG6hF3JTb5VLM1v0sF4dfL8qPLpAxJsDYs4QlGMmcgNiYyB4dLKa9rFnw6Ljd1K1OS6H7ArvoUw/+BjZveMt5zxQSVgo2S8kGr1ggtKLOivwA7E9iNP8aEMiA5Rhcwb99j2Tmc4BQOBtyOYuwko5J3RnLRtszowYpOWj5ccJyL4y5mKK8nASnC9yg+u4w3CP4UDWWMVEpT3fZUmb63RvORgR3o2Ovy011onEnjq4sT4AsPNc1wGsjDH93mEjs=
+
+print ("After:\n")
+
+for element in elements:
+    metadata = element.metadata.to_dict()
+    print(f"Element ID: {element.id}")
+    orig_elements = elements_from_base64_gzipped_json(metadata["orig_elements"])
+    print(f"  Uncompressed orig_elements:")
+    for orig_element in orig_elements:
+        print(f"    {orig_element.category}: {orig_element.text}")
+    print("\n")
+
+# Output:
+# -------
+# After:
+#
+# Element ID: 083776ca703b1925e5fef69bb2635f1f
+#   Uncompressed orig_elements:
+#     NarrativeText: This is a test email to use for unit tests.
+#     Title: Important points:
+#     ListItem: Roses are red
+#     ListItem: Violets are blue
+```
+
+## Learn more
+
+<Icon icon="blog" />&nbsp;&nbsp;[Chunking for RAG: best practices](https://unstructured.io/blog/chunking-for-rag-best-practices)

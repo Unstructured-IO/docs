@@ -1,0 +1,24 @@
+The Chroma connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[chroma]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `CHROMA_HOST` - The , represented by `--host` (CLI) or `host` (Python).
+- `CHROMA_PORT` - The , represented by `--port` (CLI) or `port` (Python).
+- `CHROMA_TENANT` - The name of the tenant that you want to access on the Chroma server, represented by `--tenant` (CLI) or `tenant` (Python).
+- `CHROMA_DATABASE` - The name of the database that you want to access in the tenant, represented by `--database` (CLI) or `database` (Python).
+- `CHROMA_COLLECTION` - The name of the collection that you want to access in the database, represented by `--collection-name` (CLI) or `collection_name` (Python).
+
+Additional settings include:
+
+- `--path` (CLI) or `path` (Python): The location where Chroma is persisted if you are not connecting through HTTP.
+- `--settings` (CLI) or `settings` (Python): A dictionary of settings to communicate with the Chroma server, for example: `'{"persist_directory":"./chroma-persist"}'`.
+- `--headers` (CLI) or `headers` (Python): A dictionary of headers to send to the Chroma server, for example: `'{"Authorization":"Basic()"}'`.
+- `--ssl` (CLI) or `ssl` (Python): True to use SSL for the connection.

@@ -2,19 +2,28 @@
 title: SFTP
 ---
 
-import SharedContentSFTP from '/snippets/sc-shared-text/sftp.mdx';
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentSFTP from '/snippets/sc-shared-text/sftp-cli-api.mdx';
 
 <SharedContentSFTP/>
 
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library. The destination connector can be any of the ones supported. This example uses the local destination connector.
+
+This example sends data to Unstructured API services for processing by default. To process data locally instead, see the instructions at the end of this page.
+
 import SFTPSh from '/snippets/source_connectors/sftp.sh.mdx';
-import SFTPPy from '/snippets/source_connectors/sftp.py.mdx';
+import SFTPPyV2 from '/snippets/source_connectors/sftp.v2.py.mdx';
+import SFTPPyV1 from '/snippets/source_connectors/sftp.v1.py.mdx';
 
 <CodeGroup>
-
   <SFTPSh />
-
-  <SFTPPy />
-
+  <SFTPPyV2 />
+  <SFTPPyV1 />
 </CodeGroup>
 
-For a full list of the options the CLI accepts check `unstructured-ingest sftp --help`.
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>

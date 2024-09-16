@@ -1,0 +1,36 @@
+```python Python Ingest v1
+import os
+
+from unstructured_ingest.connector.sharepoint import (
+    SharepointAccessConfig,
+    SharepointPermissionsConfig,
+    SimpleSharepointConfig,
+)
+from unstructured_ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
+from unstructured_ingest.runner import SharePointRunner
+
+if __name__ == "__main__":
+    runner = SharePointRunner(
+        processor_config=ProcessorConfig(
+            verbose=True,
+            output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"),
+            num_processes=2,
+        ),
+        read_config=ReadConfig(),
+        partition_config=PartitionConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            strategy="hi_res",
+        ),
+        connector_config=SimpleSharepointConfig(
+            access_config=SharepointAccessConfig(
+                client_cred=os.getenv("SHAREPOINT_APP_CLIENT_SECRET"),
+            ),
+            client_id=os.getenv("SHAREPOINT_APP_CLIENT_ID"),
+            site=os.getenv("SHAREPOINT_SITE"),
+            files_only=True,
+            path=os.getenv("SHAREPOINT_PATH"),
+        ),
+    )
+    runner.run()
+```

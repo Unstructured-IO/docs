@@ -11,7 +11,7 @@ The following table shows the document types the `unstructured` library currentl
 | Document Type                                                             | Partition Function | Strategies                           | Table Support | Options                                                                                      |
 |---------------------------------------------------------------------------|--------------------|--------------------------------------|---------------|----------------------------------------------------------------------------------------------|
 | CSV Files (.csv)                                                          | partition_csv      | N/A                                  | Yes           | None                                                                                         |
-| E-mails (.eml)                                                            | partition_eml      | N/A                                  | No            | Encoding; Max Partition; Process Attachments                                                 |
+| E-mails (.eml)                                                            | partition_email    | N/A                                  | No            | Encoding; Include Headers; Max Partition; Process Attachments                                |
 | E-mails (.msg)                                                            | partition_msg      | N/A                                  | No            | Encoding; Max Partition; Process Attachments                                                 |
 | EPubs (.epub)                                                             | partition_epub     | N/A                                  | Yes           | Include Page Breaks                                                                          |
 | Excel Documents (.xlsx/.xls)                                              | partition_xlsx     | N/A                                  | Yes           | None                                                                                         |
@@ -104,7 +104,7 @@ with open("mydoc.docx", "rb") as f:
 ```python
 from unstructured.partition.auto import partition
 
-elements = partition(filename="example-docs/layout-parser-paper-fast.pdf")
+elements = partition(filename="example-docs/pdf/layout-parser-paper-fast.pdf")
 
 ```
 
@@ -142,7 +142,7 @@ For more information about the `partition_csv` function, you can check the [sour
 
 ## `partition_doc`
 
-The `partition_doc` partitioning function pre-processes Microsoft Word documents saved in the `.doc` format. This partition function uses a combination of the styling information in the document and the structure of the text to determine the type of a text element. The `partition_doc` can take a filename or file-like object as input. `partiton_doc` uses `libreoffice` to convert the file to `.docx` and then calls `partition_docx`. Ensure you have `libreoffice` installed before using `partition_doc`.
+The `partition_doc` partitioning function pre-processes Microsoft Word documents saved in the `.doc` format. This partition function uses a combination of the styling information in the document and the structure of the text to determine the type of a text element. The `partition_doc` can take a filename or file-like object as input. `partition_doc` uses `libreoffice` to convert the file to `.docx` and then calls `partition_docx`. Ensure you have `libreoffice` installed before using `partition_doc`.
 
 Examples:
 
@@ -189,27 +189,38 @@ For more information about the `partition_docx` function, you can check the [sou
 
 ## `partition_email`
 
-The `partition_email` function partitions `.eml` documents and works with exports from email clients such as Microsoft Outlook and Gmail. The `partition_email` takes a filename, file-like object, or raw text as input and produces a list of document `Element` objects as output. Also `content_source` can be set to `text/html` (default) or `text/plain` to process the html or plain text version of the email, respectively. In order for `partition_email` to also return the header information (e.g. sender, recipient, attachment, etc.), `include_headers` must be set to `True`. Returns tuple with body elements first and header elements second, if `include_headers` is True.
+The `partition_email` function partitions `.eml` documents and works with exports from email clients such as Microsoft Outlook and Gmail. The `partition_email` takes a filename, file-like object, or raw text as input and produces a list of document `Element` objects as output. Also `content_source` can be set to `text/html` (default) or `text/plain` to process the html or plain text version of the email, respectively. In order for `partition_email` to return the header information as elements, `include_headers` must be set to `True`. Header information is captured in element metadata regardless of the `include_headers` setting.
+
+| Header     | Element type | Metadata name    |
+| ---        | ---          | ---              |
+| Subject    | Subject      | subject          |
+| From       | Sender       | sent_from        |
+| To         | Recipient    | sent_to          |
+| Cc         | Recipient    | cc_recipient     |
+| Bcc        | Recipient    | bcc_recipient    |
+| Received   | ReceivedInfo | NA               |
+| Message-ID | MetaData     | email_message_id |
+| (other)    | MetaData     | NA               |
 
 Examples:
 
 ```python
 from unstructured.partition.email import partition_email
 
-elements = partition_email(filename="example-docs/fake-email.eml")
+elements = partition_email(filename="example-docs/eml/fake-email.eml")
 
-with open("example-docs/fake-email.eml", "r") as f:
+with open("example-docs/eml/fake-email.eml", "r") as f:
     elements = partition_email(file=f)
 
-with open("example-docs/fake-email.eml", "r") as f:
+with open("example-docs/eml/fake-email.eml", "r") as f:
     text = f.read()
 elements = partition_email(text=text)
 
-with open("example-docs/fake-email.eml", "r") as f:
+with open("example-docs/eml/fake-email.eml", "r") as f:
     text = f.read()
 elements = partition_email(text=text, content_source="text/plain")
 
-with open("example-docs/fake-email.eml", "r") as f:
+with open("example-docs/eml/fake-email.eml", "r") as f:
     text = f.read()
 elements = partition_email(text=text, include_headers=True)
 
@@ -291,9 +302,6 @@ elements = partition_html(url="https://python.org/", ssl_verify=False)
 
 ```
 
-
-If you website contains news articles, it can be helpful to only grab content that appears in between the `<article>` tags, if the site uses that convention. To activate this behavior, you can set `html_assemble_articles=True`. If `html_assemble_articles` is `True`, each `<article>` tag will be treated as a a page. If `html_assemble_articles` is `True` and no `<article>` tags are present, the behavior is the same as `html_assemble_articles=False`.
-
 For more information about the `partition_html` function, you can check the [source code here](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/html.py).
 
 ## `partition_image`
@@ -308,10 +316,10 @@ Examples:
 from unstructured.partition.image import partition_image
 
 # Returns a List[Element] present in the pages of the parsed image document
-elements = partition_image("example-docs/layout-parser-paper-fast.jpg")
+elements = partition_image("example-docs/img/layout-parser-paper-fast.jpg")
 
 # Applies the English and Swedish language pack for ocr
-elements = partition_image("example-docs/layout-parser-paper-fast.jpg", languages=["eng", "swe"])
+elements = partition_image("example-docs/img/layout-parser-paper-fast.jpg", languages=["eng", "swe"])
 
 ```
 
@@ -320,16 +328,16 @@ The `strategy` kwarg controls the method that will be used to process the PDF. T
 
 The `"auto"` strategy will choose the partitioning strategy based on document characteristics and the function kwargs. If `infer_table_structure` is passed, the strategy will be `"hi_res"` because that is the only strategy that currently extracts tables for PDFs. Otherwise, `"auto"` will choose `ocr_only`. `"auto"` is the default strategy.
 
-The `"hi_res"` strategy will identify the layout of the document using `detectron2`. The advantage of “hi\_res” is that it uses the document layout to gain additional information about document elements. We recommend using this strategy if your use case is highly sensitive to correct classifications for document elements. If `detectron2` is not available, the `"hi_res"` strategy will fall back to the `"ocr_only"` strategy.
+The `"hi_res"` strategy will identify the layout of the document using `detectron2_onnx`. The advantage of “hi\_res” is that it uses the document layout to gain additional information about document elements. We recommend using this strategy if your use case is highly sensitive to correct classifications for document elements. If `detectron2_onnx` is not available, the `"hi_res"` strategy will fall back to the `"ocr_only"` strategy.
 
-The `"ocr_only"` strategy runs the document through Tesseract for OCR and then runs the raw text through `partition_text`. Currently, `"hi_res"` has difficulty ordering elements for documents with multiple columns. If you have a document with multiple columns that does not have extractable text, we recoomend using the `"ocr_only"` strategy.
+The `"ocr_only"` strategy runs the document through Tesseract for OCR and then runs the raw text through `partition_text`. Currently, `"hi_res"` has difficulty ordering elements for documents with multiple columns. If you have a document with multiple columns that does not have extractable text, we recommend using the `"ocr_only"` strategy.
 
-It is helpful to use `"ocr_only"` instead of `"hi_res"` if `detectron2` does not detect a text element in the image. To run example below, ensure you have the Korean language pack for Tesseract installed on your system.
+It is helpful to use `"ocr_only"` instead of `"hi_res"` if `detectron2_onnx` does not detect a text element in the image. To run example below, ensure you have the Korean language pack for Tesseract installed on your system.
 
 ```python
 from unstructured.partition.image import partition_image
 
-filename = "example-docs/english-and-korean.png"
+filename = "example-docs/img/english-and-korean.png"
 elements = partition_image(filename=filename, languages=["eng", "kor"], strategy="ocr_only")
 
 ```
@@ -355,7 +363,7 @@ For more information about the `partition_md` function, you can check the [sourc
 
 ## `partition_msg`
 
-The `partition_msg` functions processes `.msg` files, which is a filetype specific to email exports from Microsoft Outlook.
+The `partition_msg` functions processes `.msg` files, which is a filetype specific to email exports from Microsoft Outlook. Email header information (`bcc_recipient`, `cc_recipient`, `email_message_id`, `sent_from`, `sent_to`, `subject`, etc.) is captured in element metadata.
 
 Examples:
 
@@ -405,7 +413,7 @@ Examples:
 ```python
 from unstructured.partition.api import partition_multiple_via_api
 
-filenames = ["example-docs/fake-email.eml", "example-docs/fake.docx"]
+filenames = ["example-docs/eml/fake-email.eml", "example-docs/fake.docx"]
 
 documents = partition_multiple_via_api(filenames=filenames)
 
@@ -417,7 +425,7 @@ from contextlib import ExitStack
 
 from unstructured.partition.api import partition_multiple_via_api
 
-filenames = ["example-docs/fake-email.eml", "example-docs/fake.docx"]
+filenames = ["example-docs/eml/fake-email.eml", "example-docs/fake.docx"]
 files = [open(filename, "rb") for filename in filenames]
 
 with ExitStack() as stack:
@@ -473,11 +481,11 @@ Examples:
 from unstructured.partition.pdf import partition_pdf
 
 # Returns a List[Element] present in the pages of the parsed pdf document
-elements = partition_pdf("example-docs/layout-parser-paper-fast.pdf")
+elements = partition_pdf("example-docs/pdf/layout-parser-paper-fast.pdf")
 
 # Applies the English and Swedish language pack for ocr. OCR is only applied
 # if the text is not available in the PDF.
-elements = partition_pdf("example-docs/layout-parser-paper-fast.pdf", languages=["eng", "swe"])
+elements = partition_pdf("example-docs/pdf/layout-parser-paper-fast.pdf", languages=["eng", "swe"])
 
 ```
 
@@ -486,7 +494,7 @@ The `strategy` kwarg controls the method that will be used to process the PDF. T
 
 *   The `"auto"` strategy will choose the partitioning strategy based on document characteristics and the function kwargs. If `infer_table_structure` is passed, the strategy will be `"hi_res"` because that is the only strategy that currently extracts tables for PDFs. Otherwise, `"auto"` will choose `"fast"` if the PDF text is extractable and `"ocr_only"` otherwise. `"auto"` is the default strategy.
     
-*   The `"hi_res"` strategy will identify the layout of the document using `detectron2`. The advantage of “hi\_res” is that it uses the document layout to gain additional information about document elements. We recommend using this strategy if your use case is highly sensitive to correct classifications for document elements. If `detectron2` is not available, the `"hi_res"` strategy will fall back to the `"ocr_only"` strategy.
+*   The `"hi_res"` strategy will identify the layout of the document using `detectron2_onnx`. The advantage of “hi\_res” is that it uses the document layout to gain additional information about document elements. We recommend using this strategy if your use case is highly sensitive to correct classifications for document elements. If `detectron2_onnx` is not available, the `"hi_res"` strategy will fall back to the `"ocr_only"` strategy.
     
 *   The `"ocr_only"` strategy runs the document through Tesseract for OCR and then runs the raw text through `partition_text`. Currently, `"hi_res"` has difficulty ordering elements for documents with multiple columns. If you have a document with multiple columns that does not have extractable text, we recommend using the `"ocr_only"` strategy. `"ocr_only"` falls back to `"fast"` if Tesseract is not available and the document has extractable text.
     
@@ -512,7 +520,7 @@ partition_pdf(
 ```
 
 
-If a PDF is copy protected, `partition_pdf` can process the document with the `"hi_res"` strategy (which will treat it like an image), but cannot process the document with the `"fast"` strategy. If the user chooses `"fast"` on a copy protected PDF, `partition_pdf` will fall back to the `"hi_res"` strategy. If `detectron2` is not installed, `partition_pdf` will fail for copy protected PDFs because the document will not be processable by any of the available methods.
+If a PDF is copy protected, `partition_pdf` can process the document with the `"hi_res"` strategy (which will treat it like an image), but cannot process the document with the `"fast"` strategy. If the user chooses `"fast"` on a copy protected PDF, `partition_pdf` will fall back to the `"hi_res"` strategy. If `detectron2_onnx` is not installed, `partition_pdf` will fail for copy protected PDFs because the document will not be processable by any of the available methods.
 
 Examples:
 
@@ -520,10 +528,10 @@ Examples:
 from unstructured.partition.pdf import partition_pdf
 
 # This will process without issue
-elements = partition_pdf("example-docs/copy-protected.pdf", strategy="hi_res")
+elements = partition_pdf("example-docs/pdf/copy-protected.pdf", strategy="hi_res")
 
 # This will output a warning and fall back to hi_res
-elements = partition_pdf("example-docs/copy-protected.pdf", strategy="fast")
+elements = partition_pdf("example-docs/pdf/copy-protected.pdf", strategy="fast")
 
 ```
 
@@ -663,7 +671,7 @@ For more information about the `partition_tsv` function, you can check the [sour
 
 ## `partition_via_api`
 
-`partition_via_api` allows users to partition documents using the hosted Unstructured API. The API partitions documents using the automatic `partition` function. This is helpful if you’re hosting the API yourself or running it locally through a container. You can pass in your API key using the `api_key` kwarg. You can use the `content_type` kwarg to pass in the MIME type for the file. If you do not explicitly pass it, the MIME type will be inferred.
+`partition_via_api` allows users to partition documents using the hosted Unstructured API. The API partitions documents using the automatic `partition` function through the [Unstructured SDK Client](https://docs.unstructured.io/api-reference/api-services/accessing-unstructured-api). This is helpful if you’re hosting the API yourself or running it locally through a container. You can pass in your API key using the `api_key` kwarg. You can use the `content_type` kwarg to pass in the MIME type for the file. If you do not explicitly pass it, the MIME type will be inferred.
 
 ```python
 from unstructured.partition.api import partition_via_api
@@ -683,7 +691,7 @@ You can pass additional settings such as `strategy`, `languages` and `encoding` 
 ```python
 from unstructured.partition.api import partition_via_api
 
-filename = "example-docs/DA-1p.pdf"
+filename = "example-docs/pdf/DA-1p.pdf"
 
 elements = partition_via_api(
   filename=filename, api_key=api_key, strategy="auto"
@@ -692,17 +700,19 @@ elements = partition_via_api(
 ```
 
 
-If you are using the [Unstructured SaaS API](/api-reference/api-services/saas-api-development-guide), you can use the `api_url` kwarg to point the `partition_via_api` function at your Unstructured SaaS API URL.
+If you are using the [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide), you can use the `api_url` kwarg to point the `partition_via_api` function at your Unstructured Serverless API URL.
 
 ```python
+import os
+
 from unstructured.partition.api import partition_via_api
 
 filename = "example-docs/eml/fake-email.eml"
 
 elements = partition_via_api(
   filename=filename,
-  api_key=<<REPLACE WITH YOUR API KEY>>,
-  api_url="https://<<REPLACE WITH YOUR API URL>>/general/v0/general"
+  api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+  api_url=os.getenv("UNSTRUCTURED_API_URL")
 )
 
 ```
@@ -711,13 +721,16 @@ elements = partition_via_api(
 If you are self-hosting or running the API locally, you can use the `api_url` kwarg to point the `partition_via_api` function at your self-hosted or local API. See [here](https://github.com/Unstructured-IO/unstructured-api#dizzy-instructions-for-using-the-docker-image) for documentation on how to run the API as a container locally.
 
 ```python
+import os
+
 from unstructured.partition.api import partition_via_api
 
 filename = "example-docs/eml/fake-email.eml"
 
 elements = partition_via_api(
   filename=filename,
-  api_url="http://localhost:5000/general/v0/general"
+  api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+  api_url=os.getenv("UNSTRUCTURED_API_URL")
 )
 
 ```
@@ -744,7 +757,7 @@ For more information about the `partition_xlsx` function, you can check the [sou
 
 ## `partition_xml`
 
-The `partition_xml` function processes XML documents. If `xml_keep_tags=False`, the function only returns the text attributes from the tags. You can use `xml_path` in conjuntion with `xml_keep_tags=False` to restrict the text extraction to specific tags. If `xml_keep_tags=True`, the function returns tag information in addition to tag text. `xml_keep_tags` is `False` be default.
+The `partition_xml` function processes XML documents. If `xml_keep_tags=False`, the function only returns the text attributes from the tags. You can use `xml_path` in conjunction with `xml_keep_tags=False` to restrict the text extraction to specific tags. If `xml_keep_tags=True`, the function returns tag information in addition to tag text. `xml_keep_tags` is `False` be default.
 
 ```python
 from unstructured.partition.xml import partition_xml

@@ -1,31 +1,66 @@
 ---
-title: Unstructured API Services
+title: Unstructured Serverless API services
 sidebarTitle: Overview
 ---
 
-The Unstructured API documentation covers the following API services:
+Unstructured Serverless API services include these offerings:
 
-* Free Unstructured API: hosted by Unstructured, data processing is capped to 1000 pages, documents submitted to the free API may be utilized for our proprietary model training and evaluation purposes.
-* SaaS Unstructured API: SaaS API hosted by Unstructured, scalable and secure, your data remains private, pay-as-you-go.
-* Marketplace Unstructured API: the functionality and security of the SaaS Unstructured API, but deployed via Azure or AWS marketplace, in your preferred infrastructure.
+<CardGroup cols={2}>
+    <Card title="Unstructured Serverless API" icon="computer" href="/api-reference/api-services/saas-api-development-guide">
+        Serverless API hosted by Unstructured. Scalable and secure. Your data remains private. Start with a 14-day free trial, then pay as you go.<br/><br/>
+        [Try the quickstart](/api-reference/api-services/saas-api-development-guide#quickstart).<br/><br/>
+        [Learn more](/api-reference/api-services/saas-api-development-guide).
+    </Card>
+    <Card title="Free Unstructured API" icon="gift" href="/api-reference/api-services/free-api">
+        Hosted by Unstructured. Free to use, but data processing is limited to 1000 pages per month. Documents submitted to the Free Unstructured API may be utilized for Unstructured's proprietary model training and evaluation purposes.<br/><br/>
+        [Try the quickstart](/api-reference/api-services/free-api#quickstart).<br/><br/>
+        [Learn more](/api-reference/api-services/free-api).
+    </Card>
+    <Card title="Unstructured API on Azure" icon="windows" href="/api-reference/api-services/azure">
+        The functionality and security of the Unstructured Serverless API, but deployed through the Azure Marketplace, in your preferred infrastructure. Pay as you go.<br/><br/>
+        [Learn more](/api-reference/api-services/azure).
+    </Card>
+    <Card title="Unstructured API on AWS" icon="aws" href="/api-reference/api-services/aws">
+        The functionality and security of the Unstructured Serverless API, but deployed through the AWS Marketplace, in your preferred infrastructure. Pay as you go.<br/><br/>
+        [Learn more](/api-reference/api-services/aws).
+    </Card>
+</CardGroup>
 
-## Supported File Types
+<Icon icon="blog" />&nbsp;&nbsp;[Read the launch announcement](https://unstructured.io/blog/introducing-unstructured-serverless-api).
 
-Unstructured API supports the same file types as the open source Unstructured library.
-However, the Unstructured API services include more powerful file transformation capabilities,
-such as a more accurate table extraction model.
+## Benefits over open source
 
-|Category  |File Types                                                    |
-|----------|--------------------------------------------------------------|
-|Plaintext |.eml, .html, .md, .msg, .rst, .rtf, .txt, .xml                |
-|Images    |.png, .jpg, .jpeg, .tiff, .bmp, .heic                         |
-|Documents |.csv, .doc, .docx, .epub, .odt, .pdf, .ppt, .pptx, .tsv, .xlsx|
+Unstructured Serverless API services provide the following benefits beyond the [Unstructured open source library](/open-source/introduction/overview) offering:
 
+* Designed for production scenarios.
+* Significantly increased performance on document and table extraction.
+* Access to newer and more sophisticated vision transformer models.
+* Access to Unstructured's fine-tuned OCR models.
+* Access to Unstructured's by-page and by-similarity chunking strategies.
+* Adherence to security and SOC2 compliance standards.
+* Authentication and identity management.
+* Incremental data loading.
+* Image extraction from documents.
+* More sophisticated document hierarchy detection.
+* Unstructured manages code dependencies, for instance for libraries such as Tesseract.
+* Unstructured manages its own infrastructure, including parallelization and other performance optimizations.
 
-## Data Ingestion
+## Supported file types
 
-Unstructured API services support ingesting data from various sources - refer to [unstructured-ingest documentation](/open-source/ingest/overview) to learn more.
+import SupportedFileTypes from '/snippets/general-shared-text/supported-file-types.mdx';
 
-## Get Support
+<SupportedFileTypes />
+
+## Data ingestion
+
+Unstructured Serverless API services support ingesting data from various sources. [Learn how](/ingestion/overview).
+
+## Billing
+
+import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx';
+
+<SharedPagesBilling />
+
+## Get support
 
 Should you require any assistance or have any questions regarding the Unstructured API, please contact our support team at [support@unstructured.io](mailto:support%40unstructured.io).

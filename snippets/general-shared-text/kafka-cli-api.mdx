@@ -1,0 +1,26 @@
+The Kafka connector dependencies:
+
+  ```bash CLI, Python
+  pip install "unstructured-ingest[kafka]"
+  ```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `KAFKA_BOOTSTRAP_SERVER` - The hostname of the bootstrap Kafka cluster to connect to, represented by `--bootstrap-server` (CLI) or `bootstrap_server` (Python).
+- `KAFKA_PORT` - The port number of the cluster, represented by `--port` (CLI) or `port` (Python).
+- `KAFKA_TOPIC` - The unique name of the topic to read messages from and write messages to on the cluster, represented by `--topic` (CLI) or `topic` (Python).
+
+If you use Kafka API keys and secrets for authentication:
+
+- `KAFKA_API_KEY` - The Kafka API key value, represented by `--kafka-api-key` (CLI) or `kafka_api_key` (Python).
+- `KAFKA_SECRET` - The secret value for the Kafka API key, represented by `--secret` (CLI) or `secret` (Python).
+
+Additional settings include:
+
+- `--confluent` (CLI) or `confluent` (Python): True to indicate that the cluster is running Confluent Kafka.
+- `--num-messages-to-consume` (CLI) or `num_messages_to_consume` (Python): The maximum number of messages to get from the topic. The default is `1`.
+- `--timeout` (CLI) or `timeout` (Python): The maximum amount of time to wait for the response of a request to the topic, expressed in seconds. The default is `1.0`.

@@ -2,22 +2,28 @@
 title: Google Drive
 ---
 
-import SharedContentGoogleDrive from '/snippets/sc-shared-text/google-drive.mdx';
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentGoogleDrive from '/snippets/sc-shared-text/google-drive-cli-api.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
 <SharedContentGoogleDrive/>
+<SharedAPIKeyURL/>
 
-Make sure to set the `--partition-by-api` flag and pass in your API key with `--api-key`:
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library. The destination connector can be any of the ones supported. This example uses the local destination connector:
 
-import GoogleDriveAPISh from '/snippets/source_connectors/google_drive_api.sh.mdx';
-import GoogleDriveAPIPy from '/snippets/source_connectors/google_drive_api.py.mdx';
+import GoogleDriveAPISh from '/snippets/source_connectors/google_drive.sh.mdx';
+import GoogleDriveAPIPyV2 from '/snippets/source_connectors/google_drive.v2.py.mdx';
+import GoogleDriveAPIPyV1 from '/snippets/source_connectors/google_drive.v1.py.mdx';
 
 <CodeGroup>
-
   <GoogleDriveAPISh />
-
-  <GoogleDriveAPIPy />
-
+  <GoogleDriveAPIPyV2 />
+  <GoogleDriveAPIPyV1 />
 </CodeGroup>
 
-Additionally, if you're using Unstructured SaaS API, your locally deployed Unstructured API, or an Unstructured API
-deployed on Azure or AWS, you also need to specify the API URL via the `--partition-endpoint` argument.
+import GoogleCredentialsFileAsString from '/snippets/general-shared-text/google-credentials-file-as-string.mdx';
+
+<GoogleCredentialsFileAsString />

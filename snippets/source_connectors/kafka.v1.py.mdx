@@ -1,0 +1,46 @@
+```python Python Ingest v1
+import os
+
+from unstructured_ingest.runner import KafkaRunner
+from unstructured_ingest.connector.kafka import (
+    KafkaAccessConfig,
+    SimpleKafkaConfig
+)
+from unstructured_ingest.interfaces import (
+    ChunkingConfig,
+    EmbeddingConfig,
+    PartitionConfig,
+    ProcessorConfig,
+    ReadConfig
+)
+
+if __name__ == "__main__":
+    runner = KafkaRunner(
+        processor_config=ProcessorConfig(
+            output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR")
+        ),
+        read_config=ReadConfig(),
+        partition_config=PartitionConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            strategy="hi_res"
+        ),
+        connector_config=SimpleKafkaConfig(
+            bootstrap_server=os.getenv("KAFKA_BOOTSTRAP_SERVER"),
+            port=os.getenv("KAFKA_PORT"),
+            topic=os.getenv("KAFKA_TOPIC"),
+            access_config=KafkaAccessConfig(
+                kafka_api_key=os.getenv("KAFKA_API_KEY"),
+                secret=os.getenv("KAFKA_SECRET"),
+            ),
+            confluent=False,
+            num_messages_to_consume=1,
+            timeout=1.0
+        ),
+        chunking_config=ChunkingConfig(chunk_elements=True),
+        embedding_config=EmbeddingConfig(
+            provider="langchain-huggingface"
+        )
+    ).run()
+```

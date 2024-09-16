@@ -3,7 +3,7 @@ Batch process all your records using `unstructured-ingest` to store structured o
 First you’ll need to install the Qdrant dependencies as shown here.
 
 ```bash
-pip install "unstructured[qdrant]"
+pip install "unstructured-ingest[qdrant]"
 ```
 
 Create a Qdrant collection with the appropriate configurations. Find more information in the [Qdrant collections guide](https://qdrant.tech/documentation/concepts/collections/).
@@ -22,6 +22,6 @@ import QdrantPy from '/snippets/destination_connectors/qdrant.py.mdx';
 </CodeGroup>
 
 
-For a full list of the options the CLI accepts check `unstructured-ingest <upstream connector> qdrant --help`.
+For a full list of the options the Unstructured Ingest CLI accepts check `unstructured-ingest <upstream connector> qdrant --help`.
 
 NOTE: Keep in mind that you will need to have all the appropriate extras and dependencies for the file types of the documents contained in your data storage platform if you’re running this locally. You can find more information about this in the [installation guide](/open-source/installation/overview).

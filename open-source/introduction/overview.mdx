@@ -3,23 +3,9 @@ title: Unstructured Open Source
 sidebarTitle: Overview
 ---
 
-<Note>
+<Note>The `unstructured` open source library is designed as a starting point for quick prototyping and has [limits](#limits). For production scenarios, see [Unstructured API services](/api-reference/api-services/overview) and [Unstructured Platform](/platform/overview).</Note>
 
-    The `unstructured` library is designed as a starting point for quick prototyping. For production scenarios, see
-    [Unstructured API Services](/api-reference/api-services/overview) and [Unstructured Platform](/platform/overview).
-    These solutions include the library's functionality, and offer:
-    * **Significantly improved performance on document and table extraction**
-    * Access to our latest and continuously improving visitation transformer models
-    * **Security and SOC2 compliance**
-    * Authentication and identity management
-    * Incremental data loading
-    * ETL job scheduling and monitoring
-    * Image extraction from documents
-    * Improved document hierarchy detection
-    * and more!
-</Note>
-
-The [`unstructured` library]((https://github.com/Unstructured-IO/unstructured)) offers an open-source toolkit
+The `unstructured` [library](https://github.com/Unstructured-IO/unstructured) offers an open-source toolkit
 designed to simplify the ingestion and pre-processing of diverse data formats, including images and text-based documents
 such as PDFs, HTML files, Word documents, and more. With a focus on optimizing data workflows for Large Language Models (LLMs),
 `unstructured` provides modular functions and connectors that work seamlessly together. This cohesive system ensures
@@ -28,9 +14,9 @@ and use cases.
 
 ## Key functionality
 
-*   **Precise Document Extraction**: Unstructured offers advanced capabilities in extracting elements and metadata from documents. This includes a variety of document element types and metadata. Learn more about [Document elements and metadata](/open-source/introduction/document-elements).
+*   **Precise Document Extraction**: Unstructured offers advanced capabilities in extracting elements and metadata from documents. This includes a variety of document element types and metadata. Learn more about [Document elements and metadata](../concepts/document-elements).
     
-*   **Extensive File Support**: The platform supports a wide array of file types, ensuring versatility in handling different document formats from PDF, Images, HTML, and many more. Detailed information on supported file types can be found [here](/api-reference/api-services/overview#supported-file-types).
+*   **Extensive File Support**: The platform supports a wide array of file types, ensuring versatility in handling different document formats from PDF, Images, HTML, and many more. Detailed information on supported file types can be found [here](/open-source/introduction/supported-file-types).
     
 *   **Robust Core Functionality**: Unstructured provides a suite of core functionalities critical for efficient data processing. This includes:
     
@@ -46,12 +32,40 @@ and use cases.
         
     *   [Embedding](/open-source/core-functionality/embedding): The embedding encoder classes in Unstructured leverage document elements detected through partitioning or grouped via chunking to obtain embeddings for each element. This is particularly useful for applications like Retrieval Augmented Generation (RAG), where precise and contextually relevant embeddings are crucial.
         
-*   **High-performant Connectors**: The platform includes optimized connectors for efficient data ingestion and output. These comprise [Source Connectors](/ingest/destination-connectors/overview) for data input and [Destination Connectors](/ingest/destination-connectors/overview) for data export.
+*   **High-performant Connectors**: The platform includes optimized connectors for efficient data ingestion and output. These comprise [Source Connectors](../ingest/source-connectors/overview) for data input and [Destination Connectors](../ingest/destination-connectors/overview) for data export.
     
 
-## Common Use Cases
+## Common use cases
 
-*   Pretraining Models
-*   Fine-tuning Models
+*   Pretraining models
+*   Fine-tuning models
 *   Retrieval Augmented Generation (RAG)
 *   Traditional ETL
+
+<Note>We do not support GPU usage with the open source library.</Note>
+
+## Limits
+
+The open source library has the following limits as compared to [Unstructured API services](/api-reference/api-services/overview) and the [Unstructured Platform](/platform/overview):
+
+* Not designed for production scenarios.
+* Significantly decreased performance on document and table extraction.
+* Access only to older and less sophisticated vision transformer models.
+* No access to Unstructured's fine-tuned OCR models.
+* No access to Unstructured's by-page and by-similarity chunking strategies.
+* Lack of security and SOC2 compliance.
+* No authentication or identity management.
+* No incremental data loading.
+* No ETL job scheduling or monitoring.
+* No image extraction from documents.
+* Less sophisticated document hierarchy detection.
+* You must manage many of your own code dependencies, for instance for libraries such as Poppler and Tesseract.
+* You must manage your own infrastructure, including parallelization and other performance optimizations.
+
+## Telemetry
+
+The open source library allows you to make calls to Unstructured Serverless API services. If you do plan to make such calls, please note:
+
+import SharedTelemetry from '/snippets/general-shared-text/telemetry.mdx';
+
+<SharedTelemetry />

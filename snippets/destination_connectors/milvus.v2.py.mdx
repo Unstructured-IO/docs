@@ -1,0 +1,55 @@
+```python Python Ingest v2
+import os
+
+from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+from unstructured_ingest.v2.interfaces import ProcessorConfig
+
+from unstructured_ingest.v2.processes.connectors.milvus import (
+    MilvusConnectionConfig,
+    MilvusAccessConfig,
+    MilvusUploadStagerConfig,
+    MilvusUploaderConfig
+)
+
+from unstructured_ingest.v2.processes.connectors.local import (
+    LocalIndexerConfig,
+    LocalDownloaderConfig,
+    LocalConnectionConfig
+)
+from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+from unstructured_ingest.v2.processes.chunker import ChunkerConfig
+from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+
+# Chunking and embedding are optional.
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
+        downloader_config=LocalDownloaderConfig(),
+        source_connection_config=LocalConnectionConfig(),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            strategy="hi_res",
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="langchain-huggingface"),
+        destination_connection_config=MilvusConnectionConfig(
+            access_config=MilvusAccessConfig(
+                password=os.getenv("MILVUS_PASSWORD")
+            ),
+            uri=os.getenv("MILVUS_URI"),
+            user=os.getenv("MILVUS_USER"),
+            db_name=os.getenv("MILVUS_DB")
+        ),
+        stager_config=MilvusUploadStagerConfig(fields_to_include=["type", "element_id", "text", "embeddings"]),
+        uploader_config=MilvusUploaderConfig(collection_name=os.getenv("MILVUS_COLLECTION"))
+    ).run()
+```

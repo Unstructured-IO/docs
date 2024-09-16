@@ -1,18 +1,20 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
 
-EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-"langchain-huggingface"}
+# Chunking and embedding are optional.
 
 unstructured-ingest \
   local \
-  --input-path example-docs/book-war-and-peace-1225p.txt \
-  --output-dir local-output-to-s3 \
-  --strategy fast \
-  --chunk-elements \
-  --embedding-provider "$EMBEDDING_PROVIDER" \
-  --num-processes 2 \
-  --verbose \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --strategy hi_res \
+    --chunking-strategy by_title \
+    --embedding-provider langchain-huggingface \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
   s3 \
-  --anonymous \
-  --remote-url "<your destination path here, ie 's3://unstructured/war-and-peace-output'>"
+    --remote-url $AWS_S3_URL \
+    --key $AWS_ACCESS_KEY_ID \
+    --secret $AWS_SECRET_ACCESS_KEY
 ```

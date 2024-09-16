@@ -2,19 +2,32 @@
 title: Google Drive
 ---
 
-import SharedContentGoogleDrive from '/snippets/sc-shared-text/google-drive.mdx';
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentGoogleDrive from '/snippets/sc-shared-text/google-drive-cli-api.mdx';
 
 <SharedContentGoogleDrive/>
 
+Now call the Unstructured CLI or Python. The destination connector can be any of the ones supported. This example uses the local destination connector.
+
+This example sends data to Unstructured API services for processing by default. To process data locally instead, see the instructions at the end of this page.
+
 import GoogleDriveSh from '/snippets/source_connectors/google_drive.sh.mdx';
-import GoogleDrivePy from '/snippets/source_connectors/google_drive.py.mdx';
+import GoogleDrivePyV2 from '/snippets/source_connectors/google_drive.v2.py.mdx';
+import GoogleDrivePyV1 from '/snippets/source_connectors/google_drive.v1.py.mdx';
 
 <CodeGroup>
-
   <GoogleDriveSh />
-
-  <GoogleDrivePy />
-
+  <GoogleDrivePyV2 />
+  <GoogleDrivePyV1 />
 </CodeGroup>
 
-For a full list of the options the CLI accepts check `unstructured-ingest gdrive --help`.
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>
+
+import GoogleCredentialsFileAsString from '/snippets/general-shared-text/google-credentials-file-as-string.mdx';
+
+<GoogleCredentialsFileAsString />

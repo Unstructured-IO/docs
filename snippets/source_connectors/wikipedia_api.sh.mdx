@@ -3,10 +3,11 @@
 
 unstructured-ingest \
   wikipedia \
-  --page-title "Open Source Software" \
-  --output-dir wikipedia-ingest-output \
-  --num-processes 2 \
-  --verbose \
-  --partition-by-api \
-  --api-key "$UNSTRUCTURED_API_KEY"
+    --page-title "Open Source Software" \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --num-processes 2 \
+    --verbose \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --strategy hi_res
 ```

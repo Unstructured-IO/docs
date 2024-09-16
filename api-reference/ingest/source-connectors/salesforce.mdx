@@ -2,22 +2,24 @@
 title: Salesforce
 ---
 
-import SharedContentSalesforce from '/snippets/sc-shared-text/salesforce.mdx';
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentSalesforce from '/snippets/sc-shared-text/salesforce-cli-api.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
 <SharedContentSalesforce/>
+<SharedAPIKeyURL/>
 
-Make sure to set the `--partition-by-api` flag and pass in your API key with `--api-key`:
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library. The destination connector can be any of the ones supported. This example uses the local destination connector:
 
-import SalesforceAPISh from '/snippets/source_connectors/salesforce_api.sh.mdx';
-import SalesforceAPIPy from '/snippets/source_connectors/salesforce_api.py.mdx';
+import SalesforceAPISh from '/snippets/source_connectors/salesforce.sh.mdx';
+import SalesforceAPIPyV2 from '/snippets/source_connectors/salesforce.v2.py.mdx';
+import SalesforceAPIPyV1 from '/snippets/source_connectors/salesforce.v1.py.mdx';
 
 <CodeGroup>
-
   <SalesforceAPISh />
-
-  <SalesforceAPIPy />
-
+  <SalesforceAPIPyV2 />
+  <SalesforceAPIPyV1 />
 </CodeGroup>
-
-Additionally, if you're using Unstructured SaaS API, your locally deployed Unstructured API, or an Unstructured API
-deployed on Azure or AWS, you also need to specify the API URL via the `--partition-endpoint` argument.

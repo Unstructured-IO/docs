@@ -1,0 +1,33 @@
+```python Python Ingest v1
+import os
+
+from unstructured_ingest.connector.onedrive import OneDriveAccessConfig, SimpleOneDriveConfig
+from unstructured_ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
+from unstructured_ingest.runner import OneDriveRunner
+
+if __name__ == "__main__":
+    runner = OneDriveRunner(
+        processor_config=ProcessorConfig(
+            verbose=True,
+            output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"),
+            num_processes=2,
+        ),
+        read_config=ReadConfig(),
+        partition_config=PartitionConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            strategy="hi_res",
+        ),
+        connector_config=SimpleOneDriveConfig(
+            access_config=OneDriveAccessConfig(client_cred=os.getenv("ONEDRIVE_CLIENT_CRED")),
+            path=os.getenv("ONEDRIVE_PATH"),
+            client_id=os.getenv("ONEDRIVE_CLIENT_ID"),
+            tenant=os.getenv("ONEDRIVE_TENANT"),
+            authority_url=os.getenv("ONEDRIVE_AUTHORITY_URL"),
+            user_pname=os.getenv("ONEDRIVE_USER_PNAME"),
+            recursive=False,
+        ),
+    )
+    runner.run()
+```

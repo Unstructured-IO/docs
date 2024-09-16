@@ -1,23 +1,25 @@
 ```python Python
-from unstructured.ingest.connector.biomed import (
+from unstructured_ingest.connector.biomed import (
     SimpleBiomedConfig,
 )
-from unstructured.ingest.interfaces import (
+from unstructured_ingest.interfaces import (
     PartitionConfig,
     ProcessorConfig,
     ReadConfig,
 )
-from unstructured.ingest.runner import BiomedRunner
+from unstructured_ingest.runner import BiomedRunner
 
 if __name__ == "__main__":
     runner = BiomedRunner(
         processor_config=ProcessorConfig(
             verbose=True,
-            output_dir="azure-ingest-output",
+            output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"),
             num_processes=2,
         ),
         read_config=ReadConfig(),
-        partition_config=PartitionConfig(),
+        partition_config=PartitionConfig(
+            strategy="hi_res",
+        ),
         connector_config=SimpleBiomedConfig(path="oa_pdf/07/07/sbaa031.073.PMC7234218.pdf"),
     )
     runner.run()

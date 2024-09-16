@@ -1,0 +1,70 @@
+```python Python Ingest v1
+import os
+
+from unstructured_ingest.connector.elasticsearch import (
+    ElasticsearchAccessConfig,
+    ElasticsearchWriteConfig,
+    SimpleElasticsearchConfig,
+)
+from unstructured_ingest.connector.local import SimpleLocalConfig
+from unstructured_ingest.interfaces import (
+    ChunkingConfig,
+    EmbeddingConfig,
+    PartitionConfig,
+    ProcessorConfig,
+    ReadConfig,
+)
+from unstructured_ingest.runner import LocalRunner
+from unstructured_ingest.runner.writers.base_writer import Writer
+from unstructured_ingest.runner.writers.elasticsearch import (
+    ElasticsearchWriter,
+)
+
+
+def get_writer() -> Writer:
+    return ElasticsearchWriter(
+        connector_config=SimpleElasticsearchConfig(
+            access_config=ElasticsearchAccessConfig(
+                password=os.getenv("ELASTICSEARCH_PASSWORD"),
+                ssl_assert_fingerprint=os.getenv("ELASTICSEARCH_SSL_ASSERT_FINGERPRINT")
+            ),
+            hosts=[os.getenv("ELASTICSEARCH_HOST")],
+            username=os.getenv("ELASTICSEARCH_USERNAME"),
+            ca_certs=os.getenv("ELASTICSEARCH_CA_CERTS"),
+        ),
+        write_config=ElasticsearchWriteConfig(
+            batch_size_bytes=15_000_000,
+            num_processes=2,
+        ),
+    )
+
+# Chunking and embedding are optional.
+
+if __name__ == "__main__":
+    writer = get_writer()
+    runner = LocalRunner(
+        processor_config=ProcessorConfig(
+            verbose=True,
+            output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"),
+            num_processes=2,
+        ),
+        connector_config=SimpleLocalConfig(
+            input_path=os.getenv("LOCAL_FILE_INPUT_DIR"),
+        ),
+        read_config=ReadConfig(),
+        partition_config=PartitionConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            strategy="hi_res",
+        ),
+        chunking_config=ChunkingConfig(chunk_elements=True),
+        embedding_config=EmbeddingConfig(
+            provider="langchain-huggingface",
+            api_key=None
+        ),
+        writer=writer,
+        writer_kwargs={},
+    )
+    runner.run()
+```

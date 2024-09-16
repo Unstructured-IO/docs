@@ -9,6 +9,8 @@ If you haven’t installed Docker on your machine, you can find the installation
 
 <Note>
     We build multi-platform images to support both x86\_64 and Apple silicon hardware. Using docker pull should download the appropriate image for your architecture. However, if needed, you can specify the platform with the –platform flag, e.g., –platform linux/amd64.
+
+    We do not support GPU usage with the Unstructured library inside a Docker container.
 </Note>
 
 ## Pulling the Docker Image
@@ -54,7 +56,7 @@ Once inside the running Docker container, you can directly test the library usin
 python3
 
 >>> from unstructured.partition.pdf import partition_pdf
->>> elements = partition_pdf(filename="example-docs/layout-parser-paper-fast.pdf")
+>>> elements = partition_pdf(filename="example-docs/pdf/layout-parser-paper-fast.pdf")
 
 >>> from unstructured.partition.text import partition_text
 >>> elements = partition_text(filename="example-docs/fake-text.txt")

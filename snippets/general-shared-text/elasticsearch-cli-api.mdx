@@ -1,0 +1,35 @@
+The Elasticsearch connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[elasticsearch]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `ELASTICSEARCH_HOST` - The hostname and port number, defined as `<hostname>:<port-number>` and represented by `--hosts` (CLI) or `hosts` (Python).
+- `ELASTICSEARCH_INDEX_NAME` - The name of the search index, represented by `--index-name` (CLI) or `index_name` (Python).
+
+If you're using Elastic Cloud to connect to ElasticSearch:
+
+- `ELASTIC_CLOUD_ID` - The instance's Cloud ID, represented by `--cloud-id` (CLI) or `cloud_id` (Python).
+- `ELASTIC_CLOUD_API_KEY` - The corresponding Cloud API key value, represented by `--api-key-id` (CLI) or `api_key_id` (Python).
+
+If you're using basic authentication to the instance:
+
+- `ELASTICSEARCH_USERNAME` - The user's name, represented by `--username` (CLI) or `username` (Python).
+- `ELASTICSEARCH_PASSWORD` - The user's password, represented by `--password` (CLI) or `password` (Python).
+
+If you're using token-based authentication to the instance instead:
+
+- `ELASTICSEARCH_BEARER_TOKEN` - The bearer token's value, represented by `--bearer-auth` (CLI) or `bearer_auth` (Python).
+- `ELASTIC_CLOUD_API_KEY_ID` - The API key's value, represented by `--api-key` (CLI) or `api_key` (Python).
+
+If you're using certificates:
+
+- `ELASTICSEARCH_CA_CERTS` - The path to the Certificate Authority (CA) file, represented by `--ca-certs` (CLI) or `ca_certs` (Python).
+- `ELASTICSEARCH_SSL_ASSERT_FINGERPRINT` - The certificate's fingerprint, represented by `--ssl-assert-fingerprint` or `ssl_assert_fingerprint` (Python).
+

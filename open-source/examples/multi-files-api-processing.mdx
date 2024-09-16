@@ -16,7 +16,7 @@ Ensure you have Unstructured API key and access to an S3 bucket containing the t
 Install the unstructured package with S3 support.
 
 ```bash
-pip install "unstructured[s3]"
+pip install "unstructured-ingest[s3]"
 
 ```
 
@@ -26,13 +26,13 @@ pip install "unstructured[s3]"
 Import necessary libraries from the unstructured package for chunking and S3 processing.
 
 ```python
-from unstructured.ingest.interfaces import (
+from unstructured_ingest.interfaces import (
     FsspecConfig,
     PartitionConfig,
     ProcessorConfig,
     ReadConfig,
 )
-from unstructured.ingest.runner import S3Runner
+from unstructured_ingest.runner import S3Runner
 
 from unstructured.chunking.title import chunk_by_title
 from unstructured.staging.base import dict_to_elements
@@ -59,14 +59,14 @@ Configure and run the S3Runner for processing the data.
 runner = S3Runner(
      processor_config=ProcessorConfig(
          verbose=True,
-         output_dir="Connector-Output",
+         output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"),
          num_processes=8,
      ),
      read_config=ReadConfig(),
      partition_config=PartitionConfig(
-         partition_endpoint="https://api.unstructured.io/general/v0/general",
+         partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
          partition_by_api=True,
-         api_key=UNSTRUCTURED_API_KEY,
+         api_key=os.getenv("UNSTRUCTURED_API_KEY"),
          strategy="hi_res",
          hi_res_model_name="yolox",
      ),

@@ -1,11 +1,16 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
 
 unstructured-ingest \
   gcs \
-  --remote-url gs://utic-test-ingest-fixtures-public/ \
-  --output-dir gcs-output \
-  --num-processes 2 \
-  --recursive \
-  --verbose
+    --service-account-key $GCS_SERVICE_ACCOUNT_KEY \
+    --remote-url $GCS_REMOTE_URL \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --num-processes 2 \
+    --recursive \
+    --verbose \
+    --strategy hi_res \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL
 ```

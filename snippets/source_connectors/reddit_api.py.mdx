@@ -1,21 +1,22 @@
 ```python Python
 import os
 
-from unstructured.ingest.connector.reddit import RedditAccessConfig, SimpleRedditConfig
-from unstructured.ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
-from unstructured.ingest.runner import RedditRunner
+from unstructured_ingest.connector.reddit import RedditAccessConfig, SimpleRedditConfig
+from unstructured_ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
+from unstructured_ingest.runner import RedditRunner
 
 if __name__ == "__main__":
     runner = RedditRunner(
         processor_config=ProcessorConfig(
             verbose=True,
-            output_dir="reddit-ingest-output",
+            output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"),
             num_processes=2,
         ),
         read_config=ReadConfig(),
         partition_config=PartitionConfig(
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            strategy="hi_res",
         ),
         connector_config=SimpleRedditConfig(
             access_config=RedditAccessConfig(

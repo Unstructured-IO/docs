@@ -1,0 +1,28 @@
+```bash CLI
+#!/usr/bin/env bash
+
+# Chunking and embedding are optional.
+
+unstructured-ingest \
+  local \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --strategy hi_res \
+    --chunk-elements \
+    --embedding-provider langchain-huggingface \
+    --num-processes 2 \
+    --verbose \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+  couchbase \
+    --connection-string $CB_CONN_STR \
+    --username $CB_USERNAME \
+    --password $CB_PASSWORD \
+    --bucket $CB_BUCKET \
+    --scope $CB_SCOPE \
+    --collection $CB_COLLECTION \
+    --num-processes 2 \
+    --batch-size 80
+```

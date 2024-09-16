@@ -3,13 +3,14 @@
 
 unstructured-ingest \
   sftp \
-  --remote-url sftp://address:port/upload \
-  --username "$SFTP_USERNAME" \
-  --password "$SFTP_PASSWORD" \
-  --output-dir sftp-output \
-  --num-processes 2 \
-  --recursive \
-  --verbose \
-  --partition-by-api \
-  --api-key "$UNSTRUCTURED_API_KEY"
+    --remote-url sftp://address:port/upload \
+    --username $SFTP_USERNAME \
+    --password $SFTP_PASSWORD \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --num-processes 2 \
+    --recursive \
+    --verbose \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --strategy hi_res
 ```
