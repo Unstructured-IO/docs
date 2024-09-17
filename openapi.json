@@ -66,7 +66,7 @@
           {
             "lang": "python",
             "label": "partition",
-            "source": "import unstructured_client\nfrom unstructured_client.models import shared\n\ns = unstructured_client.UnstructuredClient(\n    api_key_auth=\"YOUR_API_KEY\",\n)\n\nreq = shared.PartitionParameters(\n    chunking_strategy='by_title',\n    combine_under_n_chars=500,\n    encoding='utf-8',\n    extract_image_block_types=[\n        'image',\n        'table',\n    ],\n    gz_uncompressed_content_type='application/pdf',\n    hi_res_model_name='yolox',\n    languages=[\n        '[',\n        'e',\n        'n',\n        'g',\n        ']',\n    ],\n    max_characters=1500,\n    new_after_n_chars=1500,\n    output_format='application/json',\n    overlap=25,\n    strategy='hi_res',\n)\n\nres = s.partition(req)\n\nif res.elements is not None:\n    # handle response\n    pass"
+            "source": "import unstructured_client\nfrom unstructured_client.models import shared\n\ns = unstructured_client.UnstructuredClient(\n    api_key_auth=\"YOUR_API_KEY\",\n)\n\nreq = shared.PartitionParameters(\n    chunking_strategy='${chunking_strategy}',\n    combine_under_n_chars=500,\n    encoding='utf-8',\n    extract_image_block_types=[\n        'image',\n        'table',\n    ],\n    gz_uncompressed_content_type='application/pdf',\n    hi_res_model_name='yolox',\n    languages=[\n        '[',\n        'e',\n        'n',\n        'g',\n        ']',\n    ],\n    max_characters=1500,\n    new_after_n_chars=1500,\n    output_format='application/json',\n    overlap=25,\n    strategy='hi_res',\n)\n\nres = s.partition(req)\n\nif res.elements is not None:\n    # handle response\n    pass"
           },
           {
             "lang": "typescript",
