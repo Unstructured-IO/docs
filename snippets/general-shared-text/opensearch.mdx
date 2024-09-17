@@ -13,7 +13,51 @@ The OpenSearch prerequisites:
   circumstances. This is because these schemas will vary based on your source files' types; how you 
   want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors. 
 
-  See: 
+  You can adapt the following index schema example for your own needs:
+
+  ```json
+  {
+      "settings": {
+          "index": {
+              "knn": true,
+              "knn.algo_param.ef_search": 100
+          }
+      },
+      "mappings": {
+          "properties": {
+              "element_id": {
+                  "type": "keyword"
+              },
+              "text": {
+                  "type": "text"
+              },
+              "embeddings": {
+                  "type": "knn_vector",
+                  "dimension": 384
+              },
+              "metadata": {
+                  "type": "object",
+                  "properties": {
+                      "parent_id": {
+                          "type": "text"
+                      },
+                      "page_number": {
+                          "type": "integer"
+                      },
+                      "is_continuation": {
+                         "type": "boolean"
+                      },
+                      "orig_elements": {
+                         "type": "text"
+                      }
+                  }
+              }
+          }
+      }
+  }
+  ```
+
+  See also: 
 
   - [Mappings and field types](https://opensearch.org/docs/latest/field-types/)
   - [Explicit mapping](https://opensearch.org/docs/latest/field-types/#explicit-mapping)

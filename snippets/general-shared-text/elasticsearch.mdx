@@ -8,7 +8,53 @@ The Elasticsearch prerequisites:
   circumstances. This is because these schemas will vary based on your source files' types; how you 
   want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors. 
 
-  See: 
+  You can adapt the following index schema example for your own needs:
+
+  ```json
+  {
+      "settings": {
+          "index": {
+              "knn": true,
+              "knn.algo_param.ef_search": 100
+          }
+      },
+      "mappings": {
+          "properties": {
+              "element_id": {
+                  "type": "keyword"
+              },
+              "text": {
+                  "type": "text"
+              },
+              "embeddings": {
+                  "type": "dense_vector",
+                  "dims": 384,
+                  "index": true,
+                  "similarity": "cosine"
+              },
+              "metadata": {
+                  "type": "object",
+                  "properties": {
+                      "parent_id": {
+                          "type": "text"
+                      },
+                      "page_number": {
+                          "type": "integer"
+                      },
+                      "is_continuation": {
+                          "type": "boolean"
+                      },
+                      "orig_elements": {
+                          "type": "text"
+                      }
+                  }
+              }
+          }
+      }
+  }
+  ```
+
+  See also: 
 
   - [An Introduction to Elasticsearch Mapping](https://www.elastic.co/blog/found-elasticsearch-mapping-introduction)
   - [Explicit mapping](https://www.elastic.co/guide/en/elasticsearch/reference/current/explicit-mapping.html)

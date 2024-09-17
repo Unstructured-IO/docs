@@ -10,7 +10,53 @@ The Weaviate prerequisites:
    The schema of the collection that you use must match the data that Unstructured writes to it. Otherwise, you might get unexpected results or errors. 
    Unstructured cannot provide a schema that is guaranteed to work for everyone in all circumstances. This is because these schemas will vary based on 
    your source files' types; how you want Unstructured to partition, chunk, and generate embeddings; 
-   any custom post-processing code that you run; and other factors. See:
+   any custom post-processing code that you run; and other factors.
+
+   You can adapt the following collection schema example for your own needs:
+
+   ```json
+   {
+       "class": "Elements",
+       "properties": [
+           {
+               "name": "element_id",
+               "dataType": ["text"]
+           },
+           {
+               "name": "text",
+               "dataType": ["text"]
+           },
+           {
+               "name": "embeddings",
+               "dataType": ["number[]"]
+           },
+           {
+               "name": "metadata",
+               "dataType": ["object"],
+               "nestedProperties": [
+                   {
+                       "name": "parent_id",
+                       "dataType": ["text"]
+                   },
+                   {
+                       "name": "page_number",
+                       "dataType": ["int"]
+                   },
+                   {
+                       "name": "is_continuation",
+                       "dataType": ["boolean"]
+                   },
+                   {
+                       "name": "orig_elements",
+                       "dataType": ["text"]
+                   }
+               ]
+           }
+       ]
+   }
+   ```
+   
+   See also :
 
    - [Collection schema](https://weaviate.io/developers/weaviate/config-refs/schema)
    - [Unstructured document elements and metadata](/api-reference/api-services/document-elements)

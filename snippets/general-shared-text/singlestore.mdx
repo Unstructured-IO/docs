@@ -9,9 +9,56 @@ The SingleStore prerequisites:
 - The name of the table in the database.
 
   The table's schema must match the schema of the documents that Unstructured produces. 
-  Unstructured cannot provide a schema that is guaranteed to work in all 
+  
+  During insertion, JSON objects are flattened, and underscores are placed between nested object names. 
+  For example, the following JSON object matches a column in the table named `data_source_date_created`:
+
+  ```json
+  {
+      "...": "...",
+      "data_source": {
+          "date_created": "1719963233.949"
+      },
+      "...": "..."
+  }
+  ```
+
+  The `metadata` object itself is also flattened in a similar way. However, for nested objects in `metadata`, 
+  the column in the table does not start with `metadata_`. For example, the following JSON object matches a 
+  column in the table named `last_modified`:
+
+  ```json
+  {
+      "...": "...",
+      "metadata": {
+          "...": "...",
+          "last_modified": "2022-12-16T17:04:16-05:00",
+          "...": "..."
+      },
+      "...": "..."
+  }
+  ```
+
+  Unstructured cannot provide a table schema that is guaranteed to work in all 
   circumstances. This is because these schemas will vary based on your source files' types; how you 
-  want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors. See:
+  want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors.
+
+  You can adapt the following table schema example for your own needs:
+
+  ```sql
+  CREATE TABLE elements (
+      id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+      element_id TEXT,
+      text TEXT,
+      embeddings Vector(384),
+      parent_id TEXT,
+      page_number TEXT,
+      is_continuation BOOLEAN,
+      orig_elements TEXT
+  );
+  ```
+
+  See also:
 
   - [CREATE TABLE](https://docs.singlestore.com/cloud/reference/sql-reference/data-definition-language-ddl/create-table/) 
     in the SingleStore documentation
