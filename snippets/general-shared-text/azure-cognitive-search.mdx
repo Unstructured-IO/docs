@@ -1,11 +1,146 @@
 The Azure AI Search (formerly Azure Cognitive Search) prerequisites:
 
-- The API key for Azure AI Search.
-- The endpoint for Azure AI Search.
-- The name of the index in Azure AI Search.
+- The endpoint and API key for Azure AI Search. [Create an endpoint and API key](https://learn.microsoft.com/azure/search/search-create-service-portal).
+- The name of the index in Azure AI Search. [Create an index](https://learn.microsoft.com/rest/api/searchservice/create-index).
 
-See the [Azure AI Search documentation](https://docs.microsoft.com/azure/search/).
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/WY8h8Gtyo7o"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
 
-<Warning>
-    Make sure that you use a compatible index schema. For reference, see the [sample index schema](/api-reference/ingest/destination-connector/azure-cognitive-search#sample-index-schema).
-</Warning>
+  The Azure AI Search index that you use must have an index schema that is compatible with the schema of the documents 
+  that Unstructured produces for you. Unstructured cannot provide a schema that is guaranteed to work in all 
+  circumstances. This is because these schemas will vary based on your source files' types; how you 
+  want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors.
+
+  You can adapt the following index schema example for your own needs:
+
+  ```json
+  {
+      "name": "<your-index-name>",
+      "fields": [
+          {
+              "name": "id",
+              "type": "Edm.String",
+              "key": true,
+              "retrievable": true
+          },
+          {
+              "name": "element_id",
+              "type": "Edm.String",
+              "searchable": false,
+              "filterable": true,
+              "sortable": true,
+              "facetable": false
+          },
+          {
+              "name": "type",
+              "type": "Edm.String",
+              "searchable": true,
+              "filterable": true,
+              "sortable": true,
+              "facetable": true
+          },
+          {
+              "name": "text",
+              "type": "Edm.String",
+              "searchable": true,
+              "filterable": false,
+              "sortable": false,
+              "facetable": false
+          },
+          {
+              "name": "embeddings",
+              "type": "Collection(Edm.Single)",
+              "searchable": true,
+              "filterable": false,
+              "sortable": false,
+              "facetable": false,
+              "dimensions": 384,
+              "vectorSearchProfile": "embeddings-config"
+          },
+          {
+              "name": "metadata",
+              "type": "Edm.ComplexType",
+              "fields": [
+                  {
+                      "name": "parent_id",
+                      "type": "Edm.String",
+                      "searchable": false,
+                      "filterable": true,
+                      "sortable": true,
+                      "facetable": false
+                  },
+                  {
+                      "name": "page_number",
+                      "type": "Edm.Int32",
+                      "searchable": false,
+                      "filterable": true,
+                      "sortable": true,
+                      "facetable": true
+                  },
+                  {
+                      "name": "is_continuation",
+                      "type": "Edm.Boolean",
+                      "searchable": false,
+                      "filterable": true,
+                      "sortable": true,
+                      "facetable": true
+                  },
+                  {
+                      "name": "orig_elements",
+                      "type": "Edm.String",
+                      "searchable": true,
+                      "filterable": false,
+                      "sortable": false,
+                      "facetable": false
+                  }
+              ]
+          }
+      ],
+      "vectorSearch": {
+          "compressions": [
+              {
+                  "name": "scalar-quantization",
+                  "kind": "scalarQuantization",
+                  "rerankWithOriginalVectors": true,
+                  "defaultOversampling": 10.0,
+                      "scalarQuantizationParameters": {
+                          "quantizedDataType": "int8"
+                      }
+              }
+          ],
+          "algorithms": [
+              {
+                  "name": "hnsw-1",
+                  "kind": "hnsw",
+                  "hnswParameters": {
+                      "metric": "cosine",
+                      "m": 4,
+                      "efConstruction": 400,
+                      "efSearch": 500
+                  }
+              }
+          ],
+          "profiles": [
+              {
+                  "name": "embeddings-config",
+                  "algorithm": "hnsw-1",
+                  "compression": "scalar-quantization"
+              }
+          ]
+      }
+  }
+  ```
+
+  See also:
+
+  - [Search indexes in Azure AI Search](https://learn.microsoft.com/azure/search/search-what-is-an-index)
+  - [Schema of a search index](https://learn.microsoft.com/azure/search/search-what-is-an-index#schema-of-a-search-index)
+  - [Example index schema](https://learn.microsoft.com/rest/api/searchservice/create-index#examples)
+  - [Unstructured document elements and metadata](/api-reference/api-services/document-elements)

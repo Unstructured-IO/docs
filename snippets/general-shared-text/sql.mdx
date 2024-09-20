@@ -6,6 +6,50 @@ For PostgreSQL:
 - The host name and port number for the instance. These values are in the `postgresql.conf` file's `listen_addresses` and `port` settings. This file should be on the same machine as the instance. These values might also already be set as environment variables named `PGHOST` and `PGPORT` on the same machine as the instance. 
 - A database in the instance. [Create a database](https://www.postgresql.org/docs/current/tutorial-createdb.html).
 - A table in the database. [Create a table](https://www.postgresql.org/docs/current/tutorial-table.html). See also the [Sample index schema](#sample-index-schema).
+
+  The table's schema must match the schema of the documents that Unstructured produces. 
+  Unstructured cannot provide a schema that is guaranteed to work in all 
+  circumstances. This is because these schemas will vary based on your source files' types; how you 
+  want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors. 
+  
+  You can adapt the following table schema example for your own needs:
+
+  <CodeGroup>
+    ```sql PostgreSQL
+    CREATE TABLE elements (
+        id UUID PRIMARY KEY,
+        element_id VARCHAR,
+        text TEXT,
+        embeddings DECIMAL [],
+        parent_id VARCHAR,
+        page_number INTEGER,
+        is_continuation BOOLEAN,
+        orig_elements TEXT
+    );
+    ```
+    
+    ```sql PostgreSQL with pgvector 
+    CREATE EXTENSION vector;
+    
+    CREATE TABLE elements (
+        id UUID PRIMARY KEY,
+        element_id VARCHAR,
+        text TEXT,
+        embeddings vector(384),
+        parent_id VARCHAR,
+        page_number INTEGER,
+        is_continuation BOOLEAN,
+        orig_elements TEXT
+    );
+    ```
+  </CodeGroup>  
+  
+  See also:
+
+  - [CREATE TABLE](https://www.postgresql.org/docs/current/sql-createtable.html) for PostgreSQL
+  - [CREATE TABLE](https://github.com/pgvector/pgvector) for PostrgreSQL with pgvector
+  - [Unstructured document elements and metadata](/api-reference/api-services/document-elements)
+
 - A user in the database, and a password for the user. [Create a user](https://www.postgresql.org/docs/current/sql-createuser.html).
 - Database access for the user. [Give database access to a user](https://www.postgresql.org/docs/current/sql-grant.html).
 
@@ -15,3 +59,29 @@ For SQLite:
 - A SQLite database. [Create a database](https://www.sqlite.org/quickstart.html).
 - The path to the database's `.db` file.
 - A table in the database. [Create a table](https://www.sqlite.org/cli.html). See also the [Sample index schema](#sample-index-schema).
+
+  The table's schema must match the schema of the documents that Unstructured produces. 
+  Unstructured cannot provide a schema that is guaranteed to work in all 
+  circumstances. This is because these schemas will vary based on your source files' types; how you 
+  want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors. 
+  
+  You can adapt the following table schema example for your own needs:
+  
+  ```sql SQLite
+  CREATE TABLE elements (
+      id TEXT PRIMARY KEY,
+      element_id TEXT,
+      text TEXT,
+      embeddings TEXT,
+      parent_id TEXT,
+      page_number INTEGER,
+      is_continuation INTEGER,
+      orig_elements TEXT
+  );
+  ```
+
+  See also:
+
+  - [CREATE TABLE](https://www.sqlite.org/lang_createtable.html) for SQLite
+  - [Unstructured document elements and metadata](/api-reference/api-services/document-elements)
+

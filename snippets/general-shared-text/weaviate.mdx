@@ -6,3 +6,57 @@ The Weaviate prerequisites:
 2. The URL and API key for the database cluster. [Get the URL and API key](https://weaviate.io/developers/wcs/quickstart#explore-the-details-panel).
 
 3. A collection in the database cluster. Note the name of the collection, also known as the collection's _class name_. [Create a collection](https://weaviate.io/developers/wcs/tools/collections-tool).
+
+   The schema of the collection that you use must match the data that Unstructured writes to it. Otherwise, you might get unexpected results or errors. 
+   Unstructured cannot provide a schema that is guaranteed to work for everyone in all circumstances. This is because these schemas will vary based on 
+   your source files' types; how you want Unstructured to partition, chunk, and generate embeddings; 
+   any custom post-processing code that you run; and other factors.
+
+   You can adapt the following collection schema example for your own needs:
+
+   ```json
+   {
+       "class": "Elements",
+       "properties": [
+           {
+               "name": "element_id",
+               "dataType": ["text"]
+           },
+           {
+               "name": "text",
+               "dataType": ["text"]
+           },
+           {
+               "name": "embeddings",
+               "dataType": ["number[]"]
+           },
+           {
+               "name": "metadata",
+               "dataType": ["object"],
+               "nestedProperties": [
+                   {
+                       "name": "parent_id",
+                       "dataType": ["text"]
+                   },
+                   {
+                       "name": "page_number",
+                       "dataType": ["int"]
+                   },
+                   {
+                       "name": "is_continuation",
+                       "dataType": ["boolean"]
+                   },
+                   {
+                       "name": "orig_elements",
+                       "dataType": ["text"]
+                   }
+               ]
+           }
+       ]
+   }
+   ```
+   
+   See also :
+
+   - [Collection schema](https://weaviate.io/developers/weaviate/config-refs/schema)
+   - [Unstructured document elements and metadata](/api-reference/api-services/document-elements)
