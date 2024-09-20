@@ -19,7 +19,7 @@ Workflows are crucial for establishing a systematic approach to managing data fl
 <Warning>
     You must first have an existing source connector and destination connector to add to the workflow.
 
-    If you do not have an existing connector for either your target source (input) or destination (output) location, stop. [Create the source connector](/platform/platform-source-connectors/overview), [create the destination connector](/platform/platform-destination-connectors/overview), and then return here.
+    If you do not have an existing connector for either your target source (input) or destination (output) location, [create the source connector](/platform/platform-source-connectors/overview), [create the destination connector](/platform/platform-destination-connectors/overview), and then return here.
 
     To see your existing connectors, on the sidebar, click **Sources** or **Destinations**.
 </Warning>
@@ -29,16 +29,109 @@ To create a workflow:
 1. On the sidebar, click **Workflows**.
 2. Click **New Workflow**.
 3. Enter a unique **Name** for this workflow.
-4. Specify the workflow's settings as follows, and then click **Save**.
+4. In the **Connectors** section, in the **Sources** dropdown list, select your source location.
+5. In the **Destination** dropdown list, select your destination location.
+
+   <Note>You can select multiple source and destination locations. Files will be ingested from all of the selected source locations, and the processed data will be delivered to all of the selected destination locations.</Note>
+
+6. In the **Workflow Settings** section, choose one of these predefined workflow settings groups:
+
+   - **Basic** is a good choice if you have documents that have no images or tables in them.
+   - **Advanced** is a good choice if you have documents that have images or tables or both in them.
+           
+   Learn about the predefined settings for [Basic](#basic-workflow-settings) and [Advanced](#advanced-workflow-settings).
+
+   If neither the **Basic** nor **Advanced** predefined settings meet your needs, click **Custom** to define different settings. 
+   If **Custom** is not available, click **Request Access**, and wait for Unstructured to enable it. 
+   Learn how to define [Custom](#custom-workflow-settings) workflow settings.
+
+7. If you want to run this workflow on a regular basis, in the **Schedule** section, select one of the time periods in the **Schedule Type** list:
+
+   - **Monthly**: This workflow will automatically run once each month. Choose the day of the month and the time on that day to run this workflow.
+   - **Daily**: This workflow will automatically run once each day for one or more days of each week. Choose the days of the week and the time on each of those days to run this workflow.
+   - **Hourly**: This workflow will automatically run once each hour. Choose the minute of the hour to run this workflow.
+   - **Frequently**: This workflow will automatically run once after each specified number of minutes. Choose the time period in minutes to wait until running this workflow again.
+
+8. Click **Save**.
+
+## Basic workflow settings
+
+To apply the following predefined advanced workflow settings, in the **Workflow Settings** section of a workflow, click **Basic**.
+
+To learn more about these settings, see the descriptions for [Custom workflow settings](#custom-workflow-settings).
+
+- **Transform** section:
+
+  - [Strategy](/platform/partitioning): **Fast**
+  - [Image Summarization](/platform/summarizing): **None**
+  - [Table Summarization](/platform/summarizing): **None**
+  - **Connector Settings**:
+
+    - **Include Page Breaks**: No (unchecked)
+    - **Infer Table Structure**: No (unchecked)
+
+- [Chunk](/platform/chunking) section: 
+
+  - **Chunker Type**: **Basic**
+  - **Include Original Elements**: No (unchecked)
+  - **Max Characters**: **500**
+  - **New After N Characters**: **1000**
+  - **Overlap**: **100**
+  - **Overlap All**: No (unchecked)
+
+- [Embed](/platform/embedding) section:
+
+  - **Vendor**: **OpenAI**
+  - **Embedding Model**: [text-embedding-3-small](https://platform.openai.com/docs/guides/embeddings)
+
+## Advanced workflow settings
+
+To apply the following predefined advanced workflow settings, in the **Workflow Settings** section of a workflow, click **Advanced**. 
+
+To learn more about these settings, see the descriptions for [Custom workflow settings](#custom-workflow-settings).
+
+- **Transform** section:
+
+  - [Strategy](/platform/partitioning): **Hi-Res**
+  - [Image Summarization](/platform/summarizing): **Claude 3.5 Sonnet**
+  - [Table Summarization](/platform/summarizing): **GPT-4o**
+  - **Connector Settings**:
+
+    - **Include Page Breaks**: Yes (checked)
+    - **Infer Table Structure**: Yes (checked)
+
+  - **Elements to Exclude**: None
+
+- [Chunk](/platform/chunking) section:
+
+  - **Chunker Type**: **By Title**
+  - **Combine Text Under N Characters**: **1000**
+  - **Include Original Elements**: Yes (checked)
+  - **Max Characters**: **500**
+  - **Multipage Sections**: Yes (checked)
+  - **New After N Characters**: **1000**
+  - **Overlap**: **100**
+  - **Overlap All**: Yes (checked)
+
+- [Embed](/platform/embedding) section:
+
+  - **Vendor**: **OpenAI**
+  - **Embedding Model**: [text-embedding-3-large](https://platform.openai.com/docs/guides/embeddings)
+
+## Custom workflow settings
+
+To define custom workflow settings, in the **Workflow Settings** section of a workflow, click **Custom**. 
+If **Custom** is not available, click **Request Access**, and wait for Unstructured to enable it.
+
+The following workflow settings can be customized:
 
 <AccordionGroup>
     <Accordion title="Transform section">
         1. For **Strategy**, choose one of the following:
 
-           - **High Res**: This strategy uses document layout to gain additional information about document elements. Unstructured recommends using this strategy if your use case is highly sensitive to correct classifications for document elements. [Learn more](/api-reference/api-services/partitioning).
-           - **Auto**: This strategy chooses the partitioning strategy based on detected document characteristics. [Learn more](/api-reference/api-services/partitioning).
-           - **Fast**: This strategy uses traditional NLP extraction techniques to quickly pull in all text elements. This strategy is not good for image-based file types. [Learn more](/api-reference/api-services/partitioning).
-           - **OCR Only**: This strategy uses optical character recognition (OCR) to extract text from image-based files. [Learn more](/api-reference/api-services/partitioning).
+           - **Fast**: This strategy uses traditional NLP extraction techniques to quickly pull in all text elements. This strategy is not good for image-based file types. [Learn more](/platform/partitioning).
+           - **Hi-Res**: This strategy uses document layout to gain additional information about document elements. Unstructured recommends using this strategy if your use case is highly sensitive to correct classifications for document elements. [Learn more](/platform/partitioning).
+           - **Auto**: This strategy chooses the partitioning strategy based on detected document characteristics. [Learn more](/platform/partitioning).
 
         2. For **Image summarization**, choose one of the following:
 
@@ -46,25 +139,28 @@ To create a workflow:
            - **GPT-4o**: Use GPT-4o to summarize images. [Learn more](https://openai.com/index/hello-gpt-4o/).
            - **Claude 3.5 Sonnet**: Use Claude 3.5 Sonnet to summarize images. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
 
+           [Learn more about image summarization](/platform/summarizing).
+
         3. For **Table summarization**, choose one of the following:
 
            - **None**: No summarization of tables.
            - **GPT-4o**: Use GPT-4o to summarize tables. [Learn more](https://openai.com/index/hello-gpt-4o/).
            - **Claude 3.5 Sonnet**: Use Claude 3.5 Sonnet to summarize tables. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
 
-        4. For **ConnectorSettings**, check one or more of the following boxes:
+           [Learn more about table summarization](/platform/summarizing).
+
+        4. For **Connector Settings**, check one or more of the following boxes:
 
            - **Include Page Breaks**: Include page breaks in the output, if the file type supports it.
-           - **Infer Table Structure**: If you also set **Strategy** to **High Res**, any table elements extracted from a PDF will include an additional metadata field, `text_as_html`, that contains a transformation of the data into an HTML `<table>`.
-           - **Reprocess all documents**: This workflow will processes any previously processed documents.
+           - **Infer Table Structure**: If you also set **Strategy** to **Hi-Res**, any table elements extracted from a PDF will include an additional metadata field, `text_as_html`, that contains a transformation of the data into an HTML `<table>`.
 
-        5. For **Elements to Exclude**, select one or more standard Unstructured element types to not include in the output. [Learn more](/api-reference/api-services/document-elements).
+        5. For **Elements to Exclude**, select one or more standard Unstructured element types to not include in the output. [Learn more](/platform/document-elements).
     </Accordion>
     <Accordion title="Chunk section">
         For **Chunker Type**, select one of the following:
 
         - **None**: Do not chunk elements.
-        - **Basic**: Combine sequential elements to maximally fill each chunk. [Learn more](/api-reference/api-services/chunking). Also specify the following:
+        - **Basic**: Combine sequential elements to maximally fill each chunk. [Learn more](/platform/chunking). Also specify the following:
 
           - **Include Original Elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk.
           - **Max Characters** (_required_): Cut off new sections after reaching a length of this many characters.
@@ -82,7 +178,7 @@ To create a workflow:
           - **Overlap** (_required_): Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting.
           - **Overlap All**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units.
 
-        - **Chunk By Page**: Preserve page boundaries. When a new page is detected, the existing chunk is closed and a new one is started, even if the next element would fit in the prior chunk. [Learn more](/api-reference/api-services/chunking). Also specify the following:
+        - **Chunk By Page**: Preserve page boundaries. When a new page is detected, the existing chunk is closed and a new one is started, even if the next element would fit in the prior chunk. [Learn more](/platform/chunking). Also specify the following:
         
           - **Include Original Elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk.
           - **Max Characters** (_required_): Cut off new sections after reaching a length of this many characters. This is a strict limit.
@@ -90,7 +186,7 @@ To create a workflow:
           - **Overlap** (_required_): Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting.
           - **Overlap All**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units.
         
-        - **Chunk By Similarity**: Use the [sentence-transformers/multi-qa-mpnet-base-dot-v1](https://huggingface.co/sentence-transformers/multi-qa-mpnet-base-dot-v1) embedding model to identify topically similar sequential elements and combine them into chunks. [Learn more](/api-reference/api-services/chunking). Also specify the following:
+        - **Chunk By Similarity**: Use the [sentence-transformers/multi-qa-mpnet-base-dot-v1](https://huggingface.co/sentence-transformers/multi-qa-mpnet-base-dot-v1) embedding model to identify topically similar sequential elements and combine them into chunks. [Learn more](/platform/chunking). Also specify the following:
 
           - **Include Original Elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk.
           - **Max Characters** (_required_): Cut off new sections after reaching a length of this many characters. This is a strict limit.
@@ -132,22 +228,10 @@ To create a workflow:
           - **textembedding-gecko@003**: [Learn more](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions#embeddings_stable_model_versions).
           - **text-embedding-004**: [Learn more](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions#embeddings_stable_model_versions).
 
-        [Learn more](https://unstructured.io/blog/understanding-embedding-models-make-an-informed-choice-for-your-rag).
-    </Accordion>
-    <Accordion title="Connect section">
-        1. For **Sources** (_required_), choose one or more of the existing source connections from the **Sources** section in the sidebar. [Learn more](/platform/platform-source-connectors/overview).
-        2. For **Destinations** (_required_), choose one or more of the existing destination connections from the **Destinations** section in the sidebar. [Learn more](/platform/platform-destination-connectors/overview). 
-    
-        <Note>You can select multiple source and destination locations. Files will be ingested from all of the selected source locations, and the processed data will be delivered to all of the selected destination locations.</Note>
-    </Accordion>
-    <Accordion title="Schedule section">
-        For **Schedule Type**, choose one of the following:
-
-        - **Off**: This workflow will not run automatically. To run this workflow, [create and run a job manually](/platform/jobs-scheduling).
-        - **Monthly**: This workflow will automatically run once each month. Choose the day of the month and the time on that day to run this workflow.
-        - **Daily**: This workflow will automatically run once each day for one or more days of each week. Choose the days of the week and the time on each of those days to run this workflow.
-        - **Hourly**: This workflow will automatically run once each hour. Choose the minute of the hour to run this workflow.
-        - **Frequently**: This workflow will automatically run once after each specified number of minutes. Choose the time period in minutes to wait until running this workflow again.
+        Learn more:
+        
+        - [Embedding overview](/platform/embedding)
+        - [Understanding embedding models: make an informed choice for your RAG](https://unstructured.io/blog/understanding-embedding-models-make-an-informed-choice-for-your-rag).
     </Accordion>
 </AccordionGroup>
 
