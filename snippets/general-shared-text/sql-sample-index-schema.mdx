@@ -1,6 +1,20 @@
 ## Sample index schema
 
-To make sure the schema of the index matches the data being written to it, a sample schema can be used.
+The schema of the index that you use must match the data that Unstructured writes to it. Otherwise, you might get unexpected results or errors.
+
+Here is a `CREATE TABLE` statement for an example table named `elements` that can handle many (but not all) of the JSON objects that Unstructured outputs. 
+
+You must adjust these column names and datatypes for your specific needs. 
+Unstructured cannot provide a schema that is guaranteed to work for everyone in all circumstances. This is because these schemas will vary based on 
+your source files' types; how you want Unstructured to partition, chunk, and generate embeddings; 
+any custom post-processing code that you run; and other factors.
+
+See also:
+
+- [CREATE TABLE](https://www.postgresql.org/docs/current/sql-createtable.html) for PostgreSQL
+- [CREATE TABLE](https://github.com/pgvector/pgvector) for PostrgreSQL with pgvector
+- [CREATE TABLE](https://www.sqlite.org/lang_createtable.html) for SQLite
+- [Unstructured document elements and metadata](/api-reference/api-services/document-elements)
 
 <CodeGroup>
     ```sql PostgreSQL
@@ -95,7 +109,7 @@ To make sure the schema of the index matches the data being written to it, a sam
     ```
     
     
-    ```sql Sqlite
+    ```sql SQLite
     CREATE TABLE elements (
         id TEXT PRIMARY KEY,
         element_id TEXT,

@@ -1,6 +1,18 @@
-## Sample index schema
+## Sample collection schema
 
-To make sure the schema of the index matches the data being written to it, a sample schema JSON can be used:
+The schema of the collection that you use must match the data that Unstructured writes to it. Otherwise, you might get unexpected results or errors.
+
+Here is a collection schema definition for an example collection named `Elements` that can handle many (but not all) of the JSON objects that Unstructured outputs. 
+
+You must adjust these properties and datatypes for your specific needs. 
+Unstructured cannot provide a schema that is guaranteed to work for everyone in all circumstances. This is because these schemas will vary based on 
+your source files' types; how you want Unstructured to partition, chunk, and generate embeddings; 
+any custom post-processing code that you run; and other factors.
+
+See also:
+
+- [Collection schema](https://weaviate.io/developers/weaviate/config-refs/schema)
+- [Unstructured document elements and metadata](/api-reference/api-services/document-elements)
 
 ```json
 {
