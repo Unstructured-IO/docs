@@ -1,0 +1,27 @@
+The Airtable connector prerequisites:
+
+- An [Airtable](https://www.airtable.com/) account. [Create a free Airtable account](https://airtable.com/signup). 
+- An Airtable personal access token. [Create a personal access token](https://support.airtable.com/docs/creating-and-using-api-keys-and-access-tokens).
+- The ID of the Airtable base to access. [Create a base](https://www.airtable.com/guides/build/create-a-base). [Get a base's ID](https://support.airtable.com/docs/finding-airtable-ids#finding-base-url-ids).
+- The ID of the table to access in the base. [Create a table](https://www.airtable.com/guides/build/create-a-table). [Get a table's ID](https://support.airtable.com/docs/finding-airtable-ids#finding-base-url-ids).
+- The ID of the view to access in the table. [Create a view](https://www.airtable.com/guides/build/create-custom-views-of-data). [Get a view's ID](https://support.airtable.com/docs/finding-airtable-ids#finding-base-url-ids).
+
+By default, Unstructured processes all tables within each and every base within an Airtable organization. You can limit the 
+tables that Unstructured ingests data from within Airtable by specifying a list of Airtable paths. 
+An Airtable path uses the following structure: `base_id/table_id(optional)/view_id(optional)`
+
+For example, given the following example Airtable URL:
+
+```text
+https://airtable.com/appr9nKeXLAtg6bgn/tblZ8uT1GY7NLbWit/viwDcpzf9dP0Gqz5J
+```
+
+- The base's ID is `appr9nKeXLAtg6bgn`. The base's path is `appr9nKeXLAtg6bgn`.
+- The table's ID is `tblZ8uT1GY7NLbWit`. The table's path is `appr9nKeXLAtg6bgn/tblZ8uT1GY7NLbWit`.
+- The view's ID is `viwDcpzf9dP0Gqz5J`. The view's path is `appr9nKeXLAtg6bgn/tblZ8uT1GY7NLbWit/viwDcpzf9dP0Gqz5J`.
+
+You can call the Airtable API to get lists of available IDs for Airtable bases, tables, and views in bulk, as follows:
+
+- [Base IDs](https://airtable.com/developers/web/api/list-bases)
+* [Table and view IDs](https://airtable.com/developers/web/api/get-base-schema)
+* [Base, table, and view IDs](https://pyairtable.readthedocs.io/en/latest/metadata.html)
