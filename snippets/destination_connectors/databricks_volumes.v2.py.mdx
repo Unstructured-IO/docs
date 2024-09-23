@@ -37,18 +37,28 @@ if __name__ == "__main__":
                 "split_pdf_concurrency_level": 15
             }
         ),
-        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
-        embedder_config=EmbedderConfig(embedding_provider="langchain-huggingface"),
+        chunker_config=ChunkerConfig(
+            chunk_by_api=True,
+            chunk_api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            chunking_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            chunking_strategy="by_title"
+        ),
+        embedder_config=EmbedderConfig(
+            embedding_provider="langchain-huggingface",
+            embedding_model_name="sentence-transformers/all-mpnet-base-v2"
+        ),
         destination_connection_config=DatabricksVolumesConnectionConfig(
             access_config=DatabricksVolumesAccessConfig(
-                username=os.getenv("DATABRICKS_USERNAME"),
-                password=os.getenv("DATABRICKS_PASSWORD")
+                token=os.getenv("DATABRICKS_TOKEN"),
+                cluster_id=os.getenv("DATABRICKS_CLUSTER_ID")
             ),
             host=os.getenv("DATABRICKS_HOST")
         ),
         uploader_config=DatabricksVolumesUploaderConfig(
             catalog=os.getenv("DATABRICKS_CATALOG"),
-            volume=os.getenv("DATABRICKS_VOLUME")
+            schema=os.getenv("DATABRICKS_SCHEMA"),
+            volume=os.getenv("DATABRICKS_VOLUME"),
+            volume_path=os.getenv("DATABRICKS_VOLUME_PATH")
         )
     ).run()
 ```

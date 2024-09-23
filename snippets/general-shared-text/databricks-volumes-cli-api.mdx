@@ -10,11 +10,61 @@ import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-d
 
 The following environment variables:
 
-- `DATABRICKS_HOST` - The Databricks compute resource's host name, represented by `--host` (CLI) or `host` (Python).
+- `DATABRICKS_HOST` - The Databricks host URL, represented by `--host` (CLI) or `host` (Python).
+- `DATABRICKS_CLUSTER_ID` - The Databricks compute resource ID, represented by `--cluster-id` (CLI) or `cluster_id` (Python).
 - `DATABRICKS_CATALOG` - The Databricks catalog name for the Volume, represented by `--catalog` (CLI) or `catalog` (Python).
+- `DATABRICKS_SCHEMA` - The Databricks schema name for the Volume, represented by `--schema` (CLI) or `schema` (Python). If not specified, `default` is used.
 - `DATABRICKS_VOLUME` - The Databricks Volume name, represented by `--volume` (CLI) or `volume` (Python).
+- `DATABRICKS_VOLUME_PATH` - Any optional path to access within the volume, specified by `--volume-path` (CLI) or `volume_path` (Python).
 
-Environment variables based on your authentication type, depending which types are supported by your cloud provider. For example, for username and password authentication:
+Environment variables based on your authentication type, depending on your cloud provider:
 
-- `DATABRICKS_USERNAME` - The Databricks account user's name, represented by `--username` (CLI) or `username` (Python).
-- `DATABRICKS_PASSWORD` - The Databricks account user's password, represented by `--password` (CLI) or `password` (Python).
+- For Databricks personal access token authentication (AWS, Azure, and GCP):
+
+  - `DATABRICKS_TOKEN` - The personal access token, represented by `--token` (CLI) or `token` (Python).
+
+- For username and password (basic) authentication (AWS only): The user's name and password values.
+
+  - `DATABRICKS_USERNAME` - The user's name, represented by `--username` (CLI) or `username` (Python).
+  - `DATABRICKS_PASSWORD` - The user's password, represented by `--password` (CLI) or `password` (Python).
+
+- For OAuth machine-to-machine (M2M) authentication (AWS, Azure, and GCP): The client ID and OAuth secret values for the corresponding service principal.
+  
+  - `DATABRICKS_CLIENT_ID` - The client ID value for the corresponding service principal, represented by `--client-id` (CLI) or `client_id` (Python).
+  - `DATABRICKS_CLIENT_SECRET` - The client ID and OAuth secret values for the corresponding service principal, represented by `--client-secret` (CLI) or `client_secret` (Python).
+
+- For OAuth user-to-machine (U2M) authentication (AWS, Azure, and GCP): No additional environment variables.
+  
+- For Azure managed identities (MSI) authentication (Azure only): 
+
+  - `ARM_CLIENT_ID` - The client ID value for the corresponding managed identity, represented by `--azure-client-id` (CLI) or `azure_client_id` (Python).
+  - If the target identity has not already been added to the workspace, then you must also specify the 
+    `DATABRICKS_AZURE_RESOURCE_ID`, represented by `--azure-workspace-resource-id` (CLI) or `azure_workspace_resource_id` (Python).
+  
+- For Microsoft Entra ID service principal authentication (Azure only): 
+
+  - `ARM_TENANT_ID` - The tenant ID value for the corresponding service principal, represented by `--azure-tenant-id` (CLI) or `azure_tenant_id` (Python).
+  - `ARM_CLIENT_ID` - The client ID value for the corresponding service principal, represented by `--azure-client-id` (CLI) or `azure_client_id` (Python).
+  - `ARM_CLIENT_SECRET` - The client secret value for the corresponding service principal, represented by `--azure-client-secret` (CLI) or `azure_client_secret` (Python).
+  - If the service principal has not already been added to the workspace, then you must also specify the 
+    `DATABRICKS_AZURE_RESOURCE_ID`, represented by `--azure-workspace-resource-id` (CLI) or `azure_workspace_resource_id` (Python).
+
+- For Azure CLI authentication (Azure only): No additional environment variables.
+
+- For Microsoft Entra ID user authentication (Azure only): 
+
+  - `DATABRICKS_TOKEN` - The Entra ID token for the corresponding Entra ID user, represented by `--token` (CLI) or `token` (Python).
+  
+- For Google Cloud Platform credentials authentication (GCP only): 
+
+  - `GOOGLE_CREDENTIALS` - The local path to the corresponding Google Cloud service account's credentials file, represented by `--google-credentials` (CLI) or `google_credentials`
+
+- For Google Cloud Platform ID authentication (GCP only): 
+
+  - `GOOGLE_SERVICE_ACCOUNT` - The Google Cloud service account's email address, represented by `--google-service-account` (CLI) or `google_service_account` (Python).
+
+- Alternatively, you can store the preceding settings in a local 
+  [Databricks configuration profile](https://docs.databricks.com/en/dev-tools/auth/config-profiles.html) and then just 
+  refer to the profile's name:
+
+  - `DATABRICKS_PROFILE` - The name of the Databricks configuration profile, represented by `--profile` (CLI) or `profile` (Python).
