@@ -120,6 +120,69 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
     ```
     </CodeGroup>
 
+## Async Partitioning
+
+    The Python SDK also has a `partition_async`. This call is equivalent to `partition` except that it can be used in a non blocking context. For instance, `asyncio.gather` can be used to concurrently process multiple files at once, as in this example: 
+
+    <CodeGroup>
+    ```python
+    import asyncio
+    import os, json
+
+    import unstructured_client
+    from unstructured_client.models import shared
+
+    client = unstructured_client.UnstructuredClient(
+        api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+        server_url=os.getenv("UNSTRUCTURED_API_URL"),
+    )
+
+
+    async def call_api(filename):
+        req = {
+            "partition_parameters": {
+                "files": {
+                    "content": open(filename, "rb"),
+                    "file_name": filename,
+                },
+                "strategy": shared.Strategy.HI_RES,
+            }
+        }
+
+
+        try:
+            res = await client.general.partition_async(request=req)
+
+            element_dicts = [element for element in res.elements]
+
+            # Write the processed data to a local file.
+            json_elements = json.dumps(element_dicts, indent=2)
+
+            # Each input will need its own output file
+            with open("PATH_TO_OUTPUT_FILE", "w") as file:
+                file.write(json_elements)
+
+        except Exception as e:
+            print(e)
+
+
+    async def process_files(filenames):
+        filenames = [
+            "PATH_TO_INPUT_FILE_1",
+            "PATH_TO_INPUT_FILE_2",
+            "PATH_TO_INPUT_FILE_3",
+        ]
+
+        tasks = []
+
+        for filename in filenames:
+            tasks.append(call_api(filename))
+
+        await asyncio.gather(*tasks)
+
+    asyncio.run(process_files())
+    ```
+    </CodeGroup>
 ## Page splitting
 
     In order to speed up processing of large PDF files, the `split_pdf_page`[*](#parameter-names) parameter is `True` by default. This
