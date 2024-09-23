@@ -1,0 +1,43 @@
+```python Python Ingest v2
+import os
+
+from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+from unstructured_ingest.v2.interfaces import ProcessorConfig
+
+from unstructured_ingest.v2.processes.connectors.airtable import (
+    AirtableIndexerConfig,
+    AirtableDownloaderConfig,
+    AirtableConnectionConfig,
+    AirtableAccessConfig
+)
+
+from unstructured_ingest.v2.processes.connectors.local import LocalUploaderConfig
+from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+from unstructured_ingest.v2.processes.chunker import ChunkerConfig
+
+# Chunking is optional.
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=AirtableIndexerConfig(list_of_paths=[os.getenv("AIRTABLE_PATHS")]),
+        downloader_config=AirtableDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
+        source_connection_config=AirtableConnectionConfig(
+            access_config=AirtableAccessConfig(
+                personal_access_token=os.getenv("AIRTABLE_TOKEN")
+            )
+        ),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
+    ).run()
+```

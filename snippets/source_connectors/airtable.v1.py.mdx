@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured_ingest.connector.airtable import AirtableAccessConfig, SimpleAirtableConfig
@@ -18,12 +18,16 @@ if __name__ == "__main__":
         ),
         read_config=ReadConfig(),
         partition_config=PartitionConfig(
+            partition_by_api=True,
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
             strategy="hi_res",
         ),
         connector_config=SimpleAirtableConfig(
             access_config=AirtableAccessConfig(
                 personal_access_token=os.getenv("AIRTABLE_PERSONAL_ACCESS_TOKEN")
             ),
+            list_of_paths=[os.getenv("AIRTABLE_PATHS")]
         ),
     )
     runner.run()
