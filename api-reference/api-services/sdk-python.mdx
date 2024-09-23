@@ -137,7 +137,6 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
         server_url=os.getenv("UNSTRUCTURED_API_URL"),
     )
 
-
     async def call_api(filename):
         req = {
             "partition_parameters": {
@@ -148,7 +147,6 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
                 "strategy": shared.Strategy.HI_RES,
             }
         }
-
 
         try:
             res = await client.general.partition_async(request=req)
@@ -164,7 +162,6 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
 
         except Exception as e:
             print(e)
-
 
     async def process_files(filenames):
         filenames = [
