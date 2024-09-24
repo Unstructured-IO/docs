@@ -1,0 +1,68 @@
+To use the AWS CloudFormation console to create an Amazon S3 bucket that allows all authenticated AWS IAM users 
+in the corresponding AWS account to read and write to the bucket, do the following. 
+
+<Info>Your organization might have stricter bucket policy requirements. Check with your AWS account 
+  administrator if you are unsure.</Info>
+
+1. Save the following YAML to a file on your local machine, for example `create-s3-bucket.yaml`. To change 
+   the following bucket policy to restrict it to a specific user in the AWS account, change `root` to that 
+   specific username.
+
+   ```yaml
+   AWSTemplateFormatVersion: '2010-09-09'
+   Description: 'CloudFormation template to create an S3 bucket with specific permissions for account users.'
+
+   Parameters:
+     BucketName:
+       Type: String
+       Description: 'Name of the S3 bucket to create'
+
+   Resources:
+     MyS3Bucket:
+       Type: 'AWS::S3::Bucket'
+       Properties:
+         BucketName: !Ref BucketName
+         PublicAccessBlockConfiguration:
+           BlockPublicAcls: true
+           BlockPublicPolicy: false
+           IgnorePublicAcls: true
+           RestrictPublicBuckets: true
+
+     BucketPolicy:
+       Type: 'AWS::S3::BucketPolicy'
+       Properties:
+         Bucket: !Ref MyS3Bucket
+         PolicyDocument:
+           Version: '2012-10-17'
+           Statement:
+             - Sid: AllowAllAuthenticatedUsersInAccount
+               Effect: Allow
+               Principal:
+                 AWS: !Sub 'arn:aws:iam::${AWS::AccountId}:root'
+               Action:
+                 - 's3:GetObject'
+                 - 's3:PutObject'
+                 - 's3:ListBucket'
+                 - 's3:DeleteObject'
+               Resource:
+                 - !Sub 'arn:aws:s3:::${BucketName}'
+                 - !Sub 'arn:aws:s3:::${BucketName}/*'
+
+   Outputs:
+     BucketName:
+       Description: 'Name of the created S3 bucket'
+       Value: !Ref MyS3Bucket
+   ```
+
+2. Sign in to the [AWS Management Console](https://console.aws.amazon.com/).
+3. Open the [AWS CloudFormation Console](https://console.aws.amazon.com/cloudformation/home).
+4. Click **Create stack > With new resources (standard)**.
+5. On the **Create stack** page, with **Choose an existing template** already selected, select **Upload a template file**.
+6. Click **Choose file**, and browse to and select the YAML file from your local machine.
+7. Click **Next**.
+8. Enter a unique **Stack name** and **BucketName**.
+9. Click **Next** two times.
+10. Click **Submit**.
+11. Wait until the **Status** changes to **CREATE_COMPLETE**.
+12. After the bucket is created, you can delete the YAML file, if you want.
+
