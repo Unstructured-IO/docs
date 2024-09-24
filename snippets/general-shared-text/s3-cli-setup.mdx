@@ -1,9 +1,14 @@
 To use the AWS CLI to create an Amazon S3 bucket that allows all authenticated AWS IAM users in the 
-corresponding AWS account to read and write to the bucket, do the following:
+corresponding AWS account to read and write to the bucket, do the following.
+
+<Info>Your organization might have stricter bucket policy requirements. Check with your AWS account 
+  administrator if you are unsure.</Info>
 
 1. [Install the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
 2. [Set up the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html).
-3. Copy the following script to a file on your local machine, for example a file named `create-s3-bucket.sh`.
+3. Copy the following script to a file on your local machine, for example a file named `create-s3-bucket.sh`. 
+   To change the following bucket policy to restrict it to a specific user in the AWS account, change `root` to that 
+   specific username.
 
    In this script, replace the following:
 
@@ -107,3 +112,5 @@ corresponding AWS account to read and write to the bucket, do the following:
    ```bash
    sh create-s3-bucket.sh
    ```
+
+5. After the bucket is created, you can delete the script file, if you want.
