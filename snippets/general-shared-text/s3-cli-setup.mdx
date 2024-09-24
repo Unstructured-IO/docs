@@ -1,0 +1,109 @@
+To use the AWS CLI to create an Amazon S3 bucket that allows all authenticated AWS IAM users in the 
+corresponding AWS account to read and write to the bucket, do the following:
+
+1. [Install the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
+2. [Set up the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html).
+3. Copy the following script to a file on your local machine, for example a file named `create-s3-bucket.sh`.
+
+   In this script, replace the following:
+
+   - Replace `<my-account-id>` with your AWS account ID.
+   - Replace `<my-unique-bucket-name>` with the name of your bucket.
+   - Replace `<us-east-1>` with your AWS Region.
+
+   ```bash
+   #!/bin/bash
+
+   # Set variables for the AWS account ID, Amazon S3 bucket name, and AWS Region.
+   ACCOUNT_ID="<my-account-id>"
+   BUCKET_NAME="<my-unique-bucket-name>"
+   REGION="<us-east-1>"
+
+   # Temporary filename for the bucket policy.
+   # Do not change this variable.
+   POLICY_FILE="bucket_policy.json"
+
+   # Create the bucket.
+   aws s3api create-bucket --bucket $BUCKET_NAME --region $REGION
+
+   # Wait for the bucket to exist.
+   echo "Waiting for bucket '$BUCKET_NAME' to be fully created..."
+   aws s3api wait bucket-exists --bucket $BUCKET_NAME
+
+   # Check if the wait command was successful.
+   if [ $? -eq 0 ]; then
+       echo "The bucket '$BUCKET_NAME' has been fully created."
+   else
+       echo "Error: Timed out waiting for bucket '$BUCKET_NAME' to be created."
+       exit 1
+   fi
+
+   # Remove the "block public policy" bucket access setting.
+   aws s3api put-public-access-block \
+       --bucket $BUCKET_NAME \
+       --public-access-block-configuration \
+       '{"BlockPublicPolicy": false, "IgnorePublicAcls": false, "BlockPublicAcls": false, "RestrictPublicBuckets": false}'
+
+   # Check if the operation was successful.
+   if [ $? -eq 0 ]; then
+       echo "The block public policy access setting was removed from '$BUCKET_NAME'."
+   else
+       echo "Error: Failed to remove the block public policy access setting from '$BUCKET_NAME'."
+       exit 1
+   fi
+
+   # Create the bucket policy.
+   cat << EOF > $POLICY_FILE
+   {
+       "Version": "2012-10-17",
+       "Statement": [
+           {
+               "Sid": "AllowAuthenticatedUsersInAccountReadWrite",
+               "Effect": "Allow",
+               "Principal": {
+                   "AWS": "arn:aws:iam::$ACCOUNT_ID:root"
+               },
+               "Action": [
+                   "s3:GetObject",
+                   "s3:PutObject",
+                   "s3:ListBucket",
+                   "s3:DeleteObject"
+               ],
+               "Resource": [
+                   "arn:aws:s3:::$BUCKET_NAME",
+                   "arn:aws:s3:::$BUCKET_NAME/*"
+               ],
+               "Condition": {
+                   "StringEquals": {
+                       "aws:PrincipalType": "IAMUser"
+                   }
+               }
+           }
+       ]
+   }
+   EOF
+
+   # Apply the bucket policy.
+   aws s3api put-bucket-policy --bucket $BUCKET_NAME --policy file://$POLICY_FILE
+
+   # Check if the policy application was successful.
+   if [ $? -eq 0 ]; then
+       echo "The bucket policy was applied to '$BUCKET_NAME'."
+   else
+       echo "Error: Failed to apply the bucket policy to '$BUCKET_NAME'."
+       exit 1
+   fi
+
+   # Verify the applied policy.
+   echo "Verifying the applied policy:"
+   aws s3api get-bucket-policy --bucket $BUCKET_NAME --query Policy --output text
+
+   # Remove the temporary bucket policy file.
+   rm $POLICY_FILE
+   ```
+
+4. Run the script, for example:
+
+   ```bash
+   sh create-s3-bucket.sh
+   ```
