@@ -26,13 +26,15 @@ def get_writer() -> Writer:
         connector_config=SimpleDatabricksVolumesConfig(
             host=os.getenv("DATABRICKS_HOST"),
             access_config=DatabricksVolumesAccessConfig(
-                username=os.getenv("DATABRICKS_USERNAME"),
-                password=os.getenv("DATABRICKS_PASSWORD")
+                token=os.getenv("DATABRICKS_TOKEN"),
+                cluster_id=os.getenv("DATABRICKS_CLUSTER_ID")
             ),
         ),
         write_config=DatabricksVolumesWriteConfig(
             catalog=os.getenv("DATABRICKS_CATALOG"),
+            schema=os.getenv("DATABRICKS_SCHEMA"),
             volume=os.getenv("DATABRICKS_VOLUME"),
+            volume_path=os.getenv("DATABRICKS_VOLUME_PATH")
         ),
     )
 
@@ -56,10 +58,13 @@ if __name__ == "__main__":
             partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
             strategy="hi_res",
         ),
-        chunking_config=ChunkingConfig(chunk_elements=True),
+        chunking_config=ChunkingConfig(
+            chunk_elements=True
+            chunking_strategy="by_title",
+        ),
         embedding_config=EmbeddingConfig(
             provider="langchain-huggingface",
-            api_key=None,
+            model_name="sentence-transformers/all-mpnet-base-v2",
         ),
         writer=writer,
         writer_kwargs={},

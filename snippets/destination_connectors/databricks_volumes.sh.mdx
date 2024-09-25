@@ -6,21 +6,23 @@
 unstructured-ingest \
   local \
     --input-path $LOCAL_FILE_INPUT_DIR \
-    --output-dir $LOCAL_FILE_OUTPUT_DIR \
-    --strategy hi_res \
-    --chunk-elements \
-    --embedding-provider langchain-huggingface \
-    --num-processes 2 \
-    --verbose \
-    --work-dir local-input \
     --partition-by-api \
-    --api-key $UNSTRUCTURED_API_KEY\
+    --api-key $UNSTRUCTURED_API_KEY \
     --partition-endpoint $UNSTRUCTURED_API_URL \
+    --strategy hi_res \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+    --chunk-by-api \
+    --chunking-strategy by_title \
+    --chunk-api-key $UNSTRUCTURED_API_KEY \
+    --chunking-endpoint $UNSTRUCTURED_API_URL \ 
+    --embedding-provider langchain-huggingface \
+    --embedding-model-name sentence-transformers/all-mpnet-base-v2 \
   databricks-volumes \
-    --host "$DATABRICKS_HOST" \
-    --username "$DATABRICKS_USERNAME" \
-    --password "$DATABRICKS_PASSWORD" \
-    --volume "$DATABRICKS_VOLUME" \
-    --catalog "$DATABRICKS_CATALOG"
+    --host $DATABRICKS_HOST \
+    --token $DATABRICKS_TOKEN \
+    --cluster-id $DATABRICKS_CLUSTER_ID \
+    --catalog $DATABRICKS_CATALOG \
+    --schema $DATABRICKS_SCHEMA \
+    --volume $DATABRICKS_VOLUME \
+    --volume-path $DATABRICKS_VOLUME_PATH
 ```

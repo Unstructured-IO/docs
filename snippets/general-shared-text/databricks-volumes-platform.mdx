@@ -2,10 +2,6 @@ Fill in the following fields:
 
 - **Name** (_required_): A unique name for this connector.
 - **Host** (_required_): The Databricks workspace host URL.
-- **Account ID** : The Databricks account ID, if needed.
-- **Username** : The Databricks username, if basic authentication is used.
-- **Password** : The associated Databricks password, if basic authentication is used.
-- **Token** : The Databricks personal access token, if personal access token authentication is used.
 - **Cluster ID** : The Databricks cluster ID.
 - **Catalog** (_required_): The name of the catalog to use.
 - **Schema** : The name of the associated schema. If not specified, **default** is used.
@@ -13,3 +9,28 @@ Fill in the following fields:
 - **Volume Path** : Any optional path to access within the volume.
 - **Overwrite** Check this box if existing data should be overwritten.
 - **Encoding** : Any encoding to be applied to the data in the volume. If not specified, **utf-8**, is used. 
+
+Also fill in the following fields based on your authentication type, depending on your cloud provider:
+
+- For Databricks personal access token authentication (AWS, Azure, and GCP):
+
+  - **Token** : The Databricks personal access token value.
+
+- For username and password (basic) authentication (AWS only):
+
+  - **Username** : The Databricks username value.
+  - **Password** : The associated Databricks password value.
+
+The following authentication types are currently not supported:
+
+- OAuth machine-to-machine (M2M) authentication (AWS, Azure, and GCP).
+- OAuth user-to-machine (U2M) authentication (AWS, Azure, and GCP).
+- Azure managed identities (MSI) authentication (Azure only).
+- Microsoft Entra ID service principal authentication (Azure only).
+- Azure CLI authentication (Azure only).
+- Microsoft Entra ID user authentication (Azure only).
+- Google Cloud Platform credentials authentication (GCP only).
+- Google Cloud Platform ID authentication (GCP only).
+
+
+

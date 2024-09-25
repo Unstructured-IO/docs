@@ -1,6 +1,39 @@
 The Databricks Volumes prerequisites:
 
-- The Databricks compute resource's host name. Get the host name for [AWS](https://docs.databricks.com/integrations/compute-details.html), [Azure](https://learn.microsoft.com/azure/databricks/integrations/compute-details), or [GCP](https://docs.gcp.databricks.com/integrations/compute-details.html).
-- The Databricks authentication details. For more information, see the documentation for [AWS](https://docs.databricks.com/dev-tools/auth/index.html), [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/), or [GCP](https://docs.gcp.databricks.com/dev-tools/auth/index.html).
+- The Databricks workspace URL. Get the workspace URL for 
+  [AWS](https://docs.databricks.com/workspace/workspace-details.html#workspace-instance-names-urls-and-ids), 
+  [Azure](https://learn.microsoft.com/azure/databricks/workspace/workspace-details#workspace-instance-names-urls-and-ids), 
+  or [GCP](https://docs.gcp.databricks.com/workspace/workspace-details.html#workspace-instance-names-urls-and-ids).
+
+  Examples:
+
+  - AWS: `https://<workspace-id>.cloud.databricks.com`
+  - Azure: `https://adb-<workspace-id>.<random-number>.azuredatabricks.net`
+  - GCP: `https://<workspace-id>.<random-number>.gcp.databricks.com`
+
+- The Databricks compute resource's ID. Get the compute resource ID for 
+  [AWS](https://docs.databricks.com/integrations/compute-details.html), 
+  [Azure](https://learn.microsoft.com/azure/databricks/integrations/compute-details), 
+  or [GCP](https://docs.gcp.databricks.com/integrations/compute-details.html).
+
+- The Databricks authentication details. For more information, see the documentation for 
+  [AWS](https://docs.databricks.com/dev-tools/auth/index.html), 
+  [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/), 
+  or [GCP](https://docs.gcp.databricks.com/dev-tools/auth/index.html).
+
+  More specifically, you will need:
+
+  - For Databricks personal access token authentication (AWS, Azure, and GCP): The personal access token's value.
+  - For username and password (basic) authentication (AWS only): The user's name and password values.
+  - For OAuth machine-to-machine (M2M) authentication (AWS, Azure, and GCP): The client ID and OAuth secret values for the corresponding service principal.
+  - For OAuth user-to-machine (U2M) authentication (AWS, Azure, and GCP): No additional values.
+  - For Azure managed identities (MSI) authentication (Azure only): The client ID value for the corresponding managed identity.
+  - For Microsoft Entra ID service principal authentication (Azure only): The tenant ID, client ID, and client secret values for the corresponding service principal.
+  - For Azure CLI authentication (Azure only): No additional values.
+  - For Microsoft Entra ID user authentication (Azure only): The Entra ID token for the corresponding Entra ID user.
+  - For Google Cloud Platform credentials authentication (GCP only): The local path to the corresponding Google Cloud service account's credentials file.
+  - For Google Cloud Platform ID authentication (GCP only): The Google Cloud service account's email address.
+
 - The Databricks catalog name for the Volume. Get the catalog name for [AWS](https://docs.databricks.com/catalogs/manage-catalog.html), [Azure](https://learn.microsoft.com/azure/databricks/catalogs/manage-catalog), or [GCP](https://docs.gcp.databricks.com/catalogs/manage-catalog.html).
-- The Databricks Volume name. Get the volume name for [AWS](https://docs.databricks.com/files/volumes.html), [Azure](https://learn.microsoft.com/azure/databricks/files/volumes), or [GCP](https://docs.gcp.databricks.com/files/volumes.html).
+- The Databricks schema name for the Volume. Get the schema name for [AWS](https://docs.databricks.com/schemas/manage-schema.html), [Azure](https://learn.microsoft.com/azure/databricks/schemas/manage-schema), or [GCP](https://docs.gcp.databricks.com/schemas/manage-schema.html).
+- The Databricks Volume name, and optionally any path in that Volume that you want to access directly. Get the Volume information for [AWS](https://docs.databricks.com/files/volumes.html), [Azure](https://learn.microsoft.com/azure/databricks/files/volumes), or [GCP](https://docs.gcp.databricks.com/files/volumes.html).
