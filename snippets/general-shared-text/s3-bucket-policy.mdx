@@ -1,0 +1,53 @@
+To use the Amazon S3 console to add an access policy that allows all authenticated AWS IAM users in the 
+corresponding AWS account to read and write to an existing S3 bucket, do the following.
+
+<Info>Your organization might have stricter bucket policy requirements. Check with your AWS account 
+  administrator if you are unsure.</Info>
+
+1. Sign in to the [AWS Management Console](https://console.aws.amazon.com/).
+2. Open the [Amazon S3 Console](https://console.aws.amazon.com/s3/home).
+3. Browse to the existing bucket and open it.
+4. Click the **Permissions** tab.
+5. In the **Bucket policy** area, click **Edit**.
+6. In the **Policy** text area, copy the following JSON-formatted policy. 
+   To change the following policy to restrict it to a specific user in the AWS account, change `root` to that 
+   specific username.
+
+   In this policy, replace the following:
+
+   - Replace `<my-account-id>` with your AWS account ID.
+   - Replace `<my-bucket-name>` in two places with the name of your bucket.
+
+   ```json
+   {
+       "Version": "2012-10-17",
+       "Statement": [
+           {
+               "Sid": "AllowAuthenticatedUsersInAccountReadWrite",
+               "Effect": "Allow",
+               "Principal": {
+                   "AWS": "arn:aws:iam::<my-account-id>:root"
+               },
+               "Action": [
+                   "s3:GetObject",
+                   "s3:PutObject",
+                   "s3:ListBucket",
+                   "s3:DeleteObject"
+               ],
+               "Resource": [
+                   "arn:aws:s3:::<my-bucket-name>",
+                   "arn:aws:s3:::<my-bucket-name>/*"
+               ],
+               "Condition": {
+                   "StringEquals": {
+                       "aws:PrincipalType": "IAMUser"
+                   }
+               }
+           }
+       ]
+   }
+   ```
+
+7. Click **Save changes**.
+
+
