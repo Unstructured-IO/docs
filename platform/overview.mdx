@@ -3,7 +3,7 @@ title: Unstructured Platform
 sidebarTitle: Overview
 ---
 
-<Note>To start using the Unstructured Platform right away, skip ahead to the [quickstart](/platform/saas-platform-guide).</Note>
+<Note>To start using the Unstructured Platform right away, skip ahead to the [quickstart](/platform/quickstart).</Note>
 
 ## What is the Unstructured Platform?
 
@@ -29,35 +29,36 @@ To get your data RAG-ready, the Unstructured Platform moves it through the follo
 ```
 <Steps>
   <Step title="Connect">
-    The Unstructured Platform offers multiple [source connectors](../platform/platform-source-connectors/overview) to connect to your data in its existing location.
+    The Unstructured Platform offers multiple [source connectors](/platform/sources/overview) to connect to your data in its existing location.
   </Step>
   <Step title="Route">
-    Routing determines which strategy Unstructured Platform uses to transforming your documents into Unstructured's canonical JSON schema. There are four [partitioning strategies](/api-reference/api-services/partitioning "partitioning strategies") for document transformation: **Fast**, **Hi Res**, **OCR Only**, and **Auto**. Of these:
+    Routing determines which strategy Unstructured Platform uses to transforming your documents into Unstructured's canonical JSON schema. The Unstructured Platform provides these [partitioning](/platform/partitioning) strategies for document transformation:
     
     - **Fast** is great for when there is extractable text available, like in HTML files or in the Microsoft Office Document format.
-    - **Hi Res** is best for PDFs and tables and where accurate classification of document elements is critical.
-    - **OCR Only** is useful when dealing with image-based files or PDFs that do not have extractable text.
+    - **Hi-Res** is best for PDFs and tables and where accurate classification of document elements is critical.
     - If you're unsure which strategy to use, choose **Auto**, and the Unstructured Platform will handle the decision for you.
 
   </Step>
   <Step title="Transform"> 
-    Your source document is transformed into Unstructured's canonical JSON schema. Regardless of the input document, this JSON schema we gives you a [standardized output](/open-source/concepts/document-elements#element-id "Elements and Metadata"). It contains more than 20 elements, such as `Header`, `Footer`, `Title`, `NarrativeText`, `Table`, `Image`, and many more. Each document is wrapped in extensive metadata so you can understand languages, file types, sources, hierarchies, and much more.
+    Your source document is transformed into Unstructured's canonical JSON schema. Regardless of the input document, this JSON schema we gives you a [standardized output](/platform/document-elements). It contains more than 20 elements, such as `Header`, `Footer`, `Title`, `NarrativeText`, `Table`, `Image`, and many more. Each document is wrapped in extensive metadata so you can understand languages, file types, sources, hierarchies, and much more.
   </Step>
     <Step title="Chunk"> 
-    Initially, the Unstructured Platform provides two optional [chunking strategies](/open-source/core-functionality/chunking#chunking-basics  "Chunking Strategies"): **Basic** and **By Title**. Of these:
+    The Unstructured Platform provides these [chunking](/platform/chunking) strategies:
     
     - **Basic** combines sequential elements up to specified size limits. Oversized elements are split, while tables are isolated and divided if necessary. Overlap between chunks is optional.
     - **By Title** uses semantic chunking, understands the layout of the document, and makes intelligent splits.
+    - **By Page** attempts to preserve page boundaries when determining the chunks' contents.
+    - **By Similarity** uses an embedding model to identify topically similar sequential elements and combines them into chunks.
 
   </Step>
   <Step title="Enrich">
     Images and tables can be optionally summarized. This generates enriched content around the images or tables that were parsed during the transformation process.
   </Step>
   <Step title="Embed">
-    The Unstructured Platform uses optional third-party embedding providers such as OpenAI and AWS Bedrock.
+    The Unstructured Platform uses optional third-party [embedding](/platform/embedding) providers such as OpenAI.
   </Step>
   <Step title="Persist">
-    The Unstructured Platform offers multiple [destination connectors](../platform/platform-destination-connectors/overview), including all major vector databases.
+    The Unstructured Platform offers multiple [destination connectors](/platform/destinations/overview), including all major vector databases.
   </Step>
 </Steps>
 
@@ -75,16 +76,16 @@ To simplify this process and provide it as a no-code solution, the Unstructured 
 
 <Steps>
   <Step title="Source Connector">
-    [Source connectors](../platform/platform-source-connectors/overview) to ingest your data into the Unstructured Platform for transformation.
+    [Source connectors](/platform/sources/overview) to ingest your data into the Unstructured Platform for transformation.
   </Step>
   <Step title="Destination Connector">
-    [Destination connectors](../platform/platform-destination-connectors/overview) tell the Unstructured Platform where to write your transformed data to.
+    [Destination connectors](/platform/destinations/overview) tell the Unstructured Platform where to write your transformed data to.
   </Step>
   <Step title="Workflow">
-    [Workflows](../platform/workflows-automation) connect sources to destinations and provide chunking, embedding, and scheduling options.
+    [Workflows](/platform/workflows) connect sources to destinations and provide chunking, embedding, and scheduling options.
   </Step>
   <Step title="Jobs">
-    [Jobs](../platform/jobs-scheduling) enable you to monitor data transformation progress.
+    [Jobs](/platform/jobs) enable you to monitor data transformation progress.
   </Step>
 </Steps>
 
@@ -94,7 +95,7 @@ The platform is designed for global reach with SOC 2 type 2 compliance. It has s
 
 ## How do I get started?
 
-Skip ahead to the [quickstart](/platform/saas-platform-guide).
+Skip ahead to the [quickstart](/platform/quickstart).
 
 
 

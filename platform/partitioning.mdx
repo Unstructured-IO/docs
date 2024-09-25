@@ -17,18 +17,20 @@ For example, the **Fast** strategy can be about 100 times faster than leading im
 
 To choose one of these strategies, select one of the **Strategy** options in the **Transform** section of a workflow:
 
-- **High Res** (_default_): This strategy uses an image-to-text model for inference. It is slower and costlier than **Fast** but can provide 
-  higher-quality resolution. You should choose this strategy if you know that:
-
-  - All of the files are only image files, or
-  - All of the files are only PDF files, and they have embedded images or tables in them, or
-  - All of the files are a combination of only these two kinds of files.
+<Note>You can change a workflow's predefined strategy only through [Custom](/platform/workflows#custom-workflow-settings) workflow settings.</Note>
 
 - **Fast**: This strategy is rule-based. It is faster and cheaper than **High Res** but might provide lower-quality resolution. 
   You should choose this strategy if you know that:
 
   - You have only PDF files, and you know that none of them have embedded images or tables in them, or 
   - You have no PDF files or image files at all.
+
+- **Hi-Res**: This strategy uses an image-to-text model for inference. It is slower and costlier than **Fast** but can provide 
+  higher-quality resolution. You should choose this strategy if you know that:
+
+  - All of the files are only image files, or
+  - All of the files are only PDF files, and they have embedded images or tables in them, or
+  - All of the files are a combination of only these two kinds of files.
 
 - **Auto**: This strategy leaves the choice of using **High Res** or **Fast** to Unstructured to determine on a file-by-file basis as it goes along. 
   Unstructured will use **High Res** if it can determine that the current file under analysis is an image file or a PDF file with embedded images or tables. 
@@ -38,6 +40,4 @@ To choose one of these strategies, select one of the **Strategy** options in the
   - At least one image file; or at least one PDF file with embedded images or tables in it; and any number of other kinds of files.
 
   Choosing **Auto** can be an effective choice with a reasonable balance of speed, cost, and quality 
-  when you have a mixture of these types of files. 
-
-- **OCR Only**: You should choose this strategy if you know that you have only image files, and you want to extract text from them.
+  when you have a mixture of these types of files.
