@@ -1,12 +1,13 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
 
 unstructured-ingest \
   airtable \
-    --metadata-exclude filename,file_directory,metadata.data_source.date_processed \
     --personal-access-token $AIRTABLE_PERSONAL_ACCESS_TOKEN \
     --output-dir $LOCAL_FILE_OUTPUT_DIR \
     --num-processes 2 \
     --reprocess \
-    --strategy hi_res
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL
 ```
