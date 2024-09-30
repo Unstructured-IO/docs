@@ -72,8 +72,6 @@ The PartitionRequest constructor no longer allows for positional arguments. You 
 req = operations.PartitionRequest(
     shared.PartitionParameters(
         files=files,
-        strategy="fast",
-        output_format="text/csv",
     )
 )
 
@@ -81,8 +79,6 @@ req = operations.PartitionRequest(
 req = operations.PartitionRequest(
     partition_parameters=shared.PartitionParameters(
         files=files,
-        strategy="fast",
-        output_format="text/csv",
     )
 )
 ```
