@@ -3,6 +3,8 @@ title: Unstructured API on AWS
 description: Follow these steps to deploy the Unstructured API service into your AWS account.
 ---
 
+_Estimated time to complete: 30 minutes_
+
 You will need:
 
 1.  **An AWS account**: 
@@ -159,6 +161,7 @@ You will establish the foundational network structure for deploying the Unstruct
         
         *   Click **Save**.
 
+
 ![connect public subnet to route table](/img/api/VPC_Step6.png) ![edit routes](/img/api/VPC_Step7.png)
 
 7.  **Inspect the VPC resource map**:
@@ -171,13 +174,13 @@ You will establish the foundational network structure for deploying the Unstruct
 
 8.  **Go to the Unstructured API page on AWS Marketplace**:
     
-    a.   Go to the [Unstructured API](http://aws.amazon.com/marketplace/pp/prodview-fuvslrofyuato) product page in the AWS Marketplace.
+    a.   Leaving the VPC dashboard from Part I open, in a separate web browser tab, go to the [Unstructured API](http://aws.amazon.com/marketplace/pp/prodview-fuvslrofyuato) product page in the AWS Marketplace.
         
     b.   Click **Continue to Subscribe**.
         
-    c.  Review the terms and conditions.
+    c.   Review the terms and conditions.
      
-    d.  Click **Continue to Configuration**.
+    d.   Click **Continue to Configuration**.
         
 
 ![Unstructured API on AWS Marketplace](/img/api/Marketplace_Step8.png)
@@ -190,7 +193,7 @@ You will establish the foundational network structure for deploying the Unstruct
         
     c.   In the **Region** dropdown list, select the Region that corresponds to the VPC from Part I.
         
-         - _Note: You must select the same Region where you set up the VPC in Part I._
+         - _Note: You must select the same Region where you set up the VPC in Part I. To find the Region, on the VPC dashboard tab from Part I that you left open, with your VPC displayed, find the VPC's Region name next to your username in the top navigation bar._
             
     d.   Click **Continue to Launch**.
         
@@ -220,23 +223,25 @@ You will establish the foundational network structure for deploying the Unstruct
     
     a.   Enter some unique **Stack name**.
         
-    b.   In the **Parameters** section, for **KeyName**, select the name of the SSH key pair from the beginning of this article.
+    b.   In the **Parameters** section, in the **InstanceType** drop-down list, select **c5.2xlarge**.
+    
+    c.   In the **KeyName** drop-down list, select the name of the SSH key pair from the beginning of this article.
 
-    c.   In the **LoadBalancerScheme** dropdown list, select **internet-facing**.
+    d.   In the **LoadBalancerScheme** dropdown list, select **internet-facing**.
         
-    d.   For **SSHLocation**, enter `0.0.0.0/0`, but only if you allow public access on the internet.
+    e.   For **SSHLocation**, enter `0.0.0.0/0`, but only if you allow public access on the internet.
         
         *   **Note**: It is generally recommended to limit SSH access to a specific IP range for enhanced security. This can be done by setting the `SSHLocation` to the IP address or range associated with your organization. Please consult your IT department or VPN vendor to obtain the correct IP information for these settings.
             
         *   AWS provides `AWS Client VPN`, which is a managed client-based VPN service that enables secure access AWS resources and resources in your on-premises network. To learn more, see [Getting started with AWS Client VPN](https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/cvpn-getting-started.html).
             
-    e.   In the **Subnets** dropdown multiselect list, select the two public subnets and the private subnet from Part I. 
+    f.   In the **Subnets** dropdown multiselect list, select the two public subnets and the private subnet from Part I. 
     
-    f.   In the **VPC** dropdown list, select the VPC from Part I.
+    g.   In the **VPC** dropdown list, select the VPC from Part I.
         
-    g.   You can leave the default values for all of the other **Parameters** fields.
+    h.   You can leave the default values for all of the other **Parameters** fields.
         
-    h.   Click **Next** button.
+    i.   Click **Next**.
         
     
     ![Specify stack details](/img/api/Marketplace_Step10b.png)
@@ -247,7 +252,7 @@ You will establish the foundational network structure for deploying the Unstruct
         
     b.   Click **Next**.
         
-    
+
     ![Specify stack options](/img/api/Marketplace_Step10c.png)
     
     **Step 4: Review**
@@ -255,16 +260,19 @@ You will establish the foundational network structure for deploying the Unstruct
     a.   Review the stack's settings.
         
     b.   Click **Submit**.
-        
-    
+
+
     ![Review stack](/img/api/Marketplace_Step10d.png)
+
 11.  **Get the Unstructured API endpoint**:
     
-    a.   Check the status of the CloudFormation stack. A successful deployment will show a **CREATE_COMPLETE** status on the **Stack Info** tables. The deployment can take several minutes.
+    a.   The CloudFormation details page for the stack appears. If you do not see it, on the sidebar, click **Stacks**, and then click the name of your stack.
+    
+    b.   Check the status of the CloudFormation stack. A successful deployment will show a **CREATE_COMPLETE** value for the **Status** field on the **Stack Info** tab on this stack's details page. The deployment can take several minutes.
             
-    b.   Click the **Resources** tab, click the **ApplicationLoadBalancer** link.
+    c.   After a successful deployment, click the **Resources** tab on this stack's details page. Then click the **Physical ID** link next to **ApplicationLoadBalancer** on this tab.
         
-    c.   On the **EC2 > Load balancers > (Load balancer ID)** page, copy the **DNS Name** value, which is shown as an **(A Record)** and ends with `.elb.amazonaws.com`.
+    d.   On the **EC2 > Load balancers > (Load balancer ID)** page that appears, copy the **DNS Name** value, which is shown as an **(A Record)** and ends with `.elb.amazonaws.com`.
         
          - Note: You will use this **DNS Name** to replace the `<application-load-balancer-dns-name>` for the following healthcheck and data processing steps.
             
@@ -273,13 +281,12 @@ You will establish the foundational network structure for deploying the Unstruct
 
 ## Healthcheck
 
-Perform a health check by running this `curl` command, replacing `<application-load-balancer-dns-name>` with your application load balancer's DNS name:
+Perform a health check by running this [curl](https://curl.se/) command from a terminal on your local machine, replacing `<application-load-balancer-dns-name>` with your application load balancer's DNS name. This health check can take several minutes:
 
 ```bash
 curl http://<application-load-balancer-dns-name>/healthcheck
 
 ```
-
 
 ![Healthcheck](/img/api/healthcheck.png)
 
@@ -288,10 +295,29 @@ curl http://<application-load-balancer-dns-name>/healthcheck
 For example, run one of the following, setting the following environment variables to make your code more portable:
 
 - Set `UNSTRUCTURED_API_URL` to `http://`, followed by your load balancer's DNS name, followed by `/general/v0/general`.
+
+  <Info>You can now use this value (`http://`, followed by your load balancer's DNS name, followed by `/general/v0/general`) in place of 
+  calling the [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide) URL or the [Free Unstructured API](/api-reference/api-services/free-api) URL as described elsewhere in the Unstructured API documentation.</Info>
+
 - Set `LOCAL_FILE_INPUT_DIR` to the path on your local machine to the files for the Unstructured API to process. If you do not have any input files available, you can download any of the ones from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in GitHub.
-- Set `LOCAL_FILE_OUTPUT_DIR` to the path on your local machine for Unstructured API to send the processed output in JSON format.:
+- Set `LOCAL_FILE_OUTPUT_DIR` to the path on your local machine for Unstructured API to send the processed output in JSON format:
 
 import CodeExamplesAzure from '/snippets/how-to-api/azure-aws.mdx';
 
 <CodeExamplesAzure/>
+
+## Accessing the hosting EC2 instance
+
+If you need to access the Amazon EC2 instance that hosts the Unstructured API, do the following:
+
+1.   In the CloudFormation console, open the details page for the stack from Part II. If you do not see it, on the CloudFormation console's sidebar, click **Stacks**, and then click the name of your stack.
+    
+2.   Click the **Resources** tab on this stack's details page. Then click the **Physical ID** link next to **EC2TargetGroup** on this tab.
+        
+3.   On the **EC2 > Target groups > (CloudFormation stack name)** page that appears, on the **Targets** tab, click the **Instance ID** link.
+
+4.   In the list of instances that appears, click the **Instance ID** link. 
+
+5.   Click **Connect**, and then follow any of the on-screen options to access the EC2 instance.
+
 
