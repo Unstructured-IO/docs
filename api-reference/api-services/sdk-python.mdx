@@ -124,7 +124,7 @@ resp = s.general.partition(request=req)
             },
             "strategy": shared.Strategy.HI_RES,
             "languages": ['eng'],
-            "split_pdf_page": True,            # If True, splits the PDF file into smaller chunks of pages.
+            "split_pdf_page": True,
         }
     }
 
@@ -164,7 +164,7 @@ resp = s.general.partition(request=req)
             ),
             strategy=shared.Strategy.HI_RES,
             languages=['eng'],
-            split_pdf_page=True,            # If True, splits the PDF file into smaller chunks of pages.
+            split_pdf_page=True,
         ),
     )
 
@@ -187,7 +187,7 @@ resp = s.general.partition(request=req)
 
 ## Async Partitioning
 
-    The Python SDK also has a `partition_async`. This call is equivalent to `partition` except that it can be used in a non blocking context. For instance, `asyncio.gather` can be used to concurrently process multiple files at once, as in this example: 
+    The Python SDK also has a `partition_async`. This call is equivalent to `partition` except that it can be used in a non blocking context. For instance, `asyncio.gather` can be used to concurrently process multiple files at once, as demonstrated here: 
 
     <CodeGroup>
     ```python
