@@ -34,6 +34,71 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
         pin your installed version.
     </Note>
 
+### Notes on breaking changes in 0.26.0
+
+- If you see the error: `AttributeError: 'PartitionParameters' object has no attribute 'partition_parameters'`
+
+Older versions of the SDK accepted a PartitionParameters object as input to the sdk.general.partition function. Now, this object must be wrapped in a PartitionRequest object.
+
+```python
+# Instead of:
+from unstructured_client.models import shared
+
+req = shared.PartitionParameters(
+        files=files,
+)
+
+resp = s.general.partition(request=req)
+
+
+# Switch to:
+from unstructured_client.models import shared, operations
+
+req = operations.PartitionRequest(
+    partition_parameters=shared.PartitionParameters(
+        files=files,
+    )
+)
+
+resp = s.general.partition(request=req)
+```
+
+- If you see the error: `TypeError: BaseModel.__init__() takes 1 positional argument but 2 were given`
+
+The PartitionRequest constructor no longer allows for positional arguments. You must specify partition_parameters by name.
+
+```python
+# Instead of:
+req = operations.PartitionRequest(
+    shared.PartitionParameters(
+        files=files,
+        strategy="fast",
+        output_format="text/csv",
+    )
+)
+
+# Switch to:
+req = operations.PartitionRequest(
+    partition_parameters=shared.PartitionParameters(
+        files=files,
+        strategy="fast",
+        output_format="text/csv",
+    )
+)
+```
+
+- If you see the error: `TypeError: General.partition() takes 1 positional argument but 2 were given`
+
+Likewise, the partition function no longer allows for positional arguments. You must specify request by name.
+
+```python
+# Instead of:
+resp = s.general.partition(req)
+
+# Switch to:
+resp = s.general.partition(request=req)
+```
+
 ## Basics
     Let's start with a simple example in which you send a PDF document to be partitioned with the Unstructured API. Note that the Python SDK gives you a choice of two interfaces. The functionality is identical, but the Pydantic model syntax may provide completion hints in your IDE, for instance.
 
@@ -180,76 +245,6 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
     ```
     </CodeGroup>
 
-
-### Notes on breaking changes
-When upgrading to a newer version of the SDK, please be aware of these breaking changes:
-
-#### Updating to 0.26.0
-
-If you see the error: `AttributeError: 'PartitionParameters' object has no attribute 'partition_parameters'`
-
-Older versions of the SDK accepted a `PartitionParameters` object as input to the `sdk.general.partition` function. Now, this object must be wrapped in a `PartitionRequest` object.
-
-```
-# Instead of:
-from unstructured_client.models import shared
-
-req = shared.PartitionParameters(
-        files=files,
-        strategy="fast",
-)
-
-resp = s.general.partition(request=req)
-
-
-# Switch to:
-from unstructured_client.models import shared, operations
-
-req = operations.PartitionRequest(
-    partition_parameters=shared.PartitionParameters(
-        files=files,
-        strategy="fast",
-    )
-)
-
-resp = s.general.partition(request=req)
-```
-
-If you see the error: `TypeError: BaseModel.__init__() takes 1 positional argument but 2 were given`
-
-The `PartitionRequest` constructor no longer allows for positional arguments. You must specify `partition_parameters` by name.
-
-```
-# Instead of:
-req = operations.PartitionRequest(
-    shared.PartitionParameters(
-        files=files,
-        strategy="fast",
-        output_format="text/csv",
-    )
-)
-
-# Switch to:
-req = operations.PartitionRequest(
-    partition_parameters=shared.PartitionParameters(
-        files=files,
-        strategy="fast",
-        output_format="text/csv",
-    )
-)
-```
-
-If you see the error: `TypeError: General.partition() takes 1 positional argument but 2 were given`
-
-Likewise, the `partition` function no longer allows for positional arguments. You must specify `request` by name.
-
-```
-# Instead of:
-resp = s.general.partition(req)
-
-# Switch to:
-resp = s.general.partition(request=req)
-```
 
 ## Page splitting
 
