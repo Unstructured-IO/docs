@@ -153,11 +153,10 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
 
             element_dicts = [element for element in res.elements]
 
-            # Write the processed data to a local file.
             json_elements = json.dumps(element_dicts, indent=2)
 
-            # Each input will need its own output file
-            with open("PATH_TO_OUTPUT_FILE", "w") as file:
+            output_filename = filename + ".json"  # Save off the json response alongside the input file
+            with open(output_filename, "w") as file:
                 file.write(json_elements)
 
         except Exception as e:
