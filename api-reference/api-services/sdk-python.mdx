@@ -294,7 +294,7 @@ the names used in the SDKs are the same across all methods.
 
 - If you see the error: `AttributeError: 'PartitionParameters' object has no attribute 'partition_parameters'`
 
-Previously, the SDK has accepted a PartitionParameters object as input to the sdk.general.partition function. Now, this object must be wrapped in a PartitionRequest object. The old behavior was deprecated in 0.23.0 and removed in 0.26.0.
+Previously, the SDK accepted a `PartitionParameters` object as input to the `sdk.general.partition` function. Now, this object must be wrapped in a `PartitionRequest` object. The old behavior was deprecated in 0.23.0 and removed in 0.26.0.
 
 ```python
 # Instead of:
