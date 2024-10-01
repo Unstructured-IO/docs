@@ -31,69 +31,8 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
 
     <Note>
         The SDK uses semantic versioning and major bumps could bring breaking changes. It is advised to
-        pin your installed version.
+        pin your installed version. See the [migration guide](#Migration guide) below for breaking change announcements.
     </Note>
-
-### Notes on breaking changes in 0.26.0
-
-- If you see the error: `AttributeError: 'PartitionParameters' object has no attribute 'partition_parameters'`
-
-Older versions of the SDK accepted a PartitionParameters object as input to the sdk.general.partition function. Now, this object must be wrapped in a PartitionRequest object.
-
-```python
-# Instead of:
-from unstructured_client.models import shared
-
-req = shared.PartitionParameters(
-        files=files,
-)
-
-resp = s.general.partition(request=req)
-
-
-# Switch to:
-from unstructured_client.models import shared, operations
-
-req = operations.PartitionRequest(
-    partition_parameters=shared.PartitionParameters(
-        files=files,
-    )
-)
-
-resp = s.general.partition(request=req)
-```
-
-- If you see the error: `TypeError: BaseModel.__init__() takes 1 positional argument but 2 were given`
-
-The PartitionRequest constructor no longer allows for positional arguments. You must specify partition_parameters by name.
-
-```python
-# Instead of:
-req = operations.PartitionRequest(
-    shared.PartitionParameters(
-        files=files,
-    )
-)
-
-# Switch to:
-req = operations.PartitionRequest(
-    partition_parameters=shared.PartitionParameters(
-        files=files,
-    )
-)
-```
-
-- If you see the error: `TypeError: General.partition() takes 1 positional argument but 2 were given`
-
-Likewise, the partition function no longer allows for positional arguments. You must specify request by name.
-
-```python
-# Instead of:
-resp = s.general.partition(req)
-
-# Switch to:
-resp = s.general.partition(request=req)
-```
 
 ## Basics
     Let's start with a simple example in which you send a PDF document to be partitioned with the Unstructured API. Note that the Python SDK gives you a choice of two interfaces. The functionality is identical, but the Pydantic model syntax may provide completion hints in your IDE, for instance.
@@ -349,3 +288,65 @@ the names used in the SDKs are the same across all methods.
 * Refer to the [API parameters](/api-reference/api-services/api-parameters) page for the full list of available parameters.
 * Refer to the [Examples](/api-reference/api-services/examples) page for some inspiration on using the parameters.
 
+### Migration guide
+
+#### Upgrading to 0.26.0
+
+- If you see the error: `AttributeError: 'PartitionParameters' object has no attribute 'partition_parameters'`
+
+Previously, the SDK has accepted a PartitionParameters object as input to the sdk.general.partition function. Now, this object must be wrapped in a PartitionRequest object. The old behavior was deprecated in 0.23.0 and removed in 0.26.0.
+
+```python
+# Instead of:
+from unstructured_client.models import shared
+
+req = shared.PartitionParameters(
+        files=files,
+)
+
+resp = s.general.partition(request=req)
+
+
+# Switch to:
+from unstructured_client.models import shared, operations
+
+req = operations.PartitionRequest(
+    partition_parameters=shared.PartitionParameters(
+        files=files,
+    )
+)
+
+resp = s.general.partition(request=req)
+```
+
+- If you see the error: `TypeError: BaseModel.__init__() takes 1 positional argument but 2 were given`
+
+In 0.26.0 the PartitionRequest constructor no longer allows for positional arguments. You must specify partition_parameters by name.
+
+```python
+# Instead of:
+req = operations.PartitionRequest(
+    shared.PartitionParameters(
+        files=files,
+    )
+)
+
+# Switch to:
+req = operations.PartitionRequest(
+    partition_parameters=shared.PartitionParameters(
+        files=files,
+    )
+)
+```
+
+- If you see the error: `TypeError: General.partition() takes 1 positional argument but 2 were given`
+
+Likewise, in 0.26.0 the partition function no longer allows for positional arguments. You must specify request by name.
+
+```python
+# Instead of:
+resp = s.general.partition(req)
+
+# Switch to:
+resp = s.general.partition(request=req)
+```
