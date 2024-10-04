@@ -120,7 +120,7 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
     ```
     </CodeGroup>
 
-## Async Partitioning
+## Async partitioning
 
     The Python SDK also has a `partition_async`. This call is equivalent to `partition` except that it can be used in a non blocking context. For instance, `asyncio.gather` can be used to concurrently process multiple files at once, as demonstrated here: 
 
@@ -155,7 +155,7 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
 
             json_elements = json.dumps(element_dicts, indent=2)
 
-            output_filename = filename + ".json"  # Save off the json response alongside the input file
+            output_filename = filename + ".json"  # Save the JSON response alongside the input file.
             with open(output_filename, "w") as file:
                 file.write(json_elements)
 
@@ -321,7 +321,7 @@ resp = s.general.partition(request=req)
 
 - If you see the error: `TypeError: BaseModel.__init__() takes 1 positional argument but 2 were given`
 
-In 0.26.0 the PartitionRequest constructor no longer allows for positional arguments. You must specify partition_parameters by name.
+In 0.26.0, the `PartitionRequest` constructor no longer allows for positional arguments. You must specify `partition_parameters` by name.
 
 ```python
 # Instead of:
