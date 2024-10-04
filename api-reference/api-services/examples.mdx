@@ -111,7 +111,7 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
         file = open(filename, "rb")
         req = operations.PartitionRequest(
             partition_parameters=shared.PartitionParameters(
-                # Note that this currently only supports a single file
+                # Note that this currently only supports a single file.
                 files=shared.Files(
                     content=file.read(),
                     file_name=filename,
@@ -262,7 +262,7 @@ For better OCR results, you can specify what languages your document is in using
         file = open(filename, "rb")
         req = operations.PartitionRequest(
             partition_parameters=shared.PartitionParameters(
-                # Note that this currently only supports a single file
+                # Note that this currently only supports a single file.
                 files=shared.Files(
                     content=file.read(),
                     file_name=filename,
@@ -410,7 +410,7 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
         file = open(filename, "rb")
         req = operations.PartitionRequest(
             partition_parameters=shared.PartitionParameters(
-                # Note that this currently only supports a single file
+                # Note that this currently only supports a single file.
                 files=shared.Files(
                     content=file.read(),
                     file_name=filename,
@@ -561,7 +561,7 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
         file = open(filename, "rb")
         req = operations.PartitionRequest(
             partition_parameters=shared.PartitionParameters(
-                # Note that this currently only supports a single file
+                # Note that this currently only supports a single file.
                 files=shared.Files(
                     content=file.read(),
                     file_name=filename,
@@ -718,7 +718,7 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
         file = open(filename, "rb")
         req = operations.PartitionRequest(
             partition_parameters=shared.PartitionParameters(
-                # Note that this currently only supports a single file
+                # Note that this currently only supports a single file.
                 files=shared.Files(
                     content=file.read(),
                     file_name=filename,
