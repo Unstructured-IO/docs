@@ -14,7 +14,7 @@ unstructured-ingest \
     --partition-endpoint $UNSTRUCTURED_API_URL \
     --strategy fast \
     --chunking-strategy by_title \
-    --embedding-provider langchain-huggingface \
+    --embedding-provider huggingface \
     --strategy hi_res \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
   local \
