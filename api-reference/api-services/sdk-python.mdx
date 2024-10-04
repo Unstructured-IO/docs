@@ -295,9 +295,9 @@ the names used in the SDKs are the same across all methods.
 
 ## Migration guide
 
-### Upgrading to 0.26.0
+There are minor breaking changes in 0.26.0. If you encounter any errors when upgrading, please find the solution below.
 
-- If you see the error: `AttributeError: 'PartitionParameters' object has no attribute 'partition_parameters'`
+**If you see the error: `AttributeError: 'PartitionParameters' object has no attribute 'partition_parameters'`**
 
 Previously, the SDK accepted a `PartitionParameters` object as input to the `sdk.general.partition` function. Now, this object must be wrapped in a `PartitionRequest` object. The old behavior was deprecated in 0.23.0 and removed in 0.26.0.
 
@@ -324,7 +324,7 @@ req = operations.PartitionRequest(
 resp = s.general.partition(request=req)
 ```
 
-- If you see the error: `TypeError: BaseModel.__init__() takes 1 positional argument but 2 were given`
+**If you see the error: `TypeError: BaseModel.__init__() takes 1 positional argument but 2 were given`**
 
 In 0.26.0, the `PartitionRequest` constructor no longer allows for positional arguments. You must specify `partition_parameters` by name.
 
@@ -344,7 +344,7 @@ req = operations.PartitionRequest(
 )
 ```
 
-- If you see the error: `TypeError: General.partition() takes 1 positional argument but 2 were given`
+**If you see the error: `TypeError: General.partition() takes 1 positional argument but 2 were given`**
 
 In 0.26.0, the `partition` function no longer allows for positional arguments. You must specify `request` by name.
 
