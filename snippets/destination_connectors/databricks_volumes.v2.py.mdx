@@ -44,7 +44,7 @@ if __name__ == "__main__":
             chunking_strategy="by_title"
         ),
         embedder_config=EmbedderConfig(
-            embedding_provider="langchain-huggingface",
+            embedding_provider="huggingface",
             embedding_model_name="sentence-transformers/all-mpnet-base-v2"
         ),
         destination_connection_config=DatabricksVolumesConnectionConfig(

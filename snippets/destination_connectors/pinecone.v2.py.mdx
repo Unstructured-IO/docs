@@ -39,7 +39,7 @@ if __name__ == "__main__":
             }
         ),
         chunker_config=ChunkerConfig(chunking_strategy="by_title"),
-        embedder_config=EmbedderConfig(embedding_provider="langchain-huggingface"),
+        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
         destination_connection_config=PineconeConnectionConfig(
             access_config=PineconeAccessConfig(
                 api_key=os.getenv("PINECONE_API_KEY")

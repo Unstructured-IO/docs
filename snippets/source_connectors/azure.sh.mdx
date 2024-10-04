@@ -12,7 +12,7 @@ unstructured-ingest \
     --partition-endpoint $UNSTRUCTURED_API_URL \
     --strategy hi_res \
     --chunking-strategy by_title \
-    --embedding-provider langchain-huggingface \
+    --embedding-provider huggingface \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
   local \
     --output-dir $LOCAL_FILE_OUTPUT_DIR
