@@ -99,7 +99,7 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
         import os
 
         from unstructured_client import UnstructuredClient
-        from unstructured_client.models import shared
+        from unstructured_client.models import operations, shared
         from unstructured_client.models.errors import SDKError
 
         client = UnstructuredClient(
@@ -109,21 +109,23 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
 
         filename = "sample-docs/layout-parser-paper.pdf"
         file = open(filename, "rb")
-        req = shared.PartitionParameters(
-            # Note that this currently only supports a single file
-            files=shared.Files(
-                content=file.read(),
-                file_name=filename,
-            ),
-            strategy=shared.Strategy.HI_RES,
-            hi_res_model_name="layout_v1.1.0",
-            split_pdf_page=True,
-            split_pdf_allow_failed=True,
-            split_pdf_concurrency_level=15
+        req = operations.PartitionRequest(
+            partition_parameters=shared.PartitionParameters(
+                # Note that this currently only supports a single file.
+                files=shared.Files(
+                    content=file.read(),
+                    file_name=filename,
+                ),
+                strategy=shared.Strategy.HI_RES,
+                hi_res_model_name="layout_v1.1.0",
+                split_pdf_page=True,
+                split_pdf_allow_failed=True,
+                split_pdf_concurrency_level=15
+            )
         )
 
         try:
-            res = client.general.partition(req)
+            res = client.general.partition(request=req)
             print(res.elements[0])
         except SDKError as e:
             print(e)
@@ -248,7 +250,7 @@ For better OCR results, you can specify what languages your document is in using
         import os
 
         from unstructured_client import UnstructuredClient
-        from unstructured_client.models import shared
+        from unstructured_client.models import operations, shared
         from unstructured_client.models.errors import SDKError
 
         client = UnstructuredClient(
@@ -258,21 +260,23 @@ For better OCR results, you can specify what languages your document is in using
 
         filename = "sample-docs/korean.png"
         file = open(filename, "rb")
-        req = shared.PartitionParameters(
-            # Note that this currently only supports a single file
-            files=shared.Files(
-                content=file.read(),
-                file_name=filename,
-            ),
-            strategy=shared.Strategy.OCR_ONLY,
-            languages=["kor"],
-            split_pdf_page=True,
-            split_pdf_allow_failed=True,
-            split_pdf_concurrency_level=15
-        )
+        req = operations.PartitionRequest(
+            partition_parameters=shared.PartitionParameters(
+                # Note that this currently only supports a single file.
+                files=shared.Files(
+                    content=file.read(),
+                    file_name=filename,
+                ),
+                strategy=shared.Strategy.OCR_ONLY,
+                languages=["kor"],
+                split_pdf_page=True,
+                split_pdf_allow_failed=True,
+                split_pdf_concurrency_level=15
+            )
+         )
 
         try:
-            res = client.general.partition(req)
+            res = client.general.partition(request=req)
             print(res.elements[0])
         except SDKError as e:
             print(e)
@@ -394,7 +398,7 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
         import os
 
         from unstructured_client import UnstructuredClient
-        from unstructured_client.models import shared
+        from unstructured_client.models import operations, shared
         from unstructured_client.models.errors import SDKError
 
         client = UnstructuredClient(
@@ -404,21 +408,23 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
 
         filename = "sample-docs/layout-parser-paper.pdf"
         file = open(filename, "rb")
-        req = shared.PartitionParameters(
-            # Note that this currently only supports a single file
-            files=shared.Files(
-                content=file.read(),
-                file_name=filename,
-            ),
-            strategy=shared.Strategy.HI_RES,
-            coordinates=True,
-            split_pdf_page=True,
-            split_pdf_allow_failed=True,
-            split_pdf_concurrency_level=15
+        req = operations.PartitionRequest(
+            partition_parameters=shared.PartitionParameters(
+                # Note that this currently only supports a single file.
+                files=shared.Files(
+                    content=file.read(),
+                    file_name=filename,
+                ),
+                strategy=shared.Strategy.HI_RES,
+                coordinates=True,
+                split_pdf_page=True,
+                split_pdf_allow_failed=True,
+                split_pdf_concurrency_level=15
+            )
         )
 
         try:
-            res = client.general.partition(req)
+            res = client.general.partition(request=req)
             print(res.elements[0])
         except SDKError as e:
             print(e)
@@ -543,7 +549,7 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
         import os
 
         from unstructured_client import UnstructuredClient
-        from unstructured_client.models import shared
+        from unstructured_client.models import operations, shared
         from unstructured_client.models.errors import SDKError
 
         client = UnstructuredClient(
@@ -553,21 +559,23 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
 
         filename = "sample-docs/layout-parser-paper-fast.pdf"
         file = open(filename, "rb")
-        req = shared.PartitionParameters(
-            # Note that this currently only supports a single file
-            files=shared.Files(
-                content=file.read(),
-                file_name=filename,
-            ),
-            unique_element_ids=True,
-            strategy=shared.Strategy.HI_RES,
-            split_pdf_page=True,
-            split_pdf_allow_failed=True,
-            split_pdf_concurrency_level=15
+        req = operations.PartitionRequest(
+            partition_parameters=shared.PartitionParameters(
+                # Note that this currently only supports a single file.
+                files=shared.Files(
+                    content=file.read(),
+                    file_name=filename,
+                ),
+                unique_element_ids=True,
+                strategy=shared.Strategy.HI_RES,
+                split_pdf_page=True,
+                split_pdf_allow_failed=True,
+                split_pdf_concurrency_level=15
+            )
         )
 
         try:
-            res = client.general.partition(req)
+            res = client.general.partition(request=req)
             print(res.elements[0])
         except SDKError as e:
             print(e)
@@ -698,7 +706,7 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
         import os
 
         from unstructured_client import UnstructuredClient
-        from unstructured_client.models import shared
+        from unstructured_client.models import operations, shared
         from unstructured_client.models.errors import SDKError
 
         client = UnstructuredClient(
@@ -708,22 +716,24 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
 
         filename = "sample-docs/layout-parser-paper-fast.pdf"
         file = open(filename, "rb")
-        req = shared.PartitionParameters(
-            # Note that this currently only supports a single file
-            files=shared.Files(
-                content=file.read(),
-                file_name=filename,
-            ),
-            chunking_strategy="by_title",
-            max_characters=1024,
-            strategy=shared.Strategy.HI_RES,
-            split_pdf_page=True,
-            split_pdf_allow_failed=True,
-            split_pdf_concurrency_level=15
+        req = operations.PartitionRequest(
+            partition_parameters=shared.PartitionParameters(
+                # Note that this currently only supports a single file.
+                files=shared.Files(
+                    content=file.read(),
+                    file_name=filename,
+                ),
+                chunking_strategy="by_title",
+                max_characters=1024,
+                strategy=shared.Strategy.HI_RES,
+                split_pdf_page=True,
+                split_pdf_allow_failed=True,
+                split_pdf_concurrency_level=15
+            )
         )
 
         try:
-            res = client.general.partition(req)
+            res = client.general.partition(request=req)
             print(res.elements[0])
         except SDKError as e:
             print(e)

@@ -31,21 +31,56 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
 
     <Note>
         The SDK uses semantic versioning and major bumps could bring breaking changes. It is advised to
-        pin your installed version.
+        pin your installed version. See the [migration guide](#migration-guide), later on this page, for breaking change announcements.
     </Note>
 
 ## Basics
-    Let's start with a simple example in which you send a PDF document to be partitioned with the Free Unstructured API:
-
-    <Warning>
-        Python SDK Deprecation Warning (>v0.22.0): The legacy method of passing `shared.PartitionParameters`
-        directly to `client.general.partition()` is currently supported but may be deprecated and
-        could break in future releases. Users should migrate to the new `shared.PartitionRequest` object 
-        to ensure compatibility with future updates.
-    </Warning>
+    Let's start with a simple example in which you send a PDF document to be partitioned with the Unstructured API. Note that the Python SDK gives you a choice of two interfaces. The functionality is identical, but the Pydantic model syntax may provide completion hints in your IDE, for instance.
 
     <CodeGroup>
-    ```python Python
+    ```python Python (TypedDict example)
+    import os, json
+
+    import unstructured_client
+    from unstructured_client.models import shared
+
+    client = unstructured_client.UnstructuredClient(
+        api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+        server_url=os.getenv("UNSTRUCTURED_API_URL"),
+    )
+
+    filename = "PATH_TO_INPUT_FILE"
+
+    req = {
+        "partition_parameters": {
+            "files": {
+                "content": open(filename, "rb"),
+                "file_name": filename,
+            },
+            "strategy": shared.Strategy.HI_RES,
+            "languages": ['eng'],
+            "split_pdf_page": True,            # If True, splits the PDF file into smaller chunks of pages.
+            "split_pdf_allow_failed": True,    # If True, the partitioning continues even if some pages fail.
+            "split_pdf_concurrency_level": 15  # Set the number of concurrent request to the maximum value: 15.
+        }
+    }
+
+    try:
+        res = client.general.partition(request=req)
+        element_dicts = [element for element in res.elements]
+
+        # Print the processed data's first element only.
+        print(element_dicts[0])
+
+        # Write the processed data to a local file.
+        json_elements = json.dumps(element_dicts, indent=2)
+
+        with open("PATH_TO_OUTPUT_FILE", "w") as file:
+            file.write(json_elements)
+    except Exception as e:
+        print(e)
+    ```
+    ```python Python (Pydantic model example)
     import os, json
 
     import unstructured_client
@@ -57,13 +92,11 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
     )
 
     filename = "PATH_TO_INPUT_FILE"
-    with open(filename, "rb") as f:
-        data = f.read()
 
     req = operations.PartitionRequest(
         partition_parameters=shared.PartitionParameters(
             files=shared.Files(
-                content=data,
+                content=open(filename, "rb"),
                 file_name=filename,
             ),
             strategy=shared.Strategy.HI_RES,
@@ -89,39 +122,68 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
     except Exception as e:
         print(e)
     ```
-    ```python Python (SDK <=v0.22.0)
-    import os
+    </CodeGroup>
+
+## Async partitioning
+
+    The Python SDK also has a `partition_async`. This call is equivalent to `partition` except that it can be used in a non blocking context. For instance, `asyncio.gather` can be used to concurrently process multiple files at once, as demonstrated here: 
+
+    <CodeGroup>
+    ```python
+    import asyncio
+    import os, json
 
     import unstructured_client
     from unstructured_client.models import shared
-    from unstructured_client.models.errors import SDKError
 
     client = unstructured_client.UnstructuredClient(
         api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
         server_url=os.getenv("UNSTRUCTURED_API_URL"),
     )
 
-    filename = "PATH_TO_FILE"
-    with open(filename, "rb") as f:
-        data = f.read()
+    async def call_api(filename):
+        req = {
+            "partition_parameters": {
+                "files": {
+                    "content": open(filename, "rb"),
+                    "file_name": filename,
+                },
+                "strategy": shared.Strategy.HI_RES,
+            }
+        }
 
-    req = shared.PartitionParameters(
-        files=shared.Files(
-            content=data,
-            file_name=filename,
-        ),
-        # Other partition parameters
-        strategy="hi_res",
-        languages=['eng'], 
-    )
+        try:
+            res = await client.general.partition_async(request=req)
 
-    try:
-        res = client.general.partition(request=req)
-        print(res.elements[0])
-    except SDKError as e:
-        print(e)
+            element_dicts = [element for element in res.elements]
+
+            json_elements = json.dumps(element_dicts, indent=2)
+
+            output_filename = filename + ".json"  # Save the JSON response alongside the input file.
+            with open(output_filename, "w") as file:
+                file.write(json_elements)
+
+        except Exception as e:
+            print(e)
+
+    async def process_files(filenames):
+        filenames = [
+            "PATH_TO_INPUT_FILE_1",
+            "PATH_TO_INPUT_FILE_2",
+            "PATH_TO_INPUT_FILE_3",
+        ]
+
+        tasks = []
+
+        for filename in filenames:
+            tasks.append(call_api(filename))
+
+        await asyncio.gather(*tasks)
+
+    asyncio.run(process_files())
     ```
     </CodeGroup>
+
 
 ## Page splitting
 
@@ -230,3 +292,65 @@ the names used in the SDKs are the same across all methods.
 * Refer to the [API parameters](/api-reference/api-services/api-parameters) page for the full list of available parameters.
 * Refer to the [Examples](/api-reference/api-services/examples) page for some inspiration on using the parameters.
 
+## Migration guide
+
+There are minor breaking changes in 0.26.0. If you encounter any errors when upgrading, please find the solution below.
+
+**If you see the error: `AttributeError: 'PartitionParameters' object has no attribute 'partition_parameters'`**
+
+Previously, the SDK accepted a `PartitionParameters` object as input to the `sdk.general.partition` function. Now, this object must be wrapped in a `PartitionRequest` object. The old behavior was deprecated in 0.23.0 and removed in 0.26.0.
+
+```python
+# Instead of:
+from unstructured_client.models import shared
+
+req = shared.PartitionParameters(
+    files=files,
+)
+
+resp = s.general.partition(request=req)
+
+
+# Switch to:
+from unstructured_client.models import shared, operations
+
+req = operations.PartitionRequest(
+    partition_parameters=shared.PartitionParameters(
+        files=files,
+    )
+)
+
+resp = s.general.partition(request=req)
+```
+
+**If you see the error: `TypeError: BaseModel.__init__() takes 1 positional argument but 2 were given`**
+
+In 0.26.0, the `PartitionRequest` constructor no longer allows for positional arguments. You must specify `partition_parameters` by name.
+
+```python
+# Instead of:
+req = operations.PartitionRequest(
+    shared.PartitionParameters(
+        files=files,
+    )
+)
+
+# Switch to:
+req = operations.PartitionRequest(
+    partition_parameters=shared.PartitionParameters(
+        files=files,
+    )
+)
+```
+
+**If you see the error: `TypeError: General.partition() takes 1 positional argument but 2 were given`**
+
+In 0.26.0, the `partition` function no longer allows for positional arguments. You must specify `request` by name.
+
+```python
+# Instead of:
+resp = s.general.partition(req)
+
+# Switch to:
+resp = s.general.partition(request=req)
+```
