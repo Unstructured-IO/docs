@@ -37,11 +37,8 @@ To create a workflow:
    - **Basic** is a good choice if you have text-only documents that have no images or tables in them.
    - **Advanced** is a good choice if you have complex documents that have images or tables or both in them.
            
-   Learn about the predefined settings for [Basic](#basic-workflow-settings) and [Advanced](#advanced-workflow-settings).
-
-   If neither the **Basic** nor **Advanced** predefined settings meet your needs, click **Custom** to define different settings. 
-   If **Custom** is not available, click **Request Access**, and wait for Unstructured to enable it. 
-   Learn how to define [Custom](#custom-workflow-settings) workflow settings.
+   To fine-tune your workflow's settings, click **Custom**. If **Custom** is not available, click **Request Access**, 
+   and wait for Unstructured to enable it. Learn how to define [Custom](#custom-workflow-settings) workflow settings.
 
 7. If you want to run this workflow on a regular basis, in the **Schedule** section, select one of the time periods in the **Schedule Type** list:
 
@@ -51,72 +48,6 @@ To create a workflow:
    - **Frequently**: This workflow will automatically run once after each specified number of minutes. Choose the time period in minutes to wait until running this workflow again.
 
 8. Click **Save**.
-
-## Basic workflow settings
-
-To apply the following predefined advanced workflow settings, in the **Workflow Settings** section of a workflow, click **Basic**.
-
-To learn more about these settings, see the descriptions for [Custom workflow settings](#custom-workflow-settings).
-
-- **Transform** section:
-
-  - [Strategy](/platform/partitioning): **Fast**
-  - [Image summarization](/platform/summarizing): **None**
-  - [Table summarization](/platform/summarizing): **None**
-  - **Connector Settings**:
-
-    - **Include Page Breaks**: No (unchecked)
-    - **Infer Table Structure**: Yes (checked)
-
-  - **Elements to Exclude**: None (nothing selected)
-
-- [Chunk](/platform/chunking) section: 
-
-  - **Chunker Type**: **Basic**
-  - **Include Original Elements**: No (unchecked)
-  - **Max Characters**: **2048**
-  - **New After N Characters**: **1500**
-  - **Overlap**: **160**
-  - **Overlap All**: No (unchecked)
-
-- [Embed](/platform/embedding) section:
-
-  - **Vendor**: **OpenAI**
-  - **Embedding Model**: [text-embedding-3-small](https://platform.openai.com/docs/guides/embeddings) (1536 dimensions)
-
-## Advanced workflow settings
-
-To apply the following predefined advanced workflow settings, in the **Workflow Settings** section of a workflow, click **Advanced**. 
-
-To learn more about these settings, see the descriptions for [Custom workflow settings](#custom-workflow-settings).
-
-- **Transform** section:
-
-  - [Strategy](/platform/partitioning): **Hi Res**
-  - [Image summarization](/platform/summarizing): **Claude 3.5 Sonnet**
-  - [Table summarization](/platform/summarizing): **GPT-4o**
-  - **Connector Settings**:
-
-    - **Include Page Breaks**: No (unchecked)
-    - **Infer Table Structure**: No (unchecked)
-
-  - **Elements to Exclude**: None (nothing selected)
-
-- [Chunk](/platform/chunking) section:
-
-  - **Chunker Type**: **Chunk By Title**
-  - **Combine Text Under N Characters**: **0**
-  - **Include Original Elements**: No (unchecked)
-  - **Max Characters**: **2048**
-  - **Multipage Sections**: Yes (checked)
-  - **New After N Characters**: **1500**
-  - **Overlap**: **160**
-  - **Overlap All**: No (unchecked)
-
-- [Embed](/platform/embedding) section:
-
-  - **Vendor**: **OpenAI**
-  - **Embedding Model**: [text-embedding-3-large](https://platform.openai.com/docs/guides/embeddings) (3072 dimensions)
 
 ## Custom workflow settings
 
