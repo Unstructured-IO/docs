@@ -1,0 +1,35 @@
+You can connect any available source connector to any available destination connector. However, the source connector code examples in the 
+documentation show connecting only to the local destination connector. Similarly, the destination connector code examples in the 
+documentation show connecting only to the local source connector. 
+
+To quickly generate an Unstructured Ingest Python library code example that connects _any_ available source connector to _any_ available destination connector, 
+do the following:
+
+1. Open the [Unstructured Ingest Code Generator](https://huggingface.co/spaces/MariaK/unstructured-pipeline-builder) webpage.
+2. Select your input (source) location type from the **Get unstructured documents from** drop-down list.
+3. Select your output (destination) location type from the **Upload RAG-ready documents to** drop-down list.
+4. Select your chunking strategy from the **Chunking strategy** drop-down list:
+
+   - **None** - Do not chunk the data elements' content.
+   - **basic** - Combine sequential data elements to maximally fill each chunk. However, do not mix `Table` and non-`Table` elements in the same chunk.
+   - **by_title** - Use the `basic` strategy and also preserve section boundaries. Optionally preserve page boundaries as well.
+   - **by_page** - Use the `basic` strategy and also preserve page boundaries.
+   - **by_similarity** - Use the `sentence-transformers/multi-qa-mpnet-base-dot-v1` embedding model to identify topically similar sequential elements and combine them into chunks. This strategy is availably only when calling Unstructured API services. 
+
+   To learn more, see [Chunking strategies](/api-reference/api-services/chunking) and [Chunking configuration](/api-reference/ingest/ingest-configuration/chunking-configuration).
+
+5. For any chunking strategy other than **None**:
+
+   - Enter your chunk size in the **Chunk size (characters)** box, or leave the default of **1000** characters. 
+   - If you need to apply overlapping to the chunks, enter the chunk overlap size in the **Chunk overlap (characters)** box, or leave default of **20** characters.
+
+   To learn more, see [Chunking configuration](/api-reference/ingest/ingest-configuration/chunking-configuration).
+
+6. To generate vector embeddings, select the provider in the **Embedding provider** drop-down list.
+
+   To learn more, see [Embedding configuraton](/api-reference/ingest/ingest-configuration/embedding-configuration).
+
+7. Click **Generate code**. 
+8. Copy the example code from the **Generated Code** pane into your code project. 
+9. The code example will contain one or more environment variables that you must set for the code to run correctly. To learn what to 
+set these variables to, click the documentation links that are below the **Generated Code** pane.
