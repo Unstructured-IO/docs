@@ -126,13 +126,13 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
 
 ## Async partitioning
 
-    The Python SDK also has a `partition_async`. This call is equivalent to `partition` except that it can be used in a non blocking context. For instance, `asyncio.gather` can be used to concurrently process multiple files at once, as demonstrated here: 
+    The Python SDK also has a `partition_async`. This call is equivalent to `partition` except that it can be used in a non blocking context. For instance, `asyncio.gather` can be used to concurrently process multiple files inside of a directory hierarchy, as demonstrated here: 
 
     <CodeGroup>
-    ```python
+    ```python Python
     import asyncio
-    import os, json
-
+    import os
+    import json
     import unstructured_client
     from unstructured_client.models import shared
 
@@ -141,12 +141,12 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
         server_url=os.getenv("UNSTRUCTURED_API_URL"),
     )
 
-    async def call_api(filename):
+    async def call_api(filename, input_dir, output_dir):
         req = {
             "partition_parameters": {
                 "files": {
                     "content": open(filename, "rb"),
-                    "file_name": filename,
+                    "file_name": os.path.basename(filename),
                 },
                 "strategy": shared.Strategy.HI_RES,
             }
@@ -154,33 +154,38 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
 
         try:
             res = await client.general.partition_async(request=req)
-
             element_dicts = [element for element in res.elements]
-
             json_elements = json.dumps(element_dicts, indent=2)
 
-            output_filename = filename + ".json"  # Save the JSON response alongside the input file.
+            # Create the output directory structure.
+            relative_path = os.path.relpath(os.path.dirname(filename), input_dir)
+            output_subdir = os.path.join(output_dir, relative_path)
+            os.makedirs(output_subdir, exist_ok=True)
+
+            # Write the output file.
+            output_filename = os.path.join(output_subdir, os.path.basename(filename) + ".json")
             with open(output_filename, "w") as file:
                 file.write(json_elements)
 
         except Exception as e:
-            print(e)
+            print(f"Error processing {filename}: {e}")
 
-    async def process_files(filenames):
-        filenames = [
-            "PATH_TO_INPUT_FILE_1",
-            "PATH_TO_INPUT_FILE_2",
-            "PATH_TO_INPUT_FILE_3",
-        ]
-
+    async def process_files(input_directory, output_directory):
         tasks = []
 
-        for filename in filenames:
-            tasks.append(call_api(filename))
+        for root, _, files in os.walk(input_directory):
+            for file in files:
+                if not file.endswith('.json'):
+                    full_path = os.path.join(root, file)
+                    tasks.append(call_api(full_path, input_directory, output_directory))
 
         await asyncio.gather(*tasks)
 
-    asyncio.run(process_files())
+    if __name__ == "__main__":
+        asyncio.run(process_files(
+            input_directory=os.getenv("LOCAL_FILE_INPUT_DIR"), 
+            output_directory=os.getenv("LOCAL_FILE_OUTPUT_DIR")
+        ))
     ```
     </CodeGroup>
 

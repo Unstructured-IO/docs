@@ -96,80 +96,147 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
     <Accordion title="Python SDK">
         <UseIngestInstead />
         ```python Python
+        import asyncio
         import os
+        import json
+        import unstructured_client
+        from unstructured_client.models import shared
 
-        from unstructured_client import UnstructuredClient
-        from unstructured_client.models import operations, shared
-        from unstructured_client.models.errors import SDKError
-
-        client = UnstructuredClient(
+        client = unstructured_client.UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            api_url=os.getenv("UNSTRUCTURED_API_URL"),
+            server_url=os.getenv("UNSTRUCTURED_API_URL"),
         )
 
-        filename = "sample-docs/layout-parser-paper.pdf"
-        file = open(filename, "rb")
-        req = operations.PartitionRequest(
-            partition_parameters=shared.PartitionParameters(
-                # Note that this currently only supports a single file.
-                files=shared.Files(
-                    content=file.read(),
-                    file_name=filename,
-                ),
-                strategy=shared.Strategy.HI_RES,
-                hi_res_model_name="layout_v1.1.0",
-                split_pdf_page=True,
-                split_pdf_allow_failed=True,
-                split_pdf_concurrency_level=15
-            )
-        )
+        async def call_api(filename, input_dir, output_dir):
+            req = {
+                "partition_parameters": {
+                    "files": {
+                        "content": open(filename, "rb"),
+                        "file_name": os.path.basename(filename),
+                    },
+                    "strategy": shared.Strategy.HI_RES,
+                    "hi_res_model_name": "layout_v1.1.0",
+                    "split_pdf_page": True,
+                    "split_pdf_allow_failed": True,
+                    "split_pdf_concurrency_level": 15
+                }
+            }
 
-        try:
-            res = client.general.partition(request=req)
-            print(res.elements[0])
-        except SDKError as e:
-            print(e)
+            try:
+                res = await client.general.partition_async(request=req)
+                element_dicts = [element for element in res.elements]
+                json_elements = json.dumps(element_dicts, indent=2)
+
+                # Create the output directory structure.
+                relative_path = os.path.relpath(os.path.dirname(filename), input_dir)
+                output_subdir = os.path.join(output_dir, relative_path)
+                os.makedirs(output_subdir, exist_ok=True)
+
+                # Write the output file.
+                output_filename = os.path.join(output_subdir, os.path.basename(filename) + ".json")
+                with open(output_filename, "w") as file:
+                    file.write(json_elements)
+
+            except Exception as e:
+                print(f"Error processing {filename}: {e}")
+
+        async def process_files(input_directory, output_directory):
+            tasks = []
+
+            for root, _, files in os.walk(input_directory):
+                for file in files:
+                    if not file.endswith('.json'):
+                        full_path = os.path.join(root, file)
+                        tasks.append(call_api(full_path, input_directory, output_directory))
+
+            await asyncio.gather(*tasks)
+
+        if __name__ == "__main__":
+            asyncio.run(process_files(
+                input_directory=os.getenv("LOCAL_FILE_INPUT_DIR"), 
+                output_directory=os.getenv("LOCAL_FILE_OUTPUT_DIR")
+            ))
         ```
     </Accordion>
     <Accordion title="JavaScript/TypeScript SDK">
         <UseIngestInstead />
         ```typescript TypeScript
         import { UnstructuredClient } from "unstructured-client";
-        import { Strategy } from "unstructured-client/sdk/models/shared/index.js";
-        import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
         import * as fs from "fs";
+        import * as path from "path";
+        import { Strategy } from "unstructured-client/sdk/models/shared/index.js";
+        import { PartitionResponse } from "unstructured-client/sdk/models/operations";
 
-        const key = process.env.UNSTRUCTURED_API_KEY;
-        const url = process.env.UNSTRUCTURED_API_URL;
+        // Send all files in the source path to Unstructured for processing.
+        // Send the processed data to the destination path.
+        function processFiles(
+            client: UnstructuredClient,
+            sourcePath: string,
+            destinationPath: string
+        ): void {
+
+            // If an output directory does not exist for the corresponding input
+            // directory, then create it.
+            if (!fs.existsSync(destinationPath)) {
+                fs.mkdirSync(destinationPath, { recursive: true });
+            }
+
+            // Get all folders and files at the current level of the input directory.
+            const items = fs.readdirSync(sourcePath);
+
+            // For each folder and file in the input directory...
+            for (const item of items) {
+                const inputPath = path.join(sourcePath, item);
+                const outputPath = path.join(destinationPath, item)
+
+                // If it's a folder, call this function recursively.
+                if (fs.statSync(inputPath).isDirectory()) {
+                    processFiles(client, inputPath, outputPath);
+                } else {
+                    // If it's a file, send it to Unstructured for processing.
+                    const data = fs.readFileSync(inputPath);
+
+                    client.general.partition({
+                        partitionParameters: {
+                            files: {
+                                content: data,
+                                fileName: inputPath
+                            },
+                            strategy: Strategy.HiRes,
+                            hiResModelName: "layout_v1.1.0", 
+                            splitPdfPage: true,
+                            splitPdfConcurrencyLevel: 15,
+                            splitPdfAllowFailed: true
+                        }
+                    }).then((res: PartitionResponse) => {
+                        // If successfully processed, write the processed data to
+                        // the destination directory.
+                        if (res.statusCode == 200) {
+                            const jsonElements = JSON.stringify(res.elements, null, 2)
+                            fs.writeFileSync(outputPath + ".json", jsonElements)
+                        }
+                    }).catch((e) => {
+                        if (e.statusCode) {
+                            console.log(e.statusCode);
+                            console.log(e.body);
+                        } else {
+                            console.log(e);
+                        }
+                    });
+                }
+            }
+        }
 
         const client = new UnstructuredClient({
-            serverURL: url,
-            security: {
-                apiKeyAuth: key,
-            },
+            security: { apiKeyAuth: process.env.UNSTRUCTURED_API_KEY },
+            serverURL: process.env.UNSTRUCTURED_API_URL
         });
 
-        const filename = "sample-docs/layout-parser-paper.pdf";
-        const data = fs.readFileSync(filename);
-
-        client.general.partition({
-            files: {
-                content: data,
-                fileName: filename,
-            },
-            strategy: Strategy.HiRes,
-            hiResModelName: "layout_v1.1.0",
-            splitPdfPage: true,
-            splitPdfConcurrencyLevel: 15,
-            splitPdfAllowFailed: true
-        }).then((res: PartitionResponse) => {
-            if (res.statusCode == 200) {
-                console.log(res.elements?.[0]);
-            }
-        }).catch((e) => {
-            console.log(e.statusCode);
-            console.log(e.body);
-        });
+        processFiles(
+            client,
+            process.env.LOCAL_FILE_INPUT_DIR,
+            process.env.LOCAL_FILE_OUTPUT_DIR
+        );
         ```
     </Accordion>
 </AccordionGroup>
@@ -230,7 +297,7 @@ For better OCR results, you can specify what languages your document is in using
                 ),
                 uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
             ).run()
-            ```
+        ```
     </Accordion>
     <Accordion title="POST">
         <UseIngestInstead />
@@ -247,80 +314,147 @@ For better OCR results, you can specify what languages your document is in using
     <Accordion title="Python SDK">
         <UseIngestInstead />
         ```python Python
+        import asyncio
         import os
+        import json
+        import unstructured_client
+        from unstructured_client.models import shared
 
-        from unstructured_client import UnstructuredClient
-        from unstructured_client.models import operations, shared
-        from unstructured_client.models.errors import SDKError
-
-        client = UnstructuredClient(
+        client = unstructured_client.UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
             server_url=os.getenv("UNSTRUCTURED_API_URL"),
         )
 
-        filename = "sample-docs/korean.png"
-        file = open(filename, "rb")
-        req = operations.PartitionRequest(
-            partition_parameters=shared.PartitionParameters(
-                # Note that this currently only supports a single file.
-                files=shared.Files(
-                    content=file.read(),
-                    file_name=filename,
-                ),
-                strategy=shared.Strategy.OCR_ONLY,
-                languages=["kor"],
-                split_pdf_page=True,
-                split_pdf_allow_failed=True,
-                split_pdf_concurrency_level=15
-            )
-         )
+        async def call_api(filename, input_dir, output_dir):
+            req = {
+                "partition_parameters": {
+                    "files": {
+                        "content": open(filename, "rb"),
+                        "file_name": os.path.basename(filename),
+                    },
+                    "strategy": shared.Strategy.OCR_ONLY,
+                    "languages": ["kor"],
+                    "split_pdf_page": True,
+                    "split_pdf_allow_failed": True,
+                    "split_pdf_concurrency_level": 15
+                }
+            }
 
-        try:
-            res = client.general.partition(request=req)
-            print(res.elements[0])
-        except SDKError as e:
-            print(e)
+            try:
+                res = await client.general.partition_async(request=req)
+                element_dicts = [element for element in res.elements]
+                json_elements = json.dumps(element_dicts, indent=2)
+
+                # Create the output directory structure.
+                relative_path = os.path.relpath(os.path.dirname(filename), input_dir)
+                output_subdir = os.path.join(output_dir, relative_path)
+                os.makedirs(output_subdir, exist_ok=True)
+
+                # Write the output file.
+                output_filename = os.path.join(output_subdir, os.path.basename(filename) + ".json")
+                with open(output_filename, "w") as file:
+                    file.write(json_elements)
+
+            except Exception as e:
+                print(f"Error processing {filename}: {e}")
+
+        async def process_files(input_directory, output_directory):
+            tasks = []
+
+            for root, _, files in os.walk(input_directory):
+                for file in files:
+                    if not file.endswith('.json'):
+                        full_path = os.path.join(root, file)
+                        tasks.append(call_api(full_path, input_directory, output_directory))
+
+            await asyncio.gather(*tasks)
+
+        if __name__ == "__main__":
+            asyncio.run(process_files(
+                input_directory=os.getenv("LOCAL_FILE_INPUT_DIR"), 
+                output_directory=os.getenv("LOCAL_FILE_OUTPUT_DIR")
+            ))
         ```
     </Accordion>
     <Accordion title="JavaScript/TypeScript SDK">
         <UseIngestInstead />
         ```typescript TypeScript
         import { UnstructuredClient } from "unstructured-client";
-        import { Strategy } from "unstructured-client/sdk/models/shared/index.js";
-        import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
         import * as fs from "fs";
+        import * as path from "path";
+        import { Strategy } from "unstructured-client/sdk/models/shared/index.js";
+        import { PartitionResponse } from "unstructured-client/sdk/models/operations";
 
-        const key = process.env.UNSTRUCTURED_API_KEY;
-        const url = process.env.UNSTRUCTURED_API_URL;
+        // Send all files in the source path to Unstructured for processing.
+        // Send the processed data to the destination path.
+        function processFiles(
+            client: UnstructuredClient,
+            sourcePath: string,
+            destinationPath: string
+        ): void {
+
+            // If an output directory does not exist for the corresponding input
+            // directory, then create it.
+            if (!fs.existsSync(destinationPath)) {
+                fs.mkdirSync(destinationPath, { recursive: true });
+            }
+
+            // Get all folders and files at the current level of the input directory.
+            const items = fs.readdirSync(sourcePath);
+
+            // For each folder and file in the input directory...
+            for (const item of items) {
+                const inputPath = path.join(sourcePath, item);
+                const outputPath = path.join(destinationPath, item)
+
+                // If it's a folder, call this function recursively.
+                if (fs.statSync(inputPath).isDirectory()) {
+                    processFiles(client, inputPath, outputPath);
+                } else {
+                    // If it's a file, send it to Unstructured for processing.
+                    const data = fs.readFileSync(inputPath);
+
+                    client.general.partition({
+                        partitionParameters: {
+                            files: {
+                                content: data,
+                                fileName: inputPath
+                            },
+                            strategy: Strategy.OcrOnly,
+                            languages: ["kor"],
+                            splitPdfPage: true,
+                            splitPdfConcurrencyLevel: 15,
+                            splitPdfAllowFailed: true
+                        }
+                    }).then((res: PartitionResponse) => {
+                        // If successfully processed, write the processed data to
+                        // the destination directory.
+                        if (res.statusCode == 200) {
+                            const jsonElements = JSON.stringify(res.elements, null, 2)
+                            fs.writeFileSync(outputPath + ".json", jsonElements)
+                        }
+                    }).catch((e) => {
+                        if (e.statusCode) {
+                            console.log(e.statusCode);
+                            console.log(e.body);
+                        } else {
+                            console.log(e);
+                        }
+                    });
+                }
+            }
+        }
 
         const client = new UnstructuredClient({
-            serverURL: url,
-            security: {
-                apiKeyAuth: key,
-            },
+            security: { apiKeyAuth: process.env.UNSTRUCTURED_API_KEY },
+            serverURL: process.env.UNSTRUCTURED_API_URL
         });
 
-        const filename = "sample-docs/korean.png";
-        const data = fs.readFileSync(filename);
-
-        client.general.partition({
-            files: {
-                content: data,
-                fileName: filename,
-            },
-            strategy: Strategy.OcrOnly,
-            languages: ["kor"],
-            splitPdfPage: true,
-            splitPdfConcurrencyLevel: 15,
-            splitPdfAllowFailed: true
-        }).then((res: PartitionResponse) => {
-            if (res.statusCode == 200) {
-                console.log(res.elements?.[0]);
-            }
-        }).catch((e) => {
-            console.log(e.statusCode);
-            console.log(e.body);
-        });
+        processFiles(
+            client,
+            process.env.LOCAL_FILE_INPUT_DIR,
+            process.env.LOCAL_FILE_OUTPUT_DIR
+        );
         ```
     </Accordion>
 </AccordionGroup>
@@ -395,80 +529,147 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
     <Accordion title="Python SDK">
         <UseIngestInstead />
         ```python Python
+        import asyncio
         import os
+        import json
+        import unstructured_client
+        from unstructured_client.models import shared
 
-        from unstructured_client import UnstructuredClient
-        from unstructured_client.models import operations, shared
-        from unstructured_client.models.errors import SDKError
-
-        client = UnstructuredClient(
+        client = unstructured_client.UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
             server_url=os.getenv("UNSTRUCTURED_API_URL"),
         )
 
-        filename = "sample-docs/layout-parser-paper.pdf"
-        file = open(filename, "rb")
-        req = operations.PartitionRequest(
-            partition_parameters=shared.PartitionParameters(
-                # Note that this currently only supports a single file.
-                files=shared.Files(
-                    content=file.read(),
-                    file_name=filename,
-                ),
-                strategy=shared.Strategy.HI_RES,
-                coordinates=True,
-                split_pdf_page=True,
-                split_pdf_allow_failed=True,
-                split_pdf_concurrency_level=15
-            )
-        )
+        async def call_api(filename, input_dir, output_dir):
+            req = {
+                "partition_parameters": {
+                    "files": {
+                        "content": open(filename, "rb"),
+                        "file_name": os.path.basename(filename),
+                    },
+                    "strategy": shared.Strategy.HI_RES,
+                    "coordinates": True,
+                    "split_pdf_page": True,
+                    "split_pdf_allow_failed": True,
+                    "split_pdf_concurrency_level": 15
+                }
+            }
 
-        try:
-            res = client.general.partition(request=req)
-            print(res.elements[0])
-        except SDKError as e:
-            print(e)
+            try:
+                res = await client.general.partition_async(request=req)
+                element_dicts = [element for element in res.elements]
+                json_elements = json.dumps(element_dicts, indent=2)
+
+                # Create the output directory structure.
+                relative_path = os.path.relpath(os.path.dirname(filename), input_dir)
+                output_subdir = os.path.join(output_dir, relative_path)
+                os.makedirs(output_subdir, exist_ok=True)
+
+                # Write the output file.
+                output_filename = os.path.join(output_subdir, os.path.basename(filename) + ".json")
+                with open(output_filename, "w") as file:
+                    file.write(json_elements)
+
+            except Exception as e:
+                print(f"Error processing {filename}: {e}")
+
+        async def process_files(input_directory, output_directory):
+            tasks = []
+
+            for root, _, files in os.walk(input_directory):
+                for file in files:
+                    if not file.endswith('.json'):
+                        full_path = os.path.join(root, file)
+                        tasks.append(call_api(full_path, input_directory, output_directory))
+
+            await asyncio.gather(*tasks)
+
+        if __name__ == "__main__":
+            asyncio.run(process_files(
+                input_directory=os.getenv("LOCAL_FILE_INPUT_DIR"), 
+                output_directory=os.getenv("LOCAL_FILE_OUTPUT_DIR")
+            ))
         ```
     </Accordion>
     <Accordion title="JavaScript/TypeScript SDK">
         <UseIngestInstead />
         ```typescript TypeScript
         import { UnstructuredClient } from "unstructured-client";
-        import { Strategy } from "unstructured-client/sdk/models/shared/index.js";
-        import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
         import * as fs from "fs";
+        import * as path from "path";
+        import { Strategy } from "unstructured-client/sdk/models/shared/index.js";
+        import { PartitionResponse } from "unstructured-client/sdk/models/operations";
 
-        const key = process.env.UNSTRUCTURED_API_KEY;
-        const url = process.env.UNSTRUCTURED_API_URL;
+        // Send all files in the source path to Unstructured for processing.
+        // Send the processed data to the destination path.
+        function processFiles(
+            client: UnstructuredClient,
+            sourcePath: string,
+            destinationPath: string
+        ): void {
+
+            // If an output directory does not exist for the corresponding input
+            // directory, then create it.
+            if (!fs.existsSync(destinationPath)) {
+                fs.mkdirSync(destinationPath, { recursive: true });
+            }
+
+            // Get all folders and files at the current level of the input directory.
+            const items = fs.readdirSync(sourcePath);
+
+            // For each folder and file in the input directory...
+            for (const item of items) {
+                const inputPath = path.join(sourcePath, item);
+                const outputPath = path.join(destinationPath, item)
+
+                // If it's a folder, call this function recursively.
+                if (fs.statSync(inputPath).isDirectory()) {
+                    processFiles(client, inputPath, outputPath);
+                } else {
+                    // If it's a file, send it to Unstructured for processing.
+                    const data = fs.readFileSync(inputPath);
+
+                    client.general.partition({
+                        partitionParameters: {
+                            files: {
+                                content: data,
+                                fileName: inputPath
+                            },
+                            strategy: Strategy.HiRes,
+                            coordinates: true,
+                            splitPdfPage: true,
+                            splitPdfConcurrencyLevel: 15,
+                            splitPdfAllowFailed: true
+                        }
+                    }).then((res: PartitionResponse) => {
+                        // If successfully processed, write the processed data to
+                        // the destination directory.
+                        if (res.statusCode == 200) {
+                            const jsonElements = JSON.stringify(res.elements, null, 2)
+                            fs.writeFileSync(outputPath + ".json", jsonElements)
+                        }
+                    }).catch((e) => {
+                        if (e.statusCode) {
+                            console.log(e.statusCode);
+                            console.log(e.body);
+                        } else {
+                            console.log(e);
+                        }
+                    });
+                }
+            }
+        }
 
         const client = new UnstructuredClient({
-            serverURL: url,
-            security: {
-                apiKeyAuth: key,
-            },
+            security: { apiKeyAuth: process.env.UNSTRUCTURED_API_KEY },
+            serverURL: process.env.UNSTRUCTURED_API_URL
         });
 
-        const filename = "sample-docs/layout-parser-paper.pdf";
-        const data = fs.readFileSync(filename);
-
-        client.general.partition({
-            files: {
-                content: data,
-                fileName: filename,
-            },
-            coordinates: true,
-            strategy: Strategy.HiRes,
-            splitPdfPage: true,
-            splitPdfConcurrencyLevel: 15,
-            splitPdfAllowFailed: true
-        }).then((res: PartitionResponse) => {
-            if (res.statusCode == 200) {
-                console.log(res.elements?.[0]);
-            }
-        }).catch((e) => {
-            console.log(e.statusCode);
-            console.log(e.body);
-        });
+        processFiles(
+            client,
+            process.env.LOCAL_FILE_INPUT_DIR,
+            process.env.LOCAL_FILE_OUTPUT_DIR
+        );
         ```
     </Accordion>
 </AccordionGroup>
@@ -546,80 +747,147 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
     <Accordion title="Python SDK">
         <UseIngestInstead />
         ```python Python
+        import asyncio
         import os
+        import json
+        import unstructured_client
+        from unstructured_client.models import shared
 
-        from unstructured_client import UnstructuredClient
-        from unstructured_client.models import operations, shared
-        from unstructured_client.models.errors import SDKError
-
-        client = UnstructuredClient(
+        client = unstructured_client.UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
             server_url=os.getenv("UNSTRUCTURED_API_URL"),
         )
 
-        filename = "sample-docs/layout-parser-paper-fast.pdf"
-        file = open(filename, "rb")
-        req = operations.PartitionRequest(
-            partition_parameters=shared.PartitionParameters(
-                # Note that this currently only supports a single file.
-                files=shared.Files(
-                    content=file.read(),
-                    file_name=filename,
-                ),
-                unique_element_ids=True,
-                strategy=shared.Strategy.HI_RES,
-                split_pdf_page=True,
-                split_pdf_allow_failed=True,
-                split_pdf_concurrency_level=15
-            )
-        )
+        async def call_api(filename, input_dir, output_dir):
+            req = {
+                "partition_parameters": {
+                    "files": {
+                        "content": open(filename, "rb"),
+                        "file_name": os.path.basename(filename),
+                    },
+                    "strategy": shared.Strategy.HI_RES,
+                    "unique_element_ids": True,
+                    "split_pdf_page": True,
+                    "split_pdf_allow_failed": True,
+                    "split_pdf_concurrency_level": 15
+                }
+            }
 
-        try:
-            res = client.general.partition(request=req)
-            print(res.elements[0])
-        except SDKError as e:
-            print(e)
+            try:
+                res = await client.general.partition_async(request=req)
+                element_dicts = [element for element in res.elements]
+                json_elements = json.dumps(element_dicts, indent=2)
+
+                # Create the output directory structure.
+                relative_path = os.path.relpath(os.path.dirname(filename), input_dir)
+                output_subdir = os.path.join(output_dir, relative_path)
+                os.makedirs(output_subdir, exist_ok=True)
+
+                # Write the output file.
+                output_filename = os.path.join(output_subdir, os.path.basename(filename) + ".json")
+                with open(output_filename, "w") as file:
+                    file.write(json_elements)
+
+            except Exception as e:
+                print(f"Error processing {filename}: {e}")
+
+        async def process_files(input_directory, output_directory):
+            tasks = []
+
+            for root, _, files in os.walk(input_directory):
+                for file in files:
+                    if not file.endswith('.json'):
+                        full_path = os.path.join(root, file)
+                        tasks.append(call_api(full_path, input_directory, output_directory))
+
+            await asyncio.gather(*tasks)
+
+        if __name__ == "__main__":
+            asyncio.run(process_files(
+                input_directory=os.getenv("LOCAL_FILE_INPUT_DIR"), 
+                output_directory=os.getenv("LOCAL_FILE_OUTPUT_DIR")
+            ))
         ```
     </Accordion>
     <Accordion title="JavaScript/TypeScript SDK">
         <UseIngestInstead />
         ```typescript TypeScript
         import { UnstructuredClient } from "unstructured-client";
-        import { Strategy } from "unstructured-client/sdk/models/shared/index.js";
-        import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
         import * as fs from "fs";
+        import * as path from "path";
+        import { Strategy } from "unstructured-client/sdk/models/shared/index.js";
+        import { PartitionResponse } from "unstructured-client/sdk/models/operations";
 
-        const key = process.env.UNSTRUCTURED_API_KEY;
-        const url = process.env.UNSTRUCTURED_API_URL;
+        // Send all files in the source path to Unstructured for processing.
+        // Send the processed data to the destination path.
+        function processFiles(
+            client: UnstructuredClient,
+            sourcePath: string,
+            destinationPath: string
+        ): void {
+
+            // If an output directory does not exist for the corresponding input
+            // directory, then create it.
+            if (!fs.existsSync(destinationPath)) {
+                fs.mkdirSync(destinationPath, { recursive: true });
+            }
+
+            // Get all folders and files at the current level of the input directory.
+            const items = fs.readdirSync(sourcePath);
+
+            // For each folder and file in the input directory...
+            for (const item of items) {
+                const inputPath = path.join(sourcePath, item);
+                const outputPath = path.join(destinationPath, item)
+
+                // If it's a folder, call this function recursively.
+                if (fs.statSync(inputPath).isDirectory()) {
+                    processFiles(client, inputPath, outputPath);
+                } else {
+                    // If it's a file, send it to Unstructured for processing.
+                    const data = fs.readFileSync(inputPath);
+
+                    client.general.partition({
+                        partitionParameters: {
+                            files: {
+                                content: data,
+                                fileName: inputPath
+                            },
+                            uniqueElementIds: true,
+                            strategy: Strategy.HiRes,
+                            splitPdfPage: true,
+                            splitPdfConcurrencyLevel: 15,
+                            splitPdfAllowFailed: true
+                        }
+                    }).then((res: PartitionResponse) => {
+                        // If successfully processed, write the processed data to
+                        // the destination directory.
+                        if (res.statusCode == 200) {
+                            const jsonElements = JSON.stringify(res.elements, null, 2)
+                            fs.writeFileSync(outputPath + ".json", jsonElements)
+                        }
+                    }).catch((e) => {
+                        if (e.statusCode) {
+                            console.log(e.statusCode);
+                            console.log(e.body);
+                        } else {
+                            console.log(e);
+                        }
+                    });
+                }
+            }
+        }
 
         const client = new UnstructuredClient({
-            serverURL: url,
-            security: {
-                apiKeyAuth: key,
-            },
+            security: { apiKeyAuth: process.env.UNSTRUCTURED_API_KEY },
+            serverURL: process.env.UNSTRUCTURED_API_URL
         });
 
-        const filename = "sample-docs/layout-parser-paper-fast.pdf";
-        const data = fs.readFileSync(filename);
-
-        client.general.partition({
-            files: {
-                content: data,
-                fileName: filename,
-            },
-            uniqueElementIds: true,
-            strategy: Strategy.HiRes,
-            splitPdfPage: true,
-            splitPdfConcurrencyLevel: 15,
-            splitPdfAllowFailed: true
-        }).then((res: PartitionResponse) => {
-            if (res.statusCode == 200) {
-                console.log(res.elements?.[0]);
-            }
-        }).catch((e) => {
-            console.log(e.statusCode);
-            console.log(e.body);
-        });
+        processFiles(
+            client,
+            process.env.LOCAL_FILE_INPUT_DIR,
+            process.env.LOCAL_FILE_OUTPUT_DIR
+        );
         ```
     </Accordion>
 </AccordionGroup>
@@ -703,82 +971,149 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
     <Accordion title="Python SDK">
         <UseIngestInstead />
         ```python Python
+        import asyncio
         import os
+        import json
+        import unstructured_client
+        from unstructured_client.models import shared
 
-        from unstructured_client import UnstructuredClient
-        from unstructured_client.models import operations, shared
-        from unstructured_client.models.errors import SDKError
-
-        client = UnstructuredClient(
+        client = unstructured_client.UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
             server_url=os.getenv("UNSTRUCTURED_API_URL"),
         )
 
-        filename = "sample-docs/layout-parser-paper-fast.pdf"
-        file = open(filename, "rb")
-        req = operations.PartitionRequest(
-            partition_parameters=shared.PartitionParameters(
-                # Note that this currently only supports a single file.
-                files=shared.Files(
-                    content=file.read(),
-                    file_name=filename,
-                ),
-                chunking_strategy="by_title",
-                max_characters=1024,
-                strategy=shared.Strategy.HI_RES,
-                split_pdf_page=True,
-                split_pdf_allow_failed=True,
-                split_pdf_concurrency_level=15
-            )
-        )
+        async def call_api(filename, input_dir, output_dir):
+            req = {
+                "partition_parameters": {
+                    "files": {
+                        "content": open(filename, "rb"),
+                        "file_name": os.path.basename(filename),
+                    },
+                    "chunking_strategy": "by_title",
+                    "max_characters": 1024,
+                    "strategy": shared.Strategy.HI_RES,
+                    "split_pdf_page": True,
+                    "split_pdf_allow_failed": True,
+                    "split_pdf_concurrency_level": 15
+                }
+            }
 
-        try:
-            res = client.general.partition(request=req)
-            print(res.elements[0])
-        except SDKError as e:
-            print(e)
+            try:
+                res = await client.general.partition_async(request=req)
+                element_dicts = [element for element in res.elements]
+                json_elements = json.dumps(element_dicts, indent=2)
+
+                # Create the output directory structure.
+                relative_path = os.path.relpath(os.path.dirname(filename), input_dir)
+                output_subdir = os.path.join(output_dir, relative_path)
+                os.makedirs(output_subdir, exist_ok=True)
+
+                # Write the output file.
+                output_filename = os.path.join(output_subdir, os.path.basename(filename) + ".json")
+                with open(output_filename, "w") as file:
+                    file.write(json_elements)
+
+            except Exception as e:
+                print(f"Error processing {filename}: {e}")
+
+        async def process_files(input_directory, output_directory):
+            tasks = []
+
+            for root, _, files in os.walk(input_directory):
+                for file in files:
+                    if not file.endswith('.json'):
+                        full_path = os.path.join(root, file)
+                        tasks.append(call_api(full_path, input_directory, output_directory))
+
+            await asyncio.gather(*tasks)
+
+        if __name__ == "__main__":
+            asyncio.run(process_files(
+                input_directory=os.getenv("LOCAL_FILE_INPUT_DIR"), 
+                output_directory=os.getenv("LOCAL_FILE_OUTPUT_DIR")
+            ))
         ```
     </Accordion>
     <Accordion title="JavaScript/TypeScript SDK">
         <UseIngestInstead />
         ```typescript TypeScript
         import { UnstructuredClient } from "unstructured-client";
-        import { Strategy } from "unstructured-client/sdk/models/shared/index.js";
-        import { PartitionResponse } from "unstructured-client/dist/sdk/models/operations";
         import * as fs from "fs";
+        import * as path from "path";
+        import { ChunkingStrategy, Strategy } from "unstructured-client/sdk/models/shared/index.js";
+        import { PartitionResponse } from "unstructured-client/sdk/models/operations";
 
-        const key = process.env.UNSTRUCTURED_API_KEY;
-        const url = process.env.UNSTRUCTURED_API_URL;
+        // Send all files in the source path to Unstructured for processing.
+        // Send the processed data to the destination path.
+        function processFiles(
+            client: UnstructuredClient,
+            sourcePath: string,
+            destinationPath: string
+        ): void {
+
+            // If an output directory does not exist for the corresponding input
+            // directory, then create it.
+            if (!fs.existsSync(destinationPath)) {
+                fs.mkdirSync(destinationPath, { recursive: true });
+            }
+
+            // Get all folders and files at the current level of the input directory.
+            const items = fs.readdirSync(sourcePath);
+
+            // For each folder and file in the input directory...
+            for (const item of items) {
+                const inputPath = path.join(sourcePath, item);
+                const outputPath = path.join(destinationPath, item)
+
+                // If it's a folder, call this function recursively.
+                if (fs.statSync(inputPath).isDirectory()) {
+                    processFiles(client, inputPath, outputPath);
+                } else {
+                    // If it's a file, send it to Unstructured for processing.
+                    const data = fs.readFileSync(inputPath);
+
+                    client.general.partition({
+                        partitionParameters: {
+                            files: {
+                                content: data,
+                                fileName: inputPath
+                            },
+                            strategy: Strategy.HiRes,
+                            chunkingStrategy: ChunkingStrategy.ByTitle,
+                            maxCharacters: 1024,
+                            splitPdfPage: true,
+                            splitPdfConcurrencyLevel: 15,
+                            splitPdfAllowFailed: true
+                        }
+                    }).then((res: PartitionResponse) => {
+                        // If successfully processed, write the processed data to
+                        // the destination directory.
+                        if (res.statusCode == 200) {
+                            const jsonElements = JSON.stringify(res.elements, null, 2)
+                            fs.writeFileSync(outputPath + ".json", jsonElements)
+                        }
+                    }).catch((e) => {
+                        if (e.statusCode) {
+                            console.log(e.statusCode);
+                            console.log(e.body);
+                        } else {
+                            console.log(e);
+                        }
+                    });
+                }
+            }
+        }
 
         const client = new UnstructuredClient({
-            serverURL: url,
-            security: {
-                apiKeyAuth: key,
-            },
+            security: { apiKeyAuth: process.env.UNSTRUCTURED_API_KEY },
+            serverURL: process.env.UNSTRUCTURED_API_URL
         });
 
-        const filename = "sample-docs/layout-parser-paper-fast.pdf";
-        const data = fs.readFileSync(filename);
-
-        client.general.partition({
-            files: {
-                content: data,
-                fileName: filename,
-            },
-            chunkingStrategy: "by_title",
-            maxCharacters: 1024,
-            strategy: Strategy.HiRes,
-            splitPdfPage: true,
-            splitPdfConcurrencyLevel: 15,
-            splitPdfAllowFailed: true
-        }).then((res: PartitionResponse) => {
-            if (res.statusCode == 200) {
-                console.log(res.elements?.[0]);
-            }
-        }).catch((e) => {
-            console.log(e.statusCode);
-            console.log(e.body);
-        });
+        processFiles(
+            client,
+            process.env.LOCAL_FILE_INPUT_DIR,
+            process.env.LOCAL_FILE_OUTPUT_DIR
+        );
         ```
     </Accordion>
 </AccordionGroup>

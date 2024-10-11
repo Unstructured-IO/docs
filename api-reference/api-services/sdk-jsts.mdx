@@ -138,9 +138,7 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
     ```
     </CodeGroup>
 
-    import SharedAPISingleFile from '/snippets/general-shared-text/multi-file-api-use-connectors.mdx';
-
-    <SharedAPISingleFile />
+    For a code example that works with an entire directory of files instead of just a single PDF, see the [Processing multiple files](#processing-multiple-files) section.
 
 ## Page splitting
 
@@ -209,6 +207,92 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
             };
         });
         ```
+
+## Processing multiple files
+
+    The code example in the [Basics](#basics) section processes a single PDF file. But what if you want to process 
+    multiple files inside a directory with a mixture of subdirectories and files with different file types?
+
+    The following example takes an input directory path to read files from and an output directory path to 
+    write the processed data to, processing one file at a time.
+
+    ```typescript TypeScript
+    import { UnstructuredClient } from "unstructured-client";
+    import * as fs from "fs";
+    import * as path from "path";
+    import { Strategy } from "unstructured-client/sdk/models/shared/index.js";
+    import { PartitionResponse } from "unstructured-client/sdk/models/operations";
+
+    // Send all files in the source path to Unstructured for processing.
+    // Send the processed data to the destination path.
+    function processFiles(
+        client: UnstructuredClient,
+        sourcePath: string,
+        destinationPath: string
+    ): void {
+
+        // If an output directory does not exist for the corresponding input
+        // directory, then create it.
+        if (!fs.existsSync(destinationPath)) {
+            fs.mkdirSync(destinationPath, { recursive: true });
+        }
+
+        // Get all folders and files at the current level of the input directory.
+        const items = fs.readdirSync(sourcePath);
+
+        // For each folder and file in the input directory...
+        for (const item of items) {
+            const inputPath = path.join(sourcePath, item);
+            const outputPath = path.join(destinationPath, item)
+
+            // If it's a folder, call this function recursively.
+            if (fs.statSync(inputPath).isDirectory()) {
+                processFiles(client, inputPath, outputPath);
+            } else {
+                // If it's a file, send it to Unstructured for processing.
+                const data = fs.readFileSync(inputPath);
+
+                client.general.partition({
+                    partitionParameters: {
+                        files: {
+                            content: data,
+                            fileName: inputPath
+                        },
+                        strategy: Strategy.HiRes,
+                        splitPdfPage: true,
+                        splitPdfConcurrencyLevel: 15,
+                        splitPdfAllowFailed: true
+                    }
+                }).then((res: PartitionResponse) => {
+                    // If successfully processed, write the processed data to
+                    // the destination directory.
+                    if (res.statusCode == 200) {
+                        const jsonElements = JSON.stringify(res.elements, null, 2)
+                        fs.writeFileSync(outputPath + ".json", jsonElements)
+                    }
+                }).catch((e) => {
+                    if (e.statusCode) {
+                        console.log(e.statusCode);
+                        console.log(e.body);
+                    } else {
+                        console.log(e);
+                    }
+                });
+            }
+        }
+    }
+
+    const client = new UnstructuredClient({
+        security: { apiKeyAuth: process.env.UNSTRUCTURED_API_KEY },
+        serverURL: process.env.UNSTRUCTURED_API_URL
+    });
+
+    processFiles(
+        client,
+        process.env.LOCAL_FILE_INPUT_DIR,
+        process.env.LOCAL_FILE_OUTPUT_DIR
+    );
+    ```
 
 ## Parameters & examples
 
