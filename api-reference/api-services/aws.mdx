@@ -320,4 +320,20 @@ If you need to access the Amazon EC2 instance that hosts the Unstructured API, d
 
 5.   Click **Connect**, and then follow any of the on-screen options to access the EC2 instance.
 
+## Manage related AWS account costs
+
+After you run the CloudFormation stack, costs will begin accruing to your AWS account on an ongoing basis for related AWS resources. 
+These costs vary based on where these resource are located, which resources are covered by AWS Free Tier offerings, the extent to 
+which you customize these resources' settings, how much you use these resources, and other factors. Even if you stop or terminate 
+the related EC2 instance and delete the related application load balancer, costs might continue to accrue for other related AWS sources. 
+
+To stop these costs from accruing, you can delete the CloudFormation stack. This stops and deletes all of the related AWS resources. 
+To delete the CloudFormation stack, do the following:
+
+1. In the CloudFormation console, open the details page for the stack from Part II. If you do not see it, on the CloudFormation console's sidebar, click **Stacks**, and then click the name of your stack.
+
+2. Click **Delete**. 
+
+3. Follow the on-screen directions to finish deleting the stack. 
+
 
