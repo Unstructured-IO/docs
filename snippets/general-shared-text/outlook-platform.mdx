@@ -3,8 +3,8 @@ Fill in the following fields:
 - **Name** (_required_): A unique name for this connector.
 - **User Email** (_required_): The Outlook email account address to access messages from.
 - **Folders** (_required_): A comma-separated list of email folders to download messages from. To access messages from subfolders as well, check the **Recursive** box.
-- **Client ID** (_required_): The client ID of the Microsoft Entra ID application that has access to the Outlook email account address.
-- **Client Credential** (_required_): The secret ID of the corresponding Entra ID application.
+- **Client ID** (_required_): The client ID of the Microsoft Entra ID application that has access to the Outlook email account address. Can be found in App registrations' **Overview** sections of your application.
+- **Client Credential** (_required_): The secret ID of the corresponding Entra ID application. Can be read from App registrations' **Cerificates & secrets** sections of your application **only** right after creation.
 - **Authentication Provider URL**: The authentication token provider for the Entra ID application. If this field is left blank, `https://login.microsoftonline.com` is used by default.
-- **Tenant**: The ID or domain name that is associated with the Entra ID application. If this field is left blank, `common` is used by default.
+- **Tenant**: The ID or domain name that is associated with the Entra ID application. If this field is left blank, `common` is used by default. Can be found in App registrations' **Overview** sections of your application.
 - **Recursive**: Check this box to recursively access messages from subfolders.

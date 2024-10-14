@@ -1,3 +1,32 @@
 The Outlook prerequisites:
 
-- ...
+
+A Microsoft Entra ID tenant. If you don't have a tenant, [create an Azure account](https://azure.microsoft.com/en-us/pricing/purchase-options/azure-account/).
+
+<iframe
+width="560"
+height="315"
+src="https://www.youtube.com/embed/2bQ6WiJ1ncA"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
+
+An Azure identity platform managed application. Learn how to create one from **Register an application** and **Add credentials (Option 2)** steps from Microsoft's [official guide](https://learn.microsoft.com/en-us/graph/auth-register-app-v2). Watch how to **Register an application** in the following video, you can omit the **Redirect URI** part and still need to add credentials:
+
+<iframe
+width="560"
+height="315"
+src="https://www.youtube.com/embed/au1dBzirmvQ?si=hRakOvOI4oxZ56qv" 
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen>
+</iframe>
+
+Once you've created the application you can access data for **Client ID** and **Tenant** fields in App registrations' **Overview** section.
+
+Copy and store the secret created in App registrations' **Certificates & secrets > Client secrets > New client secret.** for the **Client Credential** field.
+
+![Infrastructure Diagram](/img/connectors/outlook-app-overview.png)
