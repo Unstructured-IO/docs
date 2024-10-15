@@ -54,14 +54,14 @@ The programmatic approach you take to get these document elements will depend on
         ```
     </Accordion>
     <Accordion title="Python SDK">
-        For the [Unstructured Python SDK](/api-reference/api-services/sdk-python), calling an `UnstructuredClient` object's `general.partition` method returns a `PartitionResponse` object. 
+        For the [Unstructured Python SDK](/api-reference/api-services/sdk-python), calling an `UnstructuredClient` object's `general.partition_async` method returns a `PartitionResponse` object. 
         
         This `PartitionResponse` object's `elements` variable contains a list of key-value dictionaries (`List[Dict[str, Any]]`). For example:
 
         ```python Python
         # ...
 
-        res = client.general.partition(request=req)
+        res = await client.general.partition_async(request=req)
 
         # Do something with the elements, for example:
         save_elements_to_file(res.elements)
@@ -80,7 +80,7 @@ The programmatic approach you take to get these document elements will depend on
         ```python Python
         # ...
 
-        res = client.general.partition(request=req)
+        res = await client.general.partition_async(request=req)
 
         for element in res.elements:
             # Do something with each element, for example:
@@ -103,7 +103,7 @@ The programmatic approach you take to get these document elements will depend on
 
         # ...
 
-        res = client.general.partition(request=req)
+        res = await client.general.partition_async(request=req)
         
         dict_elements = elements_from_dicts(
             element_dicts=res.elements

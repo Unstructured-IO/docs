@@ -45,7 +45,7 @@ if __name__ == "__main__":
     )
 
     try:
-        result = client.general.partition(request)
+        result = await client.general.partition_async(request)
 
         for element in result.elements:
             if "image_base64" in element["metadata"]:

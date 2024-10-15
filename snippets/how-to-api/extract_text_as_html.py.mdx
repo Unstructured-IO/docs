@@ -36,7 +36,7 @@ if __name__ == "__main__":
     )
 
     try:
-        result = client.general.partition(request)
+        result = await client.general.partition_async(request)
 
         # Provide some minimal CSS for better table readability.
         table_css = "<head><style>table, th, td { border: 1px solid; }</style></head>"

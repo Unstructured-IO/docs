@@ -44,7 +44,7 @@ req = operations.PartitionRequest(
 )
 
 try:
-    res = client.general.partition(request=req)
+    res = await client.general.partition_async(request=req)
 
     # Create a dictionary that will hold only
     # a transposed version of the returned elements. 
