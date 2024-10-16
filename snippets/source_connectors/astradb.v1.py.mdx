@@ -29,7 +29,7 @@ if __name__ == "__main__":
                 token=os.getenv("ASTRA_DB_APPLICATION_TOKEN"),
                 api_endpoint=os.getenv("ASTRA_DB_API_ENDPOINT")
             ),
-            namespace=os.getenv("ASTRA_DB_NAMESPACE"),
+            keyspace=os.getenv("ASTRA_DB_KEYSPACE"),
             collection_name=os.getenv("ASTRA_DB_COLLECTION")
         )
     ).run()
