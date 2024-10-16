@@ -1,7 +1,7 @@
 The Outlook prerequisites:
 
 
-A Microsoft Entra ID tenant. If you don't have a tenant, [create an Azure account](https://azure.microsoft.com/en-us/pricing/purchase-options/azure-account/).
+A Microsoft Entra ID tenant. If you don't have a tenant, [create an Azure account](https://azure.microsoft.com/pricing/purchase-options/azure-account/).
 
 <iframe
 width="560"
@@ -13,7 +13,7 @@ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; pic
 allowfullscreen
 ></iframe>
 
-An Azure identity platform managed application. Learn how to create one from **Register an application** and **Add credentials (Option 2)** steps from Microsoft's [official guide](https://learn.microsoft.com/en-us/graph/auth-register-app-v2). Watch how to **Register an application** in the following video, you can omit the **Redirect URI** part and still need to add credentials:
+A Microsoft Entra ID app registration. [Create an app registration](https://learn.microsoft.com/graph/auth-register-app-v2). See also the following video, but note that while you can omit the **Redirect URI** part, you must still add credentials:
 
 <iframe
 width="560"
@@ -25,8 +25,8 @@ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; pic
 allowfullscreen>
 </iframe>
 
-Once you've created the application you can access data for **Client ID** and **Tenant** fields in App registrations' **Overview** section.
+Once you've created the app registration, you can get the **Client ID** and **Tenant** values from the app registration's **Overview** section in the Azure portal.
 
-Copy and store the secret created in App registrations' **Certificates & secrets > Client secrets > New client secret.** for the **Client Credential** field.
+Copy and store the secret that you create by using the app registration's **Certificates & secrets > Client secrets > New client secret** link. The secret will appear in the **Client Credential** field.
 
 ![Infrastructure Diagram](/img/connectors/outlook-app-overview.png)
