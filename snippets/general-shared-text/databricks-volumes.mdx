@@ -21,16 +21,21 @@ The Databricks Volumes prerequisites:
   [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/), 
   or [GCP](https://docs.gcp.databricks.com/dev-tools/auth/index.html).
 
-  More specifically, you will need:
+  More specifically, you will need the following authentication details.
+
+  The following authentication types are supported by both Unstructured API services and the Unstructured Platform:
 
   - For Databricks personal access token authentication (AWS, Azure, and GCP): The personal access token's value.
-  - For username and password (basic) authentication (AWS only): The user's name and password values.
   - For OAuth machine-to-machine (M2M) authentication (AWS, Azure, and GCP): The client ID and OAuth secret values for the corresponding service principal.
+  - For Microsoft Entra ID user authentication (Azure only): The Entra ID token for the corresponding Entra ID user.
+  
+  The following authentication types are supported only by Unstructured API services:
+
+  - For username and password (basic) authentication (AWS only): The user's name and password values.
   - For OAuth user-to-machine (U2M) authentication (AWS, Azure, and GCP): No additional values.
   - For Azure managed identities (MSI) authentication (Azure only): The client ID value for the corresponding managed identity.
   - For Microsoft Entra ID service principal authentication (Azure only): The tenant ID, client ID, and client secret values for the corresponding service principal.
   - For Azure CLI authentication (Azure only): No additional values.
-  - For Microsoft Entra ID user authentication (Azure only): The Entra ID token for the corresponding Entra ID user.
   - For Google Cloud Platform credentials authentication (GCP only): The local path to the corresponding Google Cloud service account's credentials file.
   - For Google Cloud Platform ID authentication (GCP only): The Google Cloud service account's email address.
 

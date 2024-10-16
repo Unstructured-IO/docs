@@ -18,19 +18,7 @@ Also fill in the following fields based on your authentication type, depending o
   - **Token** : The Databricks personal access token value (for AWS, Azure, and GCP) or the 
     Microsoft Entra ID token value (Azure only).
 
-- For username and password (basic) authentication (AWS only):
+- For OAuth machine-to-machine (M2M) authentication (AWS, Azure, and GCP):
 
-  - **Username** : The Databricks username value.
-  - **Password** : The associated Databricks password value.
-
-The following authentication types are currently not supported by the Unstructured Platform (only programmatically by the 
-[Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli) and the 
-[Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library)):
-
-- OAuth machine-to-machine (M2M) authentication (AWS, Azure, and GCP).
-- OAuth user-to-machine (U2M) authentication (AWS, Azure, and GCP).
-- Azure managed identities (MSI) authentication (Azure only).
-- Microsoft Entra ID service principal authentication (Azure only).
-- Azure CLI authentication (Azure only).
-- Google Cloud Platform credentials authentication (GCP only).
-- Google Cloud Platform ID authentication (GCP only).
+  - **Client ID** : The service principal's client (application) ID value.
+  - **Client Secret** : The associated Databricks OAuth client secret value.
