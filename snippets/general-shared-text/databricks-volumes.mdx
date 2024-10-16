@@ -1,5 +1,15 @@
 The Databricks Volumes prerequisites:
 
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/rNZpwa1-g7M"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
+
 - The Databricks workspace URL. Get the workspace URL for 
   [AWS](https://docs.databricks.com/workspace/workspace-details.html#workspace-instance-names-urls-and-ids), 
   [Azure](https://learn.microsoft.com/azure/databricks/workspace/workspace-details#workspace-instance-names-urls-and-ids), 
@@ -11,11 +21,6 @@ The Databricks Volumes prerequisites:
   - Azure: `https://adb-<workspace-id>.<random-number>.azuredatabricks.net`
   - GCP: `https://<workspace-id>.<random-number>.gcp.databricks.com`
 
-- The Databricks compute resource's ID. Get the compute resource ID for 
-  [AWS](https://docs.databricks.com/integrations/compute-details.html), 
-  [Azure](https://learn.microsoft.com/azure/databricks/integrations/compute-details), 
-  or [GCP](https://docs.gcp.databricks.com/integrations/compute-details.html).
-
 - The Databricks authentication details. For more information, see the documentation for 
   [AWS](https://docs.databricks.com/dev-tools/auth/index.html), 
   [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/), 
@@ -23,7 +28,8 @@ The Databricks Volumes prerequisites:
 
   More specifically, you will need the following authentication details.
 
-  The following authentication types are supported by both Unstructured API services and the Unstructured Platform:
+  The following authentication types are supported by both [Unstructured API services](/api-reference/api-services/overview) 
+  and the [Unstructured Platform](/platform/overview):
 
   - For Databricks personal access token authentication (AWS, Azure, and GCP): The personal access token's value.
   - For OAuth machine-to-machine (M2M) authentication (AWS, Azure, and GCP): The client ID and OAuth secret values for the corresponding service principal.
