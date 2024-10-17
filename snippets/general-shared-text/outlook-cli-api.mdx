@@ -1,0 +1,16 @@
+The Outlook connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[outlook]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `OUTLOOK_USER_EMAIL` - The Outlook user's email address, represented by `--user-email` (CLI) or `user_mail` (Python).
+- `OUTLOOK_APP_CLIENT_ID` - The application (client) ID of the Microsoft Entra ID app registration that has access to the user's email account, represented by `--client-id` (CLI) or `client_id` (Python).
+- `OUTLOOK_APP_CLIENT_SECRET` - The client secret for the Entra ID app registration, represented by `--client-cred` (CLI) or `client_cred` (Python).
+- `OUTLOOK_APP_TENANT` - The directory (tenant) ID of the Entra ID app registration, represented by `--tenant` (CLI) or `tenant` (Python).
