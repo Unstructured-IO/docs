@@ -1,0 +1,12 @@
+The Outlook prerequisites:
+
+- The Outlook user's email address.
+- A Microsoft Entra ID app registration in the same Azure account as the Outlook account. You will need 
+  this app registration's client (application) ID, client secret, and directory (tenant) ID. [Learn how](https://learn.microsoft.com/entra/identity-platform/quickstart-register-app).
+- The Entra ID app registration must have the following Graph API permission levels of the application (not delegated) type: 
+
+  - `Mail.Read`
+  - `Mail.ReadBasic`
+  - `User.Read.All`
+
+  [Learn how](https://learn.microsoft.com/entra/identity-platform/howto-update-permissions).

@@ -1,0 +1,42 @@
+```python Python Ingest v2
+import os
+
+from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+from unstructured_ingest.v2.interfaces import ProcessorConfig
+
+from unstructured_ingest.v2.processes.connectors.outlook import (
+    OutlookIndexerConfig,
+    OutlookDownloaderConfig,
+    OutlookConnectionConfig,
+    OutlookAccessConfig
+)
+
+from unstructured_ingest.v2.processes.connectors.local import LocalUploaderConfig
+from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+
+# Embedding is optional.
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=OutlookIndexerConfig(
+            outlook_folders=["Inbox"],
+            recursive=False,
+            user_email=os.getenv("OUTLOOK_USER_EMAIL")
+        ),
+        downloader_config=OutlookDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
+        source_connection_config=OutlookConnectionConfig(
+            access_config=OutlookAccessConfig(client_cred=os.getenv("OUTLOOK_APP_CLIENT_SECRET")),
+            client_id=os.getenv("OUTLOOK_APP_CLIENT_ID"),
+            tenant=os.getenv("OUTLOOK_APP_TENANT")
+        ),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")
+        ),
+        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
+        uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
+    ).run()
+```
