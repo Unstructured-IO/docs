@@ -9,7 +9,7 @@ To view the jobs dashboard, on the sidebar, click **Jobs**.
 
 The jobs dashboard provides a centralized view for managing and monitoring the execution of data processing tasks within your workflows.
 
-The jobs dashboard lists each job and its associated **Workflow** name, **ID**, **Status**, and **Job Created Time**.
+The jobs dashboard lists each job and its associated **Status**, **Job ID**, **Created** date and time, **Workflow** name, and **Runtime** duration.
 
 Each job's status, shown in the **Status** column, can be:
     
@@ -19,11 +19,9 @@ Each job's status, shown in the **Status** column, can be:
     
 *   **Finished**: The job has completed successfully.
     
-*   **Failed**: The job has some errors.
+*   **Failed**: The job has errors.
 
 ## Run a job
-
-![Run a job](/img/platform/Run-Job.png)
 
 <Warning>
     You must first have an existing workflow to run a job against.
@@ -33,26 +31,24 @@ Each job's status, shown in the **Status** column, can be:
     To see your existing workflows, on the sidebar, click **Workflows**.
 </Warning>
 
-1.  On the sidebar, click **Jobs**, and then click **Run Job**.
+To run a job, on the sidebar, click **Workflows**, and then click **Run** in the row for the workflow that you want to run.
     
-2.  In the **Select a Workflow** dropdown list, select an existing workflow, and then click **Run**.
-
 ## Monitor a job
 
-![Job details](/img/platform/Job-Details.png)
+![Completed job](/img/platform/Job-Complete.png)
 
-The **Job Details** page is a comprehensive section for monitoring the specific details of jobs executed within a particular workflow. To access this page, click the specific job's **ID** link on the jobs dashboard.
+The job details pane is a comprehensive section for monitoring the specific details of jobs executed within a particular workflow. To access this pane, click the specific job on the jobs dashboard.
 
-The **Job Details** page shows:
+Clicking the **Details** button shows:
 
-*   **Execution Time**: When the job started.
+- The job's ID.
+- The job's start date.
+- The source and destination connectors for the job.
+- Information about the files that were processed in each of the job's stages. This information shows how many files are:
 
-*   **Documents**: The number of documents that were attempted to be processed.
+  - **Ready**: Waiting to be processed.
+  - **In Progress**: Being processed.
+  - **Success**: Successfully processed.
+  - **Failure**: Failed to process successfully.
 
-*   **Success**: The number of successfully processed documents.
-
-*   **Failed**: The number of documents that failed to process.
-
-*   **Status**: The status of each step in the job, including each step's **Ready**, **In Progress**, **Success**, and **Failure** state.
-
-To see the job detail's metadata, click **View Payload**.
+To see the job's logs, click the **Logs** button.
