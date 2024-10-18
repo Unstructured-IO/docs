@@ -46,6 +46,7 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
    - The provider ID `aws-bedrock` for [Amazon Bedrock](https://aws.amazon.com/bedrock/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/bedrock/).
    - `huggingface` for [Hugging Face](https://huggingface.co/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/huggingfacehub/).
    - `openai` for [OpenAI](https://openai.com/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/openai/).
+   - `togetherai` for [Together.ai](https://www.together.ai/). [Learn more](https://docs.together.ai/docs/embedding-models).
    - `vertexai` for [Google Vertex AI PaLM](https://cloud.google.com/vertex-ai/docs/generative-ai/learn/overview). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/google_vertex_ai_palm/).
    - `voyageai` for [Voyage AI](https://www.voyageai.com/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/voyageai/).
    - `mixedbread-ai` for [Mixedbread](https://www.mixedbread.ai/). [Learn more](https://www.mixedbread.ai/docs/embeddings/overview).
@@ -56,6 +57,7 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
    - For `aws-bedrock`, run `pip install "unstructured-ingest[bedrock]"`.
    - For `huggingface`, run `pip install "unstructured-ingest[embed-huggingface]"`.
    - For `openai`, run `pip install "unstructured-ingest[openai]"`.
+   - For `togetherai`, run `pip install "unstructured-ingest[togetherai]"`.
    - For `vertexai`, run `pip install "unstructured-ingest[embed-vertexai]"`.
    - For `voyageai`, run `pip install "unstructured-ingest[embed-voyageai]"`.
    - For `mixedbread-ai`, run `pip install "unstructured-ingest[embed-mixedbreadai]"`.
@@ -66,6 +68,7 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
    - `aws-bedrock`. [Choose a model](https://docs.aws.amazon.com/bedrock/latest/userguide/model-ids.html). No default model is provided. [Learn more about the supported models](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html).
    - `huggingface`. [Choose a model](https://huggingface.co/models?other=embeddings), or use the default model [sentence-transformers/all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2).
    - `openai`. [Choose a model](https://platform.openai.com/docs/guides/embeddings/embedding-models), or use the default model `text-embedding-ada-002`.
+   - `togetherai`. [Choose a model](https://docs.together.ai/docs/embedding-models), or use the default model `togethercomputer/m2-bert-80M-8k-retrieval`.
    - `vertexai`. [Choose a model](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/text-embeddings-api), or use the default model `textembedding-gecko@001`.
    - `voyageai`.  [Choose a model](https://docs.voyageai.com/docs/embeddings). No default model is provided.
    - `mixedbread-ai`. [Choose a model](https://www.mixedbread.ai/docs/embeddings/models), or use the default model [mixedbread-ai/mxbai-embed-large-v1](https://www.mixedbread.ai/docs/embeddings/mxbai-embed-large-v1).
@@ -76,6 +79,7 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
    - For `aws-bedrock`, you'll need an AWS access key value, the corresponding AWS secret access key value, and the corresponding AWS Region identifier. [Get an AWS access key and secret access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html).
    - For `huggingface`, if you use a gated model (a model with special conditions that you must accept before you can use it, or a privately published model), you'll need an HF inference API key value, beginning with `hf_`. [Get an HF inference API key](https://huggingface.co/docs/api-inference/en/quicktour#get-your-api-token). To learn whether your model requires an HF inference API key, see your model provider's documentation. 
    - For `openai`, you'll need an OpenAI API key value. [Get an OpenAI API key](https://platform.openai.com/docs/quickstart/create-and-export-an-api-key).
+   - For `togetherai`, you'll need a together.ai API key value. [Get a together.ai API key](https://docs.together.ai/reference/authentication-1). 
    - For `vertexai`, you'll need the path to a Google Cloud credentials JSON file. Learn more [here](https://cloud.google.com/docs/authentication/application-default-credentials#GAC) and [here](https://googleapis.dev/python/google-auth/latest/reference/google.auth.html#module-google.auth).
    - For `voyageai`, you'll need a Voyage AI API key value. [Get a Voyage AI API key](https://docs.voyageai.com/docs/api-key-and-installation#authentication-with-api-keys).
    - For `mixedbread-ai`, you'll need a Mixedbread API key value. [Get a Mixedbread API key](https://www.mixedbread.ai/dashboard?next=api-keys).
