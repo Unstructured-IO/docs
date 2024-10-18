@@ -16,10 +16,10 @@ Workflows are crucial for establishing a systematic approach to managing data fl
 
 ![Choose a workflow type](/img/platform/Choose-Workflow-Type.png)
 
-The Unstructured Platform provides two ways to create a workflow:
+The Unstructured Platform provides two types of workflow builders:
 
-- An [automatic workflow](#create-an-automatic-workflow) or "build it for me" workflow. Automatic workflows use sensible process defaults to enable you to get good-quality results faster.
-- A [custom workflow](#create-a-custom-worklow) or "build it myself" workflow. Custom workflows enable you to fine-tune the process behind the scenes, and you are okay with spending some extra setup time to get very specific results.
+- [Automatic](#create-an-automatic-workflow) workflows, which use sensible default workflow settings to enable you to get good-quality results faster.
+- [Custom](#create-a-custom-worklow) workflows, which enable you to fine-tune the workflow settings behind the scenes to get very specific results.
 
 All Unstructured accounts can create automatic worklows.
 
@@ -40,12 +40,6 @@ To create an automatic workflow:
 1. On the sidebar, click **Workflows**.
 2. Click **New Workflow**.
 3. Next to **Build it for me**, click **Create Workflow**.
-
-   <Info>
-       If your Unstructured account is enabled for custom workflows, select the option button next to **Build it for me**, 
-       and then click **Continue**.
-   </Info>
-
 4. For **Workflow Name**, enter some unique name for this workflow.
 5. In the **Sources** dropdown list, select your source location.
 6. In the **Destinations** dropdown list, select your destination location.
@@ -59,8 +53,9 @@ To create an automatic workflow:
 
     - **Basic** is a good choice if you have text-only documents that have no images or tables in them.
     - **Advanced** is a good choice if you have complex documents that have images or tables or both in them.
-           
+
 11. Click **Complete**.
+12. If you did not set the workflow to run on a schedule, you can [run the worklow](#edit-delete-or-run-a-workflow) now.
 
 ### Create a custom workflow
 
@@ -72,18 +67,121 @@ To create an automatic workflow:
     To see your existing connectors, on the sidebar, click **Connectors**, and then click **Sources** or **Destinations**.
 </Warning>
 
-To create custom workflows, you must request Unstructured to enable your account first. To make this request:
+There are two ways to create a custom workflow:
+
+1. Through [Build it for me > Custom](#build-it-for-me-custom). This option enables you to fine-tune the kinds of settings that are in **Basic** and **Advanced**.
+2. Through [Build it myself](#build-it-myself). This option offers a visual workflow designer with even more fine-tuning than the **Custom** option.  
+
+#### Build it for me - Custom
 
 1. On the sidebar, click **Workflows**.
 2. Click **New Workflow**.
-3. Next to **Build it myself**, click **Notify me**, and follow the on-screen directions to complete the request.
-4. Unstructured will notify you when your account has been enabled to create custom workflows.
+3. For **Workflow Name**, enter some unique name for this workflow.
+4. In the **Sources** dropdown list, select your source location.
+5. In the **Destinations** dropdown list, select your destination location.
 
-After Unstructured notifies you that your account has been enabled to create custom workflows:
+   <Note>You can select multiple source and destination locations. Files will be ingested from all of the selected source locations, and the processed data will be delivered to all of the selected destination locations.</Note>
+
+6. Click **Continue**.
+7. If you want this workflow to run on a schedule, in the **Repeat run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
+8. Click **Continue**.
+9. In the **Strategy Focus** section, if the **Custom** option is disabled, inside , click **Notify me**, and follow the on-screen directions to complete the request.
+
+   Unstructured will notify you when your account has enabled the **Custom** option. After you receive this notification, click 
+   **Custom**, and continue with this procedure.
+
+10. In the **Strategy** area, choose one of the following:
+
+    - **Fast**: This strategy uses traditional NLP extraction techniques to quickly pull in all text elements. This strategy is not good for image-based file types.[Learn more](/platform/partitioning).
+    - **Auto**: This strategy chooses the partitioning strategy based on detected document characteristics.
+
+    [Learn more](/platform/partitioning).
+
+11. In the **Image Summzarizer** drop-down list, choose one of the following:
+
+    - **None**: Do not provide summaries for any detected images in any of the files.
+    - **GPT-4o**: Use GPT-4o to provide summaries for any detected images in any of the files. [Learn more](https://openai.com/index/hello-gpt-4o/).
+    - **Claude 3.5 Sonnet**: Use Claude 3.5 Sonnet to provide summaries for any detected images in any of the files. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+
+    [Learn more](/platform/summarizing).
+
+12. In the **Table Summzarizer** drop-down list, choose one of the following:
+
+    - **None**: Do not provide summaries for any detected tables in any of the files.
+    - **GPT-4o**: Use GPT-4o to provide summaries for any detected tables in any of the files. [Learn more](https://openai.com/index/hello-gpt-4o/).
+    - **Claude 3.5 Sonnet**: Use Claude 3.5 Sonnet to provide summaries for any detected tables in any of the files. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+
+    [Learn more](/platform/summarizing).
+
+13. In the **Connector Settings** area:
+
+    - Check the **Include Page Breaks** box to include page breaks in the output, if the file type support it.
+    - Check the **Infer Table Structure** box to extract any detected table elements in PDF files as HTML format into a `metadata` output field named `text_as_html`.
+
+14. In the **Elements to Exclude** drop-down list, select any element types to exclude from the output.
+15. In the **Chunk** area, for **Chunker Type**, select one of the following:
+
+    - **None**: Do not apply special chunking rules to the output.
+    - **Chunk by Character** (also known as _basic_ chunking): Combine sequential elements to maximally fill each chunk. Also, specify the following:
+
+      - **Include Original Elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
+      - **Max Characters**: Cut off new sections after reaching a length of this many characters. The default is **2048**.
+      - **New After n chars**: Cut off new sections after reaching a length of this many characters. This is an approximate limit. The default is **1500**.
+      - **Overlap**: Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting. The default is **160**.
+      - **Overlap all**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. By default, this box is unchecked.
+        
+    - **Chunk by Page**: Preserve page boundaries. When a new page is detected, the existing chunk is closed and a new one is started, even if the next element would fit in the prior chunk. Also, specify the following:
+        
+      - **Include Original Elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
+      - **Max Characters**: Cut off new sections after reaching a length of this many characters. This is a strict limit. The default is **500**.
+      - **New After n Characters**: Cut off new sections after reaching a length of this many characters. This is an approximate limit. The default is **50**.
+      - **Overlap**: Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting. The default is **30**.
+      - **Overlap all**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. By default, this box is unchecked.
+
+    - **Chunk by Title**: Preserve section boundaries and optionally page boundaries as well. A single chunk will never contain text that occurred in two different sections. When a new section starts, the existing chunk is closed and a new one is started, even if the next element would fit in the prior chunk. Also, specify the following:
+    
+      - **Combine Text Under n Chars**: Combine elements until a section reaches a length of this many characters. The default is **0**.
+      - **Include Original Elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
+      - **Max Characters**: Cut off new sections after reaching a length of this many characters. This is a strict limit. The default is **2048**.
+      - **Multipage Sections**: Check this box to allow sections to span multiple pages. By default, this box is unchecked.
+      - **New After n Characters**: Cut off new sections after reaching a length of this many characters. This is an approximate limit. The default is **1500*.
+      - **Overlap**: Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting. The default is **160**.
+      - **Overlap all**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. By default, this box is unchecked.
+
+    - **Chunk by Similarity**: Use the [sentence-transformers/multi-qa-mpnet-base-dot-v1](https://huggingface.co/sentence-transformers/multi-qa-mpnet-base-dot-v1) embedding model to identify topically similar sequential elements and combine them into chunks. Also, specify the following:
+
+      - **Include Original Elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
+      - **Max Characters**: Cut off new sections after reaching a length of this many characters. This is a strict limit. The default is **500**.
+      - **Similarity Threshold**: Specify a threshold between 0 and 1 exclusive (0.01 to 0.99 inclusive), where 0 indicates completely dissimilar vectors and 1 indicates identical vectors, taking into consider the trade-offs between precision (a higher threshold) and recall (a lower threshold). The default is **0.5**. [Learn more](https://towardsdatascience.com/introduction-to-embedding-clustering-and-similarity-11dd80b00061).
+
+    Learn more:
+        
+    - [Chunking overview](/platform/chunking)
+    - [Chunking for RAG: best practices](https://unstructured.io/blog/chunking-for-rag-best-practices)
+
+16. In the **Embed** area, for **Provider**, choose one of the following:
+
+    - **None**: Do not generate embeddings.
+    - **OpenAI**: Use OpenAI to generate embeddings.
+    - **Vertex AI**: Use Vertex AI to generate embeddings.
+        
+    Learn more:
+        
+    - [Embedding overview](/platform/embedding)
+    - [Understanding embedding models: make an informed choice for your RAG](https://unstructured.io/blog/understanding-embedding-models-make-an-informed-choice-for-your-rag).
+
+17. Click **Complete**.
+18. If you did not set the workflow to run on a schedule, you can [run the worklow](#edit-delete-or-run-a-workflow) now.
+
+#### Build it myself
 
 1. On the sidebar, click **Workflows**.
 2. Click **New Workflow**.
-3. Select the option button next to **Build it myself**, and then click **Continue**.
+3. If the **Build it myself** option is disabled, inside **Build it myself**, click **Notify me**, and follow the on-screen directions to complete the request.
+
+   Unstructured will notify you when your account has been enabled the **Build it myself** option. After you receive this notification, click 
+   **Build it myself**, and continue with this procedure.
+
 4. In the **This workflow** pane, click the **Details** button.
 
    ![Workflow details](/img/platform/Workflow-Details.png)
@@ -116,14 +214,16 @@ After Unstructured notifies you that your account has been enabled to create cus
     <Accordion title="Partitioner node">
         For **Partition Strategy**, choose one of the following:
 
-        - **Auto**: This strategy chooses the partitioning strategy based on detected document characteristics. [Learn more](/platform/partitioning).
-        - **Fast**: This strategy uses traditional NLP extraction techniques to quickly pull in all text elements. This strategy is not good for image-based file types. [Learn more](/platform/partitioning).
-        - **Hi-res**: This strategy uses document layout to gain additional information about document elements. Unstructured recommends using this strategy if your use case is highly sensitive to correct classifications for document elements. [Learn more](/platform/partitioning).
+        - **Auto**: This strategy chooses the partitioning strategy based on detected document characteristics.
+        - **Fast**: This strategy uses traditional NLP extraction techniques to quickly pull in all text elements. This strategy is not good for image-based file types.
+        - **Hi-res**: This strategy uses document layout to gain additional information about document elements. Unstructured recommends using this strategy if your use case is highly sensitive to correct classifications for document elements.
+    
+        [Learn more](/platform/partitioning).
     </Accordion>
     <Accordion title="Chunker node">
         For **Chunkers**, select one of the following:
 
-        - **Chunk by title**: Preserve section boundaries and optionally page boundaries as well. A single chunk will never contain text that occurred in two different sections. When a new section starts, the existing chunk is closed and a new one is started, even if the next element would fit in the prior chunk. [Learn more](/api-reference/api-services/chunking). Also specify the following:
+        - **Chunk by title**: Preserve section boundaries and optionally page boundaries as well. A single chunk will never contain text that occurred in two different sections. When a new section starts, the existing chunk is closed and a new one is started, even if the next element would fit in the prior chunk. Also, specify the following:
         
           - **Combine text under n chars**: Combine elements until a section reaches a length of this many characters. The default is **0**.
           - **Include original elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
@@ -133,7 +233,7 @@ After Unstructured notifies you that your account has been enabled to create cus
           - **Overlap**: Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting. The default is **160**.
           - **Overlap all**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. By default, this box is unchecked.
 
-        - **Chunk by character** (also known as _basic_ chunking): Combine sequential elements to maximally fill each chunk. [Learn more](/platform/chunking). Also specify the following:
+        - **Chunk by character** (also known as _basic_ chunking): Combine sequential elements to maximally fill each chunk. Also, specify the following:
 
           - **Include original elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
           - **Max characters**: Cut off new sections after reaching a length of this many characters. The default is **2048**.
@@ -141,7 +241,7 @@ After Unstructured notifies you that your account has been enabled to create cus
           - **Overlap**: Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting. The default is **160**.
           - **Overlap All**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. By default, this box is unchecked.
         
-        - **Chunk by page**: Preserve page boundaries. When a new page is detected, the existing chunk is closed and a new one is started, even if the next element would fit in the prior chunk. [Learn more](/platform/chunking). Also specify the following:
+        - **Chunk by page**: Preserve page boundaries. When a new page is detected, the existing chunk is closed and a new one is started, even if the next element would fit in the prior chunk. Also, specify the following:
         
           - **Include original elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
           - **Max characters**: Cut off new sections after reaching a length of this many characters. This is a strict limit. The default is **500**.
@@ -149,13 +249,17 @@ After Unstructured notifies you that your account has been enabled to create cus
           - **Overlap**: Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting. The default is **30**.
           - **Overlap all**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. By default, this box is unchecked.
         
-        - **Chunk by similarity**: Use the [sentence-transformers/multi-qa-mpnet-base-dot-v1](https://huggingface.co/sentence-transformers/multi-qa-mpnet-base-dot-v1) embedding model to identify topically similar sequential elements and combine them into chunks. [Learn more](/platform/chunking). Also specify the following:
+        - **Chunk by similarity**: Use the [sentence-transformers/multi-qa-mpnet-base-dot-v1](https://huggingface.co/sentence-transformers/multi-qa-mpnet-base-dot-v1) embedding model to identify topically similar sequential elements and combine them into chunks. Also, specify the following:
 
           - **Include original elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
           - **Max characters**: Cut off new sections after reaching a length of this many characters. This is a strict limit. The default is **500**.
           - **Similarity threshold**: Specify a threshold between 0 and 1 exclusive (0.01 to 0.99 inclusive), where 0 indicates completely dissimilar vectors and 1 indicates identical vectors, taking into consider the trade-offs between precision (a higher threshold) and recall (a lower threshold). The default is **0.5**. [Learn more](https://towardsdatascience.com/introduction-to-embedding-clustering-and-similarity-11dd80b00061).
 
-        [Learn more](https://unstructured.io/blog/chunking-for-rag-best-practices).
+        Learn more:
+        
+        - [Chunking overview](/platform/chunking)
+        - [Chunking for RAG: best practices](https://unstructured.io/blog/chunking-for-rag-best-practices)
+
     </Accordion>
     <Accordion title="Enrichment node">
         For **Enrichment model**, choose one of the following:
@@ -166,7 +270,7 @@ After Unstructured notifies you that your account has been enabled to create cus
         - **Anthropic Image Description** to use Claude 3.5 Sonnet to summarize images. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
         - **Anthropic Table Description** to use Claude 3.5 Sonnet to summarize tables. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
 
-        [Learn more about summarizing](/platform/summarizing).
+        [Learn more](/platform/summarizing).
     </Accordion>
     <Accordion title="Embedder node">
         For **Providers**, select one of the following:
