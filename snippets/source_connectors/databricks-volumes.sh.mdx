@@ -4,8 +4,13 @@
 # Chunking and embedding are optional.
 
 unstructured-ingest \
-  local \
-    --input-path $LOCAL_FILE_INPUT_DIR \
+  databricks-volumes \
+    --token $DATABRICKS_TOKEN \
+    --host $DATABRICKS_HOST \
+    --catalog $DATABRICKS_CATALOG \
+    --schema $DATABRICKS_SCHEMA \
+    --volume $DATABRICKS_VOLUME \
+    --volume-path $DATABRICKS_VOLUME_PATH \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
     --partition-endpoint $UNSTRUCTURED_API_URL \
@@ -13,11 +18,6 @@ unstructured-ingest \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
     --chunking-strategy by_title \
     --embedding-provider huggingface \
-  databricks-volumes \
-    --token $DATABRICKS_TOKEN \
-    --host $DATABRICKS_HOST \
-    --catalog $DATABRICKS_CATALOG \
-    --schema $DATABRICKS_SCHEMA \
-    --volume $DATABRICKS_VOLUME \
-    --volume-path $DATABRICKS_VOLUME_PATH
+  local \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR
 ```
