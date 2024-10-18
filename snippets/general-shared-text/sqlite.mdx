@@ -1,0 +1,32 @@
+The SQLite prerequisites:
+
+- A SQLite instance. [Download and install SQLite](https://www.sqlitetutorial.net/download-install-sqlite/).
+- A SQLite database. [Create a database](https://www.sqlite.org/quickstart.html).
+- The path to the database's `.db` file.
+- A table in the database. [Create a table](https://www.sqlite.org/cli.html).
+
+  The table's schema must match the schema of the documents that Unstructured produces. 
+  Unstructured cannot provide a schema that is guaranteed to work in all 
+  circumstances. This is because these schemas will vary based on your source files' types; how you 
+  want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors. 
+  
+  You can adapt the following table schema example for your own needs:
+  
+  ```sql SQLite
+  CREATE TABLE elements (
+      id TEXT PRIMARY KEY,
+      element_id TEXT,
+      text TEXT,
+      embeddings TEXT,
+      parent_id TEXT,
+      page_number INTEGER,
+      is_continuation INTEGER,
+      orig_elements TEXT
+  );
+  ```
+
+  See also:
+
+  - [CREATE TABLE](https://www.sqlite.org/lang_createtable.html) for SQLite
+  - [Unstructured document elements and metadata](/api-reference/api-services/document-elements)
+
