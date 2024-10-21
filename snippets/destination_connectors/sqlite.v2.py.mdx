@@ -4,11 +4,11 @@ import os
 from unstructured_ingest.v2.pipeline.pipeline import Pipeline
 from unstructured_ingest.v2.interfaces import ProcessorConfig
 
-from unstructured_ingest.v2.processes.connectors.sql import (
-    SQLConnectionConfig,
-    SQLAccessConfig,
-    SQLUploaderConfig,
-    SQLUploadStagerConfig
+from unstructured_ingest.v2.processes.connectors.sql.sqlite import (
+    SQLiteConnectionConfig,
+    SQLiteAccessConfig,
+    SQLiteUploaderConfig,
+    SQLiteUploadStagerConfig
 )
 from unstructured_ingest.v2.processes.connectors.local import (
     LocalIndexerConfig,
@@ -46,7 +46,6 @@ if __name__ == "__main__":
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
             partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
             metadata_include=metadata_includes,
-            strategy="hi_res",
             additional_partition_args={
                 "split_pdf_page": True,
                 "split_pdf_allow_failed": True,
@@ -54,18 +53,12 @@ if __name__ == "__main__":
             }
         ),
         chunker_config=ChunkerConfig(chunking_strategy="by_title"),
-        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
-        destination_connection_config=SQLConnectionConfig(
-            access_config=SQLAccessConfig(
-                username=os.getenv("PGUSER"),
-                password=os.getenv("PGPASSWORD")
-            ),
-            db_type=os.getenv("SQL_DB_TYPE"),
-            host=os.getenv("PGHOST"),
-            port=os.getenv("PGPORT"),
-            database=os.getenv("PGDATABASE")
+        embedder_config=EmbedderConfig(embedding_provider="langchain-huggingface"),
+        destination_connection_config=SQLiteConnectionConfig(
+            access_config=SQLiteAccessConfig(),
+            database_path=os.getenv("SQLITE_DB_PATH")
         ),
-        stager_config=SQLUploadStagerConfig(),
-        uploader_config=SQLUploaderConfig()
+        stager_config=SQLiteUploadStagerConfig(),
+        uploader_config=SQLiteUploaderConfig()
     ).run()
 ```
