@@ -6,36 +6,39 @@ from unstructured_ingest.v2.interfaces import ProcessorConfig
 
 # For all supported Databricks authentication types, you can import this:
 from unstructured_ingest.v2.processes.connectors.databricks_volumes import (
+    DatabricksVolumesIndexerConfig,
     DatabricksVolumesConnectionConfig,
     DatabricksVolumesAccessConfig,
-    DatabricksVolumesUploaderConfig
+    DatabricksVolumesDownloaderConfig
 )
 
 # Alternatively, for supported Databricks on AWS authentication types only, you can import this:
 # from unstructured_ingest.v2.processes.connectors.databricks.volumes_aws import (
+#     DatabricksAWSVolumesIndexerConfig,
 #     DatabricksAWSVolumesConnectionConfig,
 #     DatabricksAWSVolumesAccessConfig,
-#     DatabricksAWSVolumesUploaderConfig
+#     DatabricksAWSVolumesDownloaderConfig
 # )
 
 # Alternatively, for supported Azure Databricks authentication types only, you can import this:
 # from unstructured_ingest.v2.processes.connectors.databricks.volumes_azure import (
+#     DatabricksAzureVolumesIndexerConfig,
 #     DatabricksAzureVolumesConnectionConfig,
 #     DatabricksAzureVolumesAccessConfig,
-#     DatabricksAzureVolumesUploaderConfig
+#     DatabricksAzureVolumesDownloaderConfig
 # )
 
 # Alternatively, for supported Databricks on Google Cloud authentication types only, you can import this:
 # from unstructured_ingest.v2.processes.connectors.databricks.volumes_gcp import (
+#     DatabricksGoogleVolumesIndexerConfig,
 #     DatabricksGoogleVolumesConnectionConfig,
 #     DatabricksGoogleVolumesAccessConfig,
-#     DatabricksGoogleVolumesUploaderConfig
+#     DatabricksGoogleVolumesDownloaderConfig
 # )
 
 from unstructured_ingest.v2.processes.connectors.local import (
-    LocalIndexerConfig,
-    LocalDownloaderConfig,
-    LocalConnectionConfig
+    LocalConnectionConfig,
+    LocalUploaderConfig
 )
 from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
 from unstructured_ingest.v2.processes.chunker import ChunkerConfig
@@ -45,15 +48,50 @@ from unstructured_ingest.v2.processes.embedder import EmbedderConfig
 
 if __name__ == "__main__":
     Pipeline.from_configs(
-        context=ProcessorConfig(),
-        indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
-        downloader_config=LocalDownloaderConfig(),
-        source_connection_config=LocalConnectionConfig(),
+        context=ProcessorConfig(reprocess=True),
+        indexer_config=DatabricksVolumesIndexerConfig(recursive=True),
+        # For specifying a Databricks configuration profile:
+        downloader_config=DatabricksVolumesDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
+        source_connection_config=DatabricksVolumesConnectionConfig(
+            access_config=DatabricksVolumesAccessConfig(profile=os.getenv("DATABRICKS_PROFILE")),
+            host=os.getenv("DATABRICKS_HOST"),
+            catalog=os.getenv("DATABRICKS_CATALOG"),
+            schema=os.getenv("DATABRICKS_SCHEMA"),
+            volume=os.getenv("DATABRICKS_VOLUME"),
+            volume_path=os.getenv("DATABRICKS_VOLUME_PATH")
+        ),
+        # Other examples:
+        #
+        # For Databricks on AWS, with Databricks personal access token authentication:
+        # downloader_config=DatabricksAWSVolumesDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
+        # source_connection_config=DatabricksAWSVolumesConnectionConfig(
+        #     access_config=DatabricksAWSVolumesAccessConfig(token=os.getenv("DATABRICKS_TOKEN")),
+        #     host=os.getenv("DATABRICKS_HOST")
+        # ),
+        #
+        # For Azure Databricks, with Microsoft Entra ID service principal authentication:
+        # downloader_config=DatabricksAzureVolumesDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
+        # source_connection_config=DatabricksAzureVolumesConnectionConfig(
+        #     access_config=DatabricksAzureVolumesAccessConfig(
+        #         azure_client_id=os.getenv("ARM_CLIENT_ID"),
+        #         azure_client_secret=os.getenv("ARM_CLIENT_SECRET"),
+        #         azure_tenant_id=os.getenv("ARM_TENANT_ID")   
+        #     ),
+        #     host=os.getenv("DATABRICKS_HOST")
+        # ),
+        #
+        # For Databricks on Google Cloud, with Google Cloud Platform credentials authentication:
+        # downloader_config=DatabricksGoogleVolumesDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
+        # source_connection_config=DatabricksGoogleVolumesConnectionConfig(
+        #     access_config=DatabricksGoogleVolumesAccessConfig(
+        #         google_service_account=os.getenv("GOOGLE_CREDENTIALS")
+        #     ),
+        #     host=os.getenv("DATABRICKS_HOST")
+        # ),
         partitioner_config=PartitionerConfig(
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
             partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
-            strategy="hi_res",
             additional_partition_args={
                 "split_pdf_page": True,
                 "split_pdf_allow_failed": True,
@@ -62,61 +100,6 @@ if __name__ == "__main__":
         ),
         chunker_config=ChunkerConfig(chunking_strategy="by_title"),
         embedder_config=EmbedderConfig(embedding_provider="huggingface"),
-        # For specifying a Databricks configuration profile:
-        destination_connection_config=DatabricksVolumesConnectionConfig(
-            access_config=DatabricksVolumesAccessConfig(profile=os.getenv("DATABRICKS_PROFILE")),
-            host=os.getenv("DATABRICKS_HOST"),
-            catalog=os.getenv("DATABRICKS_CATALOG"),
-            schema=os.getenv("DATABRICKS_SCHEMA"),
-            volume=os.getenv("DATABRICKS_VOLUME"),
-            volume_path=os.getenv("DATABRICKS_VOLUME_PATH")
-        ),
-        uploader_config=DatabricksVolumesUploaderConfig(overwrite=True)
-        # Other examples:
-        #
-        # For Databricks on AWS, with Databricks personal access token authentication:
-        # destination_connection_config=DatabricksAWSVolumesConnectionConfig(
-        #     access_config=DatabricksAWSVolumesAccessConfig(token=os.getenv("DATABRICKS_TOKEN")),
-        #     host=os.getenv("DATABRICKS_HOST")
-        # ),
-        # uploader_config=DatabricksAWSVolumesUploaderConfig(
-        #     catalog=os.getenv("DATABRICKS_CATALOG"),
-        #     schema=os.getenv("DATABRICKS_SCHEMA"),
-        #     volume=os.getenv("DATABRICKS_VOLUME"),
-        #     volume_path=os.getenv("DATABRICKS_VOLUME_PATH"),
-        #     overwrite=True
-        # )
-        #
-        # For Azure Databricks, with Microsoft Entra ID service principal authentication:
-        # destination_connection_config=DatabricksAzureVolumesConnectionConfig(
-        #     access_config=DatabricksAzureVolumesAccessConfig(
-        #         azure_client_id=os.getenv("ARM_CLIENT_ID"),
-        #         azure_client_secret=os.getenv("ARM_CLIENT_SECRET"),
-        #         azure_tenant_id=os.getenv("ARM_TENANT_ID")   
-        #     ),
-        #     host=os.getenv("DATABRICKS_HOST")
-        # ),
-        # uploader_config=DatabricksAzureVolumesUploaderConfig(
-        #     catalog=os.getenv("DATABRICKS_CATALOG"),
-        #     schema=os.getenv("DATABRICKS_SCHEMA"),
-        #     volume=os.getenv("DATABRICKS_VOLUME"),
-        #     volume_path=os.getenv("DATABRICKS_VOLUME_PATH"),
-        #     overwrite=True
-        # )
-        #
-        # For Databricks on Google Cloud, with Google Cloud Platform credentials authentication:
-        # destination_connection_config=DatabricksGoogleVolumesConnectionConfig(
-        #     access_config=DatabricksGoogleVolumesAccessConfig(
-        #         google_service_account=os.getenv("GOOGLE_CREDENTIALS")
-        #     ),
-        #     host=os.getenv("DATABRICKS_HOST")
-        # ),
-        # uploader_config=DatabricksAWSVolumesUploaderConfig(
-        #     catalog=os.getenv("DATABRICKS_CATALOG"),
-        #     schema=os.getenv("DATABRICKS_SCHEMA"),
-        #     volume=os.getenv("DATABRICKS_VOLUME"),
-        #     volume_path=os.getenv("DATABRICKS_VOLUME_PATH"),
-        #     overwrite=True
-        # )
+        uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
     ).run()
 ```

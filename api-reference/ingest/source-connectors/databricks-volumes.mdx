@@ -1,0 +1,23 @@
+---
+title: Databricks Volumes
+---
+
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentDatabricksVolumes from '/snippets/sc-shared-text/databricks-volumes-cli-api.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedContentDatabricksVolumes/>
+<SharedAPIKeyURL/>
+
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library. The destination connector can be any of the ones supported. This example uses the local destination connector:
+
+import DatabricksVolumesAPISh from '/snippets/source_connectors/databricks-volumes.sh.mdx';
+import DatabricksVolumesAPIPyV2 from '/snippets/source_connectors/databricks-volumes.v2.py.mdx';
+
+<CodeGroup>
+  <DatabricksVolumesAPISh />
+  <DatabricksVolumesAPIPyV2 />
+</CodeGroup>
