@@ -1,0 +1,32 @@
+The Outlook prerequisites:
+
+
+A Microsoft Entra ID tenant. If you don't have a tenant, [create an Azure account](https://azure.microsoft.com/pricing/purchase-options/azure-account/).
+
+<iframe
+width="560"
+height="315"
+src="https://www.youtube.com/embed/2bQ6WiJ1ncA"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
+
+A Microsoft Entra ID app registration. [Create an app registration](https://learn.microsoft.com/graph/auth-register-app-v2). See also the following video, but note that while you can omit the **Redirect URI** part, you must still add credentials:
+
+<iframe
+width="560"
+height="315"
+src="https://www.youtube.com/embed/au1dBzirmvQ?si=hRakOvOI4oxZ56qv" 
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin"
+allowfullscreen>
+</iframe>
+
+Once you've created the app registration, you can get the **Client ID** and **Tenant** values from the app registration's **Overview** section in the Azure portal.
+
+Copy and store the secret that you create by using the app registration's **Certificates & secrets > Client secrets > New client secret** link. The secret will appear in the **Client Credential** field.
+
+![Infrastructure Diagram](/img/connectors/outlook-app-overview.png)
