@@ -1,101 +1,25 @@
 ---
-title: Unstructured Platform 
-sidebarTitle: Overview
+title: Overview
+description: Destination connectors in the Unstructured Platform are designed to specify the endpoint for data processed within the platform. These connectors ensure that the transformed and analyzed data is securely and efficiently transferred to a storage system for future use, often to a vector database for tasks that involve high-speed retrieval and advanced data analytics operations.
 ---
 
-<Note>To start using the Unstructured Platform right away, skip ahead to the [quickstart](/platform/quickstart).</Note>
+![Destinations in the sidebar](/img/platform/Destinations-Sidebar.png)
 
-## What is the Unstructured Platform?
+To see your existing destination connectors, on the sidebar, click **Destinations**.
 
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/_mxLMykpFJ0"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-></iframe>
+To create a destination connector:
 
-The Unstructured Platform is a no-code user interface, pay-as-you-go platform for transforming your unstructured data into data that is ready for Retrieval Augmented Generation (RAG). 
+1. On the sidebar, click **Destinations**.
+2. Click **New Destination**.
+3. In the **Type** drop-down list, select the connector type that matches your destination.
+4. Fill in the fields according to your connector type. To learn how, click your connector type in the following list:
 
-## How does it work?
+   - [Astra DB](/platform/destinations/astradb)
+   - [Azure Cognitive Search](/platform/destinations/azure-cognitive-search)
+   - [Milvus](/platform/destinations/milvus)
+   - [MongoDB](/platform/destinations/mongodb)
+   - [Pinecone](/platform/destinations/pinecone)
+   - [S3](/platform/destinations/s3)
 
-To get your data RAG-ready, the Unstructured Platform moves it through the following process:
-
-```mermaid
-  flowchart LR
-    Connect[1. Connect]-->Route[2. Route]-->Transform[3. Transform]-->Chunk[4. Chunk]-->Enrich[5. Enrich]-->Embed[6. Embed]-->Persist[7. Persist]
-```
-<Steps>
-  <Step title="Connect">
-    The Unstructured Platform offers multiple [source connectors](/platform/sources/overview) to connect to your data in its existing location.
-  </Step>
-  <Step title="Route">
-    Routing determines which strategy Unstructured Platform uses to transforming your documents into Unstructured's canonical JSON schema. The Unstructured Platform provides these [partitioning](/platform/partitioning) strategies for document transformation:
-    
-    - **Fast** is great for when there is extractable text available, like in HTML files or in the Microsoft Office Document format.
-    - **Hi Res** is best for PDFs and tables and where accurate classification of document elements is critical.
-    - If you're unsure which strategy to use, choose **Auto**, and the Unstructured Platform will handle the decision for you.
-
-  </Step>
-  <Step title="Transform"> 
-    Your source document is transformed into Unstructured's canonical JSON schema. Regardless of the input document, this JSON schema we gives you a [standardized output](/platform/document-elements). It contains more than 20 elements, such as `Header`, `Footer`, `Title`, `NarrativeText`, `Table`, `Image`, and many more. Each document is wrapped in extensive metadata so you can understand languages, file types, sources, hierarchies, and much more.
-  </Step>
-    <Step title="Chunk"> 
-    The Unstructured Platform provides these [chunking](/platform/chunking) strategies:
-    
-    - **Basic** combines sequential elements up to specified size limits. Oversized elements are split, while tables are isolated and divided if necessary. Overlap between chunks is optional.
-    - **By Title** uses semantic chunking, understands the layout of the document, and makes intelligent splits.
-    - **By Page** attempts to preserve page boundaries when determining the chunks' contents.
-    - **By Similarity** uses an embedding model to identify topically similar sequential elements and combines them into chunks.
-
-  </Step>
-  <Step title="Enrich">
-    Images and tables can be optionally summarized. This generates enriched content around the images or tables that were parsed during the transformation process.
-  </Step>
-  <Step title="Embed">
-    The Unstructured Platform uses optional third-party [embedding](/platform/embedding) providers such as OpenAI.
-  </Step>
-  <Step title="Persist">
-    The Unstructured Platform offers multiple [destination connectors](/platform/destinations/overview), including all major vector databases.
-  </Step>
-</Steps>
-
-To simplify this process and provide it as a no-code solution, the Unstructured Platform brings together four key concepts:
-
-```mermaid
-  flowchart LR
-    subgraph Workflow[3. Workflow]
-        direction LR
-        Source[1. Source Connector] --> Destination[2. Destination Connector]
-    end
-    Jobs
-    Workflow[3. Workflow] --> Jobs[4. Jobs]
-```
-
-<Steps>
-  <Step title="Source Connector">
-    [Source connectors](/platform/sources/overview) to ingest your data into the Unstructured Platform for transformation.
-  </Step>
-  <Step title="Destination Connector">
-    [Destination connectors](/platform/destinations/overview) tell the Unstructured Platform where to write your transformed data to.
-  </Step>
-  <Step title="Workflow">
-    [Workflows](/platform/workflows) connect sources to destinations and provide chunking, embedding, and scheduling options.
-  </Step>
-  <Step title="Jobs">
-    [Jobs](/platform/jobs) enable you to monitor data transformation progress.
-  </Step>
-</Steps>
-
-## What support is there for compliance?
-
-The platform is designed for global reach with SOC2 Type 1, SOC2 Type 2, and HIPAA compliance. It has support for over 50 languages.
-
-## How do I get started?
-
-Skip ahead to the [quickstart](/platform/quickstart).
-
-
-
+5. Click **Save and Test**.
+6. Click **Close**.
