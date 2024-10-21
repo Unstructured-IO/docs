@@ -1,4 +1,4 @@
-The PostgreSQL and SQLite connector dependencies:
+The PostgreSQL connector dependencies:
 
 ```bash CLI, Python
 pip install "unstructured-ingest[postgres]"
@@ -10,16 +10,8 @@ import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-d
 
 The following environment variables:
 
-For PostgreSQL:
-
-- `SQL_DB_TYPE` - The SQL database type. For PostgreSQL, this is always `postgresql`, represented by `--db-type` (CLI) or `db_type` (Python).
 - `PGHOST` - The host name, represented by `--host` (CLI) or `host` (Python).
 - `PGPORT` - The port number, represented by `--port` (CLI) or `port` (Python).
 - `PGUSER` - The username, represented by `--username` (CLI) or `username` (Python).
 - `PGPASSWORD` - The user's password, represented by `--password` (CLI) or `password` (Python).
 - `PGDATABASE` - The name of the database, represented by `--database` (CLI) or `database` (Python).
-
-For SQLite:
-
-- `SQL_DB_TYPE` - The SQL database type. For SQLite, this is always `sqlite`, represented by `--db-type` (CLI) or `db_type` (Python).
-- `SQLITE_DB_PATH` - The path to the database's `.db` file, represented by `--database` (CLI) or `database` (Python).
