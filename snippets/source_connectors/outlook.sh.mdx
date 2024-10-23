@@ -1,16 +1,19 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
+
+# Embedding is optional.
 
 unstructured-ingest \
   outlook \
-    --client-id $MS_CLIENT_ID \
-    --client-cred $MS_CLIENT_CRED \
-    --tenant $MS_TENANT_ID \
-    --user-email $MS_USER_EMAIL \
-    --outlook-folders Inbox,"Sent Items" \
+    --user-email $OUTLOOK_USER_EMAIL \
+    --outlook-folders Inbox \
     --output-dir $LOCAL_FILE_OUTPUT_DIR \
-    --num-processes 2 \
-    --recursive \
-    --verbose \
-    --strategy hi_res
+    --client-id $OUTLOOK_APP_CLIENT_ID \
+    --client-cred $OUTLOOK_APP_CLIENT_SECRET \
+    --tenant $OUTLOOK_APP_TENANT \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface
 ```

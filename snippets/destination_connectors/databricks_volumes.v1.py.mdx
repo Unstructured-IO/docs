@@ -26,8 +26,7 @@ def get_writer() -> Writer:
         connector_config=SimpleDatabricksVolumesConfig(
             host=os.getenv("DATABRICKS_HOST"),
             access_config=DatabricksVolumesAccessConfig(
-                token=os.getenv("DATABRICKS_TOKEN"),
-                cluster_id=os.getenv("DATABRICKS_CLUSTER_ID")
+                token=os.getenv("DATABRICKS_TOKEN")
             ),
         ),
         write_config=DatabricksVolumesWriteConfig(
@@ -63,8 +62,7 @@ if __name__ == "__main__":
             chunking_strategy="by_title",
         ),
         embedding_config=EmbeddingConfig(
-            provider="huggingface",
-            model_name="sentence-transformers/all-mpnet-base-v2",
+            provider="huggingface"
         ),
         writer=writer,
         writer_kwargs={},
