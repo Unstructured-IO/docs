@@ -14,144 +14,294 @@ Workflows are crucial for establishing a systematic approach to managing data fl
 
 ## Create a workflow
 
+![Choose a workflow type](/img/platform/Choose-Workflow-Type.png)
+
+The Unstructured Platform provides two types of workflow builders:
+
+- [Automatic](#create-an-automatic-workflow) workflows, which use sensible default workflow settings to enable you to get good-quality results faster.
+- [Custom](#create-a-custom-worklow) workflows, which enable you to fine-tune the workflow settings behind the scenes to get very specific results.
+
+All Unstructured accounts can create automatic worklows.
+
+To create custom workflows, you must request Unstructured to enable your account first. [Learn how](#create-a-custom-worklow).
+
+### Create an automatic workflow
+
 <Warning>
     You must first have an existing source connector and destination connector to add to the workflow.
 
     If you do not have an existing connector for either your target source (input) or destination (output) location, [create the source connector](/platform/sources/overview), [create the destination connector](/platform/destinations/overview), and then return here.
 
-    To see your existing connectors, on the sidebar, click **Sources** or **Destinations**.
+    To see your existing connectors, on the sidebar, click **Connectors**, and then click **Sources** or **Destinations**.
 </Warning>
 
-To create a workflow:
+To create an automatic workflow:
 
 1. On the sidebar, click **Workflows**.
 2. Click **New Workflow**.
-3. Enter a unique **Name** for this workflow.
-4. In the **Connectors** section, in the **Sources** dropdown list, select your source location.
-5. In the **Destination** dropdown list, select your destination location.
+3. Next to **Build it with me**, click **Create Workflow**.
+
+   <Note>If a radio button appears instead of **Build it with me**, select it, and then click **Continue**.</Note>
+
+4. For **Workflow Name**, enter some unique name for this workflow.
+5. In the **Sources** dropdown list, select your source location.
+6. In the **Destinations** dropdown list, select your destination location.
 
    <Note>You can select multiple source and destination locations. Files will be ingested from all of the selected source locations, and the processed data will be delivered to all of the selected destination locations.</Note>
 
-6. In the **Workflow Settings** section, choose one of these predefined workflow settings groups:
+7. Click **Continue**.
+8. In the **Optimize for** section, select the option to choose one of these predefined workflow settings groups:
 
    - **Basic** is a good choice if you have text-only documents that have no images or tables in them.
    - **Advanced** is a good choice if you have complex documents that have images or tables or both in them.
-           
-   To fine-tune your workflow's settings, click **Custom**. If **Custom** is not available, click **Request Access**, 
-   and wait for Unstructured to enable it. Learn how to define [Custom](#custom-workflow-settings) workflow settings.
 
-7. If you want to run this workflow on a regular basis, in the **Schedule** section, select one of the time periods in the **Schedule Type** list:
+9. If you want to overwrite any files in the destination location that might have been previously processed, check the **Reprocess all** box.
+10. If you want to retry processing any documents that failed to process, check the **Retry Failed Documents** box.
+11. Click **Continue**.
+12. If you want this workflow to run on a schedule, in the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
+13. Click **Complete**.
+14. If you did not set the workflow to run on a schedule, you can [run the worklow](#edit-delete-or-run-a-workflow) now.
 
-   - **Monthly**: This workflow will automatically run once each month. Choose the day of the month and the time on that day to run this workflow.
-   - **Daily**: This workflow will automatically run once each day for one or more days of each week. Choose the days of the week and the time on each of those days to run this workflow.
-   - **Hourly**: This workflow will automatically run once each hour. Choose the minute of the hour to run this workflow.
-   - **Frequently**: This workflow will automatically run once after each specified number of minutes. Choose the time period in minutes to wait until running this workflow again.
+### Create a custom workflow
 
-8. Click **Save**.
+<Warning>
+    You must first have an existing source connector and destination connector to add to the workflow.
 
-## Custom workflow settings
+    If you do not have an existing connector for either your target source (input) or destination (output) location, [create the source connector](/platform/sources/overview), [create the destination connector](/platform/destinations/overview), and then return here.
 
-To define custom workflow settings, in the **Workflow Settings** section of a workflow, click **Custom**. 
-If **Custom** is not available, click **Request Access**, and wait for Unstructured to enable it.
+    To see your existing connectors, on the sidebar, click **Connectors**, and then click **Sources** or **Destinations**.
+</Warning>
 
-The following workflow settings can be customized:
+There are two ways to create a custom workflow:
+
+- Through [Build it with me > Custom](#build-it-with-me-custom). This option enables you to fine-tune the kinds of settings that are in **Basic** and **Advanced**.
+- Through [Build it myself](#build-it-myself). This option offers a visual workflow designer with even more fine-tuning than the **Custom** option.  
+
+#### Build it with me - Custom
+
+1. On the sidebar, click **Workflows**.
+2. Click **New Workflow**.
+3. Next to **Build it with me**, click **Create Workflow**.
+
+   <Note>If a radio button appears instead of **Build it with me**, select it, and then click **Continue**.</Note>
+
+4. For **Workflow Name**, enter some unique name for this workflow.
+5. In the **Sources** dropdown list, select your source location.
+6. In the **Destinations** dropdown list, select your destination location.
+
+   <Note>You can select multiple source and destination locations. Files will be ingested from all of the selected source locations, and the processed data will be delivered to all of the selected destination locations.</Note>
+
+7. Click **Continue**.
+8. In the **Optimize for** section, click the **Custom** option, and then click **Continue**.
+
+   <Note>
+      If the **Custom** option is disabled, inside the **Custom** option click **Notify me**, and follow the on-screen directions to complete the request. 
+      Unstructured will notify you when your account has been enabled with the **Custom** option. After you receive this notification, click the 
+      **Custom** option, and then click **Continue**.
+   </Note>
+
+9. In the **Strategy** area, choose one of the following:
+
+    - **Fast**: This strategy uses traditional NLP extraction techniques to quickly pull in all text elements. This strategy is not good for image-based file types or files with images or tables in them.
+    - **Hi-res**: This strategy uses the document layout to gain additional information about document elements. This strategy is good for image-based file types and files with images or tables in them. This strategy is recommended if your use case is highly sensitive to correct classification for document elements. 
+    - **Auto**: This strategy chooses the partitioning strategy on a file-by-file basis, depending on detected document characteristics.
+
+    [Learn more](/platform/partitioning).
+
+10. In the **Image Summzarizer** drop-down list, choose one of the following:
+
+    - **None**: Do not provide summaries for any detected images in any of the files.
+    - **GPT-4o**: Use GPT-4o to provide summaries for any detected images in any of the files. [Learn more](https://openai.com/index/hello-gpt-4o/).
+    - **Claude 3.5 Sonnet**: Use Claude 3.5 Sonnet to provide summaries for any detected images in any of the files. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+
+    [Learn more](/platform/summarizing).
+
+11. In the **Table Summzarizer** drop-down list, choose one of the following:
+
+    - **None**: Do not provide summaries for any detected tables in any of the files.
+    - **GPT-4o**: Use GPT-4o to provide summaries for any detected tables in any of the files. [Learn more](https://openai.com/index/hello-gpt-4o/).
+    - **Claude 3.5 Sonnet**: Use Claude 3.5 Sonnet to provide summaries for any detected tables in any of the files. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+
+    [Learn more](/platform/summarizing).
+
+12. Check the **Include Page Breaks** box to include page breaks in the output, if the file type support it.
+13. Check the **Infer Table Structure** box to extract any detected table elements in PDF files as HTML format into a `metadata` output field named `text_as_html`.
+
+14. In the **Elements to Exclude** drop-down list, select any element types to exclude from the output.
+15. In the **Chunk** area, for **Chunker Type**, select one of the following:
+
+    - **None**: Do not apply special chunking rules to the output.
+    - **Chunk by Character** (also known as _basic_ chunking): Combine sequential elements to maximally fill each chunk. Also, specify the following:
+
+      - **Include Original Elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
+      - **Max Characters**: Cut off new sections after reaching a length of this many characters. The default is **2048**.
+      - **New After n chars**: Cut off new sections after reaching a length of this many characters. This is an approximate limit. The default is **1500**.
+      - **Overlap**: Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting. The default is **160**.
+      - **Overlap all**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. By default, this box is unchecked.
+        
+    - **Chunk by Page**: Preserve page boundaries. When a new page is detected, the existing chunk is closed and a new one is started, even if the next element would fit in the prior chunk. Also, specify the following:
+        
+      - **Include Original Elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
+      - **Max Characters**: Cut off new sections after reaching a length of this many characters. This is a strict limit. The default is **500**.
+      - **New After n Characters**: Cut off new sections after reaching a length of this many characters. This is an approximate limit. The default is **50**.
+      - **Overlap**: Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting. The default is **30**.
+      - **Overlap all**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. By default, this box is unchecked.
+
+    - **Chunk by Title**: Preserve section boundaries and optionally page boundaries as well. A single chunk will never contain text that occurred in two different sections. When a new section starts, the existing chunk is closed and a new one is started, even if the next element would fit in the prior chunk. Also, specify the following:
+    
+      - **Combine Text Under n Chars**: Combine elements until a section reaches a length of this many characters. The default is **0**.
+      - **Include Original Elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
+      - **Max Characters**: Cut off new sections after reaching a length of this many characters. This is a strict limit. The default is **2048**.
+      - **Multipage Sections**: Check this box to allow sections to span multiple pages. By default, this box is unchecked.
+      - **New After n Characters**: Cut off new sections after reaching a length of this many characters. This is an approximate limit. The default is **1500*.
+      - **Overlap**: Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting. The default is **160**.
+      - **Overlap all**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. By default, this box is unchecked.
+
+    - **Chunk by Similarity**: Use the [sentence-transformers/multi-qa-mpnet-base-dot-v1](https://huggingface.co/sentence-transformers/multi-qa-mpnet-base-dot-v1) embedding model to identify topically similar sequential elements and combine them into chunks. Also, specify the following:
+
+      - **Include Original Elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
+      - **Max Characters**: Cut off new sections after reaching a length of this many characters. This is a strict limit. The default is **500**.
+      - **Similarity Threshold**: Specify a threshold between 0 and 1 exclusive (0.01 to 0.99 inclusive), where 0 indicates completely dissimilar vectors and 1 indicates identical vectors, taking into consider the trade-offs between precision (a higher threshold) and recall (a lower threshold). The default is **0.5**. [Learn more](https://towardsdatascience.com/introduction-to-embedding-clustering-and-similarity-11dd80b00061).
+
+    Learn more:
+        
+    - [Chunking overview](/platform/chunking)
+    - [Chunking for RAG: best practices](https://unstructured.io/blog/chunking-for-rag-best-practices)
+
+16. In the **Embed** area, for **Provider**, choose one of the following:
+
+    - **None**: Do not generate embeddings.
+    - **OpenAI**: Use OpenAI to generate embeddings.
+    - **Vertex AI**: Use Vertex AI to generate embeddings.
+        
+    Learn more:
+        
+    - [Embedding overview](/platform/embedding)
+    - [Understanding embedding models: make an informed choice for your RAG](https://unstructured.io/blog/understanding-embedding-models-make-an-informed-choice-for-your-rag).
+
+17. Check the **Reprocess all** box if you want to overwrite any files in the destination location that might have been previously processed, 
+18. Check the **Retry Failed Documents** box if you want to retry processing any documents that failed to process, 
+19. Click **Continue**.
+20. If you want this workflow to run on a schedule, in the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
+21. Click **Complete**.
+22. If you did not set the workflow to run on a schedule, you can [run the worklow](#edit-delete-or-run-a-workflow) now.
+
+#### Build it myself
+
+1. On the sidebar, click **Workflows**.
+2. Click **New Workflow**.
+3. Click the **Build it myself** option, and then click **Continue**.
+
+   <Note>
+      If the **Build it myself** option is disabled, inside the **Build it myself** option click **Notify me**, and follow the on-screen directions to complete the request. 
+      Unstructured will notify you when your account has been enabled with the **Build it myself** option. After you receive this notification, click the 
+      **Build it myself** option, and then click **Continue**.
+   </Note>
+
+4. In the **This workflow** pane, click the **Details** button.
+
+   ![Workflow details](/img/platform/Workflow-Details.png)
+
+5. Next to **Name**, click the pencil icon, enter some unique name for this workflow, and then click the check mark icon.
+6. If you want this workflow to run on a schedule, click the **Schedule** button. In the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings.
+7. To overwrite any previously processed files, or to retry any documents that fail to process, click the **Settings** button, and check either or both of the boxes.
+8. In the pipeline designer, click the **Source** node. In the **Source** pane, select the source location. Then click **Save**.
+
+   ![Workflow designer](/img/platform/Workflow-Designer.png)
+
+9. Click the **Destination** node. In the **Destination** pane, select the destination location. Then click **Save**.
+10. As needed, add more nodes by clicking the plus icon (recommended) or **Add Node** button:
+
+    ![Add node to workflow](/img/platform/Workflow-Add-Node.png)
+
+    - Click **Connect** to add another **Source** or **Destination** node. You can add multiple source and destination locations. Files will be ingested from all of the source locations, and the processed data will be delivered to all of the destination locations. [Learn more](#custom-workflow-node-types).
+    - Click **Enrich** to add a **Chunker** or **Enrichment** node. [Learn more](#custom-workflow-node-types).
+    - Click **Transform** to add a **Partitioner** or **Embedder** node. [Learn more](#custom-workflow-node-types).
+
+    <Tip>
+        Make sure to add nodes in the correct order. If you are unsure, see the usage hints in the blue note that appears 
+        in the node's settings pane.
+
+        ![Node usage hints note](/img/platform/Node-Usage-Hints.png)
+    </Tip>
+
+    To edit a node, click that node, and then change its settings.
+
+    To delete a node, click that node, and then click the trash can icon above it.
+
+11. Click **Save**.
+12. If you did not set the workflow to run on a schedule, you can [run the worklow](#edit-delete-or-run-a-workflow) now.
+
+#### Custom workflow node types
 
 <AccordionGroup>
-    <Accordion title="Transform section">
-        1. For **Strategy**, choose one of the following:
+    <Accordion title="Partitioner node">
+        For **Partition Strategy**, choose one of the following:
 
-           - **Fast**: This strategy uses traditional NLP extraction techniques to quickly pull in all text elements. This strategy is not good for image-based file types. [Learn more](/platform/partitioning).
-           - **Hi Res**: This strategy uses document layout to gain additional information about document elements. Unstructured recommends using this strategy if your use case is highly sensitive to correct classifications for document elements. [Learn more](/platform/partitioning).
-           - **Auto**: This strategy chooses the partitioning strategy based on detected document characteristics. [Learn more](/platform/partitioning).
+        - **Auto**: This strategy chooses the partitioning strategy on a file-by-file basis, depending on detected document characteristics.    
+        - **Fast**: This strategy uses traditional NLP extraction techniques to quickly pull in all text elements. This strategy is not good for image-based file types or files with images or tables in them.
+        - **Hi-res**: This strategy uses the document layout to gain additional information about document elements. This strategy is good for image-based file types and files with images or tables in them. This strategy is recommended if your use case is highly sensitive to correct classification for document elements. 
 
-        2. For **Image summarization**, choose one of the following:
-
-           - **None**: No summarization of images.
-           - **GPT-4o**: Use GPT-4o to summarize images. [Learn more](https://openai.com/index/hello-gpt-4o/).
-           - **Claude 3.5 Sonnet**: Use Claude 3.5 Sonnet to summarize images. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
-
-           [Learn more about image summarization](/platform/summarizing).
-
-        3. For **Table summarization**, choose one of the following:
-
-           - **None**: No summarization of tables.
-           - **GPT-4o**: Use GPT-4o to summarize tables. [Learn more](https://openai.com/index/hello-gpt-4o/).
-           - **Claude 3.5 Sonnet**: Use Claude 3.5 Sonnet to summarize tables. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
-
-           [Learn more about table summarization](/platform/summarizing).
-
-        4. For **Connector Settings**, check one or more of the following boxes:
-
-           - **Include Page Breaks**: Include page breaks in the output, if the file type supports it.
-           - **Infer Table Structure**: If you also set **Strategy** to **Hi Res**, any table elements extracted from a PDF will include an additional metadata field, `text_as_html`, that contains a transformation of the data into an HTML `<table>`.
-
-        5. For **Elements to Exclude**, select one or more standard Unstructured element types to not include in the output. [Learn more](/platform/document-elements).
+        [Learn more](/platform/partitioning).
     </Accordion>
-    <Accordion title="Chunk section">
-        For **Chunker Type**, select one of the following:
+    <Accordion title="Chunker node">
+        For **Chunkers**, select one of the following:
 
-        - **None**: Do not chunk elements.
-        - **Basic**: Combine sequential elements to maximally fill each chunk. [Learn more](/platform/chunking). Also specify the following:
-
-          - **Include Original Elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk.
-          - **Max Characters** (_required_): Cut off new sections after reaching a length of this many characters.
-          - **New After N Characters** (_required_): Cut off new sections after reaching a length of this many characters. This is an approximate limit.
-          - **Overlap** (_required_): Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting.
-          - **Overlap All**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units.
-
-        - **Chunk By Title**: Preserve section boundaries and optionally page boundaries as well. A single chunk will never contain text that occurred in two different sections. When a new section starts, the existing chunk is closed and a new one is started, even if the next element would fit in the prior chunk. [Learn more](/api-reference/api-services/chunking). Also specify the following:
+        - **Chunk by title**: Preserve section boundaries and optionally page boundaries as well. A single chunk will never contain text that occurred in two different sections. When a new section starts, the existing chunk is closed and a new one is started, even if the next element would fit in the prior chunk. Also, specify the following:
         
-          - **Combine Text Under N Characters** (_required_): Combine elements until a section reaches a length of this many characters.
-          - **Include Original Elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk.
-          - **Max Characters** (_required_): Cut off new sections after reaching a length of this many characters. This is a strict limit.
-          - **Multipage Sections**: Check this box to allow sections to span multiple pages.
-          - **New After N Characters** (_required_): Cut off new sections after reaching a length of this many characters. This is an approximate limit.
-          - **Overlap** (_required_): Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting.
-          - **Overlap All**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units.
+          - **Combine text under n chars**: Combine elements until a section reaches a length of this many characters. The default is **0**.
+          - **Include original elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
+          - **Max characters**: Cut off new sections after reaching a length of this many characters. This is a strict limit. The default is **2048**.
+          - **Multipage sections**: Check this box to allow sections to span multiple pages. By default, this box is unchecked.
+          - **New after n chars**: Cut off new sections after reaching a length of this many characters. This is an approximate limit. The default is **1500*.
+          - **Overlap**: Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting. The default is **160**.
+          - **Overlap all**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. By default, this box is unchecked.
 
-        - **Chunk By Page**: Preserve page boundaries. When a new page is detected, the existing chunk is closed and a new one is started, even if the next element would fit in the prior chunk. [Learn more](/platform/chunking). Also specify the following:
+        - **Chunk by character** (also known as _basic_ chunking): Combine sequential elements to maximally fill each chunk. Also, specify the following:
+
+          - **Include original elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
+          - **Max characters**: Cut off new sections after reaching a length of this many characters. The default is **2048**.
+          - **New after n chars**: Cut off new sections after reaching a length of this many characters. This is an approximate limit. The default is **1500*.
+          - **Overlap**: Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting. The default is **160**.
+          - **Overlap All**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. By default, this box is unchecked.
         
-          - **Include Original Elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk.
-          - **Max Characters** (_required_): Cut off new sections after reaching a length of this many characters. This is a strict limit.
-          - **New After N Characters** (_required_): Cut off new sections after reaching a length of this many characters. This is an approximate limit.
-          - **Overlap** (_required_): Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting.
-          - **Overlap All**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units.
+        - **Chunk by page**: Preserve page boundaries. When a new page is detected, the existing chunk is closed and a new one is started, even if the next element would fit in the prior chunk. Also, specify the following:
         
-        - **Chunk By Similarity**: Use the [sentence-transformers/multi-qa-mpnet-base-dot-v1](https://huggingface.co/sentence-transformers/multi-qa-mpnet-base-dot-v1) embedding model to identify topically similar sequential elements and combine them into chunks. [Learn more](/platform/chunking). Also specify the following:
+          - **Include original elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
+          - **Max characters**: Cut off new sections after reaching a length of this many characters. This is a strict limit. The default is **500**.
+          - **New after n chars**: Cut off new sections after reaching a length of this many characters. This is an approximate limit. The default is **50**.
+          - **Overlap**: Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting. The default is **30**.
+          - **Overlap all**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. By default, this box is unchecked.
+        
+        - **Chunk by similarity**: Use the [sentence-transformers/multi-qa-mpnet-base-dot-v1](https://huggingface.co/sentence-transformers/multi-qa-mpnet-base-dot-v1) embedding model to identify topically similar sequential elements and combine them into chunks. Also, specify the following:
 
-          - **Include Original Elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk.
-          - **Max Characters** (_required_): Cut off new sections after reaching a length of this many characters. This is a strict limit.
-          - **Similarity Threshold** (_required_): Specify a threshold between 0 and 1 exclusive (0.01 to 0.99 inclusive), where 0 indicates completely dissimilar vectors and 1 indicates identical vectors, taking into consider the trade-offs between precision (a higher threshold) and recall (a lower threshold). [Learn more](https://towardsdatascience.com/introduction-to-embedding-clustering-and-similarity-11dd80b00061).
+          - **Include original elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
+          - **Max characters**: Cut off new sections after reaching a length of this many characters. This is a strict limit. The default is **500**.
+          - **Similarity threshold**: Specify a threshold between 0 and 1 exclusive (0.01 to 0.99 inclusive), where 0 indicates completely dissimilar vectors and 1 indicates identical vectors, taking into consider the trade-offs between precision (a higher threshold) and recall (a lower threshold). The default is **0.5**. [Learn more](https://towardsdatascience.com/introduction-to-embedding-clustering-and-similarity-11dd80b00061).
 
-        [Learn more](https://unstructured.io/blog/chunking-for-rag-best-practices).
+        Learn more:
+        
+        - [Chunking overview](/platform/chunking)
+        - [Chunking for RAG: best practices](https://unstructured.io/blog/chunking-for-rag-best-practices)
+
     </Accordion>
-    <Accordion title="Embed section">
-        For **Vendor**, select one of the following:
+    <Accordion title="Enrichment node">
+        For **Enrichment model**, choose one of the following:
+        
+        - **OpenAI Image Description** to use GPT-4o to summarize images. [Learn more](https://openai.com/index/hello-gpt-4o/).
+        - **OpenAI Table Description** to use se GPT-4o to summarize tables. [Learn more](https://openai.com/index/hello-gpt-4o/).
+        - **OpenAI Table to HTML** to use GPT-4o to convert tables to HTML. [Learn more](https://openai.com/index/hello-gpt-4o/).
+        - **Anthropic Image Description** to use Claude 3.5 Sonnet to summarize images. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+        - **Anthropic Table Description** to use Claude 3.5 Sonnet to summarize tables. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
 
-        - **Off**: Do not generate embeddings.
-        - **OpenAI**: Use OpenAI to generate embeddings. Also choose the embedding model to use, from one of the following:
+        [Learn more](/platform/summarizing).
+    </Accordion>
+    <Accordion title="Embedder node">
+        For **Providers**, select one of the following:
 
-          - **text-embedding-3-small** (1536 dimensions): [Learn more](https://platform.openai.com/docs/guides/embeddings).
-          - **text-embedding-3-large** (3072 dimensions): [Learn more](https://platform.openai.com/docs/guides/embeddings).
-          - **Ada 002 (Text)** (1536 dimensions): [Learn more](https://platform.openai.com/docs/guides/embeddings).
-
-        - **Hugging Face**: Use Hugging Face to generate embeddings. Also choose the embedding model to use, from one of the following:
-
-          - **nvidia/NV-Embed-v1** (4096 dimensions): [Learn more](https://huggingface.co/nvidia/NV-Embed-v1).
-          - **voyage-large-2-instruct** (1024 dimensions): [Learn more](https://huggingface.co/voyageai/voyage-large-2-instruct).
-          - **stella_en_400M_v5** (1024 dimensions): [Learn more](https://huggingface.co/dunzhang/stella_en_400M_v5).
-          - **stella_en_1.5B_v5** (1024 dimensions): [Learn more](https://huggingface.co/dunzhang/stella_en_1.5B_v5).
-          - **Alibaba-NLP/gte-Qwen2-7B-instruct** (3584 dimensions): [Learn more](https://huggingface.co/Alibaba-NLP/gte-Qwen2-7B-instruct).
-
-        - **OctoAI**: Use OctoAI to generate embeddings. Also choose the embedding model to use, from one of the following:
-
-          - **GTE Large** (1024 dimensions): [Learn more](https://octo.ai/blog/introducing-octoais-embedding-api-to-power-your-rag-needs/).
-
-        - **Vertex AI**: Use Vertex AI to generate embeddings. Also choose the embedding model to use, from one of the following:
-
-          - **textembedding-gecko@003** (768 dimensions): [Learn more](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions#embeddings_stable_model_versions).
-          - **text-embedding-004** (768 dimensions): [Learn more](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/model-versions#embeddings_stable_model_versions).
-
+        - **OpenAI**: Use OpenAI to generate embeddings.
+        - **Vertex AI**: Use Vertex AI to generate embeddings.
+        
         Learn more:
         
         - [Embedding overview](/platform/embedding)
@@ -161,13 +311,13 @@ The following workflow settings can be customized:
 
 ## Edit, delete, or run a workflow
 
-![Manage a workflow](/img/platform/Workflow-Actions.png)
+To run a workflow:
 
-For each of the workflows on the **Workflows** list page, the following actions are available by clicking the ellipses (the three dots) next to the respective workflow name:
+1. On the sidebar, click **Workflows**.
+2. In the list of workflows, click **Run** in the row for the workflow that you want to run.
 
-*   **Edit**: Changes the existing configuration of your workflow. This can include changing the source, destination, scheduling, and chunking strategies, among other settings.
-    
+For each of the workflows on the **Workflows** list page, the following actions are available by clicking the ellipses (the three dots) in the row for the respective workflow:
+
+*   **Edit via Form**: Changes the existing configuration of your workflow.
 *   **Delete**: Removes the workflow from the platform. Use this action cautiously, as it will permanently delete the workflow and its configurations.
-    
-*   **Run**: Manually runs the workflow outside of its scheduled runs. This is particularly useful for testing or ad-hoc data processing needs.
-
+*   **Open**: Opens the workflow's settings page.
