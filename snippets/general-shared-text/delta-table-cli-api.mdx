@@ -1,0 +1,15 @@
+The Delta Table connector dependencies for Amazon S3:
+
+```bash CLI, Python
+pip install "unstructured-ingest[delta-table]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `AWS_S3_URL` - The path to the S3 bucket or folder, formatted as `s3://my-bucket/` (if the files are in the bucket's root) or `s3://my-bucket/my-folder/`, represented by `--table-uri` (CLI) or `table_uri` (Python).
+- `AWS_ACCESS_KEY_ID` - The AWS access key ID for the authenticated AWS IAM user, represented by `--aws-access-key-id` (CLI) or `aws_access_key` (Python).
+- `AWS_SECRET_ACCESS_KEY` - The corresponding AWS secret access key, represented by `--aws-secret-access-key` (CLI) or `aws_secret_access_key` (Python).
