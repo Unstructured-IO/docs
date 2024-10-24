@@ -1,0 +1,25 @@
+The Slack connector dependencies:
+
+```bash
+pip install "unstructured-ingest[slack]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+These environment variables:
+
+- `SLACK_BOT_USER_OAUTH_TOKEN` - The OAuth token for the Slack app, represented by `--token` (CLI) or `token` (Python).
+
+To specify the starting and ending date and time range for the channels to be processed:
+
+- For the CLI, use one of the following supported formats: 
+
+  - `YYYY-MM-DD`
+  - `YYYY-MM-DDTHH:MM:SS`
+  - `YYYY-MM-DDTHH:MM:SSZ`
+  - `YYYY-MM-DD+HH:MM:SS`
+  - `YYYY-MM-DD-HH:MM:SS`
+
+- For Python, use the `datetime.datetime` function.

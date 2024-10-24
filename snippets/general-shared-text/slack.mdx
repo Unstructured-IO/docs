@@ -1,0 +1,15 @@
+The Slack prerequisites:
+
+- A Slack app. Create a Slack app by following [Step 1: Creating an app](https://api.slack.com/quickstart#creating).
+- The app must have the `channels:history` OAuth scope. Give the app this scope by following [Step 2: Requesting scopes](https://api.slack.com/quickstart#scopes).
+- The app must be installed and authorized for the target Slack workspace. Install and authorize the app by following [Step 3: Installing and authorizing the app](https://api.slack.com/quickstart#installing).
+- The app's access token. Get this token by following [Step 3: Installing and authorizing the app](https://api.slack.com/quickstart#installing).
+- Add the app to the target channels in the Slack workspace. To do this from the channel, open the channel's details page, click the **Integrations** tab, click **Add apps**, and follow the on-screen directions to install the app.
+- The channel ID for each target channel. To get this ID, open the channel's details page, and look for the **Channel ID** field on the **About** tab.
+- The starting and ending date and time range for the channels to be processed. Supported formats include:
+
+  - `YYYY-MM-DD`
+  - `YYYY-MM-DDTHH:MM:SS`
+  - `YYYY-MM-DDTHH:MM:SSZ`
+  - `YYYY-MM-DD+HH:MM:SS`
+  - `YYYY-MM-DD-HH:MM:SS`

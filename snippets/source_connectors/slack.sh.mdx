@@ -1,13 +1,19 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
+
+# Chunking and embedding are optional.
 
 unstructured-ingest \
   slack \
-    --channels 12345678 \
-    --token 12345678 \
+    --token $SLACK_BOT_USER_OAUTH_TOKEN \
+    --channels C03FVNHR70A,C03FVNRG43D \
+    --start-date 2024-10-22 \
+    --end-date 2024-10-23 \
     --download-dir $LOCAL_FILE_DOWNLOAD_DIR \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface \
     --output-dir $LOCAL_FILE_OUTPUT_DIR \
-    --start-date 2023-04-01T01:00:00-08:00 \
-    --end-date 2023-04-02 \
-    --strategy hi_res
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL
 ```
