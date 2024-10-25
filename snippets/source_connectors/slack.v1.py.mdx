@@ -1,5 +1,6 @@
-```python Python
+```python Python Ingest v1
 import os
+from datetime import datetime
 
 from unstructured_ingest.connector.slack import SimpleSlackConfig, SlackAccessConfig
 from unstructured_ingest.interfaces import PartitionConfig, ProcessorConfig, ReadConfig
@@ -14,17 +15,15 @@ if __name__ == "__main__":
         ),
         read_config=ReadConfig(),
         partition_config=PartitionConfig(
-            partition_by_api=True,
-            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
             strategy="hi_res",
         ),
         connector_config=SimpleSlackConfig(
             access_config=SlackAccessConfig(
-                token=os.getenv("SLACK_TOKEN"),
+                token=os.getenv("SLACK_BOT_USER_OAUTH_TOKEN"),
             ),
-            channels=["12345678"],
-            start_date="2023-04-01T01:00:00-08:00",
-            end_date="2023-04-02,",
+            channels=["C03FVNHR70A", "C03FVNRG43D"],
+            start_date=datetime(year=2024, month=10, day=22),
+            end_date=datetime(year=2024, month=10, day=23)
         ),
     )
     runner.run()
