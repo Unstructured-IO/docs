@@ -4,11 +4,14 @@
 # Chunking and embedding are optional.
 
 unstructured-ingest \
-  slack \
-    --token $SLACK_BOT_USER_OAUTH_TOKEN \
-    --channels C03FVNHR70A,C03FVNRG43D \
-    --start-date 2024-10-22 \
-    --end-date 2024-10-23 \
+  postgres \
+    --host $PGHOST \
+    --port $PGPORT \
+    --database $PGDATABASE \
+    --table-name elements \
+    --id-column id \
+    --username $PGUSER \
+    --password $PGPASSWORD \
     --download-dir $LOCAL_FILE_DOWNLOAD_DIR \
     --chunking-strategy by_title \
     --embedding-provider huggingface \
