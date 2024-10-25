@@ -1,0 +1,21 @@
+```bash CLI
+#!/usr/bin/env bash
+
+unstructured \
+  snowflake \
+    --account $SNOWFLAKE_ACCOUNT \
+    --user $SNOWFLAKE_USER \
+    --password $SNOWFLAKE_PASSWORD \
+    --host $SNOWFLAKE_HOST \
+    --port $SNOWFLAKE_PORT \
+    --database $SNOWFLAKE_DATABASE \
+    --schema PUBLIC \
+    --table-name elements\
+    --id-column id \
+    --batch-size 100 \
+    --download-dir $LOCAL_FILE_DOWNLOAD_DIR\
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR
+```

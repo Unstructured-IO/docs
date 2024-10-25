@@ -1,0 +1,23 @@
+---
+title: Snowflake
+---
+
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentSnowflake from '/snippets/dc-shared-text/snowflake-cli-api.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedContentSnowflake/>
+<SharedAPIKeyURL/>
+
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library. The source connector can be any of the ones supported. This example uses the local source connector:
+
+import SnowflakeAPISh from '/snippets/destination_connectors/snowflake.sh.mdx';
+import SnowflakeAPIPyV2 from '/snippets/destination_connectors/snowflake.v2.py.mdx';
+
+<CodeGroup>
+  <SnowflakeAPISh />
+  <SnowflakeAPIPyV2 />
+</CodeGroup>
