@@ -1,0 +1,58 @@
+---
+title: Recommend
+---
+
+<Note>
+    This feature is available only for [Custom](/platform/workflows#create-a-custom-workflow) workflows.
+</Note>
+
+The Unstrucutured Platform provides an embedding recommender that identifies the best 
+[embedding](/platform/embedding) model to generate embeddings for documents in a given source location. 
+This is great for those beginning with retrieval augmented generation (RAG) 
+or for those who do not want to spend lots of time learning about how to compare various embedding models. 
+Just point the Unstructured Platform to your [source connector](/platform/sources/overview) and, after just a few minutes of 
+back-end analysis, Unstructured delivers its recommendation to you.
+
+## Get a recommendation
+
+1. In the Unstructured Platform, [create a source connector](/platform/sources/overview), if you do not already have one, for the source location that you want to get a recommendation for.
+2. On the sidebar, click **Recommend**.
+3. In the **Embed Recommender** pane, for **Sources**, select the source connector.
+4. Click **Start**.
+5. In the **Recommendations** pane, wait until the **Recommended Model** field displays the recommendation.
+6. To get more details, click the row in the list for your source connector.
+
+## Apply a recommendation to a custom workflow
+
+For a [Build it with me - Custom](/platform/workflows#build-it-with-me-custom) workflow:
+
+1. In the **Embed** section, for **Provider**, select the recommended embedding provider's name.
+2. If you select **OpenAI**, then for **Model**, select the recommended embedding model's name.
+3. Make a note of the number of dimensions displayed for the model that you selected. If you selected **VertexAI** instead of 
+   **OpenAI**, the number of dimensions is 768.
+4. To save these settings, continue creating or editing the workflow as usual.
+
+<Note>
+    The number of dimensions for the embedding model that you select for this workflow must match the number of dimensions in 
+    this workflow's destination location. Otherwise, this workflow might fail or produce unexpected results. To set the number of 
+    dimensions in the destination, see the destination provider's documentation.
+</Note>
+
+For a [Build it myself](/platform/workflows#build-it-myself) workflow:
+
+1. Add a **Transform > Embedder** node.
+2. In the **Embedder** node's settings pane, with the **Details** button already clicked, for **Select Embedding Provider**, 
+   select the recommended embedding provider's name.
+3. If you select **OpenAI**, then for **OpenAI**, select the recommended embedding model's name.
+4. Make a note of the number of dimensions displayed for the model that you selected. If you selected **VertexAI** instead of 
+   **OpenAI**, the number of dimensions is 768.
+5. To save these settings, continue creating or editing the workflow as usual.
+
+<Note>
+    The number of dimensions for the embedding model that you select for this workflow must match the number of dimensions in 
+    this workflow's destination location. Otherwise, this workflow might fail or produce unexpected results. To set the number of 
+    dimensions in the destination, see the destination provider's documentation.
+</Note>
+
+
+
