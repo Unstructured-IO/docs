@@ -59,9 +59,16 @@ on Hugging Face:
 
 ## Generate embeddings
 
-To generate embeddings, choose one of the following embedding providers in the **Providers** section of an **Embedder** node in a workflow:
+To generate embeddings, choose one of the following embedding providers and models in the **Providers** section of an **Embedder** node in a workflow:
 
 <Note>You can change a workflow's predefined provider only through [Custom](/platform/workflows#create-a-custom-workflow) workflow settings.</Note>
 
-- **OpenAI**: Use [OpenAI](https://openai.com) to generate embeddings.
-- **Vertex AI**: Use [Vertex AI](https://cloud.google.com/vertex-ai) to generate embeddings.
+- **OpenAI**: Use [OpenAI](https://openai.com) to generate embeddings. Also, choose the model to use:
+
+  - **text-embedding-3-small**, with 1536 dimensions.
+  - **text-embedding-3-large**, with 3072 dimensions.
+  - **Ada 002 (Text)**, with 1536 dimensions.
+
+  [Learn more](https://platform.openai.com/docs/guides/embeddings).
+        
+- **Vertex AI**: Use [Vertex AI](https://cloud.google.com/vertex-ai) to generate embeddings by using the [textembedding-gecko@001](https://cloud.google.com/vertex-ai/generative-ai/docs/embeddings/get-text-embeddings) model, with 768 dimensions.
