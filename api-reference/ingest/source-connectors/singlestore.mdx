@@ -1,0 +1,23 @@
+---
+title: SingleStore
+---
+
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentSingleStore from '/snippets/sc-shared-text/singlestore-cli-api.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedContentSingleStore/>
+<SharedAPIKeyURL/>
+
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library. The destination connector can be any of the ones supported. This example uses the local destination connector:
+
+import SingleStoreAPISh from '/snippets/source_connectors/singlestore.sh.mdx';
+import SingleStoreAPIPyV2 from '/snippets/source_connectors/singlestore.v2.py.mdx';
+
+<CodeGroup>
+  <SingleStoreAPISh />
+  <SingleStoreAPIPyV2 />
+</CodeGroup>
