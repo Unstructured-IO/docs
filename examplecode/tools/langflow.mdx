@@ -12,7 +12,11 @@ import AstraDBShared from '/snippets/general-shared-text/astradb.mdx';
 
 <AstraDBShared />
 
-Also, [sign up for a free Langflow account](https://astra.datastax.com/signup?type=langflow).
+Also:
+
+- [Sign up for an OpenAI account], and [get your OpenAI API key](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key).
+- [Sign up for a free Langflow account](https://astra.datastax.com/signup?type=langflow).
+- [Get your Unstructured Serverless API key]().
 
 ## Create and run the project
 
@@ -22,15 +26,18 @@ Also, [sign up for a free Langflow account](https://astra.datastax.com/signup?ty
         2. From your dashboard, click **New Project**.
         3. Click **Blank Flow**.
     </Step>
-    <Step title="Enter your Unstructured API key">
+    <Step title="Enter your API keys and tokens">
         1. In the top navigation bar, click the gear icon, and then click **Settings**.
 
            ...
 
-        2. With the **Global Variables** tab already selected, click **Add New**.
+        2. With the **Global Variables** tab already selected in the sidebar, click **Add New**.
         3. In the **Create Variable** dialog, for **Variable Name**, enter `UNSTRUCTURED_API_KEY`.
+
         4. For **Value**, enter your Unstructured API key.
         5. Click **Save Variable**.
+        6. Repeat this process for a global variable named `OPENAI_API_KEY`, set to the value of your OpenAI API key.
+        7. In the list of global variables, open **ASTRA_DB_APPLICATION_TOKEN**, set it to the value of your Astra DB application token, and then click **Update Variable**.
         6. In the top navigation bar, click the back arrow.
 
            ...
@@ -38,37 +45,79 @@ Also, [sign up for a free Langflow account](https://astra.datastax.com/signup?ty
     </Step>
     <Step title="Add the Unstructured component">
         1. On the sidebar, expand **Experimental (Beta)**, and then expand **Loaders**.
-        2. Drag the **Unstructured** component into the designer area.
-        3. In the **Unstructured** component, click the box or icon next to **File**, and then select the files to process.
+        2. Drag the **Unstructured** component onto the designer area.
+        3. In the **Unstructured** component, click the box or icon next to **File**, and then select a file or a directory of files for Unstructured to process. This component works only with the file extensions `.pdf`, `.docx`, and `.txt`.
+
+           ...
+
+        4. For **Unstructured.io Serverless API Key**, click the globe icon, and then select **UNSTRUCTURED_API_KEY**.
 
            ...
 
     </Step>
-    <Step title="Add the Split Text component">
-
-    </Step>
     <Step title="Add the OpenAI Embeddings component">
+        1. On the sidebar, expand **Embeddings**, and then drag the **OpenAI Embeddings** component onto the designer area.
+        2. In the **OpenAI Embeddings** component, for **Model**, select `text-embedding-3-large`.
+        3. For **OpenAI API Key**, click the globe icon, and then select **OPENAI_API_KEY**.
+
+           ...
 
     </Step>
     <Step title="Add the Chat Input component">
+        On the sidebar, expand **Input**, and then drag the **Chat Input** component onto the designer area.
 
+        ...
+        
     </Step>
     <Step title="Add the Astra DB component">
+        1. On the sidebar, expand **Vector Stores**, and then drag the **Astra DB** component onto the designer area.
+        2. In the **Astra DB** component, in the **Database** list, select the name of your Astra DB database.
+        3. In the **Collection** list, select the name of the collection in the database.
+        4. Connect the **Message** output from the **Chat Input** component to the **Search Input** input in the **Astra DB** component.
+        5. Connect the **Data** output from the **Unstructured** component to the **Ingest Data** input in the **Astra DB** component.
+        6. Connect the **Embeddings** output from the **OpenAI Embeddings** component to the **Embedding or Astra Vectorize** input in the  **Astra DB** component.
+
+           ...
 
     </Step>
     <Step title="Add the Parse Data component">
+        1. On the sidebar, expand **Helpers**, and then drag the **Parse Data** component onto the designer area.
+        2. Connect the **Search Results** output from the **Astra DB** component to the **Data** input in the **Parse Data** component.
+
+           ...
 
     </Step>
     <Step title="Add the Prompt component">
+        1. On the sidebar, expand **Prompts**, and then drag the **Prompt** component onto the designer area.
+        2. Connect the **Message** output from the **Chat Input** component to the **question** input in the **Prompt** component.
+        3. Connect the **Text** output from the **Pase Data** component to the **context** input in the **Prompt** component.
+
+           ...
 
     </Step>
     <Step title="Add the OpenAI component">
+        1. On the sidebar, expand **Models**, and then drag the **OpenAI** component onto the designer area.
+        2. In the **Model Name** list, select **gpt-4o**.
+        3. For **OpenAI API Key**, click the globe icon, and then select **OPENAI_API_KEY**. 
+        4. For **Temperature**, enter `0.1`.
+        5. Connect the **Prompt Message** output from the **Prompt** component to the **Input** input in the **OpenAI** component.
+        6. ...
+
+           ...
 
     </Step>
     <Step title="Add the Chat Output component">
+        1. On the sidebar, expand **Outputs**, and then drag the **Chat Output** component onto the designer area.
+        2. Connect the **Text** output from the **Chat Output** component to the **Text** input in the **Chat Output** component.
+        
+           ...
 
     </Step>
     <Step title="Run the project">
+        1. In the designer area, click **Playground**.
 
+           ...
+
+        2. In the **Split Text** component, click the play icon. Wait until 
     </Step>
 </Steps>
