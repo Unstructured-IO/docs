@@ -58,7 +58,7 @@ To create an automatic workflow:
 9. The **Reprocess all** box applies only to the Amazon S3 and Azure Blob Storage source connectors:
 
    - Checking this box reprocesses all documents in the source location on every workflow run.
-   - Unchecking this box causes only new documents that are added to the source location since the last workflow run to be processed on future runs.
+   - Unchecking this box causes only new documents that are added to the source location since the last workflow run to be processed on future runs. Previously processed documents are not processed again, even if those documents' contents change.
 
 10. If you want to retry processing any documents that failed to process, check the **Retry Failed Documents** box.
 11. Click **Continue**.
@@ -186,7 +186,7 @@ There are two ways to create a custom workflow:
 17. The **Reprocess all** box applies only to the Amazon S3 and Azure Blob Storage source connectors:
 
     - Checking this box reprocesses all documents in the source location on every workflow run.
-    - Unchecking this box causes only new documents that are added to the source location since the last workflow run to be processed on future runs.
+    - Unchecking this box causes only new documents that are added to the source location since the last workflow run to be processed on future runs. Previously processed documents are not processed again, even if those documents' contents change.
 
 18. Check the **Retry Failed Documents** box if you want to retry processing any documents that failed to process. 
 19. Click **Continue**.
@@ -217,7 +217,7 @@ There are two ways to create a custom workflow:
    The **Reprocess all** box applies only to the Amazon S3 and Azure Blob Storage source connectors:
 
    - Checking this box reprocesses all documents in the source location on every workflow run.
-   - Unchecking this box causes only new documents that are added to the source location since the last workflow run to be processed on future runs.
+   - Unchecking this box causes only new documents that are added to the source location since the last workflow run to be processed on future runs. Previously processed documents are not processed again, even if those documents' contents change.
 
 8. In the pipeline designer, click the **Source** node. In the **Source** pane, select the source location. Then click **Save**.
 
