@@ -7,7 +7,7 @@ It is open-source, fully customizable, and works with most LLMs and many vector 
 
 ![Langflow designer](/img/langflow/designer.png)
 
-This no-code, hands-on demonstration walks you through creating a Langflow project that enables you to use GPT-4o by OpenAI to chat 
+This no-code, hands-on demonstration walks you through creating a Langflow project that enables you to use GPT-4o-mini to chat 
 in real time with a PDF document that is processed by Unstructured and has its processed data stored in an 
 [Astra DB](https://www.datastax.com/products/datastax-astra) vector database.
 
@@ -71,19 +71,24 @@ Also:
         3. Repeat these previous two actions to add a second **Astra DB** component, renaming it to `Astra DB RAG`.
         4. In both of these **Astra DB** components, in the **Database** list, select the name of your Astra DB database. Make sure this is the same database name in both components.
         5. In the **Collection** list in both components, select the name of the collection in the database. Make sure this is the same collection name in both components.
-        6. In the **Astra DB Application Token** box in both components, enter your Astra DB application token's value.
+        6. In the **Astra DB Application Token** box in both components, enter your Astra DB application token's value. Make sure this is the same application token value in both components.
         7. Connect the **Data** output from the **Unstructured** component to the **Ingest Data** input in the **Astra DB Ingest** component.
+
+           To make the connection, click and hold your mouse pointer inside of the circle next to **Data** in the **Unstructured** component. 
+           While holding your mouse pointer, drag it over into the circle next to **Ingest Data** in the **Astra DB Ingest** component. Then 
+           release your mouse pointer. A line appears between these two circles.
+
         8. Connect the **Embeddings** output from the **OpenAI Embeddings** component to the **Embedding or Astra Vectorize** input in the  **Astra DB Ingest** component.
 
            ![Astra DB component](/img/langflow/astra-db-component.png)
 
         9. Wait until **Saved** appears in the top navigation bar.
         10. In the title bar of the **Astra DB Ingest** component, click the play icon. This ingests the processed data 
-            from Unstructured and the the associated generated vector embeddings into the specified Astra DB collection.
+            from Unstructured and the associated generated vector embeddings into the specified Astra DB collection.
 
             ![Play icon](/img/langflow/build.png)
 
-        11. Wait until **Building** disppears from the top navigation bar, and a green check mark appears next to the play icon. This could take several minutes.
+        11. Wait until **Building** disppears from the top navigation bar, and a green check mark appears next to this play icon. This could take several minutes.
     
             <Note>
                 Each time you click the play icon in the **Astra DB Ingest** component, Unstructured reprocesses the specified local 
@@ -140,13 +145,23 @@ Also:
 
            ![Connect Prompt component](/img/langflow/connect-prompt-component.png)
 
-        6. Wait until **Saved** appears in the top navigation bar.
+        
+        6. Connect the **Message** output from the **Chat Input** component to the **question** input in the **Prompt** component.
+
+           <Note>
+               You will now have two connections from the **Message** output in the **Chat Input** component:
+
+               - One connection was already made to the **Search Input** input in the **Astra DB RAG** component.
+               - Another connection has just now been made to the **question** input in the **Prompt** component.
+           </Note>
+
+        7. Wait until **Saved** appears in the top navigation bar.
     </Step>
     <Step title="Add the OpenAI component">
         In this step, you create a component that sends a prompt to a text-based LLM and outputs the LLM's response.
 
         1. On the sidebar, expand **Models**, and then drag the **OpenAI** component onto the designer area.
-        2. In the **Model Name** list, select **gpt-4o**.
+        2. In the **Model Name** list, select **gpt-4o-mini**.
         3. For **OpenAI API Key**, enter your OpenAI API key's value.
         4. For **Temperature**, enter `0.1`.
         5. Connect the **Prompt Message** output from the **Prompt** component to the **Input** input in the **OpenAI** component.
