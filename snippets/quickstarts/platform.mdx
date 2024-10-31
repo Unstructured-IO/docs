@@ -77,7 +77,11 @@ allowfullscreen
             - **Basic** is a good choice if you have text-only documents that have no images or tables in them.
             - **Advanced** is a good choice if you have complex documents that have images or tables or both in them.
 
-        9. If you want to overwrite any files in the destination location that might have been previously processed, check the **Reprocess all** box.
+        9. The **Reprocess all** box applies only to the Amazon S3 and Azure Blob Storage source connectors:
+
+           - Checking this box reprocesses all documents in the source location on every workflow run.
+           - Unchecking this box causes only new documents that are added to the source location since the last workflow run to be processed on future runs. Previously processed documents are not processed again, even if those documents' contents change.
+
         10. If you want to retry processing any documents that failed to process, check the **Retry Failed Documents** box.
         11. Click **Continue**.
         12. If you want this workflow to run on a schedule, in the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
