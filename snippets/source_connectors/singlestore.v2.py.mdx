@@ -1,0 +1,60 @@
+```python Python Ingest v2
+import os
+
+from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+from unstructured_ingest.v2.interfaces import ProcessorConfig
+
+from unstructured_ingest.v2.processes.connectors.sql.singlestore import (
+    SingleStoreIndexerConfig,
+    SingleStoreDownloaderConfig,
+    SingleStoreConnectionConfig,
+    SingleStoreAccessConfig
+)
+
+from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+from unstructured_ingest.v2.processes.chunker import ChunkerConfig
+from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+
+from unstructured_ingest.v2.processes.connectors.local import (
+    LocalUploaderConfig,
+    LocalConnectionConfig
+)
+
+# Chunking and embedding are optional.
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=SingleStoreIndexerConfig(
+            table_name=os.getenv("SINGLESTORE_TABLE"),
+            id_column="id",
+            batch_size=100
+        ),
+        downloader_config=SingleStoreDownloaderConfig(
+            download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")
+        ),
+        source_connection_config=SingleStoreConnectionConfig(
+            access_config=SingleStoreAccessConfig(
+                password=os.getenv("SINGLESTORE_PASSWORD")
+            ),
+            host=os.getenv("SINGLESTORE_HOST"),
+            port=os.getenv("SINGLESTORE_PORT"),
+            user=os.getenv("SINGLESTORE_USER"),
+            database=os.getenv("SINGLESTORE_DB")
+        ),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
+        destination_connection_config=LocalConnectionConfig(),
+        uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
+    ).run()
+```

@@ -55,7 +55,11 @@ To create an automatic workflow:
    - **Basic** is a good choice if you have text-only documents that have no images or tables in them.
    - **Advanced** is a good choice if you have complex documents that have images or tables or both in them.
 
-9. If you want to overwrite any files in the destination location that might have been previously processed, check the **Reprocess all** box.
+9. The **Reprocess all** box applies only to the Amazon S3 and Azure Blob Storage source connectors:
+
+   - Checking this box reprocesses all documents in the source location on every workflow run.
+   - Unchecking this box causes only new documents that are added to the source location since the last workflow run to be processed on future runs. Previously processed documents are not processed again, even if those documents' contents change.
+
 10. If you want to retry processing any documents that failed to process, check the **Retry Failed Documents** box.
 11. Click **Continue**.
 12. If you want this workflow to run on a schedule, in the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
@@ -171,16 +175,27 @@ There are two ways to create a custom workflow:
 16. In the **Embed** area, for **Provider**, choose one of the following:
 
     - **None**: Do not generate embeddings.
-    - **OpenAI**: Use OpenAI to generate embeddings.
-    - **Vertex AI**: Use Vertex AI to generate embeddings.
+    - **OpenAI**: Use OpenAI to generate embeddings. Also, choose the model to use:
+
+      - **text-embedding-3-small**, with 1536 dimensions.
+      - **text-embedding-3-large**, with 3072 dimensions.
+      - **Ada 002 (Text)**, with 1536 dimensions.
+
+      [Learn more](https://platform.openai.com/docs/guides/embeddings).
+
+    - **Vertex AI**: Use Vertex AI to generate embeddings by using the `textembedding-gecko@001` model, with 768 dimensions. [Learn more](https://cloud.google.com/vertex-ai/generative-ai/docs/embeddings/get-text-embeddings).
         
     Learn more:
         
     - [Embedding overview](/platform/embedding)
     - [Understanding embedding models: make an informed choice for your RAG](https://unstructured.io/blog/understanding-embedding-models-make-an-informed-choice-for-your-rag).
 
-17. Check the **Reprocess all** box if you want to overwrite any files in the destination location that might have been previously processed, 
-18. Check the **Retry Failed Documents** box if you want to retry processing any documents that failed to process, 
+17. The **Reprocess all** box applies only to the Amazon S3 and Azure Blob Storage source connectors:
+
+    - Checking this box reprocesses all documents in the source location on every workflow run.
+    - Unchecking this box causes only new documents that are added to the source location since the last workflow run to be processed on future runs. Previously processed documents are not processed again, even if those documents' contents change.
+
+18. Check the **Retry Failed Documents** box if you want to retry processing any documents that failed to process. 
 19. Click **Continue**.
 20. If you want this workflow to run on a schedule, in the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
 21. Click **Complete**.
@@ -205,6 +220,12 @@ There are two ways to create a custom workflow:
 5. Next to **Name**, click the pencil icon, enter some unique name for this workflow, and then click the check mark icon.
 6. If you want this workflow to run on a schedule, click the **Schedule** button. In the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings.
 7. To overwrite any previously processed files, or to retry any documents that fail to process, click the **Settings** button, and check either or both of the boxes.
+
+   The **Reprocess all** box applies only to the Amazon S3 and Azure Blob Storage source connectors:
+
+   - Checking this box reprocesses all documents in the source location on every workflow run.
+   - Unchecking this box causes only new documents that are added to the source location since the last workflow run to be processed on future runs. Previously processed documents are not processed again, even if those documents' contents change.
+
 8. In the pipeline designer, click the **Source** node. In the **Source** pane, select the source location. Then click **Save**.
 
    ![Workflow designer](/img/platform/Workflow-Designer.png)
@@ -299,8 +320,15 @@ There are two ways to create a custom workflow:
     <Accordion title="Embedder node">
         For **Providers**, select one of the following:
 
-        - **OpenAI**: Use OpenAI to generate embeddings.
-        - **Vertex AI**: Use Vertex AI to generate embeddings.
+        - **OpenAI**: Use OpenAI to generate embeddings. Also, choose the model to use:
+
+          - **text-embedding-3-small**, with 1536 dimensions.
+          - **text-embedding-3-large**, with 3072 dimensions.
+          - **Ada 002 (Text)**, with 1536 dimensions.
+
+          [Learn more](https://platform.openai.com/docs/guides/embeddings).
+
+        - **Vertex AI**: Use Vertex AI to generate embeddings by using the `textembedding-gecko@001` model, with 768 dimensions. [Learn more](https://cloud.google.com/vertex-ai/generative-ai/docs/embeddings/get-text-embeddings).
         
         Learn more:
         
