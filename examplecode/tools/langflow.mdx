@@ -1,0 +1,204 @@
+---
+title: Langflow
+---
+
+[Langflow](https://www.langflow.org/) is a visual framework for building multi-agent and RAG applications. 
+It is open-source, fully customizable, and works with most LLMs and many vector stores out of the box. 
+
+![Langflow designer](/img/langflow/designer.png)
+
+This no-code, hands-on demonstration walks you through creating a Langflow project that enables you to use GPT-4o-mini to chat 
+in real time with a PDF document that is processed by Unstructured and has its processed data stored in an 
+[Astra DB](https://www.datastax.com/products/datastax-astra) vector database.
+
+## Prerequisites
+
+import AstraDBShared from '/snippets/general-shared-text/astradb.mdx';
+
+<AstraDBShared />
+
+Also:
+
+- [Sign up for an OpenAI account](https://platform.openai.com/signup), and [get your OpenAI API key](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key).
+- [Sign up for a free Langflow account](https://astra.datastax.com/signup?type=langflow).
+- [Get your Unstructured Serverless API key](/api-reference/api-services/saas-api-development-guide#get-started).
+
+## Create and run the demonstration project
+
+<Steps>
+    <Step title="Create the Langflow project">
+        1. Sign in to your Langflow dashboard.
+        2. From your dashboard, click **New Project**.
+        3. Click **Blank Flow**.
+    </Step>
+    <Step title="Add the Unstructured component">
+        In this step, you add a component that instructs Unstructured Serverless API services to process a local file or a local directory of files that you specify.
+ 
+        1. On the sidebar, expand **Experimental (Beta)**, and then expand **Loaders**.
+        2. Drag the **Unstructured** component onto the designer area.
+        3. In the **Unstructured** component, click the box or icon next to **File**, and then select a file or a directory of files for Unstructured to process. This component works only with the file extensions `.pdf`, `.docx`, and `.txt`.
+
+           You can select any files that you want. This demonstration uses [the text of the United States Constitution in PDF format](https://constitutioncenter.org/media/files/constitution.pdf), 
+           saved to your local development machine.
+
+        4. For **Unstructured.io Serverless API Key**, enter your Unstructured API key value.
+
+           ![Unstructured component](/img/langflow/unstructured-component.png)
+
+        5. Wait until **Saved** appears in the top navigation bar.
+
+           ![Saved message](/img/langflow/saved.png)
+
+    </Step>
+    <Step title="Add the OpenAI Embeddings component">
+        In this step, you add a component that generates vector embeddings for the processed data that Unstructured outputs.
+
+        1. On the sidebar, expand **Embeddings**, and then drag the **OpenAI Embeddings** component onto the designer area.
+        2. In the **OpenAI Embeddings** component, for **Model**, select `text-embedding-3-large`.
+        3. For **OpenAI API Key**, enter your OpenAI API key's value.
+
+           ![OpenAI Embeddings component](/img/langflow/openai-embeddings-component.png)
+
+        4. Wait until **Saved** appears in the top navigation bar.
+    </Step>
+    <Step title="Add the Astra DB components">
+        In this step, you add two components. The first component instructs Astra DB to ingest into the specified Astra DB collection the processed data that Unstructured outputs along 
+        with the associated generated vector embeddings. The second component instructs Astra DB to take user-supplied chat messages and perform contextual 
+        searches over the ingested data in the specified Astra DB collection, outputting its search results. 
+
+        1. On the sidebar, expand **Vector Stores**, and then drag the **Astra DB** component onto the designer area.
+        2. Double-click the **Astra DB** component's title bar, and rename the component to `Astra DB Ingest`.
+        3. Repeat these previous two actions to add a second **Astra DB** component, renaming it to `Astra DB RAG`.
+        4. In both of these **Astra DB** components, in the **Database** list, select the name of your Astra DB database. Make sure this is the same database name in both components.
+        5. In the **Collection** list in both components, select the name of the collection in the database. Make sure this is the same collection name in both components.
+        6. In the **Astra DB Application Token** box in both components, enter your Astra DB application token's value. Make sure this is the same application token value in both components.
+        7. Connect the **Data** output from the **Unstructured** component to the **Ingest Data** input in the **Astra DB Ingest** component.
+
+           To make the connection, click and hold your mouse pointer inside of the circle next to **Data** in the **Unstructured** component. 
+           While holding your mouse pointer, drag it over into the circle next to **Ingest Data** in the **Astra DB Ingest** component. Then 
+           release your mouse pointer. A line appears between these two circles.
+
+        8. Connect the **Embeddings** output from the **OpenAI Embeddings** component to the **Embedding or Astra Vectorize** input in the  **Astra DB Ingest** component.
+
+           ![Astra DB component](/img/langflow/astra-db-component.png)
+
+        9. Wait until **Saved** appears in the top navigation bar.
+        10. In the title bar of the **Astra DB Ingest** component, click the play icon. This ingests the processed data 
+            from Unstructured and the associated generated vector embeddings into the specified Astra DB collection.
+
+            ![Play icon](/img/langflow/build.png)
+
+        11. Wait until **Building** disppears from the top navigation bar, and a green check mark appears next to this play icon. This could take several minutes.
+    
+            <Note>
+                Each time you click the play icon in the **Astra DB Ingest** component, Unstructured reprocesses the specified local 
+                file or a local directory. If neither the specified file names or directories nor the specified collection name change, this could result in multiple duplicate records 
+                being inserted into the specified Astra DB collection. You should only click the play icon in the **Astra DB Ingest** component when you want to insert new processed data into 
+                the specified Astra DB collection.
+            </Note>
+    </Step>
+    <Step title="Add the Chat Input component">
+        In this step, you add a component that takes user-supplied chat messages and sends them as input to Astra DB for contextual searching.
+
+        1. On the sidebar, expand **Inputs**, and then drag the **Chat Input** component onto the designer area.
+        2. Connect the **Message** output from the **Chat Input** component to the **Search Input** input in the **Astra DB RAG** component.
+        
+           ![Chat Input component](/img/langflow/chat-input-component.png)
+
+        3. Wait until **Saved** appears in the top navigation bar.
+    </Step>
+    <Step title="Add the Parse Data component">
+        In this step, you add a component that takes the Astra DB search results and converts them into plain text, suitable for inclusion in 
+        a prompt to a text-based LLM.
+
+        1. On the sidebar, expand **Helpers**, and then drag the **Parse Data** component onto the designer area.
+        2. Connect the **Search Results** output from the **Astra DB RAG** component to the **Data** input in the **Parse Data** component.
+
+           ![Parse Data component](/img/langflow/parse-data-component.png)
+
+        3. Wait until **Saved** appears in the top navigation bar.
+    </Step>
+    <Step title="Add the Prompt component">
+        In this step, you add a component that builds a prompt and then sends it to a text-based LLM.
+
+        1. On the sidebar, expand **Prompts**, and then drag the **Prompt** component onto the designer area.
+        2. In the **Prompt** component, next to **Template**, click the box or arrow icon.
+        3. In the **Edit Prompt** window, enter the following prompt:
+
+           ```text
+           {context}
+
+           ---
+
+           Given the context above, answer the question as best as possible.
+
+           Question: {question}
+
+           Answer: 
+           ```
+
+        4. Click **Check & Save**.
+
+           ![Prompt component](/img/langflow/edit-prompt.png)
+
+        5. Connect the **Text** output from the **Parse Data** component to the **context** input in the **Prompt** component.
+
+           ![Connect Prompt component](/img/langflow/connect-prompt-component.png)
+
+        
+        6. Connect the **Message** output from the **Chat Input** component to the **question** input in the **Prompt** component.
+
+           <Note>
+               You will now have two connections from the **Message** output in the **Chat Input** component:
+
+               - One connection was already made to the **Search Input** input in the **Astra DB RAG** component.
+               - Another connection has just now been made to the **question** input in the **Prompt** component.
+           </Note>
+
+        7. Wait until **Saved** appears in the top navigation bar.
+    </Step>
+    <Step title="Add the OpenAI component">
+        In this step, you create a component that sends a prompt to a text-based LLM and outputs the LLM's response.
+
+        1. On the sidebar, expand **Models**, and then drag the **OpenAI** component onto the designer area.
+        2. In the **Model Name** list, select **gpt-4o-mini**.
+        3. For **OpenAI API Key**, enter your OpenAI API key's value.
+        4. For **Temperature**, enter `0.1`.
+        5. Connect the **Prompt Message** output from the **Prompt** component to the **Input** input in the **OpenAI** component.
+
+           ![OpenAI component](/img/langflow/openai-component.png)
+
+        6. Wait until **Saved** appears in the top navigation bar.
+    </Step>
+    <Step title="Add the Chat Output component">
+        In this step, you create a component that returns the answer to the user's original chat message.
+
+        1. On the sidebar, expand **Outputs**, and then drag the **Chat Output** component onto the designer area.
+        2. Connect the **Text** output from the **OpenAI** component to the **Text** input in the **Chat Output** component.
+        
+           ![Chat Output component](/img/langflow/chat-output-component.png)
+
+        3. Wait until **Saved** appears in the top navigation bar.
+
+        The final project should look like this:
+
+        ![Final project results](/img/langflow/final-project.png)
+
+    </Step>
+    <Step title="Run the project">
+        1. In the designer area, click **Playground**.
+
+           ![Open Playground button](/img/langflow/open-playground.png)
+
+        2. Enter a question into the chat box, for example, `What rights does the fifth amendment guarantee?` Then press the send button.
+
+           ![Playground window](/img/langflow/playground.png)
+
+        3. Wait until the answer appears.
+        4. Ask as many additional questions as you want to. 
+    </Step>
+</Steps>
+
+## Learn more
+
+See the [Langflow documentation](https://docs.langflow.org/).
