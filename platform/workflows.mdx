@@ -109,7 +109,7 @@ There are two ways to create a custom workflow:
 
     - **Fast**: This strategy uses traditional NLP extraction techniques to quickly pull in all text elements. This strategy is not good for image-based file types or files with images or tables in them.
     - **Hi-res**: This strategy uses the document layout to gain additional information about document elements. This strategy is good for image-based file types and files with images or tables in them. This strategy is recommended if your use case is highly sensitive to correct classification for document elements.
-    - **VLM**: This strategy provides the highest accuracy for parsing image and PDF files by using visual language models (VLMs).
+    - **VLM**: This strategy provides the highest accuracy for parsing image and PDF files by using visual language models (VLMs). Files that are not images or PDFs are processed by using the **Hi-res** strategy and are charged at the **Hi-res** rate instead.
     - **Auto**: This strategy chooses the partitioning strategy on a file-by-file basis, depending on detected document characteristics.
 
     [Learn more](/platform/partitioning).
@@ -264,7 +264,7 @@ There are two ways to create a custom workflow:
         - **Auto**: This strategy chooses the partitioning strategy on a file-by-file basis, depending on detected document characteristics.    
         - **Fast**: This strategy uses traditional NLP extraction techniques to quickly pull in all text elements. This strategy is not good for image-based file types or files with images or tables in them.
         - **Hi-res**: This strategy uses the document layout to gain additional information about document elements. This strategy is good for image-based file types and files with images or tables in them. This strategy is recommended if your use case is highly sensitive to correct classification for document elements. 
-        - **VLM**: This strategy provides the highest accuracy for parsing image and PDF files by using visual language models (VLMs).
+        - **VLM**: This strategy provides the highest accuracy for parsing image and PDF files by using visual language models (VLMs). Files that are not images or PDFs are processed by using the **Hi-res** strategy and are charged at the **Hi-res** rate instead.
 
 
         [Learn more](/platform/partitioning).
