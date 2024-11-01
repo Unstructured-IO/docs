@@ -13,6 +13,13 @@ or for those who do not want to spend lots of time learning about how to compare
 Just point the Unstructured Platform to your [source connector](/platform/sources/overview) and, after just a few minutes of 
 back-end analysis, Unstructured delivers its recommendation to you.
 
+Unstructured makes recommendations from among its list of preapproved embedding models. You cannot include unapproved 
+embedding models in the recommendation process. Nor can you restrict the process to consider only specific preapproved models, 
+specific numbers or ranges of dimensions, or other criteria.
+
+To make its recommendation, Unstructured uses the [Hi-res partitioning strategy](/platform/partitioning) to process and then analyze up to 50 files that 
+it randomly chooses from the specified source location. Your Unstructured account is charged at the **Hi-res** rate for this activity.
+
 ## Get a recommendation
 
 1. In the Unstructured Platform, [create a source connector](/platform/sources/overview), if you do not already have one, for the source location that you want to get a recommendation for.
@@ -28,8 +35,7 @@ For a [Build it with me - Custom](/platform/workflows#build-it-with-me-custom) w
 
 1. In the **Embed** section, for **Provider**, select the recommended embedding provider's name.
 2. If you select **OpenAI**, then for **Model**, select the recommended embedding model's name.
-3. Make a note of the number of dimensions displayed for the model that you selected. If you selected **VertexAI** instead of 
-   **OpenAI**, the number of dimensions is 768.
+3. Make a note of the number of dimensions for the model that you selected. [View the number of dimensions by model](/platform/embedding#generate-embeddings).
 4. To save these settings, continue creating or editing the workflow as usual.
 
 <Note>
@@ -44,8 +50,7 @@ For a [Build it myself](/platform/workflows#build-it-myself) workflow:
 2. In the **Embedder** node's settings pane, with the **Details** button already clicked, for **Select Embedding Provider**, 
    select the recommended embedding provider's name.
 3. If you select **OpenAI**, then for **OpenAI**, select the recommended embedding model's name.
-4. Make a note of the number of dimensions displayed for the model that you selected. If you selected **VertexAI** instead of 
-   **OpenAI**, the number of dimensions is 768.
+4. Make a note of the number of dimensions displayed for the model that you selected. [View the number of dimensions by model](/platform/embedding#generate-embeddings).
 5. To save these settings, continue creating or editing the workflow as usual.
 
 <Note>
