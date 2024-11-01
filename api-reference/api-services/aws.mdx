@@ -6,7 +6,7 @@ description: Follow these steps to deploy the Unstructured API service into your
 <Warning>
     This article describes how to create several interrelated resources in your AWS account. 
     Your AWS account will be charged on an ongoing basis for these resources, even if you are not actively using them.<br/><br/>
-    Manually stopping or terminating the associated Amazon EC2 instance alone will not reduce these ongoing charges.<br/><br/>
+    Manually stopping or terminating the associated Amazon EC2 instances alone will not reduce these ongoing charges.<br/><br/>
     To stop accruing all related ongoing charges, you must delete all of the associated AWS resources. 
     To do this, see [Manage related AWS account costs](#manage-related-aws-account-costs).
 </Warning>
@@ -330,18 +330,28 @@ If you need to access the Amazon EC2 instance that hosts the Unstructured API, d
 
 ## Manage related AWS account costs
 
-After you run the CloudFormation stack, costs will begin accruing to your AWS account on an ongoing basis for related AWS resources. 
-These costs vary based on where these resource are located, which resources are covered by AWS Free Tier offerings, the extent to 
+After you run the CloudFormation stack that you created in Part II, charges will begin accruing to your AWS account on an ongoing basis for related AWS resources. 
+The amounts of these charges vary based on where these resource are located, which resources are covered by AWS Free Tier offerings, the extent to 
 which you customize these resources' settings, how much you use these resources, and other factors. Stopping or terminating 
-the related Amazon EC2 instance alone will not reduce these costs.
+the related Amazon EC2 instances alone will not eliminate these ongoing charges.
 
-To stop these costs from accruing, delete the CloudFormation stack. This stops and deletes all of the related AWS resources. 
-To delete the CloudFormation stack, do the following:
+To stop these charges from accruing, 
+[delete the CloudFormation stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-delete-stack.html) 
+that you created and ran in Part II. This stops and deletes all of the related AWS resources. 
 
-1. In the CloudFormation console, open the details page for the stack from Part II. If you do not see it, on the CloudFormation console's sidebar, click **Stacks**, and then click the name of your stack.
+Before you delete the stack, note the following:
 
-2. Click **Delete**. 
+- You should click the **Resources** tab on the stack's details page to be aware of the associated resources that will be deleted.
+- You should note any resource dependencies, resources with deletion protection or termination protection enabled, or nested stacks 
+  that might prevent stack deletion, and resolve these issues that could prevent stack deletion. To find these kinds of issues:
 
-3. Follow the on-screen directions to finish deleting the stack. 
+  - On the **Template** tab on the stack's details page, look for occurences of the `DependsOn` attribute, which are set to the name 
+    of the resource dependency.
+  - On the **Template** tab on the stack's details page, look for occurences of the `DeletionPolicy` attribute set to `Retain` or the 
+    `UpdateReplacePolicy` attribute set to `Retain`. The associated resources have deletion protection enabled.
+  - On the **Stack info** tab on the stack's details page, look for the **Termination protection** field. If it is set to **Activated**, 
+    termination protection is enabled.
+  - On the **Resources** tab on the stack's details page, look for resources with their **Type** set to `AWS::CloudFormation::Stack`. These indicate nested stacks.
 
+After you delete the stack, you should check your [AWS Billing and Cost Management dashboard](https://docs.aws.amazon.com/awsconsolehelpdocs/latest/gsg/billinginfo.html) to confirm that associated charges are no longer accruing.
 
