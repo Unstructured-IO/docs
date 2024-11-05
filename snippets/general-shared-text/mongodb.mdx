@@ -17,4 +17,22 @@ allowfullscreen
 - The cluster must have at least one database. [Create a database](https://www.mongodb.com/docs/compass/current/databases/#create-a-database).
 - The database must have at least one user, and that user must have sufficient access to the database. [Create a database user](https://www.mongodb.com/docs/atlas/security-add-mongodb-users/#add-database-users). [Give the user database access](https://www.mongodb.com/docs/manual/core/authorization/).
 - The database must have at least one collection. [Create a collection](https://www.mongodb.com/docs/compass/current/collections/#create-a-collection).
-- The URI for the cluster. This URI must include the protocol, username, password, and host. [Learn how to get this value](https://www.mongodb.com/resources/products/fundamentals/mongodb-connection-string).
+- The connection string for the cluster. For MongoDB Atlas, this connection string must include the protocol, username, password, host, and cluster name. For example:
+
+  ```text
+  mongodb+srv://<db_user>:<db_password>@<host>/?retryWrites=true&w=majority&appName=<cluster>
+  ```
+
+  To get the connection string in MongoDB Atlas, do the following:
+
+  1. Log in to your MongoDB Atlas console.
+  2. In the sidebar, under **Databases**, click **Clusters**.
+  3. Click on the cluster you want to connect to.
+  4. Click **Connect**, or click the **Cmd Line Tools** tab and then click **Connect Instructions**.
+  5. Click **Drivers**.
+  6. Under **Add your connection string into your application code**, copy the connection string. 
+     You can then close the **Connect** dialog in MongoDB Atlas.
+
+     Before you use this connection string, be sure to fill in any placeholders in the string, such as your MongoDB Atlas database user's password value. 
+
+  [Learn more](https://www.mongodb.com/resources/products/fundamentals/mongodb-connection-string).
