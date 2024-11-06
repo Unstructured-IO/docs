@@ -12,11 +12,35 @@ allowfullscreen
 
 - The SharePoint site URL.
 
-  - Site URLs typically have the format `https://[tenant].sharepoint.com`.
-  - Relative site URLs typically have the format `https://[tenant].sharepoint.com/sites/<site_name>`. 
-  - To process all sites within a tenant, use a site URL of `https://[tenant]-admin.sharepoint.com`. This requires the app to be registered at a tenant level.
+  - Site URLs typically have the format `https://<tenant>.sharepoint.com`.
+  - Relative site URLs typically have the format `https://<tenant>.sharepoint.com/sites/<site_name>`. 
+  - To process all sites within a tenant, use a site URL of `https://<tenant>-admin.sharepoint.com`. This requires the app to be registered at a tenant level.
 
   [Learn more](https://learn.microsoft.com/microsoft-365/community/query-string-url-tricks-sharepoint-m365).
 
 - The path in the SharePoint site from which to start parsing files, for example `"Shared Documents"`. If the connector is to process all sites within the tenant, this filter will be applied to all site document libraries.
-- A SharePoint app principal with it application (client) ID, client secret, and access permissions to the SharePoint instance. [Get a client ID and client secret, and set access permissions](https://github.com/vgrem/Office365-REST-Python-Client/wiki/How-to-connect-to-SharePoint-Online-and-and-SharePoint-2013-2016-2019-on-premises--with-app-principal).
+- A SharePoint app principal with its application (client) ID, client secret, and access permissions to the SharePoint instance. [Get a client ID and client secret, and set access permissions](https://github.com/vgrem/Office365-REST-Python-Client/wiki/How-to-connect-to-SharePoint-Online-and-and-SharePoint-2013-2016-2019-on-premises--with-app-principal).
+
+  You can create SharePoint app principals through `https://<tenant>.sharepoint.com/_layouts/15/appregnew.aspx`.
+
+  For a SharePoint app principal with site-scoped permissions, use app permission request XML such as the following to grant 
+  permissions through `https://<tenant>.sharepoint.com/_layouts/15/appinv.aspx`:
+
+  ```xml
+  <AppPermissionRequests AllowAppOnlyPolicy="true">
+    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="FullControl" />
+  </AppPermissionRequests>
+  ```
+
+  For a SharePoint app principal with tenant-scoped permissions, use app permission request XML such as the following to grant 
+  permissions through `https://<tenant>-admin.sharepoint.com/_layouts/15/appinv.aspx` instead:
+
+  ```xml
+  <AppPermissionRequests AllowAppOnlyPolicy="true">
+    <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
+  </AppPermissionRequests>
+  ```
+
+  Available `Right` settings include `Read`, `Write`, `Manage`, and `FullControl`. To learn more, see 
+  [Add-in permissions in SharePoint](https://learn.microsoft.com/sharepoint/dev/sp-add-ins/add-in-permissions-in-sharepoint).
+
