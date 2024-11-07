@@ -73,3 +73,21 @@ For more information about prerequisites, see the following:
   If the target files are in a folder, the path to the target folder in the S3 bucket, formatted as `protocol://bucket/path/to/folder/` (for example, `s3://my-bucket/my-folder/`). 
 - If the target files are in a folder, make sure the authenticated AWS IAM user has 
   authenticated access to the folder as well. [Enable authenticated folder access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html#example-bucket-policies-folders).
+
+## Add an access policy to an existing bucket
+
+import S3BucketPolicy from '/snippets/general-shared-text/s3-bucket-policy.mdx';
+
+<S3BucketPolicy />
+
+## Create a bucket with AWS CloudFormation
+
+import S3BucketCloudFormation from '/snippets/general-shared-text/s3-cf-setup.mdx';
+
+<S3BucketCloudFormation />
+
+## Create a bucket with the AWS CLI
+
+import S3BucketCLI from '/snippets/general-shared-text/s3-cli-setup.mdx';
+
+<S3BucketCLI />
