@@ -21,17 +21,17 @@ allowfullscreen
   - Azure: `https://adb-<workspace-id>.<random-number>.azuredatabricks.net`
   - GCP: `https://<workspace-id>.<random-number>.gcp.databricks.com`
 
-- The Databricks compute resource's ID. Get the compute resource ID for 
-  [AWS](https://docs.databricks.com/integrations/compute-details.html), 
-  [Azure](https://learn.microsoft.com/azure/databricks/integrations/compute-details), 
-  or [GCP](https://docs.gcp.databricks.com/integrations/compute-details.html).
-
 - The Databricks authentication details. For more information, see the documentation for 
   [AWS](https://docs.databricks.com/dev-tools/auth/index.html), 
   [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/), 
   or [GCP](https://docs.gcp.databricks.com/dev-tools/auth/index.html).
 
-  More specifically, you will need:
+  For the [Unstructured Platform](/platform/overview), only the following Databricks authentication type is supported:
+  
+  - For OAuth machine-to-machine (M2M) authentication (AWS, Azure, and GCP): The client ID and OAuth secret values for the corresponding service principal.
+    Note that for Azure, only Databricks-managed service principals are supported. Microsoft Entra ID-managed service principals are not supported.
+  
+  For [Unstructured Ingest](/ingestion/overview), the following Databricks authentication types are supported:
 
   - For Databricks personal access token authentication (AWS, Azure, and GCP): The personal access token's value.
   - For username and password (basic) authentication (AWS only): The user's name and password values.
@@ -44,6 +44,10 @@ allowfullscreen
   - For Google Cloud Platform credentials authentication (GCP only): The local path to the corresponding Google Cloud service account's credentials file.
   - For Google Cloud Platform ID authentication (GCP only): The Google Cloud service account's email address.
 
-- The Databricks catalog name for the Volume. Get the catalog name for [AWS](https://docs.databricks.com/catalogs/manage-catalog.html), [Azure](https://learn.microsoft.com/azure/databricks/catalogs/manage-catalog), or [GCP](https://docs.gcp.databricks.com/catalogs/manage-catalog.html).
-- The Databricks schema name for the Volume. Get the schema name for [AWS](https://docs.databricks.com/schemas/manage-schema.html), [Azure](https://learn.microsoft.com/azure/databricks/schemas/manage-schema), or [GCP](https://docs.gcp.databricks.com/schemas/manage-schema.html).
-- The Databricks Volume name, and optionally any path in that Volume that you want to access directly. Get the Volume information for [AWS](https://docs.databricks.com/files/volumes.html), [Azure](https://learn.microsoft.com/azure/databricks/files/volumes), or [GCP](https://docs.gcp.databricks.com/files/volumes.html).
+- The Databricks catalog name for the volume. Get the catalog name for [AWS](https://docs.databricks.com/catalogs/manage-catalog.html), [Azure](https://learn.microsoft.com/azure/databricks/catalogs/manage-catalog), or [GCP](https://docs.gcp.databricks.com/catalogs/manage-catalog.html).
+- The Databricks schema name for the volume. Get the schema name for [AWS](https://docs.databricks.com/schemas/manage-schema.html), [Azure](https://learn.microsoft.com/azure/databricks/schemas/manage-schema), or [GCP](https://docs.gcp.databricks.com/schemas/manage-schema.html).
+- The Databricks volume name, and optionally any path in that volume that you want to access directly. Get the volume information for [AWS](https://docs.databricks.com/files/volumes.html), [Azure](https://learn.microsoft.com/azure/databricks/files/volumes), or [GCP](https://docs.gcp.databricks.com/files/volumes.html).
+- Make sure that the target user or service principal has access to the target volume. To learn more, see the documentation for 
+  [AWS](https://docs.databricks.com/volumes/utility-commands.html#change-permissions-on-a-volume), 
+  [Azure](https://learn.microsoft.com/azure/databricks/volumes/utility-commands#change-permissions-on-a-volume), 
+  or [GCP](https://docs.gcp.databricks.com/volumes/utility-commands.html#change-permissions-on-a-volume).
