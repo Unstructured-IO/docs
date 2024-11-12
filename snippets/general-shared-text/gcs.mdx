@@ -1,6 +1,30 @@
 The Google Cloud Storage prerequisites:
 
-- A Google Cloud Storage bucket URL, beginning with `gs://`.
-- A Google Cloud service account key for Google Cloud Storage. The service account key must have at least the **Storage Object Viewer** role to ensure proper access permissions. [Create a service account key](https://cloud.google.com/iam/docs/keys-create-delete#creating). [Assign a role](https://cloud.google.com/storage/docs/access-control/iam).
+- A Google Cloud service account. [Create a service account](https://cloud.google.com/iam/docs/service-accounts-create#console).
+- A service account key for the service account. See [Create a service account key](https://cloud.google.com/iam/docs/keys-create-delete#creating) in
+  [Create and delete service account keys](https://cloud.google.com/iam/docs/keys-create-delete). 
 
-[Learn more](https://cloud.google.com/storage/docs).
+  To ensure maximum compatibility across Unstructured service offerings, you should give the service account key information to Unstructured as 
+  a single-line string that contains the contents of the downloaded service account key file (and not the service account key file itself). 
+  To print this single-line string without line breaks, suitable for copying, you can run one of the following commands from your Terminal or Command Prompt. 
+  In this command, replace `<path-to-downloaded-key-file>` with the path to the service account key file that you downloaded by following the preceding instructions.
+
+  - For macOS or Linux: 
+    ```text
+    tr -d '\n' < <path-to-downloaded-key-file>
+    ```
+  - For Windows:
+    ```text
+    (Get-Content -Path "<path-to-downloaded-key-file>" -Raw).Replace("`r`n", "").Replace("`n", "")
+    ```
+
+- The URI for a Google Cloud Storage bucket. This URI consists of the target bucket name, plus any target folder within the bucket, expressed as `gs://<bucket-name>[/folder-name]`. [Create a bucket](https://cloud.google.com/storage/docs/creating-buckets#console).
+
+  This bucket must have, at minimum, one of the following roles applied to the target Google Cloud service account:
+
+  - `Storage Object Viewer` for bucket read access.
+  - `Storage Object Creator` for bucket write access.
+  - The `Storage Object Admin` role provides read and write access, plus access to additional bucket operations.
+
+  To apply one of these roles to a service account for a bucket, see [Add a principal to a bucket-level policy](https://cloud.google.com/storage/docs/access-control/using-iam-permissions#bucket-add) 
+  in [Set and manage IAM policies on buckets](https://cloud.google.com/storage/docs/access-control/using-iam-permissions).
