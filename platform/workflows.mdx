@@ -109,9 +109,12 @@ There are two ways to create a custom workflow:
 9. In the **Strategy** area, choose one of the following:
 
     - **Fast**: Ideal for simple, text-only documents.
-    - **Hi-res**: Best for PDFs, images, and complex file types.
+    - **Hi-Res**: Best for PDFs, images, and complex file types.
     - **VLM**: For your most challenging documents, including scanned and handwritten content. It uses vision language models (VLMs). 
-      During processing, files that are not PDFs or images are processed by using the **Hi-res** strategy and are charged at the **Hi-res** rate instead.
+      During processing, files that are not PDFs or images are processed by using the **Hi-Res** strategy and are charged at the **Hi-Res** rate instead.
+    - **Auto**: This strategy examines each file before processing it. If the file is an image, or if the file is a PDF and at least one embedded table 
+      or image is found in it, **Hi-Res** is used to process that file and charged at the **Hi-Res** rate for that file. Otherwise, **Fast** is used and charged at the 
+      **Fast** rate for that file.
 
     [Learn more](/platform/partitioning).
 
@@ -263,9 +266,12 @@ There are two ways to create a custom workflow:
         For **Partition Strategy**, choose one of the following:
 
         - **Fast**: Ideal for simple, text-only documents.  
-        - **Hi-res**: Best for PDFs, images, and complex file types.
+        - **Hi-Res**: Best for PDFs, images, and complex file types.
         - **VLM**: For your most challenging documents, including scanned and handwritten content. It uses vision language models (VLMs). 
-          During processing, files that are not PDFs or images are processed by using the **Hi-res** strategy and are charged at the **Hi-res** rate instead.
+          During processing, files that are not PDFs or images are processed by using the **Hi-Res** strategy and are charged at the **Hi-Res** rate instead.
+        - **Auto**: This strategy examines each file before processing it. If the file is an image, or if the file is a PDF and at least one embedded table 
+          or image is found in it, **Hi-Res** is used to process that file and charged at the **Hi-Res** rate for that file. Otherwise, **Fast** is used and charged at the 
+          **Fast** rate for that file.
 
         [Learn more](/platform/partitioning).
     </Accordion>
