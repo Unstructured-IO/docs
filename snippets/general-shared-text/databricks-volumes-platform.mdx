@@ -2,35 +2,25 @@ Fill in the following fields:
 
 - **Name** (_required_): A unique name for this connector.
 - **Host** (_required_): The Databricks workspace host URL.
-- **Cluster ID** : The Databricks cluster ID.
 - **Catalog** (_required_): The name of the catalog to use.
 - **Schema** : The name of the associated schema. If not specified, **default** is used.
 - **Volume** (_required_): The name of the associated volume.
 - **Volume Path** : Any optional path to access within the volume.
-- **Overwrite** Check this box if existing data should be overwritten.
-- **Encoding** : Any encoding to be applied to the data in the volume. If not specified, **utf-8**, is used. 
+- **Client ID** (_required_): The application ID value for the Databricks-managed service principal that has access to the volume.
+- **Client Secret** (_required_): The associated OAuth secret value for the Databricks-managed service principal that has access to the volume.
 
-Also fill in the following fields based on your authentication type, depending on your cloud provider:
+To learn how to create a Databricks-managed service principal, get its application ID, and generate an associated OAuth secret, 
+see the documentation for 
+[AWS](https://docs.databricks.com/dev-tools/auth/oauth-m2m.html), 
+[Azure](https://learn.microsoft.com/databricks/dev-tools/auth/oauth-m2m), 
+or [GCP](https://docs.gcp.databricks.com/dev-tools/auth/oauth-m2m.html).
 
-- For Databricks personal access token authentication (AWS, Azure, and GCP):
+For Azure, only Databricks-managed service principals are supported. Microsoft Entra ID-managed service principals are not supported.
 
-  - **Token** : The Databricks personal access token value.
-
-- For username and password (basic) authentication (AWS only):
-
-  - **Username** : The Databricks username value.
-  - **Password** : The associated Databricks password value.
-
-The following authentication types are currently not supported:
-
-- OAuth machine-to-machine (M2M) authentication (AWS, Azure, and GCP).
-- OAuth user-to-machine (U2M) authentication (AWS, Azure, and GCP).
-- Azure managed identities (MSI) authentication (Azure only).
-- Microsoft Entra ID service principal authentication (Azure only).
-- Azure CLI authentication (Azure only).
-- Microsoft Entra ID user authentication (Azure only).
-- Google Cloud Platform credentials authentication (GCP only).
-- Google Cloud Platform ID authentication (GCP only).
+To learn how to grant a Databricks-managed service principal access to a volume, see the documentation for 
+[AWS](https://docs.databricks.com/volumes/utility-commands.html#change-permissions-on-a-volume), 
+[Azure](https://learn.microsoft.com/azure/databricks/volumes/utility-commands#change-permissions-on-a-volume), 
+or [GCP](https://docs.gcp.databricks.com/volumes/utility-commands.html#change-permissions-on-a-volume).
 
 
 
