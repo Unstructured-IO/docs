@@ -46,23 +46,6 @@ When you log in to the Serverless API dashboard, you can access your API keys by
 Under the `Actions` column, click the `Copy` icon to copy the key or an example code snippet to process the documents
 using the Unstructured REST API, or the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli), or the [Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) or [Unstructured JavaScript/TypeScript SDK](https://github.com/Unstructured-IO/unstructured-js-client).
 
-### What is the new Unstructured API pricing structure?
-
-We offer a clear and straightforward pay-per-page pricing model, giving you full control and predictability over your
-document preprocessing costs. We have two different document processing strategies:
-
-- **Fast Strategy**: $1 per 1000 pages processed
-
-    Designed for low-latency use cases, Fast Strategy is for file types other than PDF or images, where we can capitalize on the structure of the document to exact and classify the text. This strategy uses rules-based parsers to deliver fast and cost-effective processing to render natural language in structured JSON.
-
-- **Hi-Res Strategy**: $10 per 1000 pages processed
-
-    Best for complex file types like PDF and JPEG or documents with images, forms, and tables. This strategy uses AI models to understand document layouts and render their contents in structured JSON.
-
-import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx';
-
-<SharedPagesBilling />
-
 ### How can I check my balance and make the payment?
 
 Your usage information can be found on your API dashboard. Click the `Usage` link on the side navigation. You can view your usage by date, including detailed information, such as the number of requests, total pages processed by fast and hi-res strategy, and total cost.
