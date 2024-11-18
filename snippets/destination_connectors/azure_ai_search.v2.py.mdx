@@ -3,11 +3,11 @@ import os
 
 from unstructured_ingest.v2.pipeline.pipeline import Pipeline
 from unstructured_ingest.v2.interfaces import ProcessorConfig
-from unstructured_ingest.v2.processes.connectors.azure_cognitive_search import (
-    AzureCognitiveSearchAccessConfig,
-    AzureCognitiveSearchConnectionConfig,
-    AzureCognitiveSearchUploadStagerConfig,
-    AzureCognitiveSearchUploaderConfig
+from unstructured_ingest.v2.processes.connectors.azure_ai_search import (
+    AzureAISearchAccessConfig,
+    AzureAISearchConnectionConfig,
+    AzureAISearchUploadStagerConfig,
+    AzureAISearchUploaderConfig
 )
 from unstructured_ingest.v2.processes.connectors.local import (
     LocalIndexerConfig,
@@ -39,14 +39,14 @@ if __name__ == "__main__":
         ),
         chunker_config=ChunkerConfig(chunking_strategy="by_title"),
         embedder_config=EmbedderConfig(embedding_provider="huggingface"),
-        destination_connection_config=AzureCognitiveSearchConnectionConfig(
-            access_config=AzureCognitiveSearchAccessConfig(
+        destination_connection_config=AzureAISearchConnectionConfig(
+            access_config=AzureAISearchAccessConfig(
                 key=os.getenv("AZURE_SEARCH_API_KEY")
             ),
             endpoint=os.getenv("AZURE_SEARCH_ENDPOINT"),
             index=os.getenv("AZURE_SEARCH_INDEX")
         ),
-        stager_config=AzureCognitiveSearchUploadStagerConfig(),
-        uploader_config=AzureCognitiveSearchUploaderConfig()
+        stager_config=AzureAISearchUploadStagerConfig(),
+        uploader_config=AzureAISearchUploaderConfig()
     ).run()
 ```
