@@ -1,10 +1,13 @@
 Fill in the following fields:
 
 - **Name** (_required_): A unique name for this connector.
-- **Client ID** (_required_): The ID of the client for the associated Microsoft Entra ID app.
-- **Client Credential** (_required_): The credential for the associated Entra ID app.
-- **Tenant ID** (_required_): The ID of the tenant for the associated Entra ID app.
-- **Authority URL**: The URL for the authentication token provider for Entra ID app (typically **https://login.microsoftonline.com**).
-- **Principal Name** (_required_): The name of the Entra ID principal (typically your Entra ID email).
-- **Path**: Path to the target OneDrive folder.
-- **Recursive**: Check this box recursively access files from subfolders within the specified OneDrive path.
+- **Client ID** (_required_): The application (client) ID of the Microsoft Entra ID app registration that has access to the OneDrive account.
+- **Tenant ID** (_required_): The directory (tenant) ID of the Entra ID app registration.
+- **Authority URL** (_required_): The authentication token provider URL for the Entra ID app registration. The default is `https://login.microsoftonline.com`.
+- **Principal Name** (_required_): The User Principal Name (UPN) for the OneDrive user account in Entra ID. This is typically the user's email address.
+- **Path**: The path to the target folder in the OneDrive account, starting with the account's root folder, for example `my-folder/my-subfolder`.
+- **Recursive**: Check this box to recursively access files from subfolders within the specified OneDrive path.
+- **Client Credential** (_required_): The client secret for the Entra ID app registration.
+
+
+

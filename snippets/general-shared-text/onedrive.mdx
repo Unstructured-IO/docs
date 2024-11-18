@@ -1,29 +1,28 @@
 The OneDrive prerequisites:
 
+<iframe
+width="560"
+height="315"
+src="https://www.youtube.com/embed/7uSu0LsbcEQ"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
+
 - A OneDrive account.
-- Path to the target OneDrive folder.
-- The client ID, client secret, and tenant ID for the Azure app that is registered with Microsoft Graph and assigned the correct OneDrive authentication scopes in Microsoft Entra ID (formerly Azure Active Directory (Azure AD)). See [Registering your app for Microsoft Graph](https://learn.microsoft.com/onedrive/developer/rest-api/getting-started/app-registration) and [OneDrive authentication and sign-in](https://learn.microsoft.com/onedrive/developer/rest-api/getting-started/msa-oauth).
+- The User Principal Name (UPN) for the OneDrive account. This is typically the OneDrive account user's email address.
+- The path to the target OneDrive folder, starting from the OneDrive account's root folder, for example `my-folder/my-subfolder`.
+- The client ID, tenant ID, and client secret for the Microsoft Entra ID app registration that has access to the target OneDrive account and 
+  also has the correct set of Microsoft Graph authentication scopes. These scopes include:
 
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/uJsdMIpuuno?start=14&end=372"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
+  - `Files.ReadWrite.All` (if both reading and writing are needed)
+  - `Sites.ReadWrite.All` (if both reading and writing are needed)
+  - `User.Read.All`
+  - `Directory.Read.All`
+  
+See also:
 
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/aKNmym2nYzY?start=43&end=241"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
-
-- The Entra ID principal name (typically your Entra ID email).
-
-See also the [OneDrive API documentation](https://docs.microsoft.com/onedrive/developer/rest-api/).
+- [Registering your app for Microsoft Graph](https://learn.microsoft.com/onedrive/developer/rest-api/getting-started/app-registration)
+- [OneDrive authentication and sign-in](https://learn.microsoft.com/onedrive/developer/rest-api/getting-started/msa-oauth)
+- [OneDrive API documentation](https://docs.microsoft.com/onedrive/developer/rest-api/)
