@@ -1,18 +1,20 @@
-The Elasticsearch prerequisites:
+The Elasticsearch prerequisites.
 
-- An Elasticsearch instance, such as an [Elastic Cloud](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html#hosted-elasticsearch-service) service instance...
+- For the [Unstructured Platform](/platform/overview), only Elastic Cloud instances are supported.
+- For [Unstructured Ingest](/ingestion/overview), Elastic Cloud instances and self-manged Elasticsearch instances are supported.
+- For Elastic Cloud, you will need an [Elastic Cloud service instance](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html#hosted-elasticsearch-service).
 
   <iframe
   width="560"
   height="315"
-  src="https://www.youtube.com/embed/-bmVLeEti1Q"
+  src="https://www.youtube.com/embed/HEYIFC7uOus"
   title="YouTube video player"
   frameborder="0"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowfullscreen
   ></iframe>
 
-  ...or a [self-managed Elasticsearch](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html#elasticsearch-deployment-options) instance.
+- For self-managed Elasticsearch, you will need a [self-managed Elasticsearch instance](https://www.elastic.co/guide/en/elasticsearch/reference/current/install-elasticsearch.html#elasticsearch-deployment-options).
   
   <iframe
   width="560"
@@ -24,7 +26,7 @@ The Elasticsearch prerequisites:
   allowfullscreen
   ></iframe>
 
-- The name of the index on the instance. See [Create index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html) and [Get index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-index.html).
+- You will need the name of the index on the instance. See [Create index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html) and [Get index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-index.html).
 
   The Elasticsearch index that you use must have a schema that is compatible with the schema of the documents 
   that Unstructured produces for you. Unstructured cannot provide a schema that is guaranteed to work in all 
@@ -94,8 +96,10 @@ The Elasticsearch prerequisites:
   allowfullscreen
   ></iframe>
 
-- If you're connecting to an Elastic Cloud instance, the Cloud ID and API key. To get these, see your Elasticsearch Service web console.
-- If you're connecting to a self-managed instance, the instance's hostname and port number. See [Networking](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html).
-- If you're using basic authentication to the instance, the user's name and password.
-- If you're using token-based authentication to the instance, the bearer token or API key for the instance. See [Token-based authentication services](https://www.elastic.co/guide/en/elasticsearch/reference/current/token-authentication-services.html) and [Create API key](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-create-api-key.html).
-- If you're using certificate, the path to the Certificate Authority (CA) file on the instance, and the certificate fingerprint. See [SSL certificate API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-ssl.html) and [Where can I see my Certificate Fingerprint?](https://discuss.elastic.co/t/where-can-i-see-my-certificate-fingerprint/319335/3).
+- For Elastic Cloud, you will need the Elastic Cloud service instance's API key. If you are using Unstructured Ingest, you will also need the instance's Cloud ID. To get these, see your Elasticsearch Service web console.
+- For self-managed Elasticsearch, you will need:
+
+  - The self-managed instance's hostname and port number. See [Networking](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html).
+  - If you're using basic authentication to the self-managed instance, the user's name and password.
+  - If you're using token-based authentication to the self-managed instance, the bearer token or API key for the instance. See [Token-based authentication services](https://www.elastic.co/guide/en/elasticsearch/reference/current/token-authentication-services.html) and [Create API key](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-create-api-key.html).
+  - If you're using certificate authentication to the self-managed instance, the path to the Certificate Authority (CA) file on the instance, and the certificate fingerprint. See [SSL certificate API](https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-ssl.html) and [Where can I see my Certificate Fingerprint?](https://discuss.elastic.co/t/where-can-i-see-my-certificate-fingerprint/319335/3).
