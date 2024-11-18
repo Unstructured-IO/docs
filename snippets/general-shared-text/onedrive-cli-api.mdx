@@ -10,10 +10,10 @@ import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-d
 
 The following environment variables:
 
-- `ONEDRIVE_PATH` - The path to the target OneDrive folder, represented by `--path` (CLI) or `path` (Python).
-- `ONEDRIVE_CLIENT_ID` - The client ID for the Azure app that is registered with Microsoft Graph and assigned the correct OneDrive authentication scopes in Microsoft Entra ID (formerly Azure Active Directory (Azure AD)), represented by `--client-id` (CLI) or `client_id` (Python).
-- `ONEDRIVE_CLIENT_CRED` - The client secret for the Azure app, represented by `--client-cred` (CLI) or `client_cred` (Python).
-- `ONEDRIVE_TENANT` - The tenant for the Azure app, represented by `--tenant` (CLI) or `tenant` (Python).
-- `ONEDRIVE_USER_PNAME` - The Entra ID principal name (typically your Entra ID email), represented by `--user-pname` (CLI) or `user_pname` (Python).
-- `ONEDRIVE_AUTHORITY_URL` - The authentication token provider for Microsoft apps (typically `https://login.microsoftonline.com`, the default if not otherwise specified), represented by `--authority-url` (CLI) or `authority_url` (Python).
+- `ONEDRIVE_PATH` - The path to the target folder in the OneDrive account, starting with the account's root folder (for example `my-folder/my-subfolder`), represented by `--path` (CLI) or `path` (Python).
+- `ONEDRIVE_CLIENT_ID` - The application (client) ID of the Microsoft Entra ID app registration that has access to the OneDrive account, represented by `--client-id` (CLI) or `client_id` (Python).
+- `ONEDRIVE_CLIENT_CRED` - The client secret for the Entra ID app registration, represented by `--client-cred` (CLI) or `client_cred` (Python).
+- `ONEDRIVE_TENANT` - The directory (tenant) ID of the Entra ID app registration, represented by `--tenant` (CLI) or `tenant` (Python).
+- `ONEDRIVE_USER_PNAME` - The User Principal Name (UPN) for the OneDrive user account in Entra ID (typically the user's email address), represented by `--user-pname` (CLI) or `user_pname` (Python).
+- `ONEDRIVE_AUTHORITY_URL` - The authentication token provider URL for the Entra ID app registration (the default is `https://login.microsoftonline.com` if not otherwise specified), represented by `--authority-url` (CLI) or `authority_url` (Python).
 
