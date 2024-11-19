@@ -1,0 +1,21 @@
+The Confluence connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[confluence]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `CONFLUENCE_URL` - The URL of the Confluence instance, represented by `--url` (CLI) or `url` (Python).
+- `CONFLUENCE_API_TOKEN` - The value of the Confluence API token for authenticating with the Confluence instance, represented by `--api-token` (CLI) or `api_token` (Python).
+- `CONFLUENCE_USER_EMAIL` - The user's email address for authenticating with the Confluence instance, represented by `--user-email` (CLI) or `user_email` (Python).
+
+Additional settings include:
+
+- `--spaces` (CLI) or `spaces` (Python): Optionally, the list of the names of the specific spaces to access, expressed as a comma-separated list of strings (CLI) or an array of strings (Python), with each string representing a space's name. The default is no specific spaces, if not otherwise specified.
+- `--max-num-of-spaces` (CLI) or `max_num_of_spaces` (Python): Optionally, the maximum number of spaces to access, expressed as an integer. The default value is `500` if not otherwise specified.
+- `--max-num-of-docs-from-each-space` (CLI) or `max_num_of_docs_from_each_space` (Python): Optionally, the maximum number of documents to access from each space, expressed as an integer. The default value is `100` if not otherwise specified.
