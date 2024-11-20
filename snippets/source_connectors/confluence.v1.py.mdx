@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured_ingest.connector.confluence import ConfluenceAccessConfig, SimpleConfluenceConfig
@@ -15,6 +15,9 @@ if __name__ == "__main__":
         read_config=ReadConfig(),
         partition_config=PartitionConfig(
             metadata_exclude=["filename", "file_directory", "metadata.data_source.date_processed"],
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
             strategy="hi_res",
         ),
         connector_config=SimpleConfluenceConfig(
@@ -22,7 +25,7 @@ if __name__ == "__main__":
                 api_token=os.getenv("CONFLUENCE_API_TOKEN"),
             ),
             user_email=os.getenv("CONFLUENCE_USER_EMAIL"),
-            url="https://unstructured-ingest-test.atlassian.net",
+            url=os.getenv("CONFLUENCE_URL"),
         ),
     )
     runner.run()

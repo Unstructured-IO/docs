@@ -10,16 +10,15 @@ unstructured-ingest \
     --topic $KAFKA_TOPIC \
     --kafka-api-key $KAFKA_API_KEY \
     --secret $KAFKA_API_KEY \
-    --confluent false \
+    --confluent true \
+    --batch-size 100 \
     --num-messages-to-consume 1 \
-    --timeout 1.0
+    --timeout 1.0 \
     --output-dir $LOCAL_FILE_OUTPUT_DIR \
-    --chunk-elements \
+    --chunking-strategy by_title \
     --embedding-provider huggingface \
-    --num-processes 2 \
-    --verbose \
     --partition-by-api \
-    --api-key $UNSTRUCTURED_API_KEY\
+    --api-key $UNSTRUCTURED_API_KEY \
     --partition-endpoint $UNSTRUCTURED_API_URL \
     --strategy hi_res \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
