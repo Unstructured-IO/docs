@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured_ingest.connector.git import GitAccessConfig
@@ -17,10 +17,11 @@ if __name__ == "__main__":
         partition_config=PartitionConfig(
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
             strategy="hi_res",
         ),
         connector_config=SimpleGitlabConfig(
-            url="https://gitlab.com/gitlab-com/content-sites/docsy-gitlab",
+            url=os.getenv("GITLAB_REPO_URL"),
             branch="v0.0.7",
             access_config=GitAccessConfig(),
         ),
