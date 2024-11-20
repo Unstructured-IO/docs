@@ -1,10 +1,10 @@
 ```python Python Ingest v1
 import os
 
-from unstructured_ingest.connector.azure_cognitive_search import (
-    AzureCognitiveSearchAccessConfig,
-    AzureCognitiveSearchWriteConfig,
-    SimpleAzureCognitiveSearchStorageConfig,
+from unstructured_ingest.connector.azure_ai_search import (
+    AzureAISearchAccessConfig,
+    AzureAISearchWriteConfig,
+    SimpleAzureAISearchStorageConfig,
 )
 from unstructured_ingest.connector.local import SimpleLocalConfig
 from unstructured_ingest.interfaces import (
@@ -15,19 +15,19 @@ from unstructured_ingest.interfaces import (
     ReadConfig,
 )
 from unstructured_ingest.runner import LocalRunner
-from unstructured_ingest.runner.writers.azure_cognitive_search import (
-    AzureCognitiveSearchWriter,
+from unstructured_ingest.runner.writers.azure_ai_search import (
+    AzureAISearchWriter,
 )
 from unstructured_ingest.runner.writers.base_writer import Writer
 
 
 def get_writer() -> Writer:
-    return AzureCognitiveSearchWriter(
-        connector_config=SimpleAzureCognitiveSearchStorageConfig(
-            access_config=AzureCognitiveSearchAccessConfig(key=os.getenv("AZURE_SEARCH_API_KEY")),
+    return AzureAISearchWriter(
+        connector_config=SimpleAzureAISearchStorageConfig(
+            access_config=AzureAISearchAccessConfig(key=os.getenv("AZURE_SEARCH_API_KEY")),
             endpoint=os.getenv("AZURE_SEARCH_ENDPOINT"),
         ),
-        write_config=AzureCognitiveSearchWriteConfig(index=os.getenv("AZURE_SEARCH_INDEX")),
+        write_config=AzureAISearchWriteConfig(index=os.getenv("AZURE_SEARCH_INDEX")),
     )
 
 # Chunking and embedding are optional.
