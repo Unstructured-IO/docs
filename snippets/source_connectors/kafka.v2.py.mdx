@@ -1,0 +1,52 @@
+```python Python Ingest v2
+import os
+
+from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+from unstructured_ingest.v2.interfaces import ProcessorConfig
+
+from unstructured_ingest.v2.processes.connectors.kafka.cloud import (
+    CloudKafkaIndexerConfig,
+    CloudKafkaDownloaderConfig,
+    CloudKafkaConnectionConfig,
+    CloudKafkaAccessConfig
+)
+
+from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+from unstructured_ingest.v2.processes.chunker import ChunkerConfig
+from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+from unstructured_ingest.v2.processes.connectors.local import LocalUploaderConfig
+
+# Chunking and embedding are optional.
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=CloudKafkaIndexerConfig(
+            topic=os.getenv("KAFKA_TOPIC"),
+            num_messages_to_consume=100,
+            timeout=1
+        ),
+        downloader_config=CloudKafkaDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
+        source_connection_config=CloudKafkaConnectionConfig(
+            access_config=CloudKafkaAccessConfig(
+                kafka_api_key=os.getenv("KAFKA_API_KEY"),
+                secret=os.getenv("KAFKA_SECRET")
+            ),
+            bootstrap_server=os.getenv("KAFKA_BOOTSTRAP_SERVER"),
+            port=os.getenv("KAFKA_PORT")
+        ),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
+        uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
+    ).run()
+```
