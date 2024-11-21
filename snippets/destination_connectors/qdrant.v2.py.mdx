@@ -13,11 +13,28 @@ from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
 from unstructured_ingest.v2.processes.chunker import ChunkerConfig
 from unstructured_ingest.v2.processes.embedder import EmbedderConfig
 
+# For Qdrant local:
+# from unstructured_ingest.v2.processes.connectors.qdrant.local import (
+#     LocalQdrantConnectionConfig,
+#     LocalQdrantAccessConfig,
+#     LocalQdrantUploadStagerConfig,
+#     LocalQdrantUploaderConfig
+# )
+
+# For Qdrant client-server:
+# from unstructured_ingest.v2.processes.connectors.qdrant.server import (
+#     ServerQdrantConnectionConfig,
+#     ServerQdrantAccessConfig,
+#     ServerQdrantUploadStagerConfig,
+#     ServerQdrantUploaderConfig
+# )
+
+# For Qdrant Cloud:
 from unstructured_ingest.v2.processes.connectors.qdrant.cloud import (
     CloudQdrantConnectionConfig,
     CloudQdrantAccessConfig,
-    CloudQdrantUploaderConfig,
-    CloudQdrantUploadStagerConfig
+    CloudQdrantUploadStagerConfig,
+    CloudQdrantUploaderConfig
 )
 
 # Chunking and embedding are optional.
@@ -40,6 +57,32 @@ if __name__ == "__main__":
         ),
         chunker_config=ChunkerConfig(chunking_strategy="by_title"),
         embedder_config=EmbedderConfig(embedding_provider="huggingface"),
+
+        # For Qdrant local:
+        # destination_connection_config=LocalQdrantConnectionConfig(
+        #     access_config=LocalQdrantAccessConfig(),
+        #     path=os.getenv("QDRANT_PATH")
+        # ),
+        # stager_config=LocalQdrantUploadStagerConfig(),
+        # uploader_config=LocalQdrantUploaderConfig(
+        #     collection_name=os.gentenv("QDRANT_COLLECTION"),
+        #     batch_size=50,
+        #     num_processes=1
+        # )
+
+        # For Qdrant client-server:
+        # destination_connection_config=ServerQdrantConnectionConfig(
+        #     access_config=ServerQdrantAccessConfig(),
+        #     url=os.getenv("QDRANT_URL")
+        # ),
+        # stager_config=ServerQdrantUploadStagerConfig(),
+        # uploader_config=ServerQdrantUploaderConfig(
+        #     collection_name=os.gentenv("QDRANT_COLLECTION"),
+        #     batch_size=50,
+        #     num_processes=1
+        # )
+
+        # For Qdrant cloud:
         destination_connection_config=CloudQdrantConnectionConfig(
             access_config=CloudQdrantAccessConfig(
                 api_key=os.getenv("QDRANT_API_KEY")
@@ -49,7 +92,8 @@ if __name__ == "__main__":
         stager_config=CloudQdrantUploadStagerConfig(),
         uploader_config=CloudQdrantUploaderConfig(
             collection_name=os.gentenv("QDRANT_COLLECTION"),
-            batch_size=50
+            batch_size=50,
+            num_processes=1
         )
     ).run()
 ```

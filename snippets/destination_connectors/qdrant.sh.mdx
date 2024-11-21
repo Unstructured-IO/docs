@@ -3,20 +3,52 @@
 
 # Chunking and embedding are optional.
 
+# For Qdrant local:
 unstructured-ingest \
   local \
     --input-path $LOCAL_FILE_INPUT_DIR \
-    --output-dir $LOCAL_FILE_OUTPUT_DIR \
-    --chunk-elements \
+    --chunking-strategy by_title \
     --embedding-provider huggingface \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
     --partition-endpoint $UNSTRUCTURED_API_URL \
-    --strategy hi_res \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
-  qdrant \
+  qdrant-local \
+    --path $QDRANT_PATH \
+    --collection-name $QDRANT_COLLECTION \
+    --batch-size 50 \
+    --num-processes 1
+
+# For Qdrant client-server:
+unstructured-ingest \
+  local \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+  qdrant-server \
     --url $QDRANT_URL \
     --collection-name $QDRANT_COLLECTION \
+    --batch-size 50 \
+    --num-processes 1
+
+# For Qdrant cloud:
+unstructured-ingest \
+  local \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+  qdrant-cloud \
+    --url $QDRANT_URL \
     --api-key $QDRANT_API_KEY \
-    --batch-size 50
+    --collection-name $QDRANT_COLLECTION \
+    --batch-size 50 \
+    --num-processes 1
 ```

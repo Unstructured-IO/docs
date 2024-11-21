@@ -10,6 +10,11 @@ import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-d
 
 The following environment variables:
 
-- `QDRANT_URL` - The Qdrant cluster's URL, represented by `--url` (CLI) or `url` (Python).
-- `QDRANT_API_KEY` - The Qdrant API key, represented by `--api-key` (CLI) or `api_key` (Python).
-- `QDRANT_COLLECTION` - The name of the target collection on the cluster, represented by `--collection-name` (CLI) or `collection_name` (Python).
+- `QDRANT_COLLECTION` - The name of the target collection on the Qdrant local installation, 
+  Qdrant server, or Qdrant Cloud cluster, represented by `--collection-name` (CLI) or `collection_name` (Python).
+- For Qdrant local, `QDRANT_PATH` - The path to the local Qdrant installation, represented by `--path` (CLI) or `path` (Python).
+- For Qdrant client-server, `QDRANT_URL` - The Qdrant server's URL, represented by `--url` (CLI) or `url` (Python).
+- For Qdrant Cloud:
+
+  - `QDRANT_URL` - The Qdrant cluster's URL, represented by `--url` (CLI) or `url` (Python).
+  - `QDRANT_API_KEY` - The Qdrant API key, represented by `--api-key` (CLI) or `api_key` (Python).

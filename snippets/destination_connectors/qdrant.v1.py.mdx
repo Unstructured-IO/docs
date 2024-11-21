@@ -18,6 +18,8 @@ from unstructured_ingest.runner import LocalRunner
 from unstructured_ingest.runner.writers.base_writer import Writer
 from unstructured_ingest.runner.writers.qdrant import QdrantWriter
 
+# This example uses Qdrant Cloud.
+
 def get_writer() -> Writer:
     return QdrantWriter(
         connector_config=SimpleQdrantConfig(
