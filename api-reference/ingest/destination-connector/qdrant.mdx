@@ -2,6 +2,28 @@
 title: Qdrant
 ---
 
-import SharedQdrant from '/snippets/dc-shared-text/qdrant.mdx';
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
 
-<SharedQdrant />
+<NewDocument />
+
+import SharedContentQdrant from '/snippets/dc-shared-text/qdrant-cli-api.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedContentQdrant/>
+<SharedAPIKeyURL/>
+
+Now call the Unstructured CLI or Python SDK. The source connector can be any of the ones supported.
+
+This example uses the local source connector:
+
+import QdrantAPISh from '/snippets/destination_connectors/qdrant.sh.mdx';
+import QdrantAPIPyV2 from '/snippets/destination_connectors/qdrant.v2.py.mdx';
+import QdrantAPIPyV1 from '/snippets/destination_connectors/qdrant.v1.py.mdx';
+
+<CodeGroup>
+  <QdrantAPISh />
+  <QdrantAPIPyV2 />
+  <QdrantAPIPyV1 />
+</CodeGroup>
+
+

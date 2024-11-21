@@ -1,4 +1,4 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
 
 # Chunking and embedding are optional.
@@ -7,13 +7,16 @@ unstructured-ingest \
   local \
     --input-path $LOCAL_FILE_INPUT_DIR \
     --output-dir $LOCAL_FILE_OUTPUT_DIR \
-    --strategy hi_res \
     --chunk-elements \
     --embedding-provider huggingface \
-    --num-processes 2 \
-    --verbose \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --strategy hi_res \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
   qdrant \
-    --collection-name $QDRANT_COLLECTION_NAME \
-    --location http://localhost:6333 \
-    --batch-size 80
+    --url $QDRANT_URL \
+    --collection-name $QDRANT_COLLECTION \
+    --api-key $QDRANT_API_KEY \
+    --batch-size 50
 ```
