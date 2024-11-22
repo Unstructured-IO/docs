@@ -1,0 +1,65 @@
+The LanceDB prerequisites:
+
+- A [LanceDB open source software (OSS) installation](https://lancedb.github.io/lancedb/basic/#installation) on a local machine, a server, or a virtual machine. 
+  (LanceDB Cloud is not supported.)
+- For LanceDB OSS with local data storage:
+
+  - The local path to the folder where the LanceDB data is (or will be) stored. 
+    See [Connect to a database](https://lancedb.github.io/lancedb/basic/#connect-to-a-database) in the LanceDB documentation.
+  - The name of the target [LanceDB table](https://lancedb.github.io/lancedb/basic/#create-an-empty-table) within the local data folder.
+
+- For LanceDB OSS with data storage in an Amazon S3 bucket:
+
+  - The URI for the target Amazon S3 bucket and any target folder path within that bucket. Use the format `s3://<bucket-name>[/<folder-name>]`.
+  - The name of the target [LanceDB table](https://lancedb.github.io/lancedb/guides/storage/#object-stores) within the Amazon S3 bucket.
+  - The AWS access key ID and AWS secret access key for the AWS IAM entity that has access to the Amazon S3 bucket.
+
+  For more information, see [AWS S3](https://lancedb.github.io/lancedb/guides/storage/#aws-s3) in the LanceDB documentation, along with the following video:
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/hyDHfhVVAhs"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
+
+- For LanceDB OSS with data storage in an Azure Blob Storage account:
+
+  - The name of the target Azure Blob Storage account. 
+  = The URI for the target container within that Azure Blob Storage account and any target folder path within that container. Use the format `az://<container-name>[/<folder-name>]`.
+  - The name of the target [LanceDB table](https://lancedb.github.io/lancedb/guides/storage/#object-stores) within the Azure Blob Storage account.
+  - The access key for the Azure Blob Storage account.
+
+  For more information, see [Azure Blob Storage](https://lancedb.github.io/lancedb/guides/storage/#azure-blob-storage) in the LanceDB documentation, along with the following video:
+  
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/Vl3KCphlh9Y"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
+  
+- For LanceDB OSS with data storage in a Google Cloud Storage bucket:
+
+  - The URI for the target Google Cloud Storage bucket and any target folder path within that bucket. Use the format `gs://<bucket-name>[/<folder-name>]`.
+  - The name of the target [LanceDB table](https://lancedb.github.io/lancedb/guides/storage/#object-stores) within the Google Cloud Storage bucket.
+  - A single-line string that contains the contents of the downloaded service account key file for the Google Cloud service account that has access to the 
+    Google Cloud Storage bucket.
+
+  For more information, see [Google Cloud Storage](https://lancedb.github.io/lancedb/guides/storage/#google-cloud-storage) in the LanceDB documentation, along with the following video:
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/HYaALQ0F-L4"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>

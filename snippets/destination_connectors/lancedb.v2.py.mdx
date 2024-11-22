@@ -1,0 +1,107 @@
+```python Python Ingest v2
+import os
+
+from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+from unstructured_ingest.v2.interfaces import ProcessorConfig
+
+from unstructured_ingest.v2.processes.connectors.local import (
+    LocalIndexerConfig,
+    LocalDownloaderConfig,
+    LocalConnectionConfig
+)
+from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+from unstructured_ingest.v2.processes.chunker import ChunkerConfig
+from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+
+# For LanceDB OSS with local data storage:
+# from unstructured_ingest.v2.processes.connectors.lancedb.local import (
+#     LanceDBLocalConnectionConfig,
+#     LanceDBLocalAccessConfig,
+#     LanceDBUploadStagerConfig,
+#     LanceDBUploaderConfig
+# )
+
+# For LanceDB OSS with data storage in an Amazon S3 bucket:
+from unstructured_ingest.v2.processes.connectors.lancedb.aws import (
+    LanceDBS3ConnectionConfig,
+    LanceDBS3AccessConfig,
+    LanceDBUploadStagerConfig,
+    LanceDBUploaderConfig
+)
+
+# For LanceDB OSS with data storage in an Azure Blob Storage account:
+# from unstructured_ingest.v2.processes.connectors.lancedb.azure import (
+#     LanceDBAzureConnectionConfig,
+#     LanceDBAzureAccessConfig,
+#     LanceDBUploadStagerConfig,
+#     LanceDBUploaderConfig
+# )
+
+# For LanceDB OSS with data storage in a Google Cloud Storage bucket:
+# from unstructured_ingest.v2.processes.connectors.lancedb.gcp import (
+#     LanceDBGCSConnectionConfig,
+#     LanceDBGCSAccessConfig,
+#     LanceDBUploadStagerConfig,
+#     LanceDBUploaderConfig
+# )
+
+# Chunking and embedding are optional.
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
+        downloader_config=LocalDownloaderConfig(),
+        source_connection_config=LocalConnectionConfig(),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
+
+        # For LanceDB OSS with local data storage:
+        # destination_connection_config=LanceDBLocalConnectionConfig(
+        #     access_config=LanceDBLocalAccessConfig(),
+        #     uri=os.getenv("LANCEDB_URI")
+        # ),
+
+        # For LanceDB OSS with data storage in an Amazon S3 bucket:
+        destination_connection_config=LanceDBS3ConnectionConfig(
+            access_config=LanceDBS3AccessConfig(
+                aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+                aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY")
+            ),
+            uri=os.getenv("LANCEDB_URI"),
+            timeout="30s"
+        ),
+
+        # For LanceDB OSS with data storage in an Azure Blob Storage account:
+        # destination_connection_config=LanceDBAzureConnectionConfig(
+        #     access_config=LanceDBAzureAccessConfig(
+        #         azure_storage_account_name=os.getenv("AZURE_STORAGE_ACCOUNT_NAME"),
+        #         azure_storage_account_key=os.getenv("AZURE_STORAGE_ACCOUNT_KEY")
+        #     ),
+        #     uri=os.getenv("LANCEDB_URI"),
+        #     timeout="30s"
+        # ),
+
+        # For LanceDB OSS with data storage in a Google Cloud Storage bucket:
+        # destination_connection_config=LanceDBGCSConnectionConfig(
+        #     access_config=LanceDBGCSAccessConfig(
+        #         google_service_account_key=os.getenv("GCS_SERVICE_ACCOUNT_KEY")
+        #     ),
+        #     uri=os.getenv("LANCEDB_URI"),
+        #     timeout="30s"
+        # ),
+
+        stager_config=LanceDBUploadStagerConfig(),
+        uploader_config=LanceDBUploaderConfig(table_name=os.gentenv("LANCEDB_TABLE"))
+    ).run()
+```
