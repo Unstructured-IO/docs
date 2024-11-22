@@ -1,0 +1,69 @@
+```bash CLI
+#!/usr/bin/env bash
+
+# Chunking and embedding are optional.
+
+# For LanceDB OSS with local data storage:
+unstructured-ingest \
+  local \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+  lancedb-local \
+    --uri $LANCEDB_URI \
+    --table-name $LANCEDB_TABLE
+
+# For LanceDB OSS with data storage in an Amazon S3 bucket:
+unstructured-ingest \
+  local \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+  lancedb-aws \
+    --aws-access-key-id $AWS_ACCESS_KEY_ID \
+    --aws-secret-access-key $AWS_SECRET_ACCESS_KEY \
+    --uri $LANCEDB_URI \
+    --table-name $LANCEDB_TABLE \
+    --timeout 30s
+
+# For LanceDB OSS with data storage in an Azure Blob Storage account:
+unstructured-ingest \
+  local \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+  lancedb-azure \
+    --azure-storage-account-name $AZURE_STORAGE_ACCOUNT_NAME \
+    --azure-storage-account-key $AZURE_STORAGE_ACCOUNT_KEY \
+    --uri $LANCEDB_URI \
+    --table-name $LANCEDB_TABLE \
+    --timeout 30s
+
+# For LanceDB OSS with data storage in a Google Cloud Storage bucket:
+unstructured-ingest \
+  local \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+  lancedb-gcs \
+    --google-service-account-key $GCS_SERVICE_ACCOUNT_KEY \
+    --uri $LANCEDB_URI \
+    --table-name $LANCEDB_TABLE \
+    --timeout 30s
+```
