@@ -20,11 +20,16 @@ To choose one of these strategies, select one of the **Partition Strategy** opti
 <Note>You can change a workflow's predefined strategy only through [Custom](/platform/workflows#create-a-custom-workflow) workflow settings.</Note>
 
 - **Fast**: This strategy is ideal for simple, text-based documents.
-- **Hi-Res**: This strategy is best for PDFs, images, and complex file types.
-- **VLM**: For your most challenging documents, including scanned and handwritten content, use this strategy, which leverages vision 
-  language models (VLMs). During processing, files that are not PDFs or images are processed by using the **Hi-Res** strategy and are charged 
-  at the **Hi-Res** rate instead.
-- **Auto**: This strategy examines each file before processing it. If the file is an image, or if the file is a PDF and at least one embedded table 
-  or image is found in it, **Hi-Res** is used to process that file and charged at the **Hi-Res** rate for that file. Otherwise, **Fast** is used and charged at the 
-  **Fast** rate for that file.
+- **High Res**: This strategy is best for PDFs, images, and complex file types.
+
+  <Note>
+      During **High Res** processing, any detected text-based files are processed and billed at the **Fast** rate instead.
+  </Note>
+
+- **VLM**: For your most challenging documents, including scanned and handwritten content.
+
+  <Note>
+      During **VLM** processing, any detected files that are not PDFs or images are processed and billed at either the **High Res** or **Fast** rate instead. 
+      Of those non-PDF and non-image files, all text-based files are processed and billed at the **Fast** rate instead. The other files are processed and billed at the **High Res** rate instead.
+  </Note>
 
