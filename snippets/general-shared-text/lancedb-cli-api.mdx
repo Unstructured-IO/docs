@@ -1,0 +1,37 @@
+The LanceDB connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[lancedb]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- For LanceDB OSS with local data storage:
+
+  - `LANCEDB_URI` - The local path to the folder where the LanceDB data is stored, represented by `--uri` (CLI) or `uri` (Python).
+  - `LANCEDB_TABLE` - The name of the target LanceDB table within the local data folder, represented by `--table-name` (CLI) or `table_name` (Python).
+
+- For LanceDB OSS with data storage in an Amazon S3 bucket:
+
+  - `LANCEDB_URI` - The URI for the target Amazon S3 bucket and any target folder path within that bucket. Use the format `s3://<bucket-name>[/<folder-name>]`. This is represented by `--uri` (CLI) or `uri` (Python).
+  - `LANCEDB_TABLE` - The name of the target LanceDB table within the Amazon S3 bucket, rrepresented by `--table-name` (CLI) or `table_name` (Python).
+  - `AWS_ACCESS_KEY_ID` - The AWS access key ID for the AWS IAM entity that has access to the Amazon S3 bucket, represented by `--aws-access-key-id` (CLI) or `aws_access_key_id` (Python).
+  - `AWS_SECRET_ACCESS_KEY` - The AWS secret access key for the AWS IAM entity that has access to the Amazon S3 bucket, represented by `--aws-secret-access-key` (CLI) or `aws_secret_access_key` (Python).
+
+- For LanceDB OSS with data storage in an Azure Blob Storage account:
+
+  - `LANCEDB_URI` - The URI for the target container within that Azure Blob Storage account and any target folder path within that container. Use the format `az://<container-name>[/<folder-name>]`. This is represented by `--uri` (CLI) or `uri` (Python).
+  - `LANCEDB_TABLE` - The name of the target LanceDB table within the Azure Blob Storage account, represented by `--table-name` (CLI) or `table_name` (Python).
+  - `AZURE_STORAGE_ACCOUNT_NAME` - The name of the target Azure Blob Storage account, represented by `--azure-storage-account-name` (CLI) or `azure_storage_account_name` (Python).
+  - `AZURE_STORAGE_ACCOUNT_KEY` - The access key for the Azure Blob Storage account, represented by `--azure-storage-account-key` (CLI) or `azure_storage_account_key` (Python).
+
+- For LanceDB OSS with data storage in a Google Cloud Storage bucket:
+
+  - `LANCEDB_URI` - The URI for the target Google Cloud Storage bucket and any target folder path within that bucket. Use the format `gs://<bucket-name>[/<folder-name>]`. This is represented by `--uri` (CLI) or `uri` (Python).
+  - `LANCEDB_TABLE` - The name of the target LanceDB table within the Google Cloud Storage bucket, represented by `--table-name` (CLI) or `table_name` (Python).
+  - `GCS_SERVICE_ACCOUNT_KEY` - A single-line string that contains the contents of the downloaded service account key file for the Google Cloud service account 
+    that has access to the Google Cloud Storage bucket, represented by `--google-service-account-key` (CLI) or `google_service_account_key` (Python).
