@@ -54,8 +54,17 @@ To create an automatic workflow:
 
    - **Basic** Ideal for simple, text-only documents.
    - **Advanced** Best for PDFs, images, and complex file types.
-   - **Platinum** For your most challenging documents, including scanned and handwritten content. It uses vision language models (VLMs). 
-     During processing, files that are not PDFs or images are processed by using the **Advanced** strategy and are charged at the **Advanced** rate instead.
+
+     <Note>
+         During **Advanced** processing, any detected text-based files are processed and billed at the **Basic** rate instead.
+     </Note>
+ 
+   - **Platinum** For your most challenging documents, including scanned and handwritten content.
+
+     <Note>
+         During **Platinum** processing, any detected files that are not PDFs or images are processed and billed at either the **Advanced** or **Basic** rate instead. 
+         Of those non-PDF and non-image files, all text-based files are processed and billed at the **Basic** rate instead. The other files are processed and billed at the **Advanced** rate instead.
+     </Note>
 
 9. The **Reprocess all** box applies only to the Amazon S3 and Azure Blob Storage source connectors:
 
@@ -109,12 +118,18 @@ There are two ways to create a custom workflow:
 9. In the **Strategy** area, choose one of the following:
 
     - **Fast**: Ideal for simple, text-only documents.
-    - **Hi-Res**: Best for PDFs, images, and complex file types.
-    - **VLM**: For your most challenging documents, including scanned and handwritten content. It uses vision language models (VLMs). 
-      During processing, files that are not PDFs or images are processed by using the **Hi-Res** strategy and are charged at the **Hi-Res** rate instead.
-    - **Auto**: This strategy examines each file before processing it. If the file is an image, or if the file is a PDF and at least one embedded table 
-      or image is found in it, **Hi-Res** is used to process that file and charged at the **Hi-Res** rate for that file. Otherwise, **Fast** is used and charged at the 
-      **Fast** rate for that file.
+    - **High Res**: Best for PDFs, images, and complex file types.
+
+      <Note>
+          During **High Res** processing, any detected text-based files are processed and billed at the **Fast** rate instead.
+      </Note>
+
+    - **VLM**: For your most challenging documents, including scanned and handwritten content.
+
+      <Note>
+          During **VLM** processing, any detected files that are not PDFs or images are processed and billed at either the **High Res** or **Fast** rate instead. 
+          Of those non-PDF and non-image files, all text-based files are processed and billed at the **Fast** rate instead. The other files are processed and billed at the **High Res** rate instead.
+      </Note>
 
     [Learn more](/platform/partitioning).
 
@@ -189,8 +204,6 @@ There are two ways to create a custom workflow:
 
       [Learn more](https://platform.openai.com/docs/guides/embeddings).
 
-    - **Vertex AI**: Use Vertex AI to generate embeddings by using the `textembedding-gecko@001` model, with 768 dimensions. [Learn more](https://cloud.google.com/vertex-ai/generative-ai/docs/embeddings/get-text-embeddings).
-        
     Learn more:
         
     - [Embedding overview](/platform/embedding)
@@ -266,12 +279,18 @@ There are two ways to create a custom workflow:
         For **Partition Strategy**, choose one of the following:
 
         - **Fast**: Ideal for simple, text-only documents.  
-        - **Hi-Res**: Best for PDFs, images, and complex file types.
-        - **VLM**: For your most challenging documents, including scanned and handwritten content. It uses vision language models (VLMs). 
-          During processing, files that are not PDFs or images are processed by using the **Hi-Res** strategy and are charged at the **Hi-Res** rate instead.
-        - **Auto**: This strategy examines each file before processing it. If the file is an image, or if the file is a PDF and at least one embedded table 
-          or image is found in it, **Hi-Res** is used to process that file and charged at the **Hi-Res** rate for that file. Otherwise, **Fast** is used and charged at the 
-          **Fast** rate for that file.
+        - **High Res**: Best for PDFs, images, and complex file types.
+
+          <Note>
+              During **High Res** processing, any detected text-based files are processed and billed at the **Fast** rate instead.
+          </Note>
+
+        - **VLM**: For your most challenging documents, including scanned and handwritten content.
+
+          <Note>
+              During **VLM** processing, any detected files that are not PDFs or images are processed and billed at either the **High Res** or **Fast** rate instead. 
+              Of those non-PDF and non-image files, all text-based files are processed and billed at the **Fast** rate instead. The other files are processed and billed at the **High Res** rate instead.
+          </Note>
 
         [Learn more](/platform/partitioning).
     </Accordion>
@@ -338,8 +357,6 @@ There are two ways to create a custom workflow:
 
           [Learn more](https://platform.openai.com/docs/guides/embeddings).
 
-        - **Vertex AI**: Use Vertex AI to generate embeddings by using the `textembedding-gecko@001` model, with 768 dimensions. [Learn more](https://cloud.google.com/vertex-ai/generative-ai/docs/embeddings/get-text-embeddings).
-        
         Learn more:
         
         - [Embedding overview](/platform/embedding)
