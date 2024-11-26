@@ -10,10 +10,17 @@ import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-d
 
 The following environment variables:
 
-- `WEAVIATE_URL` - THE REST endpoint for the Weaviate database cluster, represented by `--host-url` (CLI) or `host_url` (Python).
+- For Weaviate installed locally, `WEAVIATE_COLLECTION` - The name of the target collection in the instance, represented by `--collection` (CLI) or `collection` (Python).
+- For Embedded Weaviate:
 
-- `WEAVIATE_API_KEY` - The API key for the database cluster, represented by `--api-key` (CLI) or `api_key` (Python).
+  - `WEAVIATE_HOST` - The connection URL to the instance, represented by `--hostname` (CLI) or `hostname` (Python).
+  - `WEAVIATE_COLLECTION` - The name of the target collection in the instance, represented by `--collection` (CLI) or `collection` (Python).
 
-  <Note>For the CLI, the `--api-key` option here is part of the `weaviate` command. For Python, the `api_key` parameter here is part of the `WeaviateAccessConfig` object.</Note>
+- For Weaviate Cloud:
 
-- `WEAVIATE_COLLECTION_CLASS_NAME` - The name of the collection in the database, represented by `--class-name` (CLI) or `class_name` (Python).
+  - `WEAVIATE_CLUSTER_URL` - THE REST endpoint for the Weaviate database cluster, represented by `--cluster-url` (CLI) or `cluster_url` (Python).
+  - `WEAVIATE_API_KEY` - The API key for the database cluster, represented by `--api-key` (CLI) or `api_key` (Python).
+
+    <Note>For the CLI, the `--api-key` option here is part of the `weaviate-cloud` command. For Python, the `api_key` parameter here is part of the `CloudWeaviateAccessConfig` object.</Note>
+
+  - `WEAVIATE_COLLECTION` - The name of the target collection in the database, represented by `--collection` (CLI) or `collection` (Python).
