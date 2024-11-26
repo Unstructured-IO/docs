@@ -4,22 +4,39 @@ import os
 from unstructured_ingest.v2.pipeline.pipeline import Pipeline
 from unstructured_ingest.v2.interfaces import ProcessorConfig
 
-from unstructured_ingest.v2.processes.connectors.weaviate import (
-    WeaviateConnectionConfig,
-    WeaviateAccessConfig,
-    WeaviateUploaderConfig,
-    WeaviateUploadStagerConfig
-)
 from unstructured_ingest.v2.processes.connectors.local import (
     LocalIndexerConfig,
     LocalDownloaderConfig,
     LocalConnectionConfig
 )
+
 from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
 from unstructured_ingest.v2.processes.chunker import ChunkerConfig
 from unstructured_ingest.v2.processes.embedder import EmbedderConfig
 
-# Chunking and embedding are optional.
+# For Weaviate installed locally:
+# from unstructured_ingest.v2.processes.connectors.weaviate.local import (
+#     LocalWeaviateConnectionConfig,
+#     LocalWeaviateAccessConfig,
+#     LocalWeaviateUploadStagerConfig,
+#     LocalWeaviateUploaderConfig
+# )
+
+# For Embedded Weaviate:
+# from unstructured_ingest.v2.processes.connectors.weaviate.embedded import (
+#     EmbeddedWeaviateConnectionConfig,
+#     EmbeddedWeaviateAccessConfig,
+#     EmbeddedWeaviateUploadStagerConfig,
+#     EmbeddedWeaviateUploaderConfig
+# )
+
+# For Weaviate Cloud:
+from unstructured_ingest.v2.processes.connectors.weaviate.cloud import (
+    CloudWeaviateConnectionConfig,
+    CloudWeaviateAccessConfig,
+    CloudWeaviateUploaderConfig,
+    CloudWeaviateUploadStagerConfig
+)
 
 if __name__ == "__main__":
     Pipeline.from_configs(
@@ -31,7 +48,6 @@ if __name__ == "__main__":
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
             partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
-            strategy="hi_res",
             additional_partition_args={
                 "split_pdf_page": True,
                 "split_pdf_allow_failed": True,
@@ -39,15 +55,41 @@ if __name__ == "__main__":
             }
         ),
         chunker_config=ChunkerConfig(chunking_strategy="by_title"),
-        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
-        destination_connection_config=WeaviateConnectionConfig(
-            access_config=WeaviateAccessConfig(
+        embedder_config=EmbedderConfig(
+            embedding_provider="openai",
+            embedding_model_name=os.getenv("EMBEDDING_MODEL_NAME"),
+            embedding_api_key=os.getenv("OPENAI_APIKEY")
+        ),
+
+        # For Weaviate installed locally:
+        # destination_connection_config=LocalWeaviateConnectionConfig(
+        #     access_config=LocalWeaviateAccessConfig()
+        # ),
+        # stager_config=LocalWeaviateUploadStagerConfig(),
+        # uploader_config=LocalWeaviateUploaderConfig(
+        #     collection=os.getenv("WEAVIATE_COLLECTION")
+        # )
+
+        # For Embedded Weaviate:
+        # destination_connection_config=EmbeddedWeaviateConnectionConfig(
+        #     access_config=EmbeddedWeaviateAccessConfig(),
+        #     hostname=os.getenv("WEAVIATE_HOST")
+        # ),
+        # stager_config=EmbeddedWeaviateUploadStagerConfig(),
+        # uploader_config=EmbeddedWeaviateUploaderConfig(
+        #     collection=os.getenv("WEAVIATE_COLLECTION")
+        # )
+
+        # For Weaviate Cloud:
+        destination_connection_config=CloudWeaviateConnectionConfig(
+            access_config=CloudWeaviateAccessConfig(
                 api_key=os.getenv("WEAVIATE_API_KEY")
             ),
-            host_url=os.getenv("WEAVIATE_URL"),
-            class_name=os.getenv("WEAVIATE_COLLECTION_CLASS_NAME")
+            cluster_url=os.getenv("WEAVIATE_CLUSTER_URL")
         ),
-        stager_config=WeaviateUploadStagerConfig(),
-        uploader_config=WeaviateUploaderConfig()
+        stager_config=CloudWeaviateUploadStagerConfig(),
+        uploader_config=CloudWeaviateUploaderConfig(
+            collection=os.getenv("WEAVIATE_COLLECTION")
+        )
     ).run()
 ```

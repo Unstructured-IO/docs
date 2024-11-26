@@ -3,22 +3,48 @@
 
 # Chunking and embedding is optional.
 
+# For Weaviate installed locally:
 unstructured-ingest \
   local \
     --input-path $LOCAL_FILE_INPUT_DIR \
-    --output-dir $LOCAL_FILE_OUTPUT_DIR \
-    --strategy hi_res \
-    --chunk-elements \
-    --embedding-provider huggingface \
-    --num-processes 2 \
-    --verbose \
-    --strategy fast \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
     --partition-endpoint $UNSTRUCTURED_API_URL \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface \
+    --strategy hi_res \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
-  weaviate \
-    --host-url $WEAVIATE_URL \
+  weaviate-local \
+    --collection $WEAVIATE_COLLECTION
+
+# For Embedded Weaviate:
+unstructured-ingest \
+  local \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface \
+    --strategy hi_res \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+  weaviate-embedded \
+    --hostname $WEAVIATE_HOST \
+    --collection $WEAVIATE_COLLECTION
+
+# For Weaviate Cloud:
+unstructured-ingest \
+  local \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface \
+    --strategy hi_res \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+  weaviate-cloud \
+    --cluster-url $WEAVIATE_URL \
     --api-key $WEAVIATE_API_KEY \
-    --class-name $WEAVIATE_COLLECTION_CLASS_NAME
+    --collection $WEAVIATE_COLLECTION
 ```
