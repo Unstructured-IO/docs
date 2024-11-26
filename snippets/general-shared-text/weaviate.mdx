@@ -1,70 +1,82 @@
-<iframe
-width="560"
-height="315"
-src="https://www.youtube.com/embed/Ldb7PZU-pR4"
-title="YouTube video player"
-frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-allowfullscreen
-></iframe>
+- For the [Unstructured Platform](/platform/overview): only [Weaviate Cloud](https://weaviate.io/developers/wcs) clusters are supported.
+- For [Unstructured Ingest](/ingestion/overview): Weaviate Cloud clusters, 
+  [Weaviate installed locally](https://weaviate.io/developers/weaviate/quickstart/local), 
+  and [Embedded Weaviate](https://weaviate.io/developers/weaviate/installation/embedded) are supported.
+- For Weaviate installed locally, you will need the name of the target collection on the local instance.
+- For Embedded Weaviate, you will need the instance's connection URL and the name of the target collection on the instance.
+- For Weaviate Cloud, you will need:
 
-1. A Weaviate database instance. The following information assumes that you have a Weaviate Cloud (WCD) account with a Weaviate database cluster in that account. 
-   [Create a WCD account](https://weaviate.io/developers/wcs/quickstart#create-a-wcd-account). [Create a database cluster](https://weaviate.io/developers/wcs/quickstart#create-a-weaviate-cluster). For other database options, [learn more](https://weaviate.io/developers/weaviate/installation).
+  - A Weaviate database instance. The following information assumes that you have a Weaviate Cloud (WCD) account with a Weaviate database cluster in that account. 
+    [Create a WCD account](https://weaviate.io/developers/wcs/quickstart#create-a-wcd-account). [Create a database cluster](https://weaviate.io/developers/wcs/quickstart#create-a-weaviate-cluster). For other database options, [learn more](https://weaviate.io/developers/weaviate/installation).
+  - The name of the target collection in the database. [Create a collection](https://weaviate.io/developers/wcs/tools/collections-tool).
+  - The URL and API key for the database cluster. [Get the URL and API key](https://weaviate.io/developers/wcs/quickstart#explore-the-details-panel).
 
-2. The URL and API key for the database cluster. [Get the URL and API key](https://weaviate.io/developers/wcs/quickstart#explore-the-details-panel).
+    The following video describes how to set up Weaviate Cloud for Unstructured.
 
-3. A collection in the database cluster. Note the name of the collection, also known as the collection's _class name_. [Create a collection](https://weaviate.io/developers/wcs/tools/collections-tool).
+    <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/Ldb7PZU-pR4"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+    ></iframe>
 
-   The schema of the collection that you use must match the data that Unstructured writes to it. Otherwise, you might get unexpected results or errors. 
-   Unstructured cannot provide a schema that is guaranteed to work for everyone in all circumstances. This is because these schemas will vary based on 
-   your source files' types; how you want Unstructured to partition, chunk, and generate embeddings; 
-   any custom post-processing code that you run; and other factors.
+Weaviate requires the collection to have a data schema before you add data. However, you don't have to create a data schema manually. 
+If you don't provide one, Weaviate generates a schema based on the incoming data.
 
-   You can adapt the following collection schema example for your own needs:
+However, if you have specific schema requirements, you can create the schema manually. 
+Unstructured cannot provide a schema that is guaranteed to work for everyone in all circumstances. 
+This is because these schemas will vary based on 
+your source files' types; how you want Unstructured to partition, chunk, and generate embeddings; 
+any custom post-processing code that you run; and other factors.
 
-   ```json
-   {
-       "class": "Elements",
-       "properties": [
-           {
-               "name": "element_id",
-               "dataType": ["text"]
-           },
-           {
-               "name": "text",
-               "dataType": ["text"]
-           },
-           {
-               "name": "embeddings",
-               "dataType": ["number[]"]
-           },
-           {
-               "name": "metadata",
-               "dataType": ["object"],
-               "nestedProperties": [
-                   {
-                       "name": "parent_id",
-                       "dataType": ["text"]
-                   },
-                   {
-                       "name": "page_number",
-                       "dataType": ["text"]
-                   },
-                   {
-                       "name": "is_continuation",
-                       "dataType": ["boolean"]
-                   },
-                   {
-                       "name": "orig_elements",
-                       "dataType": ["text"]
-                   }
-               ]
-           }
-       ]
-   }
-   ```
-   
-   See also :
+You can adapt the following collection schema example for your own specific schema requirements:
 
-   - [Collection schema](https://weaviate.io/developers/weaviate/config-refs/schema)
-   - [Unstructured document elements and metadata](/api-reference/api-services/document-elements)
+```json
+{
+    "class": "Elements",
+    "properties": [
+        {
+            "name": "element_id",
+            "dataType": ["text"]
+        },
+        {
+            "name": "text",
+            "dataType": ["text"]
+        },
+        {
+            "name": "embeddings",
+            "dataType": ["number[]"]
+        },
+        {
+            "name": "metadata",
+            "dataType": ["object"],
+            "nestedProperties": [
+                {
+                    "name": "parent_id",
+                    "dataType": ["text"]
+                },
+                {
+                    "name": "page_number",
+                    "dataType": ["text"]
+                },
+                {
+                    "name": "is_continuation",
+                    "dataType": ["boolean"]
+                },
+                {
+                    "name": "orig_elements",
+                    "dataType": ["text"]
+                }
+            ]
+        }
+    ]
+}
+```
+
+See also :
+
+- [Collection schema](https://weaviate.io/developers/weaviate/config-refs/schema)
+- [Unstructured document elements and metadata](/api-reference/api-services/document-elements)
