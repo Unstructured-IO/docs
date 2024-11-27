@@ -1,0 +1,309 @@
+---
+title: Overview
+---
+
+The [Unstructured Platform](/platform/overview) features a no-code user interface for transforming your unstructured data into data that is ready 
+for Retrieval Augmented Generation (RAG).
+
+The Unstructured Platform also provides a back-end API for automation usage scenarios as well as for documentation, reporting, and recovery needs.
+
+## Requirements
+
+To use the Unstructured Platform API, you must have:
+
+- **An Unstructured account**, created through one of the following means:
+
+  - The [Unstructured Serverless API](https://unstructured.io/api-key-hosted) sign-up page.
+  - The [For Developers](https://unstructured.io/developers) sign-up page.
+  - The [For Enterprise](https://unstructured.io/enterprise) sign-up page.
+
+- **An Unstructured API key**, created through the Unstructured account console.
+
+  [Free Unstructured API](/api-reference/api-services/free-api) keys are _not_ supported.
+
+  <Note>
+      If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API key creation process 
+      might be different. For API key creation guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
+  </Note>
+
+- **The Unstructured Platform API URL**, which is `https://platform.unstructuredapp.io`
+
+  <Note>
+      If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API URL 
+      might be different. For API URL guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
+      If your API URL is different, be sure to substitute `https://platform.unstructuredapp.io` for your 
+      API URL throughout the following examples.
+  </Note>
+
+The Unstructured Platform API is offered as a set of Representational State Transfer (REST) endpoints, which you can call through standard REST-enabled 
+utilities, tools, programming languages, packages, and libraries. The following sections describe how to call the Unstructured Platform API with 
+`curl` and Postman. You can adapt this information as needed for your preferred programming languages and libraries, for example by using the 
+`requests` library with Python.
+
+<Warning>
+    The Unstructured Platform API is separate from [Unstructured Serverless API services](/api-reference/api-services/overview) and 
+    [Unstructured Ingest](/api-reference/ingest/overview). 
+
+    Because of this separation, the following Unstructured SDKs, tools, and libraries do _not_ work with the Unstructured Platform API:
+
+    - The [Unstructured Python SDK](/api-reference/api-services/sdk-python)
+    - The [Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts)
+    - [Local single-file POST requests](/api-reference/api-services/post-requests) to Unstructured Serverless API services
+    - The [Unstructured open source Python library](/api-reference/api-services/partition-via-api)
+    - The [Unstructued Ingest CLI](/api-reference/ingest/ingest-cli)
+    - The [Unstructured Ingest Python library](/api-reference/ingest/python-ingest)
+
+    [Free Unstructured API](/api-reference/api-services/free-api) accounts are also _not_ supported.
+
+    The following Unstructured API URLs are also _not_ supported:
+
+    - `https://api.unstructuredapp.io/general/v0/general` (the Unstructured Serverless API URL)
+    - `https://api.unstructured.io/general/v0/general` (the Free Unstructured API URL)
+</Warning>
+
+## Basics
+
+The Unstructured Platform API enables you to work with [connectors](#connectors),
+[workflows](#workflows), and [jobs](#jobs) in the Unstructured Platform.
+
+- A _source connector_ ingests files or data into Unstructured from a source location.
+- A _destination connector_ sends the processed data from Unstructured to a destination location.
+- A _workflow_ defines how Unstructured will process the data.
+- A _job_ runs a workflow at a specific point in time.
+
+For general information about these objects, see:
+
+- [Connectors](/platform/connectors)
+- [Workflows](/platform/workflows)
+- [Jobs](/platform/jobs)
+
+In the following `curl` examples, we recommend setting the following environment variables first:
+
+```bash
+export UNSTRUCTURED_API_URL="https://platform.unstructuredapp.io"
+export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
+```
+
+This enables you to more easily run the following `curl` examples and helps prevent you from storing scripts 
+that contain sensitive URLs and API keys in public source code repositories.
+
+In the following Postman examples, we recommend setting the following global variables first:
+
+1. In Postman, on your workspace's sidebar, click **Environments**.
+2. Click **Globals**.
+3. Create two global variables with the following settings:
+
+   - **Variable**: `UNSTRUCTURED_API_URL`
+   - **Type**: `default`
+   - **Initial value**: `https://platform.unstructuredapp.io`
+   <br/>
+   - **Variable**: `UNSTRUCTURED_API_URL`
+   - **Type**: `secret`
+   - **Initial value**: `<your-unstructured-api-key>`
+
+4. Click **Save**.
+
+This enables you to more easily run the following examples in Postman and helps prevent you from storing 
+Postman collections that contain sensitive URLs and API keys in public source code repositories.
+
+## Connectors
+
+You can [list](#list-source-connectors), 
+[get](#get-a-source-connector), 
+[create](#create-a-source-connector), 
+[update](#update-a-source-connector), 
+and [delete](#delete-a-source-connector) source connectors. 
+You can also [list](#list-destination-connectors), 
+[get](#get-a-destination-connector), 
+[create](#create-a-destination-connector), 
+[update](#update-a-destination-connector), 
+and [delete](#delete-a-destination-connector) destination connectors.
+
+For general information, see [Connectors](/platform/connectors).
+
+### List source connectors
+
+To list source connectors, use the `GET` method to call the `/sources` endpoint.
+
+To filter the list of source connectors, use the query parameter `source_type=<type>`, 
+replacing `<type>` with the source connector type's unique ID. 
+To get this ID, see [Sources](/platform/api/sources/overview).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request GET \
+        "$UNSTRUCTURED_API_URL/sources" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/sources
+            ```
+
+        3. On the **Headers** tab, enter the following header:
+
+            - **Key**: `unstructured-api-key`
+            - **Value**: `{{UNSTRUCTURED_API_KEY}}`
+        
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+### Get a source connector
+
+To get information about a source connector, use the `GET` method to call the `/sources/<connector-id>` endpoint, replacing 
+`<connector-id>` with the source connector's unique ID. To get this ID, see [List source connectors](#list-source-connectors).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        ```
+    </Accordion>
+        <Accordion title="Postman">
+        ```
+        ```
+    </Accordion>
+</AccordionGroup>
+
+### Create a source connector
+
+To create a source connector, use the `POST` method to call the `/sources` endpoint. In the request body, 
+specify the settings for the connector. For the specific settings to include, which differ by connector, see 
+[Sources](/platform/api/sources/overview). 
+
+### Update a source connector
+
+To update information about a source connector, use the `PUT` method to call the `/sources/<connector-id>` endpoint, replacing 
+`<connector-id>` with the source connector's unique ID. To get this ID, see [List source connectors](#list-source-connectors).
+
+In the request body, specify the settings for the connector. For the specific settings to include, which differ by connector, see 
+[Sources](/platform/api/sources/overview). 
+
+### Delete a source connector
+
+To delete a source connector, use the `DELETE` method to call the `/sources/<connector-id>` endpoint, replacing 
+`<connector-id>` with the source connector's unique ID. To get this ID, see [List source connectors](#list-source-connectors).
+
+### List destination connectors
+
+To list destination connectors, use the `GET` method to call the `/destinations` endpoint.
+
+To filter the list of destination connectors, use the query parameter `destination_type=<type>`, 
+replacing `<type>` with the destination connector type's unique ID. 
+To get this ID, see [Destinations](/platform/api/destinations/overview).
+
+### Get a destination connector
+
+To get information about a destination connector, use the `GET` method to call the `/destinations/<connector-id>` endpoint, replacing 
+`<connector-id>` with the destination connector's unique ID. To get this ID, see [List destination connectors](#list-destination-connectors).
+
+### Create a destination connector
+
+To create a destination connectors, use the `POST` method to call the `/destinations` endpoint. In the request body, 
+specify the settings for the connector. For the specific settings to include, which differ by connector, see 
+[Destinations](/platform/api/destinations/overview). 
+
+### Update a destination connector
+
+To update information about a destination connector, use the `PUT` method to call the `/destinations/<connector-id>` endpoint, replacing 
+`<connector-id>` with the destination connector's unique ID. To get this ID, see [List destination connectors](#list-destination-connectors).
+
+In the request body, specify the settings for the connector. For the specific settings to include, which differ by connector, see 
+[Destinations](/platform/api/destinations/overview). 
+
+### Delete a destination connector
+
+To delete a destination connector, use the `DELETE` method to call the `/destinations/<connector-id>` endpoint, replacing 
+`<connector-id>` with the destination connector's unique ID. To get this ID, see [List destination connectors](#list-destination-connectors).
+
+## Workflows
+
+You can [list](#list-workflows), 
+[get](#get-a-workflow), 
+[create](#create-a-workflow), 
+[run](#run-a-workflow), 
+[update](#update-a-workflow), 
+and [delete](#delete-a-workflow) workflows.
+
+For general information, see [Workflows](/platform/workflows).
+
+### List workflows
+
+To list workflows, use the `GET` method to call the `/worflows` endpoint.
+
+To filter the list of workflows, use one or more of the following query parameters:
+
+- `source_connector_id=<connector-id>`, replacing `<connector-id>` with the source connector's unique ID. 
+  To get this ID, see [List source connectors](#list-source-connectors).
+- `destination_connector_id=<connector-id>`, replacing `<connector-id>` with the destination connector's unique ID. 
+  To get this ID, see [List destination connectors](#list-destination-connectors).
+- `workflow_type=<type>`, replacing `<type>` with ...
+- `status=<status>`, replacing `<status>` with ...
+
+### Get a workflow
+
+To get information about a workflow, use the `GET` method to call the `/workflows/<workflow-id>` endpoint, replacing 
+`<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
+
+### Create a workflow
+
+To create a workflow, use the `POST` method to call the `/workflow` endpoint. In the request body, 
+specify the following settings:
+
+### Run a workflow
+
+To run a workflow, use the `POST` method to call the `/workflows/<workflow-id>/run` endpoint, replacing 
+`<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
+
+To run a workflow on a schedule instead, specify the `schedule` setting in the request body when you create or update a 
+workflow. See [Create a workflow](#create-a-workflow) or [Update a workflow](#update-a-workflow).
+
+### Update a workflow
+
+To update information about a workflow, use the `PUT` method to call the `/workflows/<workflow-id>` endpoint, replacing 
+`<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
+
+In the request body, specify the settings for the workflow. For the specific settings to include, see 
+[Create a workflow](#create-a-workflow).
+
+### Delete a workflow
+
+To delete a workflow, use the `DELETE` method to call the `/workflows/<workflow-id>` endpoint, replacing 
+`<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
+
+## Jobs
+
+You can [list](#list-jobs), 
+[get](#get-a-job), 
+and [cancel](#cancel-a-job) jobs.
+
+A job is created automatically whenever a workflow runs on a schedule; see [Create a workflow](#create-a-workflow).
+A job is also created whenever you run a workflow; see [Run a workflow](#run-a-workflow).
+
+For general information, see [Jobs](/platform/jobs).
+
+### List jobs
+
+To list jobs, use the `GET` method to call the `/jobs` endpoint.
+
+To filter the list of jobs, use one or both of the following query parameters:
+
+- `workflow_id=<workflow-id>`, replacing `<workflow-id>` with the workflow's unique ID. 
+  To get this ID, see [List workflows](#list-workflows).
+- `status=<status>`, replacing `<status>` with ...
+
+### Get a job
+
+To get information about a job, use the `GET` method to call the `/jobs/<job-id>` endpoint, replacing 
+`<job-id>` with the job's unique ID. To get this ID, see [List jobs](#list-jobs).
+
+### Cancel a job
+
+To cancel a job, use the `POST` method to call the `/jobs/<job-id>/cancel` endpoint, replacing 
+`<job-id>` with the job's unique ID. To get this ID, see [List jobs](#list-jobs).
+
