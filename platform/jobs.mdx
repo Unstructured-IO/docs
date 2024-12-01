@@ -12,14 +12,12 @@ The jobs dashboard provides a centralized view for managing and monitoring the e
 The jobs dashboard lists each job and its associated **Status**, **Job ID**, **Created** date and time, **Workflow** name, and **Runtime** duration.
 
 Each job's status, shown in the **Status** column, can be:
-    
-*   **Scheduled**: The job will run in the future.
-    
-*   **In Progress**: The job's documents are being processed.
-    
-*   **Finished**: The job has completed successfully.
-    
-*   **Failed**: The job has errors.
+
+![Pending job icon](/img/platform/Job-Pending.png) **Pending**: The job's data is currently not attempting to be processed.
+![In-progress job icon](/img/platform/Job-In-Progress.png) **In Progress**: The job's data is attempting to be processed.
+![Fully finished job icon](/img/platform/Job-Finished-Fully.png) **Finished**: 100% of the job's data has been successfully processed.
+![Partially finished job icon](/img/platform/Job-Finished-Partially.png) **Finished**: 90% to 99% of the job's data has been sucessfully processed.
+![Failed job icon](/img/platform/Job-Failed.png) **Failed**: Less than 90% of the job's data has been successfully processed.
 
 ## Run a job
 
@@ -43,12 +41,7 @@ Clicking the **Details** button shows:
 
 - The job's ID.
 - The job's start date.
-- The source and destination connectors for the job.
-- Information about the files that were processed in each of the job's stages. This information shows how many files are:
+- A **Request Help** button to request help from Unstructured about this job.
+- Information about what happened in each of the job's stages.
 
-  - **Ready**: Waiting to be processed.
-  - **In Progress**: Being processed.
-  - **Success**: Successfully processed.
-  - **Failure**: Failed to process successfully.
-
-To see the job's logs, click the **Logs** button.
+Clicking the **Errors** button provides any available information about what might have gone wrong with the job or in any of its stages.
