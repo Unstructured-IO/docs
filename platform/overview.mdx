@@ -23,9 +23,19 @@ To get your data RAG-ready, the Unstructured Platform moves it through the follo
   <Step title="Route">
     Routing determines which strategy Unstructured Platform uses to transforming your documents into Unstructured's canonical JSON schema. The Unstructured Platform provides these [partitioning](/platform/partitioning) strategies for document transformation:
     
-    - **Fast** is great for when there is extractable text available, like in HTML files or in the Microsoft Office Document format.
-    - **Hi Res** is best for PDFs and tables and where accurate classification of document elements is critical.
-    - If you're unsure which strategy to use, choose **Auto**, and the Unstructured Platform will handle the decision for you.
+    - **Basic** / **Fast** is ideal for simple, text-only documents.
+    - **Advanced** / **High Res** is best for PDFs, images, and complex file types.
+
+      <Note>
+          During **Advanced** / **High Res** processing, any detected text-based files are processed and billed at the **Basic** / **Fast** rate instead.
+      </Note>
+
+    - **Platinum** / **VLM** is for challenging documents, including scanned and handwritten content.
+
+      <Note>
+          During **Platinum** / **VLM** processing, any detected files that are not PDFs or images are processed and billed at either the **Advanced** / **High Res** or **Basic** / **Fast** rate instead. 
+          Of those non-PDF and non-image files, all text-based files are processed and billed at the **Basic** / **Fast** rate instead. The other files are processed and billed at the **Advanced** / **High Res** rate instead.
+      </Note>
 
   </Step>
   <Step title="Transform"> 
