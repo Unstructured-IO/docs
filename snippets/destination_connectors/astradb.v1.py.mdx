@@ -30,7 +30,6 @@ def get_writer() -> Writer:
             ),
             keyspace=os.getenv("ASTRA_DB_KEYSPACE"),
             collection_name=os.getenv("ASTRA_DB_COLLECTION"),
-            embedding_dimension=os.getenv("ASTRA_DB_EMBEDDING_DIMENSIONS"),
         ),
         write_config=AstraWriteConfig(batch_size=80),
     )
