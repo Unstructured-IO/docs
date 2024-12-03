@@ -16,3 +16,72 @@ allowfullscreen
 - The name of the [database](https://milvus.io/docs/manage_databases.md) in the instance.
 - The name of the [collection](https://milvus.io/docs/manage-collections.md) in the database.
 
+  Milvus requires the target collection to have a defined schema before Unstructured can write to the collection. The minimum viable 
+  schema for Unstructured contains only the fields `element_id` and `embeddings`, as follows. This example code demonstrates the use of the 
+  [Python SDK for Milvus](https://pypi.org/project/pymilvus/) to create a collection with this minimum viable schema, 
+  targeting Milvus on IBM watsonx.data:
+
+  ```python Python
+  import os
+  from pymilvus import (
+      connections,
+      FieldSchema,
+      DataType,
+      CollectionSchema,
+      Collection,
+  )
+
+  connections.connect(
+      alias="default",
+      host=os.getenv("MILVUS_GRPC_HOST"),
+      port=os.getenv("MILVUS_GRPC_PORT"),
+      user=os.getenv("MILVUS_USER"),
+      password=os.getenv("MILVUS_PASSWORD"),
+      secure=True
+  )
+
+  primary_key = FieldSchema(
+      name="element_id",
+      dtype=DataType.VARCHAR,
+      is_primary=True,
+      max_length=200
+  )
+
+  vector = FieldSchema(
+      name="embeddings",
+      dtype=DataType.FLOAT_VECTOR,
+      dim=3072
+  )
+
+  schema = CollectionSchema(
+      fields=[primary_key, vector],
+      enable_dynamic_field=True
+  )
+
+  collection = Collection(
+      name="my_collection",
+      schema=schema,
+      using="default"
+  )
+
+  index_params = {
+      "metric_type": "L2",
+      "index_type": "IVF_FLAT",
+      "params": {"nlist": 1024}
+  }
+
+  collection.create_index(
+      field_name="embeddings",
+      index_params=index_params
+  )
+  ```
+
+  Other approaches, such as [creating collections instantly](https://milvus.io/docs/create-collection-instantly.md), 
+  [enabling dynamic fields](https://milvus.io/docs/enable-dynamic-field.md), or 
+  [setting nullable and default fields](https://milvus.io/docs/nullable-and-default.md), have not 
+  been fully evaluated by Unstructured and might produce unexpected results. 
+
+  Unstructured cannot provide a schema that is guaranteed to work in all 
+  circumstances. This is because these schemas will vary based on your source files' types; how you 
+  want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors.
+
