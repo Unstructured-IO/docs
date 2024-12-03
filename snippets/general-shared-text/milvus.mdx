@@ -17,7 +17,7 @@ allowfullscreen
 - The name of the [collection](https://milvus.io/docs/manage-collections.md) in the database.
 
   Milvus requires the target collection to have a defined schema before Unstructured can write to the collection. The minimum viable 
-  schema for Unstructured contains only the fields `element_id` and `embeddings`, as follows. This example code demonstrates the use of the 
+  schema for Unstructured contains only the fields `element_id`, `embeddings`, and `record_id`, as follows. This example code demonstrates the use of the 
   [Python SDK for Milvus](https://pypi.org/project/pymilvus/) to create a collection with this minimum viable schema, 
   targeting Milvus on IBM watsonx.data:
 
@@ -53,8 +53,14 @@ allowfullscreen
       dim=3072
   )
 
+  record_id = FieldSchema(
+      name="record_id",
+      dtype=DataType.VARCHAR,
+      max_length=200
+  )
+
   schema = CollectionSchema(
-      fields=[primary_key, vector],
+      fields=[primary_key, vector, record_id],
       enable_dynamic_field=True
   )
 
@@ -76,10 +82,9 @@ allowfullscreen
   )
   ```
 
-  Other approaches, such as [creating collections instantly](https://milvus.io/docs/create-collection-instantly.md), 
-  [enabling dynamic fields](https://milvus.io/docs/enable-dynamic-field.md), or 
+  Other approaches, such as [creating collections instantly](https://milvus.io/docs/create-collection-instantly.md) or 
   [setting nullable and default fields](https://milvus.io/docs/nullable-and-default.md), have not 
-  been fully evaluated by Unstructured and might produce unexpected results. 
+  been fully evaluated by Unstructured and might produce unexpected results.
 
   Unstructured cannot provide a schema that is guaranteed to work in all 
   circumstances. This is because these schemas will vary based on your source files' types; how you 
