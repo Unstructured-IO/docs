@@ -1,0 +1,559 @@
+3. S3
+
+**Overview**  
+The S3 source connector enables integration with Amazon S3 buckets to process documents. Using the Unstructured Ingest CLI or Python library, you can batch process files stored in S3 and save the structured outputs locally or to another destination.
+
+**Prerequisites**  
+1. **AWS Account:** [Create an AWS account](https://aws.amazon.com/free).
+2. **S3 Bucket:** [Create an S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html).  
+   - Use anonymous (not recommended) or authenticated access.  
+   - For authenticated access:
+     - IAM user must have permissions for `s3:ListBucket` and `s3:GetObject` for read access.  
+       [Learn how](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-policies-s3.html).  
+     - IAM user must have `s3:PutObject` for write access.  
+       [Learn how](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-policies-s3.html).
+   - [Enable anonymous access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html#example-bucket-policies-anonymous-user) (if necessary, not recommended).  
+   - For temporary access, use an AWS STS session token. [Generate a session token](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.html#api_getsessiontoken).
+
+3. **Remote URL:** Specify the S3 path using the format:
+   - `s3://my-bucket/` (root of bucket).  
+   - `s3://my-bucket/my-folder/` (folder in bucket).  
+
+**Installation**  
+Install the required dependencies:  
+```bash
+pip install "unstructured-ingest[s3]"
+```
+
+**Required Environment Variables**  
+- `AWS_S3_URL`: S3 bucket or folder path.  
+- Authentication variables:
+  - `AWS_ACCESS_KEY_ID`: AWS access key ID.  
+  - `AWS_SECRET_ACCESS_KEY`: AWS secret access key.  
+  - `AWS_TOKEN`: Optional STS session token for temporary access.  
+- If using anonymous access, set `--anonymous` (CLI) or `anonymous=True` (Python).  
+
+Additionally:
+- `UNSTRUCTURED_API_KEY`: Your Unstructured API key.  
+- `UNSTRUCTURED_API_URL`: Your Unstructured API URL.  
+
+---
+
+### CLI Usage Example
+```bash
+unstructured-ingest \
+  s3 \
+    --remote-url $AWS_S3_URL \
+    --download-dir $LOCAL_FILE_DOWNLOAD_DIR \
+    --key $AWS_ACCESS_KEY_ID \
+    --secret $AWS_SECRET_ACCESS_KEY \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --strategy hi_res \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+  local \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR
+```
+
+---
+
+### Python Usage Example
+```python
+import os
+
+from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+from unstructured_ingest.v2.interfaces import ProcessorConfig
+from unstructured_ingest.v2.processes.connectors.fsspec.s3 import (
+    S3IndexerConfig,
+    S3DownloaderConfig,
+    S3ConnectionConfig,
+    S3AccessConfig
+)
+from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+from unstructured_ingest.v2.processes.chunker import ChunkerConfig
+from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+from unstructured_ingest.v2.processes.connectors.local import LocalUploaderConfig
+
+# Chunking and embedding are optional.
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=S3IndexerConfig(remote_url=os.getenv("AWS_S3_URL")),
+        downloader_config=S3DownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
+        source_connection_config=S3ConnectionConfig(
+            access_config=S3AccessConfig(
+                key=os.getenv("AWS_ACCESS_KEY_ID"),
+                secret=os.getenv("AWS_SECRET_ACCESS_KEY"),
+                token=os.getenv("AWS_TOKEN")
+            )
+        ),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            strategy="hi_res",
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
+        uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
+    ).run()
+```
+
+**Reference:** [S3 Source Connector Documentation](https://docs.unstructured.io/api-reference/ingest/source-connectors/s3)
+
+# Unstructured Ingest Destination Connectors:
+
+1. Azure 
+
+**Overview**  
+The Azure destination connector allows you to store structured outputs from processed records into an Azure Storage account. Use the Unstructured Ingest CLI or Python library to integrate Azure as a destination for your batch processing pipelines.
+
+---
+
+### Prerequisites  
+
+1. **Azure Account:** [Create an Azure account](https://azure.microsoft.com/pricing/purchase-options/azure-account).  
+
+2. **Azure Storage Account & Container:**  
+   - [Create a storage account](https://learn.microsoft.com/azure/storage/common/storage-account-create).  
+   - [Create a container](https://learn.microsoft.com/azure/storage/blobs/blob-containers-portal).  
+
+3. **Azure Storage Remote URL:** Format the URL as:  
+   - `az://<container-name>/<path/to/folder>`  
+   - Example: `az://my-container/my-folder/`
+
+4. **Permissions:**  
+   - SAS token, access key, or connection string with required permissions:  
+     - **Read** and **List** (for reading).  
+     - **Write** and **List** (for writing).  
+
+   - [Create an SAS token](https://learn.microsoft.com/azure/ai-services/translator/document-translation/how-to-guides/create-sas-tokens).  
+   - [Get an access key](https://learn.microsoft.com/azure/storage/common/storage-account-keys-manage#view-account-access-keys).  
+   - [Get a connection string](https://learn.microsoft.com/azure/storage/common/storage-configure-connection-string#configure-a-connection-string-for-an-azure-storage-account).  
+
+---
+
+### Installation  
+
+Install the required dependencies for Azure:  
+```bash
+pip install "unstructured-ingest[azure]"
+```
+
+You might need additional dependencies based on your use case. [Learn more](https://docs.unstructured.io/api-reference/ingest/ingest-dependencies).
+
+---
+
+### Required Environment Variables  
+
+- `AZURE_STORAGE_REMOTE_URL`: The remote URL for Azure storage.  
+- `AZURE_STORAGE_ACCOUNT_NAME`: Azure Storage account name.  
+- `AZURE_STORAGE_ACCOUNT_KEY`, `AZURE_STORAGE_CONNECTION_STRING`, or `AZURE_STORAGE_SAS_TOKEN`: One of these based on your security configuration.  
+
+Additionally:  
+- `UNSTRUCTURED_API_KEY`: Your Unstructured API key.  
+- `UNSTRUCTURED_API_URL`: Your Unstructured API URL.  
+
+---
+
+### CLI Usage Example  
+
+```bash
+unstructured-ingest \
+  local \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --strategy hi_res \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+  azure \
+    --remote-url $AZURE_STORAGE_REMOTE_URL \
+    --account-name $AZURE_STORAGE_ACCOUNT_NAME \
+    --account-key $AZURE_STORAGE_ACCOUNT_KEY
+```
+
+---
+
+### Python Usage Example  
+
+```python
+import os
+
+from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+from unstructured_ingest.v2.interfaces import ProcessorConfig
+from unstructured_ingest.v2.processes.connectors.fsspec.azure import (
+    AzureConnectionConfig,
+    AzureAccessConfig,
+    AzureUploaderConfig
+)
+from unstructured_ingest.v2.processes.connectors.local import (
+    LocalIndexerConfig,
+    LocalDownloaderConfig,
+    LocalConnectionConfig
+)
+from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+from unstructured_ingest.v2.processes.chunker import ChunkerConfig
+from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+
+# Chunking and embedding are optional.
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
+        downloader_config=LocalDownloaderConfig(),
+        source_connection_config=LocalConnectionConfig(),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            strategy="hi_res",
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
+        destination_connection_config=AzureConnectionConfig(
+            access_config=AzureAccessConfig(
+                account_name=os.getenv("AZURE_STORAGE_ACCOUNT_NAME"),
+                account_key=os.getenv("AZURE_STORAGE_ACCOUNT_KEY")
+            )
+        ),
+        uploader_config=AzureUploaderConfig(remote_url=os.getenv("AZURE_STORAGE_REMOTE_URL"))
+    ).run()
+```
+
+**Reference:** [Azure Destination Connector Documentation](https://docs.unstructured.io/api-reference/ingest/destination-connector/azure)
+
+2. DataBricks Volumes
+
+**Overview**  
+The Databricks Volumes destination connector enables you to batch process your records and store structured outputs in Databricks Volumes. You can use the Unstructured Ingest CLI or the Python library to integrate Databricks as a destination in your processing pipelines.
+
+---
+
+### Prerequisites  
+
+1. **Databricks Workspace URL**  
+   - Examples:  
+     - AWS: `https://<workspace-id>.cloud.databricks.com`  
+     - Azure: `https://adb-<workspace-id>.<random-number>.azuredatabricks.net`  
+     - GCP: `https://<workspace-id>.<random-number>.gcp.databricks.com`  
+   - Get details for [AWS](https://docs.databricks.com/workspace/workspace-details.html#workspace-instance-names-urls-and-ids), [Azure](https://learn.microsoft.com/azure/databricks/workspace/workspace-details#workspace-instance-names-urls-and-ids), or [GCP](https://docs.gcp.databricks.com/workspace/workspace-details.html#workspace-instance-names-urls-and-ids).  
+
+2. **Databricks Compute Resource ID**  
+   - Get details for [AWS](https://docs.databricks.com/integrations/compute-details.html), [Azure](https://learn.microsoft.com/azure/databricks/integrations/compute-details), or [GCP](https://docs.gcp.databricks.com/integrations/compute-details.html).  
+
+3. **Authentication Details**  
+   - Supported authentication methods:  
+     - Personal Access Tokens  
+     - OAuth (Machine-to-Machine, User-to-Machine)  
+     - Managed Identities (Azure)  
+     - Entra ID (Azure)  
+     - GCP Credentials  
+
+4. **Catalog, Schema, and Volume Details**  
+   - Catalog Name: Manage catalog for [AWS](https://docs.databricks.com/catalogs/manage-catalog.html), [Azure](https://learn.microsoft.com/azure/databricks/catalogs/manage-catalog), or [GCP](https://docs.gcp.databricks.com/catalogs/manage-catalog.html).  
+   - Schema Name: Manage schema for [AWS](https://docs.databricks.com/schemas/manage-schema.html), [Azure](https://learn.microsoft.com/azure/databricks/schemas/manage-schema), or [GCP](https://docs.gcp.databricks.com/schemas/manage-schema.html).  
+   - Volume Details: Manage volumes for [AWS](https://docs.databricks.com/files/volumes.html), [Azure](https://learn.microsoft.com/azure/databricks/files/volumes), or [GCP](https://docs.gcp.databricks.com/files/volumes.html).  
+
+---
+
+### Installation  
+
+Install the required dependencies for Databricks Volumes:  
+```bash
+pip install "unstructured-ingest[databricks-volumes]"
+```
+
+You may need additional dependencies. [Learn more](https://docs.unstructured.io/api-reference/ingest/ingest-dependencies).
+
+---
+
+### Environment Variables  
+
+1. **Basic Configuration**  
+   - `DATABRICKS_HOST`: Databricks host URL.  
+   - `DATABRICKS_CATALOG`: Catalog name for the Volume.  
+   - `DATABRICKS_SCHEMA`: Schema name for the Volume. Defaults to `default` if unspecified.  
+   - `DATABRICKS_VOLUME`: Volume name.  
+   - `DATABRICKS_VOLUME_PATH`: Optional path to access within the volume.  
+
+2. **Authentication**  
+   - Personal Access Token: `DATABRICKS_TOKEN`  
+   - Username/Password (AWS): `DATABRICKS_USERNAME`, `DATABRICKS_PASSWORD`  
+   - OAuth (M2M): `DATABRICKS_CLIENT_ID`, `DATABRICKS_CLIENT_SECRET`  
+   - Azure MSI: `ARM_CLIENT_ID`  
+   - GCP Credentials: `GOOGLE_CREDENTIALS`  
+   - Configuration Profile: `DATABRICKS_PROFILE`  
+
+3. **Unstructured API Variables**  
+   - `UNSTRUCTURED_API_KEY`: API key.  
+   - `UNSTRUCTURED_API_URL`: API URL.  
+
+---
+
+### CLI Usage Example  
+
+```bash
+unstructured-ingest \
+  local \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --strategy hi_res \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface \
+  databricks-volumes \
+    --profile $DATABRICKS_PROFILE \
+    --host $DATABRICKS_HOST \
+    --catalog $DATABRICKS_CATALOG \
+    --schema $DATABRICKS_SCHEMA \
+    --volume $DATABRICKS_VOLUME \
+    --volume-path $DATABRICKS_VOLUME_PATH
+```
+
+---
+
+### Python Usage Example  
+
+```python
+import os
+
+from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+from unstructured_ingest.v2.interfaces import ProcessorConfig
+from unstructured_ingest.v2.processes.connectors.databricks_volumes import (
+    DatabricksVolumesConnectionConfig,
+    DatabricksVolumesAccessConfig,
+    DatabricksVolumesUploaderConfig
+)
+from unstructured_ingest.v2.processes.connectors.local import (
+    LocalIndexerConfig,
+    LocalDownloaderConfig,
+    LocalConnectionConfig
+)
+from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+from unstructured_ingest.v2.processes.chunker import ChunkerConfig
+from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
+        downloader_config=LocalDownloaderConfig(),
+        source_connection_config=LocalConnectionConfig(),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            strategy="hi_res",
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
+        destination_connection_config=DatabricksVolumesConnectionConfig(
+            access_config=DatabricksVolumesAccessConfig(profile=os.getenv("DATABRICKS_PROFILE")),
+            host=os.getenv("DATABRICKS_HOST"),
+            catalog=os.getenv("DATABRICKS_CATALOG"),
+            schema=os.getenv("DATABRICKS_SCHEMA"),
+            volume=os.getenv("DATABRICKS_VOLUME"),
+            volume_path=os.getenv("DATABRICKS_VOLUME_PATH")
+        ),
+        uploader_config=DatabricksVolumesUploaderConfig(overwrite=True)
+    ).run()
+```
+
+**Reference:** [Databricks Volumes Destination Connector Documentation](https://docs.unstructured.io/api-reference/ingest/destination-connector/databricks-volumes)
+
+3. Weaviate
+
+**Overview**  
+The Weaviate destination connector enables you to batch process and store structured outputs into a Weaviate database. You can use the Unstructured Ingest CLI or Python library for seamless integration.
+
+---
+
+### Prerequisites  
+
+1. **Weaviate Database Instance**  
+   - Create a Weaviate Cloud (WCD) account and a Weaviate database cluster.  
+   - [Create a WCD Account](https://weaviate.io/developers/wcs/quickstart#create-a-wcd-account)  
+   - [Create a Database Cluster](https://weaviate.io/developers/wcs/quickstart#create-a-weaviate-cluster)  
+   - For self-hosted or other installation options, [learn more](https://weaviate.io/developers/weaviate/installation).  
+
+2. **Database Cluster URL and API Key**  
+   - [Retrieve the URL and API Key](https://weaviate.io/developers/wcs/quickstart#explore-the-details-panel).  
+
+3. **Database Collection (Class)**  
+   - A collection (class) schema matching the data you intend to store is required.  
+   - Example schema:  
+
+     ```json
+     {
+         "class": "Elements",
+         "properties": [
+             {
+                 "name": "element_id",
+                 "dataType": ["text"]
+             },
+             {
+                 "name": "text",
+                 "dataType": ["text"]
+             },
+             {
+                 "name": "embeddings",
+                 "dataType": ["number[]"]
+             },
+             {
+                 "name": "metadata",
+                 "dataType": ["object"],
+                 "nestedProperties": [
+                     {
+                         "name": "parent_id",
+                         "dataType": ["text"]
+                     },
+                     {
+                         "name": "page_number",
+                         "dataType": ["int"]
+                     },
+                     {
+                         "name": "is_continuation",
+                         "dataType": ["boolean"]
+                     },
+                     {
+                         "name": "orig_elements",
+                         "dataType": ["text"]
+                     }
+                 ]
+             }
+         ]
+     }
+     ```  
+   - [Schema Reference](https://weaviate.io/developers/weaviate/config-refs/schema)  
+   - [Document Elements and Metadata](https://docs.unstructured.io/api-reference/api-services/document-elements)  
+
+---
+
+
+### Installation  
+
+Install the Weaviate connector dependencies:  
+```bash
+pip install "unstructured-ingest[weaviate]"
+```
+
+Additional dependencies may be required depending on your setup. [Learn more](https://docs.unstructured.io/api-reference/ingest/ingest-dependencies).
+
+---
+
+### Environment Variables  
+
+1. **Weaviate Configuration**  
+   - `WEAVIATE_URL`: REST endpoint of the Weaviate database cluster.  
+   - `WEAVIATE_API_KEY`: API key for the database cluster.  
+   - `WEAVIATE_COLLECTION_CLASS_NAME`: Name of the collection (class) in the database.  
+
+2. **Unstructured API Configuration**  
+   - `UNSTRUCTURED_API_KEY`: Your Unstructured API key.  
+   - `UNSTRUCTURED_API_URL`: Your Unstructured API URL.  
+
+---
+
+### CLI Usage Example  
+
+```bash
+unstructured-ingest \
+  local \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --strategy hi_res \
+    --chunk-elements \
+    --embedding-provider huggingface \
+    --num-processes 2 \
+    --verbose \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+  weaviate \
+    --host-url $WEAVIATE_URL \
+    --api-key $WEAVIATE_API_KEY \
+    --class-name $WEAVIATE_COLLECTION_CLASS_NAME
+```
+
+---
+
+### Python Usage Example  
+
+```python
+import os
+
+from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+from unstructured_ingest.v2.interfaces import ProcessorConfig
+from unstructured_ingest.v2.processes.connectors.weaviate import (
+    WeaviateConnectionConfig,
+    WeaviateAccessConfig,
+    WeaviateUploaderConfig,
+    WeaviateUploadStagerConfig
+)
+from unstructured_ingest.v2.processes.connectors.local import (
+    LocalIndexerConfig,
+    LocalDownloaderConfig,
+    LocalConnectionConfig
+)
+from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+from unstructured_ingest.v2.processes.chunker import ChunkerConfig
+from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
+        downloader_config=LocalDownloaderConfig(),
+        source_connection_config=LocalConnectionConfig(),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            strategy="hi_res",
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
+        destination_connection_config=WeaviateConnectionConfig(
+            access_config=WeaviateAccessConfig(
+                api_key=os.getenv("WEAVIATE_API_KEY")
+            ),
+            host_url=os.getenv("WEAVIATE_URL"),
+            class_name=os.getenv("WEAVIATE_COLLECTION_CLASS_NAME")
+        ),
+        stager_config=WeaviateUploadStagerConfig(),
+        uploader_config=WeaviateUploaderConfig()
+    ).run()
+```
+
+**Reference:** [Weaviate Destination Connector Documentation](https://docs.unstructured.io/api-reference/ingest/destination-connector/weaviate)
