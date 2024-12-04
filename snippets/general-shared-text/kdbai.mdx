@@ -2,3 +2,63 @@
 - The instance's endpoint URL. [Get the KDB.AI Cloud endpoint URL](https://code.kx.com/kdbai/latest/gettingStarted/kdb-ai-cloud-setup.html#connect-to-your-database). [Get the KDB.AI Server endpoint URL](https://code.kx.com/kdbai/latest/gettingStarted/kdb-ai-server-setup.html).
 - An API key. [Create the API key](https://code.kx.com/kdbai/latest/gettingStarted/kdb-ai-cloud-setup.html#create-an-api-key).
 - The name of the target table to access. [Create the table](https://code.kx.com/kdbai/latest/gettingStarted/quickstart.html#create-a-new-table).
+
+  KDB.AI requires the target table to have a defined schema before Unstructured can write to the table. The recommended table 
+  schema for Unstructured contains the fields `id`, `element_id`, `document`, `metadata`, and `embeddings`, as follows. 
+  This example code demonstrates the use of the [KDB.AI Client for Python](https://pypi.org/project/kdbai-client/) to create 
+  a table with this recommended schema, along with creating a vector index that contains 3072 dimensions:
+
+  ```python Python
+  import kdbai_client as kdbai
+  import os
+
+  session = kdbai.Session(
+      endpoint=os.getenv("KDBAI_ENDPOINT"),
+      api_key=os.getenv("KDBAI_API_KEY")
+  )
+
+  db = session.database("default")
+
+  schema = [
+      {
+          "name": "id",
+          "type": "str"
+      },
+      {
+          "name": "element_id",
+          "type": "str"
+      },
+      {
+          "name": "document",
+          "type": "str"
+      },
+      {
+          "name": "metadata", 
+          "type": "general"
+      },
+      {
+          "name": "embeddings",
+          "type": "float32s"
+      }
+  ]
+
+  indexes = [ 
+      {
+          "name": "vectorIndex",
+          "type": "flat", 
+          "params": {
+              "dims": 3072,
+              "metric": "L2"
+          },
+          "column": "embeddings"
+      }
+  ]
+
+  table = db.create_table(
+      table=os.getenv("KDBAI_TABLE"),
+      schema=schema,
+      indexes=indexes
+  )
+
+  print(f"The table named '{table.name}' now exists.")
+  ```
