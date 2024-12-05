@@ -102,6 +102,6 @@ if __name__ == "__main__":
         # ),
 
         stager_config=LanceDBUploadStagerConfig(),
-        uploader_config=LanceDBUploaderConfig(table_name=os.gentenv("LANCEDB_TABLE"))
+        uploader_config=LanceDBUploaderConfig(table_name=os.getenv("LANCEDB_TABLE"))
     ).run()
 ```
