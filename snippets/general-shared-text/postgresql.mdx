@@ -10,8 +10,17 @@ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; pic
 allowfullscreen
 ></iframe>
 
+import AllowIPAddressRanges from '/snippets/general-shared-text/ip-address-ranges.mdx';
+
 - A PostgreSQL instance. [Install PostgreSQL](https://www.postgresql.org/docs/current/tutorial-install.html). 
 - The host name and port number for the instance. These values are in the `postgresql.conf` file's `listen_addresses` and `port` settings. This file should be on the same machine as the instance. These values might also already be set as environment variables named `PGHOST` and `PGPORT` on the same machine as the instance. 
+- Depending on your network security requirements, you might need to allow access to your instance only from specific IP addresses.
+
+  <AllowIPAddressRanges />
+
+  To learn how to allow these IP address ranges, see your PostgreSQL provider's documentation, for example with 
+  [Amazon RDS for PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.RDSSecurityGroups.html).
+
 - A database in the instance. [Create a database](https://www.postgresql.org/docs/current/tutorial-createdb.html).
 - A table in the database. [Create a table](https://www.postgresql.org/docs/current/tutorial-table.html).
 
