@@ -23,10 +23,23 @@
     allowfullscreen
     ></iframe>
 
-Weaviate requires the collection to have a data schema before you add data. However, you don't have to create a data schema manually. 
-If you don't provide one, Weaviate generates a schema based on the incoming data.
+Weaviate requires the collection to have a data schema before you add data. At minimum, this schema must contain the `record_id` property, as follows:
 
-However, if you have specific schema requirements, you can create the schema manually. 
+```json
+{
+    "class": "Elements",
+    "properties": [
+        {
+            "name": "record_id",
+            "dataType": ["text"]
+        }
+    ]
+}
+```
+
+Weaviate generates any additional properties based on the incoming data.
+
+If you have specific schema requirements, you can define the schema manually. 
 Unstructured cannot provide a schema that is guaranteed to work for everyone in all circumstances. 
 This is because these schemas will vary based on 
 your source files' types; how you want Unstructured to partition, chunk, and generate embeddings; 
@@ -38,6 +51,10 @@ You can adapt the following collection schema example for your own specific sche
 {
     "class": "Elements",
     "properties": [
+        {
+            "name": "record_id",
+            "dataType": ["text"]
+        },
         {
             "name": "element_id",
             "dataType": ["text"]
