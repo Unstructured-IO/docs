@@ -134,7 +134,8 @@ To get this ID, see [Sources](/platform/api/sources/overview).
         ```bash
         curl --request GET \
         "$UNSTRUCTURED_API_URL/sources" \
-        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
         ```
     </Accordion>
     <Accordion title="Postman">
@@ -145,11 +146,11 @@ To get this ID, see [Sources](/platform/api/sources/overview).
             {{UNSTRUCTURED_API_URL}}/sources
             ```
 
-        3. On the **Headers** tab, enter the following header:
+        3. On the **Headers** tab, enter the following headers:
 
-            - **Key**: `unstructured-api-key`
-            - **Value**: `{{UNSTRUCTURED_API_KEY}}`
-        
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**" `accept`, **Value**: `application/json`
+
         4. Click **Send**.
     </Accordion>
 </AccordionGroup>

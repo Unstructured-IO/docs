@@ -2,6 +2,7 @@
 curl --request POST \
 "$UNSTRUCTURED_API_URL/destinations" \
 --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header "accept: application/json" \
 --data \
 '{
     "type": "pinecone",
