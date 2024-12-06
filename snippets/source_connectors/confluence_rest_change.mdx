@@ -4,6 +4,13 @@ curl --request PUT \
 --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
 --data \
 '{
-
+    "type": "confluence",
+    "name": "<name>",
+    "url": "<url>",
+    "user_email": "<user-email>",
+    "api_token": "<api-token>",
+    "max_number_of_spaces": <max-number-of-spaces>,
+    "max_number_of_docs_per_space": <max-number-of-docs-per-space>,
+    "list_of_spaces": "<list-of-spaces>"
 }'
 ```

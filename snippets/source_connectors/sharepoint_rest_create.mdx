@@ -4,6 +4,12 @@ curl --request POST \
 --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
 --data \
 '{
-
+    "type": "sharepoint",
+    "name": "<name>",
+    "site_url": "<site-url>",
+    "path": "<path>",
+    "recursive": "<true|false>",
+    "client_id": "<client-id>", 
+    "client_credentials": "<client-credentials>"
 }'
 ```

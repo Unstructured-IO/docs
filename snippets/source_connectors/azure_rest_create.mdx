@@ -4,6 +4,8 @@ curl --request POST \
 --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
 --data \
 '{
+    "type": "azure_blob_storage",
+    "name": "<name>",
     "recursive": "<true|false>",
     "remote_url": "az://<container-name>/<path/to/file/or/folder>",
 

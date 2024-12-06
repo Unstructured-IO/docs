@@ -4,6 +4,12 @@ curl --request POST \
 --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
 --data \
 '{
-
+    "type": "datastax_astra_db",
+    "name": "<name>",
+    "collection_name": "<collection-name>",
+    "keyspace": "<keyspace>",
+    "batch_size": <batch-size>,
+    "api_endpoint": "<api-endpoint>",
+    "token", "<token>"
 }'
 ```

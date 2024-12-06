@@ -4,6 +4,10 @@ curl --request PUT \
 --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
 --data \
 '{
-
+    "type": "elasticsearch",
+    "name": "<name>",
+    "host": "<host>",
+    "index_name": "<index-name>",
+    "api_key": "<api-key>"
 }'
 ```

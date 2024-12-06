@@ -4,6 +4,10 @@ curl --request PUT \
 --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
 --data \
 '{
-
+    "type": "mongodb",
+    "name": "<name>",
+    "database": "<database>",
+    "collection": "<collection>",
+    "connection_string": "<connection_string>"
 }'
 ```

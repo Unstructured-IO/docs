@@ -4,6 +4,9 @@ curl --request PUT \
 --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
 --data \
 '{
-
+    "type": "google_gcs",
+    "name": "<name>",
+    "bucket_uri": "<bucket-uri>",
+    "service_account_key": "<service-account-key>"
 }'
 ```

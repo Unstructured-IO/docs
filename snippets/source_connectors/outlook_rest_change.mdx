@@ -4,6 +4,14 @@ curl --request PUT \
 --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
 --data \
 '{
-
+    "type": "outlook",
+    "name": "<name>",
+    "user_email": "<user-email>",
+    "authentication_provider_url": "<authentication-provider-url>",
+    "tenant": "<tenant>",
+    "client_id": "<client-id>",
+    "client_credential": "<client-credential>",
+    "folders": "<folders>",
+    "recursive": "<true|false>"
 }'
 ```

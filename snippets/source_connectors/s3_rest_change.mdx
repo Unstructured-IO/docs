@@ -4,6 +4,20 @@ curl --request PUT \
 --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
 --data \
 '{
+    "type": "amazon_s3",
+    "name": "<name>",
+    "bucket_uri": "<bucket-uri>",
+    "recursive": "<true|false>",
 
+    # For AWS access key ID with AWS secret access key authentication:
+    "authentication method": "secret", 
+    "aws_key": "<aws-key>", 
+    "aws_secret_key": "<aws-secret-key>" 
+
+    # For AWS STS token authentication:
+    "authentication method": "token", 
+    "sts_token": "<sts-token>" 
+
+    "custom_url": "<custom-url>" 
 }'
 ```

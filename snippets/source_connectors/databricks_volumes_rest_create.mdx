@@ -4,6 +4,14 @@ curl --request POST \
 --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
 --data \
 '{
-
+    "type": "databricks_volumes",
+    "name": "<name>",
+    "host": "<host>",
+    "catalog": "<catalog>",
+    "schema": "<schema>",
+    "volume": "<volume>",
+    "volume_path": "<volume-path>",
+    "client_secret": "<client-secret>",
+    "client_id": "<client-id>"
 }'
 ```
