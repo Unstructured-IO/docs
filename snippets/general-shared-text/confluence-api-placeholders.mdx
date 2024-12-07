@@ -1,1 +1,7 @@
-- `<name>` - Some unique name for this connector.
+- `<name>` (_required_) - A unique name for this connector.
+- `<url>` (_required_) - The URL to the target Confluence Cloud instance.
+- `<user-email>` (_required_) - The email address of the user who has access to the instance.
+- `<api-token>` (_required_) - The Confluence API token that provides access to the instance.
+- `<max-number-of-spaces>` - The maximum number of Confluence spaces to access within the Confluence Cloud instance. The default is `500` unless otherwise specified.
+- `<max-number-of-docs-per-space>` - The maximum number of documents to access within each space. The default is `150` unless otherwise specified.
+- `<list-of-spaces>` - A comma-separated string that lists the names of all of the spaces to access, for example: `luke,paul`. By default, if no space names are specified, and the `<max-number-of-spaces>` is reached for the instance, be aware that you might get unexpected results.

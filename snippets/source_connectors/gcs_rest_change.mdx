@@ -5,9 +5,10 @@ curl --request PUT \
 --header "accept: application/json" \
 --data \
 '{
-    "type": "google_gcs",
+    "type": "gcs",
     "name": "<name>",
     "bucket_uri": "<bucket-uri>",
+    "recursive": "<true|false>",
     "service_account_key": "<service-account-key>"
 }'
 ```

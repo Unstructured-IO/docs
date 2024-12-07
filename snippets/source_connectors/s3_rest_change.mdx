@@ -5,10 +5,13 @@ curl --request PUT \
 --header "accept: application/json" \
 --data \
 '{
-    "type": "amazon_s3",
+    "type": "s3",
     "name": "<name>",
     "bucket_uri": "<bucket-uri>",
     "recursive": "<true|false>",
+
+    # For anonymous authentication:
+    "authentication method": "anonymous", 
 
     # For AWS access key ID with AWS secret access key authentication:
     "authentication method": "secret", 
