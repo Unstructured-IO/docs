@@ -1,13 +1,13 @@
 - `<name>` (_required_) - A unique name for this connector.
-- `<bucket-uri>` (_required_) - The path to the bucket or folder, formatted as `s3://my-bucket/` (if the files are in the bucket’s root) or `s3://my-bucket/my-folder/`.
-- For AWS access key ID with AWS secret access key authentication (`"authentication method": "secret"`):
+- `<remote-url>` (_required_) - The path to the bucket or folder, formatted as `s3://my-bucket/` (if the files are in the bucket’s root) or `s3://my-bucket/my-folder/`.
+- For AWS access key ID with AWS secret access key authentication:
 
-  - `<aws-key>` - The AWS access key ID for the authenticated AWS IAM user, if the bucket has authenticated access enabled (_required_).
-  - `<aws-secret-key>` - The AWS secret access key corresponding to the preceding AWS access key ID, if the bucket has authenticated access enabled (_required_).
+  - `<key>` - The AWS access key ID for the authenticated AWS IAM user, if the bucket has authenticated access enabled (_required_).
+  - `<secret>` - The AWS secret access key corresponding to the preceding AWS access key ID, if the bucket has authenticated access enabled (_required_).
 
-- For AWS STS token authentication (`"authentication method": "token"`):
+- For AWS STS token authentication:
 
-  - `<sts-token>` - If required, the AWS STS session token for temporary access (_required_).
+  - `<token>` - If required, the AWS STS session token for temporary access (_required_).
 
-- `<custom-url>` - A custom URL, if connecting to a non-AWS S3 bucket.
+- `<endpoint-url>` - A custom URL, if connecting to a non-AWS S3 bucket.
 - For `recursive` (source connector only), set to `true` to access subfolders within the bucket. The default is `false` if not otherwise specified.

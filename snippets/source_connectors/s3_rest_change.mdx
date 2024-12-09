@@ -7,21 +7,19 @@ curl --request PUT \
 '{
     "type": "s3",
     "name": "<name>",
-    "bucket_uri": "<bucket-uri>",
+    "remote_url": "<remote_url>",
     "recursive": "<true|false>",
 
     # For anonymous authentication:
-    "authentication method": "anonymous", 
+    "anonymous": "true",
 
     # For AWS access key ID with AWS secret access key authentication:
-    "authentication method": "secret", 
-    "aws_key": "<aws-key>", 
-    "aws_secret_key": "<aws-secret-key>" 
+    "key": "<key>", 
+    "secret": "<secret>" 
 
     # For AWS STS token authentication:
-    "authentication method": "token", 
-    "sts_token": "<sts-token>" 
+    "token": "<token>" 
 
-    "custom_url": "<custom-url>" 
+    "endpoint_url": "<endpoint-url>" 
 }'
 ```

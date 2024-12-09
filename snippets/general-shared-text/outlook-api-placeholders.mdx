@@ -1,8 +1,8 @@
 - `<name>` (_required_) - A unique name for this connector.
 - `<user-email>` (_required_) - The user's email address for the target Outlook account.
-- `<authentication-provider-url>` (_required_) - The authentication token provider URL for the Entra ID app registration. The default is `https://login.microsoftonline.com`.
+- `<authority-url>` (_required_) - The authentication token provider URL for the Entra ID app registration. The default is `https://login.microsoftonline.com`.
 - `<tenant>` (_required_) - The directory (tenant) ID of the Microsoft Entra ID app registration that has access to the Outlook account.
 - `<client-id>` (_required_) - The application (client) ID of the Entra ID app registration.
 - `<client-credential>` (_required_) - The client secret for the Entra ID app registration.
-- `<folders>` (_required_) - A list of top-level folder names to access in the Outlook account. Separate multiple folder names by commas. Do not specify any subfolder names.
+- `<outlook-folders>` (_required_) - A list of top-level folder names to access in the Outlook account. Separate multiple folder names by commas. Do not specify any subfolder names.
 - For `recursive` (source connector only), set to `true` to access any and all subfolders within each of the specified top-level folders. The default is `false` if not otherwise specified.
