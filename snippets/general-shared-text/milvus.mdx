@@ -1,4 +1,7 @@
-The following video shows how to fulfill the minimum set of Milvus requirements, demonstrating Milvus on IBM watsonx.data:
+- For the [Unstructured Platform](/platform/overview), only Milvus cloud-based instances (such as Zilliz Cloud, and Milvus on IBM watsonx.data) are supported.
+- For [Unstructured Ingest](/ingestion/overview), Milvus local and cloud-based instances are supported.
+
+The following video shows how to fulfill the minimum set of requirements for Milvus cloud-based instances, demonstrating Milvus on IBM watsonx.data:
 
 <iframe
 width="560"
@@ -10,83 +13,121 @@ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; pic
 allowfullscreen
 ></iframe>
 
-- A [Milvus instance](https://milvus.io/docs/install-overview.md).
-- The [URI](https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Client/MilvusClient.md) of the instance.
-- The [username and password, or token](https://milvus.io/docs/authenticate.md) to access the instance.
-- The name of the [database](https://milvus.io/docs/manage_databases.md) in the instance.
-- The name of the [collection](https://milvus.io/docs/manage-collections.md) in the database.
+- For Zilliz Cloud, you will need:
 
-  Milvus requires the target collection to have a defined schema before Unstructured can write to the collection. The minimum viable 
-  schema for Unstructured contains only the fields `element_id`, `embeddings`, and `record_id`, as follows. This example code demonstrates the use of the 
-  [Python SDK for Milvus](https://pypi.org/project/pymilvus/) to create a collection with this minimum viable schema, 
-  targeting Milvus on IBM watsonx.data:
+  - A [Zilliz Cloud account](https://cloud.zilliz.com/signup).
+  - A [Zilliz Cloud cluster](https://docs.zilliz.com/docs/create-cluster).
+  - The URI of the cluster, also known as the cluster's _public endpoint_, which takes a format such as 
+    `https://<cluster-id>.<cluster-type>.<cloud-provider>-<region>.cloud.zilliz.com`. 
+    [Get the cluster's public endpoint](https://docs.zilliz.com/docs/manage-cluster#connect-to-cluster).
+  - The token to access the cluster. [Get the cluster's token](https://docs.zilliz.com/docs/manage-cluster#connect-to-cluster).
+  - The name of the [database](https://docs.zilliz.com/docs/database#create-database) in the instance.
+  - The name of the [collection](https://docs.zilliz.com/docs/manage-collections-console#create-collection) in the database.
 
-  ```python Python
-  import os
-  from pymilvus import (
-      connections,
-      FieldSchema,
-      DataType,
-      CollectionSchema,
-      Collection,
-  )
+    The collection must have a a defined schema before Unstructured can write to the collection. The minimum viable 
+    schema for Unstructured contains only the fields `element_id`, `embeddings`, and `record_id`, as follows:
 
-  connections.connect(
-      alias="default",
-      host=os.getenv("MILVUS_GRPC_HOST"),
-      port=os.getenv("MILVUS_GRPC_PORT"),
-      user=os.getenv("MILVUS_USER"),
-      password=os.getenv("MILVUS_PASSWORD"),
-      secure=True
-  )
+    | Field Name | Field Type | Max Length | Dimension | Index | Metric Type |
+    |---|---|---|---|---|--|
+    | `element_id` (primary key field) | **VARCHAR** | `200` | -- | -- | -- |
+    | `embeddings` (vector field) | **FLOAT_VECTOR** | -- | `3072` | Yes (Checked) | **Cosine** |
+    | `record_id` | **VARCHAR** | `200` | -- | -- | -- |
 
-  primary_key = FieldSchema(
-      name="element_id",
-      dtype=DataType.VARCHAR,
-      is_primary=True,
-      max_length=200
-  )
+- For Milvus on IBM watsonx.data, you will need:
 
-  vector = FieldSchema(
-      name="embeddings",
-      dtype=DataType.FLOAT_VECTOR,
-      dim=3072
-  )
+  - An [IBM Cloud account](https://cloud.ibm.com/registration).
+  - The [IBM watsonx.data subscription plan](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started).
+  - A [Milvus service instance in IBM watsonx.data](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-adding-milvus-service).
+  - The URI of the instance, which takes the format of `https://`, followed by instance's **GRPC host**, followed by a colon and the **GRPC port**. 
+    This takes the format of `https://<host>:<port>`. 
+    [Get the instance's GRPC host and GRPC port](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-conn-to-milvus).
+  - The name of the [database](https://milvus.io/docs/manage_databases.md) in the instance.
+  - The name of the [collection](https://milvus.io/docs/manage-collections.md) in the database. Note the collection requirements at the end of this section.
+  - The uername and password to access the instance. 
+    The username for Milvus on IBM watsonx.data is always `ibmlhapikey`. 
+    The password for Milvus on IBM watsonx.data is in the form of an IBM Cloud user API key. 
+    [Get the user API key](https://cloud.ibm.com/docs/account?topic=account-userapikey&interface=ui).
 
-  record_id = FieldSchema(
-      name="record_id",
-      dtype=DataType.VARCHAR,
-      max_length=200
-  )
+- For Milvus local, you will need:
 
-  schema = CollectionSchema(
-      fields=[primary_key, vector, record_id],
-      enable_dynamic_field=True
-  )
+  - A [Milvus instance](https://milvus.io/docs/install-overview.md).
+  - The [URI](https://milvus.io/api-reference/pymilvus/v2.4.x/MilvusClient/Client/MilvusClient.md) of the instance.
+  - The name of the [database](https://milvus.io/docs/manage_databases.md) in the instance.
+  - The name of the [collection](https://milvus.io/docs/manage-collections.md) in the database. 
+    Note the collection requirements at the end of this section.
+  - The [username and password, or token](https://milvus.io/docs/authenticate.md) to access the instance.
 
-  collection = Collection(
-      name="my_collection",
-      schema=schema,
-      using="default"
-  )
+All Milvus instances require the target collection to have a defined schema before Unstructured can write to the collection. The minimum viable 
+schema for Unstructured contains only the fields `element_id`, `embeddings`, and `record_id`, as follows. This example code demonstrates the use of the 
+[Python SDK for Milvus](https://pypi.org/project/pymilvus/) to create a collection with this minimum viable schema, 
+targeting Milvus on IBM watsonx.data. For the `connections.connect` arguments to connect to other types of Milvus deployments, see your Milvus provider's documentation:
 
-  index_params = {
-      "metric_type": "L2",
-      "index_type": "IVF_FLAT",
-      "params": {"nlist": 1024}
-  }
+```python Python
+import os
+from pymilvus import (
+    connections,
+    FieldSchema,
+    DataType,
+    CollectionSchema,
+    Collection,
+)
 
-  collection.create_index(
-      field_name="embeddings",
-      index_params=index_params
-  )
-  ```
+connections.connect(
+    alias="default",
+    host=os.getenv("MILVUS_GRPC_HOST"),
+    port=os.getenv("MILVUS_GRPC_PORT"),
+    user=os.getenv("MILVUS_USER"),
+    password=os.getenv("MILVUS_PASSWORD"),
+    secure=True
+)
 
-  Other approaches, such as [creating collections instantly](https://milvus.io/docs/create-collection-instantly.md) or 
-  [setting nullable and default fields](https://milvus.io/docs/nullable-and-default.md), have not 
-  been fully evaluated by Unstructured and might produce unexpected results.
+primary_key = FieldSchema(
+    name="element_id",
+    dtype=DataType.VARCHAR,
+    is_primary=True,
+    max_length=200
+)
 
-  Unstructured cannot provide a schema that is guaranteed to work in all 
-  circumstances. This is because these schemas will vary based on your source files' types; how you 
-  want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors.
+vector = FieldSchema(
+    name="embeddings",
+    dtype=DataType.FLOAT_VECTOR,
+    dim=3072
+)
+
+record_id = FieldSchema(
+    name="record_id",
+    dtype=DataType.VARCHAR,
+    max_length=200
+)
+
+schema = CollectionSchema(
+    fields=[primary_key, vector, record_id],
+    enable_dynamic_field=True
+)
+
+collection = Collection(
+    name="my_collection",
+    schema=schema,
+    using="default"
+)
+
+index_params = {
+    "metric_type": "L2",
+    "index_type": "IVF_FLAT",
+    "params": {"nlist": 1024}
+}
+
+collection.create_index(
+    field_name="embeddings",
+    index_params=index_params
+)
+```
+
+Other approaches, such as [creating collections instantly](https://milvus.io/docs/create-collection-instantly.md) or 
+[setting nullable and default fields](https://milvus.io/docs/nullable-and-default.md), have not 
+been fully evaluated by Unstructured and might produce unexpected results.
+
+Unstructured cannot provide a schema that is guaranteed to work in all 
+circumstances. This is because these schemas will vary based on your source files' types; how you 
+want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors.
 
