@@ -17,7 +17,7 @@ To use the Unstructured Platform API, you must have:
   - The [For Developers](https://unstructured.io/developers) sign-up page.
   - The [For Enterprise](https://unstructured.io/enterprise) sign-up page.
 
-- **An Unstructured API key**, created through the Unstructured account console.
+- **An Unstructured API key**, created through the Unstructured account console. To create an API key, do the following:
 
   [Free Unstructured API](/api-reference/api-services/free-api) keys are _not_ supported.
 
@@ -40,7 +40,7 @@ utilities, tools, programming languages, packages, and libraries. The following 
 `curl` and Postman. You can adapt this information as needed for your preferred programming languages and libraries, for example by using the 
 `requests` library with Python.
 
-<Warning>
+<Note>
     The Unstructured Platform API is separate from [Unstructured Serverless API services](/api-reference/api-services/overview) and 
     [Unstructured Ingest](/api-reference/ingest/overview). 
 
@@ -59,7 +59,7 @@ utilities, tools, programming languages, packages, and libraries. The following 
 
     - `https://api.unstructuredapp.io/general/v0/general` (the Unstructured Serverless API URL)
     - `https://api.unstructured.io/general/v0/general` (the Free Unstructured API URL)
-</Warning>
+</Note>
 
 ## Basics
 
@@ -126,7 +126,8 @@ For general information, see [Connectors](/platform/connectors).
 To list source connectors, use the `GET` method to call the `/sources` endpoint.
 
 To filter the list of source connectors, use the query parameter `source_type=<type>`, 
-replacing `<type>` with the source connector type's unique ID. 
+replacing `<type>` with the source connector type's unique ID 
+(for example, `s3` for the Amazon S3 source connector type). 
 To get this ID, see [Sources](/platform/api/sources/overview).
 
 <AccordionGroup>
@@ -134,6 +135,15 @@ To get this ID, see [Sources](/platform/api/sources/overview).
         ```bash
         curl --request GET \
         "$UNSTRUCTURED_API_URL/sources" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+
+        To filter the list of source connectors:
+
+        ```bash
+        curl --request GET \
+        "$UNSTRUCTURED_API_URL/sources?source_type=<type>" \
         --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
         --header "accept: application/json"
         ```
@@ -149,9 +159,13 @@ To get this ID, see [Sources](/platform/api/sources/overview).
         3. On the **Headers** tab, enter the following headers:
 
             - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
-            - **Key**" `accept`, **Value**: `application/json`
+            - **Key**: `accept`, **Value**: `application/json`
 
-        4. Click **Send**.
+        4. To filter the list of source connectors, on the **Params** tab, enter the following query parameter:
+
+           - **Key**: `source_type`, **Value**: `<type>`
+
+        5. Click **Send**.
     </Accordion>
 </AccordionGroup>
 
@@ -163,11 +177,26 @@ To get information about a source connector, use the `GET` method to call the `/
 <AccordionGroup>
     <Accordion title="curl">
         ```bash
+        curl --request GET \
+        "$UNSTRUCTURED_API_URL/sources/<connector-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
         ```
     </Accordion>
-        <Accordion title="Postman">
-        ```
-        ```
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/sources/<connector-id>
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
     </Accordion>
 </AccordionGroup>
 
@@ -177,37 +206,222 @@ To create a source connector, use the `POST` method to call the `/sources` endpo
 specify the settings for the connector. For the specific settings to include, which differ by connector, see 
 [Sources](/platform/api/sources/overview). 
 
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request POST \
+        "$UNSTRUCTURED_API_URL/sources" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json" \
+        --data \
+        '{
+            # Specify the settings for the connector here.
+        }'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/sources
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify the settings for the connector.
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
 ### Update a source connector
 
 To update information about a source connector, use the `PUT` method to call the `/sources/<connector-id>` endpoint, replacing 
 `<connector-id>` with the source connector's unique ID. To get this ID, see [List source connectors](#list-source-connectors).
 
 In the request body, specify the settings for the connector. For the specific settings to include, which differ by connector, see 
-[Sources](/platform/api/sources/overview). 
+[Sources](/platform/api/sources/overview).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request PUT \
+        "$UNSTRUCTURED_API_URL/sources/<connector-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json" \
+        --data \
+        '{
+            # Specify the settings for the connector here.
+        }'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **PUT**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/sources/<connector-id>
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify the settings for the connector.
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
 
 ### Delete a source connector
 
 To delete a source connector, use the `DELETE` method to call the `/sources/<connector-id>` endpoint, replacing 
 `<connector-id>` with the source connector's unique ID. To get this ID, see [List source connectors](#list-source-connectors).
 
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request DELETE \
+        "$UNSTRUCTURED_API_URL/sources/<connector-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **DELETE**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/sources/<connector-id>
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
 ### List destination connectors
 
 To list destination connectors, use the `GET` method to call the `/destinations` endpoint.
 
 To filter the list of destination connectors, use the query parameter `destination_type=<type>`, 
-replacing `<type>` with the destination connector type's unique ID. 
+replacing `<type>` with the destination connector type's unique ID 
+(for example, `s3` for the Amazon S3 destination connector type). 
 To get this ID, see [Destinations](/platform/api/destinations/overview).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request GET \
+        "$UNSTRUCTURED_API_URL/destinations" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+
+        To filter the list of destination connectors:
+        
+        ```bash
+        curl --request GET \
+        "$UNSTRUCTURED_API_URL/destinations?destination_type=<type>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/destinations
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. To filter the list of destination connectors, on the **Params** tab, enter the following query parameter:
+
+           - **Key**: `destination_type`, **Value**: `<type>`
+        
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
 
 ### Get a destination connector
 
 To get information about a destination connector, use the `GET` method to call the `/destinations/<connector-id>` endpoint, replacing 
 `<connector-id>` with the destination connector's unique ID. To get this ID, see [List destination connectors](#list-destination-connectors).
 
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request GET \
+        "$UNSTRUCTURED_API_URL/destinations/<connector-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/destinations/<connector-id>
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
 ### Create a destination connector
 
 To create a destination connectors, use the `POST` method to call the `/destinations` endpoint. In the request body, 
 specify the settings for the connector. For the specific settings to include, which differ by connector, see 
-[Destinations](/platform/api/destinations/overview). 
+[Destinations](/platform/api/destinations/overview).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request POST \
+        "$UNSTRUCTURED_API_URL/destinations" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json" \
+        --data \
+        '{
+            # Specify the settings for the connector here.
+        }'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/destinations
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify the settings for the connector.
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
 
 ### Update a destination connector
 
@@ -215,12 +429,69 @@ To update information about a destination connector, use the `PUT` method to cal
 `<connector-id>` with the destination connector's unique ID. To get this ID, see [List destination connectors](#list-destination-connectors).
 
 In the request body, specify the settings for the connector. For the specific settings to include, which differ by connector, see 
-[Destinations](/platform/api/destinations/overview). 
+[Destinations](/platform/api/destinations/overview).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request PUT \
+        "$UNSTRUCTURED_API_URL/destinations/<connector-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json" \
+        --data \
+        '{
+            # Specify the settings for the connector here.
+        }'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **PUT**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/destinations/<connector-id>
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify the settings for the connector.
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
 
 ### Delete a destination connector
 
 To delete a destination connector, use the `DELETE` method to call the `/destinations/<connector-id>` endpoint, replacing 
 `<connector-id>` with the destination connector's unique ID. To get this ID, see [List destination connectors](#list-destination-connectors).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request DELETE \
+        "$UNSTRUCTURED_API_URL/destinations/<connector-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **DELETE**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/destinations/<connector-id>
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
 
 ## Workflows
 
@@ -235,7 +506,7 @@ For general information, see [Workflows](/platform/workflows).
 
 ### List workflows
 
-To list workflows, use the `GET` method to call the `/worflows` endpoint.
+To list workflows, use the `GET` method to call the `/workflows` endpoint.
 
 To filter the list of workflows, use one or more of the following query parameters:
 
@@ -246,23 +517,176 @@ To filter the list of workflows, use one or more of the following query paramete
 - `workflow_type=<type>`, replacing `<type>` with ...
 - `status=<status>`, replacing `<status>` with ...
 
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request GET \
+        "$UNSTRUCTURED_API_URL/workflows" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+
+        To filter the list by source connector ID:
+
+        ```bash
+        curl --request GET \
+        "$UNSTRUCTURED_API_URL/workflows?source_connector_id=<connector-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+
+        To filter the list by destination connector ID:
+
+        ```bash
+        curl --request GET \
+        "$UNSTRUCTURED_API_URL/workflows?destination_connector_id=<connector-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+
+        To filter the list by workflow type:
+
+        ```bash
+        curl --request GET \
+        "$UNSTRUCTURED_API_URL/workflows?workflow_type=<type>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+
+        To filter the list by workflow status:
+
+        ```bash
+        curl --request GET \
+        "$UNSTRUCTURED_API_URL/workflows?status=<status>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/workflows
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. To filter the list of workflows, on the **Params** tab, enter one or more of the following query parameter:
+
+           - By source connector ID: **Key**: `source_connector_id`, **Value**: `<connector-id>`
+           - By destination connector ID: **Key**: `destination_connector_id`, **Value**: `<connector-id>`
+           - By workflow type: **Key**: `workflow_type`, **Value**: `<type>`
+           - By workflow status: **Key**: `status`, **Value**: `<status>`
+
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
 ### Get a workflow
 
 To get information about a workflow, use the `GET` method to call the `/workflows/<workflow-id>` endpoint, replacing 
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
 
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request GET \
+        "$UNSTRUCTURED_API_URL/workflows/<workflow-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
 ### Create a workflow
 
-To create a workflow, use the `POST` method to call the `/workflow` endpoint. In the request body, 
-specify the following settings:
+To create a workflow, use the `POST` method to call the `/workflows` endpoint. In the request body, 
+specify the settings for the workflow. For the specific settings to include, see 
+[Create a workflow](/platform/api/workflows#create-a-workflow).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request POST \
+        "$UNSTRUCTURED_API_URL/workflows" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json" \
+        --data \
+        '{
+            # Specify the settings for the workflow here.
+        }'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/workflows
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify the settings for the workflow.
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
 
 ### Run a workflow
 
-To run a workflow, use the `POST` method to call the `/workflows/<workflow-id>/run` endpoint, replacing 
+To run a workflow manually, use the `POST` method to call the `/workflows/<workflow-id>/run` endpoint, replacing 
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
 
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request POST \
+        "$UNSTRUCTURED_API_URL/workflows/<workflow-id>/run" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>/run
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
 To run a workflow on a schedule instead, specify the `schedule` setting in the request body when you create or update a 
-workflow. See [Create a workflow](#create-a-workflow) or [Update a workflow](#update-a-workflow).
+workflow. See [Create a workflow](/platform/api/workflows#create-a-workflow) or [Update a workflow](/platform/api/workflows#update-a-workflow).
 
 ### Update a workflow
 
@@ -270,12 +694,69 @@ To update information about a workflow, use the `PUT` method to call the `/workf
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
 
 In the request body, specify the settings for the workflow. For the specific settings to include, see 
-[Create a workflow](#create-a-workflow).
+[Update a workflow](/platform/api/workflows#update-a-workflow).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request PUT \
+        "$UNSTRUCTURED_API_URL/workflows/<workflow-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json" \
+        --data \
+        '{
+            # Specify the settings for the workflow here.
+        }'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **PUT**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify the settings for the workflow.
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
 
 ### Delete a workflow
 
 To delete a workflow, use the `DELETE` method to call the `/workflows/<workflow-id>` endpoint, replacing 
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request DELETE \
+        "$UNSTRUCTURED_API_URL/workflows/<workflow-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **DELETE**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
 
 ## Jobs
 
@@ -298,13 +779,113 @@ To filter the list of jobs, use one or both of the following query parameters:
   To get this ID, see [List workflows](#list-workflows).
 - `status=<status>`, replacing `<status>` with ...
 
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request GET \
+        "$UNSTRUCTURED_API_URL/jobs" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+
+        To filter the list by workflow ID:
+
+        ```bash
+        curl --request GET \
+        "$UNSTRUCTURED_API_URL/jobs?workflow_id=<workflow-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+
+        To filter the list by job status:
+
+        ```bash
+        curl --request GET \
+        "$UNSTRUCTURED_API_URL/job?status=<status>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/jobs
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. To filter the list of jobs, on the **Params** tab, enter one or more of the following query parameter:
+
+           - By workflow ID: **Key**: `workflow_id`, **Value**: `<workflow-id>`
+           - By job status: **Key**: `status`, **Value**: `<status>`
+
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
 ### Get a job
 
 To get information about a job, use the `GET` method to call the `/jobs/<job-id>` endpoint, replacing 
 `<job-id>` with the job's unique ID. To get this ID, see [List jobs](#list-jobs).
 
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request GET \
+        "$UNSTRUCTURED_API_URL/jobs/<job-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/jobs/<job-id>
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
 ### Cancel a job
 
-To cancel a job, use the `POST` method to call the `/jobs/<job-id>/cancel` endpoint, replacing 
+To cancel a running job, use the `POST` method to call the `/jobs/<job-id>/cancel` endpoint, replacing 
 `<job-id>` with the job's unique ID. To get this ID, see [List jobs](#list-jobs).
 
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash curl
+        curl --request POST \
+        "$UNSTRUCTURED_API_URL/jobs/<job-id>/cancel" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json" 
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/jobs/<job-id>/cancel
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
