@@ -1,5 +1,3 @@
-The Snowflake prerequisites:
-
 - A Snowflake [account](https://signup.snowflake.com/) and its [identifier](https://docs.snowflake.com/user-guide/admin-account-identifier).
 
   <iframe
@@ -60,3 +58,52 @@ The Snowflake prerequisites:
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowfullscreen
   ></iframe>
+
+  Snowflake requires the target table to have a defined schema before Unstructured can write to the table. The recommended table 
+  schema for Unstructured is as follows:
+
+  ```sql SQL
+  CREATE TABLE ELEMENTS (
+    ID VARCHAR(36) NOT NULL DEFAULT UUID_STRING(),
+    RECORD_ID VARCHAR,
+    ELEMENT_ID VARCHAR,
+    TEXT VARCHAR,
+    EMBEDDINGS ARRAY,
+    TYPE VARCHAR,
+    SYSTEM VARCHAR,
+    LAYOUT_WIDTH NUMBER,
+    LAYOUT_HEIGHT NUMBER,
+    POINTS VARCHAR,
+    URL VARCHAR,
+    VERSION VARCHAR,
+    DATE_CREATED TIMESTAMP_TZ,
+    DATE_MODIFIED TIMESTAMP_TZ,
+    DATE_PROCESSED TIMESTAMP_TZ,
+    PERMISSIONS_DATA VARCHAR,
+    RECORD_LOCATOR VARCHAR,
+    CATEGORY_DEPTH NUMBER,
+    PARENT_ID VARCHAR,
+    ATTACHED_FILENAME VARCHAR,
+    FILETYPE VARCHAR,
+    LAST_MODIFIED TIMESTAMP_TZ,
+    FILE_DIRECTORY VARCHAR,
+    FILENAME VARCHAR,
+    LANGUAGES ARRAY,
+    PAGE_NUMBER VARCHAR,
+    LINKS VARCHAR,
+    PAGE_NAME VARCHAR,
+    LINK_URLS ARRAY,
+    LINK_TEXTS ARRAY,
+    SENT_FROM ARRAY,
+    SENT_TO ARRAY,
+    SUBJECT VARCHAR,
+    SECTION VARCHAR,
+    HEADER_FOOTER_TYPE VARCHAR,
+    EMPHASIZED_TEXT_CONTENTS ARRAY,
+    EMPHASIZED_TEXT_TAGS ARRAY,
+    TEXT_AS_HTML VARCHAR,
+    REGEX_METADATA VARCHAR,
+    DETECTION_CLASS_PROB NUMBER,
+    PRIMARY KEY (ID)
+  );
+  ```

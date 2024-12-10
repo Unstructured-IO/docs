@@ -1,10 +1,10 @@
 This quickstart uses a no-code, point-and-click user interface in your web browser to get all of your data RAG-ready. Data is processed on Unstructured-hosted compute resources.
 
-You will need:
+The requirements are as follows.
 
-- A compatible source (input) location in cloud storage that contains your documents for Unstructured to process. [See the list of supported source types](/platform/connectors#sources).
-- Compatible files in your source location. [See the list of supported file types](/platform/supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
-- A compatible destination (output) location in cloud storage for Unstructured to put the processed data. [See the list of supported destination types](/platform/connectors#destinations).
+- A compatible source (input) location that contains your data for Unstructured to process. [See the list of supported source types](/platform/connectors#sources).
+- For document-based source locations, compatible files in that location. [See the list of supported file types](/platform/supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+- A compatible destination (output) location for Unstructured to put the processed data. [See the list of supported destination types](/platform/connectors#destinations).
 
 <iframe
 width="560"
@@ -17,27 +17,47 @@ allowfullscreen
 ></iframe>
 
 <Steps>
-    <Step title="Sign in to your Unstructured account">
+    <Step title="Sign up">
+        To sign up for the Unstructured Platform, go to the [For Developers](https://unstructured.io/developers) page and enter your information.
+
+        <Note>
+            By signing up through the [For Developers](https://unstructured.io/developers) page, your Unstructured account will run within the context of the Unstructured Platform on 
+            Unstructured's own hosted cloud resources. Also, after your first 14 days of usage or more than 1000 processed pages per day, 
+            whichever comes first, your account is then billed at Unstructured's standard service usage rates. You can always 
+            start a prepaid subscription in exchange for usage rate discounts. To switch your account from a pay-as-you-go plan to a prepaid subscription, 
+            contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+            
+            If you would rather run the Unstructured Platform within the context of your own virtual private cloud (VPC), 
+            or you want to make a long-term billing commitment in exchange for deeply discounted service usage rates, 
+            stop here and sign up through the [For Enterprise](https://unstructured.io/enterprise) page instead.
+        </Note>
+    </Step>
+    <Step title="Sign in">
         ![Sign in to your Unstructured account](/img/platform/Signin.png)
-        1. Sign in to your Unstructured account, at [https://app.unstructured.io](https://app.unstructured.io).
-        2. Click **Google** or **GitHub** to sign in with your Google or GitHub account. Or, enter your email address and then click **Sign In**.
+        1. After you have signed up through the [For Developers](https://unstructured.io/developers) page, the Unstructured Platform sign-in page appears.
+
+           <Note>
+              If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page instead, your sign-in process will 
+              be different. For enterprise sign-in guidance, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+           </Note>
+
+        2. Click **Google** or **GitHub** to sign in with the Google or GitHub account that you signed up with through the **For Developers** page. 
+           Or, enter the email address that you signed up with, and then click **Sign In**.
         3. If you entered your email address, check your email inbox for a message from Unstructured. In that email, click the **Sign In** link.
         4. The first time you sign in, read the terms and conditions, and then click **Accept**.
-    </Step>
-    <Step title="Open your Unstructured Platform dashboard">
-        ![Open your Unstructured Platform dashboard](/img/platform/GoToPlatform.png)
-        - From your Unstructured account dashboard, in the sidebar, click **API > Platform**.
-        <Note>
-            The **API > Platform** sidebar option is visible only to users who signed up for an Unstructured API services account before 
-            October 23, 2024. To get access to the Unstructured Platform on or after this date, 
-            [request access](https://unstructured.io/platform), and wait for an access enablement email from Unstructured.
-        </Note>
+
+        <Tip>
+            After you have signed in through the [For Developers](https://unstructured.io/developers) page for the first time, you can 
+            sign in the second time and beyond by going to the Unstructured home page at [https://unstructured.io](https://unstructured.io) and clicking **Login**.
+        
+            For enterprise sign-in guidance, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+        </Tip>
     </Step>
     <Step title="Set the source (input) location">
         ![Sources in the sidebar](/img/platform/Sources-Sidebar.png)
         1. From your Unstructured Platform dashboard, in the sidebar, click **Connectors**.
         2. Click **Sources**.
-        3. Click **Add new**.
+        3. Cick **New** or **Create Connector**.
         4. For **Name**, enter some unique name for this connector.
         5. In the **Provider** area, click the source location type that matches yours.
         6. Click **Continue**.
@@ -49,7 +69,7 @@ allowfullscreen
         ![Destinations in the sidebar](/img/platform/Destinations-Sidebar.png)
         1. In the sidebar, click **Connectors**.
         2. Click **Destinations**.
-        3. Click **Add new**.
+        3. Cick **New** or **Create Connector**.
         4. For **Name**, enter some unique name for this connector.
         5. In the **Provider** area, click the destination location type that matches yours.
         6. Click **Continue**.
@@ -72,12 +92,17 @@ allowfullscreen
            <Note>You can select multiple source and destination locations. Files will be ingested from all of the selected source locations, and the processed data will be delivered to all of the selected destination locations.</Note>
 
         7. Click **Continue**.
-        8. In the **Optimize for** section, select the option to choose one of these predefined workflow settings groups:
+        8. In the **Optimize for** section, select the option to choose one of these preconfigured workflow settings groups:
 
             - **Basic**: Ideal for simple, text-only documents.
             - **Advanced**: Best for PDFs, images, and complex file types.
             - **Platinum**: For your most challenging documents, including scanned and handwritten content. It uses vision language models (VLMs). 
               During processing, files that are not PDFs or images are processed by using the **Advanced** strategy and are charged at the **Advanced** rate instead.
+
+              <Note>
+                When you use the **Platinum** strategy for PDF files of 200 or more pages, you might notice some errors when 
+                these files are processed. These errors typically occur when these larger PDF files have lots of tables and high-resolution images.
+              </Note>
 
         9. The **Reprocess all** box applies only to the Amazon S3 and Azure Blob Storage source connectors:
 

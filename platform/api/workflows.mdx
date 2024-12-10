@@ -11,7 +11,125 @@ To use the [Unstructured Platform API](/platform/api/overview) to manage workflo
 - To update a workflow, use the `PUT` method to call the `/workflows/<workflow-id>` endpoint. [Learn more](#update-a-workflow).
 - To delete a workflow, use the `DELETE` method to call the `/workflows/<workflow-id>` endpoint. [Learn more](/platform/api/overview#delete-a-workflow).
 
+The following examples assume that you have already met the [requirements](/platform/api/overview#requirements) and 
+understand the [basics](/platform/api/overview#basics) of working with the Unstructured Platform API.
+
 ## Create a workflow
 
+To create a workflow, use the `POST` method to call the `/workflows` endpoint. In the request body, 
+specify the settings for the workflow, as follows:
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request POST \
+        "$UNSTRUCTURED_API_URL/workflows" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json" \
+        --data \
+        '{
+            "name": "<name>",
+            "source_connector_id": "<source-connector-id>",
+            "destination_connector_id": "<destination-connector-id>",
+            "type": "<type>",
+            "schedule": "<schedule>"
+        }'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/workflows
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify the settings for the workflow:
+
+           ```json
+           {
+               "name": "<name>",
+               "source_connector_id": "<source-connector-id>",
+               "destination_connector_id": "<destination-connector-id>",
+               "type": "<type>",
+               "schedule": "<schedule>"
+           }
+           ```
+
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+Replace the preceding placeholders as follows:
+
+- `<name>` (_required_) - A unique name for this workflow.
+- `<source-connector-id>` (_required_) - The ID of the target source connector. To get the ID, 
+    use the `GET` method to call the `/sources` endpoint. [Learn more](/platform/api/overview#list-source-connectors).
+- `<destination-connector-id>` (_required_) - The ID of the target destination connector. To get the ID, 
+    use the `GET` method to call the `/destinations` endpoint. [Learn more](/platform/api/overview#list-destination-connectors).
+- `<type>` (_required_) - The workflow optimization type. Available values include `advanced`, `basic`, and `platinum`.
+- `<schedule>` - The repeating automatic run schedule. Available values include the following:
+
+  - `don't repeat` (_default_) - This workflow will not run on a repeating automatic schedule. To run the workflow manually, 
+  Use the `POST` method to call the `/workflows/<workflow-id>/run` endpoint. [Learn more](/platform/api/overview#run-a-workflow).
+  - `every 15 minutes` - Run this workflow once every 15 minutes.
+  - `every hour` - Run this workflow once at the beginning of every hour.
+  - `every 2 hours` - Run this workflow once at the beginning of the hour every 2 hours.
+  - `every 4 hours` - Run this workflow once at the beginning of the hour every 4 hours.
+  - `every 6 hours` - Run this workflow once at the beginning of the hour every 6 hours.
+  - `every 8 hours` - Run this workflow once at the beginning of the hour every 8 hours.
+  - `every 10 hours` - Run this workflow once at the beginning of the hour every 10 hours.
+  - `every 12 hours` - Run this workflow once at the beginning of the hour every 12 hours.
+  - `daily` - Run this workflow once each day. To specify the time of day, ...
+  - `weekly` - Run this workflow once on each of the specified days of each week. 
+  To specify the days of the week, .... 
+  To specify the time for all of these days, ....
+  - `monthly` Run this workflow once on each of the specified days of each month. 
+  To specify the days of the month, .... 
+  To specify the time for all of these days, ....
+
+  The default value is `don't repeat` if not otherwise specified.
 
 ## Update a workflow
+
+To update information about a workflow, use the `PUT` method to call the `/workflows/<workflow-id>` endpoint, replacing 
+`<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
+
+In the request body, specify the settings for the workflow. For the specific settings to include, see 
+[Create a workflow](/platform/api/workflows#create-a-workflow).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request PUT \
+        "$UNSTRUCTURED_API_URL/workflows/<workflow-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header "accept: application/json" \
+        --data \
+        '{
+            # Specify the settings for the workflow here.
+        }'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **PUT**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify the settings for the workflow.
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>

@@ -6,6 +6,18 @@ The Unstructured Platform is a no-code user interface, pay-as-you-go platform fo
 
 <Tip>To start using the Unstructured Platform right away, skip ahead to the [quickstart](/platform/quickstart).</Tip>
 
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/IVKcQDZa9Zc"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
+
+<Icon icon="blog"/>&nbsp;&nbsp;[Read the announcement](https://unstructured.io/blog/introducing-unstructured-platform-the-enterprise-etl-platform-for-the-genai-tech-stackintroducing-unstructured-platform-beta-the-enterprise-etl-platform-for-the-genai-tech-stack).
+
 ![Partial view of the Unstructured Platform](/img/platform/Start-Screen-Partial.png)
 
 ## How does it work?
@@ -23,13 +35,23 @@ To get your data RAG-ready, the Unstructured Platform moves it through the follo
   <Step title="Route">
     Routing determines which strategy Unstructured Platform uses to transforming your documents into Unstructured's canonical JSON schema. The Unstructured Platform provides these [partitioning](/platform/partitioning) strategies for document transformation:
     
-    - **Fast** is great for when there is extractable text available, like in HTML files or in the Microsoft Office Document format.
-    - **Hi Res** is best for PDFs and tables and where accurate classification of document elements is critical.
-    - If you're unsure which strategy to use, choose **Auto**, and the Unstructured Platform will handle the decision for you.
+    - **Basic** / **Fast** is ideal for simple, text-only documents.
+    - **Advanced** / **High Res** is best for PDFs, images, and complex file types.
+
+      <Note>
+          During **Advanced** / **High Res** processing, any detected text-based files are processed and billed at the **Basic** / **Fast** rate instead.
+      </Note>
+
+    - **Platinum** / **VLM** is for challenging documents, including scanned and handwritten content.
+
+      <Note>
+          During **Platinum** / **VLM** processing, any detected files that are not PDFs or images are processed and billed at either the **Advanced** / **High Res** or **Basic** / **Fast** rate instead. 
+          Of those non-PDF and non-image files, all text-based files are processed and billed at the **Basic** / **Fast** rate instead. The other files are processed and billed at the **Advanced** / **High Res** rate instead.
+      </Note>
 
   </Step>
   <Step title="Transform"> 
-    Your source document is transformed into Unstructured's canonical JSON schema. Regardless of the input document, this JSON schema we gives you a [standardized output](/platform/document-elements). It contains more than 20 elements, such as `Header`, `Footer`, `Title`, `NarrativeText`, `Table`, `Image`, and many more. Each document is wrapped in extensive metadata so you can understand languages, file types, sources, hierarchies, and much more.
+    Your source document is transformed into Unstructured's canonical JSON schema. Regardless of the input document, this JSON schema gives you a [standardized output](/platform/document-elements). It contains more than 20 elements, such as `Header`, `Footer`, `Title`, `NarrativeText`, `Table`, `Image`, and many more. Each document is wrapped in extensive metadata so you can understand languages, file types, sources, hierarchies, and much more.
   </Step>
     <Step title="Chunk"> 
     The Unstructured Platform provides these [chunking](/platform/chunking) strategies:
@@ -85,3 +107,20 @@ The platform is designed for global reach with SOC2 Type 1, SOC2 Type 2, and HIP
 ## How do I get started?
 
 Skip ahead to the [quickstart](/platform/quickstart).
+
+## How do I get help?
+
+We are just a text or email away!
+
+![Unstructured account settings](/img/platform/AccountSettings.png)
+
+![Unstructured account settings sidebar message us](/img/platform/AccountSettingsSidebarMessageUs.png)
+
+1. In the Unstructured Platform, at the bottom of the sidebar, click your user icon, and then click **Account Settings**.
+2. On the account settings sidebar, click **Message Us**.
+
+Or, email us at [support@unstructured.io](mailto:support@unstructured.io).
+
+For enterprise support, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+
+

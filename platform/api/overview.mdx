@@ -5,7 +5,8 @@ title: Overview
 The [Unstructured Platform](/platform/overview) features a no-code user interface for transforming your unstructured data into data that is ready 
 for Retrieval Augmented Generation (RAG).
 
-The Unstructured Platform also provides a back-end API for automation usage scenarios as well as for documentation, reporting, and recovery needs.
+The Unstructured Platform also provides a back-end API for automation usage scenarios as well as for documentation, reporting, and recovery needs. 
+This page provides an overview of the Unstructured Platform API.
 
 ## Requirements
 
@@ -13,18 +14,32 @@ To use the Unstructured Platform API, you must have:
 
 - **An Unstructured account**, created through one of the following means:
 
-  - The [Unstructured Serverless API](https://unstructured.io/api-key-hosted) sign-up page.
   - The [For Developers](https://unstructured.io/developers) sign-up page.
   - The [For Enterprise](https://unstructured.io/enterprise) sign-up page.
 
-- **An Unstructured API key**, created through the Unstructured account console. To create an API key, do the following:
-
-  [Free Unstructured API](/api-reference/api-services/free-api) keys are _not_ supported.
+- **An Unstructured API key**, created through the Unstructured account console.
 
   <Note>
       If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API key creation process 
       might be different. For API key creation guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
+  
+      [Free Unstructured API](/api-reference/api-services/free-api) keys are _not_ supported.
   </Note>
+
+  To create an API key, do the following:
+
+  ![Unstructured account settings](/img/platform/AccountSettings.png)
+
+  ![Unstructured API key and API URL](/img/platform/APIKeyOnly.png)
+  1. Sign in to the Unstructured Platform. [Learn how](/platform/quickstart).
+  2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
+  3. On the account settings sidebar, click **API Keys**, if it is not already selected.
+  4. To get your API key, click the copy icon in the **Actions** column for your API key, and then click **Key Only**. Do not share your API key with others.
+
+  <Warning>
+      On the **Account Settings** page, do _not_ use the **API URL** value that is displayed. This API URL will _not_ work with the 
+      Unstructured Platform API. See the next bullet for the Unstructured Platform API URL.
+  </Warning>
 
 - **The Unstructured Platform API URL**, which is `https://platform.unstructuredapp.io`
 
@@ -77,17 +92,19 @@ For general information about these objects, see:
 - [Workflows](/platform/workflows)
 - [Jobs](/platform/jobs)
 
-In the following `curl` examples, we recommend setting the following environment variables first:
+The following sections provide examples, showing the use of `curl` or Postman, for all of the supported REST endpoints.
+
+The following `curl` examples use environment variables, which you can set as follows:
 
 ```bash
 export UNSTRUCTURED_API_URL="https://platform.unstructuredapp.io"
 export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
 ```
 
-This enables you to more easily run the following `curl` examples and helps prevent you from storing scripts 
+These environment variables enable you to more easily run the following `curl` examples and help prevent you from storing scripts 
 that contain sensitive URLs and API keys in public source code repositories.
 
-In the following Postman examples, we recommend setting the following global variables first:
+The following Postman examples use variables, which you can set as follows:
 
 1. In Postman, on your workspace's sidebar, click **Environments**.
 2. Click **Globals**.
@@ -103,7 +120,7 @@ In the following Postman examples, we recommend setting the following global var
 
 4. Click **Save**.
 
-This enables you to more easily run the following examples in Postman and helps prevent you from storing 
+These variables enable you to more easily run the following examples in Postman and help prevent you from storing 
 Postman collections that contain sensitive URLs and API keys in public source code repositories.
 
 ## Connectors
@@ -514,8 +531,8 @@ To filter the list of workflows, use one or more of the following query paramete
   To get this ID, see [List source connectors](#list-source-connectors).
 - `destination_connector_id=<connector-id>`, replacing `<connector-id>` with the destination connector's unique ID. 
   To get this ID, see [List destination connectors](#list-destination-connectors).
-- `workflow_type=<type>`, replacing `<type>` with ...
-- `status=<status>`, replacing `<status>` with ...
+- `workflow_type=<type>`, replacing `<type>` with one of the following workflow types: `advanced`, `basic`, or `platinum`.
+- `status=<status>`, replacing `<status>` with one of the following workflow statuses: `active` or `inactive`.
 
 <AccordionGroup>
     <Accordion title="curl">
@@ -777,7 +794,7 @@ To filter the list of jobs, use one or both of the following query parameters:
 
 - `workflow_id=<workflow-id>`, replacing `<workflow-id>` with the workflow's unique ID. 
   To get this ID, see [List workflows](#list-workflows).
-- `status=<status>`, replacing `<status>` with ...
+- `status=<status>`, replacing `<status>` with one of the following job statuses: `failed`, `finished`, or `running`.
 
 <AccordionGroup>
     <Accordion title="curl">
