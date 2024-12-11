@@ -1,0 +1,14 @@
+```bash REST (Create)
+curl --request POST \
+"$UNSTRUCTURED_API_URL/destinations" \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header "accept: application/json" \
+--data \
+'{
+    "type": "elasticsearch",
+    "name": "<name>",
+    "hosts": ["<host>"],
+    "index_name": "<index-name>",
+    "api_key": "<api-key>"
+}'
+```

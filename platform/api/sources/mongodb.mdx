@@ -1,0 +1,30 @@
+---
+title: MongoDB
+---
+
+Ingest your files into Unstructured from MongoDB.
+
+The requirements are as follows.
+
+import MongoDBPrerequisites from '/snippets/general-shared-text/mongodb.mdx';
+
+<MongoDBPrerequisites />
+
+To create or change a MongoDB source connector, see the following examples.
+
+import MongoDBAPIRESTCreate from '/snippets/source_connectors/mongodb_rest_create.mdx';
+import MongoDBAPIRESTChange from '/snippets/source_connectors/mongodb_rest_change.mdx';
+
+<CodeGroup>
+    <MongoDBAPIRESTCreate />
+    <MongoDBAPIRESTChange />
+</CodeGroup>
+
+Replace the preceding placeholders as follows:
+
+import MongoDBAPIPlaceholders from '/snippets/general-shared-text/mongodb-api-placeholders.mdx';
+
+<MongoDBAPIPlaceholders />
+
+To change a connector, replace `<connector-id>` with the source connector's unique ID. 
+To get this ID, see [List source connectors](/platform/api/overview#list-source-connectors).

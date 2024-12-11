@@ -1,0 +1,14 @@
+```bash REST (Change)
+curl --request PUT \
+"$UNSTRUCTURED_API_URL/destinations/<connector-id>" \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header "accept: application/json" \
+--data \
+'{
+    "type": "azure_ai_search",
+    "name": "<name>",
+    "endpoint": "<endpoint>",
+    "index": "<index>",
+    "azure_ai_search_key": "<azure-ai-search-key>"
+}'
+```

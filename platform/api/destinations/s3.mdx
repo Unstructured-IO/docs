@@ -1,0 +1,30 @@
+---
+title: S3
+---
+
+Send processed data from Unstructured to Amazon S3.
+
+The requirements are as follows.
+
+import s3Prerequisites from '/snippets/general-shared-text/s3.mdx';
+
+<s3Prerequisites />
+
+To create or change an S3 destination connector, see the following examples.
+
+import s3APIRESTCreate from '/snippets/destination_connectors/s3_rest_create.mdx';
+import s3APIRESTChange from '/snippets/destination_connectors/s3_rest_change.mdx';
+
+<CodeGroup>
+    <s3APIRESTCreate />
+    <s3APIRESTChange />
+</CodeGroup>
+
+Replace the preceding placeholders as follows:
+
+import s3APIPlaceholders from '/snippets/general-shared-text/s3-api-placeholders.mdx';
+
+<s3APIPlaceholders />
+
+To change a connector, replace `<connector-id>` with the source connector's unique ID. 
+To get this ID, see [List source connectors](/platform/api/overview#list-source-connectors).

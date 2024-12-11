@@ -1,0 +1,18 @@
+```bash REST (Change)
+curl --request PUT \
+"$UNSTRUCTURED_API_URL/destinations/<connector-id>" \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header "accept: application/json" \
+--data \
+'{
+    "type": "databricks_volumes",
+    "name": "<name>",
+    "host": "<host>",
+    "catalog": "<catalog>",
+    "schema": "<schema>",
+    "volume": "<volume>",
+    "volume_path": "<volume-path>",
+    "client_secret": "<client-secret>",
+    "client_id": "<client-id>"
+}'
+```

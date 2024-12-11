@@ -1,0 +1,11 @@
+- `<name>` (_required_) - A unique name for this connector.
+- `az://<container-name>/<path/to/file/or/folder>`  (_required_) - The Azure Storage remote URL, with the format `az://<container-name>/<path/to/file/or/folder/in/container/as/needed>`
+
+  For example, if your container is named `my-container`, and there is a folder in the container named `my-folder`, the 
+  Azure Storage remote URL would be `az://my-container/my-folder/`.
+
+- `<account-name>`  (_required_ for SAS token authentication and account key authentication) - The Azure Storage account name.
+- `<sas-token>` - For SAS token authentication, the SAS token for the Azure Storage account (_required_).
+- `<account-key>` - For account key authentication, the key for the Azure Storage account (_required_).
+- `<connection-string>` - For connection string authentication, the connection string for the Azure Storage account (_required_).
+- For `recursive` (source connector only), set to `true` to recursively access files from subfolders within the container. The default is `false` if not otherwise specified.

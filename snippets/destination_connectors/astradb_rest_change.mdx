@@ -1,0 +1,16 @@
+```bash REST (Change)
+curl --request PUT \
+"$UNSTRUCTURED_API_URL/destinations/<connector-id>" \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header "accept: application/json" \
+--data \
+'{
+    "type": "astradb",
+    "name": "<name>",
+    "collection_name": "<collection-name>",
+    "keyspace": "<keyspace>",
+    "batch_size": <batch-size>,
+    "api_endpoint": "<api-endpoint>",
+    "token": "<token>"
+}'
+```

@@ -1,0 +1,14 @@
+```bash REST (Change)
+curl --request PUT \
+"$UNSTRUCTURED_API_URL/destinations/<connector-id>" \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header "accept: application/json" \
+--data \
+'{
+    "type": "mongodb",
+    "name": "<name>",
+    "database": "<database>",
+    "collection": "<collection>",
+    "uri": "<uri>"
+}'
+```

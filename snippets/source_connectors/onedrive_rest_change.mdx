@@ -1,0 +1,18 @@
+```bash REST (Change)
+curl --request PUT \
+"$UNSTRUCTURED_API_URL/sources/<connector-id>" \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header "accept: application/json" \
+--data \
+'{
+    "type": "onedrive",
+    "name": "<name>",
+    "client_id": "<client-id>", 
+    "tenant": "<tenant>", 
+    "authority_url": "<authority-url>",
+    "user_pname": "<user-pname>",
+    "client_cred": "<client-cred>",
+    "path": "<path>",
+    "recursive": "<true|false>"
+}'
+```
