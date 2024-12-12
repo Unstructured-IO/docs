@@ -1,8 +1,9 @@
 ```bash REST (Create)
-curl --request POST \
+curl --request 'POST' --location \
 "$UNSTRUCTURED_API_URL/sources" \
+--header 'accept: application/json' \
 --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
---header "accept: application/json" \
+--header 'content-type: application/json' \
 --data \
 '{
     "type": "onedrive",

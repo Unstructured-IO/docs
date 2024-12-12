@@ -22,10 +22,10 @@ specify the settings for the workflow, as follows:
 <AccordionGroup>
     <Accordion title="curl">
         ```bash
-        curl --request POST \
+        curl --request 'POST' --location \
         "$UNSTRUCTURED_API_URL/workflows" \
         --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
-        --header "accept: application/json" \
+        --header 'accept: application/json' \
         --data \
         '{
             "name": "<name>",
@@ -106,10 +106,10 @@ In the request body, specify the settings for the workflow. For the specific set
 <AccordionGroup>
     <Accordion title="curl">
         ```bash
-        curl --request PUT \
+        curl --request 'PUT' --location \
         "$UNSTRUCTURED_API_URL/workflows/<workflow-id>" \
         --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
-        --header "accept: application/json" \
+        --header 'accept: application/json' \
         --data \
         '{
             # Specify the settings for the workflow here.
