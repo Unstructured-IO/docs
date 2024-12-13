@@ -6,10 +6,12 @@ curl --request 'POST' --location \
 --header 'content-type: application/json' \
 --data \
 '{
-    "type": "azure_ai_search",
     "name": "<name>",
-    "endpoint": "<endpoint>",
-    "index": "<index>",
-    "azure_ai_search_key": "<azure-ai-search-key>"
+    "type": "azure_ai_search",
+    "config": {
+        "endpoint": "<endpoint>",
+        "index": "<index>",
+        "azure_ai_search_key": "<azure-ai-search-key>"
+    }
 }'
 ```

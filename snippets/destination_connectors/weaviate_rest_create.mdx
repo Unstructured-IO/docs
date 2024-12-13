@@ -6,10 +6,12 @@ curl --request 'POST' --location \
 --header 'content-type: application/json' \
 --data \
 '{
-    "type": "weaviate",
     "name": "<name>",
-    "cluster_url": "<cluster-url>",
-    "collection": "<collection>",
-    "api_key": "<api-key>"
+    "type": "weaviate",
+    "config": {
+        "host_url": "<host-url>",
+        "class_name": "<class-name>",
+        "api_key": "<api-key>"
+    }
 }'
 ```

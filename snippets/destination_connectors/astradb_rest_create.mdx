@@ -6,12 +6,14 @@ curl --request 'POST' --location \
 --header 'content-type: application/json' \
 --data \
 '{
-    "type": "astradb",
     "name": "<name>",
-    "collection_name": "<collection-name>",
-    "keyspace": "<keyspace>",
-    "batch_size": <batch-size>,
-    "api_endpoint": "<api-endpoint>",
-    "token": "<token>"
+    "type": "astradb",
+    "config": {
+        "token": "<token>",
+        "api_endpoint": "<api-endpoint>",
+        "collection_name": "<collection-name>",
+        "keyspace": "<keyspace>",
+        "batch_size": <batch-size>
+    }
 }'
 ```

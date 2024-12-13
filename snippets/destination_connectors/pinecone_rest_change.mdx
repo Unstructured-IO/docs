@@ -6,10 +6,12 @@ curl --request 'PUT' --location \
 --header 'content-type: application/json' \
 --data \
 '{
-    "type": "pinecone",
     "name": "<name>",
-    "index_name" "<index-name>", 
-    "batch_size" <batch-size>,
-    "pinecone_api_key": "<pinecone-api-key>" 
+    "type": "pinecone",
+    "config": {
+        "index_name" "<index-name>", 
+        "api_key": "<api-key>",
+        "batch_size" <batch-size>
+    }
 }'
 ```

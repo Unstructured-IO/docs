@@ -6,13 +6,15 @@ curl --request 'PUT' --location \
 --header 'content-type: application/json' \
 --data \
 '{
-    "type": "onedrive",
     "name": "<name>",
-    "client_id": "<client-id>", 
-    "tenant": "<tenant>", 
-    "authority_url": "<authority-url>",
-    "user_pname": "<user-pname>",
-    "client_cred": "<client-cred>",
-    "remote_url": "<remote-url>" 
+    "type": "onedrive",
+    "config": {
+        "client_id": "<client-id>", 
+        "user_pname": "<user-pname>",
+        "tenant": "<tenant>", 
+        "authority_url": "<authority-url>",
+        "client_cred": "<client-cred>",
+        "remote_url": "<remote-url>" 
+    }
 }'
 ```

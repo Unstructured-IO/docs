@@ -6,17 +6,18 @@ curl --request 'POST' --location \
 --header 'content-type: application/json' \
 --data \
 '{
-    "type": "s3",
     "name": "<name>",
-    "remote_url": "<remote_url>"
+    "type": "s3",
+    "config": {
+        # For AWS access key ID with AWS secret access key authentication:
+        "key": "<key>", 
+        "secret": "<secret>", 
 
-    # For AWS access key ID with AWS secret access key authentication:
-    "key": "<key>", 
-    "secret": "<secret>" 
+        # For AWS STS token authentication:
+        "token": "<token>", 
 
-    # For AWS STS token authentication:
-    "token": "<token>" 
-
-    "endpoint_url": "<endpoint-url>" 
+        "remote_url": "<remote_url>",
+        "endpoint_url": "<endpoint-url>",
+    }
 }'
 ```

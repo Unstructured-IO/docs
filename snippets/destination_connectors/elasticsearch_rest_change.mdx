@@ -6,10 +6,12 @@ curl --request 'PUT' --location \
 --header 'content-type: application/json' \
 --data \
 '{
-    "type": "elasticsearch",
     "name": "<name>",
-    "hosts": ["<host>"],
-    "index_name": "<index-name>",
-    "api_key": "<api-key>"
+    "type": "elasticsearch",
+    "config": {
+        "hosts": ["<host-url>"],
+        "es_api_key": "<es-api-key>",
+        "index_name": "<index-name>"
+    }
 }'
 ```

@@ -6,14 +6,16 @@ curl --request 'POST' --location \
 --header 'content-type: application/json' \
 --data \
 '{
-    "type": "databricks_volumes",
     "name": "<name>",
-    "host": "<host>",
-    "catalog": "<catalog>",
-    "schema": "<schema>",
-    "volume": "<volume>",
-    "volume_path": "<volume-path>",
-    "client_secret": "<client-secret>",
-    "client_id": "<client-id>"
+    "type": "databricks_volumes",
+    "config": {
+        "host": "<host>",
+        "catalog": "<catalog>",
+        "schema": "<schema>",
+        "volume": "<volume>",
+        "volume_path": "<volume-path>",
+        "client_secret": "<client-secret>",
+        "client_id": "<client-id>"
+    }
 }'
 ```

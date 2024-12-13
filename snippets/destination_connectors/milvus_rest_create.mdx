@@ -6,12 +6,14 @@ curl --request 'POST' --location \
 --header 'content-type: application/json' \
 --data \
 '{
-    "type": "milvus",
     "name": "<name>",
-    "uri": "<uri>",
-    "db_name": "<db-name>",
-    "collection_name": "<collection-name>",
-    "user": "<user>",
-    "password": "<password>"
+    "type": "milvus",
+    "config": {
+        "user": "<user>",
+        "uri": "<uri>",
+        "db_name": "<db-name>",
+        "password": "<password>",
+        "collection_name": "<collection-name>"
+    }
 }'
 ```
