@@ -8,10 +8,12 @@ curl --request 'PUT' --location \
 '{
     "type": "sharepoint",
     "name": "<name>",
-    "site": "<site>",
-    "path": "<path>",
-    "recursive": "<true|false>",
-    "client_id": "<client-id>", 
-    "client_cred": "<client-cred>"
+    "config": {
+        "client_id": "<client-id>", 
+        "site": "<site>",
+        "client_cred": "<client-cred>"
+        "path": "<path>",
+        "recursive": <true|false>
+    }
 }'
 ```

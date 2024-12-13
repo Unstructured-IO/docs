@@ -8,12 +8,14 @@ curl --request 'PUT' --location \
 '{
     "type": "outlook",
     "name": "<name>",
-    "user_email": "<user-email>",
-    "authority_url": "<authority-url>",
-    "tenant": "<tenant>",
-    "client_id": "<client-id>",
-    "client_credential": "<client-credential>",
-    "outlook_folders": "<outlook_folders>",
-    "recursive": "<true|false>"
+    "config": {
+        "client_id": "<client-id>",
+        "authority_url": "<authority-url>",
+        "tenant": "<tenant>",
+        "client_cred": "<client-cred>",
+        "user_email": "<user-email>",
+        "outlook_folders": ["<folder-name>","<folder-name>"],
+        "recursive": <true|false>
+    }
 }'
 ```

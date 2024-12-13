@@ -6,10 +6,12 @@ curl --request 'PUT' --location \
 --header 'content-type: application/json' \
 --data \
 '{
-    "type": "mongodb",
     "name": "<name>",
-    "database": "<database>",
-    "collection": "<collection>",
-    "uri": "<uri>"
+    "type": "mongodb",
+    "config": {
+        "uri": "<uri>",
+        "database": "<database>",
+        "collection": "<collection>"
+    }
 }'
 ```

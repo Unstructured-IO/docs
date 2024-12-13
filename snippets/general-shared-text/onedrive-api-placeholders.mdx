@@ -1,8 +1,8 @@
 - `<name>` (_required_) - A unique name for this connector.
 - `<client-id>` (_required_) - The application (client) ID of the Microsoft Entra ID app registration that has access to the OneDrive account.
+- `<user-pname>` (_required_) - The User Principal Name (UPN) for the OneDrive user account in Entra ID. This is typically the user's email address.
 - `<tenant>` (_required_) - The directory (tenant) ID of the Entra ID app registration.
 - `<authority-url>` (_required_) - The authentication token provider URL for the Entra ID app registration. The default is https://login.microsoftonline.com.
-- `<user-pname>` (_required_) - The User Principal Name (UPN) for the OneDrive user account in Entra ID. This is typically the user's email address.
 - `<client-cred>` (_required_) - The client secret for the Entra ID app registration.
 - `<path>` (source connector only) - The path to the target folder in the OneDrive account, starting with the account's root folder, for example `my-folder/my-subfolder`.
 - For `recursive` (source connector only), set to `true` to recursively access files from subfolders within the specified OneDrive `<path>`. The default is `false` if not otherwise specified.
