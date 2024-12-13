@@ -6,10 +6,12 @@ curl --request 'POST' --location \
 --header 'content-type: application/json' \
 --data \
 '{
-    "type": "gcs",
     "name": "<name>",
-    "remote_url": "<remote-url>",
-    "recursive": "<true|false>",
-    "service_account_key": "<service-account-key>"
+    "type": "gcs",
+    "config": {
+        "service_account_key": "<service-account-key>",
+        "remote_url": "<remote-url>",
+        "recursive": <true|false>
+    }
 }'
 ```

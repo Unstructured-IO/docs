@@ -264,6 +264,10 @@ To update information about a source connector, use the `PUT` method to call the
 In the request body, specify the settings for the connector. For the specific settings to include, which differ by connector, see 
 [Sources](/platform/api/sources/overview).
 
+You must specify all of the settings for the connector, even for settings that are not changing.
+
+You can change any of the connector's settings except for its `name` and `type`.
+
 <AccordionGroup>
     <Accordion title="curl">
         ```bash
@@ -454,6 +458,10 @@ To update information about a destination connector, use the `PUT` method to cal
 In the request body, specify the settings for the connector. For the specific settings to include, which differ by connector, see 
 [Destinations](/platform/api/destinations/overview).
 
+You must specify all of the settings for the connector, even for settings that are not changing.
+
+You can change any of the connector's settings except for its `name` and `type`.
+
 <AccordionGroup>
     <Accordion title="curl">
         ```bash
@@ -541,6 +549,8 @@ To filter the list of workflows, use one or more of the following query paramete
   To get this ID, see [List destination connectors](#list-destination-connectors).
 - `workflow_type=<type>`, replacing `<type>` with one of the following workflow types: `advanced`, `basic`, or `platinum`.
 - `status=<status>`, replacing `<status>` with one of the following workflow statuses: `active` or `inactive`.
+
+You can specify multiple query parameters, for example `?source_connector_id=<connector-id>&status=<status>`.
 
 <AccordionGroup>
     <Accordion title="curl">
@@ -807,6 +817,8 @@ To filter the list of jobs, use one or both of the following query parameters:
 - `workflow_id=<workflow-id>`, replacing `<workflow-id>` with the workflow's unique ID. 
   To get this ID, see [List workflows](#list-workflows).
 - `status=<status>`, replacing `<status>` with one of the following job statuses: `failed`, `finished`, or `running`.
+
+You can specify multiple query parameters, for example `?workflow_id=<workflow-id>&status=<status>`.
 
 <AccordionGroup>
     <Accordion title="curl">

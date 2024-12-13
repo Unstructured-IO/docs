@@ -8,24 +8,23 @@ curl --request 'POST' --location \
 '{
     "type": "azure",
     "name": "<name>",
-    "recursive": "<true|false>",
-    "remote_url": "az://<container-name>/<path/to/file/or/folder>",
+    "config": {
+        "remote_url": "az://<container-name>/<path/to/file/or/folder>",
+        "recursive": <true|false>,
+    
+        # For anonymous authentication, do not set any of the 
+        # following fields.
 
-    # For anonymous authentication:
-    "authentication_method": "anonymous"
+        # For SAS token authentication:
+        "account_name": "<account-name>",
+        "sas_token": "<sas-token>"
 
-    # For SAS token authentication:
-    "authentication_method": "sas_token_recommended",
-    "account_name": "<account-name>",
-    "sas_token": "<sas-token>"
+        # For account key authentication:
+        "account_name": "<account-name>",
+        "account_key": "<account-key>"
 
-    # For account key authentication:
-    "authentication_method": "account_key",
-    "account_name": "<account-name>",
-    "account_key": "<account-key>"
-
-    # For connection string authentication:
-    "authentication_method": "connection_string",
-    "connection_string": "<connection-string>"
+        # For connection string authentication:
+        "connection_string": "<connection-string>"
+    }
 }'
 ```

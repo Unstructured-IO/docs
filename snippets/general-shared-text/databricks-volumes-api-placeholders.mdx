@@ -1,11 +1,11 @@
 - `<name>` (_required_) - A unique name for this connector.
 - `<host>` (_required_) - The Databricks workspace host URL.
+- `<client-id>` (_required_) - The application ID value for the Databricks-managed service principal that has access to the volume.
+- `<client-secret>` (_required_) - The associated OAuth secret value for the Databricks-managed service principal that has access to the volume.
 - `<catalog>` (_required_) - The name of the catalog to use.
-- `<databricks-schema>` - The name of the associated schema. If not specified, `default` is used.
+- `<schema>` - The name of the associated schema. If not specified, `default` is used.
 - `<volume>` (_required_) - The name of the associated volume.
 - `<volume-path>` - Any optional path to access within the volume.
-- `<client-secret>` (_required_) - The associated OAuth secret value for the Databricks-managed service principal that has access to the volume.
-- `<client-id>` (_required_) - The application ID value for the Databricks-managed service principal that has access to the volume.
 
 To learn how to create a Databricks-managed service principal, get its application ID, and generate an associated OAuth secret, 
 see the documentation for 
