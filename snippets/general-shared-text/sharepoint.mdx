@@ -1,34 +1,107 @@
 - The SharePoint site URL.
 
-  - Site URLs typically have the format `https://<tenant>.sharepoint.com`.
-  - Relative site URLs typically have the format `https://<tenant>.sharepoint.com/sites/<site_name>`. 
-  - To process all sites within a tenant, use a site URL of `https://<tenant>-admin.sharepoint.com`. This requires the app to be registered at a tenant level.
+  - Site collection-level URLs typically have the format `https://<tenant>.sharepoint.com/sites/<site-collection-name>`.
+  - Root site collection-level URLs typically have the format `https://<tenant>.sharepoint.com`. 
+  - To process all sites within a tenant, use a site URL of `https://<tenant>-admin.sharepoint.com`.
 
   [Learn more](https://learn.microsoft.com/microsoft-365/community/query-string-url-tricks-sharepoint-m365).
 
 - The path in the SharePoint site from which to start parsing files, for example `"Shared Documents"`. If the connector is to process all sites within the tenant, this filter will be applied to all site document libraries.
-- A SharePoint app principal with its application (client) ID, client secret, and access permissions to the SharePoint instance. [Get a client ID and client secret, and set access permissions](https://github.com/vgrem/Office365-REST-Python-Client/wiki/How-to-connect-to-SharePoint-Online-and-and-SharePoint-2013-2016-2019-on-premises--with-app-principal).
+- A SharePoint app principal with its application (client) ID, client secret, and the appropriate access permissions. 
 
-  You can create SharePoint app principals through `https://<tenant>.sharepoint.com/_layouts/15/appregnew.aspx`.
+  Complete the steps in the following sections, depending on whether you want to access sites at the site collection level, the 
+  root site collection level, or all sites within a tenant. 
+  
+  <Note>
+      Two of the main factors in the following sections are the scope of access 
+      and the level of administrative permissions required to create the app principal. Tenant-wide app principals offer the broadest access 
+      but require the highest level of administrative rights, while site collection app principals are more restricted but can be created by users 
+      with lower-level permissions.
+  </Note>
 
-  For a SharePoint app principal with site-scoped permissions, use app permission request XML such as the following to grant 
-  permissions through `https://<tenant>.sharepoint.com/_layouts/15/appinv.aspx`:
+## Tenant-wide SharePoint app principals
 
-  ```xml
-  <AppPermissionRequests AllowAppOnlyPolicy="true">
-    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="FullControl" />
-  </AppPermissionRequests>
-  ```
+Create a tenant-wide SharePoint app principal when you want the power and flexibility of a principal that can process all sites within a tenant. 
 
-  For a SharePoint app principal with tenant-scoped permissions, use app permission request XML such as the following to grant 
-  permissions through `https://<tenant>-admin.sharepoint.com/_layouts/15/appinv.aspx` instead:
+SharePoint app principals that are created in the SharePoint admin center have tenant-wide scope and can potentially access all sites within the tenant. 
+Only global or SharePoint administrators typically have access to the following URLs.
 
-  ```xml
-  <AppPermissionRequests AllowAppOnlyPolicy="true">
-    <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
-  </AppPermissionRequests>
-  ```
+1. To create a tenant-wide SharePoint app principal and then get its client ID and client secret, go to the following URL:
 
-  Available `Right` settings include `Read`, `Write`, `Manage`, and `FullControl`. To learn more, see 
-  [Add-in permissions in SharePoint](https://learn.microsoft.com/sharepoint/dev/sp-add-ins/add-in-permissions-in-sharepoint).
+   `https://<tenant>-admin.sharepoint.com/_layouts/15/appregnew.aspx`
 
+2. To add access permissions to a tenant-wide SharePoint app principal and then get its client ID and client secret, go to the following URL:
+
+   `https://<tenant>.sharepoint.com/_layouts/15/appinv.aspx`
+
+3. Apply the following permissions XML to the tenant-wide SharePoint app principal:
+
+   ```xml
+   <AppPermissionRequests AllowAppOnlyPolicy="true">
+       <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
+   </AppPermissionRequests>
+   ```
+   Available `Right` settings include `Read`, `Write`, `Manage`, and `FullControl`. To learn more, see 
+   [Add-in permissions in SharePoint](https://learn.microsoft.com/sharepoint/dev/sp-add-ins/add-in-permissions-in-sharepoint).
+
+[Learn how to complete these preceding steps](https://github.com/vgrem/Office365-REST-Python-Client/wiki/How-to-connect-to-SharePoint-Online-and-and-SharePoint-2013-2016-2019-on-premises--with-app-principal). 
+Be sure to substitute the URLs and XML in the linked article with the ones in these preceding steps accordingly.
+
+## Root site collection-level SharePoint app principals
+
+Create a root site collection-level SharePoint app principal when you want a principal that can only access a root site collection, for example with a URL 
+that has the format `https://<tenant>.sharepoint.com`.
+
+SharePoint app principals that are created at the root site collection level have a scope limited to the root site collection. Site collection administrators can usually access the following URLs.
+
+1. To create a root site collection-level SharePoint app principal and then get its client ID and client secret, go to the following URL:
+
+   `https://<tenant>.sharepoint.com/_layouts/15/appregnew.aspx`
+
+2. To add access permissions to a root site collection-level SharePoint app principal, go to the following URL:
+
+   `https://<tenant>.sharepoint.com/_layouts/15/appinv.aspx`
+
+3. Apply the following permissions XML to the root site collection-level SharePoint app principal:
+
+   ```xml
+   <AppPermissionRequests AllowAppOnlyPolicy="true">
+       <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="FullControl" />
+   </AppPermissionRequests>
+   ```
+
+   Available `Right` settings include `Read`, `Write`, `Manage`, and `FullControl`. To learn more, see 
+   [Add-in permissions in SharePoint](https://learn.microsoft.com/sharepoint/dev/sp-add-ins/add-in-permissions-in-sharepoint).
+
+[Learn how to complete these preceding steps](https://github.com/vgrem/Office365-REST-Python-Client/wiki/How-to-connect-to-SharePoint-Online-and-and-SharePoint-2013-2016-2019-on-premises--with-app-principal). 
+Be sure to substitute the URLs and XML in the linked article with the ones in these preceding steps accordingly.
+
+## Site collection-level SharePoint app principals
+
+Create a site collection-level SharePoint app principal when you want a principal that can only access a specific site collection, for example with a URL 
+that has or starts with the format `https://<tenant>.sharepoint.com/sites/<site-collection-name>`.
+
+SharePoint app principals that are created at the site collection level have the most limited scope, restricted to the specific subsite and its subsites. 
+Site owners or those with appropriate permissions on the subsite can access the following URLs.
+
+1. To create a site collection-level SharePoint app principal, go to the following URL:
+
+   `https://<tenant>.sharepoint.com/sites/<site-collection-name>/_layouts/15/appregnew.aspx`
+
+2. To add access permissions to a site collection-level SharePoint app principal, go to the following URL:
+
+   `https://<tenant>.sharepoint.com/sites/<site-collection-name>/_layouts/15/appinv.aspx`
+
+3. Apply the following permissions XML to the site collection-level SharePoint app principal:
+
+   ```xml
+   <AppPermissionRequests AllowAppOnlyPolicy="true">
+       <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="FullControl" />
+   </AppPermissionRequests>
+   ```
+
+   Available `Right` settings include `Read`, `Write`, `Manage`, and `FullControl`. To learn more, see 
+   [Add-in permissions in SharePoint](https://learn.microsoft.com/sharepoint/dev/sp-add-ins/add-in-permissions-in-sharepoint).
+
+[Learn how to complete these preceding steps](https://github.com/vgrem/Office365-REST-Python-Client/wiki/How-to-connect-to-SharePoint-Online-and-and-SharePoint-2013-2016-2019-on-premises--with-app-principal). 
+Be sure to substitute the URLs and XML in the linked article with the ones in these preceding steps accordingly.
