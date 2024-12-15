@@ -1,0 +1,12 @@
+Fill in the following fields:
+
+- **Name** (_required_): A unique name for this connector.
+- **Host** (_required_): The host name of the target PostgreSQL instance.
+- **DB Name** (_required_): The name of the target database on the instance.
+- **Port** (_required_): The port number on the instance.
+- **Username** (_required_): The name of the target user with the appropriate access to the instance.
+- **Password** (_required_): The password for the user.
+- **Table Name** (_required_): The name of the target table in the database.
+- **Batch Size**: The maximum number of rows to transmit at a time. The default is `100` if not otherwise specified.
+- **ID Column** (_required_, source connector only): The name of the ID column in the table.
+- **Columns** (_required_, source connector only): A comma separated list of column to process (including the specified **ID Column** column). The default is all columns if not otherwise specified. 
