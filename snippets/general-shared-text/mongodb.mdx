@@ -10,10 +10,15 @@ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; pic
 allowfullscreen
 ></iframe>
 
+import AllowIPAddressRanges from '/snippets/general-shared-text/ip-address-ranges.mdx';
+
 - A MongoDB Atlas account. [Create an account](https://www.mongodb.com/cloud/atlas/register).
 - A MongoDB Atlas cluster. [Create a cluster](https://www.mongodb.com/docs/atlas/tutorial/deploy-free-tier-cluster).
 - The cluster must be reachable from your application environment. [Learn how](https://www.mongodb.com/docs/atlas/setup-cluster-security/#network-and-firewall-requirements). 
-- The cluster must be configured to use your IP address. [Learn how](https://www.mongodb.com/docs/atlas/setup-cluster-security/#ip-access-list).
+- The cluster must be configured to allow IP address. [Learn how](https://www.mongodb.com/docs/atlas/setup-cluster-security/#ip-access-list).
+
+  <AllowIPAddressRanges />
+
 - The cluster must have at least one database. [Create a database](https://www.mongodb.com/docs/compass/current/databases/#create-a-database).
 - The database must have at least one user, and that user must have sufficient access to the database. [Create a database user](https://www.mongodb.com/docs/atlas/security-add-mongodb-users/#add-database-users). [Give the user database access](https://www.mongodb.com/docs/manual/core/authorization/).
 - The database must have at least one collection. [Create a collection](https://www.mongodb.com/docs/compass/current/collections/#create-a-collection).
