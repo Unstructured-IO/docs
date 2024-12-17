@@ -1,20 +1,23 @@
 - A Salesforce account. [Create an account](https://developer.salesforce.com/signup).
-
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/PIVPq2J1OMA"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
-
 - Your Salesforce username.
 - The Salesforce categories (objects) that you want to access, specified as a comma-separated list. Available categories include `Account`, `Campaign`, `Case`, `EmailMessage`, and `Lead`.
 - The OAuth consumer key (client ID) for the target Salesforce connected app in the account. 
-- The contents of the private key (PEM) for the certificate that is associated for the Salesforce connected app. The PEM must be expressed a 
-  ...
+- The contents of the private key (PEM) for the certificate that is associated for the Salesforce connected app. The PEM must be expressed as a 
+  single-line string without line breaks. To print this single-line string without line breaks, suitable for copying, 
+  you can run one of the following commands from your Terminal or Command Prompt. In this command, replace 
+  `<path-to-private-key-file>` with the path to the `.pem` file.
+
+  For macOS or Linux:
+
+  ```bash
+  awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' <path-to-private-key-file>
+  ```
+
+  For Windows:
+
+  ```bash
+  (Get-Content -Path "<path-to-private-key-file>" -Raw).Replace("`r`n", "\n")
+  ```
 
 To get your Salesforce username, do the following:
 
