@@ -1,37 +1,67 @@
 - A Salesforce account. [Create an account](https://developer.salesforce.com/signup).
+- Your Salesforce username.
+- The Salesforce categories (objects) that you want to access, specified as a comma-separated list. Available categories include `Account`, `Campaign`, `Case`, `EmailMessage`, and `Lead`.
+- The OAuth consumer key (client ID) for the target Salesforce connected app in the account. 
+- The contents of the private key (PEM) for the certificate that is associated for the Salesforce connected app. The PEM must be expressed as a 
+  single-line string without line breaks. To print this single-line string without line breaks, suitable for copying, 
+  you can run one of the following commands from your Terminal or Command Prompt. In this command, replace 
+  `<path-to-private-key-file>` with the path to the `.pem` file.
 
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/PIVPq2J1OMA"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
+  For macOS or Linux:
 
-- The Salesforce categories (objects) that you want to access, specified as a comma-separated list. Available categories include `Account`, `Case`, `Campaign`, `EmailMessage`, and `Lead`.
-- The OAuth consumer key (client ID) and private key (PEM) for the Salesforce connected app. The PEM is a string that begins with `—–BEGIN RSA PRIVATE KEY—–` and ends with `—–END RSA PRIVATE KEY—–`. [Create a connected app](https://help.salesforce.com/s/articleView?id=sf.connected_app_create.htm&type=5). [Get the consumer key](https://help.salesforce.com/s/articleView?id=sf.connected_app_rotate_consumer_details.htm&type=5). [Get the private key](https://help.salesforce.com/s/articleView?id=sf.task_create_a_certificate_and_private_key.htm&type=5).
+  ```bash
+  awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' <path-to-private-key-file>
+  ```
 
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/GcbcMsMV4oY"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
+  For Windows:
 
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/hFV2Ao4aXAY"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
-  
+  ```bash
+  (Get-Content -Path "<path-to-private-key-file>" -Raw).Replace("`r`n", "\n")
+  ```
 
+To get your Salesforce username, do the following:
+
+1. Log in to your Salesforce account.
+2. In the top navigation bar, click the **Quick Settings** (gear) icon, and then click **Open Advanced Setup**.
+3. In the search box, search for and go to **Users**.
+4. Note the **Name** value (_not_ the **User Name** value) for your user.
+
+If you do not already have a Salesforce connected app, to create one, start by creating or getting the certificate (`.crt`) and private key (`.pem`) files 
+that you will associate with the connected app. If you do not have the certificate and private key, you can use your local machine to create your own 
+private key and self-signed certificate, if your organization allows, by running the following commands, one command at a time:
+
+```bash
+openssl genrsa -out MyPrivateKey.pem -traditional
+openssl req -new -key MyPrivateKey.pem -out MyCertificateSigningRequest.csr
+openssl x509 -req -in MyCertificateSigningRequest.csr -signkey MyPrivateKey.pem -out MyCertificate.crt -days 365
+```
+
+Be sure to store these generated files in a secure location.
+
+To create a Salesforce connected app, do the following:
+
+1. Log in to your Salesforce account.
+2. In the top navigation bar, click the **Quick Settings** (gear) icon, and then click **Open Advanced Setup**.
+3. In the search box, search for and go to **App Manager**.
+4. Click **New Connected App**.
+5. With **Create a Connected App** selected, click **Continue**.
+6. At a minimum, fill in the following, and then click **Save**:
+
+   - **Connected App Name**
+   - **API Name** (can be same as **Connected App Name**, but do not use spaces or punctuation)
+   - **Contact Email**
+   - Check **Enable OAuth Settings**.
+   - For **Callback URL**, entering `http://localhost` is okay if you won't be using this connected app for other special authentication scenarios.
+   - Check **Use Digital Signatures**. Click **Choose File**, and browse to and select your certificate (`.crt`) file.
+   - For **Selected OAuth Scopes**, add **Manage user data via APIs (api)** (recommended) or **Full access (full)**.
+
+To get the Salesforce connected app's consumer key, do the following:
+
+1. Log in to your Salesforce account.
+2. In the top navigation bar, click the **Quick Settings** (gear) icon, and then click **Open Advanced Setup**.
+3. In the search box, search for and go to **App Manager**.
+4. In the list of apps, click the arrow next to the target connected app, and click **View**.
+5. Click **Manage Consumer Details**.
+6. Complete the on-screen security verification.
+7. Note the **Consumer Key** value.
   
