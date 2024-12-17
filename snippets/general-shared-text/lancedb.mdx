@@ -1,3 +1,5 @@
+import LanceDBRecordID from '/snippets/general-shared-text/lancedb-record-id.mdx';
+
 - A [LanceDB open source software (OSS) installation](https://lancedb.github.io/lancedb/basic/#installation) on a local machine, a server, or a virtual machine. 
   (LanceDB Cloud is not supported.)
 - For LanceDB OSS with local data storage:
@@ -6,10 +8,15 @@
     See [Connect to a database](https://lancedb.github.io/lancedb/basic/#connect-to-a-database) in the LanceDB documentation.
   - The name of the target [LanceDB table](https://lancedb.github.io/lancedb/basic/#create-an-empty-table) within the local data folder.
 
+    <LanceDBRecordID />
+
 - For LanceDB OSS with data storage in an Amazon S3 bucket:
 
   - The URI for the target Amazon S3 bucket and any target folder path within that bucket. Use the format `s3://<bucket-name>[/<folder-name>]`.
   - The name of the target [LanceDB table](https://lancedb.github.io/lancedb/guides/storage/#object-stores) within the Amazon S3 bucket.
+
+    <LanceDBRecordID />
+
   - The AWS access key ID and AWS secret access key for the AWS IAM entity that has access to the Amazon S3 bucket.
 
   For more information, see [AWS S3](https://lancedb.github.io/lancedb/guides/storage/#aws-s3) in the LanceDB documentation, along with the following video:
@@ -29,6 +36,9 @@
   - The name of the target Azure Blob Storage account. 
   = The URI for the target container within that Azure Blob Storage account and any target folder path within that container. Use the format `az://<container-name>[/<folder-name>]`.
   - The name of the target [LanceDB table](https://lancedb.github.io/lancedb/guides/storage/#object-stores) within the Azure Blob Storage account.
+  
+    <LanceDBRecordID />
+
   - The access key for the Azure Blob Storage account.
 
   For more information, see [Azure Blob Storage](https://lancedb.github.io/lancedb/guides/storage/#azure-blob-storage) in the LanceDB documentation, along with the following video:
@@ -47,6 +57,9 @@
 
   - The URI for the target Google Cloud Storage bucket and any target folder path within that bucket. Use the format `gs://<bucket-name>[/<folder-name>]`.
   - The name of the target [LanceDB table](https://lancedb.github.io/lancedb/guides/storage/#object-stores) within the Google Cloud Storage bucket.
+  
+    <LanceDBRecordID />
+
   - A single-line string that contains the contents of the downloaded service account key file for the Google Cloud service account that has access to the 
     Google Cloud Storage bucket.
 
