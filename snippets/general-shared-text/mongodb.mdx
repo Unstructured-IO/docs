@@ -11,6 +11,8 @@ allowfullscreen
 ></iframe>
 
 import AllowIPAddressRanges from '/snippets/general-shared-text/ip-address-ranges.mdx';
+import MongoDBRecordID from '/snippets/general-shared-text/mongodb-record-id.mdx';
+
 
 - A MongoDB Atlas account. [Create an account](https://www.mongodb.com/cloud/atlas/register).
 - A MongoDB Atlas cluster. [Create a cluster](https://www.mongodb.com/docs/atlas/tutorial/deploy-free-tier-cluster).
@@ -22,6 +24,9 @@ import AllowIPAddressRanges from '/snippets/general-shared-text/ip-address-range
 - The cluster must have at least one database. [Create a database](https://www.mongodb.com/docs/compass/current/databases/#create-a-database).
 - The database must have at least one user, and that user must have sufficient access to the database. [Create a database user](https://www.mongodb.com/docs/atlas/security-add-mongodb-users/#add-database-users). [Give the user database access](https://www.mongodb.com/docs/manual/core/authorization/).
 - The database must have at least one collection. [Create a collection](https://www.mongodb.com/docs/compass/current/collections/#create-a-collection).
+
+  <MongoDBRecordID />
+
 - The connection string for the cluster. For MongoDB Atlas, this connection string must include the protocol, username, password, host, and cluster name. For example:
 
   ```text
