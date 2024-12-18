@@ -1,0 +1,20 @@
+```bash REST (Change)
+curl --request 'PUT' --location \
+"$UNSTRUCTURED_API_URL/sources/<connector-id>" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header 'content-type: application/json' \
+--data \
+'{
+    "name": "<name>",
+    "type": "confluence",
+    "config": {
+        "url": "<url>",
+        "user_email": "<user-email>",
+        "api_token": "<api-token>",
+        "max_num_of_spaces": <max-num-of-spaces>,
+        "max_num_of_docs_from_each_space": <max-num-of-docs-from-each-space>,
+        "spaces": ["<space-name>", "<space-name>"]
+    }
+}'
+```

@@ -1,0 +1,21 @@
+```bash REST (Change)
+curl --request 'PUT' --location \
+"$UNSTRUCTURED_API_URL/sources/<connector-id>" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header 'content-type: application/json' \
+--data \
+'{
+    "type": "outlook",
+    "name": "<name>",
+    "config": {
+        "client_id": "<client-id>",
+        "authority_url": "<authority-url>",
+        "tenant": "<tenant>",
+        "client_cred": "<client-cred>",
+        "user_email": "<user-email>",
+        "outlook_folders": ["<folder-name>","<folder-name>"],
+        "recursive": <true|false>
+    }
+}'
+```

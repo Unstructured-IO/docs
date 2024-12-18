@@ -1,0 +1,14 @@
+```bash REST (Create)
+curl --request 'POST' --location \
+"$UNSTRUCTURED_API_URL/destinations" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header 'content-type: application/json' \
+--data \
+'{
+    "type": "gcs",
+    "name": "<name>",
+    "remote_url": "<remote-url>",
+    "service_account_key": "<service-account-key>"
+}'
+```

@@ -1,0 +1,25 @@
+---
+title: Overview
+---
+
+To use the [Unstructured Platform API](/platform/api/overview) to manage source connectors, do the following:
+
+- To get a list of available source connectors, use the `GET` method to call the `/sources` endpoint. [Learn more](/platform/api/overview#list-source-connectors).
+- To get information about a source connector, use the `GET` method to call the `/sources/<connector-id>` endpoint. [Learn more](/platform/api/overview#get-a-source-connector).
+- To create a source connector, use the `POST` method to call the `/sources` endpoint. [Learn more](/platform/api/overview#create-a-source-connector).
+- To update a source connector, use the `PUT` method to call the `/sources/<connector-id>` endpoint. [Learn more](/platform/api/overview#update-a-source-connector).
+- To delete a source connector, use the `DELETE` method to call the `/sources/<connector-id>` endpoint. [Learn more](/platform/api/overview#delete-a-source-connector). 
+
+To create a source connector, you must also provide a request body that contains settings that are specific to that connector. 
+For the list of specific settings, see:
+
+- [Azure](/platform/api/sources/azure-blob-storage) (`source_type=azure`)
+- [Confluence](/platform/api/sources/confluence) (`source_type=confluence`)
+- [Databricks Volumes](/platform/api/sources/databricks-volumes) (`source_type=databricks_volumes`)
+- [Google Cloud Storage](/platform/api/sources/google-cloud) (`source_type=gcs`)
+- [MongoDB](/platform/api/sources/mongodb) (`source_type=mongodb`)
+- [OneDrive](/platform/api/sources/onedrive) (`source_type=onedrive`)
+- [Outlook](/platform/api/sources/outlook) (`source_type=outlook`)
+- [S3](/platform/api/sources/s3) (`source_type=s3`)
+- [SharePoint](/platform/api/sources/sharepoint) (`source_type=sharepoint`)
+
