@@ -6,9 +6,9 @@ curl --request 'PUT' --location \
 --header 'content-type: application/json' \
 --data \
 '{
-    "type": "gcs",
-    "name": "<name>",
-    "remote_url": "<remote-url>",
-    "service_account_key": "<service-account-key>"
+    "config": {
+        "remote_url": "<remote-url>",
+        "service_account_key": "<service-account-key>"
+    }
 }'
 ```

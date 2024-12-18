@@ -41,12 +41,12 @@ To use the Unstructured Platform API, you must have:
       Unstructured Platform API. See the next bullet for the Unstructured Platform API URL.
   </Warning>
 
-- **The Unstructured Platform API URL**, which is `http://platform.unstructuredapp.io/api/v1`
+- **The Unstructured Platform API URL**, which is `https://platform.unstructuredapp.io/api/v1`
 
   <Note>
       If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API URL 
       might be different. For API URL guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
-      If your API URL is different, be sure to substitute `http://platform.unstructuredapp.io/api/v1` for your 
+      If your API URL is different, be sure to substitute `https://platform.unstructuredapp.io/api/v1` for your 
       API URL throughout the following examples.
   </Note>
 
@@ -54,6 +54,11 @@ The Unstructured Platform API is offered as a set of Representational State Tran
 utilities, tools, programming languages, packages, and libraries. The following sections describe how to call the Unstructured Platform API with 
 `curl` and Postman. You can adapt this information as needed for your preferred programming languages and libraries, for example by using the 
 `requests` library with Python.
+
+<Tip>
+    You can also use the [Unstructured Platform API - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
+    that are available through `https://platform.unstructuredapp.io`.
+</Tip>
 
 <Note>
     The Unstructured Platform API is separate from [Unstructured Serverless API services](/api-reference/api-services/overview) and 
@@ -94,10 +99,15 @@ For general information about these objects, see:
 
 The following sections provide examples, showing the use of `curl` or Postman, for all of the supported REST endpoints.
 
+<Tip>
+    You can also use the [Unstructured Platform API - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
+    that are available through `https://platform.unstructuredapp.io`.
+</Tip>
+
 The following `curl` examples use environment variables, which you can set as follows:
 
 ```bash
-export UNSTRUCTURED_API_URL="http://platform.unstructuredapp.io/api/v1"
+export UNSTRUCTURED_API_URL="https://platform.unstructuredapp.io/api/v1"
 export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
 ```
 
@@ -112,8 +122,8 @@ The following Postman examples use variables, which you can set as follows:
 
    - **Variable**: `UNSTRUCTURED_API_URL`
    - **Type**: `default`
-   - **Initial value**: `http://platform.unstructuredapp.io/api/v1`
-   - **Current value**: `http://platform.unstructuredapp.io/api/v1`
+   - **Initial value**: `https://platform.unstructuredapp.io/api/v1`
+   - **Current value**: `https://platform.unstructuredapp.io/api/v1`
    <br/>
    - **Variable**: `UNSTRUCTURED_API_URL`
    - **Type**: `secret`
@@ -545,14 +555,13 @@ To list workflows, use the `GET` method to call the `/workflows` endpoint.
 
 To filter the list of workflows, use one or more of the following query parameters:
 
-- `source_connector_id=<connector-id>`, replacing `<connector-id>` with the source connector's unique ID. 
+- `source_id=<connector-id>`, replacing `<connector-id>` with the source connector's unique ID. 
   To get this ID, see [List source connectors](#list-source-connectors).
-- `destination_connector_id=<connector-id>`, replacing `<connector-id>` with the destination connector's unique ID. 
+- `destination_id=<connector-id>`, replacing `<connector-id>` with the destination connector's unique ID. 
   To get this ID, see [List destination connectors](#list-destination-connectors).
-- `workflow_type=<type>`, replacing `<type>` with one of the following workflow types: `advanced`, `basic`, or `platinum`.
 - `status=<status>`, replacing `<status>` with one of the following workflow statuses: `active` or `inactive`.
 
-You can specify multiple query parameters, for example `?source_connector_id=<connector-id>&status=<status>`.
+You can specify multiple query parameters, for example `?source_id=<connector-id>&status=<status>`.
 
 <AccordionGroup>
     <Accordion title="curl">
@@ -567,7 +576,7 @@ You can specify multiple query parameters, for example `?source_connector_id=<co
 
         ```bash
         curl --request 'GET' --location \
-        "$UNSTRUCTURED_API_URL/workflows?source_connector_id=<connector-id>" \
+        "$UNSTRUCTURED_API_URL/workflows?source_id=<connector-id>" \
         --header 'accept: application/json' \
         --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
         ```
@@ -576,16 +585,7 @@ You can specify multiple query parameters, for example `?source_connector_id=<co
 
         ```bash
         curl --request 'GET' --location \
-        "$UNSTRUCTURED_API_URL/workflows?destination_connector_id=<connector-id>" \
-        --header 'accept: application/json' \
-        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
-        ```
-
-        To filter the list by workflow type:
-
-        ```bash
-        curl --request 'GET' --location \
-        "$UNSTRUCTURED_API_URL/workflows?workflow_type=<type>" \
+        "$UNSTRUCTURED_API_URL/workflows?destination_id=<connector-id>" \
         --header 'accept: application/json' \
         --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
         ```
@@ -614,9 +614,8 @@ You can specify multiple query parameters, for example `?source_connector_id=<co
 
         4. To filter the list of workflows, on the **Params** tab, enter one or more of the following query parameter:
 
-           - By source connector ID: **Key**: `source_connector_id`, **Value**: `<connector-id>`
-           - By destination connector ID: **Key**: `destination_connector_id`, **Value**: `<connector-id>`
-           - By workflow type: **Key**: `workflow_type`, **Value**: `<type>`
+           - By source connector ID: **Key**: `source_id`, **Value**: `<connector-id>`
+           - By destination connector ID: **Key**: `destination_id`, **Value**: `<connector-id>`
            - By workflow status: **Key**: `status`, **Value**: `<status>`
 
         5. Click **Send**.

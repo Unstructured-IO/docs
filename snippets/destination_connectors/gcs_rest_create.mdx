@@ -8,7 +8,9 @@ curl --request 'POST' --location \
 '{
     "type": "gcs",
     "name": "<name>",
-    "remote_url": "<remote-url>",
-    "service_account_key": "<service-account-key>"
+    "config": {
+        "remote_url": "<remote-url>",
+        "service_account_key": "<service-account-key>"
+    }
 }'
 ```
