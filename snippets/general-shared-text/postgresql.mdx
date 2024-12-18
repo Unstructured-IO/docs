@@ -35,6 +35,7 @@ import AllowIPAddressRanges from '/snippets/general-shared-text/ip-address-range
     ```sql PostgreSQL
     CREATE TABLE elements (
         id UUID PRIMARY KEY,
+        record_id VARCHAR,
         element_id VARCHAR,
         text TEXT,
         embeddings DECIMAL [],
@@ -50,6 +51,7 @@ import AllowIPAddressRanges from '/snippets/general-shared-text/ip-address-range
     
     CREATE TABLE elements (
         id UUID PRIMARY KEY,
+        record_id VARCHAR,
         element_id VARCHAR,
         text TEXT,
         embeddings vector(384),
