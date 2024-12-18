@@ -1,10 +1,11 @@
 Fill in the following fields:
 
 - **Name** (_required_): A unique name for this connector.
-- **Connection string** (_required_): The connection string for the Couchbase cluster.
 - **Bucket** (_required_): The name of the bucket to connect to on the cluster. 
-- **Scope** (_required_): The name of the scope in the bucket.
-- **Collection** (_required_): The name of the collection in the scope.
-- **Batch Size**: The maximum number of documents per transmitted batch.
+- **Connection string** (_required_): The connection string for the Couchbase cluster.
+- **Scope**: The name of the scope in the bucket. The default is `_default` if not otherwise specified.
+- **Collection**: The name of the collection in the scope. The default is `_default` if not otherwise specified.
+- **Batch Size**: The maximum number of documents per transmitted batch. The default is `50` if not otherwise specified.
+- **Collection ID key** (source connector only): The name of the collection field that contains the document ID. The default is `id` if not otherwise specified 
 - **Username** (_required_): The cluster access name (username) that has access to the cluster.
 - **Password** (_required_): The password for the corresponding username.

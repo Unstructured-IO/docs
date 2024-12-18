@@ -38,6 +38,7 @@ You can adapt the following table schema example for your own needs:
 ```sql
 CREATE TABLE elements (
     id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    record_id TEXT,
     element_id TEXT,
     text TEXT,
     embeddings Vector(384),
