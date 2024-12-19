@@ -1,6 +1,6 @@
 ```bash REST (Change)
 curl --request 'PUT' --location \
-"$UNSTRUCTURED_API_URL/destinations/<connector-id>" \
+"$UNSTRUCTURED_API_URL/destinations" \
 --header 'accept: application/json' \
 --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
 --header 'content-type: application/json' \
@@ -13,7 +13,12 @@ curl --request 'PUT' --location \
         "username": "<username>",
         "password": "<password>",
         "table_name": "<table-name>",
-        "batch_size": <batch-size>
+        "batch_size": <batch-size>,
+        "id_column": "<id-column>",
+        "fields": [
+            "<field>",
+            "<field>"
+        ]
     }
 }'
 ```
