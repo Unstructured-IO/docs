@@ -1,0 +1,21 @@
+```bash REST (Create)
+curl --request 'POST' --location \
+"$UNSTRUCTURED_API_URL/sources" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header 'content-type: application/json' \
+--data \
+'{
+    "name": "<name>",
+    "type": "databricks_volumes",
+    "config": {
+        "host": "<host>",
+        "catalog": "<catalog>",
+        "schema": "<schema>",
+        "volume": "<volume>",
+        "volume_path": "<volume-path>",
+        "client_secret": "<client-secret>",
+        "client_id": "<client-id>"
+    }
+}'
+```

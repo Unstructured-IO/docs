@@ -16,3 +16,9 @@ These environment variables are required for the Couchbase Connector:
 - `CB_BUCKET` - The name of the bucket in the Couchbase server, represented by `--bucket` (CLI) or `bucket` (Python).
 - `CB_SCOPE` - The name of the scope in the bucket, represented by `--scope` (CLI) or `scope` (Python).
 - `CB_COLLECTION` - The name of the collection in the scope, represented by `--collection` (CLI) or `collection` (Python).
+
+Additional available settings include:
+
+- `--collection-id` (CLI) or `collection_id` in `CouchbaseDownloaderConfig` (Python) - Optional for the source connector. The  
+  unique key of the ID field in the collection. The default is `id` if not otherwise specified. 
+  [Learn more](https://docs.couchbase.com/server/current/learn/services-and-indexes/indexes/indexing-and-query-perf.html#introduction-document-keys).

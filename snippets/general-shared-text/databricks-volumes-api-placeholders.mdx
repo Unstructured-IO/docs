@@ -1,0 +1,21 @@
+- `<name>` (_required_) - A unique name for this connector.
+- `<host>` (_required_) - The Databricks workspace host URL.
+- `<client-id>` (_required_) - The application ID value for the Databricks-managed service principal that has access to the volume.
+- `<client-secret>` (_required_) - The associated OAuth secret value for the Databricks-managed service principal that has access to the volume.
+- `<catalog>` (_required_) - The name of the catalog to use.
+- `<schema>` - The name of the associated schema. If not specified, `default` is used.
+- `<volume>` (_required_) - The name of the associated volume.
+- `<volume-path>` - Any optional path to access within the volume.
+
+To learn how to create a Databricks-managed service principal, get its application ID, and generate an associated OAuth secret, 
+see the documentation for 
+[AWS](https://docs.databricks.com/dev-tools/auth/oauth-m2m.html), 
+[Azure](https://learn.microsoft.com/databricks/dev-tools/auth/oauth-m2m), 
+or [GCP](https://docs.gcp.databricks.com/dev-tools/auth/oauth-m2m.html).
+
+For Azure, only Databricks-managed service principals are supported. Microsoft Entra ID-managed service principals are not supported.
+
+To learn how to grant a Databricks-managed service principal access to a volume, see the documentation for 
+[AWS](https://docs.databricks.com/volumes/utility-commands.html#change-permissions-on-a-volume), 
+[Azure](https://learn.microsoft.com/azure/databricks/volumes/utility-commands#change-permissions-on-a-volume), 
+or [GCP](https://docs.gcp.databricks.com/volumes/utility-commands.html#change-permissions-on-a-volume).

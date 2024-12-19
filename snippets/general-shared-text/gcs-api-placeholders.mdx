@@ -1,0 +1,4 @@
+- `<name>` (_required_) - A unique name for this connector.
+- `<service-account-key>` (_required_) - The contents of a service account key file, expressed as a single string without line breaks, for a Google Cloud service account that has the required access permissions to the bucket.
+- `<remote-url>` (_required_) - The URI for the Google Cloud Storage bucket and any target folder path within the bucket. This URI takes the format `gs://<bucket-name>[/folder-name]`.
+- For `recursive` (source connector only), set to `true` to ingest data recursively from any subfolders, starting from the path specified by `<remote-url>`. The default is `false` if not otherwise specified.
