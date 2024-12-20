@@ -2,30 +2,35 @@
 title: Recommend
 ---
 
-<Note>
-    This feature works only with **Build it with me > Custom** and **Build it myself** [workflows](/platform/workflows).
-
-    This feature is _not_ supported for **Basic**, **Advanced**, and **Platinum** [workflows](/platform/workflows).
-</Note>
-
-The Unstructured Platform can offer you a recommendation for an ideal [embedding provider and model](/platform/embedding) 
-and [chunking strategy and settings](/platform/chunking) for your source files and non-file data documents and records. 
+The Unstructured Platform can offer you recommendations for an ideal [embedding provider and model](/platform/embedding) 
+and [chunking strategy and settings](/platform/chunking) for your source files. 
 These recommendations are optimized to work well across a variety of 
 vector stores, RAG applications, and model fine-tuning scenarios. 
 
-Unstructured's embedding provider and model and chunking strategy and settings recommendations are especially useful if you are not familiar with how the 
-various embedding providers and models and chunking strategies and settings can be applied for optimal results. If you are comfortable with embedding and chunking, 
-you can use these recommendations to help inform your current strategies. 
+Unstructured's embedding and chunking recommendations are especially useful if you are not familiar with how the 
+various embedding and chunking strategies and settings can be applied for optimal results. However, if you are already comfortable with embedding and chunking, 
+these recommendations can still be useful in helping inform your current strategies. 
 
-Unstructured makes its recommendations by using the related [source connector](/platform/sources/overview) to access, process, and analyze a 
-sampling of files or non-file data documents or records from the source location, depending on the connector's type. Unstructured then recommends 
-an embedding provider and model and chunking strategy and settings based on this analysis.
+Unstructured's recommendations can be implemented only in **Build it with me > Custom** and **Build it myself** [workflows](/platform/workflows).
+You cannot implement these recommendations in **Build it with me** > **Basic**, **Advanced**, and **Platinum** workflows, as those workflow types already have 
+preset embedding and chunking settings that cannot be changed.
+
+Unstructured makes its recommendations by using the specified [source connector](/platform/sources/overview) to access, process, and analyze a 
+sampling of files from the source location. Unstructured then recommends 
+an embedding provider and model and a chunking strategy and settings based on this analysis.
+
+Unstructured's embedding and chunking recommendations can be requested for the following file-based source connector types:
+
+- [Azure](/platform/sources/azure-blob-storage)
+- [Dropbox](/platform/sources/dropbox)
+- [Google Cloud Storage](/platform/sources/google-cloud)
+- [S3](/platform/sources/s3)
 
 import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx';
 
 <Note>
     Performing a recommendation will result in billing to your Unstructured account. To make its recommendation, Unstructured 
-    must process and analyze a sampling of up to 50 files or 50 non-file data documents or records from the source location, depending on the source connector's type. 
+    must process and analyze a sampling of up to 50 files from the source location. 
     Your Unstructured account is billed for the equivalent number of pages.
 
     <SharedPagesBilling />
@@ -33,40 +38,37 @@ import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx'
 
 ## Request a recommendation
 
-1. On the sidebar, click **Connectors**.
+1. In the Unstructured Platform, on the sidebar, click **Connectors**.
 2. Click **Sources**.
 3. Click the name of the source connector that you want to use. If you do not have a source connector, 
    [create one](/platform/sources/overview).
 4. If you're requesting a recomendation for the first time for this connector, click the **Run Recommender** button. 
 
    If you have previously requested a recommendation for this connector, you can make another request by clicking the **Run Again** button. 
-   This can be useful if you significantly changed the files or non-file data documents or records in the source location since you previously 
+   This is useful if you significantly changed the files in the source location since you previously 
    requested a recommendation. 
 
-   <Tip>
-       If the **Run Recommender** or **Run Again** button is not visible, or if they are visible but not enabled, there is likely something wrong 
-       with your source connector.
+   If the **Run Recommender** or **Run Again** button is not visible, or if they are visible but not enabled, check for the following:
        
-       To fix this, try clicking the edit (pencil) icon, 
-       make any necessary changes to the connector's previous settings, and then click **Save and Test**. 
-       Keep repeating this step as needed until a **Successful** icon appears. When this icon appears, the 
-       **Run Recommender** or **Run Again** button should be visible and enabled.
-   </Tip>
+   - The selected connector must be a file-based source connector. See the preceding list for supported file-based source connector types. 
+   - The selected connector must have successfully passed a connectivity test. If the connector's details pane does not show a 
+     **Successful** icon, then click the pencil icon, make any necessary changes to the connector's previous settings, 
+     and then click **Save and Test**. 
 
 5. Two **Scheduled** statuses appear, one for **Embed** and another for **Chunk**.
 6. After several minutes, the **Scheduled** statuses are replaced by **Running**.
 7. After several more minutes, the **Running** statuses are replaced by **Finished**.
-8. To view the recommendation, click **View**.
+8. After **Finished** appears, to view the recommendation, click **View**.
 
-The **Auto Recommender Results** pane shows Unstructured's recommended embedding provider and model and chunking strategy and settings for your source 
-files or non-file data documents or records, depending on the source connector's type.
+The **Auto Recommender Results** pane shows Unstructured's recommended embedding provider and model and chunking strategy and 
+settings for the source files that it analyzed.
 
 ## Implement an embed recommendation
 
 1. In the **Auto Recommender Results** pane, in the **Embed Recommendation** area, note the recommended embedding provider and model.
-2. To implement the recommendation, expand the **Next Steps** section and follow the on-screen instructions. 
+2. To implement the recommendation, expand the **Next Steps** section and follow the on-screen instructions for your target workflow. 
 
 ## Implement a chunking recommendation
     
 1. In the **Auto Recommender Results** pane, in the **Chunk Recommendation** area, note the recommended chunking strategy and settings.
-2. To implement the recommendation, expand the **Next Steps** section and follow the on-screen instructions. 
+2. To implement the recommendation, expand the **Next Steps** section and follow the on-screen instructions for your target workflow. 
