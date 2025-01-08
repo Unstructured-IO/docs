@@ -1,0 +1,62 @@
+The graph ouput of the Neo4j destination connector is represented in the following diagram:
+
+```mermaid
+graph BT
+    subgraph dn [Document Node]
+    D[Document]
+    end
+    style dn stroke-dasharray: 5
+    
+    subgraph en [Element Nodes]
+    UE1[UnstructuredElement]
+    UE2[UnstructuredElement]
+    UE3[UnstructuredElement]
+    UE4[UnstructuredElement]
+    UE5[UnstructuredElement]
+    UE6[UnstructuredElement]
+    end
+    style en stroke-dasharray: 5
+    
+    UE1 -->|PART_OF_DOCUMENT| D
+    UE2 -->|PART_OF_DOCUMENT| D
+    UE3 -->|PART_OF_DOCUMENT| D
+    UE4 -->|PART_OF_DOCUMENT| D
+    UE5 -->|PART_OF_DOCUMENT| D
+    UE6 -->|PART_OF_DOCUMENT| D
+
+    subgraph cn [Chunk Nodes]
+    C1[Chunk]
+    C2[Chunk]
+    C3[Chunk]
+    C4[Chunk]
+    end
+    style cn stroke-dasharray: 5
+    
+    C1 -->|NEXT_CHUNK| C2
+    C2 -->|NEXT_CHUNK| C3
+    C3 -->|NEXT_CHUNK| C4
+
+    C1 -->|PART_OF_DOCUMENT| D
+    C2 -->|PART_OF_DOCUMENT| D
+    C3 -->|PART_OF_DOCUMENT| D
+    C4 -->|PART_OF_DOCUMENT| D
+
+    UE1 -.->|PART_OF_CHUNK| C1
+    UE2 -.->|PART_OF_CHUNK| C1
+    UE3 -.->|PART_OF_CHUNK| C2
+    UE4 -.->|PART_OF_CHUNK| C3
+    UE5 -.->|PART_OF_CHUNK| C4
+    UE6 -.->|PART_OF_CHUNK| C4
+```
+
+In the preceding diagram:
+
+- The `Document` node represents the source file.
+- The `UnstructuredElement` nodes represent the source file's Unstructured `Element` objects, before chunking.
+- The `Chunk` nodes represent the source file's Unstructured `Element` objects, after chunking.
+- Each `UnstructuredElement` node has a `PART_OF_DOCUMENT` relationship with the `Document` node.
+- Each `Chunk` node also has a `PART_OF_DOCUMENT` relationship with the `Document` node.
+- Each `UnstructuredElement` node has a `PART_OF_CHUNK` relationship with a `Chunk` element.
+- Each `Chunk` node, except for the "last" `Chunk` node, has a `NEXT_CHUNK` relationship with its "next" `Chunk` node.
+
+Learn more about [document elements](/platform/document-elements) and [chunking](/platform/chunking).
