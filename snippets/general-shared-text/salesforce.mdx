@@ -37,9 +37,22 @@
      - **API Name** (can be the same as **Connected App Name**, but do not use spaces or punctuation)
      - **Contact Email**
      - Check **Enable OAuth Settings**.
-     - For **Callback URL**, entering `http://localhost` is okay if you won't be using this connected app for other special authentication scenarios.
+     - For **Callback URL**, entering `https://localhost` is okay if you won't be using this connected app for other special authentication scenarios.
      - Check **Use Digital Signatures**. Click **Choose File**, and browse to and select your certificate (`.crt`) file.
-     - For **Selected OAuth Scopes**, add **Manage user data via APIs (api)** (recommended) or **Full access (full)**.
+     - For **Selected OAuth Scopes**, add the following:
+     
+       - **Manage user data via APIs (api)** and **Perform requests on your behalf at any time (refresh_token, offline_access)** (recommended); or 
+       - **Full access (full)**
+    
+     - Uncheck **Require Proof Key for Code Exchange (PKCE) Extension for Supported Authorization Flows**.
+     - Uncheck **Require Secret for Web Server Flow**.
+     - Uncheck **Require Secret for Refresh Token Flow**.
+     - Check **Enable Authorization Code and Credentials Flow**.
+
+  7. On the connected app's details page, click **Manage**, click **Edit Policies**, set the following under **OAuth Policies**, and then click **Save**:
+
+     - Set **Permitted Users** to **All users may self-authorize**.
+     - Set **IP Relaxation** to **Relax IP restrictions**.
 
 - The OAuth consumer key (client ID) for the Salesforce connected app. 
   
@@ -52,6 +65,14 @@
   5. Click **Manage Consumer Details**.
   6. Complete the on-screen security verification.
   7. Note the **Consumer Key** value.
+
+- You must use your Salesforce account to do a one-time approval of the Salesforce connected app by using its consumer key and callback URL. To do this, while you are logged in to your 
+  Salesforce account, browse to the following URL, replacing `<client-id>` with the consumer key. This URL assumes that the callback URL 
+  is `https://localhost`:
+
+  ```
+  https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=<client-id>&redirect_uri=https%3A%2F%2Flocalhost
+  ```
 
 - To ensure maximum compatibility across Unstructured service offerings, you should give the private key information to Unstructured as 
   a single-line string that contains the contents of the private key (`.pem`) file (_not_ the private key file itself).  
