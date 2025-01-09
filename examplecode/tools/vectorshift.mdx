@@ -7,9 +7,11 @@ to build AI search engines, assistants, chatbots, and automations.
 
 VectorShift's platform allows you to design, prototype, build, deploy, 
 and manage generative AI workflows and automation across two interfaces: no-code and code SDK. 
-This hands-on demonstration uses the no-code interface walks you through creating a VectorShift project that enables you to use 
-GPT-4o-mini to chat in real time with a PDF document that is processed by Unstructured and has its processed data stored in a 
+This hands-on demonstration uses the no-code interface to walk you through creating a VectorShift pipeline project. This project 
+enables you to use GPT-4o-mini to chat in real time with a PDF document that is processed by Unstructured and has its processed data stored in a 
 [Pinecone](https://www.pinecone.io/) vector database. 
+
+This video provides a general introduction to VectorShift pipeline projects:
 
 <iframe
 width="560"
@@ -22,6 +24,16 @@ allowfullscreen
 ></iframe>
 
 ## Prerequisites
+
+<iframe
+width="560"
+height="315"
+src="https://www.youtube.com/embed/Li0yhaeguYQ"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
 
 import PineconeShared from '/snippets/general-shared-text/pinecone.mdx';
 
@@ -56,7 +68,7 @@ Also:
 
     </Step>
     <Step title="Add the Input node">
-        In this step, you add a node to the pipeline. This node takes user-supplied chat messages and sends them as input to Pinecone for contextual searching.
+        In this step, you add a node to the pipeline. This node takes user-supplied chat messages and sends them as input to Pinecone, and as input to a text-based LLM, for contextual searching.
 
         In the top pipeline node chooser bar, on the **General** tab, click **Input**.
 
