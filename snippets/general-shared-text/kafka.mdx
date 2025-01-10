@@ -1,5 +1,35 @@
-- A Kafka cluster, such as ones provided by [Confluent Cloud](https://www.confluent.io/confluent-cloud), [Amazon Managed Streaming for Apache Kafka (Amazon MSK)](https://aws.amazon.com/msk/), or [Google Cloud Managed Service for Apache Kafka](https://cloud.google.com/products/managed-service-for-apache-kafka).
-- The hostname of the bootstrap Kafka cluster to connect to.  
-- The port number of the cluster.
+- A Kafka cluster, such as ones offered by the following providers:
+
+  - [Confluent Cloud](https://www.confluent.io/confluent-cloud) 
+    ([Create a cluster](https://docs.confluent.io/cloud/current/clusters/create-cluster.html#create-ak-clusters).)
+  - [Amazon Managed Streaming for Apache Kafka (Amazon MSK)](https://aws.amazon.com/msk/) 
+    ([Create an Amazon MSK Provisioned cluster](https://docs.aws.amazon.com/msk/latest/developerguide/getting-started.html), or 
+    [create an Amazon MSK Serverless cluster](https://docs.aws.amazon.com/msk/latest/developerguide/serverless-getting-started.html).)
+  - [Apache Kafka in Azure HDInsight] 
+    ([Create an Apache Kafka cluster in Azure HDInsight](https://learn.microsoft.com/azure/hdinsight/kafka/apache-kafka-get-started).)
+  - [Google Cloud Managed Service for Apache Kafka](https://cloud.google.com/products/managed-service-for-apache-kafka) 
+    ([Create a cluster](https://cloud.google.com/managed-service-for-apache-kafka/docs/create-cluster).)
+
+- The hostname and port number of the bootstrap Kafka cluster to connect to.
+
+  - For Confuent Cloud, [get the hostname and port number](https://docs.confluent.io/cloud/current/clusters/create-cluster.html#view-a-ak-cluster).
+  - For Amazon MSK, [get the hostname and port number](https://docs.aws.amazon.com/msk/latest/developerguide/list-clusters-console.html).
+  - For Apache Kafka in Azure HDInsight, [get the hostname and port number](https://learn.microsoft.com/azure/hdinsight/find-host-name).
+  - For Google Cloud Managed Service for Apache Kafka, [get the hostname and port number](https://cloud.google.com/managed-service-for-apache-kafka/docs/view-cluster).
+
 - The name of the topic to read messages from and write messages to on the cluster. 
+
+  - For Confluent Cloud, [create a topic](https://docs.confluent.io/cloud/current/client-apps/topics/index.html#create-topics) and 
+    [access available topics](https://docs.confluent.io/cloud/current/client-apps/topics/index.html#create-topics).
+  - For Amazon MSK, [create a topic on an Amazon MSK Provisioned cluster](https://docs.aws.amazon.com/msk/latest/developerguide/create-topic.html), or 
+    [create a topic on an Amazon MSK Serverless cluster](https://docs.aws.amazon.com/msk/latest/developerguide/msk-serverless-create-topic.html).
+  - For Apache Kafka in Azure HDInsight, [create a topic and access available topics](https://learn.microsoft.com/azure/hdinsight/kafka/apache-kafka-get-started#manage-apache-kafka-topics).
+  - For Google Cloud Managed Service for Apache Kafka, [create a topic](https://cloud.google.com/managed-service-for-apache-kafka/docs/create-topic) and 
+    [access available topics](https://cloud.google.com/managed-service-for-apache-kafka/docs/list-topics).
+
 - If you use Kafka API keys and secrets for authentication, the key and secret values.
+
+  - For Confluent Cloud, [create an API key and secret](https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/manage-api-keys.html#add-an-api-key).
+  - For Amazon MSK, [create an API key and secret]().
+  - For Apache Kafka in Azure HDInsight, [create an API key and secret]().
+  - For Google Cloud Managed Service for Apache Kafka, [create an API key and secret](). 
