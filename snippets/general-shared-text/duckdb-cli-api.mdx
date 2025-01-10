@@ -1,0 +1,15 @@
+The DuckDB connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[duckdb]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `DUCKDB_DATABASE` - The path to the target DuckDB persistent database file with the extension `.db` or `.duckdb`, represented by `--database` (CLI) or `database` (Python).
+- `DUCKDB_DB_SCHEMA` - The name of the target schema in the database, represented by `--db-schema` (CLI) or `db_schema` (Python).
+- `DUCKDB_TABLE` - The name of the target table in the schema, represented by `--table` (CLI) or `table` (Python).

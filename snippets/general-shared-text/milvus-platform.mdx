@@ -1,8 +1,27 @@
-Fill in the following fields:
+Fill in the following fields for Milvus on IBM watsonx.data:
+
+- **Name** (_required_): A unique name for this connector.
+- **GRPC Host** (_required_): The GRPC host name for the Milvus instance.
+- **GRPC Port**: The GRPC port number for the instance.
+- **DB Name**: The name of the database in the instance. The default is `default` if not otherwise specified.
+- **Collection Name** (_required_): The name of the collection in the database. 
+- **Username**: The username to access the Milvus instance. The default is `ibmlhapikey` if not otherwise specified.
+- **API Key** (_required_): The IBM Cloud user API key.
+
+Fill in the following fields for Milvus on Zilliz Cloud:
 
 - **Name** (_required_): A unique name for this connector.
 - **URI** (_required_): The URI of the Milvus instance, for example: `https://12345.serverless.gcp-us-west1.cloud.zilliz.com`.
-- **DB Name** (_required_): The name of the database in the instance.
+- **DB Name**: The name of the database in the instance. The default is `default` if not otherwise specified.
+- **Collection Name** (_required_): The name of the collection in the database. 
+- **Username** (_required_): The username to access the Milvus instance.
+- **Password** (_required_): The password corresponding to the username to access the instance.
+
+Fill in the following fields for other Milvus deployments:
+
+- **Name** (_required_): A unique name for this connector.
+- **URI** (_required_): The URI of the Milvus instance, for example: `https://12345.serverless.gcp-us-west1.cloud.zilliz.com`.
+- **DB Name**: The name of the database in the instance. The default is `default` if not otherwise specified.
 - **Collection Name** (_required_): The name of the collection in the database. 
 - **Username** (_required_): The username to access the Milvus instance.
 - **Password** (_required_): The password corresponding to the username to access the instance.

@@ -1,0 +1,157 @@
+---
+title: VectorShift
+---
+
+[VectorShift](https://vectorshift.ai/) is an integrated framework of no-code, low-code, and out of the box generative AI solutions 
+to build AI search engines, assistants, chatbots, and automations. 
+
+VectorShift's platform allows you to design, prototype, build, deploy, 
+and manage generative AI workflows and automation across two interfaces: no-code and code SDK. 
+This hands-on demonstration uses the no-code interface to walk you through creating a VectorShift pipeline project. This project 
+enables you to use GPT-4o-mini to chat in real time with a PDF document that is processed by Unstructured and has its processed data stored in a 
+[Pinecone](https://www.pinecone.io/) vector database. 
+
+This video provides a general introduction to VectorShift pipeline projects:
+
+<iframe
+width="560"
+height="315"
+src="https://www.youtube.com/embed/_ToXPwOW2bY"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
+
+## Prerequisites
+
+<iframe
+width="560"
+height="315"
+src="https://www.youtube.com/embed/Li0yhaeguYQ"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
+
+import PineconeShared from '/snippets/general-shared-text/pinecone.mdx';
+
+<PineconeShared />
+
+Also:
+
+- [Sign up for an OpenAI account](https://platform.openai.com/signup), and [get your OpenAI API key](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key).
+- [Sign up for a VectorShift Starter account](https://app.vectorshift.ai/api/signup).
+- [Sign up for an Unstructured Platform account through the For Developers page](/platform/quickstart).
+
+## Create and run the demonstration project
+
+<Steps>
+    <Step title="Get source data into Pinecone">
+        Although you can use any [supported file type](/platform/supported-file-types) or data in any 
+        [supported source type](/platform/sources/overview) for the input into Pinecone, this demonstration uses [the text of the United States Constitution in PDF format](https://constitutioncenter.org/media/files/constitution.pdf). 
+
+        1. Sign in to your Unstructured Platform account.
+        2. [Create a source connector](/platform/sources/overview), if you do not already have one, to connect Unstructured to the source location where the PDF file is stored. 
+        3. [Create a Pinecone destination connector](/platform/destinations/pinecone), if you do not already have one, to connect Unstructured to your Pinecone serverless index.
+        4. [Create a workflow](/platform/workflows#create-a-workflow) that references this source connector and destination connector.
+        5. [Run the workflow](/platform/workflows#edit-delete-or-run-a-workflow). 
+    </Step>
+    <Step title="Create the VectorShift project">
+        1. Sign in to your VectorShift account dashboard.
+        2. On the sidebar, click **Pipelines**.
+        3. Click **New**.
+        4. Click **Create Pipeline from Scratch**.
+
+        ![Create the VectorShift project](/img/vectorshift/CreateProject.png)
+
+    </Step>
+    <Step title="Add the Input node">
+        In this step, you add a node to the pipeline. This node takes user-supplied chat messages and sends them as input to Pinecone, and as input to a text-based LLM, for contextual searching.
+
+        In the top pipeline node chooser bar, on the **General** tab, click **Input**.
+
+        ![Adding the Input node](/img/vectorshift/InputComponent.png)
+
+    </Step>
+    <Step title="Add the Pinecone node">
+        In this step, you add a node that connects to the Pinecone serverless index.
+
+        1. In the top pipeline node chooser bar, on the **Integrations** tab, click **Pinecone**.
+        2. In the **Pinecone** node, for **Embedding Model**, select **openai/text-embedding-3-large**.
+        3. Click **Connected Account**.
+        4. In the **Select Pinecone Account** dialog, click **Connect New**.
+        5. Enter the **API Key** and **Region** for your Pinecone serverless index, and then click **Save**.
+        6. For **Index**, selet the name of your Pinecone serverless index.
+        7. Connect the **input_1** output from the **Input** node to the **query** input in the **Pinecone** node.
+
+           To make the connection, click and hold your mouse pointer inside of the circle next to **input_1** in the **Input** node. 
+           While holding your mouse pointer, drag it over into the circle next to **query** in the **Pinecone** node. Then 
+           release your mouse pointer. A line appears between these two circles.
+
+        ![Adding the Pinecone node](/img/vectorshift/PineconeComponent.png)
+
+    </Step>
+    <Step title="Add the OpenAI LLM node">
+        In this step, you add a node that builds a prompt and then sends it to a text-based LLM.
+
+        1. In the top pipeline node chooser bar, on the **LLMs** tab, click **OpenAI**.
+        2. In the **OpenAI LLM** node, for **System**, enter the following text:
+
+           ```
+           Answer the Question based on Context. Use Memory when relevant.
+           ```
+
+        3. For **Prompt**, enter the following text:
+
+           ```
+           Question: {{Question}}
+           Context: {{Context}}
+           Memory: {{Memory}}
+           ```
+
+        4. For **Model**, select **gpt-4o-mini**.
+        5. Check the box titled **Use Personal API Key**.
+        6. For **API Key**, enter your OpenAI API key.
+        7. Connect the **input_1** output from the **Input** node to the **Question** input in the **OpenAI LLM** node.
+        8. Connect the **output** output from the **Pinecone** node to the **Context** input in the **OpenAI LLM** node.
+
+        ![Adding the OpenAI LLM node](/img/vectorshift/OpenAILLMComponent.png)
+        
+    </Step>
+    <Step title="Add the Chat Memory node">
+        In this step, you add a node that adds chat memory to the session.
+
+        1. In the top pipeline node chooser bar, on the **Chat** tab, click **Chat Memory**.
+        2. Connect the output from the **Chat Memory** node to the **Memory** input in the **OpenAI LLM** node.
+
+        ![Adding the Chat Memory node](/img/vectorshift/ChatMemoryComponent.png)
+        
+    </Step>
+        <Step title="Add the Output node">
+        In this step, you add a node that displays the chat output.
+
+        1. In the top pipeline node chooser bar, on the **General** tab, click **Output**.
+        2. Connect the **response** output from the **OpenAI LLM** node to the input in the **Output** node.
+
+        ![Adding the Output node](/img/vectorshift/OutputComponent.png)
+        
+    </Step>
+    <Step title="Run the project">
+        1. In the upper corner of the pipeline designer, click the play (**Run Pipeline**) button.
+
+           ![Running the pipeline](/img/vectorshift/RunPipeline.png)
+
+        2. In the chat pane, on the **Chatbot** tab, enter a question into the **Message Assistant** box, for example, `What rights does the fifth amendment guarantee?` Then press the send button.
+
+           ![Chatbot results](/img/vectorshift/ChatbotResults.png)
+
+        3. Wait until the answer appears.
+        4. Ask as many additional questions as you want to. 
+    </Step>
+</Steps>
+
+## Learn more
+
+See the [VectorShift documentation](https://docs.vectorshift.ai/).

@@ -1,0 +1,24 @@
+---
+title: MotherDuck
+---
+
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentMotherDuck from '/snippets/dc-shared-text/motherduck-cli-api.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedContentMotherDuck/>
+<SharedAPIKeyURL/>
+
+Now call the Unstructured CLI or Python SDK. The source connector can be any of the ones supported. This example uses the local source connector:
+
+import MotherDuckAPISh from '/snippets/destination_connectors/motherduck.sh.mdx';
+import MotherDuckAPIPyV2 from '/snippets/destination_connectors/motherduck.v2.py.mdx';
+
+<CodeGroup>
+  <MotherDuckAPISh />
+  <MotherDuckAPIPyV2 />
+</CodeGroup>
+

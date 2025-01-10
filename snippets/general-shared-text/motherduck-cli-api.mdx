@@ -1,0 +1,16 @@
+The MotherDuck connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[duckdb]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `MOTHERDUCK_MD_TOKEN` - The access token for the target MotherDuck account, represented by `--md-token` (CLI) or `md_token` (Python).
+- `MOTHERDUCK_DATABASE` - The name of the target database in the account, represented by `--database` (CLI) or `database` (Python).
+- `MOTHERDUCK_DB_SCHEMA` - The name of the target schema in the database, represented by `--db-schema` (CLI) or `db_schema` (Python).
+- `MOTHERDUCK_TABLE` - The name of the target table in the schema, represented by `--table` (CLI) or `table` (Python).
