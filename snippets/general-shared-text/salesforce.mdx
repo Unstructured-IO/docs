@@ -3,10 +3,10 @@
 
   1. Log in to your Salesforce account.
   2. In the top navigation bar, click the **Quick Settings** (gear) icon, and then click **Open Advanced Setup**.
-  3. In the search box, search for and go to **Users**.
-  4. Note the **Name** value (_not_ the **User Name** value) for your user.
+  3. In the **Home** tab, under **Administration**, expand **Users**, and then click **Users**.
+  4. Note the **User Name** value (_not_ the **Name** value) for your user.
 
-- The Salesforce categories (objects) that you want to access, specified as a comma-separated list. 
+- The names of the Salesforce categories (objects) that you want to access, specified as a comma-separated list. 
   Available categories include `Account`, `Campaign`, `Case`, `EmailMessage`, and `Lead`.
 - A Salesforce connected app in your Salesforce account.
 
@@ -22,13 +22,13 @@
   openssl x509 -req -in MyCertificateSigningRequest.csr -signkey MyPrivateKey.pem -out MyCertificate.crt -days 365
   ```
 
-  Of course, you can change these example filenames as needed. Be sure to store these generated files in a secure location.
+  Of course, you can change these preceding example filenames as needed. Be sure to store these generated files in a secure location.
 
   To create a Salesforce connected app, do the following:
 
   1. Log in to your Salesforce account.
   2. In the top navigation bar, click the **Quick Settings** (gear) icon, and then click **Open Advanced Setup**.
-  3. In the search box, search for and go to **App Manager**.
+  3. In the **Home** tab, under **Platform Tools**, expand **Apps**, and then click **App Manager**.
   4. Click **New Connected App**.
   5. With **Create a Connected App** selected, click **Continue**.
   6. At a minimum, fill in the following, and then click **Save**:
@@ -36,23 +36,24 @@
      - **Connected App Name**
      - **API Name** (can be the same as **Connected App Name**, but do not use spaces or punctuation)
      - **Contact Email**
-     - Check **Enable OAuth Settings**.
+     - Under **API (Enable OAuth Settings)**, check **Enable OAuth Settings**.
      - For **Callback URL**, entering `https://localhost` is okay if you won't be using this connected app for other special authentication scenarios.
-     - Check **Use Digital Signatures**. Click **Choose File**, and browse to and select your certificate (`.crt`) file.
-     - For **Selected OAuth Scopes**, add the following:
+     - Check **Use digital signatures**, click **Choose File**, and browse to and select your certificate (`.crt`) file.
+     - For **Selected OAuth Scopes**, move the following entries from the **Available OAuth Scopes** list to the **Selected OAuth Scopes** list:
      
-       - **Manage user data via APIs (api)** and **Perform requests on your behalf at any time (refresh_token, offline_access)** (recommended); or 
-       - **Full access (full)**
+       - **Manage user data via APIs (api)**
+       - **Perform requests on your behalf at any time (refresh_token, offline_access)**
     
      - Uncheck **Require Proof Key for Code Exchange (PKCE) Extension for Supported Authorization Flows**.
-     - Uncheck **Require Secret for Web Server Flow**.
-     - Uncheck **Require Secret for Refresh Token Flow**.
+     - Leave **Require Secret for Web Server Flow** checked.
+     - Leave **Require Secret for Refresh Token Flow** checked.
      - Check **Enable Authorization Code and Credentials Flow**.
 
   7. On the connected app's details page, click **Manage**, click **Edit Policies**, set the following under **OAuth Policies**, and then click **Save**:
 
      - Set **Permitted Users** to **All users may self-authorize**.
      - Set **IP Relaxation** to **Relax IP restrictions**.
+     - Set **Refresh Token Policy** to **Refresh token is valid until revoked**.
 
 - The OAuth consumer key (client ID) for the Salesforce connected app. 
   
@@ -60,45 +61,33 @@
 
   1. Log in to your Salesforce account.
   2. In the top navigation bar, click the **Quick Settings** (gear) icon, and then click **Open Advanced Setup**.
-  3. In the search box, search for and go to **App Manager**.
+  3. In the **Home** tab, under **Platform Tools**, expand **Apps**, and then click **App Manager**.
   4. In the list of apps, click the arrow next to the target connected app, and click **View**.
   5. Click **Manage Consumer Details**.
   6. Complete the on-screen security verification.
   7. Note the **Consumer Key** value.
 
 - You must use your Salesforce account to do a one-time approval of the Salesforce connected app by using its consumer key and callback URL. To do this, while you are logged in to your 
-  Salesforce account, browse to the following URL, replacing `<client-id>` with the consumer key. This URL assumes that the callback URL 
+  Salesforce account, browse to the following URL, replacing `<client-id>` with the consumer key value. This URL assumes that the callback URL 
   is `https://localhost`:
 
   ```
   https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=<client-id>&redirect_uri=https%3A%2F%2Flocalhost
   ```
 
-- To ensure maximum compatibility across Unstructured service offerings, you should give the private key information to Unstructured as 
-  a single-line string that contains the contents of the private key (`.pem`) file (_not_ the private key file itself).  
-  To print this single-line string without line breaks, suitable for copying, you can run one of the following commands from your Terminal or Command Prompt. 
+- To ensure maximum compatibility across Unstructured service offerings, you should give the contents of the private key (`.pem`) file to Unstructured as 
+  a string that contains the contents of the file (_not_ the private key file itself).  
+  To print this string suitable for copying, you can run one of the following commands from your Terminal or Command Prompt. 
   In this command, replace `<path-to-private-key-file>` with the path to the private key file.
 
   - For macOS or Linux: 
 
     ```bash
-    awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' <path-to-private-key-file>
+    cat <path-to-private-key-file>
     ```
-
-    This command does the following:
-
-    1. `NF` - Checks to make sure the private key file (`<path-to-private-key-file>`) is not empty. If the file is not empty, then the command continues. 
-    2. `sub(/\r/, "")` - Replaces all carriage return characters (`\r`) with empty strings.
-    3. `printf "%s\\n",$0` - Prints the resulting entire line, followed by a newline character, suitable for copying.
 
   - For Windows:
 
     ```text
-    (Get-Content -Path "<path-to-private-key-file>" -Raw).Replace("`r`n", "\n")
+    Get-Content <path-to-private-key-file>
     ```
-
-    This command does the following:
-
-    1. `Get-Content -Path "<path-to-private-key-file>" -Raw` - Reads the entire contents of the private key file as a single string.
-    2. `Replace("rn", "\n")` - Replaces all Windows-style line endings (`\r\n`) with Unix-style line endings (`\n`).
-    3. The modified string is printed, suitable for copying.
