@@ -1,104 +1,103 @@
-- A Salesforce account. [Create an account](https://developer.salesforce.com/signup).
-- Your Salesforce username.
-- The Salesforce categories (objects) that you want to access, specified as a comma-separated list. Available categories include `Account`, `Campaign`, `Case`, `EmailMessage`, and `Lead`.
-- The OAuth consumer key (client ID) for the target Salesforce connected app in the account. 
-- The contents of the private key (PEM) for the certificate that is associated for the Salesforce connected app. The PEM must be expressed as a 
-  single-line string without line breaks. To print this single-line string without line breaks, suitable for copying, 
-  you can run one of the following commands from your Terminal or Command Prompt. In this command, replace 
-  `<path-to-private-key-file>` with the path to the `.pem` file.
+<iframe
+width="560"
+height="315"
+src="https://www.youtube.com/embed/5a-nh4t78V8"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
 
-  For macOS or Linux:
+- A [Salesforce account](https://developer.salesforce.com/signup).
+- Your Salesforce username. To get this username, do the following:
 
-- The Salesforce categories (objects) that you want to access, specified as a comma-separated list. Available categories include `Account`, `Campaign`, `Case`, `EmailMessage`, and `Lead`.
-- The OAuth consumer key (client ID) for the Salesforce connected app.
+  1. Log in to your Salesforce account.
+  2. In the top navigation bar, click the **Quick Settings** (gear) icon, and then click **Open Advanced Setup**.
+  3. In the **Home** tab, under **Administration**, expand **Users**, and then click **Users**.
+  4. Note the **User Name** value (_not_ the **Name** value) for your user.
 
-  1. If you do not already have a connected app, you will first need a certificate for the connected app that you will create later. If you do not already have a certificate, see 
-     [Certificates and Keys](https://help.salesforce.com/s/articleView?id=sf.security_keys_about.htm&language=en_US&type=5), for 
-     example to [generate a self-signed certificate](https://help.salesforce.com/s/articleView?id=sf.security_keys_creating.htm&type=5) and to download the 
-     resulting `.crt` file.
-  2. To [create the connected app](https://help.salesforce.com/s/articleView?id=sf.connected_app_create.htm&type=5), follow the steps in 
-     [Configure Basic Connected App Settings](https://help.salesforce.com/s/articleView?id=sf.connected_app_create_basics.htm&type=5) and 
-     [Enable OAuth Settings for API Integration](https://help.salesforce.com/s/articleView?id=sf.connected_app_create_api_integration.htm&type=5) to create 
-     create and configure the app to use the JWT OAuth flow. The minimum fields to set for the app are:
+- The names of the Salesforce categories (objects) that you want to access, specified as a comma-separated list. 
+  Available categories include `Account`, `Campaign`, `Case`, `EmailMessage`, and `Lead`.
+- A Salesforce connected app in your Salesforce account.
 
-     - **Connected App Name**
-     - **API Name**
-     - **Contact Email**
-     - Check **Enable OAuth Settings**
-     - **Callback URL** - Can be set to `https://localhost` if you have no special requirements for additional authentication for this app outside of Unstructured.
-     - Check **Use digital signatures**, and 
-     - **Selected OAuth Scopes** - Select **Manage user data via APIs (api)** (recommended), or **Full access (full)**.
-  
-  3. [Get the consumer key (client ID)](https://help.salesforce.com/s/articleView?id=sf.connected_app_rotate_consumer_details.htm&type=5) for the app.
-  4. [Get the private key](https://help.salesforce.com/s/articleView?id=sf.task_create_a_certificate_and_private_key.htm&type=5) for the app. 
+  If you do not already have a Salesforce connected app, to create one, start by creating or getting the certificate (`.crt`) and private key (`.pem`) files 
+  that you will associate with the connected app. 
 
-- The private key (`.pem`) file for the certificate (`.crt`) file. To generate the private key file, you can use a utility such as `openssel`, as follows:
+  If you do not have the certificate and private key files, you can use the `openssl` utility on your local machine to create your own 
+  private key and self-signed certificate, if your organization allows, by running the following commands, one command at a time:
 
   ```bash
-  openssl x509 -in MyCertificate.crt -out MyCertificate.pem -outform PEM
+  openssl genrsa -out MyPrivateKey.pem -traditional
+  openssl req -new -key MyPrivateKey.pem -out MyCertificateSigningRequest.csr
+  openssl x509 -req -in MyCertificateSigningRequest.csr -signkey MyPrivateKey.pem -out MyCertificate.crt -days 365
   ```
 
-  To ensure maximum compatibility across Unstructured service offerings, you should give the private key information to Unstructured as 
-  a single-line string that contains the contents of the downloaded private key file (and not the prviate key file itself).  
-  To print this single-line string without line breaks, suitable for copying, you can run one of the following commands from your Terminal or Command Prompt. 
-  In this command, replace `<path-to-downloaded-key-file>` with the path to the private key file that you generated by following the preceding instructions.
+  Of course, you can change these preceding example filenames as needed. Be sure to store these generated files in a secure location.
+
+  To create a Salesforce connected app, do the following:
+
+  1. Log in to your Salesforce account.
+  2. In the top navigation bar, click the **Quick Settings** (gear) icon, and then click **Open Advanced Setup**.
+  3. In the **Home** tab, under **Platform Tools**, expand **Apps**, and then click **App Manager**.
+  4. Click **New Connected App**.
+  5. With **Create a Connected App** selected, click **Continue**.
+  6. At a minimum, fill in the following, and then click **Save**:
+
+     - **Connected App Name**
+     - **API Name** (can be the same as **Connected App Name**, but do not use spaces or punctuation)
+     - **Contact Email**
+     - Under **API (Enable OAuth Settings)**, check **Enable OAuth Settings**.
+     - For **Callback URL**, entering `https://localhost` is okay if you won't be using this connected app for other special authentication scenarios.
+     - Check **Use digital signatures**, click **Choose File**, and browse to and select your certificate (`.crt`) file.
+     - For **Selected OAuth Scopes**, move the following entries from the **Available OAuth Scopes** list to the **Selected OAuth Scopes** list:
+     
+       - **Manage user data via APIs (api)**
+       - **Perform requests on your behalf at any time (refresh_token, offline_access)**
+    
+     - Uncheck **Require Proof Key for Code Exchange (PKCE) Extension for Supported Authorization Flows**.
+     - Leave **Require Secret for Web Server Flow** checked.
+     - Leave **Require Secret for Refresh Token Flow** checked.
+     - Check **Enable Authorization Code and Credentials Flow**.
+
+  7. On the connected app's details page, click **Manage**, click **Edit Policies**, set the following under **OAuth Policies**, and then click **Save**:
+
+     - Set **Permitted Users** to **All users may self-authorize**.
+     - Set **IP Relaxation** to **Relax IP restrictions**.
+     - Set **Refresh Token Policy** to **Refresh token is valid until revoked**.
+
+- The OAuth consumer key (client ID) for the Salesforce connected app. 
+  
+  To get the Salesforce connected app's consumer key, do the following:
+
+  1. Log in to your Salesforce account.
+  2. In the top navigation bar, click the **Quick Settings** (gear) icon, and then click **Open Advanced Setup**.
+  3. In the **Home** tab, under **Platform Tools**, expand **Apps**, and then click **App Manager**.
+  4. In the list of apps, click the arrow next to the target connected app, and click **View**.
+  5. Click **Manage Consumer Details**.
+  6. Complete the on-screen security verification.
+  7. Note the **Consumer Key** value.
+
+- You must use your Salesforce account to do a one-time approval of the Salesforce connected app by using its consumer key and callback URL. To do this, while you are logged in to your 
+  Salesforce account, browse to the following URL, replacing `<client-id>` with the consumer key value. This URL assumes that the callback URL 
+  is `https://localhost`:
+
+  ```
+  https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=<client-id>&redirect_uri=https%3A%2F%2Flocalhost
+  ```
+
+- To ensure maximum compatibility across Unstructured service offerings, you should give the contents of the private key (`.pem`) file to Unstructured as 
+  a string that contains the contents of the file (_not_ the private key file itself).  
+  To print this string suitable for copying, you can run one of the following commands from your Terminal or Command Prompt. 
+  In this command, replace `<path-to-private-key-file>` with the path to the private key file.
 
   - For macOS or Linux: 
 
     ```bash
-    awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}' <path-to-private-key-file>
+    cat <path-to-private-key-file>
     ```
 
   - For Windows:
 
-
     ```text
-    (Get-Content -Path "<path-to-private-key-file>" -Raw).Replace("`r`n", "\n")
+    Get-Content <path-to-private-key-file>
     ```
-
-To get your Salesforce username, do the following:
-
-1. Log in to your Salesforce account.
-2. In the top navigation bar, click the **Quick Settings** (gear) icon, and then click **Open Advanced Setup**.
-3. In the search box, search for and go to **Users**.
-4. Note the **Name** value (_not_ the **User Name** value) for your user.
-
-If you do not already have a Salesforce connected app, to create one, start by creating or getting the certificate (`.crt`) and private key (`.pem`) files 
-that you will associate with the connected app. If you do not have the certificate and private key, you can use your local machine to create your own 
-private key and self-signed certificate, if your organization allows, by running the following commands, one command at a time:
-
-```bash
-openssl genrsa -out MyPrivateKey.pem -traditional
-openssl req -new -key MyPrivateKey.pem -out MyCertificateSigningRequest.csr
-openssl x509 -req -in MyCertificateSigningRequest.csr -signkey MyPrivateKey.pem -out MyCertificate.crt -days 365
-```
-
-Be sure to store these generated files in a secure location.
-
-To create a Salesforce connected app, do the following:
-
-1. Log in to your Salesforce account.
-2. In the top navigation bar, click the **Quick Settings** (gear) icon, and then click **Open Advanced Setup**.
-3. In the search box, search for and go to **App Manager**.
-4. Click **New Connected App**.
-5. With **Create a Connected App** selected, click **Continue**.
-6. At a minimum, fill in the following, and then click **Save**:
-
-   - **Connected App Name**
-   - **API Name** (can be same as **Connected App Name**, but do not use spaces or punctuation)
-   - **Contact Email**
-   - Check **Enable OAuth Settings**.
-   - For **Callback URL**, entering `http://localhost` is okay if you won't be using this connected app for other special authentication scenarios.
-   - Check **Use Digital Signatures**. Click **Choose File**, and browse to and select your certificate (`.crt`) file.
-   - For **Selected OAuth Scopes**, add **Manage user data via APIs (api)** (recommended) or **Full access (full)**.
-
-To get the Salesforce connected app's consumer key, do the following:
-
-1. Log in to your Salesforce account.
-2. In the top navigation bar, click the **Quick Settings** (gear) icon, and then click **Open Advanced Setup**.
-3. In the search box, search for and go to **App Manager**.
-4. In the list of apps, click the arrow next to the target connected app, and click **View**.
-5. Click **Manage Consumer Details**.
-6. Complete the on-screen security verification.
-7. Note the **Consumer Key** value.
-  
