@@ -1,0 +1,13 @@
+Fill in the following fields:
+
+- **Name** (_required_): A unique name for this connector.
+- **Bootstrap Server** (_required_): The hostname of the bootstrap Kafka cluster to connect to.
+- **Port**: The port number of the cluster.
+- **Group ID**: The ID of the consumer group, if any, that is associated with the target Kafka cluster. 
+  (A consumer group is a way to allow a pool of consumers to divide the consumption of data 
+  over topics and partitions.) The default is `default_group_id` if not otherwise specified.
+- **Topic** (_required_): The unique name of the topic to read messages from and write messages to on the cluster.
+- **Number of messages to consume**: The maximum number of messages to get from the topic. The default is `1` if not otherwise specified.
+- **Batch Size**: The maximum number of messages to send in a single batch.
+- **API Key** (_required_): The Kafka API key value.
+- **Secret** (_required_): The secret value for the Kafka API key.
