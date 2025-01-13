@@ -142,6 +142,26 @@ Also:
            Answer: 
            ```
 
+           <Tip>
+               To answer the question, the preceding prompt uses the context along with general information that the text-based LLM is 
+               trained on. To use only the context to answer the question, you can change the prompt, for example to something like this:
+
+               ```text
+               {context}
+
+               ---
+
+               Given the context above, answer the question as best as possible. Use only the context to answer the question. Do not use 
+               any other sources of information. If the context does not provide enough information to answer the question, reply with 
+               'I do not have enough context to answer the question.'
+
+               Question: {question}
+
+               Answer:
+               ```
+
+           </Tip>
+
         4. Click **Check & Save**.
 
            ![Prompt component](/img/langflow/edit-prompt.png)
