@@ -1,0 +1,33 @@
+```bash CLI
+# Chunking and embedding are optional.
+
+# Use a Redis connection string:
+unstructured-ingest \
+  local \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+  redis \
+    --uri $REDIS_URI
+
+# Use Redis connection properties:
+unstructured-ingest \
+  local \
+    --input-path $LOCAL_FILE_INPUT_DIR \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
+  redis \
+    --host $REDIS_HOST \
+    --port 14453
+    --database 0 \
+    --username $REDIS_USERNAME \
+    --password $REDIS_PASSWORD \
+    --no-ssl
