@@ -1,10 +1,9 @@
 - A [Neo4j deployment](https://neo4j.com/deployment-center/).
-- The username and password for the user who has access to the Neo4j deployment.
+- The username and password for the user who has access to the Neo4j deployment. The default user is typically `neo4j`.
 
-  - For a Neo4j AuraDB instance, the defaut user is typically named `neo4j`, and its password is set when the instance is created.
-  - For an AWS Marketplace, Microsoft Azure Marketplace, or Google Cloud Marketplace deployment of Neo4j, the default user is also 
-    typically named `neo4j`, and its password is also set during the deployment process.
-  - For a local Neo4j deployment, the default user is also typically named `neo4j`. You can [set its initial password](https://neo4j.com/docs/operations-manual/current/configuration/set-initial-password/) for the `neo4j` user, or [recover an admin user and its password](https://neo4j.com/docs/operations-manual/current/authentication-authorization/password-and-user-recovery/).
+  - For a Neo4j AuraDB instance, the defaut user's is typically set when the instance is created.
+  - For an AWS Marketplace, Microsoft Azure Marketplace, or Google Cloud Marketplace deployment of Neo4j, the default user is typically set during the deployment process.
+  - For a local Neo4j deployment, you can [set the default user's initial password](https://neo4j.com/docs/operations-manual/current/configuration/set-initial-password/) or [recover an admin user and its password](https://neo4j.com/docs/operations-manual/current/authentication-authorization/password-and-user-recovery/).
 
 - The connection URI for the Neo4j deployment, which starts with `neo4j://`, `neo4j+s://`, `bolt://`, or `bolt+s://`; followed by `localhost` or the host name; and sometimes ending with a colon and the port number (such as `:7687`). For example:
 
