@@ -1,0 +1,25 @@
+The Redis connector dependencies.
+
+```bash
+pip install "unstructured-ingest[redis]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- For connecting with a Redis connection string, `REDIS_URI`, represented by `--uri` (CLI) or `uri` (Python). Redis connection strings use the following format:
+
+  ```
+  <protocol>://<username>:<password>@<hostname>:<port>?ssl=<true|false>&db=<db_number>
+  ```
+
+- For connecting with Redis connection properties:
+
+  - `REDIS_HOST` - The hostname of the target Redis database, represented by `--host` (CLI) or `host` (Python).
+  - `REDIS_PORT` - The database's port number, represented by `--port` (CLI) or `port` (Python).
+  - `REDIS_DATABASE` - The database number of the target database, represented by `--database` (CLI) or `database` (Python).
+  - `REDIS_USERNAME` - The username for the database, represented by `--username` (CLI) or `username` (Python).
+  - `REDIS_PASSWORD` - The user's password, represented by `--password` (CLI) or `password` (Python).
