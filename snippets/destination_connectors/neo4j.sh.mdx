@@ -1,7 +1,7 @@
 ```bash CLI
 #!/usr/bin/env bash
 
-# Chunking and embedding is optional.
+# Chunking and embedding are optional.
 
 unstructured-ingest \
   local \
@@ -11,12 +11,12 @@ unstructured-ingest \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
     --partition-endpoint $UNSTRUCTURED_API_URL \
+    --strategy hi_res \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
-  vectara \
-    --customer-id $VECTARA_CUSTOMER_ID \
-    --corpus-name $VECTARA_CORPUS_NAME \
-    --corpus-key $VECTARA_CORPUS_KEY \
-    --oauth-client-id $VECTARA_OAUTH_CLIENT_ID \
-    --oauth-secret $VECTARA_OAUTH_CLIENT_SECRET \
-    --token-url $VECTARA_OAUTH_TOKEN_URL
+  neo4j \
+    --username $NEO4J_USERNAME \
+    --password $NEO4J_PASSWORD \
+    --uri $NEO4J_URI \ # <scheme>://<host>:<port>
+    --database $NEO4J_DATABASE \
+    --batch-size 100
 ```

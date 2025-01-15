@@ -1,4 +1,4 @@
-```python Python
+```python Python Ingest v1
 import os
 
 from unstructured_ingest.connector.local import SimpleLocalConfig
@@ -24,7 +24,7 @@ def get_writer() -> Writer:
         connector_config=SimpleVectaraConfig(
             access_config=VectaraAccessConfig(
                 oauth_client_id=os.getenv("VECTARA_OAUTH_CLIENT_ID"),
-                oauth_secret=os.getenv("VECTARA_OAUTH_SECRET"),
+                oauth_secret=os.getenv("VECTARA_OAUTH_CLIENT_SECRET"),
             ),
             customer_id=os.getenv("VECTARA_CUSTOMER_ID"),
             corpus_name="test-corpus-vectara",

@@ -1,0 +1,18 @@
+The Vectara connector dependencies.
+
+```bash
+pip install "unstructured-ingest[vectara]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `VECTARA_CUSTOMER_ID` - The customer ID for the target Vectara account, represented by `--customer-id` (CLI) or `customer_id` (Python).
+- `VECTARA_CORPUS_NAME` - The name of the target corpus in the account, represented by `--corpus-name` (CLI) or `corpus_name` (Python).
+- `VECTARA_CORPUS_KEY` - The name of the corpus's key, represented by `--corpus-key` (CLI) or `corpus_key` (Python).
+- `VECTARA_OAUTH_TOKEN_URL` - The OAuth token URL for getting and refreshing OAuth access tokens in the account, represented by `--token-url` (CLI) or `token_url` (Python).
+- `VECTARA_OAUTH_CLIENT_ID` - A valid OAuth client ID in the account, represented by `--oauth-client-id` (CLI) or `oauth_client_id` (Python).
+- `VECTARA_OAUTH_CLIENT_SECRET` - The OAuth client secret for the client ID, represented by `--oauth-client-secret` (CLI) or `oauth_client_secret` (Python).
