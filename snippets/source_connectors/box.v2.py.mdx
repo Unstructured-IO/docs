@@ -25,7 +25,7 @@ if __name__ == "__main__":
         downloader_config=BoxDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
         source_connection_config=BoxConnectionConfig(
             access_config=BoxAccessConfig(
-                box_app_config=os.getenv("BOX_APP_CONFIG_PATH")
+                box_app_config=os.getenv("BOX_APP_CONFIG")
             )
         ),
         partitioner_config=PartitionerConfig(
