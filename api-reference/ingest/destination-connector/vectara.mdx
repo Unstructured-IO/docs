@@ -2,6 +2,29 @@
 title: Vectara
 ---
 
-import SharedVectara from '/snippets/dc-shared-text/vectara.mdx';
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
 
-<SharedVectara />
+<NewDocument />
+
+import SharedContentVectara from '/snippets/dc-shared-text/vectara-cli-api.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedContentVectara/>
+<SharedAPIKeyURL/>
+
+Now call the Unstructured CLI or Python SDK. The source connector can be any of the ones supported.
+
+This example uses the local source connector:
+
+import VectaraAPISh from '/snippets/destination_connectors/vectara.sh.mdx';
+import VectaraAPIPyV2 from '/snippets/destination_connectors/vectara.v2.py.mdx';
+import VectaraAPIPyV1 from '/snippets/destination_connectors/vectara.v1.py.mdx';
+
+<CodeGroup>
+  <VectaraAPISh />
+  <VectaraAPIPyV2 />
+  <VectaraAPIPyV1 />
+</CodeGroup>
+
+
+

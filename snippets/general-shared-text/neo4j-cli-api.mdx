@@ -1,0 +1,16 @@
+The Neo4j connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[neo4j]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `NEO4J_USERNAME` - The name of the target user with access to the target Neo4j deployment, represented by `--username` (CLI) or `username` (Python).
+- `NEO4J_PASSWORD` - The user's password, represented by `--password` (CLI) or `password` (Python).
+- `NEO4J_URI` - The connection URI for the deployment, represented by `--uri` (CLI) or `uri` (Python).
+- `NEO4J_DATABASE` - The name of the database in the deployment, represented by `--database` (CLI) or `database` (Python).

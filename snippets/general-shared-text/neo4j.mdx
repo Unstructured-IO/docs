@@ -1,0 +1,41 @@
+- A [Neo4j deployment](https://neo4j.com/deployment-center/).
+
+  The following video shows how to set up a Neo4j Aura deployment:
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/fo8uDIm1zCE"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
+
+- The username and password for the user who has access to the Neo4j deployment. The default user is typically `neo4j`.
+
+  - For a Neo4j Aura instance, the defaut user's is typically set when the instance is created.
+  - For an AWS Marketplace, Microsoft Azure Marketplace, or Google Cloud Marketplace deployment of Neo4j, the default user is typically set during the deployment process.
+  - For a local Neo4j deployment, you can [set the default user's initial password](https://neo4j.com/docs/operations-manual/current/configuration/set-initial-password/) or [recover an admin user and its password](https://neo4j.com/docs/operations-manual/current/authentication-authorization/password-and-user-recovery/).
+
+- The connection URI for the Neo4j deployment, which starts with `neo4j://`, `neo4j+s://`, `bolt://`, or `bolt+s://`; followed by `localhost` or the host name; and sometimes ending with a colon and the port number (such as `:7687`). For example:
+
+  - For a Neo4j Aura deployment, browse to the target Neo4j instance in the Neo4j Aura account and click **Connect > Drivers** to get the connection URI, which follows the format `neo4j+s://<host-name>`. A port number is not used or needed.
+  - For an AWS Marketplace, Microsoft Azure Marketplace, or Google Cloud Marketplace deployment of Neo4j, see 
+    [Neo4j on AWS](https://neo4j.com/docs/operations-manual/current/cloud-deployments/neo4j-aws/),
+    [Neo4j on Azure](https://neo4j.com/docs/operations-manual/current/cloud-deployments/neo4j-azure/), or 
+    [Neo4j on GCP](https://neo4j.com/docs/operations-manual/current/cloud-deployments/neo4j-gcp/) 
+    for details about how to get the connection URI.
+  - For a local Neo4j deployment, the URI is typically `bolt://localhost:7687`
+  - For other Neo4j deployment types, see the deployment provider's documentation.
+
+  [Learn more](https://neo4j.com/docs/browser-manual/current/operations/dbms-connection).
+
+- The name of the target database in the Neo4j deployment. A default Neo4j deployment typically contains two standard databases: one named `neo4j` for user data and another 
+  named `system` for system data and metadata. Some Neo4j deployment types support more than these two databases per deployment; 
+  Neo4j Aura instances do not.  
+
+  - [Create additional databases](https://neo4j.com/docs/operations-manual/current/database-administration/standard-databases/create-databases/) 
+    for a local Neo4j deployment that uses Enterprise Edition; or for Neo4j on AWS, Neo4j on Azure, or Neo4j on GCP deployments. 
+  - [Get a list of additional available databases](https://neo4j.com/docs/operations-manual/current/database-administration/standard-databases/listing-databases/) 
+    for a local Neo4j deployment that uses Enterprise Edition; or for Neo4j on AWS, Neo4j on Azure, or Neo4j on GCP deployments.
