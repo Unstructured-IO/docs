@@ -48,6 +48,20 @@ import AllowIPAddressRanges from '/snippets/general-shared-text/ip-address-range
   [Amazon RDS for PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.RDSSecurityGroups.html) or 
   [Azure Database for PostgreSQL](https://learn.microsoft.com/azure/postgresql/flexible-server/how-to-manage-firewall-portal#create-a-firewall-rule-after-server-is-created).
 
+  <Note>
+      For Amazon RDS for PostgreSQL, Amazon recommends that you set the instance's **Public access** setting to **No** by default, as this 
+      approach is more secure. This means that no 
+      resources can connect to the instance outside of the instance's associated Virtual Private Cloud (VPC) without extra configuration. 
+      [Learn more](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.WorkingWithRDSInstanceinaVPC.html#USER_VPC.Hiding). 
+      [Access an Amazon RDS instance in a VPC](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.Scenarios.html).
+
+      If you must enable public access, set the instance's **Public access** setting to **Yes**, and then adjust the instance's related 
+      security group to allow this access. 
+      [Learn how](https://repost.aws/en/questions/QUxemKa9u5TV6CmLiO-r5prg/lost-public-access-to-aws-rds-postgresql-instance). 
+      
+      [Troubleshoot issues with connecting to Amazon RDS instances](https://repost.aws/knowledge-center/rds-connectivity-instance-subnet-vpc).
+  </Note>
+
 - A database in the instance. 
 
   - For Amazon RDS for PostgreSQL and Azure Database for PostgreSQL, the default database name is `postgres` unless a custom database name was specified during the instance creation process.
