@@ -42,7 +42,7 @@ if __name__ == "__main__":
         embedder_config=EmbedderConfig(embedding_provider="huggingface"),
         destination_connection_config=BoxConnectionConfig(
             access_config=BoxAccessConfig(
-                box_app_config=os.getenv("BOX_APP_CONFIG_PATH")
+                box_app_config=os.getenv("BOX_APP_CONFIG")
             )
         ),
         uploader_config=BoxUploaderConfig(
