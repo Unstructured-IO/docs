@@ -8,23 +8,32 @@ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; pic
 allowfullscreen
 ></iframe>
 
-1. A Google Cloud service account and its related `credentials.json` key file or its contents in JSON format. [Learn how](https://developers.google.com/workspace/guides/create-credentials#service-account).
-2. To ensure maximum compatibility across Unstructured service offerings, you should give the service account key information to Unstructured as 
-   a single-line string that contains the contents of the downloaded service account key file (and not the service account key file itself). 
-   To print this single-line string without line breaks, suitable for copying, you can run one of the following commands from your Terminal or Command Prompt. 
-   In this command, replace `<path-to-downloaded-key-file>` with the path to the `credentials.json` key file that you downloaded by following the preceding instructions.
+- A [Google Cloud account](https://console.cloud.google.com).
+- The **Google Drive API** enabled in the account. 
+  [Learn how](https://cloud.google.com/apis/docs/getting-started#enabling_apis).
+- Within the account, a Google Cloud service account and its related `credentials.json` key file or its contents in JSON format. 
+  [Create a service account](https://developers.google.com/workspace/guides/create-credentials#create_a_service_account). 
+  [Create credentials for a service account](https://developers.google.com/workspace/guides/create-credentials#create_credentials_for_a_service_account).
 
-   - For macOS or Linux: 
+  To ensure maximum compatibility across Unstructured service offerings, you should give the service account key information to Unstructured as 
+  a single-line string that contains the contents of the downloaded service account key file (and not the service account key file itself). 
+  To print this single-line string without line breaks, suitable for copying, you can run one of the following commands from your Terminal or Command Prompt. 
+  In this command, replace `<path-to-downloaded-key-file>` with the path to the `credentials.json` key file that you downloaded by following the preceding instructions.
 
-     ```text
-     tr -d '\n' < <path-to-downloaded-key-file>
-     ```
+  - For macOS or Linux: 
 
-   - For Windows:
+    ```text
+    tr -d '\n' < <path-to-downloaded-key-file>
+    ```
 
-     ```text
-     (Get-Content -Path "<path-to-downloaded-key-file>" -Raw).Replace("`r`n", "").Replace("`n", "")
-     ```
+  - For Windows:
 
-3. Give the service account's email address access to the Google Drive folder. [Learn more](https://www.googlecloudcommunity.com/gc/Workspace-Q-A/Can-i-give-access-to-document-of-google-drive-to-service-account/m-p/530106).
-4. Note the folder ID. This is a part of the URL for your Google Drive folder represented in the following URL as `{folder_id}`: `https://drive.google.com/drive/folders/{folder-id}`.
+    ```text
+    (Get-Content -Path "<path-to-downloaded-key-file>" -Raw).Replace("`r`n", "").Replace("`n", "")
+    ```
+
+- A [Google Drive folder](https://support.google.com/drive/answer/2375091).
+- Give the service account access to the folder. To do this, share the folder with the service account's email address. 
+  [Learn how](https://support.google.com/drive/answer/7166529). 
+  [Learn more](https://www.googlecloudcommunity.com/gc/Workspace-Q-A/Can-i-give-access-to-document-of-google-drive-to-service-account/m-p/530106).  
+- Get the folder's ID. This is a part of the URL for your Google Drive folder represented in the following URL as `{folder_id}`: `https://drive.google.com/drive/folders/{folder-id}`.
