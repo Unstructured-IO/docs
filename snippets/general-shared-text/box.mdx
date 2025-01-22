@@ -16,4 +16,22 @@
    - **Share** your Box account's target folder with the copied service account's email address as a **Co-owner** or **Editor**. 
    - Note the remote URL to the target folder, which takes the format `box://<path/to/folder/in/account>`.
 
-6. The private key configuration JSON file for the Box Custom App. To download this file, in the Box Custom App, on the **Configuration** tab, under **Add and Manage Public Keys**, click **Generate a Public/Private Keypair**. Store the downloaded private key configuration JSON file in a secure location. Do not share it with others.
+6. The private key configuration JSON file for the Box Custom App, or a string that contains this file's contents.
+
+   - To download this file, in the Box Custom App, on the **Configuration** tab, under **Add and Manage Public Keys**, click **Generate a Public/Private Keypair**. Store the downloaded private key configuration JSON file in a secure location.
+   - To ensure maximum compatibility across Unstructured service offerings, you should give the private key configuration JSON file information to Unstructured as 
+   a single-line string that contains the contents of the downloaded private key configuration JSON file (and not the file itself). 
+   To print this single-line string, suitable for copying, you can run one of the following commands from your Terminal or Command Prompt. 
+   In this command, replace `<path-to-downloaded-key-file>` with the path to the private key configuration JSON file that you downloaded by following the preceding instructions.
+
+     - For macOS or Linux: 
+
+       ```text
+       tr -d '\n' < <path-to-downloaded-key-file>
+       ```
+
+     - For Windows:
+
+       ```text
+       (Get-Content -Path "<path-to-downloaded-key-file>" -Raw).Replace("`r`n", "").Replace("`n", "")
+       ```

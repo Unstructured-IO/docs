@@ -36,7 +36,7 @@ import AllowIPAddressRanges from '/snippets/general-shared-text/ip-address-range
 - The host name and port number for the instance. 
 
   - For Amazon RDS for PostgreSQL, learn how to [get the host name and port number](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_ConnectToPostgreSQLInstance.html#postgresql-endpoint).
-  - For Azure Database for PostgreSQL, learn how to [get the host](https://learn.microsoft.com/azure/postgresql/flexible-server/quickstart-create-server-portal#connect-to-the-azure-database-for-postgresql-flexible-server-database-using-psql). The port number is `5432`.
+  - For Azure Database for PostgreSQL, learn how to [get the host](https://learn.microsoft.com/azure/postgresql/flexible-server/quickstart-create-server#get-the-connection-information). The port number is `5432`.
   - For local PostgreSQL installations, these values are in the `postgresql.conf` file's `listen_addresses` and `port` settings. This file should be on the same machine as the instance. These values might also already be set as environment variables named `PGHOST` and `PGPORT` on the same machine as the instance. 
   - For other installation types, see your PostgreSQL provider's documentation.
 
@@ -47,6 +47,20 @@ import AllowIPAddressRanges from '/snippets/general-shared-text/ip-address-range
   To learn how to allow these IP address ranges, see your PostgreSQL provider's documentation, for example with 
   [Amazon RDS for PostgreSQL](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Overview.RDSSecurityGroups.html) or 
   [Azure Database for PostgreSQL](https://learn.microsoft.com/azure/postgresql/flexible-server/how-to-manage-firewall-portal#create-a-firewall-rule-after-server-is-created).
+
+  <Note>
+      For Amazon RDS for PostgreSQL, Amazon recommends that you set the instance's **Public access** setting to **No** by default, as this 
+      approach is more secure. This means that no 
+      resources can connect to the instance outside of the instance's associated Virtual Private Cloud (VPC) without extra configuration. 
+      [Learn more](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.WorkingWithRDSInstanceinaVPC.html#USER_VPC.Hiding). 
+      [Access an Amazon RDS instance in a VPC](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_VPC.Scenarios.html).
+
+      If you must enable public access, set the instance's **Public access** setting to **Yes**, and then adjust the instance's related 
+      security group to allow this access. 
+      [Learn how](https://repost.aws/en/questions/QUxemKa9u5TV6CmLiO-r5prg/lost-public-access-to-aws-rds-postgresql-instance). 
+      
+      [Troubleshoot issues with connecting to Amazon RDS instances](https://repost.aws/knowledge-center/rds-connectivity-instance-subnet-vpc).
+  </Note>
 
 - A database in the instance. 
 
@@ -69,7 +83,6 @@ import AllowIPAddressRanges from '/snippets/general-shared-text/ip-address-range
         id UUID PRIMARY KEY,
         record_id VARCHAR,
         element_id VARCHAR,
-        record_id TEXT,
         text TEXT,
         embeddings DECIMAL [],
         parent_id VARCHAR,
@@ -86,7 +99,6 @@ import AllowIPAddressRanges from '/snippets/general-shared-text/ip-address-range
         id UUID PRIMARY KEY,
         record_id VARCHAR,
         element_id VARCHAR,
-        record_id TEXT,
         text TEXT,
         embeddings vector(3072),
         parent_id VARCHAR,

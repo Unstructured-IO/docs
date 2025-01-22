@@ -24,7 +24,7 @@ from unstructured_ingest.runner.writers.fsspec.box import (
 def get_writer() -> Writer:
     return BoxWriter(
         connector_config=SimpleBoxConfig(
-            access_config=BoxAccessConfig(box_app_config=os.getenv("BOX_APP_CONFIG_PATH")),
+            access_config=BoxAccessConfig(box_app_config=os.getenv("BOX_APP_CONFIG")),
             remote_url=os.getenv("BOX_REMOTE_URL"),
         ),
         write_config=BoxWriteConfig(),
