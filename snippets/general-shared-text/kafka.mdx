@@ -1,6 +1,7 @@
-- A Kafka cluster, such as ones provided by [Confluent Cloud](https://www.confluent.io/confluent-cloud), [Amazon Managed Streaming for Apache Kafka (Amazon MSK)](https://aws.amazon.com/msk/), or [Google Cloud Managed Service for Apache Kafka](https://cloud.google.com/products/managed-service-for-apache-kafka).
+- A Kafka cluster, available through providers such as [Confluent Cloud](https://www.confluent.io/confluent-cloud).
 
-  The following video shows how to set up a Kafka cluster in Confluent Cloud:
+  The following video shows how to 
+  [create a Kafka cluster in Confluent Cloud](https://docs.confluent.io/cloud/current/get-started/index.html#step-1-create-a-ak-cluster-in-ccloud):
 
   <iframe
   width="560"
@@ -12,7 +13,10 @@
   allowfullscreen
   ></iframe>
 
-- The hostname of the bootstrap Kafka cluster to connect to.  
-- The port number of the cluster.
-- The name of the topic to read messages from and write messages to on the cluster. 
-- If you use Kafka API keys and secrets for authentication, the key and secret values.
+- The [hostname and port number](https://docs.confluent.io/cloud/current/faq.html#how-do-i-view-cluster-details-with-ccloud-console-short) 
+  of the bootstrap Kafka server to connect to for the cluster. Note that a colon (`:`) separates the hostname from the port number.
+  [Learn more](https://docs.confluent.io/cloud/current/clusters/create-cluster.html#view-ak-clusters).
+- The name of the [topic](https://docs.confluent.io/cloud/current/get-started/index.html#step-2-create-a-ak-topic) 
+  to read messages from and write messages to on the cluster. 
+- The [API key and secret](https://docs.confluent.io/cloud/current/security/authenticate/workload-identities/service-accounts/api-keys/manage-api-keys.html#add-an-api-key) 
+  for the cluster.
