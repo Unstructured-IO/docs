@@ -9,10 +9,11 @@
    f) Enter a name for your app, and then click **Create app**.<br/>
    g) On the app's **Permissions** tab, under **Files and folders**, check the boxes labelled **files.content.read** or **files.content.write** or both, 
       depending on whether you want to read files, write files, or both. Then click **Submit**.<br/>
-   h) On the app's **Settings** tab, note the value of the **App folder name** field. This will be the app folder under the `Apps` top-level folder in your Dropbox 
-      account that the Dropbox app will use for access. If you change the value of **App folder name** field here, then you _must_ also have an app folder with the same name under the 
-      `Apps` top-level folder in your Dropbox account. <br/>
-   i) Under **OAuth 2**, next to **Generated access token**, click **Generate**. Copy the value of this access token. Unstructured recommends that you do not click **Generate** until you have completed all of the preceding steps first.<br/>
+   h) On the app's **Settings** tab, note the value of the **App folder name** field. This is the name of the app folder that Dropbox will create under the `Apps` top-level folder in your Dropbox 
+      account that the Dropbox app will use for access. If you change the value of **App folder name** field here, Dropbox will create an app folder with that name under the `Apps` top-level folder instead.<br/>
+   i) Under **OAuth 2**, next to **Generated access token**, click **Generate**. Copy the value of this access token. You should only click **Generate** after you have completed all of the preceding steps first. 
+      This is because the access token is scoped to the specific app folder and settings at the time the access token is generated. If you change the app folder name or any of the permissions later, 
+      you should regenerate the access token.<br/>
 
 3. The app folder that your Dropbox app will use for access can be found in your Dropbox account under the `Apps` top-level folder. For example, if the value of the **App folder name** 
    field above is `my-folder`, then the app folder that your Dropbox app will use for access can be found under `https://dropbox.com/home/Apps/my-folder`
