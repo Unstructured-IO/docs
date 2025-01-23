@@ -7,12 +7,13 @@ curl --request 'POST' --location \
 --data \
 '{
     "name": "<name>",
-    "type": "qdrant-cloud",
+    "type": "neo4j",
     "config": {
-        "url": "<url>",
-        "collection_name": "<collection-name>",
-        "batch_size": "<batch-size>",
-        "api_key": "<api-key>"
+        "uri": "<uri>",
+        "database": "<database>",
+        "username": "<username>",
+        "password": "<password>",
+        "batch_size": <batch-size>
     }
 }'
 ```

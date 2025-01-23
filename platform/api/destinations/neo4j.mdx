@@ -1,0 +1,30 @@
+---
+title: Neo4j
+---
+
+Send processed data from Unstructured to Neo4j.
+
+The requirements are as follows.
+
+import Neo4jPrerequisites from '/snippets/general-shared-text/neo4j.mdx';
+
+<Neo4jPrerequisites />
+
+To create or change a Neo4j destination connector, see the following examples.
+
+import Neo4jAPIRESTCreate from '/snippets/destination_connectors/neo4j_rest_create.mdx';
+import Neo4jAPIRESTChange from '/snippets/destination_connectors/neo4j_rest_change.mdx';
+
+<CodeGroup>
+    <Neo4jAPIRESTCreate />
+    <Neo4jAPIRESTChange />
+</CodeGroup>
+
+Replace the preceding placeholders as follows:
+
+import Neo4jAPIPlaceholders from '/snippets/general-shared-text/neo4j-api-placeholders.mdx';
+
+<Neo4jAPIPlaceholders />
+
+To change a connector, replace `<connector-id>` with the source connector's unique ID. 
+To get this ID, see [List source connectors](/platform/api/overview#list-source-connectors).

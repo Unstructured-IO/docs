@@ -1,0 +1,6 @@
+- `<name>` (_required_) - A unique name for this connector.
+- `<uri>` (_required_) - The connection URI for the Neo4j deployment, which typically starts with `neo4j://`, `neo4j+s://`, `bolt://`, or `bolt+s://`; is followed by the host name; and ends with a colon and the port number (such as `:7473`, `:7474`, or `:7687`).
+- `<database>` (_required_) - The name of the target database in the Neo4j deployment. A default Neo4j deployment typically contains a standard database named neo4j for user data.
+- `<username>` (_required_) - The name of the user who has access to the Neo4j deployment. A default Neo4j deployment typically contains a default user named `neo4j`.
+- `<password>` (_required_) - The password for the user.
+- `<batch-size>` - The maximum number of nodes or relationships to be transmitted per batch. The default is `100` if not otherwise specified.
