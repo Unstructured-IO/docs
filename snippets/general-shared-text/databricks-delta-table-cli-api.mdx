@@ -1,0 +1,31 @@
+The Delta Tables in Databricks connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[databricks-delta-tables]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `DATABRICKS_HOST` - The ..., represented by `--...` (CLI) or `...` (Python).
+- `DATABRICKS_HTTP_PATH` - The ..., represented by `--...` (CLI) or `...` (Python).
+- `DATABRICKS_TOKEN` - The ..., represented by `--...` (CLI) or `...` (Python).
+- `DATABRICKS_CLIENT_ID` - The ..., represented by `--...` (CLI) or `...` (Python).
+- `DATABRICKS_CLIENT_SECRET` - The ..., represented by `--...` (CLI) or `...` (Python).
+- `DATABRICKS_CATALOG` - The ..., represented by `--...` (CLI) or `...` (Python).
+- `DATABRICKS_DATABASE` - The ..., represented by `--...` (CLI) or `...` (Python).
+- `DATABRICKS_TABLE` - The ..., represented by `--...` (CLI) or `...` (Python).
+
+For the SQL-based implementation, add these environment variables:
+
+- `DATABRICKS_RECORD_ID_KEY` - The ..., represented by `--...` (CLI) or `...` (Python).
+- The batch size, represented by `--...` (CLI) or `...` (Python).
+
+For the volume-based implementation, add these environment variables:
+
+- `DATABRICKS_SCHEMA` - The ..., represented by `--...` (CLI) or `...` (Python).   
+- `DATABRICKS_VOLUME` - The ..., represented by `--...` (CLI) or `...` (Python).
+- `DATABRICKS_VOLUME_PATH` - The ..., represented by `--...` (CLI) or `...` (Python).
