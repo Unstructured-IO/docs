@@ -1,0 +1,16 @@
+Batch process all your records to store structured outputs in a Delta Table in Databricks.
+
+The Delta Tables in Databricks connector provides two implementations:
+
+- The _SQL-based_ implementation enables you to have Unstructured write its processed data directly to a table in Unity Catalog. 
+  If you use this implementation, you do not need to provide a volume as described in the following requirements.
+- The _volume-based_ implementation enables you to have Unstructured write its processed data as a file to a volume in Unity Catalog. Unstructured then 
+  uses that file in the volume to write the file's data to a table in Unity Catalog. The file remains in the volume.
+
+The requirements are as follows.
+
+import SharedDatabricksDeltaTable from '/snippets/general-shared-text/databricks-delta-table.mdx';
+import SharedDatabricksDeltaTableCLIAPI from '/snippets/general-shared-text/databricks-delta-table-cli-api.mdx';
+
+<SharedDatabricksDeltaTable />
+<SharedDatabricksDeltaTableCLIAPI />

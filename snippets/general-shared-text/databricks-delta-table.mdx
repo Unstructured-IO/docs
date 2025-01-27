@@ -1,0 +1,115 @@
+- A Databricks account on [AWS](https://docs.databricks.com/getting-started/free-trial.html), 
+  [Azure](https://learn.microsoft.com/azure/databricks/getting-started/), or 
+  [GCP](https://docs.gcp.databricks.com/getting-started/index.html).
+- A workspace within the Datbricks account for [AWS](https://docs.databricks.com/admin/workspace/index.html),
+  [Azure](https://learn.microsoft.com/azure/databricks/admin/workspace/), or 
+  [GCP](https://docs.gcp.databricks.com/admin/workspace/index.html).
+- One of the following compute resources within the workspace:
+
+  - A SQL warehouse for [AWS](https://docs.databricks.com/compute/sql-warehouse/create.html), 
+    [Azure](https://learn.microsoft.com/azure/databricks/compute/sql-warehouse/create), or 
+    [GCP](https://docs.gcp.databricks.com/compute/sql-warehouse/create.html).
+  - A cluster for [AWS](https://docs.databricks.com/compute/use-compute.html), 
+    [Azure](https://learn.microsoft.com/azure/databricks/compute/use-compute), or 
+    [GCP](https://docs.gcp.databricks.com/compute/use-compute.html).
+
+- The SQL warehouse's or cluster's **Server Hostname** and **HTTP Path** values for [AWS](https://docs.databricks.com/integrations/compute-details.html), 
+  [Azure](https://learn.microsoft.com/azure/databricks/integrations/compute-details), or 
+  [GCP](https://docs.gcp.databricks.com/integrations/compute-details.html).
+- Unity Catalog enabled in the workspace for [AWS](https://docs.databricks.com/data-governance/unity-catalog/get-started.html),
+  [Azure](https://learn.microsoft.com/azure/databricks/data-governance/unity-catalog/get-started), or 
+  [GCP](https://docs.gcp.databricks.com/data-governance/unity-catalog/get-started.html). 
+- Within Unity Catalog:
+
+  - A catalog 
+    for [AWS](https://docs.databricks.com/catalogs/create-catalog.html), 
+    [Azure](https://learn.microsoft.com/azure/databricks/catalogs/create-catalog), or 
+    [GCP](https://docs.gcp.databricks.com/catalogs/create-catalog.html). 
+  - A schema 
+    for [AWS](https://docs.databricks.com/schemas/create-schema.html), 
+    [Azure](https://learn.microsoft.com/azure/databricks/schemas/create-schema), or 
+    [GCP](https://docs.gcp.databricks.com/schemas/create-schema.html)
+    within that catalog, 
+  - A table 
+    for [AWS](https://docs.databricks.com/tables/managed.html), 
+    [Azure](https://learn.microsoft.com/azure/databricks/tables/managed), or 
+    [GCP](https://docs.gcp.databricks.com/tables/managed.html)
+    within that schema.
+
+  This table must contain the following column names and their data types:
+
+  ```text
+  CREATE TABLE IF NOT EXISTS `<catalog-name>`.`<schema-name>`.elements (
+      id STRING NOT NULL PRIMARY KEY,
+      record_id STRING,
+      element_id STRING,
+      text STRING,
+      embeddings ARRAY<FLOAT>,
+      type STRING,
+      date_created TIMESTAMP,
+      date_modified TIMESTAMP,
+      date_processed TIMESTAMP,
+      permissions_data STRING,
+      filesize_bytes FLOAT,
+      url STRING,
+      version STRING,
+      record_locator STRING,
+      category_depth INT,
+      parent_id STRING,
+      attached_filename STRING,
+      filetype STRING,
+      last_modified TIMESTAMP,
+      file_directory STRING,
+      filename STRING,
+      languages ARRAY<STRING>,
+      page_number STRING,
+      links STRING,
+      page_name STRING,
+      link_urls STRING,
+      link_texts STRING,
+      sent_from STRING,
+      sent_to STRING,
+      subject STRING,
+      section STRING,
+      header_footer_type STRING,
+      emphasized_text_contents STRING,
+      emphasized_text_tags STRING,
+      text_as_html STRING,
+      regex_metadata STRING,
+      detection_class_prob FLOAT,
+      is_continuation BOOLEAN,
+      orig_elements STRING,
+      coordinates_points STRING,
+      coordinates_system STRING,
+      coordinates_layout_width FLOAT,
+      coordinates_layout_height FLOAT
+  );
+  ```
+
+- Within Unity Catalog, a volume 
+  for [AWS](https://docs.databricks.com/volumes/utility-commands.html), 
+  [Azure](https://learn.microsoft.com/azure/databricks/volumes/utility-commands), 
+  or [GCP](https://docs.gcp.databricks.com/volumes/utility-commands.html)
+  within the same schema as the table. 
+- For Databricks personal access token authentication to the workspace, the 
+  Databricks personal access token value for 
+  [AWS](https://docs.databricks.com/dev-tools/auth/pat.html#databricks-personal-access-tokens-for-workspace-users), 
+  [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/pat#azure-databricks-personal-access-tokens-for-workspace-users), or 
+  [GCP](https://docs.gcp.databricks.com/dev-tools/auth/pat.html#databricks-personal-access-tokens-for-workspace-users). 
+  This token must be for the workspace user who 
+  has the appropriate access permissions to the catalog, schema, table, volume, and cluster or SQL warehouse, 
+- For Databricks managed service principal authentication (using Databricks OAuth M2M) to the workspace:
+
+  - A Databricks managed service principal. 
+    This service principal must have the appropriate access permissions to the catalog, schema, table, volume, and cluster or SQL warehouse.
+  - The service principal's **UUID** value.
+  - The OAuth **Secret** value for the service principal. 
+
+  To get this information, see Steps 1-3 of the instructions for [AWS](https://docs.databricks.com/dev-tools/auth/oauth-m2m.html), 
+  [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/oauth-m2m), or 
+  [GCP](https://docs.gcp.databricks.com/dev-tools/auth/oauth-m2m.html).
+
+  <Note>
+      For Azure Databricks, this connector only supports Databricks managed service principals. 
+      Microsoft Entra ID managed service principals are not supported.
+  </Note>
