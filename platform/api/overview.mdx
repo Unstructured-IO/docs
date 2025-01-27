@@ -2,6 +2,13 @@
 title: Overview
 ---
 
+<Note>
+    The Unstructured Platform API is separate from Unstructured Serverless API services. 
+    
+    For information about Unstructured Serverless API services, see the 
+    [Unstructured Serverless API services overview](/api-reference/api-services/overview).
+</Note>
+
 The [Unstructured Platform](/platform/overview) features a no-code user interface for transforming your unstructured data into data that is ready 
 for Retrieval Augmented Generation (RAG).
 
@@ -22,12 +29,12 @@ allowfullscreen
 
 To use the Unstructured Platform API, you must have:
 
-- **An Unstructured account**, created through one of the following means:
+- **An Unstructured account**, created through the [For Developers](https://unstructured.io/developers) page, with one of the following plans:
 
-  - The [For Developers](https://unstructured.io/developers) sign-up page.
-  - The [For Enterprise](https://unstructured.io/enterprise) sign-up page.
+  - A [pay-per-page plan](https://unstructured.io/developers#get-started).
+  - A [subscribe-and-save plan](https://unstructured.io/subscribeandsave)
 
-- **An Unstructured API key**, created through the Unstructured account console.
+- **An Unstructured API key**, created through your Unstructured account console.
 
   <Note>
       If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API key creation process 
@@ -41,17 +48,18 @@ To use the Unstructured Platform API, you must have:
   ![Unstructured account settings](/img/platform/AccountSettings.png)
 
   ![Unstructured API key and API URL](/img/platform/APIKeyOnly.png)
+
   1. Sign in to the Unstructured Platform. [Learn how](/platform/quickstart).
   2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
-  3. On the account settings sidebar, click **API Keys**, if it is not already selected.
-  4. To get your API key, click the copy icon in the **Actions** column for your API key, and then click **Key Only**. Do not share your API key with others.
+  3. On the **API Keys** tab, click **Generate New Key**.
+  4. Enter some descriptive name for the API key, and then click **Save**.
+  5. Click the **Copy** icon for your new API key, and then click **Key Only**. The API key's value is copied to your system's clipboard.
+
+- The Unstructured **Platform API URL**, which is `https://platform.unstructuredapp.io/api/v1`
 
   <Warning>
-      On the **Account Settings** page, do _not_ use the **API URL** value that is displayed. This API URL will _not_ work with the 
-      Unstructured Platform API. See the next bullet for the Unstructured Platform API URL.
+      Do not use the Unstructured **Serverless API URL**, which is separate from the Unstructured Platform API URL.
   </Warning>
-
-- **The Unstructured Platform API URL**, which is `https://platform.unstructuredapp.io/api/v1`
 
   <Note>
       If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API URL 
