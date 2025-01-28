@@ -10,6 +10,12 @@
   allowfullscreen
   ></iframe>
 
+  The following Snowflake query returns the current account's identifier:
+
+  ```text
+  SELECT CURRENT_ORGANIZATION_NAME() || '-' || CURRENT_ACCOUNT_NAME() AS "Account Identifier"
+  ```
+
 - The Snowflake [username and its password](https://docs.snowflake.com/user-guide/admin-user-management#creating-users) in the account.
 
   <iframe
@@ -22,7 +28,16 @@
   allowfullscreen
   ></iframe>
 
-- The Snowflake [hostname and its port number](https://docs.snowflake.com/sql-reference/functions/system_allowlist) in the account.
+- The Snowflake warehouse's [hostname and its port number](https://docs.snowflake.com/sql-reference/functions/system_allowlist) in the account. The following Snowflake query 
+  returns a list of available warehouse types, hostnames, and port numbers in the current account. Look for the row with a `type` of `SNOWFLAKE_DEPLOYMENT`:
+
+  ```text
+  SELECT t.VALUE:type::VARCHAR as type,
+         t.VALUE:host::VARCHAR as host,
+         t.VALUE:port as port
+  FROM TABLE(FLATTEN(input => PARSE_JSON(SYSTEM$ALLOWLIST()))) AS t;
+  ```
+
 - The name of the Snowflake [database](https://docs.snowflake.com/sql-reference/sql/create-database) in the account.
 
   <iframe
@@ -34,6 +49,12 @@
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowfullscreen
   ></iframe>
+
+  The following Snowflake query returns a list of available databases in the current account:
+
+  ```text
+  SHOW DATABASES;
+  ```
 
 - The name of the [schema](https://docs.snowflake.com/sql-reference/sql/create-schema) in the database.
 
@@ -47,6 +68,18 @@
   allowfullscreen
   ></iframe>
 
+  The following Snowflake query returns a list of available schemas in the current account:
+
+  ```text
+  SHOW SCHEMAS;
+  ```
+
+  The following Snowflake query returns a list of available schemas for the database named `<database-name>` in the current account:
+
+  ```text
+  SHOW SCHEMAS IN DATABASE <database-name>;
+  ```
+
 - The name of the [table](https://docs.snowflake.com/sql-reference/sql/create-table) in the schema.
 
   <iframe
@@ -58,6 +91,13 @@
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowfullscreen
   ></iframe>
+
+  The following Snowflake query returns a list of available tables for the schema named `<schema-name>` in the datbase named 
+  `<database-name>` in the current account:
+
+  ```text
+  SHOW TABLES IN SCHEMA <database-name>.<schema-name>;
+  ```
 
   Snowflake requires the target table to have a defined schema before Unstructured can write to the table. The recommended table 
   schema for Unstructured is as follows:
@@ -107,3 +147,15 @@
     PRIMARY KEY (ID)
   );
   ```
+
+- The name of the Snowflake [role](https://docs.snowflake.com/sql-reference/sql/create-role) that the user belongs to and that also has sufficient access to the Snowflake database, schema, table, and host.
+
+  - To create a database in Snowflake, the role needs to be granted `CREATE DATABASE` privilege at the current account level; and `USAGE` privilege on the warehouse that is used to create the database.
+  - To create a schema in a database in Snowflake, the role needs to be granted `USAGE` privilege on the database and the warehouse that is used to create the schema; and `CREATE SCHEMA` on the database.
+  - To create a table in a schema in Snowflake, the role needs to be granted `USAGE` privilege on the database and schema and the warehouse that is used to create the table; and `CREATE TABLE` on the schema.
+  - To write to a table in Snowflake, the role needs to be granted `USAGE` privilege on the database and schema and the warehouse that is used to write to the table; and `INSERT` on the table.
+  - To read from a table in Snowflake, the role needs to be granted `USAGE` privilege on the database and schema and the warehouse that is used to write to the table; and `SELECT` on the table.
+
+  [Grant privileges to a role](https://docs.snowflake.com/sql-reference/sql/grant-privilege). [Learn more](https://docs.snowflake.com/user-guide/security-access-control-privileges). 
+
+- For the destination connector, the name of the column in the table that uniquely identifies each record (for example, `RECORD_ID`).
