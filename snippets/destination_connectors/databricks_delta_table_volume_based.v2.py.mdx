@@ -5,9 +5,9 @@ from unstructured_ingest.v2.pipeline.pipeline import Pipeline
 from unstructured_ingest.v2.interfaces import ProcessorConfig
 
 from unstructured_ingest.v2.processes.connectors.sql.databricks_delta_tables import (
-    DatabrickDeltaTablesConnectionConfig,
-    DatabrickDeltaTablesAccessConfig,
-    DatabrickDeltaTablesUploadStagerConfig
+    DatabricksDeltaTablesConnectionConfig,
+    DatabricksDeltaTablesAccessConfig,
+    DatabricksDeltaTablesUploadStagerConfig
 )
 
 from unstructured_ingest.v2.processes.connectors.databricks.volumes_table import (
@@ -45,8 +45,8 @@ if __name__ == "__main__":
         embedder_config=EmbedderConfig(embedding_provider="huggingface"),
         
         # For authenticating with Databricks personal access tokens.
-        destination_connection_config=DatabrickDeltaTablesConnectionConfig(
-            access_config=DatabrickDeltaTablesAccessConfig(
+        destination_connection_config=DatabricksDeltaTablesConnectionConfig(
+            access_config=DatabricksDeltaTablesAccessConfig(
                 token=os.getenv("DATABRICKS_TOKEN"),
             ),
             server_hostname=os.getenv("DATABRICKS_HOST"),
@@ -54,8 +54,8 @@ if __name__ == "__main__":
         ),
 
         # For authenticating with Databricks managed service principals.
-        # destination_connection_config=DatabrickDeltaTablesConnectionConfig(
-        #     access_config=DatabrickDeltaTablesAccessConfig(
+        # destination_connection_config=DatabricksDeltaTablesConnectionConfig(
+        #     access_config=DatabricksDeltaTablesAccessConfig(
         #         client_id=os.getenv("DATABRICKS_CLIENT_ID"),
         #         client_secret=os.getenv("DATABRICKS_CLIENT_SECRET")
         #     ),
@@ -63,7 +63,7 @@ if __name__ == "__main__":
         #     http_path=os.getenv("DATABRICKS_HTTP_PATH")
         # ),
 
-        stager_config=DatabrickDeltaTablesUploadStagerConfig(),
+        stager_config=DatabricksDeltaTablesUploadStagerConfig(),
         uploader_config=DatabricksVolumeDeltaTableUploaderConfig(
             catalog=os.getenv("DATABRICKS_CATALOG"),
             schema=os.getenv("DATABRICKS_SCHEMA"),
