@@ -1,4 +1,4 @@
-- A Snowflake [account](https://signup.snowflake.com/) and its [identifier](https://docs.snowflake.com/user-guide/admin-account-identifier).
+- A Snowflake [account](https://signup.snowflake.com/) and its account identifier.
 
   <iframe
   width="560"
@@ -10,13 +10,19 @@
   allowfullscreen
   ></iframe>
 
-  The following Snowflake query returns the current account's identifier:
+  To get the identifier for the current Snowflake account:
+
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click your username, and then click **Account > View account details**.
+  3. On the **Account** tab, note the value of the **Account Identifier** field.
+
+  Alternatively, the following Snowflake query returns the current account's identifier:
 
   ```text
   SELECT CURRENT_ORGANIZATION_NAME() || '-' || CURRENT_ACCOUNT_NAME() AS "Account Identifier"
   ```
 
-- The Snowflake [username and its password](https://docs.snowflake.com/user-guide/admin-user-management#creating-users) in the account.
+- The Snowflake [user's login name (not its username) and its password](https://docs.snowflake.com/user-guide/admin-user-management#creating-users) in the account.
 
   <iframe
   width="560"
@@ -28,8 +34,27 @@
   allowfullscreen
   ></iframe>
 
-- The Snowflake warehouse's [hostname and its port number](https://docs.snowflake.com/sql-reference/functions/system_allowlist) in the account. The following Snowflake query 
-  returns a list of available warehouse types, hostnames, and port numbers in the current account. Look for the row with a `type` of `SNOWFLAKE_DEPLOYMENT`:
+  To view the login name for a user:
+
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click **Admin > Users & Roles**.
+  3. On the **Users** tab, in the list of available users, click the name of the target user.
+  4. In the **About** tile, note the **Login Name** for the user.
+
+  Alternatively, the following Snowflake query returns information about the user with the username of `<my-user>`, including their `login_name` value representing their login name:
+
+  ```text
+  SHOW USERS LIKE '<my-user>';
+  ```
+
+- The Snowflake warehouse's [hostname and its port number](https://docs.snowflake.com/sql-reference/functions/system_allowlist) in the account. 
+
+  To view a list of available warehouses in the current Snowflake account:
+
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click **Admin > Warehouses**. This view does not provide access to the warehouses' hostnames or port numbers. To get this information, you must run a Snowflake query.
+
+  The following Snowflake query returns a list of available warehouse types, hostnames, and port numbers in the current account. Look for the row with a `type` of `SNOWFLAKE_DEPLOYMENT`:
 
   ```text
   SELECT t.VALUE:type::VARCHAR as type,
@@ -50,7 +75,12 @@
   allowfullscreen
   ></iframe>
 
-  The following Snowflake query returns a list of available databases in the current account:
+  To view a list of available databases in the current Snowflake account:
+
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click **Data > Databases**.
+
+  Alternatively, the following Snowflake query returns a list of available databases in the current account:
 
   ```text
   SHOW DATABASES;
@@ -68,7 +98,13 @@
   allowfullscreen
   ></iframe>
 
-  The following Snowflake query returns a list of available schemas in the current account:
+  To view a list of available schemas for a database in the current Snowflake account:
+
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click **Data > Databases**.
+  3. Expand the name of the target database.
+
+  Alternatively, the following Snowflake query returns a list of available schemas in the current account:
 
   ```text
   SHOW SCHEMAS;
@@ -92,7 +128,15 @@
   allowfullscreen
   ></iframe>
 
-  The following Snowflake query returns a list of available tables for the schema named `<schema-name>` in the datbase named 
+  To view a list of available tables for a schema in a database in the current Snowflake account:
+
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click **Data > Databases**.
+  3. Expand the name of the database that contains the target schema.
+  4. Expand the name of the target schema. 
+  5. Expand **Tables**.
+
+  Alternatively, the following Snowflake query returns a list of available tables for the schema named `<schema-name>` in the datbase named 
   `<database-name>` in the current account:
 
   ```text
@@ -148,6 +192,7 @@
   );
   ```
 
+- The name of the column in the table that uniquely identifies each record (for example, `RECORD_ID`).
 - The name of the Snowflake [role](https://docs.snowflake.com/sql-reference/sql/create-role) that the user belongs to and that also has sufficient access to the Snowflake database, schema, table, and host.
 
   - To create a database in Snowflake, the role needs to be granted `CREATE DATABASE` privilege at the current account level; and `USAGE` privilege on the warehouse that is used to create the database.
@@ -156,6 +201,16 @@
   - To write to a table in Snowflake, the role needs to be granted `USAGE` privilege on the database and schema and the warehouse that is used to write to the table; and `INSERT` on the table.
   - To read from a table in Snowflake, the role needs to be granted `USAGE` privilege on the database and schema and the warehouse that is used to write to the table; and `SELECT` on the table.
 
-  [Grant privileges to a role](https://docs.snowflake.com/sql-reference/sql/grant-privilege). [Learn more](https://docs.snowflake.com/user-guide/security-access-control-privileges). 
+  To view a list of available roles in the current Snowflake account:
 
-- For the destination connector, the name of the column in the table that uniquely identifies each record (for example, `RECORD_ID`).
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click **Admin > Users & Roles**.
+  3. Click the **Roles** tab.
+
+  Alternatively, the following Snowflake query returns a list of available roles in the current account:
+
+  ```text
+  SHOW ROLES;
+  ```
+
+  [Grant privileges to a role](https://docs.snowflake.com/sql-reference/sql/grant-privilege). [Learn more](https://docs.snowflake.com/user-guide/security-access-control-privileges). 

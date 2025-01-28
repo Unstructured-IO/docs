@@ -40,18 +40,22 @@ if __name__ == "__main__":
         chunker_config=ChunkerConfig(chunking_strategy="by_title"),
         embedder_config=EmbedderConfig(embedding_provider="huggingface"),
         destination_connection_config=SnowflakeConnectionConfig(
-            access_config=SnowflakeAccessConfig(password=os.getenv("SNOWFLAKE_PASSWORD")),
+            access_config=SnowflakeAccessConfig(
+                password=os.getenv("SNOWFLAKE_PASSWORD")
+            ),
             account=os.getenv("SNOWFLAKE_ACCOUNT"),
             user=os.getenv("SNOWFLAKE_USER"),
             host=os.getenv("SNOWFLAKE_HOST"),
             port=os.getenv("SNOWFLAKE_PORT"),
             database=os.getenv("SNOWFLAKE_DATABASE"),
-            schema="PUBLIC"
+            schema=os.getenv("SNOWFLAKE_SCHEMA"),
+            role=os.getenv("SNOWFLAKE_ROLE")
         ),
         stager_config=SnowflakeUploadStagerConfig(),
         uploader_config=SnowflakeUploaderConfig(
             batch_size=50,
-            table_name="elements"
+            table_name=os.getenv("SNOWFLAKE_TABLE"),
+            record_id_key=os.getenv("SNOWFLAKE_RECORD_ID_KEY")
         )
     ).run()
 ```
