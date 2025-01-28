@@ -32,7 +32,7 @@ specify the settings for the workflow, as follows:
             "source_id": "<source-connector-id>",
             "destination_id": "<destination-connector-id>",
             "workflow_type": "<type>",
-            "schedule": "<cron-expression>"
+            "schedule": "<schedule-timeframe>"
         }'
         ```
     </Accordion>
@@ -57,7 +57,7 @@ specify the settings for the workflow, as follows:
                "source_id": "<source-connector-id>",
                "destination_id": "<destination-connector-id>",
                "workflow_type": "<type>",
-               "schedule": "<cron-expression>"
+               "schedule": "<schedule-timeframe>"
            }
            ```
 
@@ -73,12 +73,21 @@ Replace the preceding placeholders as follows:
 - `<destination-connector-id>` (_required_) - The ID of the target destination connector. To get the ID, 
     use the `GET` method to call the `/destinations` endpoint. [Learn more](/platform/api/overview#list-destination-connectors).
 - `<type>` (_required_) - The workflow optimization type. Available values include `advanced`, `basic`, and `platinum`.
-- `<cron-expression>` - The repeating automatic run schedule, specified as a cron expression, for example 
-   `59 11 * * 4` to run the workflow at 11:59 PM every Thursday. 
-   [Get help building cron expressions](https://crontab.guru/). 
-   [Learn more](https://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html).
+- `<schedule-timeframe>` - The repeating automatic run schedule, specified as a predefined phrase. The available predefined phrases are:
 
-   If `schedule` is not specified or if `crontab_entries` is empty, the workflow does not automatically run on a repeating schedule.
+  - `every 15 minutes`: Every 15 minutes (cron expression: `*/15 * * * *`).
+  - `every hour`: At the first minute of every hour (cron expression: `0 * * * *`).
+  - `every 2 hours`: At the first minute of every second hour (cron expression: `0 */2 * * *`).
+  - `every 4 hours`: At the first minute of every fourth hour (cron expression: `0 */4 * * *`).
+  - `every 6 hours`: At the first minute of every sixth hour (cron expression: `0 */6 * * *`).
+  - `every 8 hours`: At the first minute of every eighth hour (cron expression: `0 */8 * * *`).
+  - `every 10 hours`: At the first minute of every tenth hour (cron expression: `0 */10 * * *`).
+  - `every 12 hours`: At the first minute of every twelfth hour (cron expression: `0 */12 * * *`).
+  - `daily`: At the first minute of every day (cron expression: `0 0 * * *`).
+  - `weekly`: At the first minute of every Sunday (cron expression: `0 0 * * 0`).
+  - `monthly`: At the first minute of the first day of every month (cron expression: `0 0 1 * *`).
+    
+  If `schedule` is not specified, the workflow does not automatically run on a repeating schedule.
 
 ## Update a workflow
 
