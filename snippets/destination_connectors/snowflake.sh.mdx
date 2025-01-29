@@ -6,8 +6,6 @@
 unstructured \
   local \
     --input-path $LOCAL_FILE_INPUT_DIR \
-    --partition-by-api \
-    --strategy hi_res \
     --chunking-strategy by_title \
     --embedding-provider huggingface \
     --partition-by-api \
@@ -18,10 +16,13 @@ unstructured \
     --account $SNOWFLAKE_ACCOUNT \
     --user $SNOWFLAKE_USER \
     --password $SNOWFLAKE_PASSWORD \
+    --role $SNOWFLAKE_ROLE \
     --host $SNOWFLAKE_HOST \
     --port $SNOWFLAKE_PORT \
     --database $SNOWFLAKE_DATABASE \
-    --schema PUBLIC \
-    --table-name elements \
-    --batch-size 50
+    --schema $SNOWFLAKE_SCHEMA \
+    --batch-size 50 \
+    --table-name $SNOWFLAKE_TABLE \
+    --record-id-key $SNOWFLAKE_RECORD_ID_KEY \
+
 ```

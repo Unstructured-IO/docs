@@ -63,10 +63,18 @@ To generate embeddings, choose one of the following embedding providers and mode
 
 <Note>You can change a workflow's preconfigured provider only through [Custom](/platform/workflows#create-a-custom-workflow) workflow settings.</Note>
 
-- **OpenAI**: Use [OpenAI](https://openai.com) to generate embeddings. Also, choose the model to use:
+- **Azure OpenAI**: Use [Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service) to generate embeddings. Also, choose the model to use:
 
   - **text-embedding-3-small**, with 1536 dimensions.
   - **text-embedding-3-large**, with 3072 dimensions.
-  - **Ada 002 (Text)**, with 1536 dimensions.
+  - **Ada 002 (Text)** (`text-embedding-ada-002`), with 1536 dimensions.
 
-  [Learn more](https://platform.openai.com/docs/guides/embeddings).
+  [Learn more](https://learn.microsoft.com/azure/ai-services/openai/concepts/models#embeddings).
+
+- **TogetherAI**: Use [TogetherAI](https://www.together.ai/) to generate embeddings. Also, choose the model to use:
+
+  - **M2-BERT-80M-2K-Retrieval**, with 768 dimensions.
+  - **M2-BERT-80M-8K-Retrieval**, with 768 dimensions.
+  - **M2-BERT-80M-32K-Retrieval**, with 768 dimensions.
+  
+  [Learn more](https://docs.together.ai/docs/serverless-models#embedding-models).

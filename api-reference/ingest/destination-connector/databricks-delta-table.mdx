@@ -1,0 +1,37 @@
+---
+title: Delta Tables in Databricks
+---
+
+<Note>
+    This article covers connecting Unstructured to Delta Tables in Databricks.
+    
+    For information about connecting Unstructured to Delta Tables in Amazon S3 instead, see 
+    [Delta Tables in Amazon S3](/api-reference/ingest/destination-connector/delta-table).
+
+    For information about connecting Unstructured to Databricks Volumes instead, see 
+    [Databricks Volumes](/api-reference/ingest/destination-connector/databricks-volumes).
+</Note>
+
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentDatabricksDeltaTable from '/snippets/dc-shared-text/databricks-delta-table-cli-api.mdx';
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedContentDatabricksDeltaTable/>
+<SharedAPIKeyURL/>
+
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library. The source connector can be any of the ones supported. This example uses the local source connector:
+
+import DatabricksDeltaTableSQLBasedAPISh from '/snippets/destination_connectors/databricks_delta_table_sql_based.sh.mdx';
+import DatabricksDeltaTableVolumeBasedAPISh from '/snippets/destination_connectors/databricks_delta_table_volume_based.sh.mdx';
+import DatabricksDeltaTableSQLBasedAPIPyV2 from '/snippets/destination_connectors/databricks_delta_table_sql_based.v2.py.mdx';
+import DatabricksDeltaTableVolumeBasedAPIPyV2 from '/snippets/destination_connectors/databricks_delta_table_volume_based.v2.py.mdx';
+
+<CodeGroup>
+  <DatabricksDeltaTableSQLBasedAPISh />
+  <DatabricksDeltaTableVolumeBasedAPISh />
+  <DatabricksDeltaTableSQLBasedAPIPyV2 />
+  <DatabricksDeltaTableVolumeBasedAPIPyV2 />
+</CodeGroup>

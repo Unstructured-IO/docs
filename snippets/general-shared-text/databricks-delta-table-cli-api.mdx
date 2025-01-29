@@ -1,0 +1,32 @@
+The Delta Tables in Databricks connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[databricks-delta-tables]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `DATABRICKS_HOST` - The Databricks cluster's or SQL warehouse's **Server Hostname** value, represented by `--server-hostname` (CLI) or `server_hostname` (Python).
+- `DATABRICKS_HTTP_PATH` - The cluster's or SQL warehouse's **HTTP Path** value, represented by `--http-path` (CLI) or `http_path` (Python).
+- `DATABRICKS_TOKEN` - For Databricks personal access token authentication, the token's value, represented by `--token` (CLI) or `token` (Python).
+- `DATABRICKS_CLIENT_ID` - For Databricks managed service principal authenticaton, the service principal's **UUID** value, represented by `--client-id` (CLI) or `client_id` (Python).
+- `DATABRICKS_CLIENT_SECRET` - For Databricks managed service principal authenticaton, the service principal's OAuth **Secret** value, represented by `--client-secret` (CLI) or `client_secret` (Python).
+- `DATABRICKS_CATALOG` - The name of the catalog in Unity Catalog, represented by `--catalog` (CLI) or `catalog` (Python).
+- `DATABRICKS_DATABASE` - The name of the schema (database) inside of the catalog, represented by `--database` (CLI) or `database` (Python). The default is `default` if not otherwise specified.
+- `DATABRICKS_TABLE` - The name of the table inside of the schema (database), represented by `--table-name` (CLI) or `table_name` (Python). The default is `elements` if not otherwise specified.
+
+For the SQL-based implementation, add these environment variables:
+
+- `DATABRICKS_RECORD_ID_KEY` - The name of the column that uniquely identifies each record in the table, represented by `--record-id-key` (CLI) or `record_id_key` (Python).
+- The maximum number of records to be transmitted per batch, represented by `--batch-size` (CLI) or `batch_size` (Python). The default is `50` if not otherwise specified.
+
+For the volume-based implementation, add these environment variables:
+
+- `DATABRICKS_SCHEMA` - The name of the schema (database) inside of the catalog, represented by `--schema` (CLI) or `schema` (Python). This name of this database (schema) must be the same as 
+  the value of the `DATABRICKS_DATABASE` environment variable and is required for compatiblity. The default is `default` if not otherwise specified.  
+- `DATABRICKS_VOLUME` - The name of the volume inside of the schema (database), represented by `--volume` (CLI) or `volume` (Python).
+- `DATABRICKS_VOLUME_PATH` - Optionally, a specific path inside of the volume that you want to start accessing from, starting from the volume's root, represented by `--volume-path` (CLI) or `volume_path` (Python). The default is to start accessing from the volume's root if not otherwise specified.

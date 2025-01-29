@@ -1,0 +1,74 @@
+```python Python Ingest v2 (SQL-Based)
+import os
+
+from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+from unstructured_ingest.v2.interfaces import ProcessorConfig
+
+from unstructured_ingest.v2.processes.connectors.sql.databricks_delta_tables import (
+    DatabricksDeltaTablesConnectionConfig,
+    DatabricksDeltaTablesAccessConfig,
+    DatabricksDeltaTablesUploadStagerConfig,
+    DatabricksDeltaTablesUploaderConfig
+)
+
+from unstructured_ingest.v2.processes.connectors.local import (
+    LocalIndexerConfig,
+    LocalConnectionConfig,
+    LocalDownloaderConfig
+)
+
+from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+from unstructured_ingest.v2.processes.chunker import ChunkerConfig
+from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+
+# Chunking and embedding are optional.
+
+if __name__ == "__main__":
+
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
+        downloader_config=LocalDownloaderConfig(),
+        source_connection_config=LocalConnectionConfig(),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
+        
+        # For authenticating with Databricks personal access tokens.
+        destination_connection_config=DatabricksDeltaTablesConnectionConfig(
+            access_config=DatabricksDeltaTablesAccessConfig(
+                token=os.getenv("DATABRICKS_TOKEN"),
+            ),
+            server_hostname=os.getenv("DATABRICKS_HOST"),
+            http_path=os.getenv("DATABRICKS_HTTP_PATH")
+        ),
+
+        # For authenticating with Databricks managed service principals.
+        # destination_connection_config=DatabricksDeltaTablesConnectionConfig(
+        #     access_config=DatabricksDeltaTablesAccessConfig(
+        #         client_id=os.getenv("DATABRICKS_CLIENT_ID"),
+        #         client_secret=os.getenv("DATABRICKS_CLIENT_SECRET")
+        #     ),
+        #     server_hostname=os.getenv("DATABRICKS_HOST"),
+        #     http_path=os.getenv("DATABRICKS_HTTP_PATH")
+        # ),
+
+        stager_config=DatabricksDeltaTablesUploadStagerConfig(),
+        uploader_config=DatabricksDeltaTablesUploaderConfig(
+            catalog=os.getenv("DATABRICKS_CATALOG"),
+            database=os.getenv("DATABRICKS_DATABASE"),
+            table_name=os.getenv("DATABRICKS_TABLE"),
+            record_id_key=os.getenv("DATABRICKS_RECORD_ID_KEY"),
+            batch_size=50    
+        )
+    ).run()
+```

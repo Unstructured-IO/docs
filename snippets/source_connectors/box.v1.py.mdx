@@ -27,7 +27,7 @@ if __name__ == "__main__":
             remote_url=os.getenv("BOX_REMOTE_URL"),
             recursive=True,
             access_config=BoxAccessConfig(
-                box_app_config=os.getenv("BOX_APP_CONFIG_PATH")
+                box_app_config=os.getenv("BOX_APP_CONFIG")
             ),
         ),
     )
