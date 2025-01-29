@@ -1,0 +1,25 @@
+```bash REST (Create)
+curl --request 'POST' --location \
+"$UNSTRUCTURED_API_URL/destinations" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header 'content-type: application/json' \
+--data \
+'{
+    "name": "<name>",
+    "type": "databricks_volume_delta_tables",
+    "config": {
+        "server_hostname": "<server-hostname>",
+        "http_path": "<http-path>",
+        "token": "<token>",
+        "client_id": "<client-id>",
+        "client_secret": "<client-secret>",
+        "volume": "<volume>",
+        "catalog": "<catalog>",
+        "volume_path": "<volume-path>",
+        "schema": "<schema>",
+        "database": "<database>",
+        "table_name": "<table-name>"
+    }
+}'
+```
