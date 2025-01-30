@@ -1,0 +1,30 @@
+---
+title: Kafka
+---
+
+Send processed data from Unstructured to Kafka.
+
+The requirements are as follows.
+
+import KafkaPrerequisites from '/snippets/general-shared-text/kafka.mdx';
+
+<KafkaPrerequisites />
+
+To create or change a Kafka destination connector, see the following examples.
+
+import KafkaAPIRESTCreate from '/snippets/destination_connectors/kafka_rest_create.mdx';
+import KafkaAPIRESTChange from '/snippets/destination_connectors/kafka_rest_change.mdx';
+
+<CodeGroup>
+    <KafkaAPIRESTCreate />
+    <KafkaAPIRESTChange />
+</CodeGroup>
+
+Replace the preceding placeholders as follows:
+
+import KafkaAPIPlaceholders from '/snippets/general-shared-text/kafka-api-placeholders.mdx';
+
+<KafkaAPIPlaceholders />
+
+To change a connector, replace `<connector-id>` with the source connector's unique ID. 
+To get this ID, see [List source connectors](/platform/api/overview#list-source-connectors).
