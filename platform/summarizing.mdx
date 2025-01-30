@@ -3,8 +3,11 @@ title: Summarizing
 ---
 
 After partitioning and chunking, _summarizing_ generates text-based summaries of images and tables. 
-This summarization is done by using the [GPT-4o](https://openai.com/index/hello-gpt-4o/) or 
-[Claude 3.5 Sonnet](https://www.anthropic.com/news/claude-3-5-sonnet) models. 
+This summarization is done by using models offered through these providers:
+
+- [GPT-4o](https://openai.com/index/hello-gpt-4o/), provided through OpenAI.
+- [Claude 3.5 Sonnet](https://www.anthropic.com/news/claude-3-5-sonnet), provided through Anthropic. 
+- [Claude 3.5 Sonnet](https://aws.amazon.com/bedrock/claude/), provided through Amazon Bedrock.
 
 Here is an example of the output of image summarization using GPT-4o. Note specifically the `text` field that is added. 
 Line breaks have been inserted here for readability. The output will not contain these line breaks. 
@@ -68,19 +71,20 @@ Line breaks have been inserted here for readability. The output will not contain
 }
 ```
 
-## Summarize images and tables
+## Summarize images or tables
 
-To summarize images and tables, in the **Enrichment model** section of an **Enrichment** node in a workflow, specify the following:
+To summarize images or tables, in the **Task** drop-down list of an **Enrichment** node in a workflow, specify the following:
 
 <Note>You can change a workflow's summarization settings only through [Custom](/platform/workflows#create-a-custom-workflow) workflow settings.</Note>
 
-For image summarization, choose one of the following:
+For image summarization, select **Image Description**, and then choose one of the following provider (and model) combinations to use:
 
-- **OpenAI Image Description**: Use GPT-4o to summarize images. [Learn more](https://openai.com/index/hello-gpt-4o/).
-- **Anthropic Image Description**: Use Claude 3.5 Sonnet to summarize images. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+- **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
+- **Anthropic (Claude 3.5 Sonnet)**. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+- **Amazon Bedrock (Claude 3.5 Sonnet)**. [Learn more](https://aws.amazon.com/bedrock/claude/).
 
-For table summarization, choose one of the following:
+For table summarization, select **Table Description**, and then choose one of the following provider (and model) combinations to use:
 
-- **OpenAI GPT-4o Table Description**: Use GPT-4o to summarize tables. [Learn more](https://openai.com/index/hello-gpt-4o/).
-- **OpenAI GPT-4o Table to HTML**: Use GPT-4o to convert tables to HTML format. [Learn more](https://openai.com/index/hello-gpt-4o/).
-- **Anthropic Table Description**: Use Claude 3.5 Sonnet to summarize tables. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+- **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
+- **Anthropic (Claude 3.5 Sonnet)**. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+- **Amazon Bedrock (Claude 3.5 Sonnet)**. [Learn more](https://aws.amazon.com/bedrock/claude/).
