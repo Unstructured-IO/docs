@@ -59,11 +59,11 @@ on Hugging Face:
 
 ## Generate embeddings
 
-To generate embeddings, choose one of the following embedding providers and models in the **Providers** section of an **Embedder** node in a workflow:
+To generate embeddings, choose one of the following embedding providers and models in the **Select Embedding Model** section of an **Embedder** node in a workflow:
 
 <Note>You can change a workflow's preconfigured provider only through [Custom](/platform/workflows#create-a-custom-workflow) workflow settings.</Note>
 
-- **Azure OpenAI**: Use [Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service) to generate embeddings. Also, choose the model to use:
+- **Azure OpenAI**: Use [Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service) to generate embeddings with one of the following models:
 
   - **text-embedding-3-small**, with 1536 dimensions.
   - **text-embedding-3-large**, with 3072 dimensions.
@@ -71,7 +71,15 @@ To generate embeddings, choose one of the following embedding providers and mode
 
   [Learn more](https://learn.microsoft.com/azure/ai-services/openai/concepts/models#embeddings).
 
-- **TogetherAI**: Use [TogetherAI](https://www.together.ai/) to generate embeddings. Also, choose the model to use:
+- **Amazon Bedrock**: Use [Amazon Bedrock](https://aws.amazon.com/bedrock) to generate embeddings with one of the following models:
+
+  - **Titan Text Embeddings V2**, with 1024 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html).
+  - **Titan Embeddings G1 - Text**, with 1536 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html).
+  - **Titan Multimodal Embeddings G1**, with 1024 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-multiemb-models.html).
+  - **Cohere Embed English**, with 1024 embeddings. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-embed.html).
+  - **Cohere Embed Multilingual**, with 1024 embedding. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-embed.html).
+
+- **TogetherAI**: Use [TogetherAI](https://www.together.ai/) to generate embeddings with one of the following models:
 
   - **M2-BERT-80M-2K-Retrieval**, with 768 dimensions.
   - **M2-BERT-80M-8K-Retrieval**, with 768 dimensions.
