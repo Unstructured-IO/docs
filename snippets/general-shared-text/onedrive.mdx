@@ -8,19 +8,25 @@ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; pic
 allowfullscreen
 ></iframe>
 
-- A OneDrive account.
-- The User Principal Name (UPN) for the OneDrive account. This is typically the OneDrive account user's email address.
+- [A Microsoft 365 or Office 365 plan](https://learn.microsoft.com/office365/servicedescriptions/office-365-platform-service-description/office-365-plan-options) that includes 
+  both OneDrive and SharePoint Online. (Even if you only plan to use OneDrive, you still need a plan that includes SharePoint Online, 
+  because OneDrive is built on SharePoint technology.)
+- The User Principal Name (UPN) for the OneDrive account. This is typically the OneDrive account user's email address. To find a UPN:
+
+  1. Depending on your plan, sign in to your Microsoft 365 admin center (typically [https://admin.microsoft.com](https://admin.microsoft.com)) using your administrator credentials, 
+     or sign in to your Office 365 portal (typically [https://portal.office.com](https://portal.office.com)) using your credentials.
+  2. In the **Users** section, click **Active users**.
+  3. Locate the user account in the list of active users.
+  4. The UPN is displayed in the **Username** column.
+
 - The path to the target OneDrive folder, starting from the OneDrive account's root folder, for example `my-folder/my-subfolder`.
 - The client ID, tenant ID, and client secret for the Microsoft Entra ID app registration that has access to the target OneDrive account and 
-  also has the correct set of Microsoft Graph authentication scopes. These scopes include:
+  also has the correct set of Microsoft Graph access permissions. These permissions include:
 
   - `Files.ReadWrite.All` (if both reading and writing are needed)
   - `Sites.ReadWrite.All` (if both reading and writing are needed)
   - `User.Read.All`
   - `Directory.Read.All`
-  
-See also:
-
-- [Registering your app for Microsoft Graph](https://learn.microsoft.com/onedrive/developer/rest-api/getting-started/app-registration)
-- [OneDrive authentication and sign-in](https://learn.microsoft.com/onedrive/developer/rest-api/getting-started/msa-oauth)
-- [OneDrive API documentation](https://docs.microsoft.com/onedrive/developer/rest-api/)
+  1. [Create an Entra ID app registration](https://learn.microsoft.com/entra/identity-platform/quickstart-register-app?pivots=portal).
+  2. [Add Graph access permissions to an app registration](https://learn.microsoft.com/entra/identity-platform/howto-update-permissions?pivots=portal#add-permissions-to-an-application).
+  3. [Grant consent for the added Graph permissions](https://learn.microsoft.com/entra/identity-platform/howto-update-permissions?pivots=portal#grant-consent-for-the-added-permissions-for-the-enterprise-application).
