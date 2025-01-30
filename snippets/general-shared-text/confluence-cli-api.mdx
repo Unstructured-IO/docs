@@ -10,16 +10,16 @@ import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-d
 
 The following environment variables:
 
-- `CONFLUENCE_URL` - The URL of the Confluence instance, represented by `--url` (CLI) or `url` (Python).
+- `CONFLUENCE_URL` - The target Confluence site's URL, represented by `--url` (CLI) or `url` (Python).
 - One of the following:
 
-  - `CONFLUENCE_API_TOKEN` - The value of the Confluence API token for authenticating with the Confluence instance, represented by `--api-token` (CLI) or `api_token` (Python).
-  - `CONFLUENCE_ACCESS_TOKEN` - The value of the Confluence personal access token for authenticating with the Confluence instance, represented by `--access-token` (CLI) or `access_token` (Python).
-
-- `CONFLUENCE_USER_EMAIL` - The user's email address for authenticating with the Confluence instance, represented by `--user-email` (CLI) or `user_email` (Python).
+  - For API token authentication: `CONFLUENCE_USERNAME` and `CONFLUENCE_TOKEN` - The name or email address,and API token of the target Confluence user, represented by `--username` (CLI) or `username` (Python) and `--token` (CLI) or `token` (Python), respectively.
+  - For personal access token (PAT) authentication: `CONFLUENCE_TOKEN` - The PAT for the target Confluence user, represented by `--token` (CLI) or `token` (Python).
+  - For password authentication: `CONFLUENCE_USERNAME` and `CONFLUENCE_PASSWORD` - The name or email address, and password of the target Confluence user, represented by `--username` (CLI) or `username` (Python) and `--password` (CLI) or `password` (Python), respectively.
 
 Additional settings include:
 
 - `--spaces` (CLI) or `spaces` (Python): Optionally, the list of the names of the specific spaces to access, expressed as a comma-separated list of strings (CLI) or an array of strings (Python), with each string representing a space's name. The default is no specific spaces, if not otherwise specified.
 - `--max-num-of-spaces` (CLI) or `max_num_of_spaces` (Python): Optionally, the maximum number of spaces to access, expressed as an integer. The default value is `500` if not otherwise specified.
 - `--max-num-of-docs-from-each-space` (CLI) or `max_num_of_docs_from_each_space` (Python): Optionally, the maximum number of documents to access from each space, expressed as an integer. The default value is `100` if not otherwise specified.
+- `--cloud` or `--no-cloud` (CLI) or `cloud` (Python): Optionally, whether to use Confluence Cloud (`--cloud` for CLI or `cloud=True` for Python). The default is `--no-cloud` (CLI) or `cloud=False` (Python) if not otherwise specified.
