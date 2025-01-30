@@ -6,13 +6,14 @@ unstructured \
     --account $SNOWFLAKE_ACCOUNT \
     --user $SNOWFLAKE_USER \
     --password $SNOWFLAKE_PASSWORD \
+    --role $SNOWFLAKE_ROLE \
     --host $SNOWFLAKE_HOST \
     --port $SNOWFLAKE_PORT \
     --database $SNOWFLAKE_DATABASE \
-    --schema PUBLIC \
-    --table-name elements\
-    --id-column id \
-    --batch-size 100 \
+    --schema $SNOWFLAKE_SCHEMA \
+    --batch-size 50 \
+    --table-name $SNOWFLAKE_TABLE \
+    --id-column $SNOWFLAKE_RECORD_ID_KEY \
     --download-dir $LOCAL_FILE_DOWNLOAD_DIR\
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
