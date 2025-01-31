@@ -7,7 +7,18 @@ curl --request 'PUT' --location \
 --data \
 '{
     "config": {
-        ...
+        "database": <database>,
+        "ssl": <true|false>,
+        "batch_size": <batch-size>,
+
+        # For URI authentication:
+        "uri": "<uri>"
+      
+        # For password authentication:
+        "host": "<host>",
+        "port": <port>,
+        "username": "<username>",
+        "password": "<password>"
     }
 }'
 ```

@@ -9,7 +9,18 @@ curl --request 'POST' --location \
     "name": "<name>",
     "type": "redis",
     "config": {
-        ...
+        "database": <database>,
+        "ssl": <true|false>,
+        "batch_size": <batch-size>,
+
+        # For URI authentication:
+        "uri": "<uri>"
+      
+        # For password authentication:
+        "host": "<host>",
+        "port": <port>,
+        "username": "<username>",
+        "password": "<password>"   
     }
 }'
 ```
