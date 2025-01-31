@@ -1,14 +1,48 @@
 ```bash CLI
 #!/usr/bin/env bash
 
+# For API token authentication:
 unstructured-ingest \
   confluence \
+    --token $CONFLUENCE_TOKEN \
+    --url $CONFLUENCE_URL \
+    --username $CONFLUENCE_USERNAME \
+    --cloud \
+    --spaces luke,paul \
+    --max-num-of-spaces 500 \
+    --max-num-of-docs-from-each-space 150 \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface
+
+# For personal access token (PAT) authentication:
+unstructured-ingest \
+  confluence \
+    --token $CONFLUENCE_TOKEN \
     --url $CONFLUENCE_URL \
     --spaces luke,paul \
-    --user-email $CONFLUENCE_USER_EMAIL \
-    --api-token $CONFLUENCE_API_TOKEN \
-    # Or:
-    # --access-token $CONFLUENCE_ACCESS_TOKEN \
+    --max-num-of-spaces 500 \
+    --max-num-of-docs-from-each-space 150 \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface
+
+# For password authentication:
+unstructured-ingest \
+  confluence \
+    --password $CONFLUENCE_PASSWORD \
+    --url $CONFLUENCE_URL \
+    --username $CONFLUENCE_USERNAME \
+    --no-cloud \
+    --spaces luke,paul \
+    --max-num-of-spaces 500 \
+    --max-num-of-docs-from-each-space 150 \
     --output-dir $LOCAL_FILE_OUTPUT_DIR \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \

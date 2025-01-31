@@ -28,14 +28,16 @@ allowfullscreen
         <Note>
             If you choose a pay-per-page plan, after your first 14 days of usage or more than 1000 processed pages per day, 
             whichever comes first, your account is then billed at Unstructured's standard service usage rates. To keep using the service, 
-            you must provide Unstructured with your payment details.
+            you must 
+            [provide Unstructured with your payment details](/platform/billing#add-view-or-change-pay-per-page-payment-details).
             
             To save money by switching from a pay-per-page to a subscribe-and-save plan, go to the 
-            [Unstructured Subscribe & Save](https://unstructured.io/subscribeandsave) page and complete the on-screen instructions.
+            [Unstructured Subscribe & Save](https://unstructured.io/subscribeandsave) page and complete the on-screen instructions. 
+            To save even more money by making a long-term billing commitment, 
+            stop here and sign up through the [For Enterprise](https://unstructured.io/enterprise) page instead.
             
             By signing up for a pay-per-page or subscribe-and-save plan, your Unstructured account will run within the context of the Unstructured Platform on 
             Unstructured's own hosted cloud resources. If you would rather run the Unstructured Platform within the context of your own virtual private cloud (VPC), 
-            (or you want to save even more money by making a long-term billing commitment), 
             stop here and sign up through the [For Enterprise](https://unstructured.io/enterprise) page instead.
         </Note>
     </Step>
@@ -92,9 +94,9 @@ allowfullscreen
         ![Workflows in the sidebar](/img/platform/Workflows-Sidebar.png)
         1. In the sidebar, click **Workflows**.
         2. Click **New Workflow**.
-        3. Next to **Build it with me**, click **Create Workflow**.
+        3. Next to **Build it with Me**, click **Create Workflow**.
 
-           <Note>If a radio button appears instead of **Build it with me**, select it, and then click **Continue**.</Note>
+           <Note>If a radio button appears instead of **Build it with Me**, select it, and then click **Continue**.</Note>
 
         4. For **Workflow Name**, enter some unique name for this workflow.
         5. In the **Sources** dropdown list, select your source location from Step 3.
@@ -115,15 +117,14 @@ allowfullscreen
                 these files are processed. These errors typically occur when these larger PDF files have lots of tables and high-resolution images.
               </Note>
 
-        9. The **Reprocess all** box applies only to the Amazon S3 and Azure Blob Storage source connectors:
+        9. The **Reprocess All** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
 
            - Checking this box reprocesses all documents in the source location on every workflow run.
            - Unchecking this box causes new documents that have been added to the source location, as well as existing documents in the source location that have had their contents or titles changed, since the last workflow run to be processed on future runs. Other previously processed documents are not processed again.
 
-        10. If you want to retry processing any documents that failed to process, check the **Retry Failed Documents** box.
-        11. Click **Continue**.
-        12. If you want this workflow to run on a schedule, in the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
-        13. Click **Complete**.
+        10. Click **Continue**.
+        11. If you want this workflow to run on a schedule, in the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
+        12. Click **Complete**.
     </Step>
     <Step title="Process the documents">
         ![Workflows in the sidebar](/img/platform/Workflows-Sidebar.png)
@@ -136,7 +137,7 @@ allowfullscreen
         1. In the sidebar, click **Jobs**.
         2. In the list of jobs, wait for the job's **Status** to change to **Finished**.
         3. Click the row for the job.
-        4. If **Overview** displays **Success**, go to the next Step.
+        4. After **Overview** displays **Finished**, go to the next Step.
     </Step>
     <Step title="View the processed data">
         Go to your destination location to view the processed data.

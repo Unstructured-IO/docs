@@ -25,8 +25,8 @@ The Unstructured Platform is a no-code user interface, pay-as-you-go platform fo
 To get your data RAG-ready, the Unstructured Platform moves it through the following process:
 
 ```mermaid
-  flowchart LR
-    Connect[1. Connect]-->Route[2. Route]-->Transform[3. Transform]-->Chunk[4. Chunk]-->Enrich[5. Enrich]-->Embed[6. Embed]-->Persist[7. Persist]
+flowchart LR
+    Connect-->Route-->Transform-->Chunk-->Enrich-->Embed-->Persist
 ```
 
 <Steps>
@@ -74,27 +74,30 @@ To get your data RAG-ready, the Unstructured Platform moves it through the follo
   </Step>
 </Steps>
 
-To simplify this process and provide it as a no-code solution, the Unstructured Platform brings together four key concepts:
+To simplify this process and provide it as a no-code solution, the Unstructured Platform brings together these key concepts:
 
 ```mermaid
-  flowchart LR
-    subgraph Workflow[3. Workflow]
-        direction LR
-        Source[1. Source Connector] --> Destination[2. Destination Connector]
-    end
-    Jobs
-    Workflow[3. Workflow] --> Jobs[4. Jobs]
+flowchart LR
+    
+    SC[Source Connectors]
+    DC[Destination Connectors]
+    W[Workflow]
+    J[Jobs]
+    
+    SC --> W
+    DC --> W
+    W --> J
 ```
 
 <Steps>
-  <Step title="Source Connector">
+  <Step title="Source Connectors">
     [Source connectors](/platform/sources/overview) to ingest your data into the Unstructured Platform for transformation.
   </Step>
-  <Step title="Destination Connector">
+  <Step title="Destination Connectors">
     [Destination connectors](/platform/destinations/overview) tell the Unstructured Platform where to write your transformed data to.
   </Step>
   <Step title="Workflow">
-    [Workflows](/platform/workflows) connect sources to destinations and provide chunking, embedding, and scheduling options.
+    A [workflow](/platform/workflows) connects sources to destinations and provide chunking, embedding, and scheduling options.
   </Step>
   <Step title="Jobs">
     [Jobs](/platform/jobs) enable you to monitor data transformation progress.
@@ -111,16 +114,7 @@ Skip ahead to the [quickstart](/platform/quickstart).
 
 ## How do I get help?
 
-We are just an email away!
-
-![Unstructured account settings](/img/platform/AccountSettings.png)
-
-![Unstructured account settings need help button](/img/platform/AccountSettingsNeedHelp.png)
-
-1. In the Unstructured Platform, at the bottom of the sidebar, click your user icon, and then click **Account Settings**.
-2. In the upper corner, click **Need help**.
-
-Or, [contact us directly](https://unstructured.io/contact).
+[Contact us directly](https://unstructured.io/contact), or join our [Slack community](https://short.unstructured.io/pzw05l7).
 
 For enterprise support, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
 
