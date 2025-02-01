@@ -10,8 +10,8 @@ allowfullscreen
 
 The preceding video shows how to use Databricks personal access tokens (PATs), which are supported only for [Unstructured Ingest](/ingestion/overview).
 
-To learn how to use Databricks-managed service principals, which are supported by both the [Unstructured Platform](/platform/overview) and Unstructured Ingest, 
-see the additional videos later on this page.
+To learn how to use Databricks managed service principals, which are supported by both the [Unstructured Platform](/platform/overview) and Unstructured Ingest, 
+see the additional video later on this page.
 
 - The Databricks workspace URL. Get the workspace URL for 
   [AWS](https://docs.databricks.com/workspace/workspace-details.html#workspace-instance-names-urls-and-ids), 
@@ -29,7 +29,7 @@ see the additional videos later on this page.
   [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/), 
   or [GCP](https://docs.gcp.databricks.com/dev-tools/auth/index.html).
 
-  The following videos show how to create a Databricks-managed service principal and then grant it access to a Databricks volume:
+  The following video shows how to create a Databricks managed service principal:
 
   <iframe
   width="560"
@@ -41,20 +41,9 @@ see the additional videos later on this page.
   allowfullscreen
   ></iframe>
 
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/DykQRxgh2aQ"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
-
-  For the [Unstructured Platform](/platform/overview), only the following Databricks authentication type is supported:
-  
-  - For OAuth machine-to-machine (M2M) authentication (AWS, Azure, and GCP): The client ID and OAuth secret values for the corresponding service principal.
-    Note that for Azure, only Databricks-managed service principals are supported. Microsoft Entra ID-managed service principals are not supported.
+  For the [Unstructured Platform](/platform/overview), only Databricks OAuth machine-to-machine (M2M) authentication is supported for AWS, Azure, and GCP. 
+  You will need the the **Client ID** (or **UUID** or **Application** ID) and OAuth **Secret** (client secret) values for the corresponding service principal. 
+  Note that for Azure, only Databricks managed service principals are supported. Microsoft Entra ID managed service principals are not supported.
   
   For [Unstructured Ingest](/ingestion/overview), the following Databricks authentication types are supported:
 
@@ -69,10 +58,37 @@ see the additional videos later on this page.
   - For Google Cloud Platform credentials authentication (GCP only): The local path to the corresponding Google Cloud service account's credentials file.
   - For Google Cloud Platform ID authentication (GCP only): The Google Cloud service account's email address.
 
-- The Databricks catalog name for the volume. Get the catalog name for [AWS](https://docs.databricks.com/catalogs/manage-catalog.html), [Azure](https://learn.microsoft.com/azure/databricks/catalogs/manage-catalog), or [GCP](https://docs.gcp.databricks.com/catalogs/manage-catalog.html).
-- The Databricks schema name for the volume. Get the schema name for [AWS](https://docs.databricks.com/schemas/manage-schema.html), [Azure](https://learn.microsoft.com/azure/databricks/schemas/manage-schema), or [GCP](https://docs.gcp.databricks.com/schemas/manage-schema.html).
-- The Databricks volume name, and optionally any path in that volume that you want to access directly. Get the volume information for [AWS](https://docs.databricks.com/files/volumes.html), [Azure](https://learn.microsoft.com/azure/databricks/files/volumes), or [GCP](https://docs.gcp.databricks.com/files/volumes.html).
-- Make sure that the target user or service principal has access to the target volume. To learn more, see the documentation for 
-  [AWS](https://docs.databricks.com/volumes/utility-commands.html#change-permissions-on-a-volume), 
-  [Azure](https://learn.microsoft.com/azure/databricks/volumes/utility-commands#change-permissions-on-a-volume), 
-  or [GCP](https://docs.gcp.databricks.com/volumes/utility-commands.html#change-permissions-on-a-volume).
+- The name of the parent catalog in Unity Catalog for 
+  [AWS](https://docs.databricks.com/catalogs/create-catalog.html), 
+  [Azure](https://learn.microsoft.com/azure/databricks/catalogs/create-catalog), or 
+  [GCP](https://docs.gcp.databricks.com/catalogs/create-catalog.html) for the volume.
+- The name of the parent schema in Unity Catalog for 
+  [AWS](https://docs.databricks.com/schemas/create-schema.html), 
+  [Azure](https://learn.microsoft.com/azure/databricks/schemas/create-schema), or 
+  [GCP](https://docs.gcp.databricks.com/schemas/create-schema.html) for the volume.
+- The name of the volume in Unity Catalog for [AWS](https://docs.databricks.com/tables/managed.html), 
+  [Azure](https://learn.microsoft.com/azure/databricks/tables/managed), or 
+  [GCP](https://docs.gcp.databricks.com/tables/managed.html), and optionally any path in that volume that you want to access directly, beginning with the volume's root.
+- The Databricks workspace user or service principal must have the following _minimum_ set of privileges to read from or write to the 
+  existing volume in Unity Catalog:
+
+  - `USE CATALOG` on the volume's parent catalog in Unity Catalog.
+  - `USE SCHEMA` on the volume's parent schema in Unity Catalog.
+  - `READ VOLUME` and `WRITE VOLUME` on the volume.
+
+  Learn how to check and set Unity Catalog privileges for 
+  [AWS](https://docs.databricks.com/data-governance/unity-catalog/manage-privileges/index.html#show-grant-and-revoke-privileges), 
+  [Azure](https://learn.microsoft.com/azure/databricks/data-governance/unity-catalog/manage-privileges/#grant), or 
+  [GCP](https://docs.gcp.databricks.com/data-governance/unity-catalog/manage-privileges/index.html#show-grant-and-revoke-privileges).
+
+  The following videos shows how to grant a Databricks managed service principal privileges to a Unity Catalog volume:
+    
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/DykQRxgh2aQ"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
