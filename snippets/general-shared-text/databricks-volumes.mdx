@@ -1,19 +1,10 @@
-<iframe
-width="560"
-height="315"
-src="https://www.youtube.com/embed/rNZpwa1-g7M"
-title="YouTube video player"
-frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-allowfullscreen
-></iframe>
-
-The preceding video shows how to use Databricks personal access tokens (PATs), which are supported only for [Unstructured Ingest](/ingestion/overview).
-
-To learn how to use Databricks managed service principals, which are supported by both the [Unstructured Platform](/platform/overview) and Unstructured Ingest, 
-see the additional video later on this page.
-
-- The Databricks workspace URL. Get the workspace URL for 
+- A Databricks account on [AWS](https://docs.databricks.com/getting-started/free-trial.html), 
+  [Azure](https://learn.microsoft.com/azure/databricks/getting-started/), or 
+  [GCP](https://docs.gcp.databricks.com/getting-started/index.html).
+- A workspace within the Datbricks account for [AWS](https://docs.databricks.com/admin/workspace/index.html),
+  [Azure](https://learn.microsoft.com/azure/databricks/admin/workspace/), or 
+  [GCP](https://docs.gcp.databricks.com/admin/workspace/index.html).
+- The workspace's URL. Get the workspace URL for 
   [AWS](https://docs.databricks.com/workspace/workspace-details.html#workspace-instance-names-urls-and-ids), 
   [Azure](https://learn.microsoft.com/azure/databricks/workspace/workspace-details#workspace-instance-names-urls-and-ids), 
   or [GCP](https://docs.gcp.databricks.com/workspace/workspace-details.html#workspace-instance-names-urls-and-ids).
@@ -29,6 +20,13 @@ see the additional video later on this page.
   [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/), 
   or [GCP](https://docs.gcp.databricks.com/dev-tools/auth/index.html).
 
+  For the [Unstructured Platform](/platform/overview), only Databricks OAuth machine-to-machine (M2M) authentication is supported for 
+  [AWS](https://docs.databricks.com/dev-tools/auth/oauth-m2m.html), 
+  [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/oauth-m2m), and 
+  [GCP](https://docs.gcp.databricks.com/dev-tools/auth/oauth-m2m.html). 
+  You will need the the **Client ID** (or **UUID** or **Application** ID) and OAuth **Secret** (client secret) values for the corresponding service principal. 
+  Note that for Azure, only Databricks managed service principals are supported. Microsoft Entra ID managed service principals are not supported.
+
   The following video shows how to create a Databricks managed service principal:
 
   <iframe
@@ -40,29 +38,45 @@ see the additional video later on this page.
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowfullscreen
   ></iframe>
-
-  For the [Unstructured Platform](/platform/overview), only Databricks OAuth machine-to-machine (M2M) authentication is supported for AWS, Azure, and GCP. 
-  You will need the the **Client ID** (or **UUID** or **Application** ID) and OAuth **Secret** (client secret) values for the corresponding service principal. 
-  Note that for Azure, only Databricks managed service principals are supported. Microsoft Entra ID managed service principals are not supported.
   
   For [Unstructured Ingest](/ingestion/overview), the following Databricks authentication types are supported:
 
-  - For Databricks personal access token authentication (AWS, Azure, and GCP): The personal access token's value.
-  - For username and password (basic) authentication (AWS only): The user's name and password values.
-  - For OAuth machine-to-machine (M2M) authentication (AWS, Azure, and GCP): The client ID and OAuth secret values for the corresponding service principal.
-  - For OAuth user-to-machine (U2M) authentication (AWS, Azure, and GCP): No additional values.
-  - For Azure managed identities (MSI) authentication (Azure only): The client ID value for the corresponding managed identity.
-  - For Microsoft Entra ID service principal authentication (Azure only): The tenant ID, client ID, and client secret values for the corresponding service principal.
-  - For Azure CLI authentication (Azure only): No additional values.
-  - For Microsoft Entra ID user authentication (Azure only): The Entra ID token for the corresponding Entra ID user.
-  - For Google Cloud Platform credentials authentication (GCP only): The local path to the corresponding Google Cloud service account's credentials file.
-  - For Google Cloud Platform ID authentication (GCP only): The Google Cloud service account's email address.
+  - For Databricks personal access token authentication for 
+    [AWS](https://docs.databricks.com/dev-tools/auth/pat.html), 
+    [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/pat), or 
+    [GCP](https://docs.gcp.databricks.com/dev-tools/auth/pat.html): The personal access token's value.
+
+    The following video shows how to create a Databricks personal access token:
+
+    <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/OzEU2miAS6I"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+    ></iframe>
+
+  - For username and password (basic) authentication ([AWS](https://docs.databricks.com/archive/dev-tools/basic.html) only): The user's name and password values.
+  - For OAuth machine-to-machine (M2M) authentication ([AWS](https://docs.databricks.com/dev-tools/auth/oauth-m2m.html), 
+    [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/oauth-m2m), and 
+    [GCP](https://docs.gcp.databricks.com/dev-tools/auth/oauth-m2m.html)): The client ID and OAuth secret values for the corresponding service principal.
+  - For OAuth user-to-machine (U2M) authentication ([AWS](https://docs.databricks.com/dev-tools/auth/oauth-u2m.html), 
+    [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/oauth-u2m), and 
+    [GCP](https://docs.gcp.databricks.com/dev-tools/auth/oauth-u2m.html)): No additional values.
+  - For Azure managed identities (formerly Managed Service Identities (MSI) authentication) ([Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/azure-mi) only): The client ID value for the corresponding managed identity.
+  - For Microsoft Entra ID service principal authentication ([Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/azure-sp) only): The tenant ID, client ID, and client secret values for the corresponding service principal.
+  - For Azure CLI authentication ([Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/azure-cli) only): No additional values.
+  - For Microsoft Entra ID user authentication ([Azure](https://learn.microsoft.com/azure/databricks/dev-tools/user-aad-token) only): The Entra ID token for the corresponding Entra ID user.
+  - For Google Cloud Platform credentials authentication ([GCP](https://docs.gcp.databricks.com/dev-tools/auth/gcp-creds.html) only): The local path to the corresponding Google Cloud service account's credentials file.
+  - For Google Cloud Platform ID authentication ([GCP](https://docs.gcp.databricks.com/dev-tools/auth/gcp-id.html) only): The Google Cloud service account's email address.
 
 - The name of the parent catalog in Unity Catalog for 
   [AWS](https://docs.databricks.com/catalogs/create-catalog.html), 
   [Azure](https://learn.microsoft.com/azure/databricks/catalogs/create-catalog), or 
   [GCP](https://docs.gcp.databricks.com/catalogs/create-catalog.html) for the volume.
-- The name of the parent schema in Unity Catalog for 
+- The name of the parent schema (formerly known as a database) in Unity Catalog for 
   [AWS](https://docs.databricks.com/schemas/create-schema.html), 
   [Azure](https://learn.microsoft.com/azure/databricks/schemas/create-schema), or 
   [GCP](https://docs.gcp.databricks.com/schemas/create-schema.html) for the volume.
@@ -73,22 +87,22 @@ see the additional video later on this page.
   existing volume in Unity Catalog:
 
   - `USE CATALOG` on the volume's parent catalog in Unity Catalog.
-  - `USE SCHEMA` on the volume's parent schema in Unity Catalog.
+  - `USE SCHEMA` on the volume's parent schema (formerly known as a database) in Unity Catalog.
   - `READ VOLUME` and `WRITE VOLUME` on the volume.
 
-  Learn how to check and set Unity Catalog privileges for 
-  [AWS](https://docs.databricks.com/data-governance/unity-catalog/manage-privileges/index.html#show-grant-and-revoke-privileges), 
-  [Azure](https://learn.microsoft.com/azure/databricks/data-governance/unity-catalog/manage-privileges/#grant), or 
-  [GCP](https://docs.gcp.databricks.com/data-governance/unity-catalog/manage-privileges/index.html#show-grant-and-revoke-privileges).
+  The following videos shows how to create and set privileges for a catalog, schema (formerly known as a database), and volume in Unity Catalog.
 
-  The following videos shows how to grant a Databricks managed service principal privileges to a Unity Catalog volume:
-    
   <iframe
   width="560"
   height="315"
-  src="https://www.youtube.com/embed/DykQRxgh2aQ"
+  src="https://www.youtube.com/embed/yF9DJphhQQc"
   title="YouTube video player"
   frameborder="0"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowfullscreen
   ></iframe>
+
+  Learn more about how to check and set Unity Catalog privileges for 
+  [AWS](https://docs.databricks.com/data-governance/unity-catalog/manage-privileges/index.html#show-grant-and-revoke-privileges), 
+  [Azure](https://learn.microsoft.com/azure/databricks/data-governance/unity-catalog/manage-privileges/#grant), or 
+  [GCP](https://docs.gcp.databricks.com/data-governance/unity-catalog/manage-privileges/index.html#show-grant-and-revoke-privileges).
