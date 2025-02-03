@@ -1,0 +1,11 @@
+Fill in the following fields:
+
+- **Name** (_required_): A unique name for this connector.
+- **URI**: If **URI** is selected for **Authentication Method**, the connection URI for the target database user and password, hostname, and port number. Use the format of `redis://<username>:<password>@<hostname>:<port-number>`. If SSL encryption is enabled for the database, use `rediss://` instead of `redis://`.
+- **Host** (_required_ if **Password** is selected for **Authentication Method**): The target database's hostname.
+- **Port**: If **Password** is selected for **Authentication Method**, the database's port number. The default is `6379` unless otherwise specified.
+- **Username** (_required_ if **Password** is selected for **Authentication Method**): The name of the database user (not the logged in user).
+- **Password** (_required_ if **Password** is selected for **Authentication Method**): The database user's password.
+- **Database Index**: The number (index) for the target database. The default is `0` unless otherwise specified.
+- **SSL**: Check this box to enable SSL encryption for the connection. Check this box only if SSL is already set up and enabled for the target database. This box is checked by default.
+- **Batch Size**: The maximum number of records to upload in a single batch. The default is `100` unless otherwise specified.
