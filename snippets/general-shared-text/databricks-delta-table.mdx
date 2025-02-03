@@ -9,7 +9,7 @@
   - A SQL warehouse for [AWS](https://docs.databricks.com/compute/sql-warehouse/create.html), 
     [Azure](https://learn.microsoft.com/azure/databricks/compute/sql-warehouse/create), or 
     [GCP](https://docs.gcp.databricks.com/compute/sql-warehouse/create.html).
-  - A cluster for [AWS](https://docs.databricks.com/compute/use-compute.html), 
+  - An all-purpose cluster for [AWS](https://docs.databricks.com/compute/use-compute.html), 
     [Azure](https://learn.microsoft.com/azure/databricks/compute/use-compute), or 
     [GCP](https://docs.gcp.databricks.com/compute/use-compute.html).
 
@@ -102,7 +102,7 @@
 
   - A Databricks managed service principal. 
     This service principal must have the appropriate access permissions to the catalog, schema, table, volume, and cluster or SQL warehouse.
-  - The service principal's **UUID** value.
+  - The service principal's **UUID** (or **Client ID** or **Application ID**) value.
   - The OAuth **Secret** value for the service principal. 
 
   To get this information, see Steps 1-3 of the instructions for [AWS](https://docs.databricks.com/dev-tools/auth/oauth-m2m.html), 
@@ -113,3 +113,60 @@
       For Azure Databricks, this connector only supports Databricks managed service principals. 
       Microsoft Entra ID managed service principals are not supported.
   </Note>
+
+  The following video shows how to create a Databricks managed service principal:
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/wBmqv5DaA1E"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
+
+- The Databricks workspace user or Databricks managed service principal must have the following _minimum_ set of permissions and privileges to write to an 
+  existing volume or table in Unity Catalog:
+
+  - To use an all-purpose cluster for access, `Can Restart` permission on that cluster. Learn how to check and set cluster permissions for 
+    [AWS](https://docs.databricks.com/compute/clusters-manage.html#compute-permissions), 
+    [Azure](https://learn.microsoft.com/azure/databricks/compute/clusters-manage#cluster-level-permissions), or 
+    [GCP](https://docs.gcp.databricks.com/compute/clusters-manage.html#compute-permissions).
+  - To use a SQL warehouse for access, `Can use` permission on that SQL warehouse. Learn how to check and set SQL warehouse permissions for 
+    [AWS](https://docs.databricks.com/compute/sql-warehouse/create.html#manage-a-sql-warehouse), 
+    [Azure](https://learn.microsoft.com/azure/databricks/compute/sql-warehouse/create#manage), or 
+    [GCP](https://docs.gcp.databricks.com/compute/sql-warehouse/create.html#manage-a-sql-warehouse).
+  - To access a Unity Catalog volume, the following privileges:
+
+    - `USE CATALOG` on the volume's parent catalog in Unity Catalog.
+    - `USE SCHEMA` on the volume's parent schema in Unity Catalog.
+    - `READ VOLUME` and `WRITE VOLUME` on the volume.
+
+    Learn how to check and set Unity Catalog privileges for 
+    [AWS](https://docs.databricks.com/data-governance/unity-catalog/manage-privileges/index.html#show-grant-and-revoke-privileges), 
+    [Azure](https://learn.microsoft.com/azure/databricks/data-governance/unity-catalog/manage-privileges/#grant), or 
+    [GCP](https://docs.gcp.databricks.com/data-governance/unity-catalog/manage-privileges/index.html#show-grant-and-revoke-privileges).
+
+    The following videos shows how to grant a Databricks managed service principal privileges to a Unity Catalog volume:
+    
+    <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/DykQRxgh2aQ"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+    ></iframe>
+
+  - To access a Unity Catalog table, the following privileges:
+
+    - `USE CATALOG` on the table's parent catalog in Unity Catalog.
+    - `USE SCHEMA` on the tables's parent schema in Unity Catalog.
+    - `MODIFY` and `SELECT` on the table.
+
+    Learn how to check and set Unity Catalog privileges for 
+    [AWS](https://docs.databricks.com/data-governance/unity-catalog/manage-privileges/index.html#show-grant-and-revoke-privileges), 
+    [Azure](https://learn.microsoft.com/azure/databricks/data-governance/unity-catalog/manage-privileges/#grant), or 
+    [GCP](https://docs.gcp.databricks.com/data-governance/unity-catalog/manage-privileges/index.html#show-grant-and-revoke-privileges).
