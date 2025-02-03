@@ -1,0 +1,30 @@
+---
+title: Snowflake
+---
+
+Send processed data from Unstructured to Snowflake.
+
+The requirements are as follows.
+
+import SnowflakePrerequisites from '/snippets/general-shared-text/snowflake.mdx';
+
+<SnowflakePrerequisites />
+
+To create or change a Snowflake destination connector, see the following examples.
+
+import SnowflakeAPIRESTCreate from '/snippets/destination_connectors/snowflake_rest_create.mdx';
+import SnowflakeAPIRESTChange from '/snippets/destination_connectors/snowflake_rest_change.mdx';
+
+<CodeGroup>
+    <SnowflakeAPIRESTCreate />
+    <SnowflakeAPIRESTChange />
+</CodeGroup>
+
+Replace the preceding placeholders as follows:
+
+import SnowflakeAPIPlaceholders from '/snippets/general-shared-text/snowflake-api-placeholders.mdx';
+
+<SnowflakeAPIPlaceholders />
+
+To change a connector, replace `<connector-id>` with the destination connector's unique ID. 
+To get this ID, see [List destination connectors](/platform/api/overview#list-destination-connectors).

@@ -1,0 +1,29 @@
+```bash REST (Create)
+curl --request 'POST' --location \
+"$UNSTRUCTURED_API_URL/sources" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header 'content-type: application/json' \
+--data \
+'{
+    "name": "<name>",
+    "type": "snowflake",
+    "config": {
+        "account": "<account>",
+        "user": "<user>",
+        "host": "<host>",
+        "port": <port>,
+        "database": "<database>",
+        "schema": "<schema>",
+        "role": "<role>",
+        "password": "<password>",
+        "id_column": "<id-column>",
+        "table_name": "<table-name>",
+        "batch_size": <batch-size>,
+        "fields": [
+            "field",
+            "field"
+        ]
+    }
+}'
+```

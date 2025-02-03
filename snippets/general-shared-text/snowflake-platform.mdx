@@ -1,0 +1,16 @@
+Fill in the following fields:
+
+- **Name** (_required_): A unique name for this connector.
+- **Account ID** (_required_): The target Snowflake account's identifier.
+- **Role** (_required_): The name of the Snowflake role that the user belongs to. This role must have the appropriate access to the target Snowflake warehouse, database, schema, and table.
+- **User** (_required_): The target Snowflake user's login name (not their username).
+- **Password** (_required_): The user's password.
+- **Host** (_required_): The hostname of the target Snowflake warehouse.
+- **Port** (_required_): The warehouse's port number. The default is `443` if not otherwise specified.
+- **Database** (_required_): The name of the target Snowflake database.
+- **Schema** (_required_): The name of the target Snowflake schema within the database.
+- **Table** (_required_, source connector only): The name of the target Snowflake table within the database's schema. For the destination connector, the default is `elements` if not otherwise specified.
+- **Columns** (source connector only): A comma-separated list of columns to fetch from the table. By default, all columns are fetched unless otherwise specified.
+- **ID Column** (_required_, source connector only): The name of the column that uniquely identifies each record in the table.
+- **Record ID Key** (destination connector only): The name of the column that uniquely identifies each record in the table. The default is `record_id` if not otherwise specified.
+- **Batch Size** (_required_): The maximum number of rows to fetch for each batch. The default is `50` if not otherwise specified.
