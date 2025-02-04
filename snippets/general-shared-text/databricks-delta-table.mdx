@@ -10,7 +10,7 @@
     [Azure](https://learn.microsoft.com/azure/databricks/compute/sql-warehouse/create), or 
     [GCP](https://docs.gcp.databricks.com/compute/sql-warehouse/create.html).
 
-    The following video shows how to create a SQL warehouse, get its **Server Hostname** and **HTTP Path** values, and set permissions for someone other than the warehouse's owner to use it:
+    The following video shows how to create a SQL warehouse if you do not already have one available, get its **Server Hostname** and **HTTP Path** values, and set permissions for someone other than the warehouse's owner to use it:
 
     <iframe
     width="560"
@@ -26,7 +26,7 @@
     [Azure](https://learn.microsoft.com/azure/databricks/compute/use-compute), or 
     [GCP](https://docs.gcp.databricks.com/compute/use-compute.html).
 
-    The following video shows how to create an all-purpose cluster, get its **Server Hostname** and **HTTP Path** values, and set permissions for someone other than the cluster's owner to use it:
+    The following video shows how to create an all-purpose cluster if you do not already have one available, get its **Server Hostname** and **HTTP Path** values, and set permissions for someone other than the cluster's owner to use it:
 
     <iframe
     width="560"
@@ -61,7 +61,7 @@
     [GCP](https://docs.gcp.databricks.com/tables/managed.html)
     within that schema (formerly known as a database).
 
-  The following video shows how to create a catalog, schema (formerly known as a database), and a table in Unity Catalog, and set privileges for someone other than their owner to use them:
+  The following video shows how to create a catalog, schema (formerly known as a database), and a table in Unity Catalog if you do not already have them available, and set privileges for someone other than their owner to use them:
 
   <iframe
   width="560"
@@ -130,14 +130,11 @@
 - Within Unity Catalog, a volume 
   for [AWS](https://docs.databricks.com/volumes/utility-commands.html), 
   [Azure](https://learn.microsoft.com/azure/databricks/volumes/utility-commands), 
-  or [GCP](https://docs.gcp.databricks.com/volumes/utility-commands.html)
-  within the same schema (formerly known as a database) as the table. 
+  or [GCP](https://docs.gcp.databricks.com/volumes/utility-commands.html). The volume can be in the same 
+  schema (formerly known as a database) as the table, or the volume and table can be in separate schemas. In either case, both of these 
+  schemas must share the same parent catalog.
 
-  The following video shows how to create a catalog, schema (formerly known as a database), and a volume in Unity Catalog, and set privileges for someone other than their owner to use them:
-
-  <Note>
-      If you already have a table that you want to use, then use the table's existing catalog and schema (formerly known as a database). Do not create a new catalog or schema (formerly known as a database)&mdash;just create the new volume. The volume and table must be within the same schema (formerly known as a database) and catalog.
-  </Note>
+  The following video shows how to create a catalog, schema (formerly known as a database), and a volume in Unity Catalog if you do not already have them available, and set privileges for someone other than their owner to use them:
 
   <iframe
   width="560"
@@ -165,7 +162,7 @@
       Microsoft Entra ID managed service principals are not supported.
   </Note>
 
-  The following video shows how to create a Databricks managed service principal:
+  The following video shows how to create a Databricks managed service principal if you do not already have one available:
 
   <iframe
   width="560"
@@ -185,7 +182,7 @@
   This token must be for the workspace user who 
   has the appropriate access permissions to the catalog, schema (formerly known as a database), table, volume, and cluster or SQL warehouse, 
 
-  The following video shows how to create a Databricks personal access token:
+  The following video shows how to create a Databricks personal access token if you do not already have one available:
 
   <iframe
   width="560"
