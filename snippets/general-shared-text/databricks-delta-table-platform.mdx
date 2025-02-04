@@ -6,8 +6,14 @@ Fill in the following fields:
 - **Token** (_required_ for PAT authentication): For Databricks personal access token (PAT) authentication, the target Databricks user's PAT value.
 - **UUID** and **OAuth Secret** (_required_ for OAuth authentication): For Databricks OAuth machine-to-machine (M2M) authentication, the Databricks managed service principal's **UUID** (or **Client ID** or **Application ID**) and OAuth **Secret** (client secret) values. 
 - **Catalog** (_required_): The name of the catalog in Unity Catalog for the target volume and table in the Databricks workspace.
-- **Database**: The name of the database in Unity Catalog for the target volume and table. The default is `default` if not otherwise specified.
+- **Database**: The name of the schema (formerly known as a database) in Unity Catalog for the target table. The default is `default` if not otherwise specified.
+
+  If the target table and volume are in the same schema (formerly known as a database), then **Database** and **Schema** will have the same names.
+
 - **Table Name** (_required_): The name of the target table in Unity Catalog.
-- **Schema**: The name of the schema in Unity Catalog for the target volume and table. The default is `default` if not otherwise specified.
+- **Schema**: The name of the schema (formerly known as a database) in Unity Catalog for the target volume. The default is `default` if not otherwise specified.
+
+  If the target volume and table are in the same schema (formerly known as a database), then **Schema** and **Database** will have the same names.
+
 - **Volume** (_required_): The name of the target volume in Unity Catalog.
 - **Volume Path**: Any target folder path inside of the volume to use instead of the volume's root. If not otherwise specified, processing occurs at the volume's root.
