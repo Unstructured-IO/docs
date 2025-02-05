@@ -9,9 +9,34 @@
   - A SQL warehouse for [AWS](https://docs.databricks.com/compute/sql-warehouse/create.html), 
     [Azure](https://learn.microsoft.com/azure/databricks/compute/sql-warehouse/create), or 
     [GCP](https://docs.gcp.databricks.com/compute/sql-warehouse/create.html).
-  - A cluster for [AWS](https://docs.databricks.com/compute/use-compute.html), 
+
+    The following video shows how to create a SQL warehouse if you do not already have one available, get its **Server Hostname** and **HTTP Path** values, and set permissions for someone other than the warehouse's owner to use it:
+
+    <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/N-Aw9-U3_fE"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+    ></iframe>
+
+  - An all-purpose cluster for [AWS](https://docs.databricks.com/compute/use-compute.html), 
     [Azure](https://learn.microsoft.com/azure/databricks/compute/use-compute), or 
     [GCP](https://docs.gcp.databricks.com/compute/use-compute.html).
+
+    The following video shows how to create an all-purpose cluster if you do not already have one available, get its **Server Hostname** and **HTTP Path** values, and set permissions for someone other than the cluster's owner to use it:
+
+    <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/apgibaelVY0"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+    ></iframe>
 
 - The SQL warehouse's or cluster's **Server Hostname** and **HTTP Path** values for [AWS](https://docs.databricks.com/integrations/compute-details.html), 
   [Azure](https://learn.microsoft.com/azure/databricks/integrations/compute-details), or 
@@ -25,7 +50,7 @@
     for [AWS](https://docs.databricks.com/catalogs/create-catalog.html), 
     [Azure](https://learn.microsoft.com/azure/databricks/catalogs/create-catalog), or 
     [GCP](https://docs.gcp.databricks.com/catalogs/create-catalog.html). 
-  - A schema 
+  - A schema (formerly known as a database) 
     for [AWS](https://docs.databricks.com/schemas/create-schema.html), 
     [Azure](https://learn.microsoft.com/azure/databricks/schemas/create-schema), or 
     [GCP](https://docs.gcp.databricks.com/schemas/create-schema.html)
@@ -34,7 +59,19 @@
     for [AWS](https://docs.databricks.com/tables/managed.html), 
     [Azure](https://learn.microsoft.com/azure/databricks/tables/managed), or 
     [GCP](https://docs.gcp.databricks.com/tables/managed.html)
-    within that schema.
+    within that schema (formerly known as a database).
+
+  The following video shows how to create a catalog, schema (formerly known as a database), and a table in Unity Catalog if you do not already have them available, and set privileges for someone other than their owner to use them:
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/ffNnq-6bpd4"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
 
   This table must contain the following column names and their data types:
 
@@ -86,23 +123,34 @@
   );
   ```
 
+  <Info>
+      In Databricks, a table's _schema_ is different than a _schema_ (formerly known as a database) in a catalog-schema object relationship in Unity Catalog.
+  </Info>
+
 - Within Unity Catalog, a volume 
   for [AWS](https://docs.databricks.com/volumes/utility-commands.html), 
   [Azure](https://learn.microsoft.com/azure/databricks/volumes/utility-commands), 
-  or [GCP](https://docs.gcp.databricks.com/volumes/utility-commands.html)
-  within the same schema as the table. 
-- For Databricks personal access token authentication to the workspace, the 
-  Databricks personal access token value for 
-  [AWS](https://docs.databricks.com/dev-tools/auth/pat.html#databricks-personal-access-tokens-for-workspace-users), 
-  [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/pat#azure-databricks-personal-access-tokens-for-workspace-users), or 
-  [GCP](https://docs.gcp.databricks.com/dev-tools/auth/pat.html#databricks-personal-access-tokens-for-workspace-users). 
-  This token must be for the workspace user who 
-  has the appropriate access permissions to the catalog, schema, table, volume, and cluster or SQL warehouse, 
+  or [GCP](https://docs.gcp.databricks.com/volumes/utility-commands.html). The volume can be in the same 
+  schema (formerly known as a database) as the table, or the volume and table can be in separate schemas. In either case, both of these 
+  schemas must share the same parent catalog.
+
+  The following video shows how to create a catalog, schema (formerly known as a database), and a volume in Unity Catalog if you do not already have them available, and set privileges for someone other than their owner to use them:
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/yF9DJphhQQc"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
+
 - For Databricks managed service principal authentication (using Databricks OAuth M2M) to the workspace:
 
   - A Databricks managed service principal. 
-    This service principal must have the appropriate access permissions to the catalog, schema, table, volume, and cluster or SQL warehouse.
-  - The service principal's **UUID** value.
+    This service principal must have the appropriate access permissions to the catalog, schema (formerly known as a database), table, volume, and cluster or SQL warehouse.
+  - The service principal's **UUID** (or **Client ID** or **Application ID**) value.
   - The OAuth **Secret** value for the service principal. 
 
   To get this information, see Steps 1-3 of the instructions for [AWS](https://docs.databricks.com/dev-tools/auth/oauth-m2m.html), 
@@ -110,6 +158,71 @@
   [GCP](https://docs.gcp.databricks.com/dev-tools/auth/oauth-m2m.html).
 
   <Note>
-      For Azure Databricks, this connector only supports Databricks managed service principals. 
+      For Azure Databricks, this connector only supports Databricks managed service principals for authentication. 
       Microsoft Entra ID managed service principals are not supported.
   </Note>
+
+  The following video shows how to create a Databricks managed service principal if you do not already have one available:
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/wBmqv5DaA1E"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
+
+- For Databricks personal access token authentication to the workspace, the 
+  Databricks personal access token value for 
+  [AWS](https://docs.databricks.com/dev-tools/auth/pat.html#databricks-personal-access-tokens-for-workspace-users), 
+  [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/pat#azure-databricks-personal-access-tokens-for-workspace-users), or 
+  [GCP](https://docs.gcp.databricks.com/dev-tools/auth/pat.html#databricks-personal-access-tokens-for-workspace-users). 
+  This token must be for the workspace user who 
+  has the appropriate access permissions to the catalog, schema (formerly known as a database), table, volume, and cluster or SQL warehouse, 
+
+  The following video shows how to create a Databricks personal access token if you do not already have one available:
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/OzEU2miAS6I"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
+
+- The Databricks workspace user or Databricks managed service principal must have the following _minimum_ set of permissions and privileges to write to an 
+  existing volume or table in Unity Catalog:
+
+  - To use an all-purpose cluster for access, `Can Restart` permission on that cluster. Learn how to check and set cluster permissions for 
+    [AWS](https://docs.databricks.com/compute/clusters-manage.html#compute-permissions), 
+    [Azure](https://learn.microsoft.com/azure/databricks/compute/clusters-manage#cluster-level-permissions), or 
+    [GCP](https://docs.gcp.databricks.com/compute/clusters-manage.html#compute-permissions).
+  - To use a SQL warehouse for access, `Can use` permission on that SQL warehouse. Learn how to check and set SQL warehouse permissions for 
+    [AWS](https://docs.databricks.com/compute/sql-warehouse/create.html#manage-a-sql-warehouse), 
+    [Azure](https://learn.microsoft.com/azure/databricks/compute/sql-warehouse/create#manage), or 
+    [GCP](https://docs.gcp.databricks.com/compute/sql-warehouse/create.html#manage-a-sql-warehouse).
+  - To access a Unity Catalog volume, the following privileges:
+
+    - `USE CATALOG` on the volume's parent catalog in Unity Catalog.
+    - `USE SCHEMA` on the volume's parent schema (formerly known as a database) in Unity Catalog.
+    - `READ VOLUME` and `WRITE VOLUME` on the volume.
+
+    Learn how to check and set Unity Catalog privileges for 
+    [AWS](https://docs.databricks.com/data-governance/unity-catalog/manage-privileges/index.html#show-grant-and-revoke-privileges), 
+    [Azure](https://learn.microsoft.com/azure/databricks/data-governance/unity-catalog/manage-privileges/#grant), or 
+    [GCP](https://docs.gcp.databricks.com/data-governance/unity-catalog/manage-privileges/index.html#show-grant-and-revoke-privileges).
+
+  - To access a Unity Catalog table, the following privileges:
+
+    - `USE CATALOG` on the table's parent catalog in Unity Catalog.
+    - `USE SCHEMA` on the tables's parent schema (formerly known as a database) in Unity Catalog.
+    - `MODIFY` and `SELECT` on the table.
+
+    Learn how to check and set Unity Catalog privileges for 
+    [AWS](https://docs.databricks.com/data-governance/unity-catalog/manage-privileges/index.html#show-grant-and-revoke-privileges), 
+    [Azure](https://learn.microsoft.com/azure/databricks/data-governance/unity-catalog/manage-privileges/#grant), or 
+    [GCP](https://docs.gcp.databricks.com/data-governance/unity-catalog/manage-privileges/index.html#show-grant-and-revoke-privileges).

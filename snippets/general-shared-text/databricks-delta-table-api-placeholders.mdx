@@ -2,11 +2,17 @@
 - `<server-hostname>` (_required_): The target Databricks cluster's or SQL warehouse's **Server Hostname** value.
 - `<http-path>` (_required_): The cluster's or SQL warehouse's **HTTP Path** value.
 - `<token>` (_required_ for PAT authentication): For Databricks personal access token (PAT) authentication, the target Databricks user's PAT value.
-- `<client-id>` and `<client-secret>` (_required_ for OAuth authentication): For Databricks OAuth machine-to-machine (M2M) authentication, the Databricks managed service principal's **UUID** (client ID or Application ID) and OAuth **Secret** (client secret) values. 
+- `<client-id>` and `<client-secret>` (_required_ for OAuth authentication): For Databricks OAuth machine-to-machine (M2M) authentication, the Databricks managed service principal's **UUID** (or **Client ID** or **Application ID**) and OAuth **Secret** (client secret) values. 
 - `<catalog>` (_required_): The name of the catalog in Unity Catalog for the target volume and table in the Databricks workspace.
-- `<database>`: The name of the database in Unity Catalog for the target volume and table. The default is `default` if not otherwise specified.
+- `<database>`: The name of the schema (formerly known as a database) in Unity Catalog for the target table. The default is `default` if not otherwise specified.
+
+  If the target table and volume are in the same schema (formerly known as a database), then `<database>` and `<schema>` will have the same values.
+
 - `<table-name>` (_required_): The name of the target table in Unity Catalog.
-- `<schema>`: The name of the schema in Unity Catalog for the target volume and table. The default is `default` if not otherwise specified.
+- `<schema>`: The name of the schema  (formerly known as a database) in Unity Catalog for the target volume. The default is `default` if not otherwise specified.
+
+  If the target volume and table are in the same schema (formerly known as a database), then `<schema>` and `<database>` will have the same values.
+
 - `<volume>` (_required_): The name of the target volume in Unity Catalog.
 - `<volume-path>`: Any target folder path inside of the volume to use instead of the volume's root. If not otherwise specified, processing occurs at the volume's root.
 
