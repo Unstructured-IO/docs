@@ -35,9 +35,9 @@ To create an automatic workflow:
 
 1. On the sidebar, click **Workflows**.
 2. Click **New Workflow**.
-3. Next to **Build it with me**, click **Create Workflow**.
+3. Next to **Build it with Me**, click **Create Workflow**.
 
-   <Note>If a radio button appears instead of **Build it with me**, select it, and then click **Continue**.</Note>
+   <Note>If a radio button appears instead of **Build it with Me**, select it, and then click **Continue**.</Note>
 
 4. For **Workflow Name**, enter some unique name for this workflow.
 5. In the **Sources** dropdown list, select your source location.
@@ -147,16 +147,15 @@ To create an automatic workflow:
        </Accordion>
    </AccordionGroup>
 
-9. The **Reprocess all** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
+9. The **Reprocess All** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
 
    - Checking this box reprocesses all documents in the source location on every workflow run.
    - Unchecking this box causes only new documents that are added to the source location since the last workflow run to be processed on future runs. Previously processed documents are not processed again, even if those documents' contents change.
 
-10. If you want to retry processing any documents that failed to process, check the **Retry Failed Documents** box.
-11. Click **Continue**.
-12. If you want this workflow to run on a schedule, in the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
-13. Click **Complete**.
-14. If you did not set the workflow to run on a schedule, you can [run the worklow](#edit-delete-or-run-a-workflow) now.
+10. Click **Continue**.
+11. If you want this workflow to run on a schedule, in the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
+12. Click **Complete**.
+13. If you did not set the workflow to run on a schedule, you can [run the worklow](#edit-delete-or-run-a-workflow) now.
 
 ### Create a custom workflow
 
@@ -170,7 +169,7 @@ To create an automatic workflow:
 
 1. On the sidebar, click **Workflows**.
 2. Click **New Workflow**.
-3. Click the **Build it myself** option, and then click **Continue**.
+3. Click the **Build it Myself** option, and then click **Continue**.
 4. In the **This workflow** pane, click the **Details** button.
 
    ![Workflow details](/img/platform/Workflow-Details.png)
@@ -179,7 +178,7 @@ To create an automatic workflow:
 6. If you want this workflow to run on a schedule, click the **Schedule** button. In the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings.
 7. To overwrite any previously processed files, or to retry any documents that fail to process, click the **Settings** button, and check either or both of the boxes.
 
-   The **Reprocess all** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
+   The **Reprocess All** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
 
    - Checking this box reprocesses all documents in the source location on every workflow run.
    - Unchecking this box causes new documents that have been added to the source location, as well as existing documents in the source location that have had their contents or titles changed, since the last workflow run to be processed on future runs. Other previously processed documents are not processed again.
