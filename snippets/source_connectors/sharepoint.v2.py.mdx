@@ -3,7 +3,6 @@ import os
 
 from unstructured_ingest.v2.pipeline.pipeline import Pipeline
 from unstructured_ingest.v2.interfaces import ProcessorConfig
-from pydantic import Secret
 
 from unstructured_ingest.v2.processes.connectors.sharepoint import (
     SharepointIndexerConfig,
@@ -13,7 +12,6 @@ from unstructured_ingest.v2.processes.connectors.sharepoint import (
 )
 
 from unstructured_ingest.v2.processes.connectors.local import (
-    LocalConnectionConfig,
     LocalUploaderConfig
 )
 
@@ -28,7 +26,7 @@ if __name__ == "__main__":
         context=ProcessorConfig(),
         indexer_config=SharepointIndexerConfig(
             path=os.getenv("SHAREPOINT_SITE_PATH"),
-            recursive=True  # True to recursively process files in their respective folders. (False (default) for no recursion.)
+            recursive=True  # True to recursively download files in their respective folders.
         ),
         downloader_config=SharepointDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
         source_connection_config=SharepointConnectionConfig(
