@@ -1,0 +1,127 @@
+---
+title: Named entity recognition (NER)
+---
+
+After partitioning and chunking, you can have Unstructured generate a list of recognized entities and their types (such as the names of organizations, products, and people) in the content, through a process known as _named entity recognition_ (NER).
+
+This NER is done by using models offered through these providers:
+
+- [GPT-4o](https://openai.com/index/hello-gpt-4o/), provided through OpenAI.
+- [Claude 3.5 Sonnet](https://www.anthropic.com/news/claude-3-5-sonnet), provided through Anthropic. 
+
+Here is an example of a list of recognized entities and their types using GPT-4o. Note specifically the `entities` field that is added.
+
+```json
+{
+    "type": "CompositeElement",
+    "element_id": "bc8333ea0d374670ff0bd03c6126e70d",
+    "text": "SECTION. 3\n\nThe Senate of the United States shall be composed of two Senators from each State, 
+        [chosen by the Legislature there- of,]* for six Years; and each Senator shall have one Vote.\n\n
+        Immediately after they shall be assembled in Consequence of the first Election, they shall be divided
+        as equally as may be into three Classes. The Seats of the Senators of the first Class shall be vacated
+        at the Expiration of the second Year, of the second Class at the Expiration of the fourth Year, and of
+        the third Class at the Expiration of the sixth Year, so that one third may be chosen every second Year;
+        [and if Vacan- cies happen by Resignation, or otherwise, during the Recess of the Legislature of any
+        State, the Executive thereof may make temporary Appointments until the next Meeting of the Legislature,
+        which shall then fill such Vacancies.]*\n\nC O N S T I T U T I O N O F T H E U N I T E D S T A T E S",
+    "metadata": {
+        "filename": "constitution.pdf",
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 2,
+        "entities": [
+            {
+                "entity": "Senate",
+                "type": "ORGANIZATION"
+            },
+            {
+                "entity": "United States",
+                "type": "LOCATION"
+            },
+            {
+                "entity": "Senators",
+                "type": "PERSON"
+            },
+            {
+                "entity": "State",
+                "type": "LOCATION"
+            },
+            {
+                "entity": "Legislature",
+                "type": "ORGANIZATION"
+            },
+            {
+                "entity": "six Years",
+                "type": "DATE"
+            },
+            {
+                "entity": "first Election",
+                "type": "EVENT"
+            },
+            {
+                "entity": "second Year",
+                "type": "DATE"
+            },
+            {
+                "entity": "fourth Year",
+                "type": "DATE"
+            },
+            {
+                "entity": "sixth Year",
+                "type": "DATE"
+            },
+            {
+                "entity": "Executive",
+                "type": "PERSON"
+            },
+            {
+                "entity": "C O N S T I T U T I O N O F T H E U N I T E D S T A T E S",
+                "type": "ARTIFACT"
+            }
+        ]
+    }
+}
+```
+
+# Generate a list of entities and their types
+
+To generate a list of recognized entities and their types, in the **Task** drop-down list of an **Enrichment** node in a workflow, specify the following:
+
+<Note>
+    You can change a workflow's NER settings only through [Custom](/platform/workflows#create-a-custom-workflow) workflow settings.
+    
+    Entities are only recognized when the **Partitioner** node in a workflow is also set to use the **High Res** partitioning strategy. [Learn more](/platform/partitioning).
+</Note>
+
+1. Select **Named Entity Recognition (NER)**. By default, OpenAI's GPT-4o will follow a default set of instructions (called a _prompt_) to perform NER using a set of predefined entity types.
+2. To use Anthropic's Claude 3.5 Sonnet to perform NER instead, or to customize the prompt, click **Edit**.
+3. To switch to using Anthropic's Claude 3.5 Sonnet, click **Anthropic (Claude 3.5 Sonnet)**.
+4. To experiment with running the default prompt against some sample data, click **Run Prompt**. The selected **Model** uses the 
+   **Prompt** to run NER on the **Input sample** and shows the results in the **Output**. Look specifically at the `response_json` field for the 
+   entities that were recognized and their types.
+5. To customize the prompt, change the contents of **Prompt**.
+
+   <Note>
+       For best results, Unstructured strongly recommends that you limit your changes only to certain portions of the default prompt, specifically:
+
+       - Adding, renaming, or deleting items in the list of predefined types (such as `PERSON`, `ORGANIZATION`, `LOCATION`, and so on).
+       - As needed, adding any clarifying instructions only between these two lines:
+
+         ```text
+         ...
+         Provide the entities and their corresponding types as a structured JSON response.
+
+         (Add any clarifying instructions here only.)
+
+         [START OF TEXT]
+         ...
+         ```
+
+       - Changing any other portions of the default prompt could produce unexpected results.
+   </Note>
+
+6. To experiment with different data, change the contents of **Input sample**. For best results, Unstructured strongly recommends that the JSON structure in **Input sample** be preserved.
+7. When you are satisfied with the **Model** and **Prompt** that you want to use, click **Save**.
+
