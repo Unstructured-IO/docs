@@ -14,7 +14,8 @@ The following environment variables:
 - For Embedded Weaviate:
 
   - `WEAVIATE_HOST` - The connection URL to the instance, represented by `--hostname` (CLI) or `hostname` (Python).
-  - `WEAVIATE_COLLECTION` - The name of the target collection in the instance, represented by `--collection` (CLI) or `collection` (Python).
+  - `WEAVIATE_COLLECTION` - The name of the target collection in the instance, represented by `--collection` (CLI) or `collection` (Python). 
+    If no value is provided, see the beginning of this article for the behavior at run time.
 
 - For Weaviate Cloud:
 
@@ -23,4 +24,5 @@ The following environment variables:
 
     <Note>For the CLI, the `--api-key` option here is part of the `weaviate-cloud` command. For Python, the `api_key` parameter here is part of the `CloudWeaviateAccessConfig` object.</Note>
 
-  - `WEAVIATE_COLLECTION` - The name of the target collection in the database, represented by `--collection` (CLI) or `collection` (Python).
+  - `WEAVIATE_COLLECTION` - The name of the target collection in the database, represented by `--collection` (CLI) or `collection` (Python). 
+    If no value is provided, see the beginning of this article for the behavior at run time.
