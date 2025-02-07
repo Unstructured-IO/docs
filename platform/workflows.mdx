@@ -288,6 +288,7 @@ To create an automatic workflow:
 
         - **Chunk by title**: Preserve section boundaries and optionally page boundaries as well. A single chunk will never contain text that occurred in two different sections. When a new section starts, the existing chunk is closed and a new one is started, even if the next element would fit in the prior chunk. Also, specify the following:
         
+          - **Contextual chunking**: When switched on, prepends chunk-specific explanatory context to each chunk. [Learn more](/platform/chunking#contextual-chunking).
           - **Combine text under n chars**: Combine elements until a section reaches a length of this many characters. The default is **0**.
           - **Include original elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
           - **Max characters**: Cut off new sections after reaching a length of this many characters. This is a strict limit. The default is **2048**.
@@ -298,6 +299,7 @@ To create an automatic workflow:
 
         - **Chunk by character** (also known as _basic_ chunking): Combine sequential elements to maximally fill each chunk. Also, specify the following:
 
+          - **Contextual chunking**: When switched on, prepends chunk-specific explanatory context to each chunk. [Learn more](/platform/chunking#contextual-chunking).
           - **Include original elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
           - **Max characters**: Cut off new sections after reaching a length of this many characters. The default is **2048**.
           - **New after n chars**: Cut off new sections after reaching a length of this many characters. This is an approximate limit. The default is **1500*.
@@ -306,6 +308,7 @@ To create an automatic workflow:
         
         - **Chunk by page**: Preserve page boundaries. When a new page is detected, the existing chunk is closed and a new one is started, even if the next element would fit in the prior chunk. Also, specify the following:
         
+          - **Contextual chunking**: When switched on, prepends chunk-specific explanatory context to each chunk. [Learn more](/platform/chunking#contextual-chunking).
           - **Include original elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
           - **Max characters**: Cut off new sections after reaching a length of this many characters. This is a strict limit. The default is **500**.
           - **New after n chars**: Cut off new sections after reaching a length of this many characters. This is an approximate limit. The default is **50**.
@@ -314,6 +317,7 @@ To create an automatic workflow:
         
         - **Chunk by similarity**: Use the [sentence-transformers/multi-qa-mpnet-base-dot-v1](https://huggingface.co/sentence-transformers/multi-qa-mpnet-base-dot-v1) embedding model to identify topically similar sequential elements and combine them into chunks. Also, specify the following:
 
+          - **Contextual chunking**: When switched on, prepends chunk-specific explanatory context to each chunk. [Learn more](/platform/chunking#contextual-chunking).
           - **Include original elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
           - **Max characters**: Cut off new sections after reaching a length of this many characters. This is a strict limit. The default is **500**.
           - **Similarity threshold**: Specify a threshold between 0 and 1 exclusive (0.01 to 0.99 inclusive), where 0 indicates completely dissimilar vectors and 1 indicates identical vectors, taking into consider the trade-offs between precision (a higher threshold) and recall (a lower threshold). The default is **0.5**. [Learn more](https://towardsdatascience.com/introduction-to-embedding-clustering-and-similarity-11dd80b00061).

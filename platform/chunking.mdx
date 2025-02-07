@@ -159,6 +159,110 @@ To specify this setting, enter a number into the **Similarity threshold** field.
 
 This setting applies only to the chunking strategy **Chunk by similarity**.
 
+## Contextual chunking
+
+A technique known as _contextual chunking_ prepends chunk-specific explanatory context to each chunk. 
+Contextual chunking has been shown to enhance traditional RAG solutions by yielding 
+significant improvements in retrieval accuracy, which directly translates to better performance in downstream tasks. 
+[Learn more](https://www.anthropic.com/news/contextual-retrieval).
+
+To apply contextual chunking, switch on the **Contextual chunking** toggle in the settings for any chunking strategy.
+
+This chunk-specific explanatory context information is typically about 50-100 tokens (approximately 200-400 characters) in length. 
+Contextual chunking happens before any embeddings are generated. 
+
+When contextual chunking is applied, the contextual information in each chunk begins with `Prefix:` and ends with a semicolon (`;`). 
+The chunk's original content begins with `Original:`.
+
+For example, without contextual chunking applied, elements would for instance be generated similar to the following. 
+Line breaks have been inserted here for readability. The output will not contain these line breaks:
+
+```json
+{
+    "type": "CompositeElement",
+    "element_id": "aa482034de5ade41b7223bb3beeb6a22",
+    "text": "THE\n\nCONSTITUTION of the United States\n\nG\n\nNATIONAL 
+      CONSTITUTION CENTER\n\nWe the People of the United States, in 
+      Order to form a more perfect Union, establish Justice, insure 
+      ...<full-content-redacted-for-brevity>...",
+    "metadata": {
+        "filename": "constitution.pdf",
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 1
+    }
+},
+{
+    "type": "CompositeElement",
+    "element_id": "59fbfcfb51e52c426df4c48a620c6031",
+    "text": "SECTION. 2\n\nThe House of Representatives shall be 
+        composed of Mem- bers chosen every second Year by the People 
+        of the several States, and the Electors in each State shall 
+        ...<full-content-redacted-for-brevity>...",
+    "metadata": {
+        "filename": "constitution.pdf",
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 2
+    }
+},
+```
+
+Applying contextual chunking to those same elements would result in the following output. 
+Line breaks and blank lines have been inserted here for readability. The output will not contain these line breaks and blank lines:
+
+```json
+{
+    "type": "CompositeElement",
+    "element_id": "063ed41d2a989191f2281b2d35c4b4ae",
+    "text": "Prefix: This is the opening preamble and first section of 
+        Article I of the U.S. Constitution, establishing the fundamental 
+        purpose of the document and the basic structure of legislative 
+        power in Congress. It appears at the very beginning of the main 
+        constitutional text, before all other articles and amendments.;
+        
+        Original: THE\n\nCONSTITUTION of the United States\n\nG\n\nNATIONAL 
+        CONSTITUTION CENTER\n\nWe the People of the United States, in 
+        Order to form a more perfect Union, establish Justice, insure 
+        ...<full-content-redacted-for-brevity>...",
+    "metadata": {
+        "filename": "constitution.pdf",
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 1
+    }
+},
+{
+    "type": "CompositeElement",
+    "element_id": "2270f6b8c8b4afc668f6277789370ffd",
+    "text": "Prefix: This chunk appears in Article I, Section 2 of the 
+        U.S. Constitution, which establishes the structure, composition, 
+        and powers of the House of Representatives as one of the two 
+        chambers of Congress. It follows Section 1's establishment of 
+        Congress and precedes Section 3's establishment of the Senate.;
+        
+        Original: SECTION. 2\n\nThe House of Representatives shall be 
+        composed of Mem- bers chosen every second Year by the People 
+        of the several States, and the Electors in each State shall
+        ...<full-content-redacted-for-brevity>...",
+    "metadata": {
+        "filename": "constitution.pdf",
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 2
+    }
+}
+
+```
+
 ## Learn more
 
 <Icon icon="blog" />&nbsp;&nbsp;[Chunking for RAG: best practices](https://unstructured.io/blog/chunking-for-rag-best-practices).
