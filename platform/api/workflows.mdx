@@ -4,22 +4,85 @@ title: Workflows
 
 To use the [Unstructured Platform API](/platform/api/overview) to manage workflows, do the following:
 
-- To get a list of available workflows, use the `GET` method to call the `/workflows` endpoint. [Learn more](/platform/api/overview#list-workflows).
-- To get information about a workflow, use the `GET` method to call the `/workflows/<workflow-id>` endpoint. [Learn more](/platform/api/overview#get-a-workflow).
-- To create a workflow, use the `POST` method to call the `/workflows` endpoint. [Learn more](#create-a-workflow).
-- To run a workflow manually, use the `POST` method to call the `/workflows/<workflow-id>/run` endpoint. [Learn more](/platform/api/overview#run-a-workflow).
-- To update a workflow, use the `PUT` method to call the `/workflows/<workflow-id>` endpoint. [Learn more](#update-a-workflow).
-- To delete a workflow, use the `DELETE` method to call the `/workflows/<workflow-id>` endpoint. [Learn more](/platform/api/overview#delete-a-workflow).
+- To get a list of available workflows, use the `UnstructuredClient` object's `workflows.list_workflows` function (for the Python SDK) or 
+  the `GET` method to call the `/workflows` endpoint (for `curl` or Postman). [Learn more](/platform/api/overview#list-workflows).
+- To get information about a workflow, use the `UnstructuredClient` object's `workflows.get_workflow` function (for the Python SDK) or 
+  the `GET` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman)use the `GET` method to call the `/workflows/<workflow-id>` endpoint. [Learn more](/platform/api/overview#get-a-workflow).
+- To create a workflow, use the `UnstructuredClient` object's `workflows.create_workflow` function (for the Python SDK) or 
+  the `POST` method to call the `/workflows` endpoint (for `curl` or Postman). [Learn more](#create-a-workflow).
+- To run a workflow manually, use the `UnstructuredClient` object's `workflows.run_workflow` function (for the Python SDK) or 
+  the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl` or Postman). [Learn more](/platform/api/overview#run-a-workflow).
+- To update a workflow, use the `UnstructuredClient` object's `workflows.update_workflow` function (for the Python SDK) or 
+  the `PUT` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman). [Learn more](#update-a-workflow).
+- To delete a workflow, use the `UnstructuredClient` object's `workflows.delete_workflow` function (for the Python SDK) or 
+  the `DELETE` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman). [Learn more](/platform/api/overview#delete-a-workflow).
 
 The following examples assume that you have already met the [requirements](/platform/api/overview#requirements) and 
 understand the [basics](/platform/api/overview#basics) of working with the Unstructured Platform API.
 
 ## Create a workflow
 
-To create a workflow, use the `POST` method to call the `/workflows` endpoint. In the request body, 
+To create a workflow, use the `UnstructuredClient` object's `workflows.create_workflow` function (for the Python SDK) or 
+the `POST` method to call the `/workflows` endpoint (for `curl` or Postman). 
+  
+In the `CreateWorkflow` object (for the Python SDK) or 
+the request body (for `curl` or Postman), 
 specify the settings for the workflow, as follows:
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import CreateWorkflowRequest
+        from unstructured_client.models.shared import (
+            CreateWorkflow,
+            WorkflowAutoStrategy,
+            CreateWorkflowSchedule
+        )
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        workflow = CreateWorkflow(
+            name="<name>",
+            source_id="<source-connector-id>",
+            destination_id="<destination-connector-id>",
+            workflow_type=WorkflowAutoStrategy.<TYPE>,
+            schedule=CreateWorkflowSchedule(value="<schedule-timeframe>")
+        )
+
+        response = client.workflows.create_workflow(
+            request=CreateWorkflowRequest(
+                create_workflow=workflow
+            )
+        )
+
+        info = response.workflow_information
+
+        print(f"name:           {info.name}")
+        print(f"id:             {info.id}")
+        print(f"status:         {info.status}")
+        print(f"type:           {info.workflow_type}")
+        print("source(s):")
+
+        for source in info.sources:
+            print(f"            {source}")
+
+        print("destination(s):")
+
+        for destination in info.destinations:
+            print(f"            {destination}")
+
+        print("schedule(s):")
+
+        for crontab_entry in info.schedule.crontab_entries:
+            print(f"            {crontab_entry.cron_expression}")
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'POST' --location \
@@ -72,7 +135,9 @@ Replace the preceding placeholders as follows:
     use the `GET` method to call the `/sources` endpoint. [Learn more](/platform/api/overview#list-source-connectors).
 - `<destination-connector-id>` (_required_) - The ID of the target destination connector. To get the ID, 
     use the `GET` method to call the `/destinations` endpoint. [Learn more](/platform/api/overview#list-destination-connectors).
-- `<type>` (_required_) - The workflow optimization type. Available values include `advanced`, `basic`, and `platinum`.
+- `<type>` (_required_) - The workflow optimization type. Available values include 
+  `ADVANCED`, `BASIC`, and `PLATINUM` (for the Python SDK) or 
+  `advanced`, `basic`, and `platinum` (for `curl` or Postman).
 - `<schedule-timeframe>` - The repeating automatic run schedule, specified as a predefined phrase. The available predefined phrases are:
 
   - `every 15 minutes`: Every 15 minutes (cron expression: `*/15 * * * *`).
@@ -91,13 +156,64 @@ Replace the preceding placeholders as follows:
 
 ## Update a workflow
 
-To update information about a workflow, use the `PUT` method to call the `/workflows/<workflow-id>` endpoint, replacing 
+To update information about a workflow, use the `UnstructuredClient` object's `workflows.update_workflow` function (for the Python SDK) or 
+the `PUT` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman), replacing 
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
 
 In the request body, specify the settings for the workflow. For the specific settings to include, see 
 [Create a workflow](/platform/api/workflows#create-a-workflow).
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import UpdateWorkflowRequest
+        from unstructured_client.models.shared import (
+            UpdateWorkflow,
+            WorkflowAutoStrategy,
+            CreateWorkflowSchedule
+        )
+        
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        workflow = UpdateWorkflow(
+            # Specify the settings for the workflow here.
+        )
+
+        response = client.workflows.update_workflow(
+            request=UpdateWorkflowRequest(
+                workflow_id="<workflow-id>",
+                update_workflow=workflow
+            )
+        )
+
+        info = response.workflow_information
+
+        print(f"name:           {info.name}")
+        print(f"id:             {info.id}")
+        print(f"status:         {info.status}")
+        print(f"type:           {info.workflow_type}")
+        print("source(s):")
+
+        for source in info.sources:
+            print(f"            {source}")
+
+        print("destination(s):")
+
+        for destination in info.destinations:
+            print(f"            {destination}")
+
+        print("schedule(s):")
+
+        for crontab_entry in info.schedule.crontab_entries:
+            print(f"            {crontab_entry.cron_expression}")
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'PUT' --location \
