@@ -348,7 +348,7 @@ specify the settings for the connector. For the specific settings to include, wh
             server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
-        source_connector = CreateSourceConnector(
+        destination_connector = CreateSourceConnector(
             name="<name>",
             type="<type>",
             config={
@@ -432,7 +432,7 @@ You can change any of the connector's settings except for its `name` and `type`.
             server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
-        source_connector = UpdateSourceConnector(
+        destination_connector = UpdateSourceConnector(
             config={
                 # Specify the settings for the connector here.
             }

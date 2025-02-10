@@ -1,0 +1,16 @@
+```python Python SDK
+# ...
+from unstructured_client.models.shared import <Create|Update>DestinationConnector
+# ...
+destination_connector = <Create|Update>DestinationConnector(
+    name="<name>", # Create only.
+    type="delta_table", # Create only.
+    config={
+        "aws_region": "<aws-region>",
+        "table_uri": "<table-uri>",
+        "aws_access_key_id": "<aws-access-key-id>",
+        "aws_secret_access_key": "<aws-secret-access-key>"
+    }
+)
+# ...
+```
