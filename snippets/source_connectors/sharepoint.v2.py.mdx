@@ -3,18 +3,15 @@ import os
 
 from unstructured_ingest.v2.pipeline.pipeline import Pipeline
 from unstructured_ingest.v2.interfaces import ProcessorConfig
-from pydantic import Secret
 
 from unstructured_ingest.v2.processes.connectors.sharepoint import (
     SharepointIndexerConfig,
     SharepointDownloaderConfig,
     SharepointConnectionConfig,
-    SharepointAccessConfig,
-    SharepointPermissionsConfig
+    SharepointAccessConfig
 )
 
 from unstructured_ingest.v2.processes.connectors.local import (
-    LocalConnectionConfig,
     LocalUploaderConfig
 )
 
@@ -28,17 +25,19 @@ if __name__ == "__main__":
     Pipeline.from_configs(
         context=ProcessorConfig(),
         indexer_config=SharepointIndexerConfig(
-            path=os.getenv("SHAREPOINT_PATH"),
-            recursive=True,  # Recursively process files in their respective folders. (False (default) for no recursion.)
-            omit_lists=True, # Do not process lists. (False (default) to process lists.)
-            omit_pages=True, # Do not process site pages. (False (default) to process site pages.)
-            omit_files=False # Process files (default). (True to not process files.)
+            path=os.getenv("SHAREPOINT_SITE_PATH"),
+            recursive=True  # True to recursively download files in their respective folders.
         ),
         downloader_config=SharepointDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
         source_connection_config=SharepointConnectionConfig(
-            access_config=SharepointAccessConfig(client_cred=os.getenv("SHAREPOINT_APP_CLIENT_SECRET")),
-            client_id=os.getenv("SHAREPOINT_APP_CLIENT_ID"),
-            site=os.getenv("SHAREPOINT_SITE"),
+            access_config=SharepointAccessConfig(
+                client_cred=os.getenv("ENTRA_ID_APP_CLIENT_SECRET")
+            ),
+            client_id=os.getenv("ENTRA_ID_APP_CLIENT_ID"),
+            user_pname=os.getenv("ENTRA_ID_USER_PRINCIPAL_NAME"),
+            tenant=os.getenv("ENTRA_ID_APP_TENANT_ID"),
+            authority_url=os.getenv("ENTRA_ID_TOKEN_AUTHORITY_URL"),
+            site=os.getenv("SHAREPOINT_SITE_URL")
         ),
         partitioner_config=PartitionerConfig(
             partition_by_api=True,

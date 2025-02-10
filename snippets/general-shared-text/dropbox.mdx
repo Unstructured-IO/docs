@@ -25,6 +25,13 @@ allowfullscreen
       This is because the access token is scoped to the specific app folder and settings at the time the access token is generated. If you change the app folder name or any of the permissions later, 
       you should regenerate the access token.<br/>
 
+   <Warning>
+      Access tokens are valid for **only four hours** after they are created. After this four-hour period, you can no longer use the expired access token. 
+      Dropbox does not allow the creation of access tokens that are valid for more than four hours.
+
+      To generate a replacement token for an expired one, see [Replace an expired access token](#replace-an-expired-access-token), later in this article.
+   </Warning>
+
 3. The app folder that your Dropbox app will use for access can be found in your Dropbox account under the `Apps` top-level folder. For example, if the value of the **App folder name** 
    field above is `my-folder`, then the app folder that your Dropbox app will use for access can be found under `https://dropbox.com/home/Apps/my-folder`
 
@@ -44,3 +51,69 @@ allowfullscreen
    the remote URL is `dropbox://data`
 
    ![The data subfolder under the my-folder subfolder](/img/connectors/dropbox-app-subfolder.png)
+
+## Replace an expired access token
+
+Dropbox app access tokens are valid for **only four hours**. After this time, you can no longer use the expired access token.
+
+To replace an old, expired access token with a new, valid one, do the following:
+
+1. Get the app key and app secret values for your Dropbox app. To do this:
+
+   a) Sign in to the [Dropbox Developers](https://www.dropbox.com/developers) portal with the same credentials as your Dropbox account.<br/>
+   b) Open your [App Console](https://www.dropbox.com/developers/apps).<br/>
+   c) Click your Dropbox app's icon.<br/>
+   d) On the **Settings** tab, next to **App key**, copy the value of the app key.<br/>
+   e) Next to **App secret**, click **Show**, and then copy the value of the app secret.
+
+2. Use your web browser to browse to the following URL, replacing `<app-key>` with the app key for your Dropbox app: 
+
+   ```text
+   https://www.dropbox.com/oauth2/authorize?client_id=<app-key>&response_type=code&token_access_type=offline
+   ```
+
+3. Click **Continue**.
+4. Click **Allow**.
+5. In the **Access code generated** tile, copy the access code that is shown.
+6. Use the [curl](https://curl.se/) utility in your Terminal or Command Prompt, or use a REST API client such as 
+   [Postman](https://www.postman.com/product/api-client/), to make the following REST API call, replacing the following placeholders:
+
+   - Replace `<access-code>` with the access code that you just copied.
+   - Replace `<app-key>` with the app key for your Dropbox app.
+   - Replace `<app-secret>` with the app secret for your Dropbox app.
+
+   ```text
+   curl https://api.dropbox.com/oauth2/token \
+   --data code=<access-code> \
+   --data grant_type=authorization_code \
+   --user <app-key>:<app-secret>
+   ```
+
+7. In the response, copy the following two values:
+
+   - The value of `access_token` (starting with the characters `sl`) is the new, valid access token. In your Dropbox connector settings, replace the old, 
+     expired access token value with this new, valid access token value.
+   - The value of `refresh_token` is the refresh token that you can use to replace this access token much faster and easier next time. 
+     If you lose this refresh token, you must go back to Step 2.
+
+8. To use the refresh token to replace the expired access token, make the following REST API call, replacing the following placeholders:
+
+   - Replace `<refresh-token>` with the refresh token.
+   - Replace `<app-key>` with the app key for your Dropbox app.
+   - Replace `<app-secret>` with the app secret for your Dropbox app.
+
+   ```text
+   curl https://api.dropbox.com/oauth2/token \
+   --data refresh_token=<refresh-token> \
+   --data grant_type=refresh_token \
+   --data client_id=<app-key> \
+   --data client_secret=<app-secret>
+   ```
+
+9. In the response, copy the following two values:
+
+   - The value of `access_token` (starting with the characters `sl`) is the new, valid access token. In the connector, replace the old, 
+     expired access token value with this new, valid access token value.
+   - The value of `refresh_token` is the new, valid refresh token. To replace the expired access token, go back to Step 8.
+
+   
