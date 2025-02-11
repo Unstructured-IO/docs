@@ -36,7 +36,9 @@ To choose one of these strategies, select one of the **Partition Strategy** opti
       these files are processed. These errors typically occur when these larger PDF files have lots of tables and high-resolution images.
   </Note>
 
-- **Auto**: Unstructured uses the following formula for partitioning:
+- **Auto**: Unstructured automatically analyzes and processes files on a page-by-page basis:
 
-  - ...
+  - If the page has no tables or images, **Fast** partitioning is used, and the page is billed at the **Fast** rate for processing.
+  - If the page has tables or images with standard layouts and languages, **High Res** partitioning is used, and the page is billed at the **High Res** rate for processing.
+  - If the page has tables or images with complex layouts or languages, **VLM** partitioning is used, and the page is billed at the **VLM** rate for processing.
 
