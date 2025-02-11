@@ -32,6 +32,19 @@ specify the settings for the workflow, as follows:
             "source_id": "<source-connector-id>",
             "destination_id": "<destination-connector-id>",
             "workflow_type": "<type>",
+            "workflow_nodes": [
+                {
+                    "name": "<node-name>",
+                    "type": "<node-type>",
+                    "subtype": "<node-subtype>",
+                    "settings": {
+                        "...": "..."
+                    }
+                },
+                {
+                    "...": "..." 
+                } 
+            ],
             "schedule": "<schedule-timeframe>"
         }'
         ```
@@ -57,6 +70,19 @@ specify the settings for the workflow, as follows:
                "source_id": "<source-connector-id>",
                "destination_id": "<destination-connector-id>",
                "workflow_type": "<type>",
+               "workflow_nodes": [
+                   {
+                       "name": "<node-name>",
+                       "type": "<node-type>",
+                       "subtype": "<node-subtype>",
+                       "settings": {
+                           "...": "..."
+                       }
+                   },
+                   {
+                       "...": "..." 
+                   } 
+               ],
                "schedule": "<schedule-timeframe>"
            }
            ```
@@ -72,7 +98,8 @@ Replace the preceding placeholders as follows:
     use the `GET` method to call the `/sources` endpoint. [Learn more](/platform/api/overview#list-source-connectors).
 - `<destination-connector-id>` (_required_) - The ID of the target destination connector. To get the ID, 
     use the `GET` method to call the `/destinations` endpoint. [Learn more](/platform/api/overview#list-destination-connectors).
-- `<type>` (_required_) - The workflow optimization type. Available values include `advanced`, `basic`, and `platinum`.
+- `<type>` (_required_) - The workflow optimization type. Available values include `advanced`, `basic`, `platinum`, and `custom`. 
+  If `<type>` is set to `custom`, you must add a `worfklow_nodes` array. For instructions, see [Custom workflow DAG nodes](#custom-workflow-dag-nodes).
 - `<schedule-timeframe>` - The repeating automatic run schedule, specified as a predefined phrase. The available predefined phrases are:
 
   - `every 15 minutes`: Every 15 minutes (cron expression: `*/15 * * * *`).
@@ -127,3 +154,418 @@ In the request body, specify the settings for the workflow. For the specific set
         5. Click **Send**.
     </Accordion>
 </AccordionGroup>
+
+## Custom workflow DAG nodes
+
+If `workflow_type` is set to `custom`, you must also specify the settings for the workflow's 
+directed acyclic graph (DAG) nodes. These nodes' settings are specified in the `workflow_nodes` array.
+
+- A **Source** node is automatically created when you specify the `source_id` value outside of the  
+  `workflow_nodes` array.
+- A **Destination** node is automatically created when you specify the `destination_id` value outside of the 
+  `workflow_nodes` array.
+- You can specify [Partitioner](#partitioner-node), [Chunker](#chunker-node), 
+  [Enrichment](#enrichment-node), and [Embedder](#embedder-node) nodes.
+- The order of the nodes in the `workflow_nodes` array will be the same order that these nodes appear in the DAG, 
+  with the first node in the array added directly after the **Source** node. The **Destination** node 
+  follows the last node in the array. 
+- Be sure to specify nodes in the allowed order. The following DAG placements are all allowed:
+
+```mermaid
+flowchart LR
+    Partitioner
+```
+```mermaid
+flowchart LR
+    Partitioner-->Chunker
+```
+```mermaid
+flowchart LR
+    Partitioner-->Chunker-->Embedder
+```
+```mermaid
+flowchart LR
+    Partitioner-->Enrichment-->Chunker
+```
+```mermaid
+flowchart LR
+    Partitioner-->Enrichment-->Chunker-->Embedder
+```
+
+### Partitioner node
+
+A **Partitioner** node has a `type` of `partition` and a `subtype` of `unstructured_api`. The `strategy` setting 
+determines the partition strategy to use.
+
+#### Fast strategy
+
+```json
+"...": "...",
+"workflow_nodes": [
+    {
+        "name": "Partitioner",
+        "type": "partition",
+        "subtype": "unstructured_api",
+        "settings": {
+            "strategy": "fast",
+            "include_page_breaks": <true|false>,
+            "pdf_infer_table_structure": <true|false>,
+            "exclude_elements": [
+                "<element-name>",
+                "<element-name>"
+            ],
+            "xml_keep_tags": <true|false>,
+            "encoding": "<encoding>",
+            "ocr_languages": [
+                "<language-code>",
+                "<language-code>"
+            ],
+            "extract_image_block_types": [
+                "image",
+                "table"
+            ],
+            "infer_table_structure": <true|false>
+        }
+    }
+],
+"...": "..."
+```
+
+#### High Res strategy
+
+```json
+"...": "...",
+"workflow_nodes": [
+    {
+        "name": "Partitioner",
+        "type": "partition",
+        "subtype": "unstructured_api",
+        "settings": {
+            "strategy": "hi_res",
+            "include_page_breaks": <true|false>,
+            "pdf_infer_table_structure": <true|false>,
+            "exclude_elements": [
+                "<element-name>",
+                "<element-name>"
+            ],
+            "xml_keep_tags": <true|false>,
+            "encoding": "<encoding>",
+            "ocr_languages": [
+                "<language>",
+                "<language>"
+            ],
+            "extract_image_block_types": [
+                "image",
+                "table"
+            ],
+            "infer_table_structure": <true|false>
+        }
+    }
+],
+"...": "..."
+```
+
+#### VLM strategy
+
+```json
+"...": "...",
+"workflow_nodes": [
+    {
+        "name": "Partitioner",
+        "type": "partition",
+        "subtype": "vlm",
+        "settings": {
+            "provider": "<provider>",
+            "provider_api_key": null,
+            "model": "<model>",
+            "output_format": "text/html",
+            "user_prompt": null,
+            "format_html": true,
+            "unique_element_ids": <true|false>
+        }
+    }
+],
+"...": "...",
+```
+
+Allowed values for `provider` and `model` include:
+
+- `"provider": "anthropic"`
+
+  - `"model": "claude-3-5-sonnet-20241022"`
+
+- `"provider": "anthropic""openai"`
+
+  - `"model": "gpt-4o"`
+
+- `"provider": "bedrock"`
+
+  - `"model": "us.anthropic.claude-3-5-sonnet-20241022-v2:0"`
+  - `"model": "us.anthropic.claude-3-opus-20240229-v1:0"`
+  - `"model": "us.anthropic.claude-3-haiku-20240307-v1:0"`
+  - `"model": "us.anthropic.claude-3-sonnet-20240229-v1:0"`
+  - `"model": "us.amazon.nova-pro-v1:0"`
+  - `"model": "us.amazon.nova-lite-v1:0"`
+  - `"model": "us.meta.llama3-2-90b-instruct-v1:0"`
+  - `"model": "us.meta.llama3-2-11b-instruct-v1:0"`
+
+### Chunker node
+
+#### Chunk by Character strategy
+
+```json
+"...": "..."
+"workflow_nodes": [
+    {
+        "...": "..."
+    },
+    {
+        "name": "Chunker",
+        "type": "chunk",
+        "subtype": "chunk_by_character",
+        "settings": {
+            "unstructured_api_url": null,
+            "unstructured_api_key": null,
+            "include_orig_elements": <true|false>,
+            "new_after_n_chars": <new-after-n-chars>,
+            "max_characters": <max-characters>,
+            "overlap": <overlap>,
+            "overlap_all": <true|false>,
+            "contextual_chunking_strategy": "v1"
+        }
+    }
+],
+"...": "..."
+```
+
+#### Chunk by Title strategy
+
+```json
+"...": "..."
+"workflow_nodes": [
+    {
+        "...": "..."
+    },
+    {
+        "name": "Chunker",
+        "type": "chunk",
+        "subtype": "chunk_by_title",
+        "settings": {
+            "unstructured_api_url": null,
+            "unstructured_api_key": null,
+            "multipage_sections": <true|false>,
+            "combine_text_under_n_chars": <combine-text-under-n-chars>,
+            "include_orig_elements": <true|false>,
+            "new_after_n_chars": <new-after-n-chars>,
+            "max_characters": <max-characters>,
+            "overlap": <overlap>,
+            "overlap_all": <true|false>,
+            "contextual_chunking_strategy": "v1"
+        }
+    }
+],
+"...": "..."
+```
+
+#### Chunk by Page strategy
+
+```json
+"...": "..."
+"workflow_nodes": [
+    {
+        "...": "..."
+    },
+    {
+        "name": "Chunker",
+        "type": "chunk",
+        "subtype": "chunk_by_page",
+        "settings": {
+            "unstructured_api_url": null,
+            "unstructured_api_key": null,
+            "include_orig_elements": <true|false>,
+            "new_after_n_chars": <new-after-n-chars>,
+            "max_characters": <max-characters>,
+            "overlap": <overlap>,
+            "overlap_all": <true|false>,
+            "contextual_chunking_strategy": "v1"
+        }
+    }
+],
+"...": "..."
+```
+
+#### Chunk by Similarity strategy
+
+```json
+"...": "..."
+"workflow_nodes": [
+    {
+        "...": "..."
+    },
+    {
+        "name": "Chunker",
+        "type": "chunk",
+        "subtype": "chunk_by_similarity",
+        "settings": {
+            "unstructured_api_url": null,
+            "unstructured_api_key": null,
+            "include_orig_elements": <true|false>,
+            "new_after_n_chars": <true|false>,
+            "max_characters": <max-characters>,
+            "overlap": <overlap>,
+            "overlap_all": <true|false>,
+            "contextual_chunking_strategy": "v1",
+            "similarity_threshold": <similarity-threshold>
+      }
+    }
+],
+"...": "..."
+```
+
+### Enrichment node
+
+#### Image Description task
+
+```json
+"...": "..."
+"workflow_nodes": [
+    {
+        "...": "..."
+    },
+    {
+      "name": "Enrichment",
+      "type": "prompter",
+      "subtype": "<subtype>",
+      "settings": {}
+    },
+    {
+        "...": "..."
+    }
+],
+"...": "..."
+```
+
+Allowed values for `<subtype>` include:
+
+- `openai_image_description`
+- `anthropic_image_description`
+- `bedrock_image_description`
+
+#### Table Description task
+
+```json
+"...": "..."
+"workflow_nodes": [
+    {
+        "...": "..."
+    },
+    {
+      "name": "Enrichment",
+      "type": "prompter",
+      "subtype": "<subtype>",
+      "settings": {}
+    },
+    {
+        "...": "..."
+    }
+],
+"...": "..."
+```
+
+Allowed values for `<subtype>` include:
+
+- `openai_table_description`
+- `anthropic_table_description`
+- `bedrock_table_description`
+
+#### Table to HTML task
+
+```json
+"...": "..."
+"workflow_nodes": [
+    {
+        "...": "..."
+    },
+    {
+      "name": "Enrichment",
+      "type": "prompter",
+      "subtype": "openai_table2html",
+      "settings": {}
+    },
+    {
+        "...": "..."
+    }
+],
+"...": "..."
+```
+
+#### Named Entity Recognition (NER) task
+
+```json
+"...": "..."
+"workflow_nodes": [
+    {
+        "...": "..."
+    },
+    {
+        "name": "Enrichment",
+        "type": "prompter",
+        "subtype": "openai_ner",
+        "settings": {
+            "prompt_interface_overrides": {
+                "prompt": {
+                    "user": "<user-prompt-override>"
+                } 
+            }
+        }
+    },
+    {
+        "...": "..."
+    }
+],
+"...": "..."
+```
+
+Replace the preceding placeholders as follows:
+
+### Embedder node
+
+```json
+"...": "..."
+"workflow_nodes": [
+    {
+        "...": "..."
+    },
+    {
+      "name": "Embedder",
+      "type": "embed",
+      "subtype": "<subtype>",
+      "settings": {
+        "model_name": "<model-name>"
+      }
+    }
+],
+"...": "..."
+```
+
+Allowed values for `subtype` and `model_name` include:
+
+- `"subtype": "azure_openai"`
+
+  - `"model_name": "text-embedding-3-small"`
+  - `"model_name": "text-embedding-3-large"`
+  - `"model_name": "text-embedding-ada-002"`
+
+- `"subtype": "bedrock"`
+
+  - `"model_name": "amazon.titan-embed-text-v2:0"`
+  - `"model_name": "amazon.titan-embed-text-v1"`
+  - `"model_name": "amazon.titan-embed-image-v1"`
+  - `"model_name": "cohere.embed-english-v3"`
+  - `"model_name": "cohere.embed-multilingual-v3"`
+
+- `"subtype": "togetherai"`
+
+  - `"model_name": "togethercomputer/m2-bert-80M-2k-retrieval"`
+  - `"model_name": "togethercomputer/m2-bert-80M-8k-retrieval"`
+  - `"model_name": "togethercomputer/m2-bert-80M-32k-retrieval"`
