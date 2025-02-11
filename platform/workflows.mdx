@@ -35,9 +35,9 @@ To create an automatic workflow:
 
 1. On the sidebar, click **Workflows**.
 2. Click **New Workflow**.
-3. Next to **Build it with me**, click **Create Workflow**.
+3. Next to **Build it with Me**, click **Create Workflow**.
 
-   <Note>If a radio button appears instead of **Build it with me**, select it, and then click **Continue**.</Note>
+   <Note>If a radio button appears instead of **Build it with Me**, select it, and then click **Continue**.</Note>
 
 4. For **Workflow Name**, enter some unique name for this workflow.
 5. In the **Sources** dropdown list, select your source location.
@@ -147,16 +147,15 @@ To create an automatic workflow:
        </Accordion>
    </AccordionGroup>
 
-9. The **Reprocess all** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
+9. The **Reprocess All** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
 
    - Checking this box reprocesses all documents in the source location on every workflow run.
    - Unchecking this box causes only new documents that are added to the source location since the last workflow run to be processed on future runs. Previously processed documents are not processed again, even if those documents' contents change.
 
-10. If you want to retry processing any documents that failed to process, check the **Retry Failed Documents** box.
-11. Click **Continue**.
-12. If you want this workflow to run on a schedule, in the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
-13. Click **Complete**.
-14. If you did not set the workflow to run on a schedule, you can [run the worklow](#edit-delete-or-run-a-workflow) now.
+10. Click **Continue**.
+11. If you want this workflow to run on a schedule, in the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
+12. Click **Complete**.
+13. If you did not set the workflow to run on a schedule, you can [run the worklow](#edit-delete-or-run-a-workflow) now.
 
 ### Create a custom workflow
 
@@ -170,7 +169,7 @@ To create an automatic workflow:
 
 1. On the sidebar, click **Workflows**.
 2. Click **New Workflow**.
-3. Click the **Build it myself** option, and then click **Continue**.
+3. Click the **Build it Myself** option, and then click **Continue**.
 4. In the **This workflow** pane, click the **Details** button.
 
    ![Workflow details](/img/platform/Workflow-Details.png)
@@ -179,7 +178,7 @@ To create an automatic workflow:
 6. If you want this workflow to run on a schedule, click the **Schedule** button. In the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings.
 7. To overwrite any previously processed files, or to retry any documents that fail to process, click the **Settings** button, and check either or both of the boxes.
 
-   The **Reprocess all** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
+   The **Reprocess All** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
 
    - Checking this box reprocesses all documents in the source location on every workflow run.
    - Unchecking this box causes new documents that have been added to the source location, as well as existing documents in the source location that have had their contents or titles changed, since the last workflow run to be processed on future runs. Other previously processed documents are not processed again.
@@ -265,9 +264,14 @@ To create an automatic workflow:
 
           - **Amazon Bedrock**: 
 
-            - **Anthropic Claude 3.5 Sonnet v2**
-            - **Amazon Nova Pro v1**
-            - **Llama 3.2 11B Instruct**
+            - **Anthropic Claude 3.5 Sonnet**
+            - **Anthropic Claude 3 Opus**
+            - **Anthropic Claude 3 Haiku**
+            - **Anthropic Claude 3 Sonnet**
+            - **Amazon Nova Pro**
+            - **Amazon Nova Lite**
+            - **Meta Llama 3.2 90B Instruct**
+            - **Meta Llama 3.2 11B Instruct**
 
           <Note>
               During **VLM** processing, any detected files that are not PDFs or images are processed and billed at either the **High Res** or **Fast** rate instead. 
@@ -321,15 +325,30 @@ To create an automatic workflow:
 
     </Accordion>
     <Accordion title="Enrichment node">
-        For **Enrichment model**, choose one of the following:
-        
-        - **OpenAI Image Description** to use GPT-4o to summarize images. [Learn more](https://openai.com/index/hello-gpt-4o/).
-        - **OpenAI Table Description** to use se GPT-4o to summarize tables. [Learn more](https://openai.com/index/hello-gpt-4o/).
-        - **OpenAI Table to HTML** to use GPT-4o to convert tables to HTML. [Learn more](https://openai.com/index/hello-gpt-4o/).
-        - **Anthropic Image Description** to use Claude 3.5 Sonnet to summarize images. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
-        - **Anthropic Table Description** to use Claude 3.5 Sonnet to summarize tables. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+        For **Task**, choose one of the following:
 
-        [Learn more](/platform/summarizing).
+        - **Image Description** to summarize images. Also select one of the following provider (and model) combinations to use:
+
+          - **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
+          - **Anthropic (Claude 3.5 Sonnet)**. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+          - **Amazon Bedrock (Claude 3.5 Sonnet)**. [Learn more](https://aws.amazon.com/bedrock/claude/). 
+
+          [Learn more](/platform/enriching/image-descriptions).
+        
+        - **Table Description** to summarize tables. Also select one of the following provider (and model) combinations to use:
+
+          - **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
+          - **Anthropic (Claude 3.5 Sonnet)**. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+          - **Amazon Bedrock (Claude 3.5 Sonnet)**. [Learn more](https://aws.amazon.com/bedrock/claude/). 
+
+          [Learn more](/platform/enriching/table-descriptions).
+          
+        - **Table to HTML** to convert tables to HTML. Also select one of the following provider (and model) combinations to use:
+        
+          - **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
+
+          [Learn more](/platform/enriching/table-to-html).
+        
     </Accordion>
     <Accordion title="Embedder node">
         For **Select Embedding Model**, select one of the following:
