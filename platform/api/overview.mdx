@@ -72,19 +72,19 @@ To use the Unstructured Platform API, you must have:
 
 The Unstructured Platform API is offered as follows:
 
-- As part of the [Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client), 
+- As part of the [Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) beginning with version 0.30.0, 
   which you can call through standard Python code.
 
   To install the Unstructured Python SDK, run the following command from within your Python virtual environment:
 
   ```bash
-  pip install unstructured-client
+  pip install "unstructured-client>=0.30.0"
   ```
 
-  If you already have the Unstructured Python SDK installed, upgrade to the latest version by running the following command instead:
+  If you already have the Unstructured Python SDK installed, upgrade to at least version 0.30.0 by running the following command instead:
 
   ```bash
-  pip install --upgrade unstructured-client
+  pip install --upgrade "unstructured-client>=0.30.0"
   ```
 
 - As a set of Representational State Transfer (REST) endpoints, which you can call through standard REST-enabled 
@@ -207,14 +207,14 @@ To get this ID, see [Sources](/platform/api/sources/overview).
         from unstructured_client.models.operations import ListSourcesRequest
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         response = client.sources.list_sources(
             request=ListSourcesRequest(
                 source_type="<type>" # Optional, list only for this source type.
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         # Print the list in alphabetical order by connector name.
@@ -280,14 +280,14 @@ the `GET` method to call the `/sources/<connector-id>` endpoint (for `curl` or P
         from unstructured_client.models.operations import GetSourceRequest
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         response = client.sources.get_source(
             request=GetSourceRequest(
                 source_id="<connector-id>"
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.source_connector_information
@@ -344,8 +344,7 @@ specify the settings for the connector. For the specific settings to include, wh
         from unstructured_client.models.shared import CreateSourceConnector
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         destination_connector = CreateSourceConnector(
@@ -359,7 +358,8 @@ specify the settings for the connector. For the specific settings to include, wh
         response = client.sources.create_source(
             request=CreateSourceRequest(
                 create_source_connector=source_connector
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.source_connector_information
@@ -428,8 +428,7 @@ You can change any of the connector's settings except for its `name` and `type`.
         from unstructured_client.models.shared import UpdateSourceConnector
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         destination_connector = UpdateSourceConnector(
@@ -442,7 +441,8 @@ You can change any of the connector's settings except for its `name` and `type`.
             request=UpdateSourceRequest(
                 source_id="<connector-id>",
                 update_source_connector=source_connector
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.source_connector_information
@@ -502,14 +502,14 @@ the `DELETE` method to call the `/sources/<connector-id>` endpoint (for `curl` o
         from unstructured_client.models.operations import DeleteSourceRequest
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         response = client.sources.delete_source(
             request=DeleteSourceRequest(
                 source_id="<connector-id>"
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         print(response.raw_response)
@@ -560,14 +560,14 @@ To get this ID, see [Destinations](/platform/api/destinations/overview).
         from unstructured_client.models.operations import ListDestinationsRequest
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         response = client.destinations.list_destinations(
             request=ListDestinationsRequest(
                 destination_type="<type>" # Optional, list only for this destination type.
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         # Print the list in alphabetical order by connector name.
@@ -633,14 +633,14 @@ the `GET` method to call the `/destinations/<connector-id>` endpoint (for `curl`
         from unstructured_client.models.operations import GetDestinationRequest
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         response = client.destinations.get_destination(
             request=GetDestinationRequest(
                 destination_id="<connector-id>"
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.destination_connector_information
@@ -696,8 +696,7 @@ specify the settings for the connector. For the specific settings to include, wh
         from unstructured_client.models.shared import CreateDestinationConnector
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         destination_connector = CreateDestinationConnector(
@@ -711,7 +710,8 @@ specify the settings for the connector. For the specific settings to include, wh
         response = client.destinations.create_destination(
             request=CreateDestinationRequest(
                 create_destination_connector=destination_connector
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.destination_connector_information
@@ -779,8 +779,7 @@ You can change any of the connector's settings except for its `name` and `type`.
         from unstructured_client.models.shared import UpdateDestinationConnector
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         destination_connector = UpdateDestinationConnector(
@@ -793,7 +792,8 @@ You can change any of the connector's settings except for its `name` and `type`.
             request=UpdateDestinationRequest(
                 destination_id="<connector-id>",
                 update_destination_connector=destination_connector
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.destination_connector_information
@@ -852,14 +852,14 @@ the `DELETE` method to call the `/destinations/<connector-id>` endpoint (for `cu
         from unstructured_client.models.operations import DeleteDestinationRequest
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         response = client.destinations.delete_destination(
             request=DeleteDestinationRequest(
                 destination_id="<connector-id>"
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         print(response.raw_response)
@@ -926,8 +926,7 @@ You can specify multiple query parameters, for example `?source_id=<connector-id
         from unstructured_client.models.operations import ListWorkflowsRequest
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         response = client.workflows.list_workflows(
@@ -935,7 +934,8 @@ You can specify multiple query parameters, for example `?source_id=<connector-id
                 destination_id="<connector-id>", # Optional, list only for this destination connector ID.
                 source_id="<connector-id>", # Optional, list only for this source connector ID.
                 status="<status>" # Optional, list only for this workflow status.
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         # Print the list in alphabetical order by workflow name.
@@ -1021,14 +1021,14 @@ the `GET` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or 
         from unstructured_client.models.operations import GetWorkflowRequest
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         response = client.workflows.get_workflow(
             request=GetWorkflowRequest(
                 workflow_id="<workflow-id>"
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.workflow_information
@@ -1098,8 +1098,7 @@ specify the settings for the workflow. For the specific settings to include, see
         from unstructured_client.models.shared import CreateWorkflow
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         workflow = CreateWorkflow(
@@ -1109,7 +1108,8 @@ specify the settings for the workflow. For the specific settings to include, see
         response = client.workflows.create_workflow(
             request=CreateWorkflowRequest(
                 create_workflow=workflow
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.workflow_information
@@ -1181,14 +1181,14 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
         from unstructured_client.models.operations import RunWorkflowRequest
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         response = client.workflows.run_workflow(
             request=RunWorkflowRequest(
                 workflow_id="<workflow-id>"
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         print(response.raw_response)
@@ -1242,8 +1242,7 @@ the request body (for `curl` or Postman), specify the settings for the workflow.
         from unstructured_client.models.shared import UpdateWorkflow
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         workflow = UpdateWorkflow(
@@ -1254,7 +1253,8 @@ the request body (for `curl` or Postman), specify the settings for the workflow.
             request=UpdateWorkflowRequest(
                 workflow_id="<workflow-id>",
                 update_workflow=workflow
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.workflow_information
@@ -1326,14 +1326,14 @@ the `DELETE` method to call the `/workflows/<workflow-id>` endpoint (for `curl` 
         from unstructured_client.models.operations import DeleteWorkflowRequest
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         response = client.workflows.delete_workflow(
             request=DeleteWorkflowRequest(
                 workflow_id="<workflow-id>"
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         print(response.raw_response)
@@ -1398,15 +1398,15 @@ For `curl` or Postman, you can specify multiple query parameters as `?workflow_i
         from unstructured_client.models.operations import ListJobsRequest
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         response = client.jobs.list_jobs(
             request=ListJobsRequest(
                 workflow_id="<workflow-id>", # Optional, list only for this workflow ID.
                 status="<status>", # Optional, list only for this job status.
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         # Print the list in alphabetical order by workflow name.
@@ -1482,14 +1482,14 @@ the `GET` method to call the `/jobs/<job-id>` endpoint (for `curl` or Postman), 
         from unstructured_client.models.operations import GetJobRequest
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         response = client.jobs.get_job(
             request=GetJobRequest(
                 job_id="<job-id>"
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.job_information
@@ -1540,14 +1540,14 @@ the `POST` method to call the `/jobs/<job-id>/cancel` endpoint (for `curl` or Po
         from unstructured_client.models.operations import CancelJobRequest
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         response = client.jobs.cancel_job(
             request=CancelJobRequest(
                 job_id="<job-id>"
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         print(response.raw_response)

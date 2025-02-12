@@ -43,8 +43,7 @@ specify the settings for the workflow, as follows:
         )
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         workflow = CreateWorkflow(
@@ -58,7 +57,8 @@ specify the settings for the workflow, as follows:
         response = client.workflows.create_workflow(
             request=CreateWorkflowRequest(
                 create_workflow=workflow
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.workflow_information
@@ -177,8 +177,7 @@ In the request body, specify the settings for the workflow. For the specific set
         )
         
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         workflow = UpdateWorkflow(
@@ -189,7 +188,8 @@ In the request body, specify the settings for the workflow. For the specific set
             request=UpdateWorkflowRequest(
                 workflow_id="<workflow-id>",
                 update_workflow=workflow
-            )
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.workflow_information
