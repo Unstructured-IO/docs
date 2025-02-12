@@ -55,12 +55,17 @@ To use the Unstructured Platform API, you must have:
   4. Enter some descriptive name for the API key, and then click **Save**.
   5. Click the **Copy** icon for your new API key. The API key's value is copied to your system's clipboard.
 
-- The Unstructured **Platform API URL**, which is `https://platform.unstructuredapp.io/api/v1`
+- The Unstructured **Platform API URL**. This is typically `https://platform.unstructuredapp.io`, which is unique to 
+  the Unstructured Python SDK; and `https://platform.unstructuredapp.io/api/v1` for standard REST-enabled utilities (such as `curl`), 
+  tools (such as Postman), programming languages, packages, and libraries.
 
   ![Unstructured Platform API URL](/img/platform/PlatformAPIURL.png)
 
   <Warning>
-      Do not use the Unstructured **Serverless API URL**, which is separate from the Unstructured Platform API URL.
+      **Important**: Do not use `https://platform.unstructuredapp.io/api/v1` with the Unstructured Python SDK, or else calls made by 
+      the Python SDK will fail. Use `https://platform.unstructuredapp.io` instead.
+
+      Do not use the Unstructured **Serverless API URL**, which is separate from the Unstructured Platform API URL.      
   </Warning>
 
   <Note>
@@ -141,12 +146,31 @@ as well as `curl` and Postman for all of the supported REST endpoints.
     that are available through `https://platform.unstructuredapp.io`.
 </Tip>
 
-The following Unstructured Python SDK and `curl` examples use environment variables, which you can set as follows:
+The following Unstructured Python SDK examples use the following environment variables, which you can set as follows:
+
+```bash
+export UNSTRUCTURED_API_URL="https://platform.unstructuredapp.io"
+export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
+```
+
+<Warning>
+    **Important**: Do not use `https://platform.unstructuredapp.io/api/v1` with the Python SDK, or else calls made by the Python SDK will fail. 
+    Use `https://platform.unstructuredapp.io` instead.
+</Warning>
+
+The following `curl` and Postman examples use the following environment variables, which you can set as follows:
 
 ```bash
 export UNSTRUCTURED_API_URL="https://platform.unstructuredapp.io/api/v1"
 export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
 ```
+
+<Warning>
+    **Important**: For standard REST-enabled clients (such as `curl`), 
+    do not use `https://platform.unstructuredapp.io` (which is unique to the 
+    Unstructured Python SDK), or else calls made by these REST-enabled clients will fail. 
+    Use `https://platform.unstructuredapp.io/api/v1` instead.
+</Warning>
 
 These environment variables enable you to more easily run the following Unstructured Python SDK and `curl` examples and help prevent 
 you from storing scripts that contain sensitive URLs and API keys in public source code repositories.
@@ -161,6 +185,11 @@ The following Postman examples use variables, which you can set as follows:
    - **Type**: `default`
    - **Initial value**: `https://platform.unstructuredapp.io/api/v1`
    - **Current value**: `https://platform.unstructuredapp.io/api/v1`
+
+     <Warning>
+         **Important**: Do not use `https://platform.unstructuredapp.io` (which is unique to the 
+         Unstructured Python SDK), or else calls made by Postman will fail.
+     </Warning>
    <br/>
    - **Variable**: `UNSTRUCTURED_API_URL`
    - **Type**: `secret`
