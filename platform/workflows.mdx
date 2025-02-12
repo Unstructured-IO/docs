@@ -14,12 +14,10 @@ Workflows are crucial for establishing a systematic approach to managing data fl
 
 ## Create a workflow
 
-![Choose a workflow type](/img/platform/Choose-Workflow-Type.png)
-
 The Unstructured Platform provides two types of workflow builders:
 
-- [Automatic](#create-an-automatic-workflow) workflows, which use sensible default workflow settings to enable you to get good-quality results faster.
-- [Custom](#create-a-custom-worklow) workflows, which enable you to fine-tune the workflow settings behind the scenes to get very specific results.
+- [Automatic](#create-an-automatic-workflow) or **Build it For Me** workflows, which use sensible default workflow settings to enable you to get good-quality results faster.
+- [Custom](#create-a-custom-worklow) or **Build it Myself** workflows, which enable you to fine-tune the workflow settings behind the scenes to get very specific results.
 
 ### Create an automatic workflow
 
@@ -45,27 +43,66 @@ To create an automatic workflow:
 
    <Note>You can select multiple source and destination locations. Files will be ingested from all of the selected source locations, and the processed data will be delivered to all of the selected destination locations.</Note>
 
-7. The **Reprocess All** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
+7. Click **Continue**.
+8. The **Reprocess All** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
 
    - Checking this box reprocesses all documents in the source location on every workflow run.
    - Unchecking this box causes only new documents that are added to the source location since the last workflow run to be processed on future runs. Previously processed documents are not processed again, even if those documents' contents change.
 
-8. Click **Continue**.
-9. If you want this workflow to run on a schedule, in the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
-10. Click **Complete**.
+9. Click **Continue**.
+10. If you want this workflow to run on a schedule, in the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
+11. Click **Complete**.
 
-This automatic workflow performs **Auto** [partitioning](/platform/partitioning). Unstructured automatically analyzes and processes incoming files for this workflow on a page-by-page basis, using the following formula:
+By default, this workflow partitions, chunks, and generates embeddings as follows:
 
-- If the page has no tables or images, **Fast** partitioning is used, and the page is billed at the **Fast** rate for processing.
-- If the page has tables or images with standard layouts and languages, **High Res** partitioning is used, and the page is billed at the **High Res** rate for processing.
-- If the page has tables or images with complex layouts or languages, **VLM** partitioning is used, and the page is billed at the **VLM** rate for processing.
+- **Partitioner**: **Auto** strategy
 
-To add [chunking](/platform/chunking), [enriching](/platform/enriching), or [embedding](/platform/embedding) to your workflow, do the following:
+  Unstructured automatically analyzes and processes files on a page-by-page basis and determines the best partitioning strategy to use for each page:
 
-1. On the sidebar, click **Workflows**.
-2. In the list of available workflows, click the workflow that you just created.
-3. A visual designer appears, with the workflow shown as a _directed acyclic graph_ (DAG) containing nodes representing each of the worklow's steps.
-4. To learn how to add and configure nodes for chunking, enriching, or embedding, skip ahead to Step 11 in the next section.
+  - If the page has no tables or images, **Fast** partitioning is used, and the page is billed at the **Fast** rate for processing.
+  - If the page has tables or images with standard layouts and languages, **High Res** partitioning is used, and the page is billed at the **High Res** rate for processing.
+  - If the page has tables or images with complex layouts or languages, **VLM** partitioning is used, and the page is billed at the **VLM** rate for processing.
+
+  [Learn about partitioning strategies](/platform/partitioning).
+
+- **Chunker**: **Chunk by Title** strategy
+
+  - **Contextual Chunking**: No (unchecked)
+  - **Combine Text Under N Characters**: 3000
+  - **Include Original Elements**: Yes (checked)
+  - **Max Characters**: 5500
+  - **Multipage Sections**: Yes (checked)
+  - **New After N Characters**: 3500
+  - **Overlap**: 350
+  - **Overlap All**: Yes (checked)
+
+  [Learn about chunking strategies](/platform/chunking).
+
+- **Embedder**: 
+
+  - **Provider**: Azure OpenAI
+  - **Model**: text-embedding-3-large, with 3072 dimensions
+
+  [Learn about embedding providers and models](/platform/embedding).
+
+- **Enrichments**:
+
+  This workflow contains no enrichments. 
+
+  [Learn about available enrichments](/platform/enriching/overview).
+
+After this workflow is created, you can change any or all of its settings if you want to. This includes the workflow's 
+source connector, destination connector, partitioning, chunking, and embedding settings. You can also add enrichments 
+to the workflow if you want to. 
+
+To change the workflow's default settings or to add enrichments:
+
+1. On the sidebar, click **Workflows**. 
+2. In the list of available workflows, click the workflow that was just created. This opens a visual designer that shows 
+   your workflow as a directed acyclic graph (DAG). This DAG contains a node representing each step in the workflow. 
+   There is one node for the partitioning step, another node for the chunking step, and so on.
+3. To learn how to change a node's settings or to add enrichment nodes, click the **FAQ** button in the flyout pane in 
+   the workflow DAG designer.
 
 If you did not previously set the workflow to run on a schedule, you can [run the worklow](#edit-delete-or-run-a-workflow) now.
 
