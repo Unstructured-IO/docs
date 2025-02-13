@@ -1,0 +1,15 @@
+```python Python SDK
+# ...
+from unstructured_client.models.shared import <Create|Update>DestinationConnector
+# ...
+destination_connector = <Create|Update>DestinationConnector(
+    name="<name>", # Create only.
+    type="azure_ai_search", # Create only.
+    config={
+        "endpoint": "<endpoint>",
+        "index": "<index>",
+        "azure_ai_search_key": "<azure-ai-search-key>"
+    }
+)
+# ...
+```

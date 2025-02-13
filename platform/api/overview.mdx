@@ -57,12 +57,17 @@ To use the Unstructured Platform API, you must have:
   4. Enter some descriptive name for the API key, and then click **Save**.
   5. Click the **Copy** icon for your new API key. The API key's value is copied to your system's clipboard.
 
-- The Unstructured **Platform API URL**, which is `https://platform.unstructuredapp.io/api/v1`
+- The Unstructured **Platform API URL**. This is typically `https://platform.unstructuredapp.io`, which is unique to 
+  the Unstructured Python SDK; and `https://platform.unstructuredapp.io/api/v1` for standard REST-enabled utilities (such as `curl`), 
+  tools (such as Postman), programming languages, packages, and libraries.
 
   ![Unstructured Platform API URL](/img/platform/PlatformAPIURL.png)
 
   <Warning>
-      Do not use the Unstructured **Serverless API URL**, which is separate from the Unstructured Platform API URL.
+      **Important**: Do not use `https://platform.unstructuredapp.io/api/v1` with the Unstructured Python SDK, or else calls made by 
+      the Python SDK will fail. Use `https://platform.unstructuredapp.io` instead.
+
+      Do not use the Unstructured **Serverless API URL**, which is separate from the Unstructured Platform API URL.      
   </Warning>
 
   <Note>
@@ -72,15 +77,32 @@ To use the Unstructured Platform API, you must have:
       API URL throughout the following examples.
   </Note>
 
-The Unstructured Platform API is offered as a set of Representational State Transfer (REST) endpoints, which you can call through standard REST-enabled 
+The Unstructured Platform API is offered as follows:
+
+- As part of the [Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) beginning with version 0.30.0, 
+  which you can call through standard Python code.
+
+  To install the Unstructured Python SDK, run the following command from within your Python virtual environment:
+
+  ```bash
+  pip install "unstructured-client>=0.30.0"
+  ```
+
+  If you already have the Unstructured Python SDK installed, upgrade to at least version 0.30.0 by running the following command instead:
+
+  ```bash
+  pip install --upgrade "unstructured-client>=0.30.0"
+  ```
+
+- As a set of Representational State Transfer (REST) endpoints, which you can call through standard REST-enabled 
 utilities, tools, programming languages, packages, and libraries. The following sections describe how to call the Unstructured Platform API with 
 `curl` and Postman. You can adapt this information as needed for your preferred programming languages and libraries, for example by using the 
 `requests` library with Python.
 
-<Tip>
-    You can also use the [Unstructured Platform API - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
-    that are available through `https://platform.unstructuredapp.io`.
-</Tip>
+  <Tip>
+      You can also use the [Unstructured Platform API - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
+      that are available through `https://platform.unstructuredapp.io`.
+  </Tip>
 
 <Note>
     The Unstructured Platform API is separate from [Unstructured Serverless API services](/api-reference/api-services/overview) and 
@@ -88,7 +110,6 @@ utilities, tools, programming languages, packages, and libraries. The following 
 
     Because of this separation, the following Unstructured SDKs, tools, and libraries do _not_ work with the Unstructured Platform API:
 
-    - The [Unstructured Python SDK](/api-reference/api-services/sdk-python)
     - The [Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts)
     - [Local single-file POST requests](/api-reference/api-services/post-requests) to Unstructured Serverless API services
     - The [Unstructured open source Python library](/api-reference/api-services/partition-via-api)
@@ -119,22 +140,42 @@ For general information about these objects, see:
 - [Workflows](/platform/workflows)
 - [Jobs](/platform/jobs)
 
-The following sections provide examples, showing the use of `curl` or Postman, for all of the supported REST endpoints.
+The following sections provide examples, showing the use of the Unstructured SDK for Python for all of the supported API operations, 
+as well as `curl` and Postman for all of the supported REST endpoints.
 
 <Tip>
     You can also use the [Unstructured Platform API - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
     that are available through `https://platform.unstructuredapp.io`.
 </Tip>
 
-The following `curl` examples use environment variables, which you can set as follows:
+The following Unstructured Python SDK examples use the following environment variables, which you can set as follows:
+
+```bash
+export UNSTRUCTURED_API_URL="https://platform.unstructuredapp.io"
+export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
+```
+
+<Warning>
+    **Important**: Do not use `https://platform.unstructuredapp.io/api/v1` with the Python SDK, or else calls made by the Python SDK will fail. 
+    Use `https://platform.unstructuredapp.io` instead.
+</Warning>
+
+The following `curl` and Postman examples use the following environment variables, which you can set as follows:
 
 ```bash
 export UNSTRUCTURED_API_URL="https://platform.unstructuredapp.io/api/v1"
 export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
 ```
 
-These environment variables enable you to more easily run the following `curl` examples and help prevent you from storing scripts 
-that contain sensitive URLs and API keys in public source code repositories.
+<Warning>
+    **Important**: For standard REST-enabled clients (such as `curl`), 
+    do not use `https://platform.unstructuredapp.io` (which is unique to the 
+    Unstructured Python SDK), or else calls made by these REST-enabled clients will fail. 
+    Use `https://platform.unstructuredapp.io/api/v1` instead.
+</Warning>
+
+These environment variables enable you to more easily run the following Unstructured Python SDK and `curl` examples and help prevent 
+you from storing scripts that contain sensitive URLs and API keys in public source code repositories.
 
 The following Postman examples use variables, which you can set as follows:
 
@@ -146,6 +187,11 @@ The following Postman examples use variables, which you can set as follows:
    - **Type**: `default`
    - **Initial value**: `https://platform.unstructuredapp.io/api/v1`
    - **Current value**: `https://platform.unstructuredapp.io/api/v1`
+
+     <Warning>
+         **Important**: Do not use `https://platform.unstructuredapp.io` (which is unique to the 
+         Unstructured Python SDK), or else calls made by Postman will fail.
+     </Warning>
    <br/>
    - **Variable**: `UNSTRUCTURED_API_URL`
    - **Type**: `secret`
@@ -174,14 +220,44 @@ For general information, see [Connectors](/platform/connectors).
 
 ### List source connectors
 
-To list source connectors, use the `GET` method to call the `/sources` endpoint.
+To list source connectors, use the `UnstructuredClient` object's `sources.list_sources` function (for the Python SDK) or 
+the `GET` method to call the `/sources` endpoint (for `curl` or Postman).
 
-To filter the list of source connectors, use the query parameter `source_type=<type>`, 
+To filter the list of source connectors, use the `ListSourcesRequest` object's `source_type` parameter (for the Python SDK) 
+or the query parameter `source_type=<type>` (for `curl` or Postman), 
 replacing `<type>` with the source connector type's unique ID 
 (for example, `s3` for the Amazon S3 source connector type). 
 To get this ID, see [Sources](/platform/api/sources/overview).
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import ListSourcesRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.sources.list_sources(
+            request=ListSourcesRequest(
+                source_type="<type>" # Optional, list only for this source type.
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        # Print the list in alphabetical order by connector name.
+        sorted_sources = sorted(
+            response.response_list_sources, 
+            key=lambda source: source.name.lower()
+        )
+
+        for source in sorted_sources:
+            print(f"{source.name} ({source.id})")
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'GET' --location \
@@ -222,10 +298,38 @@ To get this ID, see [Sources](/platform/api/sources/overview).
 
 ### Get a source connector
 
-To get information about a source connector, use the `GET` method to call the `/sources/<connector-id>` endpoint, replacing 
+To get information about a source connector, use the `UnstructuredClient` object's `sources.get_source` function (for the Python SDK) or 
+the `GET` method to call the `/sources/<connector-id>` endpoint (for `curl` or Postman), replacing 
 `<connector-id>` with the source connector's unique ID. To get this ID, see [List source connectors](#list-source-connectors).
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import GetSourceRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.sources.get_source(
+            request=GetSourceRequest(
+                source_id="<connector-id>"
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        info = response.source_connector_information
+
+        print(f"name: {info.name}")
+            
+        for key, value in info.config.items():
+            print(f"{key}: {value}")
+
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'GET' --location \
@@ -253,11 +357,52 @@ To get information about a source connector, use the `GET` method to call the `/
 
 ### Create a source connector
 
-To create a source connector, use the `POST` method to call the `/sources` endpoint. In the request body, 
+To create a source connector, use the `UnstructuredClient` object's `sources.create_source` function (for the Python SDK) or 
+the `POST` method to call the `/sources` endpoint (for `curl` or Postman). 
+
+In the `CreateSourceConnector` object (for the Python SDK) or 
+the request body (for `curl` or Postman), 
 specify the settings for the connector. For the specific settings to include, which differ by connector, see 
 [Sources](/platform/api/sources/overview). 
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import CreateSourceRequest
+        from unstructured_client.models.shared import CreateSourceConnector
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        destination_connector = CreateSourceConnector(
+            name="<name>",
+            type="<type>",
+            config={
+                # Specify the settings for the connector here.
+            }
+        )
+
+        response = client.sources.create_source(
+            request=CreateSourceRequest(
+                create_source_connector=source_connector
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        info = response.source_connector_information
+
+        print(f"name: {info.name}")
+        print(f"id: {info.id}")
+            
+        for key, value in info.config.items():
+            print(f"{key}: {value}")
+
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'POST' --location \
@@ -292,10 +437,12 @@ specify the settings for the connector. For the specific settings to include, wh
 
 ### Update a source connector
 
-To update information about a source connector, use the `PUT` method to call the `/sources/<connector-id>` endpoint, replacing 
+To update information about a source connector, use the `UnstructuredClient` object's `sources.update_source` function (for the Python SDK) or 
+the `PUT` method to call the `/sources/<connector-id>` endpoint (for `curl` or Postman), replacing 
 `<connector-id>` with the source connector's unique ID. To get this ID, see [List source connectors](#list-source-connectors).
 
-In the request body, specify the settings for the connector. For the specific settings to include, which differ by connector, see 
+In the `UpdateSourceConnector` object (for the Python SDK) or 
+the request body (for `curl` or Postman), specify the settings for the connector. For the specific settings to include, which differ by connector, see 
 [Sources](/platform/api/sources/overview).
 
 You must specify all of the settings for the connector, even for settings that are not changing.
@@ -303,6 +450,42 @@ You must specify all of the settings for the connector, even for settings that a
 You can change any of the connector's settings except for its `name` and `type`.
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import UpdateSourceRequest
+        from unstructured_client.models.shared import UpdateSourceConnector
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        destination_connector = UpdateSourceConnector(
+            config={
+                # Specify the settings for the connector here.
+            }
+        )
+
+        response = client.sources.update_source(
+            request=UpdateSourceRequest(
+                source_id="<connector-id>",
+                update_source_connector=source_connector
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        info = response.source_connector_information
+
+        print(f"name: {info.name}")
+        print(f"id: {info.id}")
+            
+        for key, value in info.config.items():
+            print(f"{key}: {value}")
+
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'PUT' --location \
@@ -337,10 +520,32 @@ You can change any of the connector's settings except for its `name` and `type`.
 
 ### Delete a source connector
 
-To delete a source connector, use the `DELETE` method to call the `/sources/<connector-id>` endpoint, replacing 
+To delete a source connector, use the `UnstructuredClient` object's `sources.delete_source` function (for the Python SDK) or 
+the `DELETE` method to call the `/sources/<connector-id>` endpoint (for `curl` or Postman), replacing 
 `<connector-id>` with the source connector's unique ID. To get this ID, see [List source connectors](#list-source-connectors).
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import DeleteSourceRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.sources.delete_source(
+            request=DeleteSourceRequest(
+                source_id="<connector-id>"
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        print(response.raw_response)
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'DELETE' --location \
@@ -368,14 +573,44 @@ To delete a source connector, use the `DELETE` method to call the `/sources/<con
 
 ### List destination connectors
 
-To list destination connectors, use the `GET` method to call the `/destinations` endpoint.
+To list destination connectors, use the `UnstructuredClient` object's `destinations.list_destinations` function (for the Python SDK) or 
+the `GET` method to call the `/destinations` endpoint (for `curl` or Postman).
 
-To filter the list of destination connectors, use the query parameter `destination_type=<type>`, 
+To filter the list of destination connectors, use the `ListDestinationsRequest` object's `destination_type` parameter (for the Python SDK) or 
+the query parameter `destination_type=<type>` (for `curl` or Postman), 
 replacing `<type>` with the destination connector type's unique ID 
 (for example, `s3` for the Amazon S3 destination connector type). 
 To get this ID, see [Destinations](/platform/api/destinations/overview).
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import ListDestinationsRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.destinations.list_destinations(
+            request=ListDestinationsRequest(
+                destination_type="<type>" # Optional, list only for this destination type.
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        # Print the list in alphabetical order by connector name.
+        sorted_destinations = sorted(
+            response.response_list_destinations, 
+            key=lambda destination: destination.name.lower()
+        )
+
+        for destination in sorted_destinations:
+            print(f"{destination.name} ({destination.id})")
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'GET' --location \
@@ -416,10 +651,37 @@ To get this ID, see [Destinations](/platform/api/destinations/overview).
 
 ### Get a destination connector
 
-To get information about a destination connector, use the `GET` method to call the `/destinations/<connector-id>` endpoint, replacing 
+To get information about a destination connector, use the `UnstructuredClient` object's `destinations.get_destination` function (for the Python SDK) or 
+the `GET` method to call the `/destinations/<connector-id>` endpoint (for `curl` or Postman), replacing 
 `<connector-id>` with the destination connector's unique ID. To get this ID, see [List destination connectors](#list-destination-connectors).
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import GetDestinationRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.destinations.get_destination(
+            request=GetDestinationRequest(
+                destination_id="<connector-id>"
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        info = response.destination_connector_information
+
+        print(f"name: {info.name}")
+            
+        for key, value in info.config.items():
+            print(f"{key}: {value}")
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'GET' --location \
@@ -447,11 +709,51 @@ To get information about a destination connector, use the `GET` method to call t
 
 ### Create a destination connector
 
-To create a destination connectors, use the `POST` method to call the `/destinations` endpoint. In the request body, 
+To create a destination connectors, use the `UnstructuredClient` object's `destinations.create_destination` function (for the Python SDK) or 
+the `POST` method to call the `/destinations` endpoint (for `curl` or Postman).
+
+In the `CreateDestinationConnector` object (for the Python SDK) or 
+the request body (for `curl` or Postman), 
 specify the settings for the connector. For the specific settings to include, which differ by connector, see 
 [Destinations](/platform/api/destinations/overview).
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import CreateDestinationRequest
+        from unstructured_client.models.shared import CreateDestinationConnector
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        destination_connector = CreateDestinationConnector(
+            name="<name>",
+            type="<type>",
+            config={
+                # Specify the settings for the connector here.
+            }
+        )
+
+        response = client.destinations.create_destination(
+            request=CreateDestinationRequest(
+                create_destination_connector=destination_connector
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        info = response.destination_connector_information
+
+        print(f"name: {info.name}")
+        print(f"id: {info.id}")
+            
+        for key, value in info.config.items():
+            print(f"{key}: {value}")
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'POST' --location \
@@ -486,10 +788,12 @@ specify the settings for the connector. For the specific settings to include, wh
 
 ### Update a destination connector
 
-To update information about a destination connector, use the `PUT` method to call the `/destinations/<connector-id>` endpoint, replacing 
+To update information about a destination connector, use the `UnstructuredClient` object's `destinations.update_destination` function (for the Python SDK) or 
+the `PUT` method to call the `/destinations/<connector-id>` endpoint (for `curl` or Postman), replacing 
 `<connector-id>` with the destination connector's unique ID. To get this ID, see [List destination connectors](#list-destination-connectors).
 
-In the request body, specify the settings for the connector. For the specific settings to include, which differ by connector, see 
+In the `UpdateDestinationConnector` object (for the Python SDK) or 
+the request body (for `curl` or Postman), specify the settings for the connector. For the specific settings to include, which differ by connector, see 
 [Destinations](/platform/api/destinations/overview).
 
 You must specify all of the settings for the connector, even for settings that are not changing.
@@ -497,6 +801,41 @@ You must specify all of the settings for the connector, even for settings that a
 You can change any of the connector's settings except for its `name` and `type`.
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import UpdateDestinationRequest
+        from unstructured_client.models.shared import UpdateDestinationConnector
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        destination_connector = UpdateDestinationConnector(
+            config={
+                # Specify the settings for the connector here.
+            }
+        )
+
+        response = client.destinations.update_destination(
+            request=UpdateDestinationRequest(
+                destination_id="<connector-id>",
+                update_destination_connector=destination_connector
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        info = response.destination_connector_information
+
+        print(f"name: {info.name}")
+        print(f"id: {info.id}")
+            
+        for key, value in info.config.items():
+            print(f"{key}: {value}")
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'PUT' --location \
@@ -531,10 +870,32 @@ You can change any of the connector's settings except for its `name` and `type`.
 
 ### Delete a destination connector
 
-To delete a destination connector, use the `DELETE` method to call the `/destinations/<connector-id>` endpoint, replacing 
+To delete a destination connector, use the `UnstructuredClient` object's `destinations.delete_destination` function (for the Python SDK) or 
+the `DELETE` method to call the `/destinations/<connector-id>` endpoint (for `curl` or Postman), replacing 
 `<connector-id>` with the destination connector's unique ID. To get this ID, see [List destination connectors](#list-destination-connectors).
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import DeleteDestinationRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.destinations.delete_destination(
+            request=DeleteDestinationRequest(
+                destination_id="<connector-id>"
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        print(response.raw_response)
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'DELETE' --location \
@@ -573,9 +934,11 @@ For general information, see [Workflows](/platform/workflows).
 
 ### List workflows
 
-To list workflows, use the `GET` method to call the `/workflows` endpoint.
+To list workflows, use the `UnstructuredClient` object's `workflows.list_workflows` function (for the Python SDK) or 
+the `GET` method to call the `/workflows` endpoint (for `curl` or Postman).
 
-To filter the list of workflows, use one or more of the following query parameters:
+To filter the list of workflows, use one or more of the following `ListWorkflowsRequest` parameters (for the Python SDK) or 
+query parameters (for `curl` or Postman):
 
 - `source_id=<connector-id>`, replacing `<connector-id>` with the source connector's unique ID. 
   To get this ID, see [List source connectors](#list-source-connectors).
@@ -586,6 +949,36 @@ To filter the list of workflows, use one or more of the following query paramete
 You can specify multiple query parameters, for example `?source_id=<connector-id>&status=<status>`.
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import ListWorkflowsRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.workflows.list_workflows(
+            request=ListWorkflowsRequest(
+                destination_id="<connector-id>", # Optional, list only for this destination connector ID.
+                source_id="<connector-id>", # Optional, list only for this source connector ID.
+                status="<status>" # Optional, list only for this workflow status.
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        # Print the list in alphabetical order by workflow name.
+        sorted_workflows = sorted(
+            response.response_list_workflows, 
+            key=lambda workflow: workflow.name.lower()
+        )
+
+        for workflow in sorted_workflows:
+            print(f"{workflow.name} ({workflow.id})")
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'GET' --location \
@@ -646,10 +1039,51 @@ You can specify multiple query parameters, for example `?source_id=<connector-id
 
 ### Get a workflow
 
-To get information about a workflow, use the `GET` method to call the `/workflows/<workflow-id>` endpoint, replacing 
+To get information about a workflow, use the `UnstructuredClient` object's `workflows.get_workflow` function (for the Python SDK) or 
+the `GET` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman), replacing 
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import GetWorkflowRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.workflows.get_workflow(
+            request=GetWorkflowRequest(
+                workflow_id="<workflow-id>"
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        info = response.workflow_information
+
+        print(f"name:           {info.name}")
+        print(f"id:             {info.id}")
+        print(f"status:         {info.status}")
+        print(f"type:           {info.workflow_type}")
+        print("source(s):")
+
+        for source in info.sources:
+            print(f"            {source}")
+
+        print("destination(s):")
+
+        for destination in info.destinations:
+            print(f"            {destination}")
+
+        print("schedule(s):")
+
+        for crontab_entry in info.schedule.crontab_entries:
+            print(f"            {crontab_entry.cron_expression}")
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'GET' --location \
@@ -677,11 +1111,60 @@ To get information about a workflow, use the `GET` method to call the `/workflow
 
 ### Create a workflow
 
-To create a workflow, use the `POST` method to call the `/workflows` endpoint. In the request body, 
+To create a workflow, use the `UnstructuredClient` object's `workflows.create_workflow` function (for the Python SDK) or 
+the `POST` method to call the `/workflows` endpoint (for `curl` or Postman).
+
+In the `CreateWorkflow` object (for the Python SDK) or 
+the request body (for `curl` or Postman), 
 specify the settings for the workflow. For the specific settings to include, see 
 [Create a workflow](/platform/api/workflows#create-a-workflow).
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import CreateWorkflowRequest
+        from unstructured_client.models.shared import CreateWorkflow
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        workflow = CreateWorkflow(
+            # Specify the settings for the workflow here.
+        )
+
+        response = client.workflows.create_workflow(
+            request=CreateWorkflowRequest(
+                create_workflow=workflow
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        info = response.workflow_information
+
+        print(f"name:           {info.name}")
+        print(f"id:             {info.id}")
+        print(f"status:         {info.status}")
+        print(f"type:           {info.workflow_type}")
+        print("source(s):")
+
+        for source in info.sources:
+            print(f"            {source}")
+
+        print("destination(s):")
+
+        for destination in info.destinations:
+            print(f"            {destination}")
+
+        print("schedule(s):")
+
+        for crontab_entry in info.schedule.crontab_entries:
+            print(f"            {crontab_entry.cron_expression}")
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'POST' --location \
@@ -716,10 +1199,32 @@ specify the settings for the workflow. For the specific settings to include, see
 
 ### Run a workflow
 
-To run a workflow manually, use the `POST` method to call the `/workflows/<workflow-id>/run` endpoint, replacing 
+To run a workflow manually, use the `UnstructuredClient` object's `workflows.run_workflow` function (for the Python SDK) or 
+the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl` or Postman), replacing 
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import RunWorkflowRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.workflows.run_workflow(
+            request=RunWorkflowRequest(
+                workflow_id="<workflow-id>"
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        print(response.raw_response)
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'POST' --location \
@@ -750,13 +1255,61 @@ workflow. See [Create a workflow](/platform/api/workflows#create-a-workflow) or 
 
 ### Update a workflow
 
-To update information about a workflow, use the `PUT` method to call the `/workflows/<workflow-id>` endpoint, replacing 
+To update information about a workflow, use the `UnstructuredClient` object's `workflows.update_workflow` function (for the Python SDK) or 
+the `PUT` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman), replacing 
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
 
-In the request body, specify the settings for the workflow. For the specific settings to include, see 
+In `UpdateWorkflow` object (for the Python SDK) or 
+the request body (for `curl` or Postman), specify the settings for the workflow. For the specific settings to include, see 
 [Update a workflow](/platform/api/workflows#update-a-workflow).
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import UpdateWorkflowRequest
+        from unstructured_client.models.shared import UpdateWorkflow
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        workflow = UpdateWorkflow(
+            # Specify the settings for the workflow here.
+        )
+
+        response = client.workflows.update_workflow(
+            request=UpdateWorkflowRequest(
+                workflow_id="<workflow-id>",
+                update_workflow=workflow
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        info = response.workflow_information
+
+        print(f"name:           {info.name}")
+        print(f"id:             {info.id}")
+        print(f"status:         {info.status}")
+        print(f"type:           {info.workflow_type}")
+        print("source(s):")
+
+        for source in info.sources:
+            print(f"            {source}")
+
+        print("destination(s):")
+
+        for destination in info.destinations:
+            print(f"            {destination}")
+
+        print("schedule(s):")
+
+        for crontab_entry in info.schedule.crontab_entries:
+            print(f"            {crontab_entry.cron_expression}")
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'PUT' --location \
@@ -791,10 +1344,32 @@ In the request body, specify the settings for the workflow. For the specific set
 
 ### Delete a workflow
 
-To delete a workflow, use the `DELETE` method to call the `/workflows/<workflow-id>` endpoint, replacing 
+To delete a workflow, use the `UnstructuredClient` object's `workflows.delete_workflow` function (for the Python SDK) or 
+the `DELETE` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman), replacing 
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import DeleteWorkflowRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.workflows.delete_workflow(
+            request=DeleteWorkflowRequest(
+                workflow_id="<workflow-id>"
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        print(response.raw_response)
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'DELETE' --location \
@@ -833,17 +1408,48 @@ For general information, see [Jobs](/platform/jobs).
 
 ### List jobs
 
-To list jobs, use the `GET` method to call the `/jobs` endpoint.
+To list jobs, use the `UnstructuredClient` object's `jobs.list_jobs` function (for the Python SDK) or 
+the `GET` method to call the `/jobs` endpoint (for `curl` or Postman).
 
-To filter the list of jobs, use one or both of the following query parameters:
+To filter the list of jobs, use one or both of the following `ListJobsRequest` parameters (for the Python SDK) or 
+query parameters (for `curl` or Postman):
 
 - `workflow_id=<workflow-id>`, replacing `<workflow-id>` with the workflow's unique ID. 
   To get this ID, see [List workflows](#list-workflows).
 - `status=<status>`, replacing `<status>` with one of the following job statuses: `failed`, `finished`, or `running`.
 
-You can specify multiple query parameters, for example `?workflow_id=<workflow-id>&status=<status>`.
+For `curl` or Postman, you can specify multiple query parameters as `?workflow_id=<workflow-id>&status=<status>`.
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import ListJobsRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.jobs.list_jobs(
+            request=ListJobsRequest(
+                workflow_id="<workflow-id>", # Optional, list only for this workflow ID.
+                status="<status>", # Optional, list only for this job status.
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        # Print the list in alphabetical order by workflow name.
+        sorted_jobs = sorted(
+            response.response_list_jobs, 
+            key=lambda job: job.workflow_name.lower()
+        )
+
+        for job in sorted_jobs:
+            print(f"{job.id} (workflow name: {job.workflow_name}, id: {job.workflow_id})")
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'GET' --location \
@@ -894,10 +1500,37 @@ You can specify multiple query parameters, for example `?workflow_id=<workflow-i
 
 ### Get a job
 
-To get information about a job, use the `GET` method to call the `/jobs/<job-id>` endpoint, replacing 
+To get information about a job, use the `UnstructuredClient` object's `jobs.get_job` function (for the Python SDK) or 
+the `GET` method to call the `/jobs/<job-id>` endpoint (for `curl` or Postman), replacing 
 `<job-id>` with the job's unique ID. To get this ID, see [List jobs](#list-jobs).
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import GetJobRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.jobs.get_job(
+            request=GetJobRequest(
+                job_id="<job-id>"
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        info = response.job_information
+
+        print(f"id:            {info.id}")
+        print(f"status:        {info.status}")
+        print(f"workflow name: {info.workflow_name}")
+        print(f"workflow id:   {info.workflow_id}")
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'GET' --location \
@@ -925,10 +1558,32 @@ To get information about a job, use the `GET` method to call the `/jobs/<job-id>
 
 ### Cancel a job
 
-To cancel a running job, use the `POST` method to call the `/jobs/<job-id>/cancel` endpoint, replacing 
+To cancel a running job, use the `UnstructuredClient` object's `jobs.cancel_job` function (for the Python SDK) or 
+the `POST` method to call the `/jobs/<job-id>/cancel` endpoint (for `curl` or Postman), replacing 
 `<job-id>` with the job's unique ID. To get this ID, see [List jobs](#list-jobs).
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import CancelJobRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.jobs.cancel_job(
+            request=CancelJobRequest(
+                job_id="<job-id>"
+            ),
+            server_url=os.getenv("UNSTRUCTURED_API_URL")
+        )
+
+        print(response.raw_response)
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash curl
         curl --request 'POST' --location \

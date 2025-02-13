@@ -9,11 +9,12 @@ title: "Overview"
 You can perform ingestion with the following tools:
 
 - The [Unstructured Platform](/platform/overview), a no-code user interface, unlimited pay-as-you-go platform to get all of your data ready for Retrieval Augmented Generation (RAG) and model fine-tuning.
+- The [Unstructured Platform API](/platform/api/overview), an unlimited pay-as-you-go API that enables you to use Python code or standard REST API calls to automate the Unstructured Platform.
 - The [Unstructured Ingest CLI](#unstructured-ingest-cli), with unlimited pay-as-you-go and limited free options, that enable you to use command-line scripts to get all of your data ready for RAG and model fine-tuning.
 - The [Unstructured Ingest Python library](#unstructured-ingest-python-library), with unlimited pay-as-you-go and limited free options, that enable you to use Python code to get all of your data ready for RAG and model fine-tuning.
 
 <Info>
-    The [Unstructured Python SDK](/api-reference/api-services/sdk-python) and [Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts) can process only one file at a time.
+    The [Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts) can process only one file at a time.
 </Info>
 
 Files are ingested from an originating *source* location. Each batch of ingested files is processed either [all by Unstructured](#ingestion-options-for-the-unstructured-service) or [all locally](#local-ingestion-options). The processed data is sent to a target *destination* location. The kinds of locations you can specify varies:
