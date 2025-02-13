@@ -38,7 +38,10 @@ specify the settings for the workflow, as follows:
         from unstructured_client.models.operations import CreateWorkflowRequest
         from unstructured_client.models.shared import (
             CreateWorkflow,
-            WorkflowAutoStrategy,
+            WorkflowType,
+            WorkflowNode,
+            WorkflowNodeType,
+            Settings,
             CreateWorkflowSchedule
         )
 
@@ -50,8 +53,21 @@ specify the settings for the workflow, as follows:
             name="<name>",
             source_id="<source-connector-id>",
             destination_id="<destination-connector-id>",
-            workflow_type=WorkflowAutoStrategy.<TYPE>,
-            schedule=CreateWorkflowSchedule(value="<schedule-timeframe>")
+            workflow_type=WorkflowType.<TYPE>,
+            workflow_nodes=[
+                WorkflowNode(
+                    name="<node-name>",
+                    type=WorkflowNode.<NODE-TYPE>,
+                    subtype="<node-subtype>",
+                    settings=Settings(
+                        "..."="..."
+                    )
+                ),
+                WorkflowNode(
+                    ...
+                )
+            ],
+            schedule=CreateWorkflowSchedule.<SCHEDULE-TIMEFRAME>
         )
 
         response = client.workflows.create_workflow(
@@ -158,24 +174,28 @@ Replace the preceding placeholders as follows:
 
 - `<name>` (_required_) - A unique name for this workflow.
 - `<source-connector-id>` (_required_) - The ID of the target source connector. To get the ID, 
-  use the `GET` method to call the `/sources` endpoint. [Learn more](/platform/api/overview#list-source-connectors).
+  use the `UnstructuredClient` object's `sources.list_sources` function (for the Python SDK) or 
+  the `GET` method to call the `/sources` endpoint (for `curl` or Postman). [Learn more](/platform/api/overview#list-source-connectors).
 - `<destination-connector-id>` (_required_) - The ID of the target destination connector. To get the ID, 
-  use the `GET` method to call the `/destinations` endpoint. [Learn more](/platform/api/overview#list-destination-connectors).
-- `<type>` (_required_) - The workflow optimization type. Available values include `advanced`, `basic`, `platinum`, and `custom`. 
-  If `<type>` is set to `custom`, you must add a `worfklow_nodes` array. For instructions, see [Custom workflow DAG nodes](#custom-workflow-dag-nodes).
-- `<schedule-timeframe>` - The repeating automatic run schedule, specified as a predefined phrase. The available predefined phrases are:
+  use the `UnstructuredClient` object's `destinations.list_destinations` function (for the Python SDK) or 
+  the `GET` method to call the `/destinations` endpoint (for `curl` or Postman). [Learn more](/platform/api/overview#list-destination-connectors).
+- `<TYPE>` (for the Python SDK) or `<type>` (for `curl` or Postman) (_required_) - The workflow optimization type. Available values include 
+  `ADVANCED`, `BASIC`, `PLATINUM`, and `CUSTOM` (for the Python SDK) or 
+  `advanced`, `basic`, `platinum`, and `custom` (for `curl` or Postman). 
+  If `<TYPE>` is set to `CUSTOM` (for the Python SDK), or if `<type>` is set to `custom` (for `curl` or Postman), you must add a `worfklow_nodes` array. For instructions, see [Custom workflow DAG nodes](#custom-workflow-dag-nodes).
+- `<SCHEDULE-TIMEFRAME>` (for the Python SDK) or `<schedule-timeframe>` (for `curl` or Postman) - The repeating automatic run schedule, specified as a predefined phrase. The available predefined phrases are:
 
-  - `every 15 minutes`: Every 15 minutes (cron expression: `*/15 * * * *`).
-  - `every hour`: At the first minute of every hour (cron expression: `0 * * * *`).
-  - `every 2 hours`: At the first minute of every second hour (cron expression: `0 */2 * * *`).
-  - `every 4 hours`: At the first minute of every fourth hour (cron expression: `0 */4 * * *`).
-  - `every 6 hours`: At the first minute of every sixth hour (cron expression: `0 */6 * * *`).
-  - `every 8 hours`: At the first minute of every eighth hour (cron expression: `0 */8 * * *`).
-  - `every 10 hours`: At the first minute of every tenth hour (cron expression: `0 */10 * * *`).
-  - `every 12 hours`: At the first minute of every twelfth hour (cron expression: `0 */12 * * *`).
-  - `daily`: At the first minute of every day (cron expression: `0 0 * * *`).
-  - `weekly`: At the first minute of every Sunday (cron expression: `0 0 * * 0`).
-  - `monthly`: At the first minute of the first day of every month (cron expression: `0 0 1 * *`).
+  - `EVERY_15_MINUTES` (for the Python SDK) or `every 15 minutes` (for `curl` or Postman): Every 15 minutes (cron expression: `*/15 * * * *`).
+  - `EVERY_HOUR` (for the Python SDK) or `every hour` (for `curl` or Postman): At the first minute of every hour (cron expression: `0 * * * *`).
+  - `EVERY_2_HOURS` (for the Python SDK) or `every 2 hours` (for `curl` or Postman): At the first minute of every second hour (cron expression: `0 */2 * * *`).
+  - `EVERY_4_HOURS` (for the Python SDK) or `every 4 hours` (for `curl` or Postman): At the first minute of every fourth hour (cron expression: `0 */4 * * *`).
+  - `EVERY_6_HOURS` (for the Python SDK) or `every 6 hours` (for `curl` or Postman): At the first minute of every sixth hour (cron expression: `0 */6 * * *`).
+  - `EVERY_8_HOURS` (for the Python SDK) or `every 8 hours` (for `curl` or Postman): At the first minute of every eighth hour (cron expression: `0 */8 * * *`).
+  - `EVERY_10_HOURS` (for the Python SDK) or `every 10 hours` (for `curl` or Postman): At the first minute of every tenth hour (cron expression: `0 */10 * * *`).
+  - `EVERY_12_HOURS` (for the Python SDK) or `every 12 hours` (for `curl` or Postman): At the first minute of every twelfth hour (cron expression: `0 */12 * * *`).
+  - `DAILY` (for the Python SDK) or `daily` (for `curl` or Postman): At the first minute of every day (cron expression: `0 0 * * *`).
+  - `WEEKLY` (for the Python SDK) or `weekly` (for `curl` or Postman): At the first minute of every Sunday (cron expression: `0 0 * * 0`).
+  - `MONTHLY` (for the Python SDK) or `monthly` (for `curl` or Postman): At the first minute of the first day of every month (cron expression: `0 0 1 * *`).
     
   If `schedule` is not specified, the workflow does not automatically run on a repeating schedule.
 
@@ -197,7 +217,10 @@ In the request body, specify the settings for the workflow. For the specific set
         from unstructured_client.models.operations import UpdateWorkflowRequest
         from unstructured_client.models.shared import (
             UpdateWorkflow,
-            WorkflowAutoStrategy,
+            WorkflowType,
+            WorkflowNode,
+            WorkflowNodeType,
+            Settings,
             CreateWorkflowSchedule
         )
         
