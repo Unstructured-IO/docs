@@ -296,7 +296,7 @@ To create an automatic workflow:
           - **Overlap**: Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting. The default is **160**.
           - **Overlap all**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. By default, this box is unchecked.
 
-        - **Chunk by character** (also known as _basic_ chunking): Combine sequential elements to maximally fill each chunk. Also, specify the following:
+        - **Chunk by character** (also known as `_basic_` chunking): Combine sequential elements to maximally fill each chunk. Also, specify the following:
 
           - **Include original elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
           - **Max characters**: Cut off new sections after reaching a length of this many characters. The default is **2048**.
