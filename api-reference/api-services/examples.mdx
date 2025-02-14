@@ -11,9 +11,22 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
 import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serverless-api.mdx';
 
+<Warning>
+    **Important**: Beginning with Python SDK 0.30.0, note the following:
+    
+    - For the Unstructured Serverless API URL, do not use `https://api.unstructuredapp.io/general/v0/general`, or else calls made by 
+      the Python SDK will fail. Use `https://api.unstructuredapp.io` instead.    
+    - For the Free Unstructured API URL, do not use `https://api.unstructured.io/general/v0/general`, or else calls made by 
+      the Python SDK will fail. Use `https://api.unstructured.io` instead. 
+    - If your Python code previously used the `server_url` parameter inside of your `UnstructuredClient` constructor to specify your Unstructured API URL, you must move this `server_url` parameter into 
+      your code's `partition` or `partition_async` function calls instead, or else calls made by the Python SDK will fail. To learn how, see the following code examples.
+
+    [Learn more](/api-reference/api-services/sdk-python#migration-guide).
+</Warning>
+
 <NoURLForServerlessAPI/>
 
-import UseIngestInstead from '/snippets/general-shared-text/use-ingest-instead.mdx';
+import UseIngestOrPlatformInstead from '/snippets/general-shared-text/use-ingest-or-platform-instead.mdx';
 
 ### Changing partition strategy for a PDF
 
@@ -82,7 +95,7 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
         ```
     </Accordion>
     <Accordion title="POST">
-        <UseIngestInstead />
+        <UseIngestOrPlatformInstead />
         ```bash POST
         curl -X 'POST' $UNSTRUCTURED_API_URL \
         -H 'accept: application/json' \
@@ -94,7 +107,7 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
         ```
     </Accordion>
     <Accordion title="Python SDK">
-        <UseIngestInstead />
+        <UseIngestOrPlatformInstead />
         ```python Python
         import asyncio
         import os
@@ -103,8 +116,7 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
         from unstructured_client.models import shared
 
         client = unstructured_client.UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL"),
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         async def call_api(filename, input_dir, output_dir):
@@ -123,7 +135,10 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
             }
 
             try:
-                res = await client.general.partition_async(request=req)
+                res = await client.general.partition_async(
+                    request=req,
+                    server_url=os.getenv("UNSTRUCTURED_API_URL")
+                )
                 element_dicts = [element for element in res.elements]
                 json_elements = json.dumps(element_dicts, indent=2)
 
@@ -159,7 +174,7 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
         ```
     </Accordion>
     <Accordion title="JavaScript/TypeScript SDK">
-        <UseIngestInstead />
+        <UseIngestOrPlatformInstead />
         ```typescript TypeScript
         import { UnstructuredClient } from "unstructured-client";
         import * as fs from "fs";
@@ -300,7 +315,7 @@ For better OCR results, you can specify what languages your document is in using
         ```
     </Accordion>
     <Accordion title="POST">
-        <UseIngestInstead />
+        <UseIngestOrPlatformInstead />
         ```bash POST
         curl -X 'POST' $UNSTRUCTURED_API_URL \
         -H 'accept: application/json' \
@@ -312,7 +327,7 @@ For better OCR results, you can specify what languages your document is in using
         ```
     </Accordion>
     <Accordion title="Python SDK">
-        <UseIngestInstead />
+        <UseIngestOrPlatformInstead />
         ```python Python
         import asyncio
         import os
@@ -321,8 +336,7 @@ For better OCR results, you can specify what languages your document is in using
         from unstructured_client.models import shared
 
         client = unstructured_client.UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL"),
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         async def call_api(filename, input_dir, output_dir):
@@ -341,7 +355,10 @@ For better OCR results, you can specify what languages your document is in using
             }
 
             try:
-                res = await client.general.partition_async(request=req)
+                res = await client.general.partition_async(
+                    request=req, 
+                    server_url=os.getenv("UNSTRUCTURED_API_URL")
+                )
                 element_dicts = [element for element in res.elements]
                 json_elements = json.dumps(element_dicts, indent=2)
 
@@ -377,7 +394,7 @@ For better OCR results, you can specify what languages your document is in using
         ```
     </Accordion>
     <Accordion title="JavaScript/TypeScript SDK">
-        <UseIngestInstead />
+        <UseIngestOrPlatformInstead />
         ```typescript TypeScript
         import { UnstructuredClient } from "unstructured-client";
         import * as fs from "fs";
@@ -515,7 +532,7 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
         ```
     </Accordion>
     <Accordion title="POST">
-        <UseIngestInstead />
+        <UseIngestOrPlatformInstead />
         ```bash POST
         curl -X 'POST' $UNSTRUCTURED_API_URL \
         -H 'accept: application/json' \
@@ -527,7 +544,7 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
         ```
     </Accordion>
     <Accordion title="Python SDK">
-        <UseIngestInstead />
+        <UseIngestOrPlatformInstead />
         ```python Python
         import asyncio
         import os
@@ -536,8 +553,7 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
         from unstructured_client.models import shared
 
         client = unstructured_client.UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL"),
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         async def call_api(filename, input_dir, output_dir):
@@ -556,7 +572,10 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
             }
 
             try:
-                res = await client.general.partition_async(request=req)
+                res = await client.general.partition_async(
+                    request=req,
+                    server_url=os.getenv("UNSTRUCTURED_API_URL")
+                )
                 element_dicts = [element for element in res.elements]
                 json_elements = json.dumps(element_dicts, indent=2)
 
@@ -592,7 +611,7 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
         ```
     </Accordion>
     <Accordion title="JavaScript/TypeScript SDK">
-        <UseIngestInstead />
+        <UseIngestOrPlatformInstead />
         ```typescript TypeScript
         import { UnstructuredClient } from "unstructured-client";
         import * as fs from "fs";
@@ -734,7 +753,7 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
         ```
     </Accordion>
     <Accordion title="POST">
-        <UseIngestInstead />
+        <UseIngestOrPlatformInstead />
         ```bash POST
         curl -X 'POST' $UNSTRUCTURED_API_URL \
         -H 'accept: application/json'  \
@@ -745,7 +764,7 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
         ```
     </Accordion>
     <Accordion title="Python SDK">
-        <UseIngestInstead />
+        <UseIngestOrPlatformInstead />
         ```python Python
         import asyncio
         import os
@@ -754,8 +773,7 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
         from unstructured_client.models import shared
 
         client = unstructured_client.UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL"),
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         async def call_api(filename, input_dir, output_dir):
@@ -774,7 +792,10 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
             }
 
             try:
-                res = await client.general.partition_async(request=req)
+                res = await client.general.partition_async(
+                    request=req,
+                    server_url=os.getenv("UNSTRUCTURED_API_URL")
+                )
                 element_dicts = [element for element in res.elements]
                 json_elements = json.dumps(element_dicts, indent=2)
 
@@ -810,7 +831,7 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
         ```
     </Accordion>
     <Accordion title="JavaScript/TypeScript SDK">
-        <UseIngestInstead />
+        <UseIngestOrPlatformInstead />
         ```typescript TypeScript
         import { UnstructuredClient } from "unstructured-client";
         import * as fs from "fs";
@@ -956,7 +977,7 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
         ```
     </Accordion>
     <Accordion title="POST">
-        <UseIngestInstead />
+        <UseIngestOrPlatformInstead />
         ```bash POST
         curl -X 'POST' $UNSTRUCTURED_API_URL \
         -H 'accept: application/json'  \
@@ -969,7 +990,7 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
         ```
     </Accordion>
     <Accordion title="Python SDK">
-        <UseIngestInstead />
+        <UseIngestOrPlatformInstead />
         ```python Python
         import asyncio
         import os
@@ -978,8 +999,7 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
         from unstructured_client.models import shared
 
         client = unstructured_client.UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL"),
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         async def call_api(filename, input_dir, output_dir):
@@ -999,7 +1019,10 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
             }
 
             try:
-                res = await client.general.partition_async(request=req)
+                res = await client.general.partition_async(
+                    request=req,
+                    server_url=os.getenv("UNSTRUCTURED_API_URL")
+                )
                 element_dicts = [element for element in res.elements]
                 json_elements = json.dumps(element_dicts, indent=2)
 
@@ -1035,7 +1058,7 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
         ```
     </Accordion>
     <Accordion title="JavaScript/TypeScript SDK">
-        <UseIngestInstead />
+        <UseIngestOrPlatformInstead />
         ```typescript TypeScript
         import { UnstructuredClient } from "unstructured-client";
         import * as fs from "fs";

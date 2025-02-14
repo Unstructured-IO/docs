@@ -17,8 +17,7 @@ input_filepath = "local-ingest-input-pdf/Portable-Document-Format-Specifications
 output_filepath = "local-ingest-output-json/Portable-Document-Format-Specifications.json"
 
 client = UnstructuredClient(
-    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-    server_url=os.getenv("UNSTRUCTURED_API_URL"),
+    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
 )
 
 with open(input_filepath, "rb") as f:
@@ -44,7 +43,10 @@ req = operations.PartitionRequest(
 )
 
 try:
-    res = await client.general.partition_async(request=req)
+    res = await client.general.partition_async(
+        request=req,
+        server_url=os.getenv("UNSTRUCTURED_API_URL")
+    )
 
     # Create a dictionary that will hold only
     # a transposed version of the returned elements. 

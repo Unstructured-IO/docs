@@ -1,0 +1,16 @@
+```python Python SDK
+# ...
+from unstructured_client.models.shared import <Create|Update>DestinationConnector
+# ...
+destination_connector = <Create|Update>DestinationConnector(
+    name="<name>", # Create only.
+    type="qdrant", # Create only.
+    config={
+        "url": "<url>",
+        "collection_name": "<collection-name>",
+        "batch_size": "<batch-size>",
+        "api_key": "<api-key>"
+    }
+)
+# ...
+```

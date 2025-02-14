@@ -12,10 +12,12 @@ import s3Prerequisites from '/snippets/general-shared-text/s3.mdx';
 
 To create or change an S3 destination connector, see the following examples.
 
+import s3SDK from '/snippets/destination_connectors/s3_sdk.mdx';
 import s3APIRESTCreate from '/snippets/destination_connectors/s3_rest_create.mdx';
 import s3APIRESTChange from '/snippets/destination_connectors/s3_rest_change.mdx';
 
 <CodeGroup>
+    <s3SDK />
     <s3APIRESTCreate />
     <s3APIRESTChange />
 </CodeGroup>
@@ -26,5 +28,5 @@ import s3APIPlaceholders from '/snippets/general-shared-text/s3-api-placeholders
 
 <s3APIPlaceholders />
 
-To change a connector, replace `<connector-id>` with the source connector's unique ID. 
-To get this ID, see [List source connectors](/platform/api/overview#list-source-connectors).
+To change a connector, replace `<connector-id>` with the destination connector's unique ID. 
+To get this ID, see [List destination connectors](/platform/api/overview#list-destination-connectors).

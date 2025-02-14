@@ -1,0 +1,32 @@
+```python Python SDK
+# ...
+from unstructured_client.models.shared import <Create|Update>SourceConnector
+# ...
+source_connector = <Create|Update>SourceConnector(
+    name="<name>", # Create only.
+    type="confluence", # Create only.
+    config={
+        "url": "<url>",
+        "max_num_of_spaces": <max-num-of-spaces>,
+        "max_num_of_docs_from_each_space": <max-num-of-docs-from-each-space>,
+        "spaces": ["<space-name>", "<space-name>"],
+
+        # For API token authentication:
+
+        "username": "<username>",
+        "token": "<api-token>",
+        "cloud": "<true|false>"
+
+        # For personal access token (PAT) authentication:
+
+        "token": "<personal-access-token>",
+        "cloud": "false"
+
+        # For password authentication:
+
+        "username": "<username>",
+        "password": "<password>",
+        "cloud": "<true|false>"     
+    }
+)
+```
