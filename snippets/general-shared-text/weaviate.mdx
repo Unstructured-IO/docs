@@ -19,9 +19,47 @@
   - A Weaviate database instance. The following information assumes that you have a Weaviate Cloud (WCD) account with a Weaviate database cluster in that account. 
     [Create a WCD account](https://weaviate.io/developers/wcs/quickstart#create-a-wcd-account). [Create a database cluster](https://weaviate.io/developers/wcs/quickstart#create-a-weaviate-cluster). For other database options, [learn more](https://weaviate.io/developers/weaviate/installation).
   - The URL and API key for the database cluster. [Get the URL and API key](https://weaviate.io/developers/wcs/quickstart#explore-the-details-panel).
-  - The name of the target collection in the database. [Create a collection](https://weaviate.io/developers/wcs/tools/collections-tool).
+  - The name of the target collection in the database. [Create a collection](https://weaviate.io/developers/wcs/tools/collections-tool). 
+    
+    An existing collection is not required. At runtime, the collection behavior is as follows:
 
-Weaviate requires the collection to have a data schema before you add data. At minimum, this schema must contain the `record_id` property, as follows:
+    For the [Unstructured Platform](/platform/overview):
+    
+    - If an existing collection name is specified, and Unstructured generates embeddings, 
+      but the number of dimensions that are generated does not match the existing collection's embedding settings, the run will fail. 
+      You must change your Unstructured embedding settings or your existing collection's embedding settings to match, and try the run again.
+    - If a collection name is not specified, Unstructured creates a new collection in your Weaviate cluster. If Unstructured generates embeddings, 
+      the new collection's name will be `U<short-workflow-id>_<short-embedding-model-name>_<number-of-dimensions>`. 
+      If Unstructured does not generate embeddings, the new collection's name will be `U<short-workflow-id`.
+
+    For [Unstructured Ingest](/ingestion/overview):
+
+    - If an existing collection name is specified, and Unstructured generates embeddings, 
+      but the number of dimensions that are generated does not match the existing collection's embedding settings, the run will fail. 
+      You must change your Unstructured embedding settings or your existing collection's embedding settings to match, and try the run again. 
+    - If a collection name is not specified, Unstructured creates a new collection in your Weaviate cluster. The new collection's name will be `Elements`.
+
+    If Unstructured creates a new collection and generates embeddings, you will not see an embeddings property in tools such as the Weaviate Cloud 
+    **Collections** user interface. To view the generated embeddings, you can run a Weaviate GraphQL query such as the following. In this query, replace `<collection-name>` with 
+    the name of the new collection, and replace `<property-name>` with the name of each additional available property that 
+    you want to return results for, such as `text`, `type`, `element_id`, `record_id`, and so on. The embeddings will be 
+    returned in the `vector` property.
+
+    ```text
+    {
+      Get {
+        <collection-name> {
+          _additional {
+            vector
+          }
+          <property-name>
+          <property-name>
+        }
+      }
+    }
+    ```
+
+Weaviate requires an existing collection to have a data schema before you add data. At minimum, this schema must contain the `record_id` property, as follows:
 
 ```json
 {
