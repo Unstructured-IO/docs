@@ -57,11 +57,11 @@ By default, this workflow partitions, chunks, and generates embeddings as follow
 
 - **Partitioner**: **Auto** strategy
 
-  Unstructured automatically analyzes and processes files on a page-by-page basis and determines the best partitioning strategy to use for each page:
+  Unstructured automatically analyzes and processes files on a page-by-page basis (for PDF files) and on a document-by-document basis for everything else:
 
-  - If the page has no tables or images, **Fast** partitioning is used, and the page is billed at the **Fast** rate for processing.
-  - If the page has tables or images with standard layouts and languages, **High Res** partitioning is used, and the page is billed at the **High Res** rate for processing.
-  - If the page has tables or images with complex layouts or languages, **VLM** partitioning is used, and the page is billed at the **VLM** rate for processing.
+  - If the page or document has no images and likely does not have tables, **Fast** partitioning is used, and the page or document is billed at the **Fast** rate for processing.
+  - If the page or document has only a few tables or images with standard layouts and languages, **High Res** partitioning is used, and the page or document is billed at the **High Res** rate for processing.
+  - If the page or document has more than a few tables or images, **VLM** partitioning is used, and the page or document is billed at the **VLM** rate for processing.
 
   [Learn about partitioning strategies](/platform/partitioning).
 
@@ -107,6 +107,15 @@ To change the workflow's default settings or to add enrichments:
 If you did not previously set the workflow to run on a schedule, you can [run the worklow](#edit-delete-or-run-a-workflow) now.
 
 ### Create a custom workflow
+
+<Tip>
+    If you already have an existing workflow that you want to change, do the following:
+    
+    1. On the sidebar, click **Workflows**.
+    2. Click the name of the workflow that you want to change. 
+    3. Skip ahead to Step 11 in the following procedure.
+
+</Tip>
 
 <Warning>
     You must first have an existing source connector and destination connector to add to the workflow.
@@ -230,11 +239,11 @@ If you did not previously set the workflow to run on a schedule, you can [run th
               these files are processed. These errors typically occur when these larger PDF files have lots of tables and high-resolution images.
           </Note>
 
-        - **Auto**: Unstructured automatically analyzes and processes files on a page-by-page basis:
+        - **Auto** automatically analyzes and processes files on a page-by-page basis (for PDF files) and on a document-by-document basis for everything else:
 
-          - If the page has no tables or images, **Fast** partitioning is used, and the page is billed at the **Fast** rate for processing.
-          - If the page has tables or images with standard layouts and languages, **High Res** partitioning is used, and the page is billed at the **High Res** rate for processing.
-          - If the page has tables or images with complex layouts or languages, **VLM** partitioning is used, and the page is billed at the **VLM** rate for processing.
+          - If the page or document has no images and likely does not have tables, **Fast** partitioning is used, and the page or document is billed at the **Fast** rate for processing.
+          - If the page or document has only a few tables or images with standard layouts and languages, **High Res** partitioning is used, and the page or document is billed at the **High Res** rate for processing.
+          - If the page or document has more than a few tables or images, **VLM** partitioning is used, and the page or document is billed at the **VLM** rate for processing.
 
         [Learn more](/platform/partitioning).
     </Accordion>
