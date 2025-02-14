@@ -43,7 +43,9 @@ For the API URL, note the following:
 - For the [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide), the API URL is typically `https://api.unstructuredapp.io`, which is unique to 
   the Unstructured Python SDK, beginning with 0.30.0; and `https://api.unstructuredapp.io/general/v0/general` for the Unstructured Python SDK before 0.30.0 and for standard REST-enabled utilities (such as `curl`), 
   tools (such as Postman), programming languages, packages, and libraries. Be aware of the inclusion of `app` in this API URL.
-- For the [Free Unstructured API](/api-reference/api-services/free-api), the API URL is always `https://api.unstructured.io/general/v0/general`. Be aware that there is no `app` in this API URL.
+- For the [Free Unstructured API](/api-reference/api-services/free-api), the API URL is typically https://api.unstructured.io`, which is unique to 
+  the Unstructured Python SDK, beginning with 0.30.0; and `https://api.unstructured.io/general/v0/general` for the Unstructured Python SDK before 0.30.0 and for standard REST-enabled utilities (such as `curl`), 
+  tools (such as Postman), programming languages, packages, and libraries. Be aware that there is no `app` in this API URL.
 
 <Note>The free 14-day trial of the Unstructured Serverless API or Unstructured Platform API is different than the Free Unstructured API.</Note>
 
@@ -65,10 +67,18 @@ For the API key, note the following:
       - For the Unstructured Platform API URL, do not use `https://platform.unstructuredapp.io/api/v1`, or else calls made by 
       the Python SDK will fail. Use `https://platform.unstructuredapp.io` instead.
       - For the Unstructured Serverless API URL, do not use `https://api.unstructuredapp.io/general/v0/general`, or else calls made by 
-      the Python SDK will fail. Use `https://api.unstructuredapp.io` instead.      
+      the Python SDK will fail. Use `https://api.unstructuredapp.io` instead.  
+      - For the Free Unstructured API URL, do not use https://api.unstructured.io/general/v0/general, or else calls made by 
+      the Python SDK will fail. Use https://api.unstructured.io` instead.   
   </Warning>
 
 - For the [Free Unstructured API](/api-reference/api-services/free-api), the API key is in your original email from Unstructured. If you cannot find the original email, you can regenerate it by going to [https://unstructured.io/api-key-free](https://unstructured.io/api-key-free).
+
+  <Warning>
+      **Important**: For the Unstructured Python SDK beginning with 0.30.0,   
+      for the Free Unstructured API URL, do not use https://api.unstructured.io/general/v0/general, or else calls made by 
+      the Python SDK will fail. Use https://api.unstructured.io` instead.   
+  </Warning>
 
 <Note>The free 14-day trial of the Unstructured Serverless API or Unstructured Platform API is different than the Free Unstructured API.</Note>
 
@@ -83,6 +93,36 @@ If you still believe you have the correct API URL and API key, try the following
 
    **For the Unstructured Python SDK** (Unstructured Platform API, Unstructured Serverless API, and Free Unstructured API only)
 
+   - For the Unstructured Python SDK beginning with 0.30.0, if the `server_url` parameter is in your `UnstructuredClient` constructor, move it into 
+     your operational calling function such as `partition` or `partition_asyc` for Unstructured API services or `list_*`, `get_*`, `create_*`, `update_*`, or `delete_*` for the Unstructured Platform API. For example:
+
+     ```python
+     # Instead of this (before Python SDK 0.30.0):
+     client = unstructured_client.UnstructuredClient(
+         api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
+         server_url=os.getenv("UNSTRUCTURED_API_URL")
+     )
+
+     # Switch to this (beginning with Python SDK 0.30.0):
+     client = unstructured_client.UnstructuredClient(
+         api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+     )
+
+     # And then...
+
+     # For Unstructured API services:
+     res = client.general.<partition|partition_async>(
+         request=req,
+         server_url=os.getenv("UNSTRUCTURED_API_URL")
+     )
+
+     # Or for the Unstructured Platform API:
+     res = client.<sources-destinations-workflows-jobs>.<list-get-create-delete-operation>(
+         request=req,
+         server_url=os.getenv("UNSTRUCTURED_API_URL")
+     )
+     ```
+
    - Check the value of the `server_url` parameter. Make sure it is set to the right API URL, or an environment variable representing the right API URL.
 
      <Warning>
@@ -91,7 +131,9 @@ If you still believe you have the correct API URL and API key, try the following
          - For the Unstructured Platform API URL, do not use `https://platform.unstructuredapp.io/api/v1`, or else calls made by 
            the Python SDK will fail. Use `https://platform.unstructuredapp.io` instead.
          - For the Unstructured Serverless API URL, do not use `https://api.unstructuredapp.io/general/v0/general`, or else calls made by 
-           the Python SDK will fail. Use `https://api.unstructuredapp.io` instead.      
+           the Python SDK will fail. Use `https://api.unstructuredapp.io` instead.  
+         - For the Free Unstructured API URL, do not use https://api.unstructured.io/general/v0/general, or else calls made by 
+           the Python SDK will fail. Use https://api.unstructured.io` instead.     
      </Warning>
 
    - Check the value of the `api_key_auth` parameter. Make sure it is set to the right API key, or an environment variable representing the right API key.
@@ -103,7 +145,7 @@ If you still believe you have the correct API URL and API key, try the following
      - For `serverURL`, make sure it is set to the right API URL, or an environment variable representing the right API URL, or...
      - For `server`, make sure it is set to `"saas-api"` for the Unstructured Serverless API, or `"free-api"` for the Free Unstructured API, or an environment variable representing one of these strings.
 
-       <Note>You can use `"saas-api"` and `"free-api"` only with the Unstructured SDKs.</Note>
+       <Note>You can use `"saas-api"` and `"free-api"` only with the Unstructured JavaScript/TypeScript SDK.</Note>
 
      - Make sure that only `serverURL` or `server` are specified&mdash;not both.
      - Make sure that if you specify `serverURL`, an actual API URL (or an environment variable representing an actual API URL) is specified (not `"saas-api"` or `"free-api"`, or an environment variable representing one of these strings).
@@ -158,13 +200,18 @@ If you still believe you have the correct API URL and API key, try the following
        - For the Unstructured Platform API URL, do not use `https://platform.unstructuredapp.io/api/v1`, or else calls made by 
          the Python SDK will fail. Use `https://platform.unstructuredapp.io` instead.
        - For the Unstructured Serverless API URL, do not use `https://api.unstructuredapp.io/general/v0/general`, or else calls made by 
-         the Python SDK will fail. Use `https://api.unstructuredapp.io` instead.      
+         the Python SDK will fail. Use `https://api.unstructuredapp.io` instead.   
    </Warning>
    
    **For the Free Unstructured API**
 
    - Open your original email from Unstructured that contains your API key. Make sure it matches the one in your script, code, or environment variable. If you cannot find the original email, you can regenerate it by going to [https://unstructured.io/api-key-free](https://unstructured.io/api-key-free).
    - Make sure that you are using `https://api.unstructured.io/general/v0/general` (not `platform.unstructuredapp.io` or `api.unstructuredapp.io`) for the API URL. 
+
+   <Warning>
+       **Important**: For the Unstructured Python SDK beginning with 0.30.0 for the Free Unstructured API URL, do not use https://api.unstructured.io/general/v0/general, or else calls made by 
+       the Python SDK will fail. Use https://api.unstructured.io` instead.    
+   </Warning>
 
 4. If you are still getting this issue, [contact us directly](https://unstructured.io/contact).
 
