@@ -29,8 +29,8 @@
       but the number of dimensions that are generated does not match the existing collection's embedding settings, the run will fail. 
       You must change your Unstructured embedding settings or your existing collection's embedding settings to match, and try the run again.
     - If a collection name is not specified, Unstructured creates a new collection in your Weaviate cluster. If Unstructured generates embeddings, 
-      the new collection's name will be `Unstructured_<random-8-digit-number>_<embedding-model-name>_<number-of-dimensions>`. 
-      If Unstructured does not generate embeddings, the new collection's name will be `Unstructured_<random-8-digit-number>`.
+      the new collection's name will be `u<short-workflow-id>_<short-embedding-model-name>_<number-of-dimensions>`. 
+      If Unstructured does not generate embeddings, the new collection's name will be `u<short-workflow-id`.
 
     For [Unstructured Ingest](/ingestion/overview):
 
