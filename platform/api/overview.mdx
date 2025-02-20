@@ -57,16 +57,11 @@ To use the Unstructured Platform API, you must have:
   4. Enter some descriptive name for the API key, and then click **Save**.
   5. Click the **Copy** icon for your new API key. The API key's value is copied to your system's clipboard.
 
-- The Unstructured **Platform API URL**. This is typically `https://platform.unstructuredapp.io`, which is unique to 
-  the Unstructured Python SDK; and `https://platform.unstructuredapp.io/api/v1` for standard REST-enabled utilities (such as `curl`), 
-  tools (such as Postman), programming languages, packages, and libraries.
+- The Unstructured **Platform API URL**. If you are working with standard REST-enabled utilities such as `curl` or Postman, you will need the API URL: `https://platform.unstructuredapp.io/api/v1`.
 
   ![Unstructured Platform API URL](/img/platform/PlatformAPIURL.png)
 
   <Warning>
-      **Important**: Do not use `https://platform.unstructuredapp.io/api/v1` with the Unstructured Python SDK, or else calls made by 
-      the Python SDK will fail. Use `https://platform.unstructuredapp.io` instead.
-
       Do not use the Unstructured **Serverless API URL**, which is separate from the Unstructured Platform API URL.      
   </Warning>
 
@@ -96,8 +91,7 @@ The Unstructured Platform API is offered as follows:
 
 - As a set of Representational State Transfer (REST) endpoints, which you can call through standard REST-enabled 
 utilities, tools, programming languages, packages, and libraries. The following sections describe how to call the Unstructured Platform API with 
-`curl` and Postman. You can adapt this information as needed for your preferred programming languages and libraries, for example by using the 
-`requests` library with Python.
+`curl` and Postman. You can adapt this information as needed for your preferred programming languages and libraries.
 
   <Tip>
       You can also use the [Unstructured Platform API - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
@@ -148,31 +142,12 @@ as well as `curl` and Postman for all of the supported REST endpoints.
     that are available through `https://platform.unstructuredapp.io`.
 </Tip>
 
-The following Unstructured Python SDK examples use the following environment variables, which you can set as follows:
-
-```bash
-export UNSTRUCTURED_API_URL="https://platform.unstructuredapp.io"
-export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
-```
-
-<Warning>
-    **Important**: Do not use `https://platform.unstructuredapp.io/api/v1` with the Python SDK, or else calls made by the Python SDK will fail. 
-    Use `https://platform.unstructuredapp.io` instead.
-</Warning>
-
-The following `curl` and Postman examples use the following environment variables, which you can set as follows:
+The following Unstructured examples use the following environment variables, which you can set as follows:
 
 ```bash
 export UNSTRUCTURED_API_URL="https://platform.unstructuredapp.io/api/v1"
 export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
 ```
-
-<Warning>
-    **Important**: For standard REST-enabled clients (such as `curl`), 
-    do not use `https://platform.unstructuredapp.io` (which is unique to the 
-    Unstructured Python SDK), or else calls made by these REST-enabled clients will fail. 
-    Use `https://platform.unstructuredapp.io/api/v1` instead.
-</Warning>
 
 These environment variables enable you to more easily run the following Unstructured Python SDK and `curl` examples and help prevent 
 you from storing scripts that contain sensitive URLs and API keys in public source code repositories.
@@ -188,10 +163,6 @@ The following Postman examples use variables, which you can set as follows:
    - **Initial value**: `https://platform.unstructuredapp.io/api/v1`
    - **Current value**: `https://platform.unstructuredapp.io/api/v1`
 
-     <Warning>
-         **Important**: Do not use `https://platform.unstructuredapp.io` (which is unique to the 
-         Unstructured Python SDK), or else calls made by Postman will fail.
-     </Warning>
    <br/>
    - **Variable**: `UNSTRUCTURED_API_URL`
    - **Type**: `secret`
@@ -245,7 +216,6 @@ To get this ID, see [Sources](/platform/api/sources/overview).
             request=ListSourcesRequest(
                 source_type="<type>" # Optional, list only for this source type.
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         # Print the list in alphabetical order by connector name.
@@ -318,7 +288,6 @@ the `GET` method to call the `/sources/<connector-id>` endpoint (for `curl` or P
             request=GetSourceRequest(
                 source_id="<connector-id>"
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.source_connector_information
@@ -390,7 +359,6 @@ specify the settings for the connector. For the specific settings to include, wh
             request=CreateSourceRequest(
                 create_source_connector=source_connector
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.source_connector_information
@@ -473,7 +441,6 @@ You can change any of the connector's settings except for its `name` and `type`.
                 source_id="<connector-id>",
                 update_source_connector=source_connector
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.source_connector_information
@@ -540,7 +507,6 @@ the `DELETE` method to call the `/sources/<connector-id>` endpoint (for `curl` o
             request=DeleteSourceRequest(
                 source_id="<connector-id>"
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         print(response.raw_response)
@@ -598,7 +564,6 @@ To get this ID, see [Destinations](/platform/api/destinations/overview).
             request=ListDestinationsRequest(
                 destination_type="<type>" # Optional, list only for this destination type.
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         # Print the list in alphabetical order by connector name.
@@ -671,7 +636,6 @@ the `GET` method to call the `/destinations/<connector-id>` endpoint (for `curl`
             request=GetDestinationRequest(
                 destination_id="<connector-id>"
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.destination_connector_information
@@ -742,7 +706,6 @@ specify the settings for the connector. For the specific settings to include, wh
             request=CreateDestinationRequest(
                 create_destination_connector=destination_connector
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.destination_connector_information
@@ -824,7 +787,6 @@ You can change any of the connector's settings except for its `name` and `type`.
                 destination_id="<connector-id>",
                 update_destination_connector=destination_connector
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.destination_connector_information
@@ -890,7 +852,6 @@ the `DELETE` method to call the `/destinations/<connector-id>` endpoint (for `cu
             request=DeleteDestinationRequest(
                 destination_id="<connector-id>"
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         print(response.raw_response)
@@ -966,7 +927,6 @@ You can specify multiple query parameters, for example `?source_id=<connector-id
                 source_id="<connector-id>", # Optional, list only for this source connector ID.
                 status="<status>" # Optional, list only for this workflow status.
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         # Print the list in alphabetical order by workflow name.
@@ -1059,7 +1019,6 @@ the `GET` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or 
             request=GetWorkflowRequest(
                 workflow_id="<workflow-id>"
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.workflow_information
@@ -1140,7 +1099,6 @@ specify the settings for the workflow. For the specific settings to include, see
             request=CreateWorkflowRequest(
                 create_workflow=workflow
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.workflow_information
@@ -1219,7 +1177,6 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
             request=RunWorkflowRequest(
                 workflow_id="<workflow-id>"
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         print(response.raw_response)
@@ -1285,7 +1242,6 @@ the request body (for `curl` or Postman), specify the settings for the workflow.
                 workflow_id="<workflow-id>",
                 update_workflow=workflow
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.workflow_information
@@ -1364,7 +1320,6 @@ the `DELETE` method to call the `/workflows/<workflow-id>` endpoint (for `curl` 
             request=DeleteWorkflowRequest(
                 workflow_id="<workflow-id>"
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         print(response.raw_response)
@@ -1437,7 +1392,6 @@ For `curl` or Postman, you can specify multiple query parameters as `?workflow_i
                 workflow_id="<workflow-id>", # Optional, list only for this workflow ID.
                 status="<status>", # Optional, list only for this job status.
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         # Print the list in alphabetical order by workflow name.
@@ -1520,7 +1474,6 @@ the `GET` method to call the `/jobs/<job-id>` endpoint (for `curl` or Postman), 
             request=GetJobRequest(
                 job_id="<job-id>"
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         info = response.job_information
@@ -1578,7 +1531,6 @@ the `POST` method to call the `/jobs/<job-id>/cancel` endpoint (for `curl` or Po
             request=CancelJobRequest(
                 job_id="<job-id>"
             ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
         )
 
         print(response.raw_response)
