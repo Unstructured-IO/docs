@@ -55,10 +55,8 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
     import * as fs from "fs";
 
     const key = process.env.UNSTRUCTURED_API_KEY;
-    const url = process.env.UNSTRUCTURED_API_URL;
 
     const client = new UnstructuredClient({
-        serverURL: url,
         security: {
             apiKeyAuth: key,
         },
@@ -107,7 +105,6 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
     const url = process.env.UNSTRUCTURED_API_URL;
 
     const client = new UnstructuredClient({
-        serverURL: url,
         security: {
             apiKeyAuth: key,
         },
@@ -181,6 +178,22 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
     ```
 
 ## Customizing the client
+    ### Changing the server URL
+        The JavaScript/TypeScript SDK will send requests to the [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide) by default. If you are working with a different instance of the Unstructured API, you can specify a `server_url` when initializing the Python client. This applies in the following situations:
+        - Users of the [Free Unstructured API](/api-reference/api-services/free-api) - you must specify your Free API key, and the Free API URL which is `https://api.unstructured.io`.
+        - Users of the [Azure](/api-reference/api-services/azure) or [AWS](/api-reference/api-services/aws) offerings - you must use your custom API URL. See the corresponding pages for details.
+
+        ```typescript TypeScript
+        const key = process.env.UNSTRUCTURED_API_KEY;
+        const url = process.env.UNSTRUCTURED_API_URL;    
+
+        const client = new UnstructuredClient({
+            security: { apiKeyAuth: key },
+            serverURL: url,
+        });
+        ```
+
+
     ### Retries
         You can also change the defaults for retries through the `retryConfig`[*](#parameter-names)
         when initializing the client. If a request to the API fails, the client will retry the 
@@ -190,11 +203,9 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
 
         ```typescript TypeScript
         const key = process.env.UNSTRUCTURED_API_KEY;
-        const url = process.env.UNSTRUCTURED_API_URL;    
 
         const client = new UnstructuredClient({
             security: { apiKeyAuth: key },
-            serverURL: url,
             retryConfig: {
                 strategy: "backoff",
                 retryConnectionErrors: true,
@@ -284,7 +295,6 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
 
     const client = new UnstructuredClient({
         security: { apiKeyAuth: process.env.UNSTRUCTURED_API_KEY },
-        serverURL: process.env.UNSTRUCTURED_API_URL
     });
 
     processFiles(
