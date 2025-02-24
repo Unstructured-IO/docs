@@ -13,8 +13,26 @@
 - A Pinecone API key. [Get an API key](https://docs.pinecone.io/guides/get-started/authentication#find-your-pinecone-api-key).
 - A Pinecone serverless index. [Create a serverless index](https://docs.pinecone.io/guides/indexes/create-an-index).
 
+  An existing index is not required. At runtime, the index behavior is as follows:
+
+  For the [Unstructured Platform](/platform/overview):
+    
+  - If an existing index name is specified, and Unstructured generates embeddings, 
+    but the number of dimensions that are generated does not match the existing index's embedding settings, the run will fail. 
+    You must change your Unstructured embedding settings or your existing index's embedding settings to match, and try the run again.
+  - If an index name is not specified, Unstructured creates a new index in your Pinecone account. If Unstructured generates embeddings, 
+    the new index's name will be `U<short-workflow-id>_<short-embedding-model-name>_<number-of-dimensions>`. 
+    If Unstructured does not generate embeddings, the new index's name will be `U<short-workflow-id`.
+
+  For [Unstructured Ingest](/ingestion/overview):
+
+  - If an existing index name is specified, and Unstructured generates embeddings, 
+    but the number of dimensions that are generated does not match the existing index's embedding settings, the run will fail. 
+    You must change your Unstructured embedding settings or your existing index's embedding settings to match, and try the run again. 
+  - If an index name is not specified, Unstructured creates a new index in your Pinecone account. The new index's name will be `Elements`.
+
   <Note>
-      Unstructured recommends that all records in the target index have a field 
+      If you create a new index or use an existing one, Unstructured recommends that all records in the target index have a field 
       named `record_id` with a string data type. 
       Unstructured can use this field to do intelligent document overwrites. Without this field, duplicate documents 
       might be written to the index or, in some cases, the operation could fail altogether.
