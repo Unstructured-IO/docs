@@ -21,15 +21,15 @@
     but the number of dimensions that are generated does not match the existing index's embedding settings, the run will fail. 
     You must change your Unstructured embedding settings or your existing index's embedding settings to match, and try the run again.
   - If an index name is not specified, Unstructured creates a new index in your Pinecone account. If Unstructured generates embeddings, 
-    the new index's name will be `U<short-workflow-id>_<short-embedding-model-name>_<number-of-dimensions>`. 
-    If Unstructured does not generate embeddings, the new index's name will be `U<short-workflow-id`.
+    the new index's name will be `u<short-workflow-id>-<short-embedding-model-name>-<number-of-dimensions>`. 
+    If Unstructured does not generate embeddings, the new index's name will be `u<short-workflow-id`.
 
   For [Unstructured Ingest](/ingestion/overview):
 
   - If an existing index name is specified, and Unstructured generates embeddings, 
     but the number of dimensions that are generated does not match the existing index's embedding settings, the run will fail. 
     You must change your Unstructured embedding settings or your existing index's embedding settings to match, and try the run again. 
-  - If an index name is not specified, Unstructured creates a new index in your Pinecone account. The new index's name will be `Elements`.
+  - If an index name is not specified, Unstructured creates a new index in your Pinecone account. The new index's name will be `unstructuredautocreated`.
 
   <Note>
       If you create a new index or use an existing one, Unstructured recommends that all records in the target index have a field 
