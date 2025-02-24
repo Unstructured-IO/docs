@@ -19,17 +19,6 @@ The Free Unstructured API requires authentication via an API key. Here's how you
 5.  Click **Submit**. You will receive a Free Unstructured API key at the **Email** you provided. Store your API key in a secure location. Do not share it with others.
 6.  For the Free Unstructured API, the API URL is `https://api.unstructured.io/general/v0/general`
 
-<Warning>
-    **Important**: This article shows how to use Free Unstructured API with the Unstructured CLI and the 
-    Unstructured Ingest Python library. While you can also use this API URL with the Unstructured Python SDK, 
-    beginning with Python SDK 0.30.0, note the following:
-    
-    - Do not use https://api.unstructured.io/general/v0/general, or else calls made by 
-      the Python SDK will fail. Use https://api.unstructured.io` instead.    
-    - If your Python code uses the `server_url` parameter inside of your `UnstructuredClient` constructor to specify this URL, you must move this `server_url` parameter into 
-      your code's `partition` or `partition_async` function calls instead, or else calls made by the Python SDK will fail.
-</Warning>
-
 import FreeKeyNoServerlessURL from '/snippets/general-shared-text/free-api-key-no-serverless-access.mdx';
 
 <FreeKeyNoServerlessURL />
