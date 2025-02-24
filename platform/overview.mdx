@@ -29,33 +29,16 @@ flowchart LR
     Connect-->Route-->Transform-->Chunk-->Enrich-->Embed-->Persist
 ```
 
+import PlatformPartitioningStrategies from '/snippets/general-shared-text/platform-partitioning-strategies.mdx';
+
 <Steps>
   <Step title="Connect">
     The Unstructured Platform offers multiple [source connectors](/platform/sources/overview) to connect to your data in its existing location.
   </Step>
   <Step title="Route">
-    Routing determines which strategy Unstructured Platform uses to transforming your documents into Unstructured's canonical JSON schema. The Unstructured Platform provides these [partitioning](/platform/partitioning) strategies for document transformation:
+    Routing determines which strategy Unstructured Platform uses to transform your documents into Unstructured's canonical JSON schema. The Unstructured Platform provides four [partitioning](/platform/partitioning) strategies for document transformation, as follows.
     
-    - **Fast** is ideal for simple, text-only documents.
-    - **High Res** is best for PDFs, images, and complex file types.
-
-      <Note>
-          During **High Res** processing, any detected text-based files are processed and billed at the **Fast** rate instead.
-      </Note>
-
-    - **VLM** is for challenging documents, including scanned and handwritten content.
-
-      <Note>
-          During **VLM** processing, any detected files that are not PDFs or images are processed and billed at either the **High Res** or **Fast** rate instead. 
-          Of those non-PDF and non-image files, all text-based files are processed and billed at the **Fast** rate instead. The other files are processed and billed at the **High Res** rate instead.
-      </Note>
-
-    - **Auto** automatically analyzes and processes files on a page-by-page basis (for PDF files) and on a document-by-document basis for everything else:
-
-      - If the page or document has no images and likely does not have tables, **Fast** partitioning is used, and the page or document is billed at the **Fast** rate for processing.
-      - If the page or document has only a few tables or images with standard layouts and languages, **High Res** partitioning is used, and the page or document is billed at the **High Res** rate for processing.
-      - If the page or document has more than a few tables or images, **VLM** partitioning is used, and the page or document is billed at the **VLM** rate for processing.
-
+    <PlatformPartitioningStrategies />
   </Step>
   <Step title="Transform"> 
     Your source document is transformed into Unstructured's canonical JSON schema. Regardless of the input document, this JSON schema gives you a [standardized output](/platform/document-elements). It contains more than 20 elements, such as `Header`, `Footer`, `Title`, `NarrativeText`, `Table`, `Image`, and many more. Each document is wrapped in extensive metadata so you can understand languages, file types, sources, hierarchies, and much more.

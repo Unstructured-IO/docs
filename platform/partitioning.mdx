@@ -15,30 +15,11 @@ model-based workflows, which can be slower and costlier because they require a m
 When you choose a partitioning strategy for your files, you should be mindful of these speed, cost, and quality trade-offs. 
 For example, the **Fast** strategy can be about 100 times faster than leading image-to-text models.
 
-To choose one of these strategies, select one of the **Partition Strategy** options in the **Partitioner** node of a workflow:
+To choose one of these strategies, select one of the following four **Partition Strategy** options in the **Partitioner** node of a workflow.
 
 <Note>You can change a workflow's preconfigured strategy only through [Custom](/platform/workflows#create-a-custom-workflow) workflow settings.</Note>
 
-- **Fast**: This strategy is ideal for simple, text-based documents.
-- **High Res**: This strategy is best for PDFs, images, and complex file types.
+import PlatformPartitioningStrategies from '/snippets/general-shared-text/platform-partitioning-strategies.mdx';
 
-  <Note>
-      During **High Res** processing, any detected text-based files are processed and billed at the **Fast** rate instead.
-  </Note>
-
-- **VLM**: For your most challenging documents, including scanned and handwritten content.
-
-  <Note>
-      During **VLM** processing, any detected files that are not PDFs or images are processed and billed at either the **High Res** or **Fast** rate instead. 
-      Of those non-PDF and non-image files, all text-based files are processed and billed at the **Fast** rate instead. The other files are processed and billed at the **High Res** rate instead.
-   
-      When you use the **VLM** strategy with embeddings for PDF files of 200 or more pages, you might notice some errors when 
-      these files are processed. These errors typically occur when these larger PDF files have lots of tables and high-resolution images.
-  </Note>
-
-- **Auto**: Unstructured automatically analyzes and processes files on a page-by-page basis (for PDF files) and on a document-by-document basis for everything else:
-
-  - If the page or document has no images and likely does not have tables, **Fast** partitioning is used, and the page or document is billed at the **Fast** rate for processing.
-  - If the page or document has only a few tables or images with standard layouts and languages, **High Res** partitioning is used, and the page or document is billed at the **High Res** rate for processing.
-  - If the page or document has more than a few tables or images, **VLM** partitioning is used, and the page or document is billed at the **VLM** rate for processing.
+<PlatformPartitioningStrategies />
 

@@ -1,0 +1,12 @@
+Unstructured recommends that you choose the **Auto** partitioning strategy in most cases. With **Auto**, Unstructured does all 
+the heavy lifting, optimizing at runtime for the highest quality at the lowest cost page-by-page.
+
+You should consider the following three additional strategies only if you are absolutely sure that your documents are of the same 
+composition and complexity. Each of the following strategies are best suited for specific situations. Choosing one of these 
+three strategies other than **Auto** for sets of documents of different types could produce undesirable results, 
+including reduction in transformation quality.
+
+- **VLM**: Provides the most consistent transformation quality, especially for complex documents.
+- **High Res**: Built for documents with medium to low complexity (for example, simple images and tables). 
+  This strategy is less costly and speedier than **VLM**.
+- **Fast**: Built for text-only documents with no complexity. This is the cheapest and fastest strategy.
