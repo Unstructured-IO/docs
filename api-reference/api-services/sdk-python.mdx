@@ -18,19 +18,6 @@ import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
 <SharedAPIKeyURL />
 
-<Warning>
-    **Important**: Beginning with Python SDK 0.30.0, note the following:
-    
-    - For the Unstructured Serverless API URL, do not use `https://api.unstructuredapp.io/general/v0/general`, or else calls made by 
-      the Python SDK will fail. Use `https://api.unstructuredapp.io` instead.    
-    - For the Free Unstructured API URL, do not use `https://api.unstructured.io/general/v0/general`, or else calls made by 
-      the Python SDK will fail. Use `https://api.unstructured.io` instead. 
-    - If your Python code previously used the `server_url` parameter inside of your `UnstructuredClient` constructor to specify your Unstructured API URL, you must move this `server_url` parameter into 
-      your code's `partition` or `partition_async` function calls instead, or else calls made by the Python SDK will fail. To learn how, see the following code examples.
-
-    [Learn more](#migration-guide).
-</Warning>
-
 import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serverless-api.mdx';
 
 <NoURLForServerlessAPI/>
@@ -80,8 +67,7 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
 
     try:
         res = client.general.partition(
-            request=req,
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            request=req
         )
         element_dicts = [element for element in res.elements]
 
@@ -124,8 +110,7 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
 
     try:
         res = client.general.partition(
-            request=req,
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            request=req
         )
         element_dicts = [element for element in res.elements]
         
@@ -171,8 +156,7 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
 
         try:
             res = await client.general.partition_async(
-                request=req,
-                server_url=os.getenv("UNSTRUCTURED_API_URL")
+                request=req
             )
             element_dicts = [element for element in res.elements]
             json_elements = json.dumps(element_dicts, indent=2)
@@ -246,8 +230,7 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
         )
     )
     res = client.general.partition(
-        request=req,
-        server_url=os.getenv("UNSTRUCTURED_API_URL")
+        request=req
     )
     ```
 
@@ -263,8 +246,7 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
         import os 
 
         client = UnstructuredClient(
-            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-            server_url=os.getenv("UNSTRUCTURED_API_URL"),
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
             retry_config=RetryConfig(
                 strategy="backoff",
                 retry_connection_errors=True,
@@ -322,49 +304,7 @@ the names used in the SDKs are the same across all methods.
 
 ## Migration guide
 
-There are breaking changes beginning with Python SDK version 0.26.0 and again in 0.30.0. If you encounter any errors when upgrading, please find the solution below.
-
-**If you see the error: `404 Not Found`**
-
-Before 0.30.0, you could specify the following Unstructured API URL for the `server_url` parameter:
-
-- For the Unstructured Serverless API: `https://api.unstructuredapp.io/general/v0/general`
-- For the Free Unstructured API: `https://api.unstructured.io/general/v0/general`
-
-Beginning with 0.30.0, these Unstructured API URLs have changed as follows:
-
-- For the Unstructured Serverless API: `https://api.unstructuredapp.io` (remove `/general/v0/general`)
-- For the Free Unstructured API: `https://api.unstructured.io` (remove `/general/v0/general`)
-
-Also, before 0.30.0, the `server_url` parameter was part of the `UnstructuredClient` constructor. Beginning with 0.30.0, the `server_url` 
-parameter has been moved into the `partition` and `partition_async` functions.
-
-```python
-# Instead of:
-client = unstructured_client.UnstructuredClient(
-    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-    server_url=os.getenv("UNSTRUCTURED_API_URL")
-)
-
-# Switch to:
-client = unstructured_client.UnstructuredClient(
-    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
-)
-
-# And...
-
-# For partition:
-res = client.general.partition(
-    request=req,
-    server_url=os.getenv("UNSTRUCTURED_API_URL")
-)
-
-# For partition_async:
-res = await client.general.partition_async(
-    request=req,
-    server_url=os.getenv("UNSTRUCTURED_API_URL")
-)
-```
+There are breaking changes beginning with Python SDK version 0.26.0. If you encounter any errors when upgrading, please find the solution below.
 
 **If you see the error: `AttributeError: 'PartitionParameters' object has no attribute 'partition_parameters'`**
 
@@ -379,8 +319,7 @@ req = shared.PartitionParameters(
 )
 
 resp = s.general.partition(
-    request=req,
-    server_url=os.getenv("UNSTRUCTURED_API_URL") # Beginning with 0.30.0
+    request=req
 )
 
 # Switch to:
@@ -393,8 +332,7 @@ req = operations.PartitionRequest(
 )
 
 resp = s.general.partition(
-    request=req,
-    server_url=os.getenv("UNSTRUCTURED_API_URL") # Beginning with 0.30.0
+    request=req
 )
 ```
 
@@ -428,7 +366,6 @@ resp = s.general.partition(req)
 
 # Switch to:
 resp = s.general.partition(
-    request=req,
-    server_url=os.getenv("UNSTRUCTURED_API_URL") # Beginning with 0.30.0
+    request=req
 )
 ```

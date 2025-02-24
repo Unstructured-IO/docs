@@ -57,72 +57,71 @@ To use the Unstructured Platform API, you must have:
   4. Enter some descriptive name for the API key, and then click **Save**.
   5. Click the **Copy** icon for your new API key. The API key's value is copied to your system's clipboard.
 
-- The Unstructured **Platform API URL**. This is typically `https://platform.unstructuredapp.io`, which is unique to 
-  the Unstructured Python SDK; and `https://platform.unstructuredapp.io/api/v1` for standard REST-enabled utilities (such as `curl`), 
-  tools (such as Postman), programming languages, packages, and libraries.
+The Unstructured Platform API is offered as part of the Unstructured Python SDK and as a set of Representational State Transfer (REST) endpoints.
 
-  ![Unstructured Platform API URL](/img/platform/PlatformAPIURL.png)
+### Unstructured Python SDK
 
-  <Warning>
-      **Important**: Do not use `https://platform.unstructuredapp.io/api/v1` with the Unstructured Python SDK, or else calls made by 
-      the Python SDK will fail. Use `https://platform.unstructuredapp.io` instead.
+The [Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client), beginning with version 0.30.2, 
+allows you to call the Unstructured Platform API through standard Python code.
 
-      Do not use the Unstructured **Serverless API URL**, which is separate from the Unstructured Platform API URL.      
-  </Warning>
+To install the Unstructured Python SDK, run the following command from within your Python virtual environment:
 
-  <Note>
-      If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API URL 
-      might be different. For API URL guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
-      If your API URL is different, be sure to substitute `https://platform.unstructuredapp.io/api/v1` for your 
-      API URL throughout the following examples.
-  </Note>
+```bash
+pip install "unstructured-client>=0.30.2"
+```
 
-The Unstructured Platform API is offered as follows:
+If you already have the Unstructured Python SDK installed, upgrade to at least version 0.30.2 by running the following command instead:
 
-- As part of the [Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client) beginning with version 0.30.0, 
-  which you can call through standard Python code.
+```bash
+pip install --upgrade "unstructured-client>=0.30.2"
+```
 
-  To install the Unstructured Python SDK, run the following command from within your Python virtual environment:
+### REST endpoints
 
-  ```bash
-  pip install "unstructured-client>=0.30.0"
-  ```
-
-  If you already have the Unstructured Python SDK installed, upgrade to at least version 0.30.0 by running the following command instead:
-
-  ```bash
-  pip install --upgrade "unstructured-client>=0.30.0"
-  ```
-
-- As a set of Representational State Transfer (REST) endpoints, which you can call through standard REST-enabled 
+The Unstructured Platform API is also callable from a set of Representational State Transfer (REST) endpoints, which you can call through standard REST-enabled 
 utilities, tools, programming languages, packages, and libraries. The following sections describe how to call the Unstructured Platform API with 
 `curl` and Postman. You can adapt this information as needed for your preferred programming languages and libraries, for example by using the 
 `requests` library with Python.
 
-  <Tip>
-      You can also use the [Unstructured Platform API - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
-      that are available through `https://platform.unstructuredapp.io`.
-  </Tip>
+<Tip>
+    You can also use the [Unstructured Platform API - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
+    that are available through `https://platform.unstructuredapp.io`.
+</Tip>
+
+To call the REST endpoints, you must specify the Unstructured **Platform API URL**. This is typically `https://platform.unstructuredapp.io/api/v1`.
+
+![Unstructured Platform API URL](/img/platform/PlatformAPIURL.png)
+
+<Warning>
+    Do not use the Unstructured **Serverless API URL**, which is separate from the Unstructured Platform API URL.      
+</Warning>
 
 <Note>
-    The Unstructured Platform API is separate from [Unstructured Serverless API services](/api-reference/api-services/overview) and 
-    [Unstructured Ingest](/api-reference/ingest/overview). 
-
-    Because of this separation, the following Unstructured SDKs, tools, and libraries do _not_ work with the Unstructured Platform API:
-
-    - The [Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts)
-    - [Local single-file POST requests](/api-reference/api-services/post-requests) to Unstructured Serverless API services
-    - The [Unstructured open source Python library](/api-reference/api-services/partition-via-api)
-    - The [Unstructued Ingest CLI](/api-reference/ingest/ingest-cli)
-    - The [Unstructured Ingest Python library](/api-reference/ingest/python-ingest)
-
-    [Free Unstructured API](/api-reference/api-services/free-api) accounts are also _not_ supported.
-
-    The following Unstructured API URLs are also _not_ supported:
-
-    - `https://api.unstructuredapp.io/general/v0/general` (the Unstructured Serverless API URL)
-    - `https://api.unstructured.io/general/v0/general` (the Free Unstructured API URL)
+    If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API URL 
+    might be different. For API URL guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
+    If your API URL is different, be sure to substitute `https://platform.unstructuredapp.io/api/v1` for your 
+    API URL throughout the following examples.
 </Note>
+
+### Restrictions
+
+The Unstructured Platform API is separate from [Unstructured Serverless API services](/api-reference/api-services/overview) and 
+[Unstructured Ingest](/api-reference/ingest/overview). 
+
+Because of this separation, the following Unstructured SDKs, tools, and libraries do _not_ work with the Unstructured Platform API:
+
+- The [Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts)
+- [Local single-file POST requests](/api-reference/api-services/post-requests) to Unstructured Serverless API services
+- The [Unstructured open source Python library](/api-reference/api-services/partition-via-api)
+- The [Unstructued Ingest CLI](/api-reference/ingest/ingest-cli)
+- The [Unstructured Ingest Python library](/api-reference/ingest/python-ingest)
+
+[Free Unstructured API](/api-reference/api-services/free-api) accounts are also _not_ supported.
+
+The following Unstructured API URLs are also _not_ supported:
+
+- `https://api.unstructuredapp.io/general/v0/general` (the Unstructured Serverless API URL)
+- `https://api.unstructured.io/general/v0/general` (the Free Unstructured API URL)
 
 ## Basics
 
@@ -148,17 +147,28 @@ as well as `curl` and Postman for all of the supported REST endpoints.
     that are available through `https://platform.unstructuredapp.io`.
 </Tip>
 
-The following Unstructured Python SDK examples use the following environment variables, which you can set as follows:
+### Python SDK
+
+The following Unstructured Python SDK examples use the following environment variable, which you can set as follows:
 
 ```bash
-export UNSTRUCTURED_API_URL="https://platform.unstructuredapp.io"
 export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
 ```
 
-<Warning>
-    **Important**: Do not use `https://platform.unstructuredapp.io/api/v1` with the Python SDK, or else calls made by the Python SDK will fail. 
-    Use `https://platform.unstructuredapp.io` instead.
-</Warning>
+Calls made by the Unstructured Python SDK's `unstructured_client` functions for creating, listing, updating, 
+and deleting connectors, workflows, and jobs in the Unstructured Platform all use the Unstrucutured Platform API URL (`https://platform.unstructuredapp.io/api/v1`) by default. You do not need to 
+use the `server_url` parameter to specify this API URL in your Python code for these particular functions.
+
+<Note>
+    If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API URL 
+    might be different. For API URL guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
+    If your API URL is different, be sure to substitute `https://platform.unstructuredapp.io/api/v1` for your 
+    API URL throughout the following examples.
+
+    To specify an API URL in your code, set the `server_url` parameter in the `UnstructuredClient` constructor to the target API URL.
+</Note>
+
+### curl and Postman
 
 The following `curl` and Postman examples use the following environment variables, which you can set as follows:
 
@@ -166,13 +176,6 @@ The following `curl` and Postman examples use the following environment variable
 export UNSTRUCTURED_API_URL="https://platform.unstructuredapp.io/api/v1"
 export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
 ```
-
-<Warning>
-    **Important**: For standard REST-enabled clients (such as `curl`), 
-    do not use `https://platform.unstructuredapp.io` (which is unique to the 
-    Unstructured Python SDK), or else calls made by these REST-enabled clients will fail. 
-    Use `https://platform.unstructuredapp.io/api/v1` instead.
-</Warning>
 
 These environment variables enable you to more easily run the following Unstructured Python SDK and `curl` examples and help prevent 
 you from storing scripts that contain sensitive URLs and API keys in public source code repositories.
@@ -187,11 +190,6 @@ The following Postman examples use variables, which you can set as follows:
    - **Type**: `default`
    - **Initial value**: `https://platform.unstructuredapp.io/api/v1`
    - **Current value**: `https://platform.unstructuredapp.io/api/v1`
-
-     <Warning>
-         **Important**: Do not use `https://platform.unstructuredapp.io` (which is unique to the 
-         Unstructured Python SDK), or else calls made by Postman will fail.
-     </Warning>
    <br/>
    - **Variable**: `UNSTRUCTURED_API_URL`
    - **Type**: `secret`
@@ -244,8 +242,7 @@ To get this ID, see [Sources](/platform/api/sources/overview).
         response = client.sources.list_sources(
             request=ListSourcesRequest(
                 source_type="<type>" # Optional, list only for this source type.
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         # Print the list in alphabetical order by connector name.
@@ -317,8 +314,7 @@ the `GET` method to call the `/sources/<connector-id>` endpoint (for `curl` or P
         response = client.sources.get_source(
             request=GetSourceRequest(
                 source_id="<connector-id>"
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         info = response.source_connector_information
@@ -389,8 +385,7 @@ specify the settings for the connector. For the specific settings to include, wh
         response = client.sources.create_source(
             request=CreateSourceRequest(
                 create_source_connector=source_connector
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         info = response.source_connector_information
@@ -472,8 +467,7 @@ You can change any of the connector's settings except for its `name` and `type`.
             request=UpdateSourceRequest(
                 source_id="<connector-id>",
                 update_source_connector=source_connector
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         info = response.source_connector_information
@@ -539,8 +533,7 @@ the `DELETE` method to call the `/sources/<connector-id>` endpoint (for `curl` o
         response = client.sources.delete_source(
             request=DeleteSourceRequest(
                 source_id="<connector-id>"
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         print(response.raw_response)
@@ -597,8 +590,7 @@ To get this ID, see [Destinations](/platform/api/destinations/overview).
         response = client.destinations.list_destinations(
             request=ListDestinationsRequest(
                 destination_type="<type>" # Optional, list only for this destination type.
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         # Print the list in alphabetical order by connector name.
@@ -670,8 +662,7 @@ the `GET` method to call the `/destinations/<connector-id>` endpoint (for `curl`
         response = client.destinations.get_destination(
             request=GetDestinationRequest(
                 destination_id="<connector-id>"
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         info = response.destination_connector_information
@@ -741,8 +732,7 @@ specify the settings for the connector. For the specific settings to include, wh
         response = client.destinations.create_destination(
             request=CreateDestinationRequest(
                 create_destination_connector=destination_connector
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         info = response.destination_connector_information
@@ -823,8 +813,7 @@ You can change any of the connector's settings except for its `name` and `type`.
             request=UpdateDestinationRequest(
                 destination_id="<connector-id>",
                 update_destination_connector=destination_connector
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         info = response.destination_connector_information
@@ -889,8 +878,7 @@ the `DELETE` method to call the `/destinations/<connector-id>` endpoint (for `cu
         response = client.destinations.delete_destination(
             request=DeleteDestinationRequest(
                 destination_id="<connector-id>"
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         print(response.raw_response)
@@ -965,8 +953,7 @@ You can specify multiple query parameters, for example `?source_id=<connector-id
                 destination_id="<connector-id>", # Optional, list only for this destination connector ID.
                 source_id="<connector-id>", # Optional, list only for this source connector ID.
                 status="<status>" # Optional, list only for this workflow status.
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         # Print the list in alphabetical order by workflow name.
@@ -1058,8 +1045,7 @@ the `GET` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or 
         response = client.workflows.get_workflow(
             request=GetWorkflowRequest(
                 workflow_id="<workflow-id>"
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         info = response.workflow_information
@@ -1139,8 +1125,7 @@ specify the settings for the workflow. For the specific settings to include, see
         response = client.workflows.create_workflow(
             request=CreateWorkflowRequest(
                 create_workflow=workflow
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         info = response.workflow_information
@@ -1218,8 +1203,7 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
         response = client.workflows.run_workflow(
             request=RunWorkflowRequest(
                 workflow_id="<workflow-id>"
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         print(response.raw_response)
@@ -1284,8 +1268,7 @@ the request body (for `curl` or Postman), specify the settings for the workflow.
             request=UpdateWorkflowRequest(
                 workflow_id="<workflow-id>",
                 update_workflow=workflow
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         info = response.workflow_information
@@ -1363,8 +1346,7 @@ the `DELETE` method to call the `/workflows/<workflow-id>` endpoint (for `curl` 
         response = client.workflows.delete_workflow(
             request=DeleteWorkflowRequest(
                 workflow_id="<workflow-id>"
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         print(response.raw_response)
@@ -1436,8 +1418,7 @@ For `curl` or Postman, you can specify multiple query parameters as `?workflow_i
             request=ListJobsRequest(
                 workflow_id="<workflow-id>", # Optional, list only for this workflow ID.
                 status="<status>", # Optional, list only for this job status.
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         # Print the list in alphabetical order by workflow name.
@@ -1519,8 +1500,7 @@ the `GET` method to call the `/jobs/<job-id>` endpoint (for `curl` or Postman), 
         response = client.jobs.get_job(
             request=GetJobRequest(
                 job_id="<job-id>"
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         info = response.job_information
@@ -1577,8 +1557,7 @@ the `POST` method to call the `/jobs/<job-id>/cancel` endpoint (for `curl` or Po
         response = client.jobs.cancel_job(
             request=CancelJobRequest(
                 job_id="<job-id>"
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         print(response.raw_response)

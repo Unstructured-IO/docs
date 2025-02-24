@@ -73,8 +73,7 @@ specify the settings for the workflow, as follows:
         response = client.workflows.create_workflow(
             request=CreateWorkflowRequest(
                 create_workflow=workflow
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         info = response.workflow_information
@@ -236,8 +235,7 @@ In the request body, specify the settings for the workflow. For the specific set
             request=UpdateWorkflowRequest(
                 workflow_id="<workflow-id>",
                 update_workflow=workflow
-            ),
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            )
         )
 
         info = response.workflow_information

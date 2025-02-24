@@ -13,7 +13,7 @@ This page describes how to get started with the Unstructured Serverless API. Lea
 
 ## Get started
 
-To call the Unstructured Serverless API, you need an Unstructured account, API key, and API URL:
+To call the Unstructured Serverless API, you need an Unstructured account and an Unstructured API key:
 
 <Steps>
     <Step title="Sign up">
@@ -64,7 +64,7 @@ To call the Unstructured Serverless API, you need an Unstructured account, API k
         </Tip>
 
     </Step> 
-    <Step title="Get your API key and API URL">
+    <Step title="Get your API key">
 
         <img src="https://unstructured-tech-docs.s3.amazonaws.com/Unstructured-Platform-APIKeyURL.gif" alt="Unstructured API key how-to" width="500" />
 
@@ -76,26 +76,8 @@ To call the Unstructured Serverless API, you need an Unstructured account, API k
         2. On the **API Keys** tab, click **Generate New Key**.
         3. Enter some descriptive name for the API key, and then click **Save**.
         4. Click the **Copy** icon for your new API key. The API key's value is copied to your system's clipboard.
-        5. Note the Unstructured **Serverless API URL**, which is `https://api.unstructuredapp.io/general/v0/general`
-
-        ![Unstructured Serverless API URL](/img/platform/ServerlessAPIURL.png)
-
-        <Warning>
-            Do not use the Unstructured **Platform API URL**, which is separate from the Unstructured Serverless API URL.
-        </Warning>
-
-        <Note>
-            If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API URL 
-            might be different. For API URL guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
-            If your API URL is different, be sure to substitute `https://api.unstructuredapp.io/general/v0/general` for your 
-            API URL throughout the following examples.
-        </Note>    
     </Step>
 </Steps>
-
-import ServerlessKeyNoFreeURL from '/snippets/general-shared-text/serverless-api-key-no-free-access.mdx';
-
-<ServerlessKeyNoFreeURL />
 
 [Try the quickstart](#quickstart).
 
@@ -137,6 +119,10 @@ import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx'
 
 These examples use your local machine. They send source (input) files from your local machine to the Unstructured Serverless API which delivers the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
 
+import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serverless-api.mdx';
+
+<NoURLForServerlessAPI/>
+
 ### Unstructured Ingest CLI
 
 To work with the Unstructured Serverless API by using the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli), you will need to:
@@ -147,12 +133,11 @@ To work with the Unstructured Serverless API by using the [Unstructured Ingest C
   pip install unstructured-ingest
   ```
 
-- Set the following environment variables:
+- Set the following environment variable:
 
   - Set `UNSTRUCTURED_API_KEY` to your API key.
-  - Set `UNSTRUCTURED_API_URL` to your API URL.
   
-  [Get your API key and API URL](#get-started).
+  [Get your API key](#get-started).
 
 - Have some compatible files on your local machine to be processed. [See the list of supported file types](/api-reference/api-services/supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 
@@ -168,7 +153,6 @@ unstructured-ingest \
     --output-dir <path/to/output> \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
-    --partition-endpoint $UNSTRUCTURED_API_URL \
     --strategy hi_res \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
 ```
@@ -188,9 +172,8 @@ To work with the Unstructured Serverless API by using the [Unstructured Python l
 - Set the following environment variables:
 
   - Set `UNSTRUCTURED_API_KEY` to your API key.
-  - Set `UNSTRUCTURED_API_URL` to your API URL.
   
-  [Get your API key and API URL](#get-started).
+  [Get your API key](#get-started).
 
 - Have some compatible files on your local machine to be processed. [See the list of supported file types](/api-reference/api-services/supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 

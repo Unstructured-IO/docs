@@ -36,8 +36,7 @@ if __name__ == "__main__":
 
     try:
         result = await client.general.partition_async(
-            request=request,
-            server_url=os.getenv("UNSTRUCTURED_API_URL")
+            request=request
         )
 
         # Provide some minimal CSS for better table readability.

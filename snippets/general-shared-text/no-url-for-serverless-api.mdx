@@ -1,5 +1,13 @@
 <Info>
-    If you do not specify the API URL, your [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide) pay-as-you-go account will be used by default. You must always specify your Serverless API key.<br/><br/>
-    To use the [Free Unstructured API](/api-reference/api-services/free-api), you must always specify your Free API key, and the Free API URL which is `https://api.unstructured.io` for the Python SDK beginning with 0.30.0; and `https://api.unstructured.io/general/v0/general` for all other clients.<br/><br/>
-    To use the pay-as-you-go Unstructured API on Azure or AWS with the SDKs, you must always specify the corresponding API URL. See the [Azure](/api-reference/api-services/azure) or [AWS](/api-reference/api-services/aws) instructions.
+    If you do not specify the API URL, the [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide) URL of `https://api.unstructuredapp.io/general/v0/general` is used by default. You must always specify your Serverless API key.<br/><br/>
+    
+    To use the [Free Unstructured API](/api-reference/api-services/free-api), you must always specify your Free API key, and the Free API URL which is `https://api.unstructured.io/general/v0/general`<br/><br/>
+    
+    To use the pay-as-you-go Unstructured API on Azure or AWS with the SDKs, you must always specify the corresponding API URL. See the [Azure](/api-reference/api-services/azure) or [AWS](/api-reference/api-services/aws) instructions.<br/><br/>
+    
+    To specify the API URL in your code if needed:
+    
+    - For the Unstructured Python SDK and the Unstructured JavaScript/TypeScript SDK, set the `server_url` parameter in the `UnstructuredClient` constructor to the target API URL.
+    - For Unstructured Ingest, set `partition_endpoint` (for Python) or `--partition-endpoint` (for the CLI) to the target API URL.
+    - For the Unstructured open source library, set `api_url` to the target API URL.
 </Info>
