@@ -2,18 +2,11 @@
 title: Overview
 ---
 
-<Note>
-    The Unstructured Platform API is separate from Unstructured Serverless API services. 
-    
-    For information about Unstructured Serverless API services, see the 
-    [Unstructured Serverless API services overview](/api-reference/api-services/overview).
-</Note>
-
-The [Unstructured Platform](/platform/overview) features a no-code user interface for transforming your unstructured data into data that is ready 
+The [Unstructured Platform UI](/platform/overview) features a no-code user interface for transforming your unstructured data into data that is ready 
 for Retrieval Augmented Generation (RAG).
 
-The Unstructured Platform also provides a back-end API for automation usage scenarios as well as for documentation, reporting, and recovery needs. 
-This page provides an overview of the Unstructured Platform API.
+The Unstructured Platform Workflow API enables automation usage scenarios as well as for documentation, reporting, and recovery needs. 
+This page provides an overview of the Unstructured Platform Workflow API.
 
 <iframe
 width="560"
@@ -27,7 +20,7 @@ allowfullscreen
 
 ## Requirements
 
-To use the Unstructured Platform API, you must have:
+To use the Unstructured Platform Workflow API, you must have:
 
 - **An Unstructured account**, created through the [For Developers](https://unstructured.io/developers) page, with one of the following plans:
 
@@ -51,18 +44,18 @@ To use the Unstructured Platform API, you must have:
 
   ![Unstructured API key](/img/platform/APIKeyOnly.png)
 
-  1. Sign in to the Unstructured Platform. [Learn how](/platform/quickstart).
+  1. Sign in to the Unstructured Platform UI. [Learn how](/platform/quickstart).
   2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
   3. On the **API Keys** tab, click **Generate New Key**.
   4. Enter some descriptive name for the API key, and then click **Save**.
   5. Click the **Copy** icon for your new API key. The API key's value is copied to your system's clipboard.
 
-The Unstructured Platform API is offered as part of the Unstructured Python SDK and as a set of Representational State Transfer (REST) endpoints.
+The Unstructured Platform Workflow API is offered as part of the Unstructured Python SDK and as a set of Representational State Transfer (REST) endpoints.
 
 ### Unstructured Python SDK
 
 The [Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client), beginning with version 0.30.2, 
-allows you to call the Unstructured Platform API through standard Python code.
+allows you to call the Unstructured Platform Workflow API through standard Python code.
 
 To install the Unstructured Python SDK, run the following command from within your Python virtual environment:
 
@@ -78,13 +71,13 @@ pip install --upgrade "unstructured-client>=0.30.2"
 
 ### REST endpoints
 
-The Unstructured Platform API is also callable from a set of Representational State Transfer (REST) endpoints, which you can call through standard REST-enabled 
-utilities, tools, programming languages, packages, and libraries. The following sections describe how to call the Unstructured Platform API with 
+The Unstructured Platform Workflow API is also callable from a set of Representational State Transfer (REST) endpoints, which you can call through standard REST-enabled 
+utilities, tools, programming languages, packages, and libraries. The following sections describe how to call the Unstructured Platform Workflow API with 
 `curl` and Postman. You can adapt this information as needed for your preferred programming languages and libraries, for example by using the 
 `requests` library with Python.
 
 <Tip>
-    You can also use the [Unstructured Platform API - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
+    You can also use the [Unstructured Platform Workflow API - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
     that are available through `https://platform.unstructuredapp.io`.
 </Tip>
 
@@ -105,13 +98,10 @@ To call the REST endpoints, you must specify the Unstructured **Platform API URL
 
 ### Restrictions
 
-The Unstructured Platform API is separate from [Unstructured Serverless API services](/api-reference/api-services/overview) and 
-[Unstructured Ingest](/api-reference/ingest/overview). 
-
-Because of this separation, the following Unstructured SDKs, tools, and libraries do _not_ work with the Unstructured Platform API:
+The following Unstructured SDKs, tools, and libraries do _not_ work with the Unstructured Platform Workflow API:
 
 - The [Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts)
-- [Local single-file POST requests](/api-reference/api-services/post-requests) to Unstructured Serverless API services
+- [Local single-file POST requests](/api-reference/api-services/post-requests) to the Unstructured Platform Partition API
 - The [Unstructured open source Python library](/api-reference/api-services/partition-via-api)
 - The [Unstructued Ingest CLI](/api-reference/ingest/ingest-cli)
 - The [Unstructured Ingest Python library](/api-reference/ingest/python-ingest)
@@ -125,8 +115,8 @@ The following Unstructured API URLs are also _not_ supported:
 
 ## Basics
 
-The Unstructured Platform API enables you to work with [connectors](#connectors),
-[workflows](#workflows), and [jobs](#jobs) in the Unstructured Platform.
+The Unstructured Platform Workflow API enables you to work with [connectors](#connectors),
+[workflows](#workflows), and [jobs](#jobs) in the Unstructured Platform UI.
 
 - A _source connector_ ingests files or data into Unstructured from a source location.
 - A _destination connector_ sends the processed data from Unstructured to a destination location.
@@ -143,7 +133,7 @@ The following sections provide examples, showing the use of the Unstructured SDK
 as well as `curl` and Postman for all of the supported REST endpoints.
 
 <Tip>
-    You can also use the [Unstructured Platform API - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
+    You can also use the [Unstructured Platform Workflow API - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
     that are available through `https://platform.unstructuredapp.io`.
 </Tip>
 
@@ -156,7 +146,7 @@ export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
 ```
 
 Calls made by the Unstructured Python SDK's `unstructured_client` functions for creating, listing, updating, 
-and deleting connectors, workflows, and jobs in the Unstructured Platform all use the Unstrucutured Platform API URL (`https://platform.unstructuredapp.io/api/v1`) by default. You do not need to 
+and deleting connectors, workflows, and jobs in the Unstructured Platform UI all use the Unstrucutured Platform Workflow API URL (`https://platform.unstructuredapp.io/api/v1`) by default. You do not need to 
 use the `server_url` parameter to specify this API URL in your Python code for these particular functions.
 
 <Note>

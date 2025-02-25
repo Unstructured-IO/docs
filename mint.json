@@ -80,32 +80,28 @@
     },
     "tabs": [
       {
-        "name": "Platform",
+        "name": "Platform UI",
         "url": "platform"
       },
       {
-        "name": "API",
-        "url": "api-reference"
-      },
-      {
-          "name": "Open source",
-          "url": "open-source"
+        "name": "Platform API",
+        "url": "platform-api"
       },
       {
         "name": "Example code",
         "url": "examplecode"
       },
       {
-        "name": "Ingestion",
+        "name": "Ingest",
         "url": "ingestion"
+      },
+      {
+        "name": "Open source",
+        "url": "open-source"
       },
       {
         "name": "FAQ",
         "url": "faq"
-      },
-      {
-        "name": "Glossary",
-        "url": "glossary"
       }
   ],
     "navigation": [
@@ -275,22 +271,6 @@
         "group": "Integrations",
         "pages": [
           "open-source/integrations"
-        ]
-      },
-      {
-        "group": "Unstructured API services",
-        "pages": [
-          "api-reference/api-services/overview",
-          "api-reference/api-services/supported-file-types"
-        ]
-      },
-      {
-        "group": "Getting started with API services",
-        "pages": [
-          "api-reference/api-services/saas-api-development-guide",
-          "api-reference/api-services/free-api",
-          "api-reference/api-services/azure",
-          "api-reference/api-services/aws"
         ]
       },
       {
@@ -466,7 +446,7 @@
         ]
       },
       {
-        "group": "Unstructured Platform",
+        "group": "Unstructured Platform UI",
         "pages": [
           "platform/overview",
           "platform/supported-file-types",
@@ -534,64 +514,6 @@
           },
           "platform/workflows",
           "platform/jobs",
-          {
-            "group": "API",
-            "pages": [
-              "platform/api/overview",
-              {
-                "group": "Sources",
-                "pages": [
-                  "platform/api/sources/overview",
-                  "platform/api/sources/azure-blob-storage",
-                  "platform/api/sources/confluence",
-                  "platform/api/sources/couchbase",
-                  "platform/api/sources/databricks-volumes",
-                  "platform/api/sources/dropbox",
-                  "platform/api/sources/elasticsearch",
-                  "platform/api/sources/google-cloud",
-                  "platform/api/sources/google-drive",
-                  "platform/api/sources/kafka",
-                  "platform/api/sources/mongodb",
-                  "platform/api/sources/onedrive",
-                  "platform/api/sources/outlook",
-                  "platform/api/sources/postgresql",
-                  "platform/api/sources/s3",
-                  "platform/api/sources/salesforce",
-                  "platform/api/sources/sharepoint",
-                  "platform/api/sources/snowflake"
-                ]
-              },
-              {
-                "group": "Destinations",
-                "pages": [
-                  "platform/api/destinations/overview",
-                  "platform/api/destinations/astradb",
-                  "platform/api/destinations/azure-ai-search",
-                  "platform/api/destinations/couchbase",
-                  "platform/api/destinations/databricks-volumes",
-                  "platform/api/destinations/delta-table",
-                  "platform/api/destinations/databricks-delta-table",
-                  "platform/api/destinations/elasticsearch",
-                  "platform/api/destinations/google-cloud",
-                  "platform/api/destinations/kafka",
-                  "platform/api/destinations/milvus",
-                  "platform/api/destinations/mongodb",
-                  "platform/api/destinations/motherduck",
-                  "platform/api/destinations/neo4j",
-                  "platform/api/destinations/onedrive",
-                  "platform/api/destinations/pinecone",
-                  "platform/api/destinations/postgresql",
-                  "platform/api/destinations/qdrant",
-                  "platform/api/destinations/redis",
-                  "platform/api/destinations/s3",
-                  "platform/api/destinations/snowflake",
-                  "platform/api/destinations/weaviate"
-                ]
-              },
-              "platform/api/workflows",
-              "platform/api/jobs"
-            ]
-          },
           "platform/billing"
         ]
       },
@@ -613,6 +535,86 @@
           },
           "platform/embedding"
         ]
+      },
+      {
+        "group": "Unstructured Platform API",
+        "pages": [
+          "platform-api/overview",
+          "platform-api/supported-file-types"
+          ]
+      },
+      {
+        "group": "Workflow API",
+        "pages": [
+          "platform-api/api/overview",
+          {
+            "group": "Sources",
+            "pages": [
+              "platform-api/api/sources/overview",
+              "platform-api/api/sources/azure-blob-storage",
+              "platform-api/api/sources/confluence",
+              "platform-api/api/sources/couchbase",
+              "platform-api/api/sources/databricks-volumes",
+              "platform-api/api/sources/dropbox",
+              "platform-api/api/sources/elasticsearch",
+              "platform-api/api/sources/google-cloud",
+              "platform-api/api/sources/google-drive",
+              "platform-api/api/sources/kafka",
+              "platform-api/api/sources/mongodb",
+              "platform-api/api/sources/onedrive",
+              "platform-api/api/sources/outlook",
+              "platform-api/api/sources/postgresql",
+              "platform-api/api/sources/s3",
+              "platform-api/api/sources/salesforce",
+              "platform-api/api/sources/sharepoint",
+              "platform-api/api/sources/snowflake"
+            ]
+          },
+          {
+            "group": "Destinations",
+            "pages": [
+              "platform-api/api/destinations/overview",
+              "platform-api/api/destinations/astradb",
+              "platform-api/api/destinations/azure-ai-search",
+              "platform-api/api/destinations/couchbase",
+              "platform-api/api/destinations/databricks-volumes",
+              "platform-api/api/destinations/delta-table",
+              "platform-api/api/destinations/databricks-delta-table",
+              "platform-api/api/destinations/elasticsearch",
+              "platform-api/api/destinations/google-cloud",
+              "platform-api/api/destinations/kafka",
+              "platform-api/api/destinations/milvus",
+              "platform-api/api/destinations/mongodb",
+              "platform-api/api/destinations/motherduck",
+              "platform-api/api/destinations/neo4j",
+              "platform-api/api/destinations/onedrive",
+              "platform-api/api/destinations/pinecone",
+              "platform-api/api/destinations/postgresql",
+              "platform-api/api/destinations/qdrant",
+              "platform-api/api/destinations/redis",
+              "platform-api/api/destinations/s3",
+              "platform-api/api/destinations/snowflake",
+              "platform-api/api/destinations/weaviate"
+            ]
+          },
+          "platform-api/api/workflows",
+          "platform-api/api/jobs"
+        ]
+      },
+      {
+        "group": "Partition API",
+        "pages": [
+          "platform-api/partition-api/overview"
+        ]
+      },
+      {
+        "group": "Legacy APIs",
+        "pages": [
+          "platform-api/legacy-api/overview",
+          "platform-api/legacy-api/free-api",
+          "platform-api/legacy-api/aws",
+          "platform-api/legacy-api/azure"
+        ]          
       },
       {
         "group": "Notebooks",
@@ -648,12 +650,40 @@
         "pages": [
           "faq/faq"
         ]
+      }
+    ],
+    "redirects": [
+      {
+        "source": "api-reference/api-services/aws",
+        "destination": "platform-api/legacy-api/aws"
       },
       {
-        "group": "Glossary",
-        "pages": [
-          "glossary/glossary"
-        ]
+        "source": "api-reference/api-services/azure",
+        "destination": "platform-api/legacy-api/azure"
+      },
+      {
+        "source": "api-reference/api-services/free-api",
+        "destination": "platform-api/legacy-api/free-api"
+      },
+      {
+        "source": "api-reference/api-services/overview",
+        "destination": "platform-api/overview"
+      },
+      {
+        "source": "/api-reference/api-services/saas-api-development-guide",
+        "destination": "platform-api/overview"
+      },
+      {
+        "source": "api-reference/api-services/supported-file-types",
+        "destination": "platform-api/supported-file-types"
+      },
+      {
+        "source": "glossary/glossary",
+        "destination": "welcome"
+      },
+      {
+        "source": "platform/api/slug*",
+        "destination": "platform-api/api/slug*"
       }
     ],
     "analytics": {
