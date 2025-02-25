@@ -1,0 +1,11 @@
+Unstructured recommends that you choose the **Auto** partitioning strategy in most cases. With **Auto**, Unstructured does all 
+the heavy lifting, optimizing at runtime for the highest quality at the lowest cost page-by-page.
+
+You should consider the following additional strategies only if you are absolutely sure that your documents are of the same 
+type. Each of the following strategies are best suited for specific situations. Choosing one of these 
+strategies other than **Auto** for sets of documents of different types could produce undesirable results, 
+including reduction in transformation quality.
+
+- **VLM**: For the highest-quality transformation of these file types: `.bmp`, `.gif`, `.heic`, `.jpeg`, `.jpg`, `.pdf`, `.png`, `.tiff`, and `.webp`.
+- **High Res**: For all other [supported file types](/platform/supported-file-types), and for the generation of bounding box coordinates.
+- **Fast**: For text-only documents.
