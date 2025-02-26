@@ -25,7 +25,7 @@ Install the Pinecone connector dependencies:
 pip install "unstructured-ingest[pinecone]"
 ```
 
-Additional dependencies may be required based on your environment. [Learn more](https://docs.unstructured.io/api-reference/ingest/ingest-dependencies).
+Additional dependencies may be required based on your environment. [Learn more](https://docs.unstructured.io/ingestion/ingest-dependencies).
 
 ---
 
@@ -126,7 +126,7 @@ if __name__ == "__main__":
 - Ensure the Pinecone schema aligns with the data structure produced by Unstructured for smooth ingestion.  
 - This example uses the local source connector; you can replace it with other supported connectors as needed.
 
-**Reference:** [Pinecone Destination Connector Documentation](https://docs.unstructured.io/api-reference/ingest/destination-connector/pinecone)
+**Reference:** [Pinecone Destination Connector Documentation](https://docs.unstructured.io/ingestion/destination-connector/pinecone)
 
 5. S3 
 
@@ -171,7 +171,7 @@ Install the S3 connector dependencies:
 pip install "unstructured-ingest[s3]"
 ```
 
-Additional dependencies may be required based on your environment. [Learn more](https://docs.unstructured.io/api-reference/ingest/ingest-dependencies).
+Additional dependencies may be required based on your environment. [Learn more](https://docs.unstructured.io/ingestion/ingest-dependencies).
 
 ---
 
@@ -272,7 +272,7 @@ if __name__ == "__main__":
 - This example uses the local source connector; other connectors can be substituted.  
 - Use `--anonymous` for anonymous bucket access where applicable.  
 
-**Reference:** [S3 Destination Connector Documentation](https://docs.unstructured.io/api-reference/ingest/destination-connector/s3)
+**Reference:** [S3 Destination Connector Documentation](https://docs.unstructured.io/ingestion/destination-connector/s3)
 
 # Unstructured Ingest Best Practices
 
@@ -315,7 +315,7 @@ Follow these steps to decide on the appropriate partitioning strategy:
 #### Step 2: Object Detection Model Selection  
 
 1. **Do you have a specific high-resolution model in mind?**  
-   - **Yes:** Specify the model using `--hi-res-model-name` (CLI) or `hi_res_model_name` (Python). [Learn about available models](https://docs.unstructured.io/api-reference/how-to/choose-hi-res-model).  
+   - **Yes:** Specify the model using `--hi-res-model-name` (CLI) or `hi_res_model_name` (Python). [Learn about available models](https://docs.unstructured.io/platform-api/partition-api/choose-hi-res-model).  
    - **No:** Use `auto` for default behavior.  
 
 ---
@@ -339,7 +339,7 @@ When `auto` is used, the system makes the following decisions:
 ### Code Example  
 
 **Partition Strategy for PDF:**  
-Refer to [Changing partition strategy for a PDF](https://docs.unstructured.io/api-reference/api-services/examples#changing-partition-strategy-for-a-pdf).
+Refer to [Changing partition strategy for a PDF](https://docs.unstructured.io/platform-api/partition-api/examples#changing-partition-strategy-for-a-pdf).
 
 ---
 
@@ -349,7 +349,7 @@ Refer to [Changing partition strategy for a PDF](https://docs.unstructured.io/ap
 - Use `fast` to optimize cost and speed when precision is not critical.  
 - Rely on `auto` for dynamic, file-specific strategy selection.  
 
-**Reference:** [Choose a Partitioning Strategy Documentation](https://docs.unstructured.io/api-reference/how-to/choose-partitioning-strategy)  
+**Reference:** [Choose a Partitioning Strategy Documentation](https://docs.unstructured.io/platform-api/partition-api/choose-partitioning-strategy)  
 
 2. Choosing a hi-res model
 
@@ -376,7 +376,7 @@ Follow this step-by-step process to choose a suitable model:
 
 - **Are you processing images or PDFs with embedded images or tables?**  
   - **Yes:** Proceed to Step 2.  
-  - **No:** High-resolution object detection models are unnecessary. Set the `--strategy` option (CLI) or `strategy` parameter (Python/JavaScript/TypeScript) to `fast`. Refer to [Choose a Partitioning Strategy](https://docs.unstructured.io/api-reference/how-to/choose-partitioning-strategy).
+  - **No:** High-resolution object detection models are unnecessary. Set the `--strategy` option (CLI) or `strategy` parameter (Python/JavaScript/TypeScript) to `fast`. Refer to [Choose a Partitioning Strategy](https://docs.unstructured.io/platform-api/partition-api/choose-partitioning-strategy).
 
 #### Step 2: Model Selection  
 
@@ -408,7 +408,7 @@ Choose one of the following models based on your requirements:
 
 ### Code Examples  
 
-Refer to [Changing Partition Strategy for a PDF](https://docs.unstructured.io/api-reference/api-services/examples#changing-partition-strategy-for-a-pdf) for detailed implementation.
+Refer to [Changing Partition Strategy for a PDF](https://docs.unstructured.io/platform-api/partition-api/examples#changing-partition-strategy-for-a-pdf) for detailed implementation.
 
 ---
 
@@ -418,7 +418,7 @@ Refer to [Changing Partition Strategy for a PDF](https://docs.unstructured.io/ap
 - Opt for `auto` strategy if you prefer Unstructured to decide the model dynamically.  
 - Retain `yolox` or `detectron2_onnx` only for legacy projects requiring backward compatibility.
 
-**Reference:** [Choose a Hi-Res Model Documentation](https://docs.unstructured.io/api-reference/how-to/choose-hi-res-model)  
+**Reference:** [Choose a Hi-Res Model Documentation](https://docs.unstructured.io/platform-api/partition-api/choose-hi-res-model)  
 
 3. Chunking Strategies
 
@@ -481,7 +481,7 @@ Partitioning strategies in Unstructured are used to preprocess documents like PD
 
 ---
 
-**Learn More**: [Document Elements and Metadata](https://docs.unstructured.io/api-reference/api-services/document-elements)
+**Learn More**: [Document Elements and Metadata](https://docs.unstructured.io/latform-api/partition-api/document-elements)
 
 5. Tables as HTML
 
@@ -529,10 +529,10 @@ def get_tables_as_html(input_json, output_dir):
 ---
 
 #### **See Also**
-- [Extract images and tables](https://docs.unstructured.io/api-reference/how-to/extract-image-block-types)
+- [Extract images and tables](https://docs.unstructured.io/platform-api/partition-api/extract-image-block-types)
 - [Table Extraction from PDF](https://docs.unstructured.io/examplecode/codesamples/apioss/table-extraction-from-pdf)
 
-For more, visit the [documentation](https://docs.unstructured.io/api-reference/how-to/text-as-html).
+For more, visit the [documentation](https://docs.unstructured.io/platform-api/partition-api/text-as-html).
 
 # Integration guidelines
 

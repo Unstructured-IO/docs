@@ -16,18 +16,18 @@ do the following:
    - **by_page** - Use the `basic` strategy and also preserve page boundaries.
    - **by_similarity** - Use the `sentence-transformers/multi-qa-mpnet-base-dot-v1` embedding model to identify topically similar sequential elements and combine them into chunks. This strategy is availably only when calling Unstructured API services. 
 
-   To learn more, see [Chunking strategies](/api-reference/api-services/chunking) and [Chunking configuration](/api-reference/ingest/ingest-configuration/chunking-configuration).
+   To learn more, see [Chunking strategies](/platform-api/partition-api/chunking) and [Chunking configuration](/ingestion/ingest-configuration/chunking-configuration).
 
 5. For any chunking strategy other than **None**:
 
    - Enter your chunk size in the **Chunk size (characters)** box, or leave the default of **1000** characters. 
    - If you need to apply overlapping to the chunks, enter the chunk overlap size in the **Chunk overlap (characters)** box, or leave default of **20** characters.
 
-   To learn more, see [Chunking configuration](/api-reference/ingest/ingest-configuration/chunking-configuration).
+   To learn more, see [Chunking configuration](/ingestion/ingest-configuration/chunking-configuration).
 
 6. To generate vector embeddings, select the provider in the **Embedding provider** drop-down list.
 
-   To learn more, see [Embedding configuraton](/api-reference/ingest/ingest-configuration/embedding-configuration).
+   To learn more, see [Embedding configuraton](/ingestion/ingest-configuration/embedding-configuration).
 
 7. Click **Generate code**. 
 8. Copy the example code from the **Generated Code** pane into your code project. 
