@@ -2,21 +2,26 @@
 title: Overview
 ---
 
-You can send multiple files in batches to be ingested by Unstructured API services for processing. 
+<Note>
+    Unstructured recommends that you use the [Unstructured Platform API](/platform-api/overview) instead of the 
+    Unstructured Ingest CLI or the Unstructured Ingest Python library.
+    
+    The Unstructured Platform API provides a full range of partitioning, chunking, embedding, and enrichment options for your files and data. 
+    It also uses the latest and highest-performing models on the market today, and it has built-in logic to deliver the highest quality results 
+    at the lowest cost. 
+    
+    The Unstructured Ingest CLI and the Unstructured Ingest Python library are not being actively updated to include these and other Unstructured Platform API features.
+</Note>
+
+You can send multiple files in batches to be ingested by Unstructured for processing. 
 _Ingestion_ is the term that Unstructured uses to refer to the set of activities that happens when files are input for processing. [Learn more](/ingestion/overview).
 
-You can send batches to Unstructured API services by using the following tools:
+You can send batches to Unstructured by using the following tools:
 
 - The [Unstructured Ingest CLI](/ingestion/ingest-cli)
 - The [Unstructured Ingest Python](/ingestion/python-ingest) library
 
-<Note>
-    The Unstructured Ingest CLI and Unstructured Ingest Python library do not work with the Unstructured Platform API.
-
-    For information about the Unstructured Platform API, see the [Unstructured Platform API Overview](/platform/api/overview).
-</Note>
-
-The following 3-minute video shows how to use the Unstructured Ingest Python library to send multiple PDFs from a local directory in batches to be ingested by Unstructured API services for processing:
+The following 3-minute video shows how to use the Unstructured Ingest Python library to send multiple PDFs from a local directory in batches to be ingested by Unstructured for processing:
 
 <iframe
   width="560"
@@ -83,13 +88,13 @@ An Unstructured ingest pipeline contains the following logical steps:
         After downloading, and uncompressing if enabled, you might not want to partition everything that was downloaded, and uncompressed if enabled. The filter that was defined at the beginning is repeated here again.
     </Step>
     <Step title="Partition"> 
-        Generates the structured enriched content from the local files that have been downloaded, uncompressed if enabled, and filtered. Both local-based partitioning and Unstructured API services-based partitioning is supported, with API services-based partitioning set to run asynchronously and local-based partitioning set to run through multiprocessing.
+        Generates the structured enriched content from the local files that have been downloaded, uncompressed if enabled, and filtered. Both local-based partitioning and Unstructured-based partitioning is supported, with API services-based partitioning set to run asynchronously and local-based partitioning set to run through multiprocessing.
 
         - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `PartitionerConfig` class.
         - For the Unstructured Ingest Python library's v1 calling pattern, you can control this behavior through the `PartitionConfig` class.
     </Step>
     <Step title="Chunk">
-        Optionally, chunks the partitioned content. Chunking can also be run locally or through Unstructured API services, with asynchronous or multiprocessing behaviors set in the same approach as the partitioner.
+        Optionally, chunks the partitioned content. Chunking can also be run locally or through Unstructured, with asynchronous or multiprocessing behaviors set in the same approach as the partitioner.
     
         - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `ChunkerConfig` class.
         - For the Unstructured Ingest Python library's v1 calling pattern, you can control this behavior through the `ChunkingConfig` class.
@@ -121,10 +126,10 @@ import GeneratePythonCodeExamples from '/snippets/ingestion/code-generator.mdx';
 ## Learn more
 
 - [Ingest configuration](/ingestion/ingest-configuration/overview) settings enable you to control how batches are sent and processed.
-- [Source connectors](/ingestion/source-connectors/overview) enable you to send batches from local or remote locations to be ingested by Unstructured API services for processing.
-- [Destination connectors](/ingestion/destination-connector/overview) enable Unstructured API services to send the processed data to local or remote locations.
+- [Source connectors](/ingestion/source-connectors/overview) enable you to send batches from local or remote locations to be ingested by Unstructured for processing.
+- [Destination connectors](/ingestion/destination-connector/overview) enable Unstructured to send the processed data to local or remote locations.
 
 ## See also
 
-- The [Unstructured Platform](/platform/overview) enables you to send batches to Unstructured API services from remote locations, and to have Unstructured API services send the processed data to remote locations, all without using code or a CLI.
+- The [Unstructured Platform UI](/platform/overview) enables you to send batches to Unstructured from remote locations, and to have Unstructured send the processed data to remote locations, all without using code or a CLI.
 

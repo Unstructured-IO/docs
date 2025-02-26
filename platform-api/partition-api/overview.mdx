@@ -2,18 +2,15 @@
 title: Overview
 ---
 
-<Note>
-    The Unstructured Platform Partition API is separate from the Unstructured Platform Workflow API. 
-    
-    For information about the 
-    Unstructured Platform Workflow API, see the [Unstructured Platform Workflow API Overview](/platform-api/api/overview).
-</Note>
-
-This page describes how to get started with the Unstructured Serverless API. Learn how to obtain an API key to use with the Unstructured Serverless API, and get started in no time.
+The Unstructured Platform Partition Endpoint, part of the [Unstructured Platform API](/platform-api/overview), is intended for rapid prototyping of Unstructured's 
+various partitioning strategies, with limited support for chunking. It is designed to work only with processing of local files, one file 
+at a time. Use the [Unstructured Platform Workflow Endpoint](/platform-api/api/overview) for production-level scenarios, file processing in 
+batches, files and data in remote locations, generating embeddings, applying post-transform enrichments, using the latest and 
+highest-performing models, and for the highest quality results at the lowest cost.
 
 ## Get started
 
-To call the Unstructured Serverless API, you need an Unstructured account and an Unstructured API key:
+To call the Unstructured Platform Partition Endpoint, you need an Unstructured account and an Unstructured API key:
 
 <Steps>
     <Step title="Sign up">
@@ -91,7 +88,7 @@ If you signed up for a pay-per-page plan, you can enjoy a free 14-day trial with
 </Note>
 
 At the end of the 14-day free trial, or if you need to go past the trial's page processing limits during the 14-day free trial, you must set up your billing information to keep using
-the Unstructured Serverless API:
+the Unstructured Platform Partition API:
 
 ![Unstructured account settings](/img/platform/AccountSettings.png)
 
@@ -115,76 +112,13 @@ import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx'
 
 ## Quickstart
 
-These examples use your local machine. They send source (input) files from your local machine to the Unstructured Serverless API which delivers the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
+These examples use your local machine. They send a source (input) file from your local machine to the Unstructured Platform Partition Endpoint which then delivers the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
 
 import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serverless-api.mdx';
 
 <NoURLForServerlessAPI/>
 
-### Unstructured Ingest CLI
 
-To work with the Unstructured Serverless API by using the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli), you will need to:
-
-- Install Python, and then install the CLI package:
-
-  ```bash
-  pip install unstructured-ingest
-  ```
-
-- Set the following environment variable:
-
-  - Set `UNSTRUCTURED_API_KEY` to your API key.
-  
-  [Get your API key](#get-started).
-
-- Have some compatible files on your local machine to be processed. [See the list of supported file types](/platform-api/supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub. If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
-
-Now, use the CLI to call the API, replacing:
-
-- `<path/to/input>` with the source (input) path to the directory on your local machine that contains the compatible files for Unstructured to process on its hosted compute resources.
-- `<path/to/output>` with the destination (output) path to the directory on your local machine that will contain the processed data that Unstructured returns from its hosted compute resources.
-
-```bash CLI
-unstructured-ingest \
-  local \
-    --input-path <path/to/input> \
-    --output-dir <path/to/output> \
-    --partition-by-api \
-    --api-key $UNSTRUCTURED_API_KEY \
-    --strategy hi_res \
-    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
-```
-
-After the command successfully runs, see the results in the specified output path on your local machine.
-
-### Unstructured Ingest Python library
-
-To work with the Unstructured Serverless API by using the [Unstructured Python library](/ingestion/overview#unstructured-ingest-python-library), you will need to:
-
-- Install Python, and then install the CLI package:
-
-  ```bash
-  pip install unstructured-ingest
-  ```
-
-- Set the following environment variables:
-
-  - Set `UNSTRUCTURED_API_KEY` to your API key.
-  
-  [Get your API key](#get-started).
-
-- Have some compatible files on your local machine to be processed. [See the list of supported file types](/platform-api/supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub. If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
-
-Now, use the CLI to call the API, replacing:
-
-- `<path/to/input>` with the source (input) path to the directory on your local machine that contains the compatible files for Unstructured to process on its hosted compute resources.
-- `<path/to/output>` with the destination (output) path to the directory on your local machine that will contain the processed data that Unstructured returns from its hosted compute resources.
-
-import LocalToLocalPythonIngestLibrary from '/snippets/ingestion/local-to-local.v2.py.mdx';
-
-<LocalToLocalPythonIngestLibrary />
-
-After the command successfully runs, see the results in the specified output path on your local machine.
 
 ## Telemetry
 

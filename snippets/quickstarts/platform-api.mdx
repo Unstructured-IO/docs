@@ -2,9 +2,11 @@ This quickstart uses the Unstructured Python SDK to get all of your data RAG-rea
 
 The requirements are as follows.
 
-- A compatible source (input) location that contains your data for Unstructured to process. [See the list of supported source types](/platform/connectors#sources).
+- A compatible source (input) location that contains your data for Unstructured to process. [See the list of supported source types](/platform/connectors#sources). 
+  This quickstart uses an Amazon S3 bucket as the source location.
 - For document-based source locations, compatible files in that location. [See the list of supported file types](/platform/supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
-- A compatible destination (output) location for Unstructured to put the processed data. [See the list of supported destination types](/platform/connectors#destinations).
+- A compatible destination (output) location for Unstructured to put the processed data. [See the list of supported destination types](/platform/connectors#destinations). 
+  For this quickstart's destination location, a different folder in the same Amazon S3 bucket as the source location is used.
 
 <Steps>
     <Step title="Sign up">
@@ -56,53 +58,34 @@ The requirements are as follows.
             For enterprise sign-in guidance, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
         </Tip>
     </Step>
-    <Step title="Get and set your API key">
+    <Step title="Get your API key">
         ![Unstructured account settings](/img/platform/AccountSettings.png)
 
-        ![Unstructured API key URL](/img/platform/APIKeyURL.png)
+        ![Unstructured API key](/img/platform/APIKeyOnly.png)
+        
         1. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
-        2. Click the **API Keys** tab, if it is not already selected.
-        3. To get your API key, click the copy icon in the **Actions** column for your API key, and then click **Key Only**. Store your copied API key in a secure location. Do not share it with others.
-        4. From your Python virtual environment, Set an environment variable named `UNSTRUCTURED_API_KEY` to the value of your Unstructured API key.
+        2. On the **API Keys** tab, click **Generate New Key**.
+        3. Enter some descriptive name for the API key, and then click **Save**.
+        4. Click the **Copy** icon for your new API key. The API key's value is copied to your system's clipboard.
     </Step>
-    <Step title="Install the Unstructured Python SDK">
-        Run the following command from your Python virtual environment:
-        ```bash
-        pip install unstructured-client
-        ```
-        <AdditionalIngestDependencies />
+    <Step title="Create and set up the S3 bucket">
+        This quickstart uses an Amazon S3 bucket as both the source location and the destination location. 
+        (You can use other source and destination types that are supported by Unstructured. However, they will not work with this particular quickstart.)
+        
+        Inside of the S3 bucket, a folder named `input` represents the 
+        source location. This is where your files to be processed will be stored. 
+        The S3 URI to the source location will be `s3://<your-bucket-name>/input`.
+        
+        Inside of the same S3 bucket, a folder inside named `output` represents the destination location. This 
+        is where Unstructured will put the processed data. 
+        The S3 URI to the destination location will be `s3://<your-bucket-name>/output`.
+
+        Learn how to [create an S3 bucket and set it up for Unstructured](/platform-api/api/sources/s3). (Do not run the Python SDK code or REST commands at the end of those setup instructions.)
     </Step>
-    <Step title="Create the source connector">
-        Add the following code to an empty `.py` file to create the source connector. In this code, replace the following placeholders:
-
-        ```python Python
-        # TODO: Code goes here.
-        ```
-    </Step>
-    <Step title="Create the destination connector">
-        Add the following code to create the destination connector. In this code, replace the following placeholders:
-
-        ```python Python
-        # TODO: Code goes here.
-        ```
-    </Step>
-    <Step title="Create the workflow">
-        Add the following code to create the workflow that uses the source and destination connectors. In this code, replace the following placeholders:
-
-        ```python Python
-        # TODO: Code goes here.
-        ```
-    </Step>
-    <Step title="Run the workflow">
-        Add the following code to create the workflow that uses the source and destination connectors. In this code, replace the following placeholders:
-
-        ```python Python
-        # TODO: Code goes here.
-        ```
-
-        After you have added this code, run the `.py` file.
+    <Step title="Run the quickstart notebook">
+       After your S3 bucket is created and set up, follow the instructions in this [quickstart notebook]().
     </Step>
     <Step title="View the processed data">
-        After ..., go to your destination location to view the processed data.
+        After you run the quickstart notebook, go to your destination location to view the processed data.
     </Step>
 </Steps>

@@ -3,9 +3,6 @@ title: Process an individual file by making a direct POST request
 sidebarTitle: POST request
 ---
 
-Whether you're using the free Unstructured API, the Unstructured Serverless API, Unstructured API on Azure/AWS, or your local
-deployment of Unstructured API, you can work with the API by sending single-file POST requests to it. 
-
 import UseIngestOrPlatformInstead from '/snippets/general-shared-text/use-ingest-or-platform-instead.mdx';
 
 <UseIngestOrPlatformInstead />
@@ -30,7 +27,7 @@ Let's start with a simple example in which you send a PDF file (`*.pdf`) to part
 ```
 
 In the example above we're representing the API endpoint with the environment variable `UNSTRUCTURED_API_URL`. Note, however, that you also need to authenticate yourself with
-your individual API Key, represented by the environment variable `UNSTRUCTURED_API_KEY`. Learn how to obtain an API URL and API key in the [Unstructured Platform Partition API guide](/platform-api/partition-api/overview).
+your individual API Key, represented by the environment variable `UNSTRUCTURED_API_KEY`. Learn how to obtain an API URL and API key in the [Unstructured Platform Partition Endpoint guide](/platform-api/partition-api/overview).
 
 ## Parameters & examples
 
@@ -62,7 +59,7 @@ Unstructured offers a [Postman collection](https://learning.postman.com/docs/col
    ![Collections icon in the sidebar](/img/api/post/collection.png)
 
 6. Expand **Unstructured POST**.
-7. Click **(Platform Partition API) Basic Request**.
+7. Click **(Platform Partition Endpoint) Basic Request**.
 8. On the **Headers** tab, next to `unstructured-api-key`, enter your Unstructured API key in the **Value** column.
 
    ![Headers tab in the request area](/img/api/post/headers.png) 

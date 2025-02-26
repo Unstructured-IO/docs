@@ -3,7 +3,7 @@ title: Process files in batches by using the Unstructured Ingest CLI
 sidebarTitle: Ingest CLI
 ---
 
-The Unstructured Ingest CLI enables you to use command-line scripts to send files in batches to Unstructured API services for processing, and to tell Unstructured API services where to deliver the processed data. [Learn more](/ingestion/overview#unstructured-ingest-cli).
+The Unstructured Ingest CLI enables you to use command-line scripts to send files in batches to Unstructured for processing, and to tell Unstructured where to deliver the processed data. [Learn more](/ingestion/overview#unstructured-ingest-cli).
 
 <Note>
     The Unstructured Ingest CLI does not work with the Unstructured Platform API.
@@ -35,7 +35,7 @@ To call the Unstructured Ingest CLI, follow this calling pattern, where:
 
 - `<source>` is the command name for one of the available [source](/ingestion/source-connectors/overview) (input) connectors, such as `local` for a local source location, `azure` for an Azure Storage account source, `s3` for an Amazon S3 bucket source, and so on.
 - `<destination>` is the command name for one of the available [destination](/ingestion/destination-connector/overview) (output) connectors, such as `local` for a local destination, `azure` for an Azure Storage account destination, `s3` for an Amazon S3 bucket destination, and so on.
-- `<setting>` is one or more command-line options for specifying how and where Unstructured API services will ingest the files from the `<source>`, or how and where to deliver the processed data to the `<destination>`. 
+- `<setting>` is one or more command-line options for specifying how and where Unstructured will ingest the files from the `<source>`, or how and where to deliver the processed data to the `<destination>`. 
 
 ```bash CLI
 #!/usr/bin/env bash

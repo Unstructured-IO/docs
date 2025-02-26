@@ -3,6 +3,10 @@ title: Unstructured
 sidebarTitle: Overview
 ---
 
+Unstructured provides a platform and tools to ingest and process unstructured documents for Retrieval Augmented Generation (RAG) and model fine-tuning.
+
+This 60-second video describes more about what Unstructured does and its benefits:
+
 <iframe
   width="560"
   height="315"
@@ -12,8 +16,6 @@ sidebarTitle: Overview
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowfullscreen
 ></iframe>
-
-Unstructured provides a platform and tools to ingest and process unstructured documents for Retrieval Augmented Generation (RAG) and model fine-tuning.
 
 This 40-second video demonstrates a simple use case that Unstructured helps solve:
 
@@ -27,42 +29,55 @@ This 40-second video demonstrates a simple use case that Unstructured helps solv
   allowfullscreen
 ></iframe>
 
-### Product offerings
+Unstructured offers the Unstructured Platform user interface (UI) and the Unstructured Platform API. Click inside one of the following cards to learn more.
 
-<Card title="Unstructured Platform user interface (UI)" icon="computer" href="/platform/overview">
-  No-code UI. Production-ready. Pay as you go. [Learn more](/platform/overview).<br/><br/>
+## <Icon icon="computer" />    Unstructured Platform user interface (UI) 
 
-  ![Partial view of the Unstructured Platform](/img/platform/Start-Screen-Partial.png)<br/><br/>
+No-code UI. Production-ready. Pay as you go. [Learn more](/platform/overview).
 
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/IVKcQDZa9Zc"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe><br/>
+Here is a screenshot of the Unstructured Platform UI **Start** page:
 
-  <Tip>To start using the Unstructured Platform UI right away, skip ahead to the [quickstart](#quickstart-unstructured-platform-ui).</Tip>
-</Card>
+![Partial view of the Unstructured Platform](/img/platform/Start-Screen-Partial.png)
+
+This 90-second video provides a brief overview of the Unstructured Platform UI:
+
+<iframe
+width="560"
+height="315"
+src="https://www.youtube.com/embed/IVKcQDZa9Zc"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
+
+<Tip>To start using the Unstructured Platform UI right away, skip ahead to the [quickstart](#quickstart-unstructured-platform-ui).</Tip>
+
+## <Icon icon="square-terminal" />    Unstructured Platform API 
+
+Use scripts or code. Production-ready. Pay as you go. [Learn more](/platform-api/overview).
+
+The Unstructured Platform API consists of two parts:
+
+- The [Unstructured Platform Workflow Endpoint](/platform-api/api/overview) enables a full range of partitioning, chunking, embedding, and 
+  enrichment options for your files and data. It is designed to batch-process files and data in remote locations; send processed results to 
+  various storage, databases, and vector stores; and use the latest and highest-performing models on the market today. It has built-in logic 
+  to deliver the highest quality results at the lowest cost. [Learn more](/platform-api/api/overview).
+- The [Unstructured Platform Partition Endpoint](platform-api/partition-api/overview) is intended for rapid prototyping of Unstructured's 
+  various partitioning strategies, with limited support for chunking. It is designed to work only with processing of local files, one file 
+  at a time. Use the [Unstructured Platform Workflow Endpoint](/platform-api/api/overview) for production-level scenarios, file processing in 
+  batches, files and data in remote locations, generating embeddings, applying post-transform enrichments, using the latest and 
+  highest-performing models, and for the highest quality results at the lowest cost. [Learn more](/platform-api/partition-api/overview).
+
+Here is a screenshot of some Python code that calls the Unstructured Platform Workflow Endpoint:
+
+![Python code that calls the Unstructured Platform Workflow Endpoint](/img/platform/Python-Workflow-Code-Partial.png)
+
+<Tip>To start using the Unstructured Platform Workflow Endpoint right away, skip ahead to the [quickstart](#quickstart-unstructured-platform-endpoint).</Tip>
 
 ---
 
-<Card title="Unstructured Platform API" icon="square-terminal" href="/platform-api/overview">
-  Use scripts or code. Production-ready. Pay as you go. [Learn more](/platform-api/overview).<br/><br/>
-
-  The Unstructured Platform API consists of two parts:<br/><br/>
-
-  <Icon icon="dash" />    The [Unstructured Platform Workflow API](/platform-api/api/overview) ... [Learn more](/platform-api/api/overview).<br/>
-  <Icon icon="dash" />    The [Unstructured Platform Partition API](platform-api/partition-api/overview) ... [Learn more](/platform-api/partition-api/overview).
-
-  <Tip>To start using the Unstructured Platform Workflow API right away, skip ahead to the [quickstart](#quickstart-unstructured-platform-api).</Tip>
-</Card>
-
----
-
-### <Icon icon="files" />   Supported file types 
+## <Icon icon="files" />   Supported file types 
 
 import SupportedFileTypes from '/snippets/general-shared-text/supported-file-types.mdx';
 
@@ -70,7 +85,7 @@ import SupportedFileTypes from '/snippets/general-shared-text/supported-file-typ
 
 ---
 
-### <Icon icon="computer" />   Quickstart: Unstructured Platform UI
+## <Icon icon="computer" />   Quickstart: Unstructured Platform UI
 
 import SharedPlatformUI from '/snippets/quickstarts/platform.mdx';
 
@@ -83,7 +98,7 @@ import SharedPlatformUI from '/snippets/quickstarts/platform.mdx';
 import LocalToLocalPythonIngestLibrary from '/snippets/ingestion/local-to-local.v2.py.mdx';
 import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
 
-### <Icon icon="square-terminal" />   Quickstart: Unstructured Platform Workflow API
+## <Icon icon="square-terminal" />   Quickstart: Unstructured Platform Workflow Endpoint
 
 import SharedPlatformAPI from '/snippets/quickstarts/platform-api.mdx';
 
