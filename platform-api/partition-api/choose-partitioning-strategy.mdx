@@ -1,0 +1,47 @@
+---
+title: Choose a partitioning strategy
+---
+
+## Task
+
+You want to use the fastest, highest-precision, yet most cost-effective [partitioning strategy](/platform-api/partition-api/partitioning) overall, but you are not sure which one to specify for your particular files.
+
+## Approach
+
+The `--strategy` command option (CLI) or `strategy` parameter (Python/JavaScript/TypeScript) specifies the partitioning strategy to use.
+
+Use the following decision-maker to help you determine what to set `--strategy` or `strategy` to.
+
+<Steps>
+    <Step title="How many of the files to be processed are image files, or PDF files with embedded images or tables in them?">
+        - If **All**, you can increase precision for processing images and tables by specifying `hi_res` for `--strategy` or `strategy`. For additional benefits, skip ahead to **Step 2**.
+        - If **Some**, you can increase precision for processing images and tables by specifying `auto` for `--strategy` or `strategy`. This will leave the decision up to Unstructured on a file-by-file basis about the best partitioning strategy to use. You have completed this decision-maker. See also [Auto partitioning strategy logic](#auto-partitioning-strategy-logic).
+        - If **None**, you can increase performance and decrease cost by specifying `fast` for `--strategy` or `strategy`. You have completed this decision-maker.
+
+        <Note>For OCR, you can also set `--strategy` or `strategy` to `ocr_only`. Unstructured will use the Tesseract OCR agent as applicable. You cannot specify any other OCR agent to be used instead.</Note> 
+    </Step>
+    <Step title="For object detection, do you know which particular high-resolution object detection model you want to use?">
+        - If **No**, then specify `auto` for `--strategy` or `strategy`. This will decrease performance compared to answering **Yes**. You have completed this decision-maker. See also [Auto partitioning strategy logic](#auto-partitioning-strategy-logic).
+        - If **Yes**, then set `--hi-res-model-name` (CLI), `hi_res_model_name` (Python), or `hiResModelName`(JavaScript/TypeScript) to the available model's name. [Learn about the available models](/platform-api/partition-api/choose-hi-res-model).
+    </Step>
+</Steps>
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/SwJVB_kPqTc"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
+
+## Code example
+
+See [Changing partition strategy for a PDF](/platform-api/partition-api/examples#changing-partition-strategy-for-a-pdf).
+
+## Auto partitioning strategy logic
+
+Setting `--strategy` or `strategy` to `auto` leaves the decision up to Unstructured on a page-by-page basis about which partitioning strategy to use.
+
+If `--strategy` or `strategy` is not specified, the `auto` strategy is used by default.

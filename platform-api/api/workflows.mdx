@@ -1,0 +1,687 @@
+---
+title: Workflows
+---
+
+To use the [Unstructured Platform Workflow Endpoint](/platform/api/overview) to manage workflows, do the following:
+
+- To get a list of available workflows, use the `UnstructuredClient` object's `workflows.list_workflows` function (for the Python SDK) or 
+  the `GET` method to call the `/workflows` endpoint (for `curl` or Postman). [Learn more](/platform/api/overview#list-workflows).
+- To get information about a workflow, use the `UnstructuredClient` object's `workflows.get_workflow` function (for the Python SDK) or 
+  the `GET` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman)use the `GET` method to call the `/workflows/<workflow-id>` endpoint. [Learn more](/platform/api/overview#get-a-workflow).
+- To create a workflow, use the `UnstructuredClient` object's `workflows.create_workflow` function (for the Python SDK) or 
+  the `POST` method to call the `/workflows` endpoint (for `curl` or Postman). [Learn more](#create-a-workflow).
+- To run a workflow manually, use the `UnstructuredClient` object's `workflows.run_workflow` function (for the Python SDK) or 
+  the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl` or Postman). [Learn more](/platform/api/overview#run-a-workflow).
+- To update a workflow, use the `UnstructuredClient` object's `workflows.update_workflow` function (for the Python SDK) or 
+  the `PUT` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman). [Learn more](#update-a-workflow).
+- To delete a workflow, use the `UnstructuredClient` object's `workflows.delete_workflow` function (for the Python SDK) or 
+  the `DELETE` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman). [Learn more](/platform/api/overview#delete-a-workflow).
+
+The following examples assume that you have already met the [requirements](/platform/api/overview#requirements) and 
+understand the [basics](/platform/api/overview#basics) of working with the Unstructured Platform Workflow Endpoint.
+
+## Create a workflow
+
+To create a workflow, use the `UnstructuredClient` object's `workflows.create_workflow` function (for the Python SDK) or 
+the `POST` method to call the `/workflows` endpoint (for `curl` or Postman). 
+  
+In the `CreateWorkflow` object (for the Python SDK) or 
+the request body (for `curl` or Postman), 
+specify the settings for the workflow, as follows:
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.shared import (
+            WorkflowNode,
+            WorkflowNodeType,
+            CreateWorkflow,
+            WorkflowType,
+            Schedule
+        )
+        from unstructured_client.models.operations import CreateWorkflowRequest
+        
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        workflow_node = WorkflowNode(
+            name="<node-name>",
+            subtype="<node-subtype>",
+            type=WorkflowNodeType.<NODE-TYPE>,
+            settings={
+                "...": "..."
+            }
+        )
+
+        another_workflow_node = WorkflowNode(
+            name="<node-name>",
+            subtype="<node-subtype>",
+            type=WorkflowNodeType.<NODE-TYPE>,
+            settings={
+                "...": "..."
+            }
+        )
+
+        # And so on for any additional nodes.
+
+        workflow = CreateWorkflow(
+            name="<name>",
+            source_id="<source-connector-id>",
+            destination_id="<destination-connector-id>",
+            workflow_type=WorkflowType.<TYPE>,
+            workflow_nodes=[
+                worfklow_node,
+                another_workflow_node
+                # And so on for any additional nodes.
+            ],
+            schedule=Schedule("<schedule-timeframe>")
+        )
+
+        response = client.workflows.create_workflow(
+            request=CreateWorkflowRequest(
+                create_workflow=workflow
+            )
+        )
+
+        info = response.workflow_information
+
+        print(f"name:           {info.name}")
+        print(f"id:             {info.id}")
+        print(f"status:         {info.status}")
+        print(f"type:           {info.workflow_type}")
+        print("source(s):")
+
+        for source in info.sources:
+            print(f"            {source}")
+
+        print("destination(s):")
+
+        for destination in info.destinations:
+            print(f"            {destination}")
+
+        print("schedule(s):")
+
+        for crontab_entry in info.schedule.crontab_entries:
+            print(f"            {crontab_entry.cron_expression}")
+        ```
+    </Accordion>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'POST' --location \
+        "$UNSTRUCTURED_API_URL/workflows" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header 'accept: application/json' \
+        --data \
+        '{
+            "name": "<name>",
+            "source_id": "<source-connector-id>",
+            "destination_id": "<destination-connector-id>",
+            "workflow_type": "<type>",
+            "workflow_nodes": [
+                {
+                    "name": "<node-name>",
+                    "type": "<node-type>",
+                    "subtype": "<node-subtype>",
+                    "settings": {
+                        "...": "..."
+                    }
+                },
+                {
+                    "...": "..." 
+                } 
+            ],
+            "schedule": "<schedule-timeframe>"
+        }'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/workflows
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify the settings for the workflow:
+
+           ```json
+           {
+               "name": "<name>",
+               "source_id": "<source-connector-id>",
+               "destination_id": "<destination-connector-id>",
+               "workflow_type": "<type>",
+               "workflow_nodes": [
+                   {
+                       "name": "<node-name>",
+                       "type": "<node-type>",
+                       "subtype": "<node-subtype>",
+                       "settings": {
+                           "...": "..."
+                       }
+                   },
+                   {
+                       "...": "..." 
+                   } 
+               ],
+               "schedule": "<schedule-timeframe>"
+           }
+           ```
+
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+Replace the preceding placeholders as follows:
+
+- `<name>` (_required_) - A unique name for this workflow.
+- `<source-connector-id>` (_required_) - The ID of the target source connector. To get the ID, 
+  use the `UnstructuredClient` object's `sources.list_sources` function (for the Python SDK) or 
+  the `GET` method to call the `/sources` endpoint (for `curl` or Postman). [Learn more](/platform/api/overview#list-source-connectors).
+- `<destination-connector-id>` (_required_) - The ID of the target destination connector. To get the ID, 
+  use the `UnstructuredClient` object's `destinations.list_destinations` function (for the Python SDK) or 
+  the `GET` method to call the `/destinations` endpoint (for `curl` or Postman). [Learn more](/platform/api/overview#list-destination-connectors).
+- `<TYPE>` (for the Python SDK) or `<type>` (for `curl` or Postman) (_required_) - The workflow optimization type. [Learn more](/platform/partitioning). Available values include 
+  `ADVANCED`, `BASIC`, `PLATINUM`, and `CUSTOM` (for the Python SDK) or 
+  `advanced`, `basic`, `platinum`, and `custom` (for `curl` or Postman). 
+  If `<TYPE>` is set to `CUSTOM` (for the Python SDK), or if `<type>` is set to `custom` (for `curl` or Postman), you must add a `worfklow_nodes` array. For instructions, see [Custom workflow DAG nodes](#custom-workflow-dag-nodes).
+- `<schedule-timeframe>` - The repeating automatic run schedule, specified as a predefined phrase. The available predefined phrases are:
+
+  - `every 15 minutes` (for `curl` or Postman): Every 15 minutes (cron expression: `*/15 * * * *`).
+  - `every hour`: At the first minute of every hour (cron expression: `0 * * * *`).
+  - `every 2 hours`: At the first minute of every second hour (cron expression: `0 */2 * * *`).
+  - `every 4 hours`: At the first minute of every fourth hour (cron expression: `0 */4 * * *`).
+  - `every 6 hours`: At the first minute of every sixth hour (cron expression: `0 */6 * * *`).
+  - `every 8 hours`: At the first minute of every eighth hour (cron expression: `0 */8 * * *`).
+  - `every 10 hours`: At the first minute of every tenth hour (cron expression: `0 */10 * * *`).
+  - `every 12 hours`: At the first minute of every twelfth hour (cron expression: `0 */12 * * *`).
+  - `daily`: At the first minute of every day (cron expression: `0 0 * * *`).
+  - `weekly`: At the first minute of every Sunday (cron expression: `0 0 * * 0`).
+  - `monthly`: At the first minute of the first day of every month (cron expression: `0 0 1 * *`).
+    
+  If `schedule` is not specified, the workflow does not automatically run on a repeating schedule.
+
+## Update a workflow
+
+To update information about a workflow, use the `UnstructuredClient` object's `workflows.update_workflow` function (for the Python SDK) or 
+the `PUT` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman), replacing 
+`<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
+
+In the request body, specify the settings for the workflow. For the specific settings to include, see 
+[Create a workflow](/platform/api/workflows#create-a-workflow).
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.shared import (
+            WorkflowNode,
+            WorkflowNodeType,
+            UpdateWorkflow,
+            WorkflowType,
+            Schedule,
+        ),
+        from unstructured_client.models.operations import UpdateWorkflowRequest
+        
+        
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        workflow_node = WorkflowNode(
+            # Specify the settings for a workflow node here.
+        )
+
+        another_workflow_node = WorkflowNode(
+            # Specify the settings for another workflow node here.
+        )
+
+        # And so on for any additional nodes.
+
+        workflow = UpdateWorkflow(
+            # Specify the settings for the workflow here.
+        )
+
+        response = client.workflows.update_workflow(
+            request=UpdateWorkflowRequest(
+                workflow_id="<workflow-id>",
+                update_workflow=workflow
+            )
+        )
+
+        info = response.workflow_information
+
+        print(f"name:           {info.name}")
+        print(f"id:             {info.id}")
+        print(f"status:         {info.status}")
+        print(f"type:           {info.workflow_type}")
+        print("source(s):")
+
+        for source in info.sources:
+            print(f"            {source}")
+
+        print("destination(s):")
+
+        for destination in info.destinations:
+            print(f"            {destination}")
+
+        print("schedule(s):")
+
+        for crontab_entry in info.schedule.crontab_entries:
+            print(f"            {crontab_entry.cron_expression}")
+        ```
+    </Accordion>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'PUT' --location \
+        "$UNSTRUCTURED_API_URL/workflows/<workflow-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header 'accept: application/json' \
+        --data \
+        '{
+            # Specify the settings for the workflow here.
+        }'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **PUT**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify the settings for the workflow.
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Custom workflow DAG nodes
+
+If `WorkflowType` is set to `CUSTOM` (for the Python SDK), or if `workflow_type` is set to `custom` (for `curl` or Postman), you must also specify the settings for the workflow's 
+directed acyclic graph (DAG) nodes. These nodes' settings are specified in the `workflow_nodes` array.
+
+- A **Source** node is automatically created when you specify the `source_id` value outside of the  
+  `workflow_nodes` array.
+- A **Destination** node is automatically created when you specify the `destination_id` value outside of the 
+  `workflow_nodes` array.
+- You can specify [Partitioner](#partitioner-node), [Chunker](#chunker-node), 
+  [Enrichment](#enrichment-node), and [Embedder](#embedder-node) nodes.
+- The order of the nodes in the `workflow_nodes` array will be the same order that these nodes appear in the DAG, 
+  with the first node in the array added directly after the **Source** node. The **Destination** node 
+  follows the last node in the array. 
+- Be sure to specify nodes in the allowed order. The following DAG placements are all allowed:
+
+```mermaid
+flowchart LR
+    Partitioner
+```
+```mermaid
+flowchart LR
+    Partitioner-->Chunker
+```
+```mermaid
+flowchart LR
+    Partitioner-->Chunker-->Embedder
+```
+```mermaid
+flowchart LR
+    Partitioner-->Enrichment-->Chunker
+```
+```mermaid
+flowchart LR
+    Partitioner-->Enrichment-->Chunker-->Embedder
+```
+
+### Partitioner node
+
+A **Partitioner** node has a `type` of `partition` and a `subtype` of `unstructured_api`. The `strategy` setting 
+determines the partition strategy to use.
+
+#### Fast strategy
+
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "partition"` is `type=WorkflowNodeType.PARTITION`.
+- `true` and `false` are `True` and `False`.
+
+```text
+"name": "Partitioner",
+"type": "partition",
+"subtype": "unstructured_api",
+"settings": {
+    "strategy": "fast",
+    "include_page_breaks": <true|false>,
+    "pdf_infer_table_structure": <true|false>,
+    "exclude_elements": [
+        "<element-name>",
+        "<element-name>"
+    ],
+    "xml_keep_tags": <true|false>,
+    "encoding": "<encoding>",
+    "ocr_languages": [
+        "<language-code>",
+        "<language-code>"
+    ],
+    "extract_image_block_types": [
+        "image",
+        "table"
+    ],
+    "infer_table_structure": <true|false>
+}
+```
+
+#### High Res strategy
+
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "partition"` is `type=WorkflowNodeType.PARTITION`.
+- `true` and `false` are `True` and `False`.
+
+```text
+"name": "Partitioner",
+"type": "partition",
+"subtype": "unstructured_api",
+"settings": {
+    "strategy": "hi_res",
+    "include_page_breaks": <true|false>,
+    "pdf_infer_table_structure": <true|false>,
+    "exclude_elements": [
+        "<element-name>",
+        "<element-name>"
+    ],
+    "xml_keep_tags": <true|false>,
+    "encoding": "<encoding>",
+    "ocr_languages": [
+        "<language>",
+        "<language>"
+    ],
+    "extract_image_block_types": [
+        "image",
+        "table"
+    ],
+    "infer_table_structure": <true|false>
+}
+```
+
+#### VLM strategy
+
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "partition"` is `type=WorkflowNodeType.PARTITION`.
+- `true` and `false` are `True` and `False`.
+- `null` is `None`.
+
+```text
+"name": "Partitioner",
+"type": "partition",
+"subtype": "vlm",
+"settings": {
+    "provider": "<provider>",
+    "provider_api_key": null,
+    "model": "<model>",
+    "output_format": "text/html",
+    "user_prompt": null,
+    "format_html": true,
+    "unique_element_ids": <true|false>
+}
+```
+
+Allowed values for `provider` and `model` include:
+
+- `"provider": "anthropic"`
+
+  - `"model": "claude-3-5-sonnet-20241022"`
+
+- `"provider": "anthropic""openai"`
+
+  - `"model": "gpt-4o"`
+
+- `"provider": "bedrock"`
+
+  - `"model": "us.anthropic.claude-3-5-sonnet-20241022-v2:0"`
+  - `"model": "us.anthropic.claude-3-opus-20240229-v1:0"`
+  - `"model": "us.anthropic.claude-3-haiku-20240307-v1:0"`
+  - `"model": "us.anthropic.claude-3-sonnet-20240229-v1:0"`
+  - `"model": "us.amazon.nova-pro-v1:0"`
+  - `"model": "us.amazon.nova-lite-v1:0"`
+  - `"model": "us.meta.llama3-2-90b-instruct-v1:0"`
+  - `"model": "us.meta.llama3-2-11b-instruct-v1:0"`
+
+### Chunker node
+
+#### Chunk by Character strategy
+
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "chunk"` is `type=WorkflowNodeType.CHUNK`.
+- `true` and `false` are `True` and `False`.
+- `null` is `None`.
+
+```text
+"name": "Chunker",
+"type": "chunk",
+"subtype": "chunk_by_character",
+"settings": {
+    "unstructured_api_url": null,
+    "unstructured_api_key": null,
+    "include_orig_elements": <true|false>,
+    "new_after_n_chars": <new-after-n-chars>,
+    "max_characters": <max-characters>,
+    "overlap": <overlap>,
+    "overlap_all": <true|false>,
+    "contextual_chunking_strategy": "v1"
+}
+```
+
+#### Chunk by Title strategy
+
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "chunk"` is `type=WorkflowNodeType.CHUNK`.
+- `true` and `false` are `True` and `False`.
+- `null` is `None`.
+
+```text
+"name": "Chunker",
+"type": "chunk",
+"subtype": "chunk_by_title",
+"settings": {
+    "unstructured_api_url": null,
+    "unstructured_api_key": null,
+    "multipage_sections": <true|false>,
+    "combine_text_under_n_chars": <combine-text-under-n-chars>,
+    "include_orig_elements": <true|false>,
+    "new_after_n_chars": <new-after-n-chars>,
+    "max_characters": <max-characters>,
+    "overlap": <overlap>,
+    "overlap_all": <true|false>,
+    "contextual_chunking_strategy": "v1"
+}
+```
+
+#### Chunk by Page strategy
+
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "chunk"` is `type=WorkflowNodeType.CHUNK`.
+- `true` and `false` are `True` and `False`.
+- `null` is `None`.
+
+```text
+"name": "Chunker",
+"type": "chunk",
+"subtype": "chunk_by_page",
+"settings": {
+    "unstructured_api_url": null,
+    "unstructured_api_key": null,
+    "include_orig_elements": <true|false>,
+    "new_after_n_chars": <new-after-n-chars>,
+    "max_characters": <max-characters>,
+    "overlap": <overlap>,
+    "overlap_all": <true|false>,
+    "contextual_chunking_strategy": "v1"
+}
+```
+
+#### Chunk by Similarity strategy
+
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "chunk"` is `type=WorkflowNodeType.CHUNK`.
+- `true` and `false` are `True` and `False`.
+- `null` is `None`.
+
+```text
+"name": "Chunker",
+"type": "chunk",
+"subtype": "chunk_by_similarity",
+"settings": {
+    "unstructured_api_url": null,
+    "unstructured_api_key": null,
+    "include_orig_elements": <true|false>,
+    "new_after_n_chars": <true|false>,
+    "max_characters": <max-characters>,
+    "overlap": <overlap>,
+    "overlap_all": <true|false>,
+    "contextual_chunking_strategy": "v1",
+    "similarity_threshold": <similarity-threshold>
+}
+```
+
+### Enrichment node
+
+#### Image Description task
+
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "prompter"` is `type=WorkflowNodeType.PROMPTER`.
+
+```text
+"name": "Enrichment",
+"type": "prompter",
+"subtype": "<subtype>",
+"settings": {}
+```
+
+Allowed values for `<subtype>` include:
+
+- `openai_image_description`
+- `anthropic_image_description`
+- `bedrock_image_description`
+
+#### Table Description task
+
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "prompter"` is `type=WorkflowNodeType.PROMPTER`.
+
+```text
+"name": "Enrichment",
+"type": "prompter",
+"subtype": "<subtype>",
+"settings": {}
+```
+
+Allowed values for `<subtype>` include:
+
+- `openai_table_description`
+- `anthropic_table_description`
+- `bedrock_table_description`
+
+#### Table to HTML task
+
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "prompter"` is `type=WorkflowNodeType.PROMPTER`.
+
+```text
+"name": "Enrichment",
+"type": "prompter",
+"subtype": "openai_table2html",
+"settings": {}
+```
+
+#### Named Entity Recognition (NER) task
+
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "prompter"` is `type=WorkflowNodeType.PROMPTER`.
+
+```text
+"name": "Enrichment",
+"type": "prompter",
+"subtype": "openai_ner",
+"settings": {
+    "prompt_interface_overrides": {
+        "prompt": {
+            "user": "<user-prompt-override>"
+        } 
+    }
+}
+```
+
+### Embedder node
+
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "embed"` is `type=WorkflowNodeType.EMBED`.
+
+```text
+"name": "Embedder",
+"type": "embed",
+"subtype": "<subtype>",
+"settings": {
+    "model_name": "<model-name>"
+}
+```
+
+Allowed values for `subtype` and `model_name` include:
+
+- `"subtype": "azure_openai"`
+
+  - `"model_name": "text-embedding-3-small"`
+  - `"model_name": "text-embedding-3-large"`
+  - `"model_name": "text-embedding-ada-002"`
+
+- `"subtype": "bedrock"`
+
+  - `"model_name": "amazon.titan-embed-text-v2:0"`
+  - `"model_name": "amazon.titan-embed-text-v1"`
+  - `"model_name": "amazon.titan-embed-image-v1"`
+  - `"model_name": "cohere.embed-english-v3"`
+  - `"model_name": "cohere.embed-multilingual-v3"`
+
+- `"subtype": "togetherai"`
+
+  - `"model_name": "togethercomputer/m2-bert-80M-2k-retrieval"`
+  - `"model_name": "togethercomputer/m2-bert-80M-8k-retrieval"`
+  - `"model_name": "togethercomputer/m2-bert-80M-32k-retrieval"`

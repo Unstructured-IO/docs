@@ -1,0 +1,29 @@
+---
+title: GitLab
+---
+
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentGitLab from '/snippets/sc-shared-text/gitlab-cli-api.mdx';
+
+<SharedContentGitLab/>
+
+Now call the Unstructured CLI or Python. The destination connector can be any of the ones supported. This example uses the local destination connector.
+
+This example sends data to Unstructured for processing by default. To process data locally instead, see the instructions at the end of this page.
+
+import GitLabSh from '/snippets/source_connectors/gitlab.sh.mdx';
+import GitLabPyV2 from '/snippets/source_connectors/gitlab.v2.py.mdx';
+import GitLabPyV1 from '/snippets/source_connectors/gitlab.v1.py.mdx';
+
+<CodeGroup>
+  <GitLabSh />
+  <GitLabPyV2 />
+  <GitLabPyV1 />
+</CodeGroup>
+
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>

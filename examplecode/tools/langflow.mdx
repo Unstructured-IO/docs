@@ -21,7 +21,7 @@ Also:
 
 - [Sign up for an OpenAI account](https://platform.openai.com/signup), and [get your OpenAI API key](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key).
 - [Sign up for a free Langflow account](https://astra.datastax.com/signup?type=langflow).
-- [Get your Unstructured Serverless API key](/api-reference/api-services/saas-api-development-guide#get-started).
+- [Get your Unstructured Platform Partition Endpoint key](/platform-api/partition-api/overview).
 
 ## Create and run the demonstration project
 
@@ -32,7 +32,7 @@ Also:
         3. Click **Blank Flow**.
     </Step>
     <Step title="Add the Unstructured component">
-        In this step, you add a component that instructs Unstructured Serverless API services to process a local file that you specify.
+        In this step, you add a component that instructs the Unstructured Platform Partition Endpoint to process a local file that you specify.
  
         1. On the sidebar, expand **Experimental (Beta)**, and then expand **Loaders**.
         2. Drag the **Unstructured** component onto the designer area.
@@ -244,9 +244,9 @@ To do this, you can:
   you want Unstructured to process and then insert the new processed data into Astra DB. Then, back in the Langflow project, 
   use the **Playground** to ask additional questions, which will now include the new data when generating answers.
 
-- [Use Unstructured Ingest to create a pipeline](/api-reference/ingest/overview) that relies on any available 
-  [source connector](/api-reference/ingest/source-connectors/overview) to connect to 
-  [Astra DB](/api-reference/ingest/destination-connector/astradb). Run this pipeline outside of Langflow anytime you have new documents in that non-local source location that 
+- [Use Unstructured Ingest to create a pipeline](/ingestion/overview) that relies on any available 
+  [source connector](/ingestion/source-connectors/overview) to connect to 
+  [Astra DB](/ingestion/destination-connector/astradb). Run this pipeline outside of Langflow anytime you have new documents in that non-local source location that 
   you want Unstructured to process and then insert the new processed data into Astra DB. Then, back in the Langflow project, 
   use the **Playground** to ask additonal questions, which will now include the new data when generating answers.
 
@@ -270,20 +270,20 @@ swap out the **Astra DB RAG** component for the corresponding **Vector Stores** 
 store's name. Configure the new component, and then 
 use the **Playground** to ask additional questions, which will now use the new vector store when generating answers.
 
-Or, [use Unstructured Ingest to create a pipeline](/api-reference/ingest/overview) that relies on any available 
-[source connector](/api-reference/ingest/source-connectors/overview) to connect to 
+Or, [use Unstructured Ingest to create a pipeline](/ingestion/overview) that relies on any available 
+[source connector](/ingestion/source-connectors/overview) to connect to 
 one of the following available vector stores that Langflow also supports:
 
-- [Chroma DB](/api-reference/ingest/destination-connector/chroma)
-- [Couchbase](/api-reference/ingest/destination-connector/couchbase)
-- [Elasticsearch](/api-reference/ingest/destination-connector/elasticsearch)
-- [Milvus](/api-reference/ingest/destination-connector/milvus)
-- [MongoDB](/api-reference/ingest/destination-connector/mongodb)
-- [OpenSearch](/api-reference/ingest/destination-connector/opensearch)
-- [Pinecone](/api-reference/ingest/destination-connector/pinecone)
-- [Qdrant](/api-reference/ingest/destination-connector/qdrant)
-- [Vectara](/api-reference/ingest/destination-connector/vectara)
-- [Weaviate](/api-reference/ingest/destination-connector/weaviate)
+- [Chroma DB](/ingestion/destination-connector/chroma)
+- [Couchbase](/ingestion/destination-connector/couchbase)
+- [Elasticsearch](/ingestion/destination-connector/elasticsearch)
+- [Milvus](/ingestion/destination-connector/milvus)
+- [MongoDB](/ingestion/destination-connector/mongodb)
+- [OpenSearch](/ingestion/destination-connector/opensearch)
+- [Pinecone](/ingestion/destination-connector/pinecone)
+- [Qdrant](/ingestion/destination-connector/qdrant)
+- [Vectara](/ingestion/destination-connector/vectara)
+- [Weaviate](/ingestion/destination-connector/weaviate)
 
 Run this pipeline outside of Langflow anytime you have new documents in the source location that 
 you want Unstructured to process and then insert the new processed data into the vector store. Then, back in the Langflow project, 

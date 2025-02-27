@@ -1,0 +1,42 @@
+---
+title: Overview
+---
+
+To use the [Unstructured Platform Workflow Endpoint](/platform/api/overview) to manage destination connectors, do the following:
+
+- To get a list of available destination connectors, use the `UnstructuredClient` object's `destinations.list_destinations` function (for the Python SDK) or 
+  the `GET` method to call the `/destinations` endpoint (for `curl` or Postman).. [Learn more](/platform/api/overview#list-destination-connectors).
+- To get information about a destination connector, use the `UnstructuredClient` object's `destinations.get_destination` function (for the Python SDK) or 
+  the `GET` method to call the `/destinations/<connector-id>` endpoint (for `curl` or Postman). [Learn more](/platform/api/overview#get-a-destination-connector).
+- To create a destination connector, use the `UnstructuredClient` object's `destinations.create_destination` function (for the Python SDK) or 
+  the `POST` method to call the `/destinations` endpoint (for `curl` or Postman). [Learn more](/platform/api/overview#create-a-destination-connector).
+- To update a destination connector, use the `UnstructuredClient` object's `destinations.update_destination` function (for the Python SDK) or 
+  the `PUT` method to call the `/destinations/<connector-id>` endpoint (for `curl` or Postman). [Learn more](/platform/api/overview#update-a-destination-connector).
+- To delete a destination connector, use the `UnstructuredClient` object's `destinations.delete_destination` function (for the Python SDK) or 
+  the `DELETE` method to call the `/destinations/<connector-id>` endpoint (for `curl` or Postman). [Learn more](/platform/api/overview#delete-a-destination-connector). 
+
+To create or update a destination connector, you must also provide settings that are specific to that connector. 
+For the list of specific settings, see:
+
+- [Astra DB](/platform/api/destinations/astradb) (`astradb`)
+- [Azure AI Search](/platform/api/destinations/azure-ai-search) (`azure_ai_search`)
+- [Couchbase](/platform/api/destinations/couchbase) (`couchbase`)
+- [Databricks Volumes](/platform/api/destinations/databricks-volumes) (`databricks_volumes`)
+- [Delta Tables in Amazon S3](/platform/api/destinations/delta-table) (`delta_table`)
+- [Delta Tables in Databricks](/platform/api/destinations/databricks-delta-table) (`databricks_volume_delta_tables`)
+- [Elasticsearch](/platform/api/destinations/elasticsearch) (`elasticsearch`)
+- [Google Cloud Storage](/platform/api/destinations/google-cloud) (`gcs`)
+- [Kafka](/platform/api/destinations/kafka) (`kafka-cloud`)
+- [Milvus](/platform/api/destinations/milvus) (`milvus`)
+- [MongoDB](/platform/api/destinations/mongodb) (`mongodb`)
+- [MotherDuck](/platform/api/destinations/motherduck) (`motherduck`)
+- [Neo4j](/platform/api/destinations/neo4j) (`neo4j`)
+- [OneDrive](/platform/api/destinations/onedrive) (`onedrive`)
+- [Pinecone](/platform/api/destinations/pinecone) (`pinecone`)
+- [PostgreSQL](/platform/api/destinations/postgresql) (`postgres`)
+- [Qdrant](/platform/api/destinations/qdrant) (`qdrant-cloud`)
+- [Redis](/platform/api/destinations/redis) (`redis`)
+- [Snowflake](/platform/api/destinations/snowflake) (`snowflake`)
+- [S3](/platform/api/destinations/s3) (`s3`)
+- [Weaviate](/platform/api/destinations/weaviate) (`weaviate`)
+

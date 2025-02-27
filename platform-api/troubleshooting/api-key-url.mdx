@@ -1,0 +1,84 @@
+---
+title: Troubleshooting Unstructured Platform API keys and URLs
+sidebarTitle: API keys and URLs
+---
+
+## Issue
+
+When you run script or code to call an Unstructured Platform API, you get one of the following warnings or errors:
+
+```
+UserWarning: If intending to use the paid API, please define `server_url` in your request.
+```
+
+```
+ERROR: Server responded with 404 - {"detail":"Not Found"}
+```
+
+You also get the following related warnings or errors in your logs:
+
+```
+SDKError: API error occurred: Status 401
+{"detail":"API key is malformed, please type the API key correctly in the header."}
+```
+
+```
+API error occurred: Status 404
+{"detail":"Not Found"}
+```
+
+## Possible causes
+
+1. The Unstructured API key, API URL, or both are missing or malformed in your script or code.
+2. The API key, API URL, or both are not present in your current session.
+3. The API key is no longer valid, or the API key and API URL combination is not valid.
+
+## Suggested solutions
+
+For the API URL, note the following:
+
+- For the [Unstructured Platform Workflow Endpoint](/platform/api/overview), the API URL is typically `https://platform.unstructuredapp.io/api/v1`.
+- For the [Unstructured Platform Partition Endpoint](/platform-api/partition-api/overview), the API URL is typically `https://api.unstructuredapp.io/general/v0/general`.
+
+For the API key, the same API key works for both the [Unstructured Platform Workflow Endpoint](/platform/api/overview) key or [Unstructured Platform Partition Endpoint](/platform-api/partition-api/overview). This API key is in your Unstructured account dashboard. To access your dashboard:
+
+  ![Unstructured account settings](/img/platform/AccountSettings.png)
+
+  1. Sign in to your Unstructured account.
+  2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
+  3. On the **API Keys** tab, click the copy icon next to your key.
+  
+For the API URL, note the value of the the Unstructured **Platform API URL** (for the Unstructured Platform Workflow Endpoint) or the Unstructured **Serverless API URL** (for the Unstructured Platform Partition Endpoint). 
+
+  ![Unstructured Serverless and Platform API URLs](/img/platform/ServerlessPlatformAPIURL.png)
+
+  1. Sign in to your Unstructured account.
+  2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
+  3. On the **API Keys** tab, note the correct API URL. These APIs are not interchangeable between the Workflow and Partition APIs.
+
+If you still believe you have the correct API URL and API key, try the following steps:
+
+1. Check your script or code to see where the API URL and API key are specified, as follows:
+
+   **For a POST request**
+
+   - Check the target URL. Make sure it is set to the right API URL.
+   - Check the value of the `unstructured-api-key` header. Make sure it is set to the right API key, or an environment variable representing the right API key.
+
+   **For the Unstructured Python SDK**
+
+   - Check the value of the `server_url` parameter. Make sure it is set to the right API URL, or an environment variable representing the right API URL.
+   - Check the value of the `api_key_auth` parameter. Make sure it is set to the right API key, or an environment variable representing the right API key.
+
+   **For the Unstructured JavaScript/TypeScript SDK**
+
+   - Check the value of the `UnstructuredClient` object's `serverURL` parameter. Make sure it is set to the right API URL, or an environment variable representing the right API URL.
+   - Check the value of the `UnstructuredClient` object's `security: { apiKeyAuth }` parameter. Make sure it is set to the right API key, or an environment variable representing the right API key.
+     
+2. If you follow the recommended approach to use environment variables to represent the API key and API URL instead of hard-coding them into your script or code, check your session to see if these environment variables have been loaded, for example:
+
+   - Run the command for your operating system to list all environment variables. Make sure the API key and API URL are listed and are set to the right ones. Make sure the names and cases of these environment variables match the ones in your script or code exactly.
+   - If you use an integrated development environment (IDE) to run your script or code, check the IDE's documentation for how to specify and load environment variables at run time or debug time. Make sure the names and cases of these environment variables match the ones in your script or code exactly.
+
+3. If you are still getting this issue, [contact us directly](https://unstructured.io/contact).
+

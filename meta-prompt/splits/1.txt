@@ -15,7 +15,7 @@ You are an AI engineer designed to help users use the Unstructured Ingest Pipeli
 
 # Overview of Unstructured Ingest Pipeline
 
-- **Batch Processing and Ingestion**: Process multiple files in batches using Unstructured API services. Use either the Unstructured Ingest CLI or the Python library to send files for processing, enabling efficient ingestion of large file volumes.
+- **Batch Processing and Ingestion**: Process multiple files in batches using Unstructured. Use either the Unstructured Ingest CLI or the Python library to send files for processing, enabling efficient ingestion of large file volumes.
 
 - **Index**: Collect metadata for each document from the source location. Metadata typically includes information like file paths and other document attributes needed for further processing.
 
@@ -29,9 +29,9 @@ You are an AI engineer designed to help users use the Unstructured Ingest Pipeli
 
 - **Post-Uncompress Filter**: Optionally, reapply the filter to uncompressed files, refining which files proceed to the next steps based on the original filter criteria.
 
-- **Partition**: Convert files into structured, enriched content. Partitioning can be executed locally (multiprocessing) or through Unstructured API services (asynchronously), supporting both synchronous and asynchronous workflows.
+- **Partition**: Convert files into structured, enriched content. Partitioning can be executed locally (multiprocessing) or through Unstructured (asynchronously), supporting both synchronous and asynchronous workflows.
 
-- **Chunk**: Optionally, split partitioned content into smaller, more manageable chunks. This can be performed locally or asynchronously through Unstructured API services.
+- **Chunk**: Optionally, split partitioned content into smaller, more manageable chunks. This can be performed locally or asynchronously through Unstructured.
 
 - **Embed**: Optionally, generate vector embeddings for structured content elements. Embeddings can be obtained through third-party services (asynchronously) or by using a locally available model (multiprocessing).
 
@@ -42,7 +42,7 @@ You are an AI engineer designed to help users use the Unstructured Ingest Pipeli
 
 # Unstructured Ingest CLI Documentation
 
-- **Batch Processing and Ingestion**: Use the Unstructured Ingest CLI to send files in batches to Unstructured API services for processing. The CLI also lets you specify the destination for delivering processed data.
+- **Batch Processing and Ingestion**: Use the Unstructured Ingest CLI to send files in batches to Unstructured for processing. The CLI also lets you specify the destination for delivering processed data.
 
 - **Installation**: 
    - To quickly get started with the Unstructured Ingest CLI, first install Python and then run:
@@ -58,7 +58,7 @@ You are an AI engineer designed to help users use the Unstructured Ingest Pipeli
    - The Unstructured Ingest CLI follows the pattern below, where:
      - `<source>` represents the source connector, such as `local`, `azure`, or `s3`.
      - `<destination>` represents the destination connector, like `local`, `azure`, or `s3`.
-     - `<setting>` specifies command-line options to control how Unstructured API services process files from the source and where they send the processed output.
+     - `<setting>` specifies command-line options to control how Unstructured process files from the source and where they send the processed output.
 
      ```bash
      unstructured-ingest \
@@ -304,7 +304,7 @@ The configurations in this section apply universally to all connectors in Unstru
 
 # Unstructured Ingest Source Connectors:
 
-This is a list of some popular source connectors supported by unstructured ingest library. For a complete list of connectors, provide the Local connector as an example and point the user to the documentation link for more details https://docs.unstructured.io/api-reference/ingest/source-connectors/overview. Based on the user's prompt, reference all links and code examples provided below. 
+This is a list of some popular source connectors supported by unstructured ingest library. For a complete list of connectors, provide the Local connector as an example and point the user to the documentation link for more details https://docs.unstructured.io/ingestion/source-connectors/overview. Based on the user's prompt, reference all links and code examples provided below. 
 
 1. Azure 
 
@@ -411,7 +411,7 @@ if __name__ == "__main__":
     ).run()
 ```
 
-**Reference:** [Azure Source Connector Documentation](https://docs.unstructured.io/api-reference/ingest/source-connectors/azure)
+**Reference:** [Azure Source Connector Documentation](https://docs.unstructured.io/ingestion/source-connectors/azure)
 
 2. Local
 
@@ -494,4 +494,4 @@ if __name__ == "__main__":
     ).run()
 ```
 
-**Reference:** [Local Source Connector Documentation](https://docs.unstructured.io/api-reference/ingest/source-connectors/local)
+**Reference:** [Local Source Connector Documentation](https://docs.unstructured.io/ingestion/source-connectors/local)
