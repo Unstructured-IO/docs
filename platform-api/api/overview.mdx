@@ -11,7 +11,15 @@ various storage, databases, and vector stores; and use the latest and highest-pe
 to deliver the highest quality results at the lowest cost. 
 
 This page provides an overview of the Unstructured Platform Workflow Endpoint. This endpoint enables Unstructured Platform UI automation usage 
-scenarios as well as for documentation, reporting, and recovery needs. 
+scenarios as well as for documentation, reporting, and recovery needs.
+
+## Getting started
+
+Choose one of the following options to get started with the Unstructured Platform Workflow Endpoint:
+
+- Follow the [quickstart](#quickstart), which uses the Unstructured Python SDK from a remote hosted Google Collab notebook.
+- Start using the [Unstructred Python SDK](#unstructured-python-sdk).
+- Start using a [REST](#rest-endpoints) client, such as `curl` or Postman.
 
 ## Quickstart
 
@@ -36,46 +44,35 @@ If you already have the Unstructured Python SDK installed, upgrade to at least v
 pip install --upgrade "unstructured-client>=0.30.6"
 ```
 
-## REST endpoints
+The Unstructured Python SDK code examples, shown later on this page and on related pages, use the following environment variable, which you can set as follows:
 
-The Unstructured Platform Workflow Endpoint is also callable from a set of Representational State Transfer (REST) endpoints, which you can call through standard REST-enabled 
-utilities, tools, programming languages, packages, and libraries. The following sections describe how to call the Unstructured Platform Workflow Endpoint with 
-`curl` and Postman. You can adapt this information as needed for your preferred programming languages and libraries, for example by using the 
-`requests` library with Python.
+```bash
+export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
+```
 
-<Tip>
-    You can also use the [Unstructured Platform Workflow Endpoint - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
-    that are available through `https://platform.unstructuredapp.io`.
-</Tip>
+This environment variable enables you to more easily run the following Unstructured Python SDK examples and help prevent 
+you from storing scripts that contain sensitive API keys in public source code repositories.
 
-To call the REST endpoints, you must specify the Unstructured **Platform API URL**. This is typically `https://platform.unstructuredapp.io/api/v1`.
+To get your Unstructured API key, do the following:
 
-![Unstructured Platform API URL](/img/platform/PlatformAPIURL.png)
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
+3. On the **API Keys** tab, click **Generate New Key**.
+4. Enter some descriptive name for the API key, and then click **Save**.
+5. Click the **Copy** icon for your new API key. The API key's value is copied to your system's clipboard.
 
-<Warning>
-    Do not use the Unstructured **Serverless API URL**, which is separate from the Unstructured Platform Workflow Endpoint URL.      
-</Warning>
+Calls made by the Unstructured Python SDK's `unstructured_client` functions for creating, listing, updating, 
+and deleting connectors, workflows, and jobs in the Unstructured Platform UI all use the Unstructured Platform Workflow Endpoint URL (`https://platform.unstructuredapp.io/api/v1`) by default. You do not need to 
+use the `server_url` parameter to specify this API URL in your Python code for these particular functions.
 
 <Note>
-    If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API URL 
-    might be different. For API URL guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
+    If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API URL and API key creation guidance 
+    might be different. For guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
     If your API URL is different, be sure to substitute `https://platform.unstructuredapp.io/api/v1` for your 
     API URL throughout the following examples.
+
+    To specify an API URL in your code, set the `server_url` parameter in the `UnstructuredClient` constructor to the target API URL.
 </Note>
-
-## Restrictions
-
-The following Unstructured SDKs, tools, and libraries do _not_ work with the Unstructured Platform Workflow Endpoint:
-
-- The [Unstructured JavaScript/TypeScript SDK](/platform-api/partition-api/sdk-jsts)
-- [Local single-file POST requests](/platform-api/partition-api/sdk-jsts) to the Unstructured Platform Partition Endpoint
-- The [Unstructured open source Python library](/open-source/introduction/overview)
-- The [Unstructued Ingest CLI](/ingestion/ingest-cli)
-- The [Unstructured Ingest Python library](/ingestion/python-ingest)
-
-The following Unstructured API URL is also _not_ supported: `https://api.unstructuredapp.io/general/v0/general` (the Unstructured Platform Partition Endpoint URL).
-
-## Basics
 
 The Unstructured Platform Workflow Endpoint enables you to work with [connectors](#connectors),
 [workflows](#workflows), and [jobs](#jobs) in the Unstructured Platform UI.
@@ -91,46 +88,49 @@ For general information about these objects, see:
 - [Workflows](/platform/workflows)
 - [Jobs](/platform/jobs)
 
-The following sections provide examples, showing the use of the Unstructured SDK for Python for all of the supported API operations, 
-as well as `curl` and Postman for all of the supported REST endpoints.
+Skip ahead to start learning about how to use the Unstructured Python SDK to work with 
+[connectors](#connectors),
+[workflows](#workflows), and [jobs](#jobs) programmatically.
+
+## REST endpoints
+
+The Unstructured Platform Workflow Endpoint is callable from a set of Representational State Transfer (REST) endpoints, which you can call through standard REST-enabled 
+utilities, tools, programming languages, packages, and libraries. The examples, shown later on this page and on related pages, describe how to call the Unstructured Platform Workflow Endpoint with 
+`curl` and Postman. You can adapt this information as needed for your preferred programming languages and libraries, for example by using the 
+`requests` library with Python.
 
 <Tip>
     You can also use the [Unstructured Platform Workflow Endpoint - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
-    that are available through `https://platform.unstructuredapp.io`.
+    that are available through `https://platform.unstructuredapp.io`. To use the Swagger UI, you must provide your Unstructured API key with each call. To 
+    get this API key, see the [quickstart](#quickstart), earlier on this page.
 </Tip>
-
-### Python SDK
-
-The following Unstructured Python SDK examples use the following environment variable, which you can set as follows:
-
-```bash
-export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
-```
-
-Calls made by the Unstructured Python SDK's `unstructured_client` functions for creating, listing, updating, 
-and deleting connectors, workflows, and jobs in the Unstructured Platform UI all use the Unstrucutured Platform Workflow Endpoint URL (`https://platform.unstructuredapp.io/api/v1`) by default. You do not need to 
-use the `server_url` parameter to specify this API URL in your Python code for these particular functions.
-
-<Note>
-    If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API URL 
-    might be different. For API URL guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
-    If your API URL is different, be sure to substitute `https://platform.unstructuredapp.io/api/v1` for your 
-    API URL throughout the following examples.
-
-    To specify an API URL in your code, set the `server_url` parameter in the `UnstructuredClient` constructor to the target API URL.
-</Note>
 
 ### curl and Postman
 
-The following `curl` and Postman examples use the following environment variables, which you can set as follows:
+The following `curl` examples use the following environment variables, which you can set as follows:
 
 ```bash
 export UNSTRUCTURED_API_URL="https://platform.unstructuredapp.io/api/v1"
 export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
 ```
 
-These environment variables enable you to more easily run the following Unstructured Python SDK and `curl` examples and help prevent 
+These environment variables enable you to more easily run the following `curl` examples and help prevent 
 you from storing scripts that contain sensitive URLs and API keys in public source code repositories.
+
+To get your Unstructured API key, do the following:
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
+3. On the **API Keys** tab, click **Generate New Key**.
+4. Enter some descriptive name for the API key, and then click **Save**.
+5. Click the **Copy** icon for your new API key. The API key's value is copied to your system's clipboard.
+
+<Note>
+    If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API URL and API key creation guidance 
+    might be different. For guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
+    If your API URL is different, be sure to substitute `https://platform.unstructuredapp.io/api/v1` for your 
+    API URL throughout the following examples.
+</Note>
 
 The following Postman examples use variables, which you can set as follows:
 
@@ -152,6 +152,51 @@ The following Postman examples use variables, which you can set as follows:
 
 These variables enable you to more easily run the following examples in Postman and help prevent you from storing 
 Postman collections that contain sensitive URLs and API keys in public source code repositories.
+
+To get your Unstructured API key, do the following:
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
+3. On the **API Keys** tab, click **Generate New Key**.
+4. Enter some descriptive name for the API key, and then click **Save**.
+5. Click the **Copy** icon for your new API key. The API key's value is copied to your system's clipboard.
+
+<Note>
+    If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API URL and API key creation guidance 
+    might be different. For guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
+    If your API URL is different, be sure to substitute `https://platform.unstructuredapp.io/api/v1` for your 
+    API URL throughout the following examples.
+</Note>
+
+The Unstructured Platform Workflow Endpoint enables you to work with [connectors](#connectors),
+[workflows](#workflows), and [jobs](#jobs) in the Unstructured Platform UI.
+
+- A _source connector_ ingests files or data into Unstructured from a source location.
+- A _destination connector_ sends the processed data from Unstructured to a destination location.
+- A _workflow_ defines how Unstructured will process the data.
+- A _job_ runs a workflow at a specific point in time.
+
+For general information about these objects, see:
+
+- [Connectors](/platform/connectors)
+- [Workflows](/platform/workflows)
+- [Jobs](/platform/jobs)
+
+Skip ahead to start learning about how to use the REST endpoints to work with 
+[connectors](#connectors),
+[workflows](#workflows), and [jobs](#jobs) programmatically.
+
+## Restrictions
+
+The following Unstructured SDKs, tools, and libraries do _not_ work with the Unstructured Platform Workflow Endpoint:
+
+- The [Unstructured JavaScript/TypeScript SDK](/platform-api/partition-api/sdk-jsts)
+- [Local single-file POST requests](/platform-api/partition-api/sdk-jsts) to the Unstructured Platform Partition Endpoint
+- The [Unstructured open source Python library](/open-source/introduction/overview)
+- The [Unstructued Ingest CLI](/ingestion/ingest-cli)
+- The [Unstructured Ingest Python library](/ingestion/python-ingest)
+
+The following Unstructured API URL is also _not_ supported: `https://api.unstructuredapp.io/general/v0/general` (the Unstructured Platform Partition Endpoint URL).
 
 ## Connectors
 
