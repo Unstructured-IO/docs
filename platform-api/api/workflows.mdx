@@ -35,19 +35,39 @@ specify the settings for the workflow, as follows:
         import os
 
         from unstructured_client import UnstructuredClient
-        from unstructured_client.models.operations import CreateWorkflowRequest
         from unstructured_client.models.shared import (
-            CreateWorkflow,
-            WorkflowType,
             WorkflowNode,
             WorkflowNodeType,
-            Settings,
-            CreateWorkflowSchedule
+            CreateWorkflow,
+            WorkflowType,
+            Schedule
         )
+        from unstructured_client.models.operations import CreateWorkflowRequest
+        
 
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
+
+        workflow_node = WorkflowNode(
+            name="<node-name>",
+            subtype="<node-subtype>",
+            type=WorkflowNodeType.<NODE-TYPE>,
+            settings={
+                "...": "..."
+            }
+        )
+
+        another_workflow_node = WorkflowNode(
+            name="<node-name>",
+            subtype="<node-subtype>",
+            type=WorkflowNodeType.<NODE-TYPE>,
+            settings={
+                "...": "..."
+            }
+        )
+
+        # And so on for any additional nodes.
 
         workflow = CreateWorkflow(
             name="<name>",
@@ -55,19 +75,11 @@ specify the settings for the workflow, as follows:
             destination_id="<destination-connector-id>",
             workflow_type=WorkflowType.<TYPE>,
             workflow_nodes=[
-                WorkflowNode(
-                    name="<node-name>",
-                    type=WorkflowNode.<NODE-TYPE>,
-                    subtype="<node-subtype>",
-                    settings=Settings(
-                        "..."="..."
-                    )
-                ),
-                WorkflowNode(
-                    ...
-                )
+                worfklow_node,
+                another_workflow_node
+                # And so on for any additional nodes.
             ],
-            schedule=CreateWorkflowSchedule.<SCHEDULE-TIMEFRAME>
+            schedule=Schedule("<schedule-timeframe>")
         )
 
         response = client.workflows.create_workflow(
@@ -178,23 +190,23 @@ Replace the preceding placeholders as follows:
 - `<destination-connector-id>` (_required_) - The ID of the target destination connector. To get the ID, 
   use the `UnstructuredClient` object's `destinations.list_destinations` function (for the Python SDK) or 
   the `GET` method to call the `/destinations` endpoint (for `curl` or Postman). [Learn more](/platform/api/overview#list-destination-connectors).
-- `<TYPE>` (for the Python SDK) or `<type>` (for `curl` or Postman) (_required_) - The workflow optimization type. Available values include 
+- `<TYPE>` (for the Python SDK) or `<type>` (for `curl` or Postman) (_required_) - The workflow optimization type. [Learn more](/platform/partitioning). Available values include 
   `ADVANCED`, `BASIC`, `PLATINUM`, and `CUSTOM` (for the Python SDK) or 
   `advanced`, `basic`, `platinum`, and `custom` (for `curl` or Postman). 
   If `<TYPE>` is set to `CUSTOM` (for the Python SDK), or if `<type>` is set to `custom` (for `curl` or Postman), you must add a `worfklow_nodes` array. For instructions, see [Custom workflow DAG nodes](#custom-workflow-dag-nodes).
-- `<SCHEDULE-TIMEFRAME>` (for the Python SDK) or `<schedule-timeframe>` (for `curl` or Postman) - The repeating automatic run schedule, specified as a predefined phrase. The available predefined phrases are:
+- `<schedule-timeframe>` - The repeating automatic run schedule, specified as a predefined phrase. The available predefined phrases are:
 
-  - `EVERY_15_MINUTES` (for the Python SDK) or `every 15 minutes` (for `curl` or Postman): Every 15 minutes (cron expression: `*/15 * * * *`).
-  - `EVERY_HOUR` (for the Python SDK) or `every hour` (for `curl` or Postman): At the first minute of every hour (cron expression: `0 * * * *`).
-  - `EVERY_2_HOURS` (for the Python SDK) or `every 2 hours` (for `curl` or Postman): At the first minute of every second hour (cron expression: `0 */2 * * *`).
-  - `EVERY_4_HOURS` (for the Python SDK) or `every 4 hours` (for `curl` or Postman): At the first minute of every fourth hour (cron expression: `0 */4 * * *`).
-  - `EVERY_6_HOURS` (for the Python SDK) or `every 6 hours` (for `curl` or Postman): At the first minute of every sixth hour (cron expression: `0 */6 * * *`).
-  - `EVERY_8_HOURS` (for the Python SDK) or `every 8 hours` (for `curl` or Postman): At the first minute of every eighth hour (cron expression: `0 */8 * * *`).
-  - `EVERY_10_HOURS` (for the Python SDK) or `every 10 hours` (for `curl` or Postman): At the first minute of every tenth hour (cron expression: `0 */10 * * *`).
-  - `EVERY_12_HOURS` (for the Python SDK) or `every 12 hours` (for `curl` or Postman): At the first minute of every twelfth hour (cron expression: `0 */12 * * *`).
-  - `DAILY` (for the Python SDK) or `daily` (for `curl` or Postman): At the first minute of every day (cron expression: `0 0 * * *`).
-  - `WEEKLY` (for the Python SDK) or `weekly` (for `curl` or Postman): At the first minute of every Sunday (cron expression: `0 0 * * 0`).
-  - `MONTHLY` (for the Python SDK) or `monthly` (for `curl` or Postman): At the first minute of the first day of every month (cron expression: `0 0 1 * *`).
+  - `every 15 minutes` (for `curl` or Postman): Every 15 minutes (cron expression: `*/15 * * * *`).
+  - `every hour`: At the first minute of every hour (cron expression: `0 * * * *`).
+  - `every 2 hours`: At the first minute of every second hour (cron expression: `0 */2 * * *`).
+  - `every 4 hours`: At the first minute of every fourth hour (cron expression: `0 */4 * * *`).
+  - `every 6 hours`: At the first minute of every sixth hour (cron expression: `0 */6 * * *`).
+  - `every 8 hours`: At the first minute of every eighth hour (cron expression: `0 */8 * * *`).
+  - `every 10 hours`: At the first minute of every tenth hour (cron expression: `0 */10 * * *`).
+  - `every 12 hours`: At the first minute of every twelfth hour (cron expression: `0 */12 * * *`).
+  - `daily`: At the first minute of every day (cron expression: `0 0 * * *`).
+  - `weekly`: At the first minute of every Sunday (cron expression: `0 0 * * 0`).
+  - `monthly`: At the first minute of the first day of every month (cron expression: `0 0 1 * *`).
     
   If `schedule` is not specified, the workflow does not automatically run on a repeating schedule.
 
@@ -213,19 +225,29 @@ In the request body, specify the settings for the workflow. For the specific set
         import os
 
         from unstructured_client import UnstructuredClient
-        from unstructured_client.models.operations import UpdateWorkflowRequest
         from unstructured_client.models.shared import (
-            UpdateWorkflow,
-            WorkflowType,
             WorkflowNode,
             WorkflowNodeType,
-            Settings,
-            CreateWorkflowSchedule
-        )
+            UpdateWorkflow,
+            WorkflowType,
+            Schedule,
+        ),
+        from unstructured_client.models.operations import UpdateWorkflowRequest
+        
         
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
+
+        workflow_node = WorkflowNode(
+            # Specify the settings for a workflow node here.
+        )
+
+        another_workflow_node = WorkflowNode(
+            # Specify the settings for another workflow node here.
+        )
+
+        # And so on for any additional nodes.
 
         workflow = UpdateWorkflow(
             # Specify the settings for the workflow here.
@@ -292,7 +314,7 @@ In the request body, specify the settings for the workflow. For the specific set
 
 ## Custom workflow DAG nodes
 
-If `workflow_type` is set to `custom`, you must also specify the settings for the workflow's 
+If `WorkflowType` is set to `CUSTOM` (for the Python SDK), or if `workflow_type` is set to `custom` (for `curl` or Postman), you must also specify the settings for the workflow's 
 directed acyclic graph (DAG) nodes. These nodes' settings are specified in the `workflow_nodes` array.
 
 - A **Source** node is automatically created when you specify the `source_id` value outside of the  
@@ -334,93 +356,94 @@ determines the partition strategy to use.
 
 #### Fast strategy
 
-```json
-"...": "...",
-"workflow_nodes": [
-    {
-        "name": "Partitioner",
-        "type": "partition",
-        "subtype": "unstructured_api",
-        "settings": {
-            "strategy": "fast",
-            "include_page_breaks": <true|false>,
-            "pdf_infer_table_structure": <true|false>,
-            "exclude_elements": [
-                "<element-name>",
-                "<element-name>"
-            ],
-            "xml_keep_tags": <true|false>,
-            "encoding": "<encoding>",
-            "ocr_languages": [
-                "<language-code>",
-                "<language-code>"
-            ],
-            "extract_image_block_types": [
-                "image",
-                "table"
-            ],
-            "infer_table_structure": <true|false>
-        }
-    }
-],
-"...": "..."
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "partition"` is `type=WorkflowNodeType.PARTITION`.
+- `true` and `false` are `True` and `False`.
+
+```text
+"name": "Partitioner",
+"type": "partition",
+"subtype": "unstructured_api",
+"settings": {
+    "strategy": "fast",
+    "include_page_breaks": <true|false>,
+    "pdf_infer_table_structure": <true|false>,
+    "exclude_elements": [
+        "<element-name>",
+        "<element-name>"
+    ],
+    "xml_keep_tags": <true|false>,
+    "encoding": "<encoding>",
+    "ocr_languages": [
+        "<language-code>",
+        "<language-code>"
+    ],
+    "extract_image_block_types": [
+        "image",
+        "table"
+    ],
+    "infer_table_structure": <true|false>
+}
 ```
 
 #### High Res strategy
 
-```json
-"...": "...",
-"workflow_nodes": [
-    {
-        "name": "Partitioner",
-        "type": "partition",
-        "subtype": "unstructured_api",
-        "settings": {
-            "strategy": "hi_res",
-            "include_page_breaks": <true|false>,
-            "pdf_infer_table_structure": <true|false>,
-            "exclude_elements": [
-                "<element-name>",
-                "<element-name>"
-            ],
-            "xml_keep_tags": <true|false>,
-            "encoding": "<encoding>",
-            "ocr_languages": [
-                "<language>",
-                "<language>"
-            ],
-            "extract_image_block_types": [
-                "image",
-                "table"
-            ],
-            "infer_table_structure": <true|false>
-        }
-    }
-],
-"...": "..."
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "partition"` is `type=WorkflowNodeType.PARTITION`.
+- `true` and `false` are `True` and `False`.
+
+```text
+"name": "Partitioner",
+"type": "partition",
+"subtype": "unstructured_api",
+"settings": {
+    "strategy": "hi_res",
+    "include_page_breaks": <true|false>,
+    "pdf_infer_table_structure": <true|false>,
+    "exclude_elements": [
+        "<element-name>",
+        "<element-name>"
+    ],
+    "xml_keep_tags": <true|false>,
+    "encoding": "<encoding>",
+    "ocr_languages": [
+        "<language>",
+        "<language>"
+    ],
+    "extract_image_block_types": [
+        "image",
+        "table"
+    ],
+    "infer_table_structure": <true|false>
+}
 ```
 
 #### VLM strategy
 
-```json
-"...": "...",
-"workflow_nodes": [
-    {
-        "name": "Partitioner",
-        "type": "partition",
-        "subtype": "vlm",
-        "settings": {
-            "provider": "<provider>",
-            "provider_api_key": null,
-            "model": "<model>",
-            "output_format": "text/html",
-            "user_prompt": null,
-            "format_html": true,
-            "unique_element_ids": <true|false>
-        }
-    }
-],
-"...": "...",
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "partition"` is `type=WorkflowNodeType.PARTITION`.
+- `true` and `false` are `True` and `False`.
+- `null` is `None`.
+
+```text
+"name": "Partitioner",
+"type": "partition",
+"subtype": "vlm",
+"settings": {
+    "provider": "<provider>",
+    "provider_api_key": null,
+    "model": "<model>",
+    "output_format": "text/html",
+    "user_prompt": null,
+    "format_html": true,
+    "unique_element_ids": <true|false>
+}
 ```
 
 Allowed values for `provider` and `model` include:
@@ -448,136 +471,121 @@ Allowed values for `provider` and `model` include:
 
 #### Chunk by Character strategy
 
-```json
-"...": "..."
-"workflow_nodes": [
-    {
-        "...": "..."
-    },
-    {
-        "name": "Chunker",
-        "type": "chunk",
-        "subtype": "chunk_by_character",
-        "settings": {
-            "unstructured_api_url": null,
-            "unstructured_api_key": null,
-            "include_orig_elements": <true|false>,
-            "new_after_n_chars": <new-after-n-chars>,
-            "max_characters": <max-characters>,
-            "overlap": <overlap>,
-            "overlap_all": <true|false>,
-            "contextual_chunking_strategy": "v1"
-        }
-    }
-],
-"...": "..."
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "chunk"` is `type=WorkflowNodeType.CHUNK`.
+- `true` and `false` are `True` and `False`.
+- `null` is `None`.
+
+```text
+"name": "Chunker",
+"type": "chunk",
+"subtype": "chunk_by_character",
+"settings": {
+    "unstructured_api_url": null,
+    "unstructured_api_key": null,
+    "include_orig_elements": <true|false>,
+    "new_after_n_chars": <new-after-n-chars>,
+    "max_characters": <max-characters>,
+    "overlap": <overlap>,
+    "overlap_all": <true|false>,
+    "contextual_chunking_strategy": "v1"
+}
 ```
 
 #### Chunk by Title strategy
 
-```json
-"...": "..."
-"workflow_nodes": [
-    {
-        "...": "..."
-    },
-    {
-        "name": "Chunker",
-        "type": "chunk",
-        "subtype": "chunk_by_title",
-        "settings": {
-            "unstructured_api_url": null,
-            "unstructured_api_key": null,
-            "multipage_sections": <true|false>,
-            "combine_text_under_n_chars": <combine-text-under-n-chars>,
-            "include_orig_elements": <true|false>,
-            "new_after_n_chars": <new-after-n-chars>,
-            "max_characters": <max-characters>,
-            "overlap": <overlap>,
-            "overlap_all": <true|false>,
-            "contextual_chunking_strategy": "v1"
-        }
-    }
-],
-"...": "..."
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "chunk"` is `type=WorkflowNodeType.CHUNK`.
+- `true` and `false` are `True` and `False`.
+- `null` is `None`.
+
+```text
+"name": "Chunker",
+"type": "chunk",
+"subtype": "chunk_by_title",
+"settings": {
+    "unstructured_api_url": null,
+    "unstructured_api_key": null,
+    "multipage_sections": <true|false>,
+    "combine_text_under_n_chars": <combine-text-under-n-chars>,
+    "include_orig_elements": <true|false>,
+    "new_after_n_chars": <new-after-n-chars>,
+    "max_characters": <max-characters>,
+    "overlap": <overlap>,
+    "overlap_all": <true|false>,
+    "contextual_chunking_strategy": "v1"
+}
 ```
 
 #### Chunk by Page strategy
 
-```json
-"...": "..."
-"workflow_nodes": [
-    {
-        "...": "..."
-    },
-    {
-        "name": "Chunker",
-        "type": "chunk",
-        "subtype": "chunk_by_page",
-        "settings": {
-            "unstructured_api_url": null,
-            "unstructured_api_key": null,
-            "include_orig_elements": <true|false>,
-            "new_after_n_chars": <new-after-n-chars>,
-            "max_characters": <max-characters>,
-            "overlap": <overlap>,
-            "overlap_all": <true|false>,
-            "contextual_chunking_strategy": "v1"
-        }
-    }
-],
-"...": "..."
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "chunk"` is `type=WorkflowNodeType.CHUNK`.
+- `true` and `false` are `True` and `False`.
+- `null` is `None`.
+
+```text
+"name": "Chunker",
+"type": "chunk",
+"subtype": "chunk_by_page",
+"settings": {
+    "unstructured_api_url": null,
+    "unstructured_api_key": null,
+    "include_orig_elements": <true|false>,
+    "new_after_n_chars": <new-after-n-chars>,
+    "max_characters": <max-characters>,
+    "overlap": <overlap>,
+    "overlap_all": <true|false>,
+    "contextual_chunking_strategy": "v1"
+}
 ```
 
 #### Chunk by Similarity strategy
 
-```json
-"...": "..."
-"workflow_nodes": [
-    {
-        "...": "..."
-    },
-    {
-        "name": "Chunker",
-        "type": "chunk",
-        "subtype": "chunk_by_similarity",
-        "settings": {
-            "unstructured_api_url": null,
-            "unstructured_api_key": null,
-            "include_orig_elements": <true|false>,
-            "new_after_n_chars": <true|false>,
-            "max_characters": <max-characters>,
-            "overlap": <overlap>,
-            "overlap_all": <true|false>,
-            "contextual_chunking_strategy": "v1",
-            "similarity_threshold": <similarity-threshold>
-      }
-    }
-],
-"...": "..."
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "chunk"` is `type=WorkflowNodeType.CHUNK`.
+- `true` and `false` are `True` and `False`.
+- `null` is `None`.
+
+```text
+"name": "Chunker",
+"type": "chunk",
+"subtype": "chunk_by_similarity",
+"settings": {
+    "unstructured_api_url": null,
+    "unstructured_api_key": null,
+    "include_orig_elements": <true|false>,
+    "new_after_n_chars": <true|false>,
+    "max_characters": <max-characters>,
+    "overlap": <overlap>,
+    "overlap_all": <true|false>,
+    "contextual_chunking_strategy": "v1",
+    "similarity_threshold": <similarity-threshold>
+}
 ```
 
 ### Enrichment node
 
 #### Image Description task
 
-```json
-"...": "..."
-"workflow_nodes": [
-    {
-        "...": "..."
-    },
-    {
-      "name": "Enrichment",
-      "type": "prompter",
-      "subtype": "<subtype>",
-      "settings": {}
-    },
-    {
-        "...": "..."
-    }
-],
-"...": "..."
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "prompter"` is `type=WorkflowNodeType.PROMPTER`.
+
+```text
+"name": "Enrichment",
+"type": "prompter",
+"subtype": "<subtype>",
+"settings": {}
 ```
 
 Allowed values for `<subtype>` include:
@@ -588,23 +596,16 @@ Allowed values for `<subtype>` include:
 
 #### Table Description task
 
-```json
-"...": "..."
-"workflow_nodes": [
-    {
-        "...": "..."
-    },
-    {
-      "name": "Enrichment",
-      "type": "prompter",
-      "subtype": "<subtype>",
-      "settings": {}
-    },
-    {
-        "...": "..."
-    }
-],
-"...": "..."
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "prompter"` is `type=WorkflowNodeType.PROMPTER`.
+
+```text
+"name": "Enrichment",
+"type": "prompter",
+"subtype": "<subtype>",
+"settings": {}
 ```
 
 Allowed values for `<subtype>` include:
@@ -615,72 +616,52 @@ Allowed values for `<subtype>` include:
 
 #### Table to HTML task
 
-```json
-"...": "..."
-"workflow_nodes": [
-    {
-        "...": "..."
-    },
-    {
-      "name": "Enrichment",
-      "type": "prompter",
-      "subtype": "openai_table2html",
-      "settings": {}
-    },
-    {
-        "...": "..."
-    }
-],
-"...": "..."
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "prompter"` is `type=WorkflowNodeType.PROMPTER`.
+
+```text
+"name": "Enrichment",
+"type": "prompter",
+"subtype": "openai_table2html",
+"settings": {}
 ```
 
 #### Named Entity Recognition (NER) task
 
-```json
-"...": "..."
-"workflow_nodes": [
-    {
-        "...": "..."
-    },
-    {
-        "name": "Enrichment",
-        "type": "prompter",
-        "subtype": "openai_ner",
-        "settings": {
-            "prompt_interface_overrides": {
-                "prompt": {
-                    "user": "<user-prompt-override>"
-                } 
-            }
-        }
-    },
-    {
-        "...": "..."
-    }
-],
-"...": "..."
-```
+The following example is for `curl` and Postman. For the Python SDK:
 
-Replace the preceding placeholders as follows:
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "prompter"` is `type=WorkflowNodeType.PROMPTER`.
+
+```text
+"name": "Enrichment",
+"type": "prompter",
+"subtype": "openai_ner",
+"settings": {
+    "prompt_interface_overrides": {
+        "prompt": {
+            "user": "<user-prompt-override>"
+        } 
+    }
+}
+```
 
 ### Embedder node
 
-```json
-"...": "..."
-"workflow_nodes": [
-    {
-        "...": "..."
-    },
-    {
-      "name": "Embedder",
-      "type": "embed",
-      "subtype": "<subtype>",
-      "settings": {
-        "model_name": "<model-name>"
-      }
-    }
-],
-"...": "..."
+The following example is for `curl` and Postman. For the Python SDK:
+
+- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
+- `"type": "embed"` is `type=WorkflowNodeType.EMBED`.
+
+```text
+"name": "Embedder",
+"type": "embed",
+"subtype": "<subtype>",
+"settings": {
+    "model_name": "<model-name>"
+}
 ```
 
 Allowed values for `subtype` and `model_name` include:
