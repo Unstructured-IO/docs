@@ -1,0 +1,15 @@
+```bash REST (Change)
+curl --request 'PUT' --location \
+"$UNSTRUCTURED_API_URL/sources/<connector-id>" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header 'content-type: application/json' \
+--data \
+'{
+    "config": {
+        "remote_url": "<remote-url>",
+        "recursive": <true|false>,
+        "box_app_config": "<box-app-config>" 
+    }
+}'
+```

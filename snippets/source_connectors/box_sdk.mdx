@@ -1,0 +1,14 @@
+```python Python SDK
+# ...
+from unstructured_client.models.shared import <Create|Update>SourceConnector
+# ...
+source_connector = <Create|Update>SourceConnector(
+    name="<name>", # Create only.
+    type="box", # Create only.
+    config={
+        "remote_url": "<remote-url>",
+        "recursive": "<true|false>",
+        "box_app_config": "<box-app-config>"
+    }
+)
+```
