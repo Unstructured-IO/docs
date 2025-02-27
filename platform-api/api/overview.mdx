@@ -13,66 +13,30 @@ to deliver the highest quality results at the lowest cost.
 This page provides an overview of the Unstructured Platform Workflow Endpoint. This endpoint enables Unstructured Platform UI automation usage 
 scenarios as well as for documentation, reporting, and recovery needs. 
 
-<iframe
-width="560"
-height="315"
-src="https://www.youtube.com/embed/D4ami9OZdUw"
-title="YouTube video player"
-frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-allowfullscreen
-></iframe>
+## Quickstart
 
-## Requirements
+import SharedPlatformAPI from '/snippets/quickstarts/platform-api.mdx';
 
-To use the Unstructured Platform Workflow Endpoint, you must have:
+<SharedPlatformAPI />
 
-- **An Unstructured account**, created through the [For Developers](https://unstructured.io/developers) page, with one of the following plans:
+## Unstructured Python SDK
 
-  - A [pay-per-page plan](https://unstructured.io/developers#get-started).
-  - A [subscribe-and-save plan](https://unstructured.io/subscribeandsave)
-
-- **An Unstructured API key**, created through your Unstructured account console.
-
-  <Note>
-      If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API key creation process 
-      might be different. For API key creation guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
-  </Note>
-
-  <img src="https://unstructured-tech-docs.s3.amazonaws.com/Unstructured-Platform-APIKeyURL.gif" alt="Unstructured API key how-to" width="500" />
-
-  To create an API key, do the following:
-
-  ![Unstructured account settings](/img/platform/AccountSettings.png)
-
-  ![Unstructured API key](/img/platform/APIKeyOnly.png)
-
-  1. Sign in to the Unstructured Platform UI. [Learn how](/platform/quickstart).
-  2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
-  3. On the **API Keys** tab, click **Generate New Key**.
-  4. Enter some descriptive name for the API key, and then click **Save**.
-  5. Click the **Copy** icon for your new API key. The API key's value is copied to your system's clipboard.
-
-The Unstructured Platform Workflow Endpoint is offered as part of the Unstructured Python SDK and as a set of Representational State Transfer (REST) endpoints.
-
-### Unstructured Python SDK
-
-The [Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client), beginning with version 0.30.5, 
+The [Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client), beginning with version 0.30.6, 
 allows you to call the Unstructured Platform Workflow Endpoint through standard Python code.
 
 To install the Unstructured Python SDK, run the following command from within your Python virtual environment:
 
 ```bash
-pip install "unstructured-client>=0.30.5"
+pip install "unstructured-client>=0.30.6"
 ```
 
-If you already have the Unstructured Python SDK installed, upgrade to at least version 0.30.5 by running the following command instead:
+If you already have the Unstructured Python SDK installed, upgrade to at least version 0.30.6 by running the following command instead:
 
 ```bash
-pip install --upgrade "unstructured-client>=0.30.5"
+pip install --upgrade "unstructured-client>=0.30.6"
 ```
 
-### REST endpoints
+## REST endpoints
 
 The Unstructured Platform Workflow Endpoint is also callable from a set of Representational State Transfer (REST) endpoints, which you can call through standard REST-enabled 
 utilities, tools, programming languages, packages, and libraries. The following sections describe how to call the Unstructured Platform Workflow Endpoint with 
@@ -99,7 +63,7 @@ To call the REST endpoints, you must specify the Unstructured **Platform API URL
     API URL throughout the following examples.
 </Note>
 
-### Restrictions
+## Restrictions
 
 The following Unstructured SDKs, tools, and libraries do _not_ work with the Unstructured Platform Workflow Endpoint:
 

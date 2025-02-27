@@ -1,12 +1,13 @@
-This quickstart uses the Unstructured Python SDK to get all of your data RAG-ready. Data is processed on Unstructured-hosted compute resources.
+This quickstart uses the Unstructured Python SDK to call the Unstructured Platform Workflow Endpoint to get your data RAG-ready. The Python code for this 
+quickstart is in a remote hosted Google Collab notebook. Data is processed on Unstructured-hosted compute resources.
 
-The requirements are as follows.
+The requirements are as follows:
 
 - A compatible source (input) location that contains your data for Unstructured to process. [See the list of supported source types](/platform/connectors#sources). 
-  This quickstart uses an Amazon S3 bucket as the source location.
-- For document-based source locations, compatible files in that location. [See the list of supported file types](/platform/supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+  This quickstart uses an Amazon S3 bucket as the source location. If you use a different source type, you will need to modify the quickstart notebook accordingly.
+- For document-based source locations, compatible files in that location. [See the list of supported file types](/platform/supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the `Unstructured-IO/unstructured-ingest` repository in GitHub.
 - A compatible destination (output) location for Unstructured to put the processed data. [See the list of supported destination types](/platform/connectors#destinations). 
-  For this quickstart's destination location, a different folder in the same Amazon S3 bucket as the source location is used.
+  For this quickstart's destination location, a different folder in the same Amazon S3 bucket as the source location is used. If you use a different destination S3 bucket or a different destination type, you will need to modify the quickstart notebook accordingly.
 
 <Steps>
     <Step title="Sign up">
@@ -70,7 +71,9 @@ The requirements are as follows.
     </Step>
     <Step title="Create and set up the S3 bucket">
         This quickstart uses an Amazon S3 bucket as both the source location and the destination location. 
-        (You can use other source and destination types that are supported by Unstructured. However, they will not work with this particular quickstart.)
+        (You can use other source and destination types that are supported by Unstructured. 
+        If you use a different source or destination type, or if you use a different S3 bucket for the destination location, 
+        you will need to modify the quickstart notebook accordingly.)
         
         Inside of the S3 bucket, a folder named `input` represents the 
         source location. This is where your files to be processed will be stored. 
@@ -83,7 +86,7 @@ The requirements are as follows.
         Learn how to [create an S3 bucket and set it up for Unstructured](/platform-api/api/sources/s3). (Do not run the Python SDK code or REST commands at the end of those setup instructions.)
     </Step>
     <Step title="Run the quickstart notebook">
-       After your S3 bucket is created and set up, follow the instructions in this [quickstart notebook]().
+       After your S3 bucket is created and set up, follow the instructions in this [quickstart notebook](https://colab.research.google.com/drive/13f5C9WtUvIPjwJzxyOR3pNJ9K9vnF4ww).
     </Step>
     <Step title="View the processed data">
         After you run the quickstart notebook, go to your destination location to view the processed data.

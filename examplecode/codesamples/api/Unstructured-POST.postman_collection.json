@@ -31,14 +31,29 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "files",
-							"type": "file",
-							"src": []
+							"key": "content_type",
+							"value": "string",
+							"type": "text"
 						},
 						{
 							"key": "strategy",
-							"value": "hi_res",
+							"value": "vlm",
 							"type": "text"
+						},
+						{
+							"key": "vlm_model_provider",
+							"value": "openai",
+							"type": "text"
+						},
+						{
+							"key": "vlm_model",
+							"value": "gpt-4o",
+							"type": "text"
+						},
+						{
+							"key": "files",
+							"type": "file",
+							"src": []
 						}
 					]
 				},
@@ -48,62 +63,6 @@
 					"host": [
 						"api",
 						"unstructuredapp",
-						"io"
-					],
-					"path": [
-						"general",
-						"v0",
-						"general"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "(Free API) Basic Request",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Content-Type",
-						"value": "multipart/form-data",
-						"type": "text"
-					},
-					{
-						"key": "unstructured-api-key",
-						"value": "",
-						"type": "text"
-					}
-				],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "files",
-							"type": "file",
-							"src": []
-						},
-						{
-							"key": "strategy",
-							"value": "hi_res",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "https://api.unstructured.io/general/v0/general",
-					"protocol": "https",
-					"host": [
-						"api",
-						"unstructured",
 						"io"
 					],
 					"path": [

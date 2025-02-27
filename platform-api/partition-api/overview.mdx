@@ -112,13 +112,53 @@ import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx'
 
 ## Quickstart
 
-These examples use your local machine. They send a source (input) file from your local machine to the Unstructured Platform Partition Endpoint which then delivers the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
+This example uses the [curl](https://curl.se/) utility on your local machine to call the Unstructured Platform Partition Endpoint. It sends a source (input) file from your local machine to the Unstructured Platform Partition Endpoint which then delivers the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
 
-import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serverless-api.mdx';
+If you do not have a source file readily available, you could use for example a sample PDF file containing the text of the United States Constitution, 
+available for download from [https://constitutioncenter.org/media/files/constitution.pdf](https://constitutioncenter.org/media/files/constitution.pdf).
 
-<NoURLForServerlessAPI/>
+<Steps>
+    <Step title="Set environment variables">
+        From your terminal or Command Prompt, set the following two environment variables. 
+        
+        - Replace `<your-unstructured-api-url>` with the Unstructured Platform Partition Endpoint URL, which is `https://api.unstructuredapp.io/general/v0/general`
+        - Replace `<your-unstructured-api-key>` with your Unstructured API key, which you generated earlier on this page.
 
+        ```bash
+        export UNSTRUCTURED_API_URL=<your-unstructured-api-url>
+        export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
+        ```
+    </Step>
+    <Step title="Run the curl command">
+        Run the following `curl` command, replacing `<path/to/file>` with the path to the source file on your local machine.
 
+        If the source file is not a PDF file, then remove `;type=application/pdf` from the final `--form` option in this command.
+
+        ```bash
+        curl --request 'POST' \
+        "$UNSTRUCTURED_API_URL" \
+        --header 'accept: application/json' \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header 'content-Type: multipart/form-data' \
+        --form 'content_type=string' \
+        --form 'strategy=vlm' \
+        --form 'vlm_model_provider=openai' \
+        --form 'vlm_model=gpt-4o' \
+        --form 'output_format=application/json' \
+        --form 'files=@<path/to/file>;type=application/pdf'
+        ```
+    </Step>
+    <Step title="Examine the results">
+        After you run the `curl` command, the results are printed to your terminal or Command Prompt. The command might take several 
+        minutes to complete.
+
+        By default, the JSON is printed without indenting or other whitespace. You can pretty-print the JSON output by using utilities such as [jq](https://jqlang.org/tutorial/) in future command runs. 
+        
+        You can also pipe the JSON output to a local file by using the `curl` option [-o, --output \<file\>](https://curl.se/docs/manpage.html#-o) in future command runs.
+    </Step>
+</Steps>
+
+You can also call the Unstructured Platform Partition Endpoint by using the [Unstructured Python SDK](/platform-api/partition-api/sdk-python) or the [Unstructured JavaScript/TypeScript SDK](/platform-api/partition-api/sdk-jsts).
 
 ## Telemetry
 

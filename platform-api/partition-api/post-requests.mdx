@@ -3,27 +3,28 @@ title: Process an individual file by making a direct POST request
 sidebarTitle: POST request
 ---
 
-import UseIngestOrPlatformInstead from '/snippets/general-shared-text/use-ingest-or-platform-instead.mdx';
-
-<UseIngestOrPlatformInstead />
-
-To make POST requests, you will need:
+To make POST requests to the Unstructured Platform Partition Endpoint, you will need:
 
 import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
 <SharedAPIKeyURL />
 
-Let's start with a simple example in which you send a PDF file (`*.pdf`) to partition via Unstructured API. 
+Let's start with a simple example in which you use [curl](https://curl.se/) to send a local PDF file (`*.pdf`) to partition via the Unstructured Platform Partition Endpoint.
+
+In this command, be sure to replace `<path/to/file>` with the path to your local PDF file.
 
 ```bash
- curl -X 'POST' \
-  '$UNSTRUCTURED_API_URL' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: multipart/form-data' \
-  -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
-  -F 'files=@sample-docs/report.pdf' \
-  -F 'strategy=hi_res' \
-  -o 'sample-docs/report.json'
+curl --request 'POST' \
+"$UNSTRUCTURED_API_URL" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header 'content-Type: multipart/form-data' \
+--form 'content_type=string' \
+--form 'strategy=vlm' \
+--form 'vlm_model_provider=openai' \
+--form 'vlm_model=gpt-4o' \
+--form 'output_format=application/json' \
+--form 'files=@<path/to/file>;type=application/pdf'
 ```
 
 In the example above we're representing the API endpoint with the environment variable `UNSTRUCTURED_API_URL`. Note, however, that you also need to authenticate yourself with
@@ -31,7 +32,7 @@ your individual API Key, represented by the environment variable `UNSTRUCTURED_A
 
 ## Parameters & examples
 
-The API parameters are the same across all methods of accessing the Unstructured API.
+The API parameters are the same across all methods of accessing the Unstructured Platform Partition Endpoint.
 
 * Refer to the [API parameters](/platform-api/partition-api/api-parameters) page for the full list of available parameters.
 * Refer to the [Examples](/platform-api/partition-api/examples) page for some inspiration on using the parameters.
@@ -55,25 +56,12 @@ Unstructured offers a [Postman collection](https://learning.postman.com/docs/col
    ```
 
 5. On the sidebar, click **Collections**.
-
-   ![Collections icon in the sidebar](/img/api/post/collection.png)
-
 6. Expand **Unstructured POST**.
 7. Click **(Platform Partition Endpoint) Basic Request**.
 8. On the **Headers** tab, next to `unstructured-api-key`, enter your Unstructured API key in the **Value** column.
-
-   ![Headers tab in the request area](/img/api/post/headers.png) 
-
-   <UseTheCorrectAPIKey />
-
 9. On the **Body** tab, next to `files`, click the **Select files** box in the **Value** column.
-
-   ![Body tab in the request area](/img/api/post/body.png) 
-
-11. Click **New file from local machine**.
-12. Browse to and select the file that you want Unstructured to process. 
-13. Click **Send**.
+10. Click **New file from local machine**.
+11. Browse to and select the file that you want Unstructured to process. 
+12. Click **Send**. Processing could take several minutes.
 
 To download the processed data to your local machine, in the response area, click the ellipses, and then click **Save response to file**.
-
-![Save response to file in the response area](/img/api/post/save.png)
