@@ -190,10 +190,17 @@ Replace the preceding placeholders as follows:
 - `<destination-connector-id>` (_required_) - The ID of the target destination connector. To get the ID, 
   use the `UnstructuredClient` object's `destinations.list_destinations` function (for the Python SDK) or 
   the `GET` method to call the `/destinations` endpoint (for `curl` or Postman). [Learn more](/platform-api/api/overview#list-destination-connectors).
-- `<TYPE>` (for the Python SDK) or `<type>` (for `curl` or Postman) (_required_) - The workflow optimization type. [Learn more](/platform/partitioning). Available values include 
-  `ADVANCED`, `BASIC`, `PLATINUM`, and `CUSTOM` (for the Python SDK) or 
-  `advanced`, `basic`, `platinum`, and `custom` (for `curl` or Postman). 
+- `<TYPE>` (for the Python SDK) or `<type>` (for `curl` or Postman) (_required_) - The workflow type. Available values include `CUSTOM` (for the Python SDK) and `custom` (for `curl` or Postman).
+
   If `<TYPE>` is set to `CUSTOM` (for the Python SDK), or if `<type>` is set to `custom` (for `curl` or Postman), you must add a `worfklow_nodes` array. For instructions, see [Custom workflow DAG nodes](#custom-workflow-dag-nodes).
+
+  <Note>
+      The previously-available workflow optimization types `ADVANCED`, `BASIC`, and `PLATINUM` (for the Python SDK) and 
+      `advanced`, `basic`, and `platinum` (for `curl` or Postman) are non-operational and planned to be fully removed in a future release. 
+
+      The ability to create an [automatic workflow](/platform/workflows#create-an-automatic-workflow) type is currently not available but is planned to be added in a future release.
+  </Note>
+
 - `<schedule-timeframe>` - The repeating automatic run schedule, specified as a predefined phrase. The available predefined phrases are:
 
   - `every 15 minutes` (for `curl` or Postman): Every 15 minutes (cron expression: `*/15 * * * *`).
