@@ -4,77 +4,13 @@ title: Speed up processing of large files and batches
 
 When you use Unstructured, here are some techniques that you can try to help speed up the processing of large files and large batches of files.
 
-- Choose your partitioning strategy wisely. For example, if you have simple PDFs that don't have images and tables, you might be able to use the `fast` strategy. Try the `fast` strategy on a few of your documents before you try using the `hi_res` strategy. [Learn more](/platform-api/partition-api/partitioning).
-- For processing large numbers of documents, use [ingestion](/ingestion/overview) and [add CPUs](#adding-cpus).
-- For processing large individual PDF files with the Unstructured SDKs, [use PDF splitting parameters](#pdf-files).
+Choose your partitioning strategy wisely. For example, if you have simple PDFs that don't have images and tables, you might be able to use the `fast` strategy. Try the `fast` strategy on a few of your documents before you try using the `hi_res` strategy. [Learn more](/platform-api/partition-api/partitioning).
 
-## Adding CPUs
+To speed up PDF file processing, the [Unstructured SDK for Python](/platform-api/partition-api/sdk-python) and the [Unstructured SDK for JavaScript/TypeScript](/platform-api/partition-api/sdk-jsts) provide the following parameters to help speed up processing a large PDF file:
 
-For speeding up file processing during [ingestion](/ingestion/overview), the Unstructured CLI and Unstructured Python Ingest enable you to instruct Unstructured to use additional local CPUs where applicable. 
-
-Using additional local CPUs applies only to pipeline steps that Unstructured logs as being processed across CPUs. It does not apply to pipeline steps that are logged as being processed asynchronously. To get a list of which operations are processed where, look for the following log messages when you run an ingest pipeline:
-
-- Steps that are processed across CPUs correspond to log messages that read: `processing content across processes`. These steps might benefit by setting a higher number of local CPUs to be used.
-- Steps that are processed asynchronously correspond to log messages that read: `processing content across processes`. Any settings to use a higher number of local CPUs are ignored for these steps.
-
-For the Unstructured CLI, you can set `--num-processes` to the maximum number of available local CPUs that you want to use where applicable, for example:
-
-```bash
-unstructured-ingest \
-  local \
-    --num-processes <number>
-    # ...
-```
-
-To get the maximum number of available local logical CPUs that can be used where applicable, see your operating system's documentation.
-
-For Unstructured Python Ingest, you can set the `ProcessorConfig` object's `num_processes` parameter to the maximum number of available local CPUs that you want to use where applicable, for example:
-
-<CodeGroup>
-    ```python Python Ingest v2
-    from unstructured_ingest.v2.interfaces import ProcessorConfig
-
-    # ...
-
-    if __name__ == "__main__":
-        Pipeline.from_configs(
-            context=ProcessorConfig(
-                num_processes=<number>,
-                # ...  
-            ),
-            # ...
-        ).run()
-    ```
-
-    ```python Python Ingest v1
-    from unstructured_ingest.interfaces import (
-        ProcessorConfig,
-        # ...
-    )
-    from unstructured_ingest.runner import LocalRunner
-
-    # ...
-
-    if __name__ == "__main__":
-        runner = LocalRunner(
-            processor_config=ProcessorConfig(
-                num_processes=<number>,
-                # ...
-            ),
-            # ...
-        ).run()
-    ```
-</CodeGroup>
-
-In Python, to specify the maximum number of available local logical CPUs that can be used where applicable, you can call functions such as [os.cpu_count](https://docs.python.org/3/library/os.html#os.cpu_count) and [multiprocessing.cpu_count](https://docs.python.org/3/library/multiprocessing.html#multiprocessing.cpu_count).
-
-## PDF files
-
-To speed up PDF file processing, the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli), the [Unstructured Ingest Python library](/ingestion/python-ingest), the [Unstructured SDK for Python](/platform-api/partition-api/sdk-python), and the [Unstructured SDK for JavaScript/TypeScript](/platform-api/partition-api/sdk-jsts) provide the following parameters to help speed up processing a large PDF file:
-
-- `split_pdf_page` (CLI/Python) or `splitPdfPage` (JavaScript/TypeScript), when set to true, splits the PDF file on the client side before sending it as batches to Unstructured for processing. The number of pages in each batch is determined internally. Batches can contain between 2 and 20 pages.
-- `split_pdf_concurrency_level` (CLI/Python) or `splitPdfConcurrencyLevel` (JavaScript/TypeScript) is an integer that specifies the number of parallel requests. The default is 5. The maximum is 15. This behavior is ignored unless `split_pdf_page` (CLI/Python) or `splitPdfPage` (JavaScript/TypeScript) is also set to true.
-- `split_pdf_allow_failed` (CLI/Python) or splitPdfAllowFailed` (JavaScript/TypeScript), when set to true, allows partitioning to continue even if some pages fail.
-- `split_pdf_page_range` (CLI/Python only) is a list of two integers that specify the beginning and ending page numbers of the PDF file to be sent. A `ValueError` is raised if the specified range is not valid. This behavior is ignored unless `split_pdf_page` is also set to true.
+- `split_pdf_page` (Python) or `splitPdfPage` (JavaScript/TypeScript), when set to true, splits the PDF file on the client side before sending it as batches to Unstructured for processing. The number of pages in each batch is determined internally. Batches can contain between 2 and 20 pages.
+- `split_pdf_concurrency_level` (Python) or `splitPdfConcurrencyLevel` (JavaScript/TypeScript) is an integer that specifies the number of parallel requests. The default is 5. The maximum is 15. This behavior is ignored unless `split_pdf_page` (Python) or `splitPdfPage` (JavaScript/TypeScript) is also set to true.
+- `split_pdf_allow_failed` (Python) or splitPdfAllowFailed` (JavaScript/TypeScript), when set to true, allows partitioning to continue even if some pages fail.
+- `split_pdf_page_range` (Python only) is a list of two integers that specify the beginning and ending page numbers of the PDF file to be sent. A `ValueError` is raised if the specified range is not valid. This behavior is ignored unless `split_pdf_page` is also set to true.
 
 [Learn more](/platform-api/partition-api/sdk-python#page-splitting).

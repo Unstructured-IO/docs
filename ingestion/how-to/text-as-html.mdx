@@ -16,16 +16,12 @@ You will need a document that is one of the document types that can output the `
 
 This example uses a PDF file with an embedded table.
 
-import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
-import ExtractTextAsHTMLPy from '/snippets/how-to-api/extract_text_as_html.py.mdx';
+import ExtractTextAsHTMLIngestPy from '/snippets/how-to-api/extract_text_as_html_ingest.py.mdx';
 
 ## Code
 
-For the [Unstructured Python SDK](/platform-api/partition-api/sdk-python), you'll need:
-<SharedAPIKeyURL />
-<ExtractTextAsHTMLPy />
+For the [Unstructured Ingest Python library](/ingestion/python-ingest), you can use the standard Python 
+[json.load](https://docs.python.org/3/library/json.html#json.load) function to load into a Python dictionary the contents of a JSON 
+file that the Ingest Python library outputs after the processing is complete.
 
-## See also 
-
-- [Extract images and tables from documents](/platform-api/partition-api/extract-image-block-types)
-- [Table Extraction from PDF](/examplecode/codesamples/apioss/table-extraction-from-pdf)
+<ExtractTextAsHTMLIngestPy />

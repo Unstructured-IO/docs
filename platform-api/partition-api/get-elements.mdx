@@ -10,49 +10,9 @@ You want to get, manipulate, and print or save, the contents of the [document el
 
 Each element in the document elements contains fields for that element's type, its ID, the extracted text, and associated metadata.
 
-The programmatic approach you take to get these document elements will depend on which tool, SDK, or library you use:
+The programmatic approach you take to get these document elements will depend on which SDK you use:
 
 <AccordionGroup>
-    <Accordion title="Ingest CLI">
-        For the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli), you can use a tool such as [jq](https://jqlang.github.io/jq/) 
-        to work with a JSON file that the CLI outputs after the processing is complete. 
-        
-        For example, the following script uses `jq` to access and print each element's ID, text, and originating file name:
-
-        ```bash Shell
-        #!/usr/bin/env bash
-        
-        JSON_FILE="local-ingest-output/my-file.json"
-
-        jq -r '.[] | "ID: \(.element_id)\nText: \(.text)\nFilename: \(.metadata.filename)\n"' \
-            "$JSON_FILE"
-        ```
-    </Accordion>
-    <Accordion title="Ingest Python library">
-        For the [Unstructured Ingest Python library](/ingestion/python-ingest), you can use the standard Python 
-        [json.load](https://docs.python.org/3/library/json.html#json.load) function to load into a Python dictionary the contents of a JSON 
-        file that the Ingest Python library outputs after the processing is complete.
-
-        For example, the following code example uses standard Python to access and print each element's ID, text, and originating file name:
-
-        ```python Python
-        import json
-
-        def parse_json_file(input_file_path: str):
-            with open(input_file_path, 'r') as file:
-                file_elements = json.load(file)
-
-            for element in file_elements:
-                print(f"ID: {element["element_id"]}")
-                print(f"Text: {element["text"]}")
-                print(f"Filename: {element["metadata"]["filename"]}\n")
-
-        if __name__ == "__main__":
-            parse_json_file(
-                input_file_path="local-ingest-output/my-file.json"
-            )
-        ```
-    </Accordion>
     <Accordion title="Python SDK">
         For the [Unstructured Python SDK](/platform-api/partition-api/sdk-python), calling an `UnstructuredClient` object's `general.partition_async` method returns a `PartitionResponse` object. 
         
@@ -197,101 +157,6 @@ The programmatic approach you take to get these document elements will depend on
                 fs.writeFileSync(outputFilepath, jsonElements)
             }
         } // ...
-        ```
-    </Accordion>
-    <Accordion title="Open-source library">
-        For the [Unstructured open-source library](/open-source/introduction/overview), calling the `partition_via_api` function returns a list of elements (`list[Element]`). For example:
-
-        ```python Python
-        # ...
-
-        elements = partition_via_api(
-            filename=input_filepath,
-            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            api_url=os.getenv("UNSTRUCTURED_API_URL"),
-            strategy="hi_res"
-        )
-
-        # ...
-        ```
-
-        You can use standard Python [list operations](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) on this list.
-
-        You can also use standard Python [looping techniques](https://docs.python.org/3/tutorial/datastructures.html#looping-techniques) on this list to access each element in this list. 
-
-        Each individual element has the following attributes:
-
-        - `.text` provides the element's `text` field value as a `str`. See [Element example](/open-source/concepts/document-elements#element-example).
-        - `.metadata` provides the element's `metadata` field as an `ElementMetadata` object. See [Metadata](/open-source/concepts/document-elements#metadata).
-        - `.category` provides the element's `type` field value as a `str`. See [Element type](/open-source/concepts/document-elements#element-type).
-        - `.id` provides the element's `element_id` value as a `str`. See [Element ID](/open-source/concepts/document-elements#element-id).
-                
-        In addition, the following methods are available:
-
-        - `.convert_coordinates_to_new_system()` converts the element's location coordinates, if any, to a new coordinate system. See [Element's coordinates](/open-source/concepts/document-elements#elements-coordinates).
-        - `.to_dict()` gets the element's content as a standard Python key-value dictionary (`dict[str, Any]`).
-
-        For example:
-
-        ```python Python
-        # ...
-
-        elements = partition_via_api(
-            filename=input_filepath,
-            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            api_url=os.getenv("UNSTRUCTURED_API_URL"),
-            strategy="hi_res"
-        )
-
-        for element in elements:
-            # Do something with each element, for example:
-            save_element_to_database(f"{element.id}")
-            save_element_to_database(f"{element.text}")
-            save_element_to_database(f"{element.metadata.filename}")
-
-        ```
-
-        To serialize this list as a Python dictionary, you can use the `elements_to_dicts` method, for example:
-
-        ```python Python
-        from unstructured.staging.base import elements_to_dicts
-
-        # ...
-
-        elements = partition_via_api(
-            filename=input_filepath,
-            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            api_url=os.getenv("UNSTRUCTURED_API_URL"),
-            strategy="hi_res"
-        )
-
-        elements_dicts = elements_to_dicts(elements)
-        ```
-
-        To serialize this list as JSON, you can use the `elements_to_json` function to convert the list of elements (`Iterable[Element]`) into a JSON-formatted string and then print or save that string. For example:
-
-        ```python Python
-        from unstructured.staging.base import elements_to_json
-
-        # ...
-
-        elements = partition_via_api(
-            filename=input_filepath,
-            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-            api_url=os.getenv("UNSTRUCTURED_API_URL"),
-            strategy="hi_res"
-        )
-
-        json_elements = elements_to_json(
-            elements=elements,
-            indent=2
-        )
-
-        elements_to_json(
-            elements=elements,
-            indent=2,
-            filename=output_filepath
-        )
         ```
     </Accordion>
 </AccordionGroup>
