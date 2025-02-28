@@ -52,14 +52,13 @@ You will need to chunk a document during processing. This example uses a PDF fil
 
 ## Code
 
-import GetChunkedElementsPy from '/snippets/how-to-api/get_chunked_elements.py.mdx';
-import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+import GetChunkedElementsIngestPy from '/snippets/how-to-api/get_chunked_elements_ingest.py.mdx';
 
-For the [Unstructured Python SDK](/platform-api/partition-api/sdk-python), you'll need:
-<SharedAPIKeyURL />
-<GetChunkedElementsPy />
+For the [Unstructured Ingest Python library](/ingestion/python-ingest), you can use the standard Python 
+[json.load](https://docs.python.org/3/library/json.html#json.load) function to load into a Python dictionary the contents of a JSON 
+file that the Ingest Python library outputs after the processing is complete.
+<GetChunkedElementsIngestPy />
 
 ## See also 
 
 - [Recovering chunk elements](/open-source/core-functionality/chunking#recovering-chunk-elements)
-- [Chunking strategies](/platform-api/partition-api/chunking)

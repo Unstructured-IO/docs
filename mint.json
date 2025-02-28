@@ -345,8 +345,6 @@
           "platform-api/partition-api/choose-partitioning-strategy",
           "platform-api/partition-api/choose-hi-res-model",
           "platform-api/partition-api/get-elements",
-          "platform-api/partition-api/filter-files",
-          "platform-api/partition-api/embedding",
           "platform-api/partition-api/text-as-html",
           "platform-api/partition-api/extract-image-block-types",
           "platform-api/partition-api/get-chunked-elements",
@@ -496,6 +494,20 @@
               "ingestion/destination-connectors/vectara",
               "ingestion/destination-connectors/weaviate"
             ]
+          },
+          {
+            "group": "How-to",
+            "pages": [
+              "ingestion/how-to/overview",
+              "ingestion/how-to/examples",
+              "ingestion/how-to/speed-up-large-files-batches",
+              "ingestion/how-to/get-elements",
+              "ingestion/how-to/filter-files",
+              "ingestion/how-to/embedding",
+              "ingestion/how-to/text-as-html",
+              "ingestion/how-to/extract-image-block-types",
+              "ingestion/how-to/get-chunked-elements"
+            ]
           }
         ]
       },
@@ -606,6 +618,14 @@
       {
         "source": "/platform/api/:slug*",
         "destination": "/platform-api/api/:slug*"
+      },
+      {
+        "source": "/platform-api/partition-api/embedding",
+        "destination": "/ingestion/how-to/embedding"
+      },
+      {
+        "source": "/platform-api/partition-api/filter-files",
+        "destination": "/ingestion/how-to/filter-files"
       }
     ],
     "analytics": {

@@ -1,19 +1,16 @@
 ---
 title: Examples
-description: This page provides some examples of accessing Unstructured API via different methods.
+description: This page provides some examples of accessing Unstructured Platform Partition Endpoint via different methods.
 ---
 
-For each of these examples, you'll need:
+To use these examples, you'll first need to set an environment variable named `UNSTRUCTURED_API_KEY`, 
+representing your Unstructured API key. [Get your API key](/platform-api/partition-api/overview).
 
-import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+For the POST and Unstructured JavaScript/TypeScript SDK examples, you'll also need to set an environment variable named `UNSTRUCTURED_API_URL` to the 
+value `https://api.unstructuredapp.io/general/v0/general`
 
-<SharedAPIKeyURL />
-
-import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serverless-api.mdx';
-
-<NoURLForServerlessAPI/>
-
-import UseIngestOrPlatformInstead from '/snippets/general-shared-text/use-ingest-or-platform-instead.mdx';
+For the Unstructured Python SDK, you do not need to set an environment variable named `UNSTRUCTURED_API_URL`, as the Python SDK uses the API URL of 
+`https://api.unstructuredapp.io/general/v0/general` by default. (The Unstructured JavaScript/TypeScript SDK does not have this feature yet; you must always specify the API URL.)
 
 ### Changing partition strategy for a PDF
 
@@ -31,56 +28,6 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
 ></iframe>
 
 <AccordionGroup>
-    <Accordion title="Ingest CLI">
-        ```bash CLI
-        unstructured-ingest \
-          local \
-            --input-path $LOCAL_FILE_INPUT_DIR \
-            --output-dir $LOCAL_FILE_OUTPUT_DIR \
-            --strategy hi_res \
-            --hi-res-model-name layout_v1.1.0 \
-            --partition-by-api \
-            --api-key $UNSTRUCTURED_API_KEY \
-            --partition-endpoint $UNSTRUCTURED_API_URL \
-            --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
-        ```
-    </Accordion>
-    <Accordion title="Ingest Python">
-        ```python Python
-        import os
-
-        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-        from unstructured_ingest.v2.interfaces import ProcessorConfig
-        from unstructured_ingest.v2.processes.connectors.local import (
-            LocalIndexerConfig,
-            LocalDownloaderConfig,
-            LocalConnectionConfig,
-            LocalUploaderConfig
-        )
-        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
-
-        if __name__ == "__main__":
-            Pipeline.from_configs(
-                context=ProcessorConfig(),
-                indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
-                downloader_config=LocalDownloaderConfig(),
-                source_connection_config=LocalConnectionConfig(),
-                partitioner_config=PartitionerConfig(
-                    strategy="hi_res",
-                    hi_res_model_name="layout_v1.0.0",
-                    partition_by_api=True,
-                    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-                    partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
-                    additional_partition_args={
-                        "split_pdf_page": True,
-                        "split_pdf_allow_failed": True,
-                        "split_pdf_concurrency_level": 15
-                    }
-                ),
-                uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
-            ).run()
-        ```
-    </Accordion>
     <Accordion title="POST">
         <UseIngestOrPlatformInstead />
         ```bash POST
@@ -250,56 +197,6 @@ For better OCR results, you can specify what languages your document is in using
 [View the list of available languages](https://github.com/tesseract-ocr/tessdata).
 
 <AccordionGroup>
-    <Accordion title="Ingest CLI">
-        ```bash CLI
-        unstructured-ingest \
-          local \
-            --input-path $LOCAL_FILE_INPUT_DIR \
-            --output-dir $LOCAL_FILE_OUTPUT_DIR \
-            --strategy ocr_only \
-            --ocr-languages kor \
-            --partition-by-api \
-            --api-key $UNSTRUCTURED_API_KEY \
-            --partition-endpoint $UNSTRUCTURED_API_URL \
-            --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
-        ```
-    </Accordion>
-    <Accordion title="Ingest Python">
-        ```python Python
-        import os
-
-        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-        from unstructured_ingest.v2.interfaces import ProcessorConfig
-        from unstructured_ingest.v2.processes.connectors.local import (
-            LocalIndexerConfig,
-            LocalDownloaderConfig,
-            LocalConnectionConfig,
-            LocalUploaderConfig
-        )
-        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
-
-        if __name__ == "__main__":
-            Pipeline.from_configs(
-                context=ProcessorConfig(),
-                indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
-                downloader_config=LocalDownloaderConfig(),
-                source_connection_config=LocalConnectionConfig(),
-                partitioner_config=PartitionerConfig(
-                    strategy="ocr_only",
-                    ocr_languages=["kor"],
-                    partition_by_api=True,
-                    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-                    partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
-                    additional_partition_args={
-                        "split_pdf_page": True,
-                        "split_pdf_allow_failed": True,
-                        "split_pdf_concurrency_level": 15
-                    }
-                ),
-                uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
-            ).run()
-        ```
-    </Accordion>
     <Accordion title="POST">
         <UseIngestOrPlatformInstead />
         ```bash POST
@@ -467,55 +364,6 @@ When elements are extracted from PDFs or images, it may be useful to get their b
 Set the `coordinates` parameter to `true` to add this field to the elements in the response.
 
 <AccordionGroup>
-    <Accordion title="Ingest CLI">
-        ```bash CLI
-        unstructured-ingest \
-          local \
-            --input-path $LOCAL_FILE_INPUT_DIR \
-            --output-dir $LOCAL_FILE_OUTPUT_DIR \
-            --partition-by-api \
-            --api-key $UNSTRUCTURED_API_KEY \
-            --partition-endpoint $UNSTRUCTURED_API_URL \
-            --strategy hi_res \
-            --additional-partition-args="{\"coordinates\":\"true\", \"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
-        ```
-    </Accordion>
-    <Accordion title="Ingest Python">
-        ```python Python
-        import os
-
-        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-        from unstructured_ingest.v2.interfaces import ProcessorConfig
-        from unstructured_ingest.v2.processes.connectors.local import (
-            LocalIndexerConfig,
-            LocalDownloaderConfig,
-            LocalConnectionConfig,
-            LocalUploaderConfig
-        )
-        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
-
-        if __name__ == "__main__":
-            Pipeline.from_configs(
-                context=ProcessorConfig(),
-                indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
-                downloader_config=LocalDownloaderConfig(),
-                source_connection_config=LocalConnectionConfig(),
-                partitioner_config=PartitionerConfig(
-                    partition_by_api=True,
-                    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-                    partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
-                    strategy="hi_res",
-                    additional_partition_args={
-                        "coordinates": True,
-                        "split_pdf_page": True,
-                        "split_pdf_allow_failed": True,
-                        "split_pdf_concurrency_level": 15
-                    }
-                ),
-                uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
-            ).run()
-        ```
-    </Accordion>
     <Accordion title="POST">
         <UseIngestOrPlatformInstead />
         ```bash POST
@@ -687,55 +535,6 @@ will be random, so with every partition of the same file, you will get different
 This can be helpful if you'd like to use the IDs as a primary key in a database, for example.
 
 <AccordionGroup>
-    <Accordion title="Ingest CLI">
-        ```bash CLI
-        unstructured-ingest \
-          local \
-            --input-path $LOCAL_FILE_INPUT_DIR \
-            --output-dir $LOCAL_FILE_OUTPUT_DIR \
-            --partition-by-api \
-            --api-key $UNSTRUCTURED_API_KEY \
-            --partition-endpoint $UNSTRUCTURED_API_URL \
-            --strategy hi_res \
-            --additional-partition-args="{\"unique_element_ids\":\"true\", \"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
-        ```
-    </Accordion>
-    <Accordion title="Ingest Python">
-        ```python Python
-        import os
-
-        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-        from unstructured_ingest.v2.interfaces import ProcessorConfig
-        from unstructured_ingest.v2.processes.connectors.local import (
-            LocalIndexerConfig,
-            LocalDownloaderConfig,
-            LocalConnectionConfig,
-            LocalUploaderConfig
-        )
-        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
-
-        if __name__ == "__main__":
-            Pipeline.from_configs(
-                context=ProcessorConfig(),
-                indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
-                downloader_config=LocalDownloaderConfig(),
-                source_connection_config=LocalConnectionConfig(),
-                partitioner_config=PartitionerConfig(
-                    partition_by_api=True,
-                    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-                    partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
-                    strategy="hi_res",
-                    additional_partition_args={
-                        "unique_element_ids": True,
-                        "split_pdf_page": True,
-                        "split_pdf_allow_failed": True,
-                        "split_pdf_concurrency_level": 15
-                    }
-                ),
-                uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
-            ).run()
-        ```
-    </Accordion>
     <Accordion title="POST">
         <UseIngestOrPlatformInstead />
         ```bash POST
@@ -904,61 +703,6 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
 [//]: # (TODO: add a link to the concepts section about chunking strategies. Need to create the shared Concepts section first)
 
 <AccordionGroup>
-    <Accordion title="Ingest CLI">
-        ```bash CLI
-        unstructured-ingest \
-          local \
-            --input-path $LOCAL_FILE_INPUT_DIR \
-            --output-dir $LOCAL_FILE_OUTPUT_DIR \
-            --chunking-strategy by_title \
-            --chunk-max-characters 1024 \
-            --partition-by-api \
-            --api-key $UNSTRUCTURED_API_KEY \
-            --partition-endpoint $UNSTRUCTURED_API_URL \
-            --strategy hi_res \
-            --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
-        ```
-    </Accordion>
-    <Accordion title="Ingest Python">
-        ```python Python
-        import os
-
-        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-        from unstructured_ingest.v2.interfaces import ProcessorConfig
-        from unstructured_ingest.v2.processes.connectors.local import (
-            LocalIndexerConfig,
-            LocalDownloaderConfig,
-            LocalConnectionConfig,
-            LocalUploaderConfig
-        )
-        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
-        from unstructured_ingest.v2.processes.chunker import ChunkerConfig
-
-        if __name__ == "__main__":
-            Pipeline.from_configs(
-                context=ProcessorConfig(),
-                indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
-                downloader_config=LocalDownloaderConfig(),
-                source_connection_config=LocalConnectionConfig(),
-                partitioner_config=PartitionerConfig(
-                    partition_by_api=True,
-                    api_key=os.getenv("UNSTRUCTURED_API_KEY"),
-                    partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
-                    strategy="hi_res",
-                    additional_partition_args={
-                        "split_pdf_page": True,
-                        "split_pdf_allow_failed": True,
-                        "split_pdf_concurrency_level": 15
-                    }
-                ),
-                chunker_config=ChunkerConfig(
-                    chunking_strategy="by_title",
-                    chunk_max_characters=1024
-                ),
-                uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
-            ).run()
-        ```
-    </Accordion>
     <Accordion title="POST">
         <UseIngestOrPlatformInstead />
         ```bash POST

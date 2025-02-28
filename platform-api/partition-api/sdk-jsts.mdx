@@ -1,23 +1,11 @@
 ---
-title: Process an individual file by using the Unstructured JavaScript/TypeScript SDK
-sidebarTitle: JavaScript/TypeScript SDK
+title: JavaScript/TypeScript SDK
 ---
 
-The [Unstructured JavaScript/TypeScript SDK](https://github.com/Unstructured-IO/unstructured-js-client) client allows you to send an individual file for processing by the Unstructured Platform Partiiton API.
+The [Unstructured JavaScript/TypeScript SDK](https://github.com/Unstructured-IO/unstructured-js-client) client allows you to send one file at a time for processing by the Unstructured Platform Partition API.
 
-import UseIngestOrPlatformInstead from '/snippets/general-shared-text/use-ingest-or-platform-instead.mdx';
-
-<UseIngestOrPlatformInstead />
-
-To use the JavaScript/TypeScript SDK, you'll need:
-
-import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
-
-<SharedAPIKeyURL />
-
-import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serverless-api.mdx';
-
-<NoURLForServerlessAPI/>
+To use the JavaScript/TypeScript SDK, you'll first need to set an environment variable named `UNSTRUCTURED_API_KEY`, 
+representing your Unstructured API key. [Get your API key](/platform-api/partition-api/overview).
 
 ## Installation
 
@@ -35,7 +23,7 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
     </Note>
 
 ## Basics
-    Let's start with a simple example in which you send a PDF document to be partitioned with the free Unstructured API:
+    Let's start with a simple example in which you send a PDF document to the Unstructured Platform Parition Endpoint to be partitioned by Unstructured.
 
     <Warning>
          The JavaScript/TypeScript SDK has the following breaking changes in v0.11.0:
@@ -294,8 +282,8 @@ import NoURLForServerlessAPI from '/snippets/general-shared-text/no-url-for-serv
 
 ## Parameters & examples
 
-The parameter names used in this document are for the JavaScript/TypeScript SDK, which follow camelCase
-convention. The Python SDK uses snake_case convention. Other than this difference in naming convention, 
+The parameter names used in this document are for the JavaScript/TypeScript SDK, which follows the `camelCase` 
+convention. The Python SDK follows the `snake_case` convention. Other than this difference in naming convention, 
 the names used in the SDKs are the same across all methods.
 
 * Refer to the [API parameters](/platform-api/partition-api/api-parameters) page for the full list of available parameters.
