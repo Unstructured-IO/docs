@@ -15,17 +15,6 @@ For the Unstructured Python SDK, you do not need to set an environment variable 
 ### Changing partition strategy for a PDF
 
 Here's how you can modify partition strategy for a PDF file, and select an alternative model to use with Unstructured API.
-The `hi_res` strategy supports different models, and the default is `layout_v1.1.0`.
-
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/SwJVB_kPqTc"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-></iframe>
 
 <AccordionGroup>
     <Accordion title="POST">
@@ -36,8 +25,9 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
         -H 'Content-Type: multipart/form-data' \
         -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
         -F 'files=@sample-docs/layout-parser-paper.pdf' \
-        -F 'strategy=hi_res' \
-        -F 'hi_res_model_name=layout_v1.1.0'
+        -F 'strategy=vlm' \
+        -F 'vlm_model_provider=openai' \
+        -F 'vlm_model=gpt-4o'
         ```
     </Accordion>
     <Accordion title="Python SDK">
@@ -60,8 +50,9 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
                         "content": open(filename, "rb"),
                         "file_name": os.path.basename(filename),
                     },
-                    "strategy": shared.Strategy.HI_RES,
-                    "hi_res_model_name": "layout_v1.1.0",
+                    "strategy": shared.Strategy.VLM,
+                    "vlm_model": "gpt-4o",
+                    "vlm_model_provider": "openai",
                     "split_pdf_page": True,
                     "split_pdf_allow_failed": True,
                     "split_pdf_concurrency_level": 15
@@ -205,8 +196,9 @@ For better OCR results, you can specify what languages your document is in using
         -H 'Content-Type: multipart/form-data' \
         -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
         -F 'files=@sample-docs/korean.png' \
-        -F 'strategy=ocr_only' \
-        -F 'languages=kor'
+        -F 'strategy=vlm' \
+        -F 'vlm_model_provider=openai' \
+        -F 'vlm_model=gpt-4o' \-F 'languages=kor'
         ```
     </Accordion>
     <Accordion title="Python SDK">
@@ -543,7 +535,10 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
         -H 'Content-Type: multipart/form-data' \
         -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
         -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
-        -F 'unique_element_ids=true'
+        -F 'unique_element_ids=true' \
+        -F 'strategy=vlm' \
+        -F 'vlm_model_provider=openai' \
+        -F 'vlm_model=gpt-4o'
         ```
     </Accordion>
     <Accordion title="Python SDK">
@@ -566,7 +561,9 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
                         "content": open(filename, "rb"),
                         "file_name": os.path.basename(filename),
                     },
-                    "strategy": shared.Strategy.HI_RES,
+                    "strategy": shared.Strategy.VLM,
+                    "vlm_model": "gpt-4o",
+                    "vlm_model_provider": "openai",
                     "unique_element_ids": True,
                     "split_pdf_page": True,
                     "split_pdf_allow_failed": True,
@@ -713,7 +710,9 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
         -F 'files=@sample-docs/layout-parser-paper-fast.pdf' \
         -F 'chunking_strategy=by_title' \
         -F 'max_characters=1024' \
-        -F 'strategy=hi_res'
+        -F 'strategy=vlm' \
+        -F 'vlm_model_provider=openai' \
+        -F 'vlm_model=gpt-4o'
         ```
     </Accordion>
     <Accordion title="Python SDK">
@@ -738,7 +737,9 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
                     },
                     "chunking_strategy": "by_title",
                     "max_characters": 1024,
-                    "strategy": shared.Strategy.HI_RES,
+                    "strategy": shared.Strategy.VLM,
+                    "vlm_model": "gpt-4o",
+                    "vlm_model_provider": "openai",
                     "split_pdf_page": True,
                     "split_pdf_allow_failed": True,
                     "split_pdf_concurrency_level": 15
