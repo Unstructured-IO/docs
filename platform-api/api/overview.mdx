@@ -221,7 +221,7 @@ the `GET` method to call the `/sources` endpoint (for `curl` or Postman).
 To filter the list of source connectors, use the `ListSourcesRequest` object's `source_type` parameter (for the Python SDK) 
 or the query parameter `source_type=<type>` (for `curl` or Postman), 
 replacing `<type>` with the source connector type's unique ID 
-(for example, `s3` for the Amazon S3 source connector type). 
+(for example, for the Amazon S3 source connector type, `S3` for the Python SDK or `s3` for `curl` or Postman). 
 To get this ID, see [Sources](/platform-api/api/sources/overview).
 
 <AccordionGroup>
@@ -231,6 +231,7 @@ To get this ID, see [Sources](/platform-api/api/sources/overview).
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import ListSourcesRequest
+        from unstructured_client.models.shared import SourceConnectorType
 
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
@@ -238,7 +239,7 @@ To get this ID, see [Sources](/platform-api/api/sources/overview).
 
         response = client.sources.list_sources(
             request=ListSourcesRequest(
-                source_type="<type>" # Optional, list only for this source type.
+                source_type=SourceConnectorType.<type> # Optional, list only for this source type.
             )
         )
 
@@ -250,6 +251,38 @@ To get this ID, see [Sources](/platform-api/api/sources/overview).
 
         for source in sorted_sources:
             print(f"{source.name} ({source.id})")
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import ListSourcesRequest
+        from unstructured_client.models.shared import SourceConnectorType
+
+        async def list_sources():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = await client.sources.list_sources_async(
+                request=ListSourcesRequest(
+                    source_type=SourceConnectorType.<type> # Optional, list only for this source type. 
+                )
+            )
+
+            # Print the list in alphabetical order by connector name.
+            sorted_sources = sorted(
+                response.response_list_sources, 
+                key=lambda source: source.name.lower()
+            )
+
+            for source in sorted_sources:
+                print(f"{source.name} ({source.id})")
+
+        asyncio.run(list_sources())
         ```
     </Accordion>
     <Accordion title="curl">
@@ -318,9 +351,38 @@ the `GET` method to call the `/sources/<connector-id>` endpoint (for `curl` or P
 
         print(f"name: {info.name}")
             
-        for key, value in info.config.items():
+        for key, value in info.config:
             print(f"{key}: {value}")
 
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import GetSourceRequest
+
+        async def get_source():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = await client.sources.get_source_async(
+                request=GetSourceRequest(
+                    source_id="<connector-id>"
+                )
+            )
+
+            info = response.source_connector_information
+
+            print(f"name: {info.name}")
+                
+            for key, value in info.config:
+                print(f"{key}: {value}")
+
+        asyncio.run(get_source())
         ```
     </Accordion>
     <Accordion title="curl">
@@ -358,6 +420,9 @@ the request body (for `curl` or Postman),
 specify the settings for the connector. For the specific settings to include, which differ by connector, see 
 [Sources](/platform-api/api/sources/overview). 
 
+For the Python SDK, replace `<type>` with the source connector type's unique ID (for example, for the Amazon S3 source connector type, `S3`). 
+To get this ID, see [Sources](/platform-api/api/sources/overview).
+
 <AccordionGroup>
     <Accordion title="Python SDK">
         ```python
@@ -365,7 +430,11 @@ specify the settings for the connector. For the specific settings to include, wh
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import CreateSourceRequest
-        from unstructured_client.models.shared import CreateSourceConnector
+        from unstructured_client.models.shared import (
+            CreateSourceConnector,
+            SourceConnectorType,
+            <type>SourceConnectorConfigInput
+        )
 
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
@@ -373,10 +442,10 @@ specify the settings for the connector. For the specific settings to include, wh
 
         destination_connector = CreateSourceConnector(
             name="<name>",
-            type="<type>",
-            config={
+            type=SourceConnectorType.<type>,
+            config=<type>SourceConnectorConfigInput(
                 # Specify the settings for the connector here.
-            }
+            )
         )
 
         response = client.sources.create_source(
@@ -390,9 +459,52 @@ specify the settings for the connector. For the specific settings to include, wh
         print(f"name: {info.name}")
         print(f"id: {info.id}")
             
-        for key, value in info.config.items():
+        for key, value in info.config:
             print(f"{key}: {value}")
 
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import CreateSourceRequest
+        from unstructured_client.models.shared import (
+            CreateSourceConnector,
+            SourceConnectorType,
+            <type>SourceConnectorConfigInput
+        )
+
+        async def create_source():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            source_connector = CreateSourceConnector(
+                name="<name>",
+                type=SourceConnectorType.<type>,
+                config=<type>SourceConnectorConfigInput(
+                    # Specify the settings for the connector here.
+                )
+            )
+
+            response = await client.sources.create_source_async(
+                request=CreateSourceRequest(
+                    create_source_connector=source_connector
+                )
+            )
+
+            info = response.source_connector_information
+
+            print(f"name: {info.name}")
+            print(f"id: {info.id}")
+                
+            for key, value in info.config:
+                print(f"{key}: {value}")
+
+        asyncio.run(create_source())
         ```
     </Accordion>
     <Accordion title="curl">
@@ -437,6 +549,9 @@ In the `UpdateSourceConnector` object (for the Python SDK) or
 the request body (for `curl` or Postman), specify the settings for the connector. For the specific settings to include, which differ by connector, see 
 [Sources](/platform-api/api/sources/overview).
 
+For the Python SDK, replace `<type>` with the source connector type's unique ID (for example, for the Amazon S3 source connector type, `S3`). 
+To get this ID, see [Sources](/platform-api/api/sources/overview).
+
 You must specify all of the settings for the connector, even for settings that are not changing.
 
 You can change any of the connector's settings except for its `name` and `type`.
@@ -448,16 +563,19 @@ You can change any of the connector's settings except for its `name` and `type`.
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import UpdateSourceRequest
-        from unstructured_client.models.shared import UpdateSourceConnector
+        from unstructured_client.models.shared import (
+            UpdateSourceConnector,
+            <type>SourceConnectorConfigInput
+        )
 
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
-        destination_connector = UpdateSourceConnector(
-            config={
+        source_connector = UpdateSourceConnector(
+            config=<type>SourceConnectorConfigInput(
                 # Specify the settings for the connector here.
-            }
+            )
         )
 
         response = client.sources.update_source(
@@ -472,9 +590,50 @@ You can change any of the connector's settings except for its `name` and `type`.
         print(f"name: {info.name}")
         print(f"id: {info.id}")
             
-        for key, value in info.config.items():
+        for key, value in info.config:
             print(f"{key}: {value}")
 
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import UpdateSourceRequest
+        from unstructured_client.models.shared import (
+            UpdateSourceConnector,
+            <type>SourceConnectorConfigInput
+        )
+
+        async def update_source():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            source_connector = UpdateSourceConnector(
+                config=<type>SourceConnectorConfigInput(
+                    # Specify the settings for the connector here.
+                )
+            )
+
+            response = await client.sources.update_source_async(
+                request=UpdateSourceRequest(
+                    source_id="<connector-id>",
+                    update_source_connector=source_connector
+                )
+            )
+
+            info = response.source_connector_information
+
+            print(f"name: {info.name}")
+            print(f"id: {info.id}")
+                
+            for key, value in info.config:
+                print(f"{key}: {value}")
+
+        asyncio.run(update_source())
         ```
     </Accordion>
     <Accordion title="curl">
@@ -536,6 +695,30 @@ the `DELETE` method to call the `/sources/<connector-id>` endpoint (for `curl` o
         print(response.raw_response)
         ```
     </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import DeleteSourceRequest
+
+        async def delete_source():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = await client.sources.delete_source_async(
+                request=DeleteSourceRequest(
+                    source_id="<connector-id>"
+                )
+            )
+
+            print(response.raw_response)
+
+        asyncio.run(delete_source())
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'DELETE' --location \
@@ -569,7 +752,7 @@ the `GET` method to call the `/destinations` endpoint (for `curl` or Postman).
 To filter the list of destination connectors, use the `ListDestinationsRequest` object's `destination_type` parameter (for the Python SDK) or 
 the query parameter `destination_type=<type>` (for `curl` or Postman), 
 replacing `<type>` with the destination connector type's unique ID 
-(for example, `s3` for the Amazon S3 destination connector type). 
+(for example, for the Amazon S3 source connector type, `S3` for the Python SDK or `s3` for `curl` or Postman). 
 To get this ID, see [Destinations](/platform-api/api/destinations/overview).
 
 <AccordionGroup>
@@ -579,6 +762,7 @@ To get this ID, see [Destinations](/platform-api/api/destinations/overview).
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import ListDestinationsRequest
+        from unstructured_client.models.shared import DestinationConnectorType
 
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
@@ -586,7 +770,7 @@ To get this ID, see [Destinations](/platform-api/api/destinations/overview).
 
         response = client.destinations.list_destinations(
             request=ListDestinationsRequest(
-                destination_type="<type>" # Optional, list only for this destination type.
+                destination_type=DestinationConnectorType.<type> # Optional, list only for this destination type.
             )
         )
 
@@ -598,6 +782,38 @@ To get this ID, see [Destinations](/platform-api/api/destinations/overview).
 
         for destination in sorted_destinations:
             print(f"{destination.name} ({destination.id})")
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import ListDestinationsRequest
+        from unstructured_client.models.shared import DestinationConnectorType
+
+        async def list_destinations():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = await client.destinations.list_destinations_async(
+                request=ListDestinationsRequest(
+                    destination_type=DestinationConnectorType.<type>  # Optional, list only for this destination type.
+                )
+            )
+
+            # Print the list in alphabetical order by connector name.
+            sorted_destinations = sorted(
+                response.response_list_destinations, 
+                key=lambda destination: destination.name.lower()
+            )
+
+            for destination in sorted_destinations:
+                print(f"{destination.name} ({destination.id})")
+
+        asyncio.run(list_destinations())
         ```
     </Accordion>
     <Accordion title="curl">
@@ -666,8 +882,37 @@ the `GET` method to call the `/destinations/<connector-id>` endpoint (for `curl`
 
         print(f"name: {info.name}")
             
-        for key, value in info.config.items():
+        for key, value in info.config:
             print(f"{key}: {value}")
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import GetDestinationRequest
+
+        async def get_destination():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = await client.destinations.get_destination_async(
+                request=GetDestinationRequest(
+                    destination_id="<connector-id>"
+                )
+            )
+
+            info = response.destination_connector_information
+
+            print(f"name: {info.name}")
+                
+            for key, value in info.config:
+                print(f"{key}: {value}")
+
+        asyncio.run(get_destination())
         ```
     </Accordion>
     <Accordion title="curl">
@@ -705,6 +950,9 @@ the request body (for `curl` or Postman),
 specify the settings for the connector. For the specific settings to include, which differ by connector, see 
 [Destinations](/platform-api/api/destinations/overview).
 
+For the Python SDK, replace `<type>` with the destination connector type's unique ID (for example, for the Amazon S3 source connector type, `S3`). 
+To get this ID, see [Destinations](/platform-api/api/destinations/overview).
+
 <AccordionGroup>
     <Accordion title="Python SDK">
         ```python
@@ -712,7 +960,11 @@ specify the settings for the connector. For the specific settings to include, wh
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import CreateDestinationRequest
-        from unstructured_client.models.shared import CreateDestinationConnector
+        from unstructured_client.models.shared import (
+            CreateDestinationConnector,
+            DestinationConnectorType,
+            <type>DestinationConnectorConfigInput
+        )
 
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
@@ -720,10 +972,10 @@ specify the settings for the connector. For the specific settings to include, wh
 
         destination_connector = CreateDestinationConnector(
             name="<name>",
-            type="<type>",
-            config={
+            type=DestinationConnectorType.<type>,
+            config=<type>DestinationConnectorConfigInput(
                 # Specify the settings for the connector here.
-            }
+            )
         )
 
         response = client.destinations.create_destination(
@@ -737,8 +989,51 @@ specify the settings for the connector. For the specific settings to include, wh
         print(f"name: {info.name}")
         print(f"id: {info.id}")
             
-        for key, value in info.config.items():
+        for key, value in info.config:
             print(f"{key}: {value}")
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import CreateDestinationRequest
+        from unstructured_client.models.shared import (
+            CreateDestinationConnector,
+            DestinationConnectorType,
+            <type>DestinationConnectorConfigInput
+        )
+
+        async def create_destination():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            destination_connector = CreateDestinationConnector(
+                name="my-s3-connector",
+                type=DestinationConnectorType.<type>,
+                config=<type>DestinationConnectorConfigInput(
+                    # Specify the settings for the connector here.
+                )
+            )
+
+            response = await client.destinations.create_destination_async(
+                request=CreateDestinationRequest(
+                    create_destination_connector=destination_connector
+                )
+            )
+
+            info = response.destination_connector_information
+
+            print(f"name: {info.name}")
+            print(f"id: {info.id}")
+                
+            for key, value in info.config:
+                print(f"{key}: {value}")
+
+        asyncio.run(create_destination())
         ```
     </Accordion>
     <Accordion title="curl">
@@ -794,16 +1089,19 @@ You can change any of the connector's settings except for its `name` and `type`.
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import UpdateDestinationRequest
-        from unstructured_client.models.shared import UpdateDestinationConnector
+        from unstructured_client.models.shared import (
+            UpdateDestinationConnector,
+            <type>DestinationConnectorConfigInput
+        )
 
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         destination_connector = UpdateDestinationConnector(
-            config={
+            config=<type>DestinationConnectorConfigInput(
                 # Specify the settings for the connector here.
-            }
+            )
         )
 
         response = client.destinations.update_destination(
@@ -818,8 +1116,49 @@ You can change any of the connector's settings except for its `name` and `type`.
         print(f"name: {info.name}")
         print(f"id: {info.id}")
             
-        for key, value in info.config.items():
+        for key, value in info.config:
             print(f"{key}: {value}")
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import UpdateDestinationRequest
+        from unstructured_client.models.shared import (
+            UpdateDestinationConnector,
+            <type>DestinationConnectorConfigInput
+        )
+
+        async def update_destination():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            destination_connector = UpdateDestinationConnector(
+                config=<type>DestinationConnectorConfigInput(
+                    # Specify the settings for the connector here.
+                )
+            )
+
+            response = await client.destinations.update_destination_async(
+                request=UpdateDestinationRequest(
+                    destination_id="<connector-id>",
+                    update_destination_connector=destination_connector
+                )
+            )
+
+            info = response.destination_connector_information
+
+            print(f"name: {info.name}")
+            print(f"id: {info.id}")
+                
+            for key, value in info.config:
+                print(f"{key}: {value}")
+
+        asyncio.run(update_destination())
         ```
     </Accordion>
     <Accordion title="curl">
@@ -881,6 +1220,30 @@ the `DELETE` method to call the `/destinations/<connector-id>` endpoint (for `cu
         print(response.raw_response)
         ```
     </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import DeleteDestinationRequest
+
+        async def delete_destination():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = await client.destinations.delete_destination_async(
+                request=DeleteDestinationRequest(
+                    destination_id="<connector-id>"
+                )
+            )
+
+            print(response.raw_response)
+
+        asyncio.run(delete_destination())
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'DELETE' --location \
@@ -929,7 +1292,7 @@ query parameters (for `curl` or Postman):
   To get this ID, see [List source connectors](#list-source-connectors).
 - `destination_id=<connector-id>`, replacing `<connector-id>` with the destination connector's unique ID. 
   To get this ID, see [List destination connectors](#list-destination-connectors).
-- `status=<status>`, replacing `<status>` with one of the following workflow statuses: `active` or `inactive`.
+- `status=WorkflowState.<status>` (for the Python SDK) or `status=<status>` (for `curl` or Postman), replacing `<status>` with one of the following workflow statuses: `ACTIVE` or `INACTIVE` (for the Python SDK) or `active` or `inactive` (for `curl` or Postman).
 
 You can specify multiple query parameters, for example `?source_id=<connector-id>&status=<status>`.
 
@@ -940,6 +1303,7 @@ You can specify multiple query parameters, for example `?source_id=<connector-id
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import ListWorkflowsRequest
+        from unstructured_client.models.shared import WorkflowState
 
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
@@ -949,7 +1313,7 @@ You can specify multiple query parameters, for example `?source_id=<connector-id
             request=ListWorkflowsRequest(
                 destination_id="<connector-id>", # Optional, list only for this destination connector ID.
                 source_id="<connector-id>", # Optional, list only for this source connector ID.
-                status="<status>" # Optional, list only for this workflow status.
+                status=WorkflowState.<status> # Optional, list only for this workflow status.
             )
         )
 
@@ -961,6 +1325,40 @@ You can specify multiple query parameters, for example `?source_id=<connector-id
 
         for workflow in sorted_workflows:
             print(f"{workflow.name} ({workflow.id})")
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio 
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import ListWorkflowsRequest
+        from unstructured_client.models.shared import WorkflowState
+
+        async def list_workflows():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = await client.workflows.list_workflows_async(
+                request=ListWorkflowsRequest(
+                    destination_id="<connector-id>", # Optional, list only for this destination connector ID.
+                    source_id="<connector-id>", # Optional, list only for this source connector ID.
+                    status=WorkflowState.<status> # Optional, list only for this workflow status.
+                )
+            )
+
+            # Print the list in alphabetical order by workflow name.
+            sorted_workflows = sorted(
+                response.response_list_workflows, 
+                key=lambda workflow: workflow.name.lower()
+            )
+
+            for workflow in sorted_workflows:
+                print(f"{workflow.name} ({workflow.id})")
+
+        asyncio.run(list_workflows())
         ```
     </Accordion>
     <Accordion title="curl">
@@ -1067,6 +1465,49 @@ the `GET` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or 
             print(f"            {crontab_entry.cron_expression}")
         ```
     </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import GetWorkflowRequest
+
+        async def get_workflow():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = await client.workflows.get_workflow_async(
+                request=GetWorkflowRequest(
+                    workflow_id="<workflow-id>"
+                )
+            )
+
+            info = response.workflow_information
+
+            print(f"name: {info.name}")
+            print(f"id: {info.id}")
+            print(f"status: {info.status}")
+            print(f"type: {info.workflow_type}")
+            print("source(s):")
+
+            for source in info.sources:
+                print(f"    {source}")
+
+            print("destination(s):")
+
+            for destination in info.destinations:
+                print(f"    {destination}")
+
+            print("schedule(s):")
+
+            for crontab_entry in info.schedule.crontab_entries:
+                print(f"    {crontab_entry.cron_expression}")
+
+        asyncio.run(get_workflow())
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'GET' --location \
@@ -1109,7 +1550,13 @@ specify the settings for the workflow. For the specific settings to include, see
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import CreateWorkflowRequest
-        from unstructured_client.models.shared import CreateWorkflow
+        from unstructured_client.models.shared import (
+            WorkflowNode,
+            WorkflowNodeType,
+            CreateWorkflow,
+            WorkflowType,
+            Schedule
+        )
 
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
@@ -1145,6 +1592,60 @@ specify the settings for the workflow. For the specific settings to include, see
 
         for crontab_entry in info.schedule.crontab_entries:
             print(f"            {crontab_entry.cron_expression}")
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import CreateWorkflowRequest
+        from unstructured_client.models.shared import (
+            WorkflowNode,
+            WorkflowNodeType,
+            CreateWorkflow,
+            WorkflowType,
+            Schedule
+        )
+
+        async def create_workflow():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            workflow = CreateWorkflow(
+                # Specify the settings for the workflow here.
+            )
+
+            response = await client.workflows.create_workflow_async(
+                request=CreateWorkflowRequest(
+                    create_workflow=workflow
+                )
+            )
+
+            info = response.workflow_information
+
+            print(f"name:           {info.name}")
+            print(f"id:             {info.id}")
+            print(f"status:         {info.status}")
+            print(f"type:           {info.workflow_type}")
+            print("source(s):")
+
+            for source in info.sources:
+                print(f"            {source}")
+
+            print("destination(s):")
+
+            for destination in info.destinations:
+                print(f"            {destination}")
+
+            print("schedule(s):")
+
+            for crontab_entry in info.schedule.crontab_entries:
+                print(f"            {crontab_entry.cron_expression}")
+
+        asyncio.run(create_workflow())
         ```
     </Accordion>
     <Accordion title="curl">
@@ -1206,6 +1707,30 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
         print(response.raw_response)
         ```
     </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import RunWorkflowRequest
+
+        async def run_workflow():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = await client.workflows.run_workflow_async(
+                request=RunWorkflowRequest(
+                    workflow_id="<workflow-id>"
+                )
+            )
+
+            print(response.raw_response)
+
+        asyncio.run(run_workflow())
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'POST' --location \
@@ -1251,7 +1776,13 @@ the request body (for `curl` or Postman), specify the settings for the workflow.
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import UpdateWorkflowRequest
-        from unstructured_client.models.shared import UpdateWorkflow
+        from unstructured_client.models.shared import (
+            WorkflowNode,
+            WorkflowNodeType,
+            UpdateWorkflow,
+            WorkflowType,
+            Schedule
+        )
 
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
@@ -1288,6 +1819,61 @@ the request body (for `curl` or Postman), specify the settings for the workflow.
 
         for crontab_entry in info.schedule.crontab_entries:
             print(f"            {crontab_entry.cron_expression}")
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import UpdateWorkflowRequest
+        from unstructured_client.models.shared import (
+            WorkflowNode,
+            WorkflowNodeType,
+            UpdateWorkflow,
+            WorkflowType,
+            Schedule
+        )
+
+        async def update_workflow():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            workflow = UpdateWorkflow(
+                # Specify the settings for the workflow here.
+            )
+
+            response = await client.workflows.update_workflow_async(
+                request=UpdateWorkflowRequest(
+                    workflow_id="<workflow-id>",
+                    update_workflow=workflow
+                )
+            )
+
+            info = response.workflow_information
+
+            print(f"name:           {info.name}")
+            print(f"id:             {info.id}")
+            print(f"status:         {info.status}")
+            print(f"type:           {info.workflow_type}")
+            print("source(s):")
+
+            for source in info.sources:
+                print(f"            {source}")
+
+            print("destination(s):")
+
+            for destination in info.destinations:
+                print(f"            {destination}")
+
+            print("schedule(s):")
+
+            for crontab_entry in info.schedule.crontab_entries:
+                print(f"            {crontab_entry.cron_expression}")
+
+        asyncio.run(update_workflow())
         ```
     </Accordion>
     <Accordion title="curl">
@@ -1347,6 +1933,30 @@ the `DELETE` method to call the `/workflows/<workflow-id>` endpoint (for `curl` 
         )
 
         print(response.raw_response)
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import DeleteWorkflowRequest
+
+        async def delete_workflow():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = await client.workflows.delete_workflow_async(
+                request=DeleteWorkflowRequest(
+                    workflow_id="<workflow-id>"
+                )
+            )
+
+            print(response.raw_response)
+
+        asyncio.run(delete_workflow())
         ```
     </Accordion>
     <Accordion title="curl">
@@ -1426,6 +2036,38 @@ For `curl` or Postman, you can specify multiple query parameters as `?workflow_i
 
         for job in sorted_jobs:
             print(f"{job.id} (workflow name: {job.workflow_name}, id: {job.workflow_id})")
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import ListJobsRequest
+
+        async def list_jobs():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = await client.jobs.list_jobs_async(
+                request=ListJobsRequest(
+                workflow_id="<workflow-id>", # Optional, list only for this workflow ID.
+                status="<status>", # Optional, list only for this job status.
+                )
+            )
+
+            # Print the list in alphabetical order by workflow name.
+            sorted_jobs = sorted(
+                response.response_list_jobs, 
+                key=lambda job: job.workflow_name.lower()
+            )
+
+            for job in sorted_jobs:
+                print(f"{job.id} (workflow name: {job.workflow_name}, id: {job.workflow_id})")
+
+        asyncio.run(list_jobs())
         ```
     </Accordion>
     <Accordion title="curl">
@@ -1508,6 +2150,35 @@ the `GET` method to call the `/jobs/<job-id>` endpoint (for `curl` or Postman), 
         print(f"workflow id:   {info.workflow_id}")
         ```
     </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import GetJobRequest
+
+        async def get_job():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = await client.jobs.get_job_async(
+                request=GetJobRequest(
+                    job_id="<job-id>"
+                )
+            )
+
+            info = response.job_information
+
+            print(f"id: {info.id}")
+            print(f"status: {info.status}")
+            print(f"workflow name: {info.workflow_name}")
+            print(f"workflow id: {info.workflow_id}")
+
+        asyncio.run(get_job())
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'GET' --location \
@@ -1558,6 +2229,30 @@ the `POST` method to call the `/jobs/<job-id>/cancel` endpoint (for `curl` or Po
         )
 
         print(response.raw_response)
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import CancelJobRequest
+
+        async def cancel_job():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = await client.jobs.cancel_job_async(
+                request=CancelJobRequest(
+                    job_id="<job-id>"
+                )
+            )
+
+            print(response.raw_response)
+
+        asyncio.run(cancel_job())
         ```
     </Accordion>
     <Accordion title="curl">

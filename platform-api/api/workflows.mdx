@@ -110,6 +110,89 @@ specify the settings for the workflow, as follows:
             print(f"            {crontab_entry.cron_expression}")
         ```
     </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.shared import (
+            WorkflowNode,
+            WorkflowNodeType,
+            CreateWorkflow,
+            WorkflowType,
+            Schedule
+        )
+        from unstructured_client.models.operations import CreateWorkflowRequest
+        
+        async def create_workflow():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            workflow_node = WorkflowNode(
+                name="<node-name>",
+                subtype="<node-subtype>",
+                type=WorkflowNodeType.<NODE-TYPE>,
+                settings={
+                    "...": "..."
+                }
+            )
+
+            another_workflow_node = WorkflowNode(
+                name="<node-name>",
+                subtype="<node-subtype>",
+                type=WorkflowNodeType.<NODE-TYPE>,
+                settings={
+                    "...": "..."
+                }
+            )
+
+            # And so on for any additional nodes.
+
+            workflow = CreateWorkflow(
+                name="<name>",
+                source_id="<source-connector-id>",
+                destination_id="<destination-connector-id>",
+                workflow_type=WorkflowType.<TYPE>,
+                workflow_nodes=[
+                    worfklow_node,
+                    another_workflow_node
+                    # And so on for any additional nodes.
+                ],
+                schedule=Schedule("<schedule-timeframe>")
+            )
+
+            response = await client.workflows.create_workflow_async(
+                request=CreateWorkflowRequest(
+                    create_workflow=workflow
+                )
+            )
+
+            info = response.workflow_information
+
+            print(f"name:           {info.name}")
+            print(f"id:             {info.id}")
+            print(f"status:         {info.status}")
+            print(f"type:           {info.workflow_type}")
+            print("source(s):")
+
+            for source in info.sources:
+                print(f"            {source}")
+
+            print("destination(s):")
+
+            for destination in info.destinations:
+                print(f"            {destination}")
+
+            print("schedule(s):")
+
+            for crontab_entry in info.schedule.crontab_entries:
+                print(f"            {crontab_entry.cron_expression}")
+
+        asyncio.run(create_workflow())
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'POST' --location \
@@ -287,6 +370,71 @@ In the request body, specify the settings for the workflow. For the specific set
 
         for crontab_entry in info.schedule.crontab_entries:
             print(f"            {crontab_entry.cron_expression}")
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.shared import (
+            WorkflowNode,
+            WorkflowNodeType,
+            UpdateWorkflow,
+            WorkflowType,
+            Schedule,
+        ),
+        from unstructured_client.models.operations import UpdateWorkflowRequest
+        
+        async def update_workflow():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            workflow_node = WorkflowNode(
+                # Specify the settings for a workflow node here.
+            )
+
+            another_workflow_node = WorkflowNode(
+                # Specify the settings for another workflow node here.
+            )
+
+            # And so on for any additional nodes.
+
+            workflow = UpdateWorkflow(
+                # Specify the settings for the workflow here.
+            )
+
+            response = await client.workflows.update_workflow_async(
+                request=UpdateWorkflowRequest(
+                    workflow_id="<workflow-id>",
+                    update_workflow=workflow
+                )
+            )
+
+            info = response.workflow_information
+
+            print(f"name:           {info.name}")
+            print(f"id:             {info.id}")
+            print(f"status:         {info.status}")
+            print(f"type:           {info.workflow_type}")
+            print("source(s):")
+
+            for source in info.sources:
+                print(f"            {source}")
+
+            print("destination(s):")
+
+            for destination in info.destinations:
+                print(f"            {destination}")
+
+            print("schedule(s):")
+
+            for crontab_entry in info.schedule.crontab_entries:
+                print(f"            {crontab_entry.cron_expression}")
+
+        asyncio.run(update_workflow())
         ```
     </Accordion>
     <Accordion title="curl">
