@@ -1,21 +1,25 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>DestinationConnector
+from unstructured_client.models.shared import (
+    <Create|Update>DestinationConnector,
+    DestinationConnectorType,
+    S3DestinationConnectorConfigInput
+)
 # ...
 destination_connector = <Create|Update>DestinationConnector(
     name="<name>", # Create only.
-    type="s3", # Create only.
-    config={
+    type=DestinationConnectorType.S3, # Create only.
+    config=S3DestinationConnectorConfigInput(
         # For AWS access key ID with AWS secret access key authentication:
-        "key": "<key>", 
-        "secret": "<secret>", 
+        key="<key>", 
+        secret="<secret>", 
 
         # For AWS STS token authentication:
-        "token": "<token>", 
+        token="<token>", 
 
-        "remote_url": "<remote_url>",
-        "endpoint_url": "<endpoint-url>"
-    }
+        remote_url="<remote_url>",
+        endpoint_url="<endpoint-url>"
+    )
 )
 # ...
 ```

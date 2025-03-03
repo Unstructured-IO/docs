@@ -1,14 +1,19 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>SourceConnector
+from unstructured_client.models.shared import (
+    <Create|Update>SourceConnector,
+    SourceConnectorType,
+    MongoDBConnectorConfigInput
+)
 # ...
 source_connector = <Create|Update>SourceConnector(
     name="<name>", # Create only.
-    type="mongodb", # Create only.
-    config={
-        "uri": "<uri>",
-        "database": "<database>",
-        "collection": "<collection>"
-    }
+    type=SourceConnectorType.MONGODB, # Create only.
+    config=MongoDBConnectorConfigInput(
+        uri="<uri>",
+        database="<database>",
+        collection="<collection>"
+    )
 )
+# ...
 ```

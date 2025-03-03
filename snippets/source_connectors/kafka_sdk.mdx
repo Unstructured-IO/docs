@@ -1,18 +1,23 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>SourceConnector
+from unstructured_client.models.shared import (
+    <Create|Update>SourceConnector,
+    SourceConnectorType,
+    KafkaCloudSourceConnectorConfigInput
+)
 # ...
 source_connector = <Create|Update>SourceConnector(
     name="<name>", # Create only.
-    type="kafka-cloud", # Create only.
-    config={
-        "bootstrap_server": "<bootstrap-server>",
-        "port": <port>,
-        "group_id": "<group-id>",
-        "kafka_api_key": "<kafka-api-key>",
-        "secret": "<secret>",
-        "topic": "<topic>",
-        "num_messages_to_consume": <num-messages-to-consume>
-    }
+    type=SourceConnectorType.KAFKA_CLOUD, # Create only.
+    config=KafkaCloudSourceConnectorConfigInput(
+        bootstrap_servers="<bootstrap-server>",
+        port=<port>,
+        group_id="<group-id>",
+        kafka_api_key="<kafka-api-key>",
+        secret="<secret>",
+        topic="<topic>",
+        num_message_to_consume=<num-message-to-consume>,
+    )
 )
+# ...
 ```

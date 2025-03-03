@@ -1,23 +1,27 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>DestinationConnector
+from unstructured_client.models.shared import (
+    <Create|UpdateDestinationConnector,
+    DestinationConnectorType,
+    SnowflakeDestinationConnectorConfigInput
+)
 # ...
 destination_connector = <Create|Update>DestinationConnector(
     name="<name>", # Create only.
-    type="snowflake", # Create only.
-    config={
-        "account": "<account>",
-        "user": "<user>",
-        "host": "<host>",
-        "port": <port>,
-        "database": "<database>",
-        "schema": "<schema>",
-        "role": "<role>",
-        "password": "<password>",
-        "record_id_key": "<record-id-key>",
-        "table_name": "<table-name>",
-        "batch_size": <batch-size>
-    }
+    type=DestinationConnectorType.SNOWFLAKE, # Create only.
+    config=SnowflakeDestinationConnectorConfigInput(
+        account="<account>",
+        user="<user>",
+        host="<host>",
+        port=<port>,
+        database="<database>",
+        schema="<schema>",
+        role="<role>",
+        password="<password>",
+        record_id_key="<record-id-key>",
+        table_name="<table-name>",
+        batch_size=<batch-size>
+    )
 )
 # ...
 ```

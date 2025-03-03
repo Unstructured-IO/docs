@@ -1,15 +1,19 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>DestinationConnector
+from unstructured_client.models.shared import (
+    <Create|Update>DestinationConnector,
+    DestinationConnectorType,
+    WeaviateDestinationConnectorConfigInput
+)
 # ...
 destination_connector = <Create|Update>DestinationConnector(
     name="<name>", # Create only.
-    type="weaviate", # Create only.
-    config={
-        "host_url": "<host-url>",
-        "class_name": "<class-name>",
-        "api_key": "<api-key>"
-    }
+    type=DestinationConnectorType.WEAVIATE_CLOUD, # Create only.
+    config=WeaviateDestinationConnectorConfigInput(
+        cluster_url="<host-url>",
+        collection="<class-name>",
+        api_key="<api-key>"
+    )
 )
 # ...
 ```

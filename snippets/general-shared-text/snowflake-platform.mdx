@@ -9,7 +9,7 @@ Fill in the following fields:
 - **Port** (_required_): The warehouse's port number. The default is `443` if not otherwise specified.
 - **Database** (_required_): The name of the target Snowflake database.
 - **Schema** (_required_): The name of the target Snowflake schema within the database.
-- **Table** (_required_, source connector only): The name of the target Snowflake table within the database's schema. For the destination connector, the default is `elements` if not otherwise specified.
+- **Table** (_required_ for source connector only): The name of the target Snowflake table within the database's schema. For the destination connector, the default is `elements` if not otherwise specified.
 - **Columns** (source connector only): A comma-separated list of columns to fetch from the table. By default, all columns are fetched unless otherwise specified.
 - **ID Column** (_required_, source connector only): The name of the column that uniquely identifies each record in the table.
 - **Record ID Key** (destination connector only): The name of the column that uniquely identifies each record in the table. The default is `record_id` if not otherwise specified.

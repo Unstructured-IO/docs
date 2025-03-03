@@ -1,18 +1,23 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>SourceConnector
+from unstructured_client.models.shared import (
+    <Create|Update>SourceConnector,
+    SourceConnectorType,
+    GoogleDriveSourceConnectorConfigInput
+)
 # ...
 source_connector = <Create|Update>SourceConnector(
     name="<name>", # Create only.
-    type="google_drive", # Create only.
-    config={
-        "drive_id": "<drive-id>",
-        "service_account_key": "<service-account-key>",
-        "extensions": [
+    type=SourceConnectorType.GOOGLE_DRIVE,  # Create only.
+    config=GoogleDriveSourceConnectorConfigInput(
+        drive_id="<drive-id>",
+        service_account_key="<service-account-key>",
+        extensions=[
             "<extension>",
             "<extension>"
         ],
-        "recursive": <true|false>
-    }
+        recursive=<True|False>
+    )
 )
+# ...
 ```

@@ -1,23 +1,28 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>SourceConnector
+from unstructured_client.models.shared import (
+    CreateSourceConnector,
+    SourceConnectorType,
+    PostgreSourceConnectorConfigInput
+)
 # ...
 source_connector = <Create|Update>SourceConnector(
     name="<name>", # Create only.
-    type="postgres", # Create only.
-    config={
-        "host": "<host>",
-        "database": "<database>",
-        "port": "<port>",
-        "username": "<username>",
-        "password": "<password>",
-        "table_name": "<table-name>",
-        "batch_size": <batch-size>,
-        "id_column": "<id-column>",
-        "fields": [
+    type=SourceConnectorType.POSTGRES, # Create only.
+    config=PostgresSourceConnectorConfigInput(
+        host="<host>",
+        database="<database>",
+        port="<port>",
+        username="<username>",
+        password="<password>",
+        table_name="<table-name>",
+        batch_size=<batch-size>,
+        id_column="<id-column>",
+        fields=[
             "<field>",
             "<field>"
         ]
-    }
+    )
 )
+# ...
 ```

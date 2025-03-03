@@ -7,9 +7,8 @@
 - `<port>` (_required_): The warehouse's port number. The default is `443` if not otherwise specified.
 - `<database>` (_required_): The name of the target Snowflake database.
 - `<schema>` (_required_): The name of the target Snowflake schema within the database.
-- `<table-name>` (_required_, source connector only): The name of the target Snowflake table within the database's schema. For the destination connector, the default is `elements` if not otherwise specified.
+- `<table-name>`: The name of the target Snowflake table within the database's schema. For the destination connector, the default is `elements` if not otherwise specified.
 - `<columns>` (source connector only): A comma-separated list of columns to fetch from the table. By default, all columns are fetched unless otherwise specified.
 - `<id-column>` (_required_, source connector only): The name of the column that uniquely identifies each record in the table.
 - `<record-id-key>` (destination connector only): The name of the column that uniquely identifies each record in the table. The default is `record_id` if not otherwise specified.
-- `<field>` (destination connector only): The name of a column to include. By default, all columns are included if not otherwise specified.
 - `<batch-size>` (_required_): The maximum number of rows to fetch for each batch. The default is `50` if not otherwise specified.

@@ -5,4 +5,5 @@
 - `<kafka-api-key>` - For authentication, the API key for access to the cluster.
 - `<secret>` - For authentication, the secret for access to the cluster.
 - `<topic>` - The name of the topic to read messages from or write messages to on the cluster.
-- `<num-messages-to-consume>` - The maximum number of messages that the consumer will try to consume. The default is `100` if not otherwise specified.
+- `<batch-size>` (destination connector only) - The maximum number of messages to send in a single batch. The default is `100` if not otherwise specified.
+- `<num-messages-to-consume>` (source connector only) - The maximum number of messages that the consumer will try to consume. The default is `100` if not otherwise specified.

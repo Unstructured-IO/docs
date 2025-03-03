@@ -1,17 +1,21 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>DestinationConnector
+from unstructured_client.models.shared import (
+    <Create|Update>DestinationConnector,
+    DestinationConnectorType,
+    AstraDBConnectorConfigInput
+)
 # ...
 destination_connector = <Create|Update>DestinationConnector(
     name="<name>", # Create only.
-    type="astradb", # Create only.
-    config={
-        "token": "<token>",
-        "api_endpoint": "<api-endpoint>",
-        "collection_name": "<collection-name>",
-        "keyspace": "<keyspace>",
-        "batch_size": <batch-size>
-    }
+    type=DestinationConnectorType.ASTRADB, # Create only.
+    config=AstraDBConnectorConfigInput(
+        token="<token>",
+        api_endpoint="<api-endpoint>",
+        collection_name="<collection-name>",
+        keyspace="<keyspace>",
+        batch_size=<batch-size>
+    )
 )
 # ...
 ```

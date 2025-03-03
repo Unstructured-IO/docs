@@ -1,18 +1,23 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>SourceConnector
+from unstructured_client.models.shared import (
+    <Create|Update>SourceConnector,
+    SourceConnectorType,
+    OutlookSourceConnectorConfigInput
+)
 # ...
 source_connector = <Create|Update>SourceConnector(
     name="<name>", # Create only.
-    type="outlook", # Create only.
-    config={
-        "client_id": "<client-id>",
-        "authority_url": "<authority-url>",
-        "tenant": "<tenant>",
-        "client_cred": "<client-cred>",
-        "user_email": "<user-email>",
-        "outlook_folders": ["<folder-name>","<folder-name>"],
-        "recursive": <true|false>
-    }
+    type=SourceConnectorType.OUTLOOK, # Create only.
+    config=OutlookSourceConnectorConfigInput(
+        client_id="<client-id>",
+        authority_url="<authority-url>",
+        tenant="<tenant>",
+        client_cred="<client-cred>",
+        user_email="<user-email>",
+        outlook_folders=["<folder-name>","<folder-name>"],
+        recursive=<True|False>
+    )
 )
+# ...
 ```
