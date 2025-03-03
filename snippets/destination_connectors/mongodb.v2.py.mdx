@@ -7,7 +7,6 @@ from unstructured_ingest.v2.interfaces import ProcessorConfig
 from unstructured_ingest.v2.processes.connectors.mongodb import (
     MongoDBAccessConfig,
     MongoDBConnectionConfig,
-    MongoDBUploadStagerConfig,
     MongoDBUploaderConfig
 )
 from unstructured_ingest.v2.processes.connectors.local import (
@@ -47,7 +46,6 @@ if __name__ == "__main__":
             database=os.getenv("MONGODB_DATABASE"),
             collection=os.getenv("MONGODB_COLLECTION")
         ),
-        stager_config=MongoDBUploadStagerConfig(),
         uploader_config=MongoDBUploaderConfig(batch_size=100)
     ).run()
 ```
