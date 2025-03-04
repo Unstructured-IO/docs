@@ -521,7 +521,6 @@ A **Partitioner** node has a `type` of `WorkflowNodeType.PARTITION` (for the Pyt
             type=WorkflowNodeType.PARTITION,
             settings={
                "provider": "anthropic",
-               "provider_api_key": None,
                "model": "claude-3-5-sonnet-20241022",
                "output_format": "text/html",
                "user_prompt": None,
@@ -541,7 +540,6 @@ A **Partitioner** node has a `type` of `WorkflowNodeType.PARTITION` (for the Pyt
             "subtype": "vlm",
             "settings": {
                 "provider": "anthropic",
-                "provider_api_key": null,
                 "model": "claude-3-5-sonnet-20241022",
                 "output_format": "text/html",
                 "user_prompt": null,
@@ -566,7 +564,6 @@ A **Partitioner** node has a `type` of `WorkflowNodeType.PARTITION` (for the Pyt
             type=WorkflowNodeType.PARTITION,
             settings={
                 "provider": "<provider>",
-                "provider_api_key": None,
                 "model": "<model>",
                 "output_format": "text/html",
                 "user_prompt": None,
@@ -584,7 +581,6 @@ A **Partitioner** node has a `type` of `WorkflowNodeType.PARTITION` (for the Pyt
             "subtype": "vlm",
             "settings": {
                 "provider": "<provider>",
-                "provider_api_key": null,
                 "model": "<model>",
                 "output_format": "text/html",
                 "user_prompt": null,
@@ -763,8 +759,6 @@ A **Chunker** node has a `type` of `WorkflowNodeType.CHUNK` (for the Python SDK)
             subtype="chunk_by_character",
             type=WorkflowNodeType.CHUNK,
             settings={
-                "unstructured_api_url": None,
-                "unstructured_api_key": None,
                 "include_orig_elements": <True|False>,
                 "new_after_n_chars": <new-after-n-chars>,
                 "max_characters": <max-characters>,
@@ -782,8 +776,6 @@ A **Chunker** node has a `type` of `WorkflowNodeType.CHUNK` (for the Python SDK)
             "type": "chunk",
             "subtype": "chunk_by_character",
             "settings": {
-                "unstructured_api_url": null,
-                "unstructured_api_key": null,
                 "include_orig_elements": <true|false>,
                 "new_after_n_chars": <new-after-n-chars>,
                 "max_characters": <max-characters>,
@@ -806,8 +798,6 @@ A **Chunker** node has a `type` of `WorkflowNodeType.CHUNK` (for the Python SDK)
             subtype="chunk_by_title",
             type=WorkflowNodeType.CHUNK,
             settings={
-                "unstructured_api_url": None,
-                "unstructured_api_key": None,
                 "multipage_sections": <True|False>,
                 "combine_text_under_n_chars": <combine-text-under-n-chars>,
                 "include_orig_elements": <True|False>,
@@ -827,8 +817,6 @@ A **Chunker** node has a `type` of `WorkflowNodeType.CHUNK` (for the Python SDK)
             "type": "chunk",
             "subtype": "chunk_by_title",
             "settings": {
-                "unstructured_api_url": null,
-                "unstructured_api_key": null,
                 "multipage_sections": <true|false>,
                 "combine_text_under_n_chars": <combine-text-under-n-chars>,
                 "include_orig_elements": <true|false>,
@@ -853,8 +841,6 @@ A **Chunker** node has a `type` of `WorkflowNodeType.CHUNK` (for the Python SDK)
             subtype="chunk_by_page",
             type=WorkflowNodeType.CHUNK,
             settings={
-                "unstructured_api_url": None,
-                "unstructured_api_key": None,
                 "include_orig_elements": <True|False>,
                 "new_after_n_chars": <new-after-n-chars>,
                 "max_characters": <max-characters>,
@@ -872,8 +858,6 @@ A **Chunker** node has a `type` of `WorkflowNodeType.CHUNK` (for the Python SDK)
             "type": "chunk",
             "subtype": "chunk_by_page",
             "settings": {
-                "unstructured_api_url": null,
-                "unstructured_api_key": null,
                 "include_orig_elements": <true|false>,
                 "new_after_n_chars": <new-after-n-chars>,
                 "max_characters": <max-characters>,
@@ -896,8 +880,6 @@ A **Chunker** node has a `type` of `WorkflowNodeType.CHUNK` (for the Python SDK)
             subtype="chunk_by_similarity",
             type=WorkflowNodeType.CHUNK,
             settings={
-                "unstructured_api_url": None,
-                "unstructured_api_key": None,
                 "include_orig_elements": <True|False>,
                 "new_after_n_chars": <True|False>,
                 "max_characters": <max-characters>,
@@ -916,8 +898,6 @@ A **Chunker** node has a `type` of `WorkflowNodeType.CHUNK` (for the Python SDK)
             "type": "chunk",
             "subtype": "chunk_by_similarity",
             "settings": {
-                "unstructured_api_url": null,
-                "unstructured_api_key": null,
                 "include_orig_elements": <true|false>,
                 "new_after_n_chars": <true|false>,
                 "max_characters": <max-characters>,
