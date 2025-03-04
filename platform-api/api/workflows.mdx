@@ -506,100 +506,91 @@ flowchart LR
 
 ### Partitioner node
 
-A **Partitioner** node has a `type` of `partition` and a `subtype` of `unstructured_api`. The `strategy` setting 
-determines the partition strategy to use.
+A **Partitioner** node has a `type` of `WorkflowNodeType.PARTITION` (for the Python SDK) or `partition` (for `curl` and Postman). 
 
-#### Fast strategy
+[Learn about the available partitioning strategies](/platform/partitioning).
 
-The following example is for `curl` and Postman. For the Python SDK:
+#### Auto strategy
 
-- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
-- `"type": "partition"` is `type=WorkflowNodeType.PARTITION`.
-- `true` and `false` are `True` and `False`.
-
-```text
-"name": "Partitioner",
-"type": "partition",
-"subtype": "unstructured_api",
-"settings": {
-    "strategy": "fast",
-    "include_page_breaks": <true|false>,
-    "pdf_infer_table_structure": <true|false>,
-    "exclude_elements": [
-        "<element-name>",
-        "<element-name>"
-    ],
-    "xml_keep_tags": <true|false>,
-    "encoding": "<encoding>",
-    "ocr_languages": [
-        "<language-code>",
-        "<language-code>"
-    ],
-    "extract_image_block_types": [
-        "image",
-        "table"
-    ],
-    "infer_table_structure": <true|false>
-}
-```
-
-#### High Res strategy
-
-The following example is for `curl` and Postman. For the Python SDK:
-
-- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
-- `"type": "partition"` is `type=WorkflowNodeType.PARTITION`.
-- `true` and `false` are `True` and `False`.
-
-```text
-"name": "Partitioner",
-"type": "partition",
-"subtype": "unstructured_api",
-"settings": {
-    "strategy": "hi_res",
-    "include_page_breaks": <true|false>,
-    "pdf_infer_table_structure": <true|false>,
-    "exclude_elements": [
-        "<element-name>",
-        "<element-name>"
-    ],
-    "xml_keep_tags": <true|false>,
-    "encoding": "<encoding>",
-    "ocr_languages": [
-        "<language>",
-        "<language>"
-    ],
-    "extract_image_block_types": [
-        "image",
-        "table"
-    ],
-    "infer_table_structure": <true|false>
-}
-```
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        auto_partitioner_workflow_node = WorkflowNode(
+            name="Partitioner",
+            subtype="vlm",
+            type=WorkflowNodeType.PARTITION,
+            settings={
+               "provider": "anthropic",
+               "model": "claude-3-5-sonnet-20241022",
+               "output_format": "text/html",
+               "user_prompt": None,
+               "format_html": True,
+               "unique_element_ids": True,
+               "is_dynamic": True,
+               "allow_fast": True
+           }
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Partitioner",
+            "type": "partition",
+            "subtype": "vlm",
+            "settings": {
+                "provider": "anthropic",
+                "model": "claude-3-5-sonnet-20241022",
+                "output_format": "text/html",
+                "user_prompt": null,
+                "format_html": true,
+                "unique_element_ids": true,
+                "is_dynamic": true,
+                "allow_fast": true
+            }
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
 
 #### VLM strategy
 
-The following example is for `curl` and Postman. For the Python SDK:
-
-- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
-- `"type": "partition"` is `type=WorkflowNodeType.PARTITION`.
-- `true` and `false` are `True` and `False`.
-- `null` is `None`.
-
-```text
-"name": "Partitioner",
-"type": "partition",
-"subtype": "vlm",
-"settings": {
-    "provider": "<provider>",
-    "provider_api_key": null,
-    "model": "<model>",
-    "output_format": "text/html",
-    "user_prompt": null,
-    "format_html": true,
-    "unique_element_ids": <true|false>
-}
-```
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        vlm_partitioner_workflow_node = WorkflowNode(
+            name="Partitioner",
+            subtype="vlm",
+            type=WorkflowNodeType.PARTITION,
+            settings={
+                "provider": "<provider>",
+                "model": "<model>",
+                "output_format": "text/html",
+                "user_prompt": None,
+                "format_html": True,
+                "unique_element_ids": <True|False>
+            }
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Partitioner",
+            "type": "partition",
+            "subtype": "vlm",
+            "settings": {
+                "provider": "<provider>",
+                "model": "<model>",
+                "output_format": "text/html",
+                "user_prompt": null,
+                "format_html": true,
+                "unique_element_ids": <true|false>
+            }
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
 
 Allowed values for `provider` and `model` include:
 
@@ -626,126 +617,330 @@ Allowed values for `provider` and `model` include:
 
   - `"model": "gemini-2.0-flash-001"`
 
+#### High Res strategy
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        high_res_paritioner_workflow_node = WorkflowNode(
+            name="Partitioner",
+            subtype="unstructured_api",
+            type=WorkflowNodeType.PARTITION,
+            settings={
+                "strategy": "hi_res",
+                "include_page_breaks": <True|False>,
+                "pdf_infer_table_structure": <True|False>,
+                "exclude_elements": [
+                    "<element-name>",
+                    "<element-name>"
+                ],
+                "xml_keep_tags": <True|False>,
+                "encoding": "<encoding>",
+                "ocr_languages": [
+                    "<language>",
+                    "<language>"
+                ],
+                "extract_image_block_types": [
+                    "image",
+                    "table"
+                ],
+                "infer_table_structure": <True|False>
+            }
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Partitioner",
+            "type": "partition",
+            "subtype": "unstructured_api",
+            "settings": {
+                "strategy": "hi_res",
+                "include_page_breaks": <true|false>,
+                "pdf_infer_table_structure": <true|false>,
+                "exclude_elements": [
+                    "<element-name>",
+                    "<element-name>"
+                ],
+                "xml_keep_tags": <true|false>,
+                "encoding": "<encoding>",
+                "ocr_languages": [
+                    "<language>",
+                    "<language>"
+                ],
+                "extract_image_block_types": [
+                    "image",
+                    "table"
+                ],
+                "infer_table_structure": <true|false>
+            }
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
+
+#### Fast strategy
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        fast_partitioner_workflow_node = WorkflowNode(
+            name="Partitioner",
+            subtype="unstructured_api",
+            type=WorkflowNodeType.PARTITION,
+            settings={
+                "strategy": "fast",
+                "include_page_breaks": <True|False>,
+                "pdf_infer_table_structure": <True|False>,
+                "exclude_elements": [
+                    "<element-name>",
+                    "<element-name>"
+                ],
+                "xml_keep_tags": <True|False>,
+                "encoding": "<encoding>",
+                "ocr_languages": [
+                    "<language>",
+                    "<language>"
+                ],
+                "extract_image_block_types": [
+                    "image",
+                    "table"
+                ],
+                "infer_table_structure": <True|False>
+            }
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Partitioner",
+            "type": "partition",
+            "subtype": "unstructured_api",
+            "settings": {
+                "strategy": "fast",
+                "include_page_breaks": <true|false>,
+                "pdf_infer_table_structure": <true|false>,
+                "exclude_elements": [
+                    "<element-name>",
+                    "<element-name>"
+                ],
+                "xml_keep_tags": <true|false>,
+                "encoding": "<encoding>",
+                "ocr_languages": [
+                    "<language-code>",
+                    "<language-code>"
+                ],
+                "extract_image_block_types": [
+                    "image",
+                    "table"
+                ],
+                "infer_table_structure": <true|false>
+            }
+        }
+        ```   
+    </Accordion>
+</AccordionGroup>
+
 ### Chunker node
+
+A **Chunker** node has a `type` of `WorkflowNodeType.CHUNK` (for the Python SDK) or `chunk` (for `curl` and Postman). 
+
+[Learn about the available chunking strategies](/platform/chunking).
 
 #### Chunk by Character strategy
 
-The following example is for `curl` and Postman. For the Python SDK:
-
-- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
-- `"type": "chunk"` is `type=WorkflowNodeType.CHUNK`.
-- `true` and `false` are `True` and `False`.
-- `null` is `None`.
-
-```text
-"name": "Chunker",
-"type": "chunk",
-"subtype": "chunk_by_character",
-"settings": {
-    "unstructured_api_url": null,
-    "unstructured_api_key": null,
-    "include_orig_elements": <true|false>,
-    "new_after_n_chars": <new-after-n-chars>,
-    "max_characters": <max-characters>,
-    "overlap": <overlap>,
-    "overlap_all": <true|false>,
-    "contextual_chunking_strategy": "v1"
-}
-```
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        chunk_by_character_chunker_workflow_node = WorkflowNode(
+            name="Chunker",
+            subtype="chunk_by_character",
+            type=WorkflowNodeType.CHUNK,
+            settings={
+                "include_orig_elements": <True|False>,
+                "new_after_n_chars": <new-after-n-chars>,
+                "max_characters": <max-characters>,
+                "overlap": <overlap>,
+                "overlap_all": <True|False>,
+                "contextual_chunking_strategy": "v1"
+            }
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Chunker",
+            "type": "chunk",
+            "subtype": "chunk_by_character",
+            "settings": {
+                "include_orig_elements": <true|false>,
+                "new_after_n_chars": <new-after-n-chars>,
+                "max_characters": <max-characters>,
+                "overlap": <overlap>,
+                "overlap_all": <true|false>,
+                "contextual_chunking_strategy": "v1"
+            }
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
 
 #### Chunk by Title strategy
 
-The following example is for `curl` and Postman. For the Python SDK:
-
-- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
-- `"type": "chunk"` is `type=WorkflowNodeType.CHUNK`.
-- `true` and `false` are `True` and `False`.
-- `null` is `None`.
-
-```text
-"name": "Chunker",
-"type": "chunk",
-"subtype": "chunk_by_title",
-"settings": {
-    "unstructured_api_url": null,
-    "unstructured_api_key": null,
-    "multipage_sections": <true|false>,
-    "combine_text_under_n_chars": <combine-text-under-n-chars>,
-    "include_orig_elements": <true|false>,
-    "new_after_n_chars": <new-after-n-chars>,
-    "max_characters": <max-characters>,
-    "overlap": <overlap>,
-    "overlap_all": <true|false>,
-    "contextual_chunking_strategy": "v1"
-}
-```
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        chunk_by_title_chunker_workflow_node = WorkflowNode(
+            name="Chunker",
+            subtype="chunk_by_title",
+            type=WorkflowNodeType.CHUNK,
+            settings={
+                "multipage_sections": <True|False>,
+                "combine_text_under_n_chars": <combine-text-under-n-chars>,
+                "include_orig_elements": <True|False>,
+                "new_after_n_chars": <new-after-n-chars>,
+                "max_characters": <max-characters>,
+                "overlap": <overlap>,
+                "overlap_all": <True|False>,
+                "contextual_chunking_strategy": "v1"
+            }
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Chunker",
+            "type": "chunk",
+            "subtype": "chunk_by_title",
+            "settings": {
+                "multipage_sections": <true|false>,
+                "combine_text_under_n_chars": <combine-text-under-n-chars>,
+                "include_orig_elements": <true|false>,
+                "new_after_n_chars": <new-after-n-chars>,
+                "max_characters": <max-characters>,
+                "overlap": <overlap>,
+                "overlap_all": <true|false>,
+                "contextual_chunking_strategy": "v1"
+            }
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
 
 #### Chunk by Page strategy
 
-The following example is for `curl` and Postman. For the Python SDK:
-
-- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
-- `"type": "chunk"` is `type=WorkflowNodeType.CHUNK`.
-- `true` and `false` are `True` and `False`.
-- `null` is `None`.
-
-```text
-"name": "Chunker",
-"type": "chunk",
-"subtype": "chunk_by_page",
-"settings": {
-    "unstructured_api_url": null,
-    "unstructured_api_key": null,
-    "include_orig_elements": <true|false>,
-    "new_after_n_chars": <new-after-n-chars>,
-    "max_characters": <max-characters>,
-    "overlap": <overlap>,
-    "overlap_all": <true|false>,
-    "contextual_chunking_strategy": "v1"
-}
-```
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        chunk_by_page_chunker_workflow_node = WorkflowNode(
+            name="Chunker",
+            subtype="chunk_by_page",
+            type=WorkflowNodeType.CHUNK,
+            settings={
+                "include_orig_elements": <True|False>,
+                "new_after_n_chars": <new-after-n-chars>,
+                "max_characters": <max-characters>,
+                "overlap": <overlap>,
+                "overlap_all": <True|False>,
+                "contextual_chunking_strategy": "v1"
+            }
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Chunker",
+            "type": "chunk",
+            "subtype": "chunk_by_page",
+            "settings": {
+                "include_orig_elements": <true|false>,
+                "new_after_n_chars": <new-after-n-chars>,
+                "max_characters": <max-characters>,
+                "overlap": <overlap>,
+                "overlap_all": <true|false>,
+                "contextual_chunking_strategy": "v1"
+            }
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
 
 #### Chunk by Similarity strategy
 
-The following example is for `curl` and Postman. For the Python SDK:
-
-- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
-- `"type": "chunk"` is `type=WorkflowNodeType.CHUNK`.
-- `true` and `false` are `True` and `False`.
-- `null` is `None`.
-
-```text
-"name": "Chunker",
-"type": "chunk",
-"subtype": "chunk_by_similarity",
-"settings": {
-    "unstructured_api_url": null,
-    "unstructured_api_key": null,
-    "include_orig_elements": <true|false>,
-    "new_after_n_chars": <true|false>,
-    "max_characters": <max-characters>,
-    "overlap": <overlap>,
-    "overlap_all": <true|false>,
-    "contextual_chunking_strategy": "v1",
-    "similarity_threshold": <similarity-threshold>
-}
-```
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        chunk_by_similarity_chunker_workflow_node = WorkflowNode(
+            name="Chunker",
+            subtype="chunk_by_similarity",
+            type=WorkflowNodeType.CHUNK,
+            settings={
+                "include_orig_elements": <True|False>,
+                "new_after_n_chars": <True|False>,
+                "max_characters": <max-characters>,
+                "overlap": <overlap>,
+                "overlap_all": <True|False>,
+                "contextual_chunking_strategy": "v1",
+                "similarity_threshold": <similarity-threshold>
+            }
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Chunker",
+            "type": "chunk",
+            "subtype": "chunk_by_similarity",
+            "settings": {
+                "include_orig_elements": <true|false>,
+                "new_after_n_chars": <true|false>,
+                "max_characters": <max-characters>,
+                "overlap": <overlap>,
+                "overlap_all": <true|false>,
+                "contextual_chunking_strategy": "v1",
+                "similarity_threshold": <similarity-threshold>
+            }
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
 
 ### Enrichment node
 
+An **Enrichment** node has a `type` of `WorkflowNodeType.PROMPTER` (for the Python SDK) or `prompter` (for `curl` and Postman). 
+
+[Learn about the available enrichments](/platform/enriching/overview).
+
 #### Image Description task
 
-The following example is for `curl` and Postman. For the Python SDK:
-
-- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
-- `"type": "prompter"` is `type=WorkflowNodeType.PROMPTER`.
-
-```text
-"name": "Enrichment",
-"type": "prompter",
-"subtype": "<subtype>",
-"settings": {}
-```
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        image_description_enrichment_workflow_node = WorkflowNode(
+            name="Enrichment",
+            subtype="<subtype>",
+            type=WorkflowNodeType.PROMPTER,
+            settings={}
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Enrichment",
+            "type": "prompter",
+            "subtype": "<subtype>",
+            "settings": {}
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
 
 Allowed values for `<subtype>` include:
 
@@ -756,17 +951,28 @@ Allowed values for `<subtype>` include:
 
 #### Table Description task
 
-The following example is for `curl` and Postman. For the Python SDK:
-
-- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
-- `"type": "prompter"` is `type=WorkflowNodeType.PROMPTER`.
-
-```text
-"name": "Enrichment",
-"type": "prompter",
-"subtype": "<subtype>",
-"settings": {}
-```
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        table_description_enrichment_workflow_node = WorkflowNode(
+            name="Enrichment",
+            subtype="<subtype>",
+            type=WorkflowNodeType.PROMPTER,
+            settings={}
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Enrichment",
+            "type": "prompter",
+            "subtype": "<subtype>",
+            "settings": {}
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
 
 Allowed values for `<subtype>` include:
 
@@ -777,53 +983,98 @@ Allowed values for `<subtype>` include:
 
 #### Table to HTML task
 
-The following example is for `curl` and Postman. For the Python SDK:
-
-- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
-- `"type": "prompter"` is `type=WorkflowNodeType.PROMPTER`.
-
-```text
-"name": "Enrichment",
-"type": "prompter",
-"subtype": "openai_table2html",
-"settings": {}
-```
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        table_to_html_enrichment_workflow_node = WorkflowNode(
+            name="Enrichment",
+            subtype="openai_table2html",
+            type=WorkflowNodeType.PROMPTER,
+            settings={}
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Enrichment",
+            "type": "prompter",
+            "subtype": "openai_table2html",
+            "settings": {}
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
 
 #### Named Entity Recognition (NER) task
 
-The following example is for `curl` and Postman. For the Python SDK:
-
-- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
-- `"type": "prompter"` is `type=WorkflowNodeType.PROMPTER`.
-
-```text
-"name": "Enrichment",
-"type": "prompter",
-"subtype": "openai_ner",
-"settings": {
-    "prompt_interface_overrides": {
-        "prompt": {
-            "user": "<user-prompt-override>"
-        } 
-    }
-}
-```
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        ner_enrichment_workflow_node = WorkflowNode(
+            name="Enrichment",
+            subtype="openai_ner",
+            type=WorkflowNodeType.PROMPTER,
+            settings={
+                "prompt_interface_overrides": {
+                    "prompt": {
+                        "user": "<user-prompt-override>"
+                    } 
+                }             
+            }
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Enrichment",
+            "type": "prompter",
+            "subtype": "openai_ner",
+            "settings": {
+                "prompt_interface_overrides": {
+                    "prompt": {
+                        "user": "<user-prompt-override>"
+                    } 
+                }
+            }
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
 
 ### Embedder node
 
-The following example is for `curl` and Postman. For the Python SDK:
+An **Embedder** node has a `type` of `WorkflowNodeType.EMBED` (for the Python SDK) or `embed` (for `curl` and Postman). 
 
-- The `name`, `type`, `subtype`, and `settings` parameters must be followed by an equals character (`=`) instead of a colon character (`:`). 
-- `"type": "embed"` is `type=WorkflowNodeType.EMBED`.
+[Learn about the available embedding providers and models](/platform/embedding).
 
-```text
-"name": "Embedder",
-"type": "embed",
-"subtype": "<subtype>",
-"settings": {
-    "model_name": "<model-name>"
-}
-```
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+       embedder_workflow_node = WorkflowNode(
+            name="Embedder",
+            subtype="<subtype>",
+            type=WorkflowNodeType.EMBED,
+            settings={
+                "model_name": "<model-name>"             
+            }
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Embedder",
+            "type": "embed",
+            "subtype": "<subtype>",
+            "settings": {
+                "model_name": "<model-name>"
+            }
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
 
 Allowed values for `subtype` and `model_name` include:
 
