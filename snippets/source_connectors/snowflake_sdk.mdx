@@ -1,26 +1,31 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>SourceConnector
+from unstructured_client.models.shared import (
+    <Create|Update>SourceConnector,
+    SourceConnectorType,
+    SnowflakeSourceSourceConnectorConfigInput
+)
 # ...
 source_connector = <Create|Update>SourceConnector(
     name="<name>", # Create only.
-    type="sharepoint", # Create only.
-    config={
-        "account": "<account>",
-        "user": "<user>",
-        "host": "<host>",
-        "port": <port>,
-        "database": "<database>",
-        "schema": "<schema>",
-        "role": "<role>",
-        "password": "<password>",
-        "id_column": "<id-column>",
-        "table_name": "<table-name>",
-        "batch_size": <batch-size>,
-        "fields": [
-            "field",
-            "field"
-        ]
-    }
+    type=SourceConnectorType.SNOWFLAKE, # Create only.
+    config=SnowflakeSourceConnectorConfigInput(
+        account="<account>",
+        role="<role>",
+        user="<user>",
+        password="<password>",
+        host="<host",
+        port=<port>
+        database="<database>",
+        schema_="<schema>",
+        table_name="<table-name>",
+        id_column="<id-column>",
+        fields=[
+            "<field>", 
+            "<field>"
+        ],
+        batch_size=<batch-size> 
+    )
 )
+# ...
 ```

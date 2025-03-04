@@ -1,17 +1,21 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>DestinationConnector
+from unstructured_client.models.shared import (
+    <Create|Update>DestinationConnector,
+    DestinationConnectorType,
+    MilvusDestinationConnectorConfigInput
+)
 # ...
 destination_connector = <Create|Update>DestinationConnector(
     name="<name>", # Create only.
-    type="milvus", # Create only.
-    config={
-        "user": "<user>",
-        "uri": "<uri>",
-        "db_name": "<db-name>",
-        "password": "<password>",
-        "collection_name": "<collection-name>"
-    }
+    type=DestinationConnectorType.MILVUS, # Create only.
+    config=MilvusDestinationConnectorConfigInput(
+        user="<user>",
+        uri="<uri>",
+        db_name="<db-name>",
+        password="<password>",
+        collection_name="<collection-name>"
+    )
 )
 # ...
 ```

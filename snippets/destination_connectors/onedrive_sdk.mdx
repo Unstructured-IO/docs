@@ -1,18 +1,22 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>DestinationConnector
+from unstructured_client.models.shared import (
+    <Create|Update>DestinationConnector,
+    DestinationConnectorType,
+    OneDriveDestinationConnectorConfigInput
+)
 # ...
 destination_connector = <Create|Update>DestinationConnector(
     name="<name>", # Create only.
-    type="onedrive", # Create only.
-    config={
-        "client_id": "<client-id>", 
-        "user_pname": "<user-pname>",
-        "tenant": "<tenant>", 
-        "authority_url": "<authority-url>",
-        "client_cred": "<client-cred>",
-        "remote_url": "<remote-url>" 
-    }
+    type=DestinationConnectorType.ONEDRIVE, # Create only.
+    config=OneDriveDestinationConnectorConfigInput(
+        client_id="<client-id>", 
+        user_pname="<user-pname>",
+        tenant="<tenant>", 
+        authority_url="<authority-url>",
+        client_cred="<client-cred>",
+        remote_url="<remote-url>" 
+    )
 )
 # ...
 ```

@@ -1,14 +1,19 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>SourceConnector
+from unstructured_client.models.shared import (
+    <Create|Update>SourceConnector,
+    SourceConnectorType,
+    ElasticsearchConnectorConfigInput
+)
 # ...
 source_connector = <Create|Update>SourceConnector(
     name="<name>", # Create only.
-    type="elasticsearch", # Create only.
-    config={
-        "hosts": ["<host-url>"],
-        "es_api_key": "<es-api-key>",
-        "index_name": "<index-name>"
-    }
+    type=SourceConnectorType.ELASTICSEARCH, # Create only.
+    config=ElasticsearchConnectorConfigInput(
+        hosts=["<host-url>"],
+        es_api_key="<es-api-key>",
+        index_name="<index-name>"
+    )
 )
+# ...
 ```

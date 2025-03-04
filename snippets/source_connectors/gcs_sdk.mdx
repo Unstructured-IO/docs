@@ -1,14 +1,19 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>SourceConnector
+from unstructured_client.models.shared import (
+   <Create|Update>SourceConnector,
+    SourceConnectorType,
+    GCSSourceConnectorConfigInput
+)
 # ...
 source_connector = <Create|Update>SourceConnector(
     name="<name>", # Create only.
-    type="gcs", # Create only.
-    config={
-        "service_account_key": "<service-account-key>",
-        "remote_url": "<remote-url>",
-        "recursive": <true|false>
-    }
+    type=SourceConnectorType.GCS, # Create only.
+    config=GCSSourceConnectorConfigInput(
+        service_account_key="<service-account-key>",
+        remote_url="<remote-url>",
+        recursive=<True|False>
+    )
 )
+# ...
 ```

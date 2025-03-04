@@ -1,19 +1,24 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>SourceConnector
+from unstructured_client.models.shared import (
+    <Create|Update>SourceConnector,
+    SourceConnectorType,
+    CouchbaseSourceConnectorConfigInput
+)
 # ...
 source_connector = <Create|Update>SourceConnector(
     name="<name>", # Create only.
-    type="couchbase", # Create only.
-    config={
-        "username": "<username>",
-        "bucket": "<bucket>",
-        "connection_string": "<connection-string>",
-        "scope": "<scope>",
-        "collection": "<collection>",
-        "password": "<password>",
-        "batch_size": <batch-size>,
-        "collection_id": "<collection-id>" 
-    }
+    type=SourceConnectorType.COUCHBASE, # Create only.
+    config=CouchbaseSourceConnectorConfigInput(
+        username="<username>",
+        bucket="<bucket>",
+        connection_string="<connection-string>",
+        scope="<scope>",
+        collection="<collection>",
+        password="<password>",
+        batch_size=<batch-size>,
+        collection_id="<collection-id>" 
+    )
 )
+# ...
 ```

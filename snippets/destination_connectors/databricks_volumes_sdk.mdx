@@ -1,19 +1,23 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>DestinationConnector
+from unstructured_client.models.shared import (
+    <Create|Update>DestinationConnector,
+    DestinationConnectorType,
+    DatabricksVolumesConnectorConfigInput
+)
 # ...
 destination_connector = <Create|Update>DestinationConnector(
     name="<name>", # Create only.
-    type="databricks_volumes", # Create only.
-    config={
-        "host": "<host>",
-        "catalog": "<catalog>",
-        "schema": "<schema>",
-        "volume": "<volume>",
-        "volume_path": "<volume-path>",
-        "client_secret": "<client-secret>",
-        "client_id": "<client-id>"
-    }
+    type=DestinationConnectorType.DATABRICKS_VOLUMES, # Create only.
+    config=DatabricksVolumesConnectorConfigInput(
+        host="<host>",
+        catalog="<catalog>",
+        schema="<schema>",
+        volume="<volume>",
+        volume_path="<volume-path>",
+        client_secret="<client-secret>",
+        client_id="<client-id>"
+    )
 )
 # ...
 ```

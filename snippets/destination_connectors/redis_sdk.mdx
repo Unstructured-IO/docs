@@ -1,24 +1,28 @@
 ```python Python SDK
 # ...
-from unstructured_client.models.shared import <Create|Update>DestinationConnector
+from unstructured_client.models.shared import (
+    <Create|Update>DestinationConnector,
+    DestinationConnectorType,
+    RedisDestinationConnectorConfigInput
+)
 # ...
 destination_connector = <Create|Update>DestinationConnector(
     name="<name>", # Create only.
-    type="redis", # Create only.
-    config={
-        "database": "<database>",
-        "ssl": "<true|false>",
-        "batch_size": <batch-size>,
+    type=DestinationConnectorType.REDIS, # Create only.
+    config=RedisDestinationConnectorConfigInput(
+        database="<database>",
+        ssl=<True|False>,
+        batch_size=<batch-size>,
 
         # For URI authentication:
-        "uri": "<uri>"
+        uri="<uri>"
       
         # For password authentication:
-        "host": "<host>",
-        "port": <port>,
-        "username": "<username>",
-        "password": "<password>"   
-    }
+        host="<host>",
+        port=<port>,
+        username="<username>",
+        password="<password>"   
+    )
 )
 # ...
 ```

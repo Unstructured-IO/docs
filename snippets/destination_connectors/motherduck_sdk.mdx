@@ -3,18 +3,17 @@
 from unstructured_client.models.shared import (
     <Create|Update>DestinationConnector,
     DestinationConnectorType,
-    Neo4jDestinationConnectorConfigInput
+    MotherDuckDestinationConnectorConfigInput
 )
 # ...
 destination_connector = <Create|Update>DestinationConnector(
     name="<name>", # Create only.
-    type=DestinationConnectorType.NEO4J, # Create only.
-    config=Neo4jDestinationConnectorConfigInput(
-        uri="<uri>",
+    type=DestinationConnectorType.MOTHERDUCK, # Create only.
+    config=MotherDuckDestinationConnectorConfigInput(
         database="<database>",
-        username="<username>",
-        password="<password>",
-        batch_size=<batch-size>
+        db_schema="<db-schema>",
+        table="<table>",
+        md_token="<md-token>"
     )
 )
 # ...
