@@ -1,29 +1,38 @@
 ```python Python SDK
-# ...
+import os
+
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import CreateSourceRequest
 from unstructured_client.models.shared import (
-    <Create|Update>SourceConnector,
+    CreateSourceConnector,
     SourceConnectorType,
     S3SourceConnectorConfigInput
 )
-# ...
-source_connector = <Create|Update>SourceConnector(
-    name="<name>", # Create only.
-    type=SourceConnectorType.S3, # Create only.
-    config=S3SourceConnectorConfigInput(
-        # For anonymous authentication:
-        anonymous=True,
 
-        # For AWS access key ID with AWS secret access key authentication:
-        key="<key>", 
-        secret="<secret>", 
+with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+    response = client.sources.create_source(
+        request=CreateSourceRequest(
+            create_source_connector=CreateSourceConnector(
+                name="<name>",
+                type=SourceConnectorType.S3,
+                config=S3SourceConnectorConfigInput(
+                    # For anonymous authentication:
+                    anonymous=True,
 
-        # For AWS STS token authentication:
-        token="<token>", 
+                    # For AWS access key ID with AWS secret access key authentication:
+                    key="<key>", 
+                    secret="<secret>", 
 
-        remote_url="<remote_url>",
-        endpoint_url="<endpoint-url>", 
-        recursive=<True|False>
+                    # For AWS STS token authentication:
+                    token="<token>", 
+
+                    remote_url="<remote_url>",
+                    endpoint_url="<endpoint-url>", 
+                    recursive=<True|False>
+                )
+            )
+        )
     )
-)
-# ...
+
+    print(response.source_connector_information)
 ```

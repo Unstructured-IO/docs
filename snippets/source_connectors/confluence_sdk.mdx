@@ -1,37 +1,46 @@
 ```python Python SDK
-# ...
+import os
+
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import CreateSourceRequest
 from unstructured_client.models.shared import (
-    <Create|Update>SourceConnector,
+    CreateSourceConnector,
     SourceConnectorType,
-    ConfluenceSourceConnectorConfigInput
+    ConfuenceSourceConnectorConfigInput
 )
-# ...
-source_connector = <Create|Update>SourceConnector(
-    name="<name>", # Create only.
-    type=SourceConnectorType.CONFLUENCE, # Create only.
-    config=ConfluenceSourceConnectorConfigInput(
-        url="<url>",
-        max_num_of_spaces=<max-num-of-spaces>,
-        max_num_of_docs_from_each_space=<max-num-of-docs-from-each-space>,
-        spaces=["<space-name>", "<space-name>"],
 
-        # For API token authentication:
+with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+    response = client.sources.create_source(
+        request=CreateSourceRequest(
+            create_source_connector=CreateSourceConnector(
+                name="<name>",
+                type=SourceConnectorType.CONFLUENCE,
+                config=ConfluenceSourceConnectorConfigInput(
+                    url="<url>",
+                    max_num_of_spaces=<max-num-of-spaces>,
+                    max_num_of_docs_from_each_space=<max-num-of-docs-from-each-space>,
+                    spaces=["<space-name>", "<space-name>"],
 
-        username="<username>",
-        token="<api-token>",
-        cloud=<True|False>
+                    # For API token authentication:
 
-        # For personal access token (PAT) authentication:
+                    username="<username>",
+                    token="<api-token>",
+                    cloud=<True|False>
 
-        token="<personal-access-token>",
-        cloud=False
+                    # For personal access token (PAT) authentication:
 
-        # For password authentication:
+                    token="<personal-access-token>",
+                    cloud=False
 
-        username="<username>",
-        password="<password>",
-        cloud=<True|False>     
+                    # For password authentication:
+
+                    username="<username>",
+                    password="<password>",
+                    cloud=<True|False>     
+                )
+            )
+        )
     )
-)
-# ...
+
+    print(response.source_connector_information)
 ```
