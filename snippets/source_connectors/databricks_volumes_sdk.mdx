@@ -1,23 +1,32 @@
 ```python Python SDK
-# ...
+import os
+
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import CreateSourceRequest
 from unstructured_client.models.shared import (
-    <Create|Update>SourceConnector,
+    CreateSourceConnector,
     SourceConnectorType,
     DatabricksVolumesConnectorConfigInput
 )
-# ...
-source_connector = <Create|Update>SourceConnector(
-    name="<name>", # Create only.
-    type=SourceConnectorType.DATABRICKS_VOLUMES, # Create only.
-    config=DatabricksVolumesConnectorConfigInput(
-        catalog="<catalog>",
-        client_id="<client_id>",
-        client_secret="<client_secret>",
-        host="<host>",
-        schema_="<schema>",
-        volume="<volume>",
-        volume_path="<volume_path>"
+
+with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+    response = client.sources.create_source(
+        request=CreateSourceRequest(
+            create_source_connector=CreateSourceConnector(
+                name="<name>",
+                type=SourceConnectorType.DATABRICKS_VOLUMES,
+                config=DatabricksVolumesConnectorConfigInput(
+                    catalog="<catalog>",
+                    client_id="<client_id>",
+                    client_secret="<client_secret>",
+                    host="<host>",
+                    schema_="<schema>",
+                    volume="<volume>",
+                    volume_path="<volume_path>"
+                )
+            )
+        )
     )
-)
-# ...
+
+    print(response.source_connector_information)
 ```
