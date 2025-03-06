@@ -1,23 +1,33 @@
 ```python Python SDK
-# ...
+import os
+
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import CreateDestinationRequest
 from unstructured_client.models.shared import (
-    <Create|Update>DestinationConnector,
+    CreateDestinationConnector,
     DestinationConnectorType,
     CouchbaseDestinationConnectorConfigInput
 )
-# ...
-destination_connector = <Create|Update>DestinationConnector(
-    name="<name>", # Create only.
-    type=estinationConnectorType.COUCHBASE, # Create only.
-    config=CouchbaseDestinationConnectorConfigInput(
-        username="<username>",
-        bucket="<bucket>",
-        connection_string="<connection-string>",
-        scope="<scope>",
-        collection="<collection>",
-        password="<password>",
-        batch_size=<batch-size>
+
+with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+    response = client.destinations.create_destination(
+        request=CreateDestinationRequest(
+            create_destination_connector=CreateDestinationConnector(
+                name="<name>",
+                type=estinationConnectorType.COUCHBASE,
+                config=CouchbaseDestinationConnectorConfigInput(
+                    username="<username>",
+                    bucket="<bucket>",
+                    connection_string="<connection-string>",
+                    scope="<scope>",
+                    collection="<collection>",
+                    password="<password>",
+                    batch_size=<batch-size>
+                )
+            )
+        )
     )
-)
+
+    print(response.destination_connector_information)
 # ...
 ```
