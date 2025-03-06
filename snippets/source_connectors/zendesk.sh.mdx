@@ -5,7 +5,11 @@
 
 unstructured-ingest \
   zendesk \
-
+    --subdomain $ZENDESK_SUBDOMAIN \
+    --email $ZENDESK_EMAIL \
+    --api-token $ZENDESK_API_TOKEN \
+    --batch-size 2 \
+    --item-type tickets \
     --output-dir $LOCAL_FILE_OUTPUT_DIR \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
