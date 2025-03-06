@@ -1,0 +1,60 @@
+```python Python Ingest v2
+import os
+
+from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+from unstructured_ingest.v2.interfaces import ProcessorConfig
+
+from unstructured_ingest.v2.processes.connectors.jira import (
+    JiraIndexerConfig,
+    JiraDownloaderConfig,
+    JiraConnectionConfig,
+    JiraAccessConfig
+)
+
+from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+from unstructured_ingest.v2.processes.chunker import ChunkerConfig
+from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+from unstructured_ingest.v2.processes.connectors.local import LocalUploaderConfig
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=JiraIndexerConfig(
+            # projects=[
+            #     "project-id",
+            #     "project-id"
+            # ],
+            # boards=[
+            #     "board-id",
+            #     "board-id"
+            # ],
+            # issues=[
+            #     "issue-id",
+            #     "issue-id"
+            # ]
+        ),
+        downloader_config=JiraDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
+        source_connection_config=JiraConnectionConfig(
+            access_config=JiraAccessConfig(
+                password=os.getenv("JIRA_PASSWORD_OR_API_TOKEN"), # Password or API token authentication.
+                # token=os.getenv("JIRA_PERSONAL_ACCES_TOKEN") # Personal access token authentication only.
+            ),
+            url=os.getenv("JIRA_URL"),
+            username=os.getenv("JIRA_USERNAME"), # For password or API token authentication.
+            cloud=True # True for Jira Cloud, False (default) for Jira Data Center.
+        ),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
+        uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
+    ).run()
+```
