@@ -75,7 +75,7 @@ specify the settings for the workflow, as follows:
             destination_id="<destination-connector-id>",
             workflow_type=WorkflowType.<TYPE>,
             workflow_nodes=[
-                worfklow_node,
+                workflow_node,
                 another_workflow_node
                 # And so on for any additional nodes.
             ],
@@ -156,7 +156,7 @@ specify the settings for the workflow, as follows:
                 destination_id="<destination-connector-id>",
                 workflow_type=WorkflowType.<TYPE>,
                 workflow_nodes=[
-                    worfklow_node,
+                    workflow_node,
                     another_workflow_node
                     # And so on for any additional nodes.
                 ],
@@ -275,7 +275,7 @@ Replace the preceding placeholders as follows:
   the `GET` method to call the `/destinations` endpoint (for `curl` or Postman). [Learn more](/platform-api/api/overview#list-destination-connectors).
 - `<TYPE>` (for the Python SDK) or `<type>` (for `curl` or Postman) (_required_) - The workflow type. Available values include `CUSTOM` (for the Python SDK) and `custom` (for `curl` or Postman).
 
-  If `<TYPE>` is set to `CUSTOM` (for the Python SDK), or if `<type>` is set to `custom` (for `curl` or Postman), you must add a `worfklow_nodes` array. For instructions, see [Custom workflow DAG nodes](#custom-workflow-dag-nodes).
+  If `<TYPE>` is set to `CUSTOM` (for the Python SDK), or if `<type>` is set to `custom` (for `curl` or Postman), you must add a `workflow_nodes` array. For instructions, see [Custom workflow DAG nodes](#custom-workflow-dag-nodes).
 
   <Note>
       The previously-available workflow optimization types `ADVANCED`, `BASIC`, and `PLATINUM` (for the Python SDK) and 
