@@ -12,3 +12,9 @@ The following environment variables:
 
 - `DROPBOX_REMOTE_URL` - The remote URL to the target subfolder inside of the app folder for the Dropbox app, represented by `--remote-url` (CLI) or `remote_url` (Python).
 - `DROPBOX_ACCESS_TOKEN` - The value of the access token for the Dropbox app that is associated with the target app folder, represented by `--token` (CLI) or `token` (Python).
+
+To have Unstructured refresh expired Dropbox App access tokens on your behalf, you must also provide the following environment variables:
+
+- `DROPBOX_REFRESH_TOKEN` - The value of the refresh token for the corresponding access token, represented by `--refresh-token` (CLI) or `refresh_token` (Python).
+- `DROPBOX_APP_KEY` - The app key for the Dropbox app, represented by `--app-key` (CLI) or `app_key` (Python).
+- `DROPBOX_APP_SECRET` - The app secret for the Dropbox app, represented by `--app-secret` (CLI) or `app_secret` (Python).
