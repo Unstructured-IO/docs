@@ -1,0 +1,28 @@
+- A [Jira Cloud account](https://www.atlassian.com/try/cloud/signup?bundle=jira-software&edition=free) or 
+    [Jira Data Center installation](https://confluence.atlassian.com/adminjiraserver/installing-jira-data-center-938846870.html).
+- The site URL for your [Jira Data Center installation](https://confluence.atlassian.com/jirakb/find-your-site-url-to-set-up-the-jira-data-center-and-server-mobile-app-954244798.html) or Jira Cloud account. 
+  For Jira Cloud, open Jira in your web browser and copy the address from the browser's address bar. 
+  If you're unsure, check the dashboard URL, or if viewing an issue, project or board, the site URL is typically everything that comes before and including `/jira`, such as 
+  `https://<organization>.atlassian.net/jira`. 
+- To process Jira projects, provide the IDs for the target projects. To get a project's ID, sign in to your Jira Cloud account or Jira Data Center installation, and then go to the following URL: `https://<organization>.atlassian.net/rest/api/latest/project/<project-key>`, 
+  replacing `<organization>` with yours, and replacing `<project-key>` with the target project's key. In the 
+  response, look for the URL `https://<organization>.atlassian.net/rest/api/3/project/<project-id>`, where `<project-id>` is the target project's ID.
+- To process Jira boards, the IDs for the target boards. To get a board's ID, sign in to your Jira Cloud account or Jira Data Center installation, and then go to the following URL: `https://<organization>.atlassian.net/rest/agile/1.0/board?projectKeyOrId=<project-key-or-id>`, 
+  replacing `<organization>` with yours, and `<project-key-or-id>` with the associated project's key or ID. In the 
+  response, look for the URL `https://<organization>.atlassian.net/rest/agile/1.0/board/<board-id>`, where `<board-id>` is the board's ID.
+- To process Jira issues, the IDs for the target issues. To get an issue's ID, sign in to your Jia Cloud account or Jira Data Center installation, open the issue, and then look at the URL in your browser's address bar. The issue ID is the string of characters after the final slash in the URL.
+- A user in your [Jira Cloud account](https://support.atlassian.com/jira-cloud-administration/docs/manage-users-groups-permissions-and-roles-in-jira-cloud/) or 
+  [Jira Data Center installation](https://confluence.atlassian.com/adminjiraserver/create-edit-or-remove-a-user-938847025.html).
+- The user must have the correct permissions in your 
+  [Jira Cloud account](https://support.atlassian.com/jira-cloud-administration/docs/manage-users-groups-permissions-and-roles-in-jira-cloud/) or 
+  [Jira Data Center installation](https://confluence.atlassian.com/jirakb/permissions-made-simple-for-jira-server-717062767.html) to 
+  access the target projects, boards, and issues.
+- One of the following:
+
+  - For Jira Cloud or Jira Data Center, the target user's name or email address, and password. 
+    [Change a Jira Cloud user's password](https://support.atlassian.com/user-management/docs/change-password-for-portal-only-customers/). 
+    [Change a Jira Data Center user's password](https://confluence.atlassian.com/adminjiraserver/create-edit-or-remove-a-user-938847025.html).
+  - For Jira Cloud only, the target user's name or email address, and API token. 
+    [Create an API token](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/).
+  - For Jira Data Center only, the target user's personal access token (PAT). 
+    [Create a PAT](https://confluence.atlassian.com/enterprise/using-personal-access-tokens-1026032365.html).
