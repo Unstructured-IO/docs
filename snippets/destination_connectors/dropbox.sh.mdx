@@ -18,5 +18,7 @@ unstructured-ingest \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
   dropbox \
     --token $DROPBOX_ACCESS_TOKEN \
+    --refresh-token $DROPBOX_REFRESH_TOKEN \
+    --app-key $DROPBOX_APP_KEY \
+    --app-secret $DROPBOX_APP_SECRET \
     --remote-url $DROPBOX_REMOTE_URL
-```
