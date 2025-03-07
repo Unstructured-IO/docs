@@ -23,7 +23,8 @@ from unstructured_ingest.v2.processes.embedder import EmbedderConfig
 
 if __name__ == "__main__":
     Pipeline.from_configs(
-        context=ProcessorConfig(),
+        context=ProcessorConfig(
+        ),
         indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
         downloader_config=LocalDownloaderConfig(),
         source_connection_config=LocalConnectionConfig(),
@@ -31,7 +32,6 @@ if __name__ == "__main__":
             partition_by_api=True,
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
             partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
-            strategy="hi_res",
             additional_partition_args={
                 "split_pdf_page": True,
                 "split_pdf_allow_failed": True,
@@ -46,10 +46,14 @@ if __name__ == "__main__":
                 token=os.getenv("ASTRA_DB_APPLICATION_TOKEN")
             )
         ),
-        stager_config=AstraDBUploadStagerConfig(),
+        stager_config=AstraDBUploadStagerConfig(
+            flatten_metadata=True
+        ),
         uploader_config=AstraDBUploaderConfig(
+            collection_name=os.getenv("ASTRA_DB_COLLECTION"),
             keyspace=os.getenv("ASTRA_DB_KEYSPACE"),
-            collection_name=os.getenv("ASTRA_DB_COLLECTION")
+            batch_size=20,
+            record_id_key="record_id"
         )
     ).run()
 ```
