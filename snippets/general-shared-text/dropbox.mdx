@@ -39,7 +39,7 @@ allowfullscreen
       with the original access token and its corresponding refresh token along with the Dropbox app's **App key** and **App secret** values. 
       To learn how to supply these to Unstructured, look for mentions of "access token, "refresh token," "app key," and "app secret" in the connector settings later in this article.
 
-      For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api/overview), or if you want to otherwise use the refresh token to replace the expired access token yourself, currently you must manually replace expired access tokens.
+      For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api-reference/overview), or if you want to otherwise use the refresh token to replace the expired access token yourself, currently you must manually replace expired access tokens.
    </Warning>
 
 3. The app folder that your Dropbox app will use for access can be found in your Dropbox account under the `Apps` top-level folder. For example, if the value of the **App folder name** 
@@ -110,7 +110,7 @@ To replace an old, expired access token with a new, valid one, do the following:
    simply supply Unstructured with these `access_token` and `refresh_token` values, along with the `<app-key>` and `<app-secret>` values 
    as described earlier in this procedure, and then stop here.
 
-8. For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api/overview), or if you want to otherwise use the refresh token to replace the expired access token yourself, make the following REST API call, replacing the following placeholders:
+8. For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api-reference/overview), or if you want to otherwise use the refresh token to replace the expired access token yourself, make the following REST API call, replacing the following placeholders:
 
    - Replace `<refresh-token>` with the refresh token.
    - Replace `<app-key>` with the app key for your Dropbox app.
