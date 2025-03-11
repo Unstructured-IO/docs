@@ -1,0 +1,38 @@
+---
+title: Delta Tables in Databricks
+---
+
+<Note>
+    This article covers connecting Unstructured to Delta Tables in Databricks.
+    
+    For information about connecting Unstructured to Delta Tables in Amazon S3 instead, see 
+    [Delta Tables in Amazon S3](/api/workflow/destinations/delta-table).
+
+    For information about connecting Unstructured to Databricks Volumes instead, see 
+    [Databricks Volumes](/api/workflow/destinations/databricks-volumes).
+</Note>
+
+Send processed data from Unstructured to a Delta Table in Databricks.
+
+The requirements are as follows.
+
+import DeltaTablesInDatabricksPrerequisites from '/snippets/general-shared-text/databricks-delta-table.mdx';
+
+<DeltaTablesInDatabricksPrerequisites />
+
+To create a Delta Tables in Databricks destination connector, see the following examples.
+
+import DeltaTablesInDatabricksSDK from '/snippets/destination_connectors/databricks_delta_table_sdk.mdx';
+import DeltaTablesInDatabricksAPIRESTCreate from '/snippets/destination_connectors/databricks_delta_table_rest_create.mdx';
+
+<CodeGroup>
+    <DeltaTablesInDatabricksSDK />
+    <DeltaTablesInDatabricksAPIRESTCreate />
+</CodeGroup>
+
+Replace the preceding placeholders as follows:
+
+import DeltaTablesInDatabricksAPIPlaceholders from '/snippets/general-shared-text/databricks-delta-table-api-placeholders.mdx';
+
+<DeltaTablesInDatabricksAPIPlaceholders />
+

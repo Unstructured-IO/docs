@@ -1,0 +1,162 @@
+---
+title: Get element contents
+---
+
+## Task
+
+You want to get, manipulate, and print or save, the contents of the [document elements and metadata](/api/partition/document-elements) from the processed data that Unstructured returns.
+
+## Approach
+
+Each element in the document elements contains fields for that element's type, its ID, the extracted text, and associated metadata.
+
+The programmatic approach you take to get these document elements will depend on which SDK you use:
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        For the [Unstructured Python SDK](/api/partition/sdk-python), calling an `UnstructuredClient` object's `general.partition_async` method returns a `PartitionResponse` object. 
+        
+        This `PartitionResponse` object's `elements` variable contains a list of key-value dictionaries (`List[Dict[str, Any]]`). For example:
+
+        ```python Python
+        # ...
+
+        res = await client.general.partition_async(request=req)
+
+        # Do something with the elements, for example:
+        save_elements_to_file(res.elements)
+
+        # ...
+        ```
+        
+        You can use standard Python [list operations](https://docs.python.org/3/tutorial/datastructures.html#more-on-lists) on this list.
+
+        You can also use standard Python [looping techniques](https://docs.python.org/3/tutorial/datastructures.html#looping-techniques) on this list to access each element in this list. 
+
+        To work with an individual element's contents, you can use standard [dictionary operations](https://docs.python.org/3/library/stdtypes.html#dict) on the element.
+
+        For example:
+
+        ```python Python
+        # ...
+
+        res = await client.general.partition_async(request=req)
+
+        for element in res.elements:
+            # Do something with each element, for example:
+            save_element_to_database(f"{element["element_id"]}")
+            save_element_to_database(f"{element["text"]}")
+            save_element_to_database(f"{element["metadata"]["filename"]}\n")
+
+        # ...
+        ```
+
+        To serialize this list as JSON, you can:
+        
+        1. Use the `elements_from_dicts` function to convert the list of key-value dictionaries (`Iterable[Dict[str, Any]]`) into a list of elements (`Iterable[Element]`).
+        2. Use the `elements_to_json` function to convert the list of elements into a JSON-formatted string and then print or save that string.
+
+        For example:
+
+        ```python Python
+        from unstructured.staging.base import elements_from_dicts, elements_to_json
+
+        # ...
+
+        res = await client.general.partition_async(request=req)
+        
+        dict_elements = elements_from_dicts(
+            element_dicts=res.elements
+        )
+
+        elements_to_json(
+            elements=dict_elements,
+            indent=2,
+            filename=output_filepath
+        )
+        # ...
+        ```
+    </Accordion>
+    <Accordion title="JavaScript/TypeScript SDK">
+        For the [Unstructured JavaScript/TypeScript SDK](/api/partition/sdk-jsts), calling an `UnstructuredClient` object's `general.partition` method returns a `Promise<PartitionResponse>` object. 
+        
+        This `PartitionResponse` object's `elements` property contains an `Array` of string-value objects (`{ [k: string]: any; }[]`). For example:
+
+        ```typescript TypeScript
+        // ...
+
+        client.general.partition({
+            partitionParameters: {
+                files: {
+                    content: data,
+                    fileName: inputFilepath
+                },
+                strategy: Strategy.HiRes,
+                splitPdfPage: true,
+                splitPdfAllowFailed: true,
+                splitPdfConcurrencyLevel: 15
+            }
+        }).then((res) => {
+            if (res.statusCode == 200) {
+                // Do something with the elements, for example:
+                saveElementsToFile(res.elements)
+            }
+        } // ...
+        ```
+        
+        You can use standard [Array operations](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array) on this array.
+
+        You can also use standard `Array` techniques such as [forEach](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach) to access each object in this array. For example:
+
+        ```typescript TypeScript
+        // ...
+
+        client.general.partition({
+            partitionParameters: {
+                files: {
+                    content: data,
+                    fileName: inputFilepath
+                },
+                strategy: Strategy.HiRes,
+                splitPdfPage: true,
+                splitPdfAllowFailed: true,
+                splitPdfConcurrencyLevel: 15
+            }
+        }).then((res) => {
+            if (res.statusCode == 200) {
+                res.elements?.forEach(element => {
+                    // Do something with each element, for example:
+                    saveElementToDatabase(`${element["element_id"]}`)
+                    saveElementToDatabase(`${element["text"]}`)
+                    saveElementToDatabase(`${element["metadata"]["filename"]}`)
+                }
+            }
+        } // ...
+        ```
+
+        To serialize this list as JSON, you can use the standard [JSON.stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) function to serialize it to JSON-formatted string and the Node.js [fs.WriteFileSync](https://nodejs.org/api/fs.html#fswritefilesyncfile-data-options) function to save it as a file. For example:
+
+        ```typescript TypeScript
+        // ...
+
+        client.general.partition({
+            partitionParameters: {
+                files: {
+                    content: data,
+                    fileName: inputFilepath
+                },
+                strategy: Strategy.HiRes,
+                splitPdfPage: true,
+                splitPdfAllowFailed: true,
+                splitPdfConcurrencyLevel: 15
+            }
+        }).then((res) => {
+            if (res.statusCode == 200) {    
+                const jsonElements = JSON.stringify(res.elements, null, 2)
+
+                fs.writeFileSync(outputFilepath, jsonElements)
+            }
+        } // ...
+        ```
+    </Accordion>
+</AccordionGroup>
