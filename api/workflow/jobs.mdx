@@ -1,0 +1,14 @@
+---
+title: Jobs
+---
+
+To use the [Unstructured Workflow Endpoint](/api/workflow/overview) to manage jobs, do the following:
+
+- To get a list of available jobs, use the `UnstructuredClient` object's `jobs.list_jobs` function (for the Python SDK) or 
+  the `GET` method to call the `/jobs` endpoint (for `curl` or Postman). [Learn more](/api/workflow/overview#list-jobs).
+- To get information about a job, use the `UnstructuredClient` object's `jobs.get_job` function (for the Python SDK) or 
+  the `GET` method to call the `/jobs/<job-id>` endpoint (for `curl` or Postman). [Learn more](/api/workflow/overview#get-a-job).
+- A job is created automatically whenever a workflow runs on a schedule; see [Create a workflow](/api/workflow/workflows#create-a-workflow).
+  A job is also created whenever you run a workflow manually; see [Run a workflow](/api/workflow/overview#run-a-workflow).
+- To cancel a running job, use the `UnstructuredClient` object's `jobs.cancel_job` function (for the Python SDK) or 
+  the `POST` method to call the `/jobs/<job-id>/cancel` endpoint (for `curl` or Postman). [Learn more](/api/workflow/overview#cancel-a-job).

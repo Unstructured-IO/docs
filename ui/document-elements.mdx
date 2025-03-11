@@ -1,0 +1,188 @@
+---
+title: Document elements and metadata
+---
+
+When Unstructured [partitions](/ui/partitioning) a file, the result is a list of _document elements_, sometimes referred to simply as _elements_. These elements represent different components of the source file. 
+
+## Element example
+
+Here's an example of what an element might look like:
+
+```json
+{
+    "type": "NarrativeText",
+    "element_id": "5ef1d1117721f0472c1ad825991d7d37",
+    "text": "The Unstructured documentation covers the following services:",
+    "metadata": {
+        "last_modified": "2024-05-01T14:15:22",
+        "page_number": 1,
+        "languages": ["eng"],
+        "parent_id": "56f24319ae258b735cac3ec2a271b1d9",
+        "file_directory": "/content",
+        "filename": "Unstructured documentation.html",
+        "filetype": "text/html"
+    }
+}
+```
+
+Every element has a [type](#element-type); an [element_id](#element-id); the extracted `text`; and some [metadata](#metadata) which might 
+vary depending on the element type, file structure, and some additional settings that are applied during 
+[partitioning](/ui/partitioning), chunking, summarizing, and embedding.
+
+## Element type
+
+Instead of treating all files as strings of plain text, Unstructured preserves the semantic structure of the files. 
+This gives you more control and flexibility over how you further use the processed files and allows you to take their 
+structure into consideration. At the same time, normalizing data from various file formats to the Unstructured element 
+type scheme lets you treat all files the same in your downstream processing, regardless of source format. 
+For example, if you plan to summarize a file, you might only be interested in the narrative 
+of the file and not care about its headers and footers. You can easily filter out the elements you don't need by specifying their type.
+
+Here are some examples of the element types your file might contain:
+
+| Element type        | Description                                                                                                                                          |
+|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Address`           | A text element for capturing physical addresses.                                                                                                     |
+| `EmailAddress`      | A text element for capturing email addresses.                                                                                                        |
+| `FigureCaption`     | An element for capturing text associated with figure captions.                                                                                       |
+| `Footer`            | An element for capturing document footers.                                                                                                           |
+| `Formula`           | An element containing formulas in a file.                                                                                                            |
+| `Header`            | An element for capturing document headers.                                                                                                           |
+| `Image`             | A text element for capturing image metadata.                                                                                                         |
+| `ListItem`          | `ListItem` is a `NarrativeText` element that is part of a list.                                                                                      |
+| `NarrativeText`     | `NarrativeText` is an element consisting of multiple, well-formulated sentences. This excludes elements such titles, headers, footers, and captions. |
+| `PageBreak`         | An element for capturing page breaks.                                                                                                                |
+| `Table`             | An element for capturing tables.                                                                                                                     |
+| `Title`             | A text element for capturing titles.                                                                                                                 |
+| `UncategorizedText` | Base element for capturing free text from within files.                                                                                              |
+
+If you apply chunking, you will also see the `CompositeElement` type. 
+`CompositeElement` is a chunk formed from text (non-`Table`) elements. 
+A composite element might be formed by combining one or more sequential elements produced by partitioning. For example, 
+several individual list items might be combined into a single chunk.
+
+## Element ID
+
+By default, the element ID is a SHA-256 hash of the element's text, its position on the page, the page number it's on, 
+and the name of the related file. This is to ensure that the ID is deterministic and unique at the file level.
+
+## Metadata
+
+Unstructured tracks a variety of metadata about the elements extracted from files. Metadata is tracked at the element level within `metadata`.
+
+Element metadata enables you to do things such as:
+
+* Filter file elements based on an element's metadata value. For instance, you might want to limit your scope to elements from a certain page, or you might want to use only elements that have an email matching a regular expression in their metadata.
+* Map an element to the page where it occurred so that the original page can be retrieved when that element matches search criteria.
+
+### Common metadata fields
+
+All file types return the following `metadata` fields when the information is available from the source file:
+
+| Metadata field name        | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+|----------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `category_depth`           | The depth of the element relative to other elements of the same category. Category depth is the depth of an element relative to other elements of the same category. It is set by a file partitioner and enables the [document hierarchy](#document-hierarchy) after processing to compute more accurate hierarchies. Category depth might be set using native document hierarchies, for example reflecting `<H1>` or `<H2>` tags within an HTML file or the indentation level of a bulleted list item in a Word document. |
+| `coordinates`              | Any X-Y bounding box [coordinates](#element-coordinates).                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| `detection_class_prob`     | The detection model class probabilities. Applies only to Unstructured inference using the **High Res** strategy.                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `emphasized_text_contents` | The related emphasized text (bold or italic) in the original file.                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| `emphasized_text_tags`     | Any tags on the text that are emphasized in the original file.                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `file_directory`           | The related file's directory.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `filename`                 | The related file's filename.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `filetype`                 | The related file's type.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `is_continuation`          | True if the element is a continuation of a previous element. Only relevant for chunking, if an element was divided into two due to **Max Characters**.                                                                                                                                                                                                                                                                                                                                                                     |
+| `languages`                | Document languages at the file or element level. The list is ordered by probability of being the primary language of the text.                                                                                                                                                                                                                                                                                                                                                                                             |
+| `last_modified`            | The related file's last modified date.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `parent_id`                | The ID of the element's parent element. `parent_id` might be used to infer where an element resides within the overall [document hierarchy](#document-hierarchy). For instance, a `NarrativeText` element might have a `Title` element as a parent (a “subtitle”), which in turn might have another `Title` element as its parent (a "title").                                                                                                                                                                             |
+| `text_as_html`             | The HTML representation of the related extracted table. Only applicable to [table elements](#table-specific-metadata).                                                                                                                                                                                                                                                                                                                                                                                                     |
+
+Notes on common metadata fields:
+
+#### Document hierarchy
+
+`parent_id` and `category_depth` enhance hierarchy detection to identify the document 
+structure in various file formats by measuring relative depth of an element within its category. This is especially 
+useful in files with native hierarchies like HTML or Word files, where elements like headings or list items inherently define structure.
+
+#### Element coordinates
+
+Some file types support location data for the elements, usually in the form of bounding boxes. 
+
+The `coordinates` metadata field contains:
+
+- `points` : These specify the corners of the bounding box starting from the top left corner and proceeding counter-clockwise. The points represent pixels, the origin is in the top left and the `y` coordinate increases in the downward direction.
+- `system`: The points have an associated coordinate system. A typical example of a coordinate system is `PixelSpace`, which is used for representing the coordinates of images. The coordinate system has a name, orientation, layout width, and layout height.
+
+
+### Additional metadata fields by file type
+
+| Field name             | Applicable file types | Description                                                                                                                         |
+|------------------------|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| `page_number`          | DOCX, PDF, PPT, XLSX  | The related file's page number.                                                                                                     |
+| `page_name`            | XLSX                  | The related sheet's name in an [Excel file](#microsoft-excel-files).                                                                |
+| `sent_from`            | EML                   | The related [email](#email) sender.                                                                                                 |
+| `sent_to`              | EML                   | The related [email](#email) recipient.                                                                                              |
+| `subject`              | EML                   | The related [email](#email) subject.                                                                                                |
+| `attached_to_filename` | MSG                   | The name of the file that the attached file is attached to.                                                                         |
+| `header_footer_type`   | Word Doc              | The pages that a header or footer applies to in a [Word document](#microsoft-word-files): `primary`, `even_only`, and `first_page`. |
+| `link_urls`            | HTML                  | The URL that is associated with a link in a document.                                                                               |
+| `link_texts`           | HTML                  | The text that is associated with a link in a document.                                                                              |
+| `section`              | EPUB                  | The book section title corresponding to a table of contents.                                                                        |
+
+Here are some notes on additional metadata fields by file type:
+
+#### Email
+
+Emails will include `sent_from`, `sent_to`, and `subject` metadata. `sent_from` is a list of strings because
+the [RFC 822](https://www.rfc-editor.org/rfc/rfc822) spec for emails allows for multiple sent from email addresses.
+
+#### Microsoft Excel files
+
+For Excel files, metadata will contain a `page_name` element, which corresponds to the sheet name in the Excel
+file.
+
+#### Microsoft Word files
+
+Headers and footers in Word files include a `header_footer_type` indicating which page a header or footer applies to.
+Valid values are `"primary"`, `"even_only"`, and `"first_page"`.
+
+### Table-specific metadata
+
+For `Table` elements, the raw text of the table will be stored in the `text` attribute for the element, and HTML representation
+of the table will be available in the element metadata under `text_as_html`. 
+Unstructured will automatically extract all tables for all doc types if you check the **Infer Table Structure** in the **ConnectorSettings** area of the **Transform** section of a workflow.
+
+Here's an example of a table element. The `text` of the element will look like this:
+
+```text
+Dataset Base Model1 Large Model Notes PubLayNet [38] F / M M Layouts of modern scientific documents PRImA [3] M - Layouts of scanned modern magazines and scientific reports Newspaper [17] F - Layouts of scanned US newspapers from the 20th century TableBank [18] F F Table region on modern scientific and business document HJDataset [31] F / M - Layouts of history Japanese documents
+```
+
+And the `text_as_html` metadata for the same element will look like this:
+
+```html
+<table><thead><th>Dataset</th><th>| Base Model’</th><th>| Notes</th></thead><tr><td>PubLayNet</td><td>[38] F/M</td><td>Layouts of modern scientific documents</td></tr><tr><td>PRImA [3]</td><td>M</td><td>Layouts of scanned modern magazines and scientific reports</td></tr><tr><td>Newspaper</td><td>F</td><td>Layouts of scanned US newspapers from the 20th century</td></tr><tr><td>TableBank</td><td>F</td><td>Table region on modern scientific and business document</td></tr><tr><td>HJDataset [31]</td><td>F/M</td><td>Layouts of history Japanese documents</td></tr></table>
+```
+
+### Data connector metadata fields
+
+Documents can include additional file metadata, based on the specified source connector.
+
+#### Common data connector metadata fields
+
+- `date_created`
+- `date_modified`
+- `date_processed`
+- `record_locator`
+- `url`
+- `version`
+
+#### Additional metadata fields by connector type (within record_locator)
+
+| Source connector | Additional metadata                  |
+|------------------|--------------------------------------|
+| Azure            | `protocol`, `remote_file_path`       |
+| Elasticsearch    | `document_id`, `index_name`, `url`   |
+| Google Drive     | `drive_id`, `file_id`                |
+| OneDrive         | `server_relative_path`, `user_pname` |
+| S3               | `protocol`, `remote_file_path`       |
+| SharePoint       | `server_path`, `site_url`            |

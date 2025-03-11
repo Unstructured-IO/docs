@@ -1,0 +1,40 @@
+---
+title: Overview
+---
+
+To use the [Unstructured Workflow Endpoint](/api/workflow/overview) to manage source connectors, do the following:
+
+- To get a list of available source connectors, use the `UnstructuredClient` object's `sources.list_sources` function (for the Python SDK) or 
+  the `GET` method to call the `/sources` endpoint (for `curl` or Postman). [Learn more](/api/workflow/overview#list-source-connectors).
+- To get information about a source connector, use the `UnstructuredClient` object's `sources.get_source` function (for the Python SDK) or 
+  the `GET` method to call the `/sources/<connector-id>` endpoint (for `curl` or Postman). [Learn more](/api/workflow/overview#get-a-source-connector).
+- To create a source connector, use the `UnstructuredClient` object's `sources.create_source` function (for the Python SDK) or 
+  the `POST` method to call the `/sources` endpoint (for `curl` or Postman). [Learn more](/api/workflow/overview#create-a-source-connector).
+- To update a source connector, use the `UnstructuredClient` object's `sources.update_source` function (for the Python SDK) or 
+  the `PUT` method to call the `/sources/<connector-id>` endpoint (for `curl` or Postman). [Learn more](/api/workflow/overview#update-a-source-connector).
+- To delete a source connector, use the `UnstructuredClient` object's `sources.delete_source` function (for the Python SDK) or 
+  the `DELETE` method to call the `/sources/<connector-id>` endpoint (for `curl` or Postman). [Learn more](/api/workflow/overview#delete-a-source-connector). 
+
+To create or update a source connector, you must also provide settings that are specific to that connector. 
+For the list of specific settings, see:
+
+- [Azure](/api/workflow/sources/azure-blob-storage) (`AZURE` for the Python SDK or `azure` for `curl` and Postman)
+- [Box](/api/workflow/sources/box) (`BOX` for the Python SDK or `box` for `curl` and Postman)
+- [Confluence](/api/workflow/sources/confluence) (`CONFLUENCE` for the Python SDK or `confluence` for `curl` and Postman)
+- [Couchbase](/api/workflow/sources/couchbase) (`COUCHBASE` for the Python SDK or `couchbase` for `curl` and Postman)
+- [Databricks Volumes](/api/workflow/sources/databricks-volumes) (`DATABRICKS_VOLUMES` for the Python SDK or `databricks_volumes` for `curl` and Postman)
+- [Dropbox](/api/workflow/sources/dropbox) (`DROPBOX` for the Python SDK or `dropbox` for `curl` and Postman)
+- [Elasticsearch](/api/workflow/sources/elasticsearch) (`ELASTICSEARCH` for the Python SDK or `elasticsearch` for `curl` and Postman)
+- [Google Cloud Storage](/api/workflow/sources/google-cloud) (`GCS` for the Python SDK or `gcs` for `curl` and Postman)
+- [Google Drive](/api/workflow/sources/google-drive) (`GOOGLE_DRIVE` for the Python SDK or `google_drive` for `curl` and Postman)
+- [Kafka](/api/workflow/sources/kafka) (`KAFKA_CLOUD` for the Python SDK or `kafka-cloud` for `curl` and Postman)
+- [MongoDB](/api/workflow/sources/mongodb) (`MONGODB` for the Python SDK or `mongodb` for `curl` and Postman)
+- [OneDrive](/api/workflow/sources/onedrive) (`ONEDRIVE` for the Python SDK or `onedrive` for `curl` and Postman)
+- [Outlook](/api/workflow/sources/outlook) (`OUTLOOK` for the Python SDK or `outlook` for `curl` and Postman)
+- [PostgreSQL](/api/workflow/sources/postgresql) (`POSTGRES` for the Python SDK or `postgres` for `curl` and Postman)
+- [S3](/api/workflow/sources/s3) (`S3` for the Python SDK or `s3` for `curl` and Postman)
+- [Salesforce](/api/workflow/sources/salesforce) (`SALESFORCE` for the Python SDK or `salesforce` for `curl` and Postman)
+- [SharePoint](/api/workflow/sources/sharepoint) (`SHAREPOINT` for the Python SDK or `sharepoint` for `curl` and Postman)
+- [Snowflake](/api/workflow/sources/snowflake) (`SNOWFLAKE` for the Python SDK or `snowflake` for `curl` and Postman)
+
+
