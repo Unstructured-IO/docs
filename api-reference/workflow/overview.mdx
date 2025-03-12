@@ -5,7 +5,7 @@ title: Overview
 The [Unstructured UI](/ui/overview) features a no-code user interface for transforming your unstructured data into data that is ready 
 for Retrieval Augmented Generation (RAG).
 
-The Unstructured Workflow Endpoint, part of the [Unstructured API](/api/overview), enables a full range of partitioning, chunking, embedding, and 
+The Unstructured Workflow Endpoint, part of the [Unstructured API](/api-reference/overview), enables a full range of partitioning, chunking, embedding, and 
 enrichment options for your files and data. It is designed to batch-process files and data in remote locations; send processed results to 
 various storage, databases, and vector stores; and use the latest and highest-performing models on the market today. It has built-in logic 
 to deliver the highest quality results at the lowest cost. 
@@ -190,8 +190,8 @@ Skip ahead to start learning about how to use the REST endpoints to work with
 
 The following Unstructured SDKs, tools, and libraries do _not_ work with the Unstructured Workflow Endpoint:
 
-- The [Unstructured JavaScript/TypeScript SDK](/api/partition/sdk-jsts)
-- [Local single-file POST requests](/api/partition/sdk-jsts) to the Unstructured Partition Endpoint
+- The [Unstructured JavaScript/TypeScript SDK](/api-reference/partition/sdk-jsts)
+- [Local single-file POST requests](/api-reference/partition/sdk-jsts) to the Unstructured Partition Endpoint
 - The [Unstructured open source Python library](/open-source/introduction/overview)
 - The [Unstructued Ingest CLI](/ingestion/ingest-cli)
 - The [Unstructured Ingest Python library](/ingestion/python-ingest)
@@ -222,7 +222,7 @@ To filter the list of source connectors, use the `ListSourcesRequest` object's `
 or the query parameter `source_type=<type>` (for `curl` or Postman), 
 replacing `<type>` with the source connector type's unique ID 
 (for example, for the Amazon S3 source connector type, `S3` for the Python SDK or `s3` for `curl` or Postman). 
-To get this ID, see [Sources](/api/workflow/sources/overview).
+To get this ID, see [Sources](/api-reference/workflow/sources/overview).
 
 <AccordionGroup>
     <Accordion title="Python SDK">
@@ -418,10 +418,10 @@ the `POST` method to call the `/sources` endpoint (for `curl` or Postman).
 In the `CreateSourceConnector` object (for the Python SDK) or 
 the request body (for `curl` or Postman), 
 specify the settings for the connector. For the specific settings to include, which differ by connector, see 
-[Sources](/api/workflow/sources/overview). 
+[Sources](/api-reference/workflow/sources/overview). 
 
 For the Python SDK, replace `<type>` with the source connector type's unique ID (for example, for the Amazon S3 source connector type, `S3`). 
-To get this ID, see [Sources](/api/workflow/sources/overview).
+To get this ID, see [Sources](/api-reference/workflow/sources/overview).
 
 <AccordionGroup>
     <Accordion title="Python SDK">
@@ -547,10 +547,10 @@ the `PUT` method to call the `/sources/<connector-id>` endpoint (for `curl` or P
 
 In the `UpdateSourceConnector` object (for the Python SDK) or 
 the request body (for `curl` or Postman), specify the settings for the connector. For the specific settings to include, which differ by connector, see 
-[Sources](/api/workflow/sources/overview).
+[Sources](/api-reference/workflow/sources/overview).
 
 For the Python SDK, replace `<type>` with the source connector type's unique ID (for example, for the Amazon S3 source connector type, `S3`). 
-To get this ID, see [Sources](/api/workflow/sources/overview).
+To get this ID, see [Sources](/api-reference/workflow/sources/overview).
 
 You must specify all of the settings for the connector, even for settings that are not changing.
 
@@ -753,7 +753,7 @@ To filter the list of destination connectors, use the `ListDestinationsRequest` 
 the query parameter `destination_type=<type>` (for `curl` or Postman), 
 replacing `<type>` with the destination connector type's unique ID 
 (for example, for the Amazon S3 source connector type, `S3` for the Python SDK or `s3` for `curl` or Postman). 
-To get this ID, see [Destinations](/api/workflow/destinations/overview).
+To get this ID, see [Destinations](/api-reference/workflow/destinations/overview).
 
 <AccordionGroup>
     <Accordion title="Python SDK">
@@ -948,10 +948,10 @@ the `POST` method to call the `/destinations` endpoint (for `curl` or Postman).
 In the `CreateDestinationConnector` object (for the Python SDK) or 
 the request body (for `curl` or Postman), 
 specify the settings for the connector. For the specific settings to include, which differ by connector, see 
-[Destinations](/api/workflow/destinations/overview).
+[Destinations](/api-reference/workflow/destinations/overview).
 
 For the Python SDK, replace `<type>` with the destination connector type's unique ID (for example, for the Amazon S3 source connector type, `S3`). 
-To get this ID, see [Destinations](/api/workflow/destinations/overview).
+To get this ID, see [Destinations](/api-reference/workflow/destinations/overview).
 
 <AccordionGroup>
     <Accordion title="Python SDK">
@@ -1076,7 +1076,7 @@ the `PUT` method to call the `/destinations/<connector-id>` endpoint (for `curl`
 
 In the `UpdateDestinationConnector` object (for the Python SDK) or 
 the request body (for `curl` or Postman), specify the settings for the connector. For the specific settings to include, which differ by connector, see 
-[Destinations](/api/workflow/destinations/overview).
+[Destinations](/api-reference/workflow/destinations/overview).
 
 You must specify all of the settings for the connector, even for settings that are not changing.
 
@@ -1541,7 +1541,7 @@ the `POST` method to call the `/workflows` endpoint (for `curl` or Postman).
 In the `CreateWorkflow` object (for the Python SDK) or 
 the request body (for `curl` or Postman), 
 specify the settings for the workflow. For the specific settings to include, see 
-[Create a workflow](/api/workflow/workflows#create-a-workflow).
+[Create a workflow](/api-reference/workflow/workflows#create-a-workflow).
 
 <AccordionGroup>
     <Accordion title="Python SDK">
@@ -1757,7 +1757,7 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
 </AccordionGroup>
 
 To run a workflow on a schedule instead, specify the `schedule` setting in the request body when you create or update a 
-workflow. See [Create a workflow](/api/workflow/workflows#create-a-workflow) or [Update a workflow](/api/workflow/workflows#update-a-workflow).
+workflow. See [Create a workflow](/api-reference/workflow/workflows#create-a-workflow) or [Update a workflow](/api-reference/workflow/workflows#update-a-workflow).
 
 ### Update a workflow
 
@@ -1767,7 +1767,7 @@ the `PUT` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or 
 
 In `UpdateWorkflow` object (for the Python SDK) or 
 the request body (for `curl` or Postman), specify the settings for the workflow. For the specific settings to include, see 
-[Update a workflow](/api/workflow/workflows#update-a-workflow).
+[Update a workflow](/api-reference/workflow/workflows#update-a-workflow).
 
 <AccordionGroup>
     <Accordion title="Python SDK">

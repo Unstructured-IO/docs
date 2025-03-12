@@ -2,23 +2,23 @@
 title: Workflows
 ---
 
-To use the [Unstructured Workflow Endpoint](/api/workflow/overview) to manage workflows, do the following:
+To use the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to manage workflows, do the following:
 
 - To get a list of available workflows, use the `UnstructuredClient` object's `workflows.list_workflows` function (for the Python SDK) or 
-  the `GET` method to call the `/workflows` endpoint (for `curl` or Postman). [Learn more](/api/workflow/overview#list-workflows).
+  the `GET` method to call the `/workflows` endpoint (for `curl` or Postman). [Learn more](/api-reference/workflow/overview#list-workflows).
 - To get information about a workflow, use the `UnstructuredClient` object's `workflows.get_workflow` function (for the Python SDK) or 
-  the `GET` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman)use the `GET` method to call the `/workflows/<workflow-id>` endpoint. [Learn more](/api/workflow/overview#get-a-workflow).
+  the `GET` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman)use the `GET` method to call the `/workflows/<workflow-id>` endpoint. [Learn more](/api-reference/workflow/overview#get-a-workflow).
 - To create a workflow, use the `UnstructuredClient` object's `workflows.create_workflow` function (for the Python SDK) or 
   the `POST` method to call the `/workflows` endpoint (for `curl` or Postman). [Learn more](#create-a-workflow).
 - To run a workflow manually, use the `UnstructuredClient` object's `workflows.run_workflow` function (for the Python SDK) or 
-  the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl` or Postman). [Learn more](/api/workflow/overview#run-a-workflow).
+  the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl` or Postman). [Learn more](/api-reference/workflow/overview#run-a-workflow).
 - To update a workflow, use the `UnstructuredClient` object's `workflows.update_workflow` function (for the Python SDK) or 
   the `PUT` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman). [Learn more](#update-a-workflow).
 - To delete a workflow, use the `UnstructuredClient` object's `workflows.delete_workflow` function (for the Python SDK) or 
-  the `DELETE` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman). [Learn more](/api/workflow/overview#delete-a-workflow).
+  the `DELETE` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman). [Learn more](/api-reference/workflow/overview#delete-a-workflow).
 
-The following examples assume that you have already met the [requirements](/api/workflow/overview#requirements) and 
-understand the [basics](/api/workflow/overview#basics) of working with the Unstructured Workflow Endpoint.
+The following examples assume that you have already met the [requirements](/api-reference/workflow/overview#requirements) and 
+understand the [basics](/api-reference/workflow/overview#basics) of working with the Unstructured Workflow Endpoint.
 
 ## Create a workflow
 
@@ -269,10 +269,10 @@ Replace the preceding placeholders as follows:
 - `<name>` (_required_) - A unique name for this workflow.
 - `<source-connector-id>` (_required_) - The ID of the target source connector. To get the ID, 
   use the `UnstructuredClient` object's `sources.list_sources` function (for the Python SDK) or 
-  the `GET` method to call the `/sources` endpoint (for `curl` or Postman). [Learn more](/api/workflow/overview#list-source-connectors).
+  the `GET` method to call the `/sources` endpoint (for `curl` or Postman). [Learn more](/api-reference/workflow/overview#list-source-connectors).
 - `<destination-connector-id>` (_required_) - The ID of the target destination connector. To get the ID, 
   use the `UnstructuredClient` object's `destinations.list_destinations` function (for the Python SDK) or 
-  the `GET` method to call the `/destinations` endpoint (for `curl` or Postman). [Learn more](/api/workflow/overview#list-destination-connectors).
+  the `GET` method to call the `/destinations` endpoint (for `curl` or Postman). [Learn more](/api-reference/workflow/overview#list-destination-connectors).
 - `<TYPE>` (for the Python SDK) or `<type>` (for `curl` or Postman) (_required_) - The workflow type. Available values include `CUSTOM` (for the Python SDK) and `custom` (for `curl` or Postman).
 
   If `<TYPE>` is set to `CUSTOM` (for the Python SDK), or if `<type>` is set to `custom` (for `curl` or Postman), you must add a `workflow_nodes` array. For instructions, see [Custom workflow DAG nodes](#custom-workflow-dag-nodes).
@@ -307,7 +307,7 @@ the `PUT` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or 
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
 
 In the request body, specify the settings for the workflow. For the specific settings to include, see 
-[Create a workflow](/api/workflow/workflows#create-a-workflow).
+[Create a workflow](/api-reference/workflow/workflows#create-a-workflow).
 
 <AccordionGroup>
     <Accordion title="Python SDK">
