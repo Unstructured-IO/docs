@@ -21,8 +21,13 @@ with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as clien
                     schema="<schema>",
                     volume="<volume>",
                     volume_path="<volume-path>",
+
+                    # For Databricks OAuth machine-to-machine (M2M) authentication:
                     client_secret="<client-secret>",
                     client_id="<client-id>"
+
+                    # For Databricks personal access token authentication:
+                    token="<token>"
                 )
             )
         )
