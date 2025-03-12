@@ -1,0 +1,194 @@
+---
+title: MCP
+---
+
+The Unstructured API enables you to ... 
+
+The Unstructured API is compatible with the Model Context Protocol (MCP). 
+MCP enables you to ... 
+The MCP SDK ...
+
+This article provides a hands-on, step-by-step walkthrough to build a simple example on your local development machine 
+that integrates the Unstructured API with the MCP SDK.
+
+## Requirements
+
+Before you can start coding on your local machine, you must install the Python package and project manager `uv`, 
+create and initialize a project directory for your code, create a virtual environment to isolate and manage your 
+project's code and its dependencies, and install the MCP SDK and its dependencies, as follows.
+
+These steps are also covered in the [Quickstart For Server Developers](https://modelcontextprotocol.io/quickstart/server) in the 
+MCP documentation.
+
+1. Install `uv` [Read the uv documentation](https://docs.astral.sh/uv/).
+
+  By using `pip`:
+
+  ```bash
+  pip install uv
+  ```
+
+  Or, by using the following script (be sure to restart your terminal or Command Prompt after running the script):
+
+  ```bash
+  # For macOS and Linux:
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+
+  # For Windows:
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+
+2. From your current working directory, create a project directory and then initialize it, replacing `<project-directory-name>` with the name of your project, for 
+   example, `mcp-unstructured-demo`. Then go to the project directory:
+
+   ```bash
+   uv init <project-directory-name>
+   cd <project-directory-name>
+   ```
+
+3. Create a virtual environment in the root of the project directory. Then activate the virtual environment:
+
+  ```bash
+  # For macOS and Linux:
+  uv venv
+  source .venv/bin/activate
+
+  # For Windows:
+  uv venv
+  .venv\Scripts\activate
+  ```
+
+  To deactivate and exit the virtual environment at any time, simply run the `deactivate` command:
+
+  ```bash
+  deactivate
+  ```
+
+4. With the virtual environment activated, install the MCP SDK and its dependencies:
+
+  ```bash
+  uv add "mcp[cli]" httpx "unstructured-client>=0.30.6" dotenv 
+  ```
+
+5. [Install Claude for Desktop](https://claude.ai/download).
+
+## Step 1: Create the MCP server
+
+1. In the root of the project directory, create a new Python file, for example, `workflow.py`.
+2. Add the following code to this new `.py` file:
+
+   ```python
+   from typing import Any, List 
+   import httpx
+   from mcp.server.fastmcp import FastMCP
+
+   from dotenv import load_dotenv
+   import os
+
+   from unstructured_client import UnstructuredClient
+   from unstructured_client.models.operations import (
+       ListSourcesRequest,
+       ListSourcesResponse
+   )
+
+   # Initialize the FastMCP server.
+   mcp = FastMCP("workflow")
+
+   def get_unstructured_client(unstructured_api_key: str) -> UnstructuredClient:
+       return UnstructuredClient(api_key_auth=unstructured_api_key)
+
+   def list_source_connectors(unstructured_client: UnstructuredClient) -> ListSourcesResponse:
+       response = unstructured_client.sources.list_sources(
+           request=ListSourcesRequest()
+       )
+       return response
+
+   @mcp.tool()
+   async def list_sources():
+       load_dotenv()
+       unstructured_client = get_unstructured_client(os.getenv("UNSTRUCTURED_API_KEY"))
+       response = list_source_connectors(unstructured_client)
+       sorted_sources = sorted(
+           response.response_list_sources, 
+           key=lambda source: source.name.lower()
+       )
+
+       for source in sorted_sources:
+           print(f"{source.name} ({source.id})")
+       
+   if __name__ == "__main__":
+       # Initialize and run the MCP server.
+       mcp.run(transport='stdio')
+   ```
+
+3. In the root of the project directory, create a new file named `.env`.
+4. Add the following code to this new `.env` file, replacing `<your-unstructured-api-key>` with your Unstructured API key:
+
+   ```text
+    UNSTRUCTURED_API_KEY=<your-unstructured-api-key>
+   ```
+
+5. Open the Claude for Desktop App configuration file from the following location, for example by using Visual Studio Code:
+
+   ```text
+   # For macOS or Linux:
+   code ~/Library/Application\ Support/Claude/claude_desktop_config.json
+
+   # For Windows:
+   code $env:AppData\Claude\claude_desktop_config.json
+   ```
+
+6. Add the following code to the `claude_desktop_config.json` file, and then save the file.
+
+   In this file:
+
+   - `"worklow"` must match the value that you set in `mcp = FastMCP("workflow")` in the `workflow.py` file.
+   - `mcp_unstructured-demo` must match the name of the project directory that you set for `<project-directory-name>`.
+   - `"workflow.py"` must match the name of the Python file that you created for the MCP server.
+
+   For macOS or Linux:
+
+   ```json
+   {
+       "mcpServers": {
+           "workflow": {
+               "command": "/ABSOLUTE/PATH/TO/uv",
+               "args": [
+                   "--directory",
+                   "/ABSOLUTE/PATH/TO/PARENT/FOLDER/mcp-unstructured-demo",
+                   "run",
+                   "workflow.py"
+               ]
+           }
+       }
+   }
+   ```
+
+   For Windows:
+
+   ```json
+   {
+       "mcpServers": {
+           "workflow": {
+               "command": "C:\\ABSOLUTE\\PATH\\TO\\uv",
+               "args": [
+                   "--directory",
+                   "C:\\ABSOLUTE\\PATH\\TO\\PARENT\\FOLDER\\mcp-unstructured-demo",
+                   "run",
+                   "workflow.py"
+               ]
+           }
+       }
+   }
+   ```
+
+## Step 2: Run the MCP server from Claude for Desktop
+
+1. Start Claude for Desktop. If it is already running, restart it.
+2. Ask the following question in the chat window:
+
+   ```text
+   List all of my source connectors.
+   ```
+
+3. Claude responds with a list of all of your source connectors.
