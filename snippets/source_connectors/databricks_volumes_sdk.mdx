@@ -17,12 +17,17 @@ with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as clien
                 type=SourceConnectorType.DATABRICKS_VOLUMES,
                 config=DatabricksVolumesConnectorConfigInput(
                     catalog="<catalog>",
-                    client_id="<client_id>",
-                    client_secret="<client_secret>",
                     host="<host>",
                     schema_="<schema>",
                     volume="<volume>",
-                    volume_path="<volume_path>"
+                    volume_path="<volume_path>",
+
+                    # For Databricks OAuth machine-to-machine (M2M) authentication:
+                    client_id="<client_id>",
+                    client_secret="<client_secret>"
+
+                    # For Databricks personal access token authentication:
+                    token="<token>"
                 )
             )
         )

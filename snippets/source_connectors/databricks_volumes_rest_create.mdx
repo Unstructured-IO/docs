@@ -10,12 +10,17 @@ curl --request 'POST' --location \
     "type": "databricks_volumes",
     "config": {
         "host": "<host>",
-        "client_id": "<client-id>"
-        "client_secret": "<client-secret>",
         "catalog": "<catalog>",
         "schema": "<schema>",
         "volume": "<volume>",
-        "volume_path": "<volume-path>"
+        "volume_path": "<volume-path>",
+
+        # For Databricks OAuth machine-to-machine (M2M) authentication:
+        "client_id": "<client-id>"
+        "client_secret": "<client-secret>"
+
+        # For Databricks personal access token authentication:
+        "token": "<token>"
     }
 }'
 ```
