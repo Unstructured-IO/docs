@@ -4,5 +4,8 @@ Fill in the following fields:
 - **Collection Name** (_required_): The name of the collection in the namespace.
 - **Keyspace** (_required_): The name of the keyspace in the collection.
 - **Batch Size**: The maximum number of records per batch. The default is `20` if not otherwise specified.
+- **Flatten Metadata**: Check this box to flatten the metadata into each record. 
+  Specifically, when flattened, the metadata key values are 
+  brought to the top level of the element, and the `metadata` key itself is removed. By default, the metadata is not flattened.
 - **API Endpoint** (_required_): The database's associated API endpoint.
 - **Token** (_required_): The application token for the database.
