@@ -72,7 +72,7 @@ MCP documentation.
 4. With the virtual environment activated, install the MCP SDK and its dependencies:
 
   ```bash
-  uv add "mcp[cli]" httpx "unstructured-client>=0.30.6" dotenv anthropic
+  uv add "mcp[cli]" "unstructured-client>=0.30.6" dotenv anthropic
   ```
 
 5. [Install Claude for Desktop](https://claude.ai/download).
@@ -83,20 +83,15 @@ MCP documentation.
 2. Add the following code to this new `workflow.py` file:
 
    ```python
-   from typing import Any 
-   from mcp.server.fastmcp import FastMCP
-
+   from typing import Any, AsyncIterator, Optional
+   from mcp.server.fastmcp import FastMCP, Context
    from dotenv import load_dotenv
    import os
-
+   from dataclasses import dataclass
+   from contextlib import asynccontextmanager
    from unstructured_client import UnstructuredClient
-   from unstructured_client.models.operations import (
-       ListSourcesRequest,
-       ListSourcesResponse
-   )
-
-   # Initialize the FastMCP server.
-   mcp = FastMCP("workflow")
+   from unstructured_client.models.operations import ListSourcesRequest
+   from unstructured_client.models.shared import SourceConnectorType
 
    def load_environment_variables() -> None:
        load_dotenv()
@@ -108,29 +103,50 @@ MCP documentation.
            if not os.getenv(var):
                raise ValueError(f"Missing required environment variable: {var}")
 
-   def get_unstructured_client(unstructured_api_key: str) -> UnstructuredClient:
-       return UnstructuredClient(api_key_auth=unstructured_api_key)
+   @dataclass
+   class AppContext:
+       client: UnstructuredClient
 
-   def list_source_connectors(unstructured_client: UnstructuredClient) -> None:
-       response = unstructured_client.sources.list_sources(
-           request=ListSourcesRequest()
+   @asynccontextmanager
+   async def app_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
+       api_key = os.getenv("UNSTRUCTURED_API_KEY")
+       if not api_key:
+           raise ValueError("UNSTRUCTURED_API_KEY environment variable is required")
+       client = UnstructuredClient(api_key_auth=api_key)
+       try:
+           yield AppContext(client=client)
+       finally:
+           pass
+
+   mcp = FastMCP("workflow", lifespan=app_lifespan)
+
+   @mcp.tool()
+   async def list_sources(ctx: Context, source_type: Optional[str] = None) -> str:
+       client = ctx.request_context.lifespan_context.client
+       request = ListSourcesRequest()
+
+       if source_type:
+           try:
+               request.source_type = SourceConnectorType[source_type]
+           except KeyError:
+               return f"Invalid source type: {source_type}"
+
+       response = await client.sources.list_sources_async(
+           request=request
        )
        sorted_sources = sorted(
            response.response_list_sources, 
            key=lambda source: source.name.lower()
        )
+       result = ["Available source connectors:"]
 
        for source in sorted_sources:
-           print(f"{source.name} ({source.id})")
+           result.append(f"- {source.name} (ID: {source.id})")
 
-   @mcp.tool()
-   async def list_sources():
-       unstructured_client = get_unstructured_client(os.getenv("UNSTRUCTURED_API_KEY"))
-       list_source_connectors(unstructured_client)
+       return "\n".join(result)
        
    if __name__ == "__main__":
        load_environment_variables()
-       # Initialize and run the MCP server.
        mcp.run(transport='stdio')
    ```
 
@@ -155,7 +171,7 @@ MCP documentation.
 
    In this file:
 
-   - `"worklow"` must match the value that you set in `mcp = FastMCP("workflow")` in the `workflow.py` file.
+   - `"worklow"` must match the value that you set in `mcp = FastMCP("workflow", lifespan=app_lifespan)` in the `workflow.py` file.
    - `mcp_unstructured-demo` must match the name of the project directory that you created.
    - `"workflow.py"` must match the name of the Python file that you created for the MCP server.
 
@@ -206,10 +222,11 @@ MCP documentation.
    The MCP server starts and begins listening for commands from Claude for Desktop.
 
 2. Start Claude for Desktop. If it is already running, restart it.
-3. Ask the following question in the chat window:
+3. Ask the following question in the chat window, replacing `S3` with the type of source connector that you want to list. 
+   For a list of available source connector types, see the [Workflow Endpoint Sources overview](/api-reference/workflow/sources/overview).
 
    ```text
-   List all of my source connectors.
+   List all available source connectors of type S3.
    ```
 
-4. Claude for Desktop responds with a list of all of your source connectors.
+4. Claude for Desktop responds with a list of all available source connectors for that source connector type.
