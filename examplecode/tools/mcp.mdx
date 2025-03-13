@@ -1,0 +1,499 @@
+---
+title: Model Context Protocol (MCP) Hands-On Walkthrough
+sidebarTitle: MCP
+---
+
+[Model Context Protocol](https://modelcontextprotocol.io/introduction) (MCP) is an open protocol that standardizes 
+how applications provide context to LLMs. From the MCP documentation:
+
+> Think of MCP like a USB-C port for AI applications. Just as USB-C provides a standardized way to connect your devices to various peripherals and accessories, MCP provides a standardized way to connect AI models to different data sources and tools.
+
+This article provides a hands-on, step-by-step walkthrough to build a simple example on your local development machine
+that integrates the [Unstructured API](/api-reference/overview) with the 
+[Python SDK for Model Context Protocol](https://github.com/modelcontextprotocol/python-sdk). Specifically, 
+this walkthrough demonstrates how to write and run Python code to create an MCP _server_ 
+(a lightweight program that exposes specific capabilities through MCP); this MCP server uses the 
+[Unstructured Workflow Endpoint](/api-reference/workflow/overview) to list all of your available 
+[source connectors](/api-reference/workflow/sources/overview) and to get information about a specific source connector.
+ 
+You call this MCP server from an MCP _client_ (an application that maintains a one-to-one connection with an 
+MCP server), which in this walkthrough is [Claude for Desktop](https://claude.ai/download), a chat-based interface, by asking it plain language questions. 
+Other MCP clients are also available. [Learn more](https://modelcontextprotocol.io/clients).
+
+At the end of this walkthrough, you can extend this example by using the Workflow Endpoint to perform other tasks, such as creating, listing, changing, and 
+deleting various connectors, workflows, and jobs in your Unstructured account.
+
+## Requirements
+
+To complete this walkthrough, you must first have an Unstructured account, an Unstructured API key for that account, 
+the necessary Python toolchain and project setups, and Claude for Desktop, as follows.
+
+### Unstructured account and API key
+
+Before you begin, you must have an Unstructured account and an Unstructured API key, as follows:
+
+<Steps>
+    <Step title="Sign up">
+        To sign up for Unstructured, go to the [For Developers](https://unstructured.io/developers) page and choose one of the following plans:
+
+        - Sign up for a [pay-per-page plan](https://unstructured.io/developers#get-started).
+        - Save money by signing up for a [subscribe-and-save plan](https://unstructured.io/subscribeandsave) instead.
+
+        If you're not sure which plan to sign up for, start with a [pay-per-page plan](https://unstructured.io/developers#get-started). You can always switch plans later.
+
+        <Note>
+            If you choose a pay-per-page plan, after your first 14 days of usage or more than 1000 processed pages per day, 
+            whichever comes first, your account is then billed at Unstructured's standard service usage rates. To keep using the service, 
+            you must 
+            [provide Unstructured with your payment details](/ui/billing#add-view-or-change-pay-per-page-payment-details).
+            
+            To save money by switching from a pay-per-page to a subscribe-and-save plan, go to the 
+            [Unstructured Subscribe & Save](https://unstructured.io/subscribeandsave) page and complete the on-screen instructions. 
+            To save even more money by making a long-term billing commitment, 
+            stop here and sign up through the [For Enterprise](https://unstructured.io/enterprise) page instead.
+            
+            By signing up for a pay-per-page or subscribe-and-save plan, your Unstructured account will run within the context of Unstructured on 
+            Unstructured's own hosted cloud resources. If you would rather run Unstructured within the context of your own virtual private cloud (VPC), 
+            stop here and sign up through the [For Enterprise](https://unstructured.io/enterprise) page instead.
+        </Note>
+    </Step>
+    <Step title="Sign in">
+        <Note>
+            If you initially signed up for a subscribe-and-save plan instead of a pay-per-page plan, wait to complete this step until after you receive confirmation from Unstructured that your 
+            plan is activated. Then go to the Unstructured home page at [https://unstructured.io](https://unstructured.io) and click **Login**.
+
+            If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page instead, your sign-in process will 
+            be different. For enterprise sign-in guidance, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+        </Note>
+
+        1. After you have signed up for a pay-per-page plan, the Unstructured account sign-in page appears.
+
+           ![Sign in to your Unstructured account](/img/ui/Signin.png)
+        
+        2. Click **Google** or **GitHub** to sign in with the Google or GitHub account that you signed up with. 
+           Or, enter the email address that you signed up with, and then click **Sign In**.
+        3. If you entered your email address, check your email inbox for a message from Unstructured. In that email, click the **Sign In** link.
+        4. The first time you sign in, read the terms and conditions, and then click **Accept**.
+
+        <Tip>
+            After you have signed in for the first time, you can 
+            sign in the second time and beyond by going to the Unstructured home page at [https://unstructured.io](https://unstructured.io) and clicking **Login**.
+        
+            For enterprise sign-in guidance, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+        </Tip>
+    </Step>
+    <Step title="Get your API key">
+        ![Unstructured account settings](/img/ui/AccountSettings.png)
+
+        ![Unstructured API key](/img/ui/APIKeyOnly.png)
+        
+        1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+        2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
+        3. On the **API Keys** tab, click **Generate New Key**.
+        4. Enter some descriptive name for the API key, and then click **Save**.
+        5. Click the **Copy** icon for your new API key. The API key's value is copied to your system's clipboard.
+    </Step>
+</Steps>
+
+### Python toolchain setup, project setup, and Claude for Desktop
+
+Before you can start coding on your local machine, you must install the Python package and project manager `uv`, 
+create and initialize a project directory for your code, create a virtual environment to isolate and manage your 
+project's code and its dependencies, and install the MCP SDK and its dependencies, as follows.
+
+These steps are also covered in the [Quickstart For Server Developers](https://modelcontextprotocol.io/quickstart/server) in the 
+MCP documentation.
+
+<Steps>
+    <Step>
+        Install `uv`, as follows.
+
+        By using `pip`:
+
+        ```bash
+        pip install uv
+        ```
+
+        Or, by using the following script (be sure to restart your terminal or Command Prompt after running the script):
+
+        ```bash
+        # For macOS and Linux:
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+
+        # For Windows:
+        powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+        ```
+
+        (To learn more about `uv`, see the [uv documentation](https://docs.astral.sh/uv/).)
+    </Step>
+    <Step>
+        From your current working directory, create a project directory and then initialize it. This example creates a 
+        project directory named `mcp-unstructured-demo`. Then go to the project directory:
+
+        ```bash
+        uv init mcp-unstructured-demo
+        cd mcp-unstructured-demo
+        ```
+    </Step>
+    <Step>
+        Create a virtual environment in the root of the project directory. Then activate the virtual environment:
+
+        ```bash
+        # For macOS and Linux:
+        uv venv
+        source .venv/bin/activate
+
+        # For Windows:
+        uv venv
+        .venv\Scripts\activate
+        ```
+
+        To deactivate and exit the virtual environment at any time, simply run the `deactivate` command:
+
+        ```bash
+        deactivate
+        ```
+    </Step>
+    <Step>
+        With the virtual environment activated, install the Python SDK for Model Context Protocol and additional code dependencies:
+
+        ```bash
+        uv add "mcp[cli]" "unstructured-client>=0.30.6" dotenv
+        ```
+    </Step>
+    <Step>
+        [Install Claude for Desktop](https://claude.ai/download).
+    </Step>
+</Steps>
+
+You are now ready to start coding.
+
+## Step 1: Create the MCP server
+
+<Steps>
+    <Step>
+        In the root of the project directory, create a new Python file. This example names the file `workflow.py`. 
+        Then add the following code to this new `workflow.py` file:
+
+        ```python
+        from typing import Any, AsyncIterator, Optional
+        from mcp.server.fastmcp import FastMCP, Context
+        from dotenv import load_dotenv
+        import os
+        from dataclasses import dataclass
+        from contextlib import asynccontextmanager
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import (
+            ListSourcesRequest,
+            GetSourceRequest
+        )
+        from unstructured_client.models.shared import SourceConnectorType
+
+        def load_environment_variables() -> None:
+            """
+            Loads environment variables from a .env file and checks for required variables. 
+            Raises an error if any required variable is missing.
+
+            Args:
+                None
+
+            Returns:
+                None
+            """
+            load_dotenv()
+            required_vars = [
+                "UNSTRUCTURED_API_KEY"
+            ]
+
+            for var in required_vars:
+                if not os.getenv(var):
+                    raise ValueError(f"Missing required environment variable: {var}")
+
+        @dataclass
+        class AppContext:
+            client: UnstructuredClient
+
+        @asynccontextmanager
+        async def app_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
+            """
+            Manages application lifecycle with type-safe context
+            for the FastMCP server. Initializes the UnstructuredClient.
+            
+            Args:
+                server (FastMCP): The FastMCP server instance.
+            
+            Returns:
+                AsyncIterator[AppContext]: An asynchronous context manager providing the 
+                application context.
+            """
+            api_key = os.getenv("UNSTRUCTURED_API_KEY")
+            if not api_key:
+                raise ValueError("UNSTRUCTURED_API_KEY environment variable is required")
+            client = UnstructuredClient(api_key_auth=api_key)
+            try:
+                yield AppContext(client=client)
+            finally:
+                pass
+
+        # Initialize the FastMCP server.
+        mcp = FastMCP("workflow", lifespan=app_lifespan)
+
+        @mcp.tool()
+        async def list_sources(ctx: Context, source_type: Optional[str] = None) -> str:
+            """
+            Lists available source connectors. Optionally filters by source type.
+            
+            Args:
+                ctx (Context): The context for the request.
+                source_type (Optional[str]): The type of source connector to filter by. 
+                    If None, all sources are listed.
+            
+            Returns:
+                str: A formatted string listing available source connector names and IDs.
+            """
+            client = ctx.request_context.lifespan_context.client
+            request = ListSourcesRequest()
+
+            if source_type:
+                try:
+                    request.source_type = SourceConnectorType[source_type]
+                except KeyError:
+                    return f"Invalid source type: {source_type}"
+
+            response = await client.sources.list_sources_async(
+                request=request
+            )
+            sorted_sources = sorted(
+                response.response_list_sources, 
+                key=lambda source: source.name.lower()
+            )
+            result = ["Available source connectors:"]
+
+            for source in sorted_sources:
+                result.append(f"- {source.name} (ID: {source.id})")
+
+            return "\n".join(result)
+
+        @mcp.tool()
+        async def get_source(ctx: Context, source_id: str) -> str:
+            """
+            Gets detailed information about a specific source connector by its ID.
+            
+            Args:
+                ctx (Context): The context for the request.
+                source_id (str): The ID of the source connector to retrieve.
+                
+            Returns: 
+                str: A formatted string containing information about the source connector.
+            """
+            client = ctx.request_context.lifespan_context.client
+            
+            response = await client.sources.get_source_async(
+                request=GetSourceRequest(source_id=source_id)
+            )
+            info = response.source_connector_information
+
+            result = ["Source connector information:"]
+            result.append(f"- name: {info.name}")
+            
+            for key, value in info.config:
+                result.append(f"{key}: {value}")
+
+            return "\n".join(result)
+            
+        if __name__ == "__main__":
+            load_environment_variables()
+            # Initialize and run the MCP server.
+            mcp.run(transport='stdio')
+        ```
+    </Step>
+    <Step>
+        In the root of the project directory, create a new file named `.env`. 
+        Then add the following code to this new `.env` file, replacing `<your-unstructured-api-key>` with your Unstructured API key:
+
+        ```text
+        UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
+        ```
+
+    </Step>
+    <Step>
+        Open the Claude for Desktop App configuration file from the following location, for example by using Visual Studio Code:
+
+        ```text
+        # For macOS or Linux:
+        code ~/Library/Application\ Support/Claude/claude_desktop_config.json
+
+        # For Windows:
+        code $env:AppData\Claude\claude_desktop_config.json
+        ```
+    </Step>
+    <Step>
+        Add the following code to the `claude_desktop_config.json` file, and then save the file.
+
+        In this file:
+
+        - `"worklow"` must match the value that you set in `mcp = FastMCP("workflow", lifespan=app_lifespan)` in the `workflow.py` file.
+        - `mcp_unstructured-demo` must match the name of the project directory that you created.
+        - `"workflow.py"` must match the name of the Python file that you created for the MCP server.
+
+        For macOS or Linux:
+
+        ```json
+        {
+            "mcpServers": {
+                "workflow": {
+                    "command": "/ABSOLUTE/PATH/TO/uv",
+                    "args": [
+                        "--directory",
+                        "/ABSOLUTE/PATH/TO/PARENT/FOLDER/mcp-unstructured-demo",
+                        "run",
+                        "workflow.py"
+                    ]
+                }
+            }
+        }
+        ```
+
+        For Windows:
+
+        ```json
+        {
+            "mcpServers": {
+                "workflow": {
+                    "command": "C:\\ABSOLUTE\\PATH\\TO\\uv",
+                    "args": [
+                        "--directory",
+                        "C:\\ABSOLUTE\\PATH\\TO\\PARENT\\FOLDER\\mcp-unstructured-demo",
+                        "run",
+                        "workflow.py"
+                    ]
+                }
+            }
+        }
+        ```
+    </Step>
+</Steps>
+
+## Step 2: Run the MCP server and call it from Claude for Desktop
+
+<Steps>
+    <Step>
+        Start Claude for Desktop. If it is already running, restart it.
+    </Step>
+    <Step>
+        Ask the following question in the chat window, replacing `S3` with the type of source connector that you want to list. 
+        For a list of available source connector types, see the [Workflow Endpoint Sources overview](/api-reference/workflow/sources/overview).
+
+        ```text
+        List all available source connectors of type S3.
+        ```
+
+        Claude for Desktop responds with a list of all available source connectors for that source connector type.
+    </Step>
+    <Step>
+        Ask another question in the chat window, replacing `<source-connector-id>` with one of the source connector IDs that 
+        Claude for Desktop returned in the previous step. For example:
+
+        ```text
+        Provide information about the source connector with ID <source-connector-id>.
+        ```
+
+        Claude for Desktop responds with information about that source connector.
+    </Step>
+</Steps>
+
+## Optional Step 3: Extend the MCP server
+
+Unstructured offers an initial experimental MCP server implementation, with much more functionality than the MCP server that you just created. 
+This initial MCP server is intended only for experimentation purposes and is not recommended for production usage. A more complete, supported, 
+production-level implementation is coming soon. 
+
+To use Unstructured's initial experimental MCP server implementation, do the following:
+
+<Steps>
+    <Step>
+        From a different working directory than the one you used in the previous steps, use Git to clone the 
+        [Unstructured API MCP Server](https://github.com/Unstructured-IO/UNS-MCP) repository in GitHub, and then switch to the cloned 
+        repository's root directory:
+
+        ```bash
+        git clone https://github.com/Unstructured-IO/UNS-MCP.git
+        cd UNS-MCP
+        ```
+    </Step>
+    <Step>
+        In the cloned repository's root directory, create a new file named `.env`. 
+        Then add the following code to this new `.env` file, replacing `<your-unstructured-api-key>` with your Unstructured API key:
+
+        ```text
+        UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
+        ```
+    </Step>
+    <Step>
+        Open the Claude for Desktop App configuration file from the following location, for example by using Visual Studio Code:
+
+        ```text
+        # For macOS or Linux:
+        code ~/Library/Application\ Support/Claude/claude_desktop_config.json
+
+        # For Windows:
+        code $env:AppData\Claude\claude_desktop_config.json
+        ```
+    </Step>
+    <Step>
+        Overwrite the contents of the `claude_desktop_config.json` file with the following content, and then save the file.
+
+        For macOS or Linux:
+
+        ```json
+        {
+            "mcpServers": {
+                "UNS-MCP": {
+                    "command": "/ABSOLUTE/PATH/TO/uv",
+                    "args": [
+                        "--directory",
+                        "/ABSOLUTE/PATH/TO/PARENT/FOLDER/UNS-MCP",
+                        "run",
+                        "server.py"
+                    ]
+                }
+            }
+        }
+        ```
+
+        For Windows:
+
+        ```json
+        {
+            "mcpServers": {
+                "workflow": {
+                    "command": "C:\\ABSOLUTE\\PATH\\TO\\uv",
+                    "args": [
+                        "--directory",
+                        "C:\\ABSOLUTE\\PATH\\TO\\PARENT\\FOLDER\\UNS-MCP",
+                        "run",
+                        "server.py"
+                    ]
+                }
+            }
+        }
+        ```
+    </Step>
+    <Step>
+        Restart Claude for Desktop.
+    </Step>
+    <Step>
+        Here are some additional sample questions that you could try in Claude for Desktop:
+
+        - `List all available source connectors of type <destination-connector-type>.`
+        - `Provide information about the source connector with ID <destination-connector-id>.`
+        - `List all available destination connectors of type <destination-connector-type>.`
+        - `Provide information about the destination connector with ID <destination-connector-id>.`
+        - `Create a new workflow.`
+        - `Provide information about the workflow with ID <workflow-id>.`
+        - `Run the workflow with ID <workflow-id>.`
+        - `Update the workflow with ID <workflow-id>.`
+        - `List all available workflows.`
+        - `Delete the worklow with ID <workflow-id>.`
+    </Step>
+</Steps>
