@@ -1,6 +1,6 @@
 ---
-title: Model Context Protocol (MCP) Hands-On Walkthrough
-sidebarTitle: MCP
+title: Model Context Protocol (MCP) Hands-On Walkthrough for the Unstructured Workflow Endpoint
+sidebarTitle: MCP for Worfklow Endpoint
 ---
 
 [Model Context Protocol](https://modelcontextprotocol.io/introduction) (MCP) is an open protocol that standardizes 
@@ -14,7 +14,15 @@ that integrates the [Unstructured API](/api-reference/overview) with the
 this walkthrough demonstrates how to write and run Python code to create an MCP _server_ 
 (a lightweight program that exposes specific capabilities through MCP); this MCP server uses the 
 [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to list all of your available 
-[source connectors](/api-reference/workflow/sources/overview) and to get information about a specific source connector.
+[source connectors](/api-reference/workflow/sources/overview) and to get information about a specific source connector. The 
+Workflow Endpoint offers a full range of partitioning, chunking, embedding, and enrichment options for your files and data.
+
+<Note>
+    For a hands-on walkthrough of the [Unstructured Partition Endpoint](/api-reference/partition/overview) instead, 
+    see the [MCP Hands-On Walkthrough for the Unstructured Partition Endpoint](/examplecode/tools/mcp-partition), which 
+    is intended for rapid prototyping of Unstructured's various partitioning strategies, with limited support for chunking, 
+    processing local files one file at a time.
+</Note>
  
 You call this MCP server from an MCP _client_ (an application that maintains a one-to-one connection with an 
 MCP server), which in this walkthrough is [Claude for Desktop](https://claude.ai/download), a chat-based interface, by asking it plain language questions. 
