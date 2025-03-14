@@ -1,0 +1,40 @@
+```python Python SDK
+import os
+
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import CreateSourceRequest
+from unstructured_client.models.shared import (
+    CreateSourceConnector,
+    SourceConnectorType,
+    SnowflakeSourceConnectorConfigInput
+)
+
+with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+    response = client.sources.create_source(
+        request=CreateSourceRequest(
+            create_source_connector=CreateSourceConnector(
+                name="<name>",
+                type=SourceConnectorType.SNOWFLAKE,
+                config=SnowflakeSourceConnectorConfigInput(
+                    account="<account>",
+                    role="<role>",
+                    user="<user>",
+                    password="<password>",
+                    host="<host",
+                    port=<port>
+                    database="<database>",
+                    schema_="<schema>",
+                    table_name="<table-name>",
+                    id_column="<id-column>",
+                    fields=[
+                        "<field>", 
+                        "<field>"
+                    ],
+                    batch_size=<batch-size> 
+                )
+            )
+        )
+    )
+
+    print(response.source_connector_information)
+```

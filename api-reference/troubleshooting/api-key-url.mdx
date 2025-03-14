@@ -5,22 +5,31 @@ sidebarTitle: API keys and URLs
 
 ## Issue
 
-When you run script or code to call an Unstructured API, you get the following error:
+When you run script or code to call an Unstructured API, you get one of the following warnings or errors:
 
 ```
 UserWarning: If intending to use the paid API, please define `server_url` in your request.
 ```
 
-You also get the following related warning in your logs:
+```
+ERROR: Server responded with 404 - {"detail":"Not Found"}
+```
+
+You also get the following related warnings or errors in your logs:
 
 ```
 SDKError: API error occurred: Status 401
 {"detail":"API key is malformed, please type the API key correctly in the header."}
 ```
 
+```
+API error occurred: Status 404
+{"detail":"Not Found"}
+```
+
 ## Possible causes
 
-1. The Unstructured API key, Unstructured API URL, or both are missing or malformed in your script or code.
+1. The Unstructured API key, API URL, or both are missing or malformed in your script or code.
 2. The API key, API URL, or both are not present in your current session.
 3. The API key is no longer valid, or the API key and API URL combination is not valid.
 
@@ -28,116 +37,48 @@ SDKError: API error occurred: Status 401
 
 For the API URL, note the following:
 
-- For the [Unstructured Platform API](/platform/api/overview), the API URL is typically `https://platform.unstructuredapp.io/api/v1`.
-- For the [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide), the API URL is typically `https://api.unstructuredapp.io/general/v0/general` (be aware of the inclusion of `app` in this API URL).
-- For the [Free Unstructured API](/api-reference/api-services/free-api), the API URL is always `https://api.unstructured.io/general/v0/general` (be aware that there is no `app` in this API URL).
+- For the [Unstructured Workflow Endpoint](/api-reference/workflow/overview), the API URL is typically `https://platform.unstructuredapp.io/api/v1`.
+- For the [Unstructured Partition Endpoint](/api-reference/partition/overview), the API URL is typically `https://api.unstructuredapp.io/general/v0/general`.
 
-<Note>The free 14-day trial of the Unstructured Serverless API or Unstructured Platform API is different than the Free Unstructured API.</Note>
+For the API key, the same API key works for both the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) key or [Unstructured Partition Endpoint](/api-reference/partition/overview). This API key is in your Unstructured account dashboard. To access your dashboard:
 
-For the API key, note the following:
+  ![Unstructured account settings](/img/ui/AccountSettings.png)
 
-- For the [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide) or the [Unstructured Platform API](/platform/api/overview), the API key is in your dashboard. To access your dashboard:
-
-  ![Unstructured account settings](/img/platform/AccountSettings.png)
-
-  1. Sign in to your Unstructured account.
+  1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
   2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
-  3. On the **API Keys** tab, note the value of the Unstructured **Serverless API URL** or the Unstructured **Platform API URL**.
+  3. On the **API Keys** tab, click the copy icon next to your key.
+  
+For the API URL, note the value of the the Unstructured **API URL** (for the Unstructured Workflow Endpoint) or the Unstructured **Serverless API URL** (for the Unstructured Partition Endpoint). 
 
-  ![Unstructured Serverless and Platform API URLs](/img/platform/ServerlessPlatformAPIURL.png)
+  ![Unstructured Serverless and API URLs](/img/ui/ServerlessPlatformAPIURL.png)
 
-- For the [Free Unstructured API](/api-reference/api-services/free-api), the API key is in your original email from Unstructured. If you cannot find the original email, you can regenerate it by going to [https://unstructured.io/api-key-free](https://unstructured.io/api-key-free).
-
-<Note>The free 14-day trial of the Unstructured Serverless API or Unstructured Platform API is different than the Free Unstructured API.</Note>
+  1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+  2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
+  3. On the **API Keys** tab, note the correct API URL. These APIs are not interchangeable between the Workflow and Partition APIs.
 
 If you still believe you have the correct API URL and API key, try the following steps:
 
 1. Check your script or code to see where the API URL and API key are specified, as follows:
 
-   **For a POST request to the Unstructured API**
+   **For a POST request**
 
    - Check the target URL. Make sure it is set to the right API URL.
    - Check the value of the `unstructured-api-key` header. Make sure it is set to the right API key, or an environment variable representing the right API key.
 
-   **For the Unstructured Python SDK** (Unstructured Serverless API and Free Unstructured API only)
+   **For the Unstructured Python SDK**
 
-   - Check the value of the `UnstructuredClient` object's `server_url` or `server` parameter:
+   - Check the value of the `server_url` parameter. Make sure it is set to the right API URL, or an environment variable representing the right API URL.
+   - Check the value of the `api_key_auth` parameter. Make sure it is set to the right API key, or an environment variable representing the right API key.
 
-     - For `server_url`, make sure it is set to the right API URL, or an environment variable representing the right API URL, or...
-     - For `server`, make sure it is set to `"saas-api"` for the Unstructured Serverless API, or `"free-api"` for the Free Unstructured API, or an environment variable representing one of these strings.
+   **For the Unstructured JavaScript/TypeScript SDK**
 
-       <Note>You can use `"saas-api"` and `"free-api"` only with the Unstructured SDKs.</Note>
-
-     - Make sure that only `serverURL` or `server` are specified&mdash;not both.
-     - Make sure that if you specify `serverURL`, an actual API URL (or an environment variable representing an actual API URL) is specified (not `"saas-api"` or `"free-api"`, or an environment variable representing one of these strings).
-     - Make sure that if you specify `server`, an actual API URL is not specified (it must be only `"saas-api"` or `"free-api"`, or an environment variable representing one of these strings).
-
-   - Check the value of the `UnstructuredClient` object's `api_key_auth` parameter. Make sure it is set to the right API key, or an environment variable representing the right API key.
-
-   **For the Unstructured JavaScript/TypeScript SDK** (Unstructured Serverless API and Free Unstructured API only)
-
-   - Check the value of the `UnstructuredClient` object's `serverURL` or `server` parameter:
-
-     - For `serverURL`, make sure it is set to the right API URL, or an environment variable representing the right API URL, or...
-     - For `server`, make sure it is set to `"saas-api"` for the Unstructured Serverless API, or `"free-api"` for the Free Unstructured API, or an environment variable representing one of these strings.
-
-       <Note>You can use `"saas-api"` and `"free-api"` only with the Unstructured SDKs.</Note>
-
-     - Make sure that only `serverURL` or `server` are specified&mdash;not both.
-     - Make sure that if you specify `serverURL`, an actual API URL (or an environment variable representing an actual API URL) is specified (not `"saas-api"` or `"free-api"`, or an environment variable representing one of these strings).
-     - Make sure that if you specify `server`, an actual API URL is not specified (it must be only `"saas-api"` or `"free-api"`, or an environment variable representing one of these strings).
-
+   - Check the value of the `UnstructuredClient` object's `serverURL` parameter. Make sure it is set to the right API URL, or an environment variable representing the right API URL.
    - Check the value of the `UnstructuredClient` object's `security: { apiKeyAuth }` parameter. Make sure it is set to the right API key, or an environment variable representing the right API key.
      
-   **For the Unstructured Ingest CLI** (Unstructured Serverless API and Free Unstructured API only)
-
-   - Check the value of the `--partition-endpoint` command option. Make sure it is set to the right API URL, or an environment variable representing the right API URL.
-   - Check the value of the `--api-key` command option. Make sure it is set to the right API key, or an environment variable representing the right API key.
-
-   **For the Unstructured Ingest Python library** (Unstructured Serverless API and Free Unstructured API only)
-
-   For a v2 connector implementation, check the value of the `partitioner_config` parameter in the `Pipeline.from_configs` method. This parameter should be set to a `PartitionerConfig` object:
-
-   - Check the object's `partition_endpoint` parameter. Make sure it is set to the right API URL, or an environment variable representing the right API URL.
-   - Check the object's `api_key` parameter. Make sure it is set to the right API key, or an environment variable representing the right API key.
-
-   For a v1 connector implementation, check the value of the `partition_config` parameter in the `Runner` object. This parameter should be set to a `PartitionConfig` object:
-
-   - Check the object's `partition_endpoint` parameter. Make sure it is set to the right API URL, or an environment variable representing the right API URL.
-   - Check the object's `api_key` parameter. Make sure it is set to the right API key, or an environment variable representing the right API key.
-   
-   **For the Unstructured open source library** (Unstructured Serverless API and Free Unstructured API only)
-
-   - Check the value of the `partition_by_api` command's `api_url` parameter. Make sure it is set to the right API URL, or an environment variable representing the right API URL.
-   - Check the value of the `partition_by_api` command's `api_key` parameter. Make sure it is set to the right API key, or an environment variable representing the right API key.
-
 2. If you follow the recommended approach to use environment variables to represent the API key and API URL instead of hard-coding them into your script or code, check your session to see if these environment variables have been loaded, for example:
 
    - Run the command for your operating system to list all environment variables. Make sure the API key and API URL are listed and are set to the right ones. Make sure the names and cases of these environment variables match the ones in your script or code exactly.
    - If you use an integrated development environment (IDE) to run your script or code, check the IDE's documentation for how to specify and load environment variables at run time or debug time. Make sure the names and cases of these environment variables match the ones in your script or code exactly.
 
-3. Re-verify the API key and API URL that you want to use:
-
-   **For the Unstructured Serverless API and Unstructured Platform API**
-
-   ![Unstructured account settings](/img/platform/AccountSettings.png)
-
-   1. Sign in to your Unstructured account.
-   2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
-   
-   - Make sure that the API key you want to use matches the one in your script, code, or environment variable. To get the full API key value, click the **Copy** icon. Paste it to a temporary location for you to compare to your the one in your script, code, or environment variable. After you make the comparison, make sure to immediately delete from that temporary location what you just pasted.
-   - Make sure the Unstructured **Serverless API URL** or the Unstructured **Platform API URL** matches the one in your script, code, or environment variable.
-   
-   ![Unstructured Serverless and Platform API URLs](/img/platform/ServerlessPlatformAPIURL.png)
-   
-   <Note>For the Unstructured Serverless API only, you can use `"saas-api"` with the Unstructured SDKs, instead of an API URL. For more information, see Item 1 earlier in this section.</Note>
-
-   **For the Free Unstructured API**
-
-   - Open your original email from Unstructured that contains your API key. Make sure it matches the one in your script, code, or environment variable. If you cannot find the original email, you can regenerate it by going to [https://unstructured.io/api-key-free](https://unstructured.io/api-key-free).
-   - Make sure that you are using `https://api.unstructured.io/general/v0/general` (not `api.unstructuredapp.io`) for the API URL. 
-   
-   <Note>For the Free Unstructured API, you can use `"free-api"` with the Unstructured SDKs, instead of an API URL. For more information, see Item 1 earlier in this section.</Note>
-
-4. If you are still getting this issue, [contact us directly](https://unstructured.io/contact).
+3. If you are still getting this issue, [contact us directly](https://unstructured.io/contact).
 

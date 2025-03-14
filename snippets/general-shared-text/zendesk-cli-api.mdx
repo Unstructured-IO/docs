@@ -1,0 +1,15 @@
+The Zendesk connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[zendesk]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `ZENDESK_SUBDOMAIN` - The subdomain for your Zendesk account, represented by `--subdomain` (CLI) or `subdomain` (Python).
+- `ZENDESK_EMAIL` - The login email address for your Zendesk account, represented by `--email` (CLI) or `email` (Python).
+- `ZENDESK_API_TOKEN` - The API token (not OAuth token) for your login email address, represented by `--api-token` (CLI) or `api_token` (Python).

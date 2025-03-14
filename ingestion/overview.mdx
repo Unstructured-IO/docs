@@ -1,149 +1,27 @@
 ---
-title: "Overview"
+title: Overview
 ---
 
-## Concepts
+<Note>
+    Unstructured recommends that you use the [Unstructured API](/api-reference/overview) instead of the 
+    Unstructured Ingest CLI or the Unstructured Ingest Python library.
+    
+    The Unstructured API provides a full range of partitioning, chunking, embedding, and enrichment options for your files and data. 
+    It also uses the latest and highest-performing models on the market today, and it has built-in logic to deliver the highest quality results 
+    at the lowest cost. 
+    
+    The Unstructured Ingest CLI and the Unstructured Ingest Python library are not being actively updated to include these and other Unstructured API features.
+</Note>
 
-*Ingestion* is the term that Unstructured uses to refer to the set of activities that happens when files are input for processing. Ingestion enables multiple files to be processed as a batch.
+You can send multiple files in batches to be ingested by Unstructured for processing. 
+_Ingestion_ is the term that Unstructured uses to refer to the set of activities that happens when files are input for processing. [Learn more](/ingestion/overview).
 
-You can perform ingestion with the following tools:
+You can send batches to Unstructured by using the following tools:
 
-- The [Unstructured Platform](/platform/overview), a no-code user interface, unlimited pay-as-you-go platform to get all of your data ready for Retrieval Augmented Generation (RAG) and model fine-tuning.
-- The [Unstructured Ingest CLI](#unstructured-ingest-cli), with unlimited pay-as-you-go and limited free options, that enable you to use command-line scripts to get all of your data ready for RAG and model fine-tuning.
-- The [Unstructured Ingest Python library](#unstructured-ingest-python-library), with unlimited pay-as-you-go and limited free options, that enable you to use Python code to get all of your data ready for RAG and model fine-tuning.
+- The [Unstructured Ingest CLI](/ingestion/ingest-cli)
+- The [Unstructured Ingest Python](/ingestion/python-ingest) library
 
-<Info>
-    The [Unstructured Python SDK](/api-reference/api-services/sdk-python) and [Unstructured JavaScript/TypeScript SDK](/api-reference/api-services/sdk-jsts) can process only one file at a time.
-</Info>
-
-Files are ingested from an originating *source* location. Each batch of ingested files is processed either [all by Unstructured](#ingestion-options-for-the-unstructured-service) or [all locally](#local-ingestion-options). The processed data is sent to a target *destination* location. The kinds of locations you can specify varies:
-
-When you use the [Unstructured Platform](/platform/overview), the source and destination must both be in cloud storage. Local source or local destination locations are not allowed. For example:
-
- ```mermaid
-flowchart LR
-    source[Google Drive]-->api[Processing...]-->destination[S3]
-```
-
-```mermaid
-flowchart LR
-    source[Azure]-->api[Processing...]-->destination[Pinecone]
-```
-
-The Unstructured Platform enables you to connect to many kinds of [sources](/platform/sources/overview) and [destinations](/platform/destinations/overview).
-
-If you use the Unstructured Ingest CLI or the Unstructured Ingest Python library, the source or destination can be a cloud storage location or a local location. For example:
-
-```mermaid
-flowchart LR
-    source[Local directory]-->api[Processing...]-->destination[Azure]
-```
-
- ```mermaid
-flowchart LR
-    source[Google Drive]-->api[Processing...]-->destination[Local directory]
-```
-
-```mermaid
-flowchart LR
-    source[S3]-->api[Processing...]-->destination[Pincone]
-```
-
-```mermaid
-flowchart LR
-    source[Local directory]-->api[Processing...]-->destination[A different local directory]
-```
-
-Unstructured provides many [source](/api-reference/ingest/source-connectors/overview) and [destination](/api-reference/ingest/destination-connector/overview) connectors.
-
-## Ingestion options for the Unstructured service
-
-This is the flow for sending files to Unstructured for processing and the processed data being delivered by Unstructured:
-
-```mermaid
-flowchart LR
-    source[Source]-->api[Processed by Unstructured]-->destination[Destination]
-```
-
-- This flow always happens for the Unstructured Platform. The Platform only allows sending files from cloud storage and sending processed data to cloud storage.
-- For the Unstructured Ingest CLI or the Unstructured Ingest Python library, to use this flow:
-
-  - When using the Unstructured Ingest CLI, include the `--partition-by-api` option and set `--api-key` and `--partition-endpoint` to a valid, matching Unstructured API key and API URL, respectively.
-  - When using the Unstructured Ingest Python library, set `partition_by_api=True` and `api_key` and set `partition_endpoint` to a valid, matching Unstructured API key and API URL, respectively.
-
-## Local ingestion options
-
-This is the flow for processing files locally. No files are sent to Unstructured for processing:
-
-```mermaid
-flowchart LR
-    source[Source]-->api[Processed locally]-->destination[Destination]
-```
-
-- This flow never happens for the Unstructured Platform. The Platform does not allow sending files from a local destination to Unstructured or Unstructured sending processed data to a local destination.
-- For the Unstructured Ingest CLI or the Unstructured Ingest Python library, to use this flow:
-
-  - When using the Unstructured Ingest CLI, omit the `--partition-by-api`, `--api-key`, and `--partition-endpoint` options.
-  - When using the Unstructured Ingest Python library, omit `partition_by_api` or explicitly set `partition_by_api=False`. Also omit `api_key` and `partition_endpoint`.
-
-## Unstructured Ingest CLI
-
-The Unstructured Ingest CLI enables you to use command-line scripts to get all of your data ready for RAG and model fine-tuning.
-
-One approach to using the CLI is installing Python and then running the following command to install the CLI:
-
-```bash
-pip install unstructured-ingest
-```
-
-This default installation option enables the ingestion of plain text files, HTML, XML, JSON and emails that do not require any extra dependencies. This default option also enables you to specify local source and destination locations.
-
-import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
-
-<AdditionalIngestDependencies />
-
-For additional installation options, see:
-
-- [Run the library in a container](https://github.com/Unstructured-IO/unstructured/tree/main?tab=readme-ov-file#run-the-library-in-a-container)
-- [Installing the library](https://github.com/Unstructured-IO/unstructured/tree/main?tab=readme-ov-file#installing-the-library)
-- The installation commands for additional connectors for [sources](/api-reference/ingest/source-connectors/overview) and [destinations](/api-reference/ingest/destination-connector/overview)
-
-To display the list of available source connector commands, run the following command:
-
-```bash
-unstructured-ingest --help
-```
-
-To display the list of available destination connector commands, run the following command:
-
-```bash
-unstructured-ingest local --help
-```
-
-To display help for a specific source connector command, run the following command:
-
-```bash
-unstructured-ingest <command-name> --help
-```
-
-To display help for a specific destination connector command, run the following command:
-
-```bash
-unstructured-ingest local <command-name> --help
-```
-
-To begin using the CLI, see the quickstarts for the:
-
-- [Unstructured Serverless API](/api-reference/api-services/saas-api-development-guide#unstructured-cli)
-- [Free Unstructured API](/api-reference/api-services/free-api#unstructured-cli)
-
-<Info>To migrate from older, deprecated versions of the Ingest CLI that used `pip install unstructured`, see the [migration guide](#migration-guide).</Info>
-
-## Unstructured Ingest Python library
-
-The Unstructured Ingest Python library enable you to use Python code to get all of your data ready for RAG and model fine-tuning.
-
-The following 3-minute video shows how to use the Unstructured Ingest Python library to send multiple PDFs from a local directory in batches to be ingested by Unstructured API services for processing:
+The following 3-minute video shows how to use the Unstructured Ingest Python library to send multiple PDFs from a local directory in batches to be ingested by Unstructured for processing:
 
 <iframe
   width="560"
@@ -155,44 +33,103 @@ The following 3-minute video shows how to use the Unstructured Ingest Python lib
   allowfullscreen
 ></iframe>
 
-One approach to using the Unstructured Ingest Python library is installing Python and then running the following command to install the library and the default connectors:
+The following 5-minute video goes into more detail about the various components of the Unstructured Ingest Python library:
 
-```bash
-pip install unstructured-ingest
-```
+<iframe
+width="560"
+height="315"
+src="https://www.youtube.com/embed/A_kqK2KHTdg"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
 
-This default installation option enables the ingestion of plain text files, HTML, XML, JSON and emails that do not require any extra dependencies. This default option also enables you to specify local source and destination locations.
+## Ingest flow
 
-<AdditionalIngestDependencies />
+The Unstructured ingest flow is similar to an extract, transform and load (ETL) data pipeline. 
+Because of this, a customer-defined implementation of the Unstructured ingest flow is sometimes referred to as an _ingest pipeline_ or simply a _pipeline_. 
+An Unstructured ingest pipeline contains the following logical steps:
 
-For additional installation options, see:
+<Steps>
+    <Step title="Index">
+        Reaches out to the source location and pulls in metadata for each document.
 
-- [Run the library in a container](https://github.com/Unstructured-IO/unstructured/tree/main?tab=readme-ov-file#run-the-library-in-a-container)
-- [Installing the library](https://github.com/Unstructured-IO/unstructured/tree/main?tab=readme-ov-file#installing-the-library)
-- The installation commands for additional connectors for [sources](/api-reference/ingest/source-connectors/overview) and [destinations](/api-reference/ingest/destination-connector/overview)
+        For example, this could include information such as the path to the files to be analyzed.
 
-Some source and destination connectors provide newer v2 and older v1 implementations, while some provide only older v1 implementations. You should use the v2 implementations wherever they are available, to help ensure better forward-compatibility of your code. For the lists of available v2 and v1 connectors, see:
+        - For the Unstructured CLI, you can control this behavior, where available for a connector, through its `--input-path` command option.
+        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior, where available for a connector, through its `<Prefix>IndexerConfig` class (where `<Prefix>` represents the connector provider's name, such as `Azure` for Azure.)
+    </Step>
+    <Step title="Post-Index Filter">
+        After indexing, you might not want to download everything that was indexed.
 
-- [v2 non-fsspec connectors](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/unstructured_ingest/v2/processes/connectors)
-- [v2 fsspec connectors](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/unstructured_ingest/v2/processes/connectors/fsspec)
-- [v1 non-fsspec connectors](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/unstructured_ingest/connector)
-- [v1 fsspec connectors](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/unstructured_ingest/connector/fsspec)
-- [v1 Notion connector](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/unstructured_ingest/connector/notion)
+        For example, you might want to download only files that match specific types, file names, paths, or sizes. 
 
-To begin using the Unstructured Ingest Python library, see the code examples for the [source](/api-reference/ingest/source-connectors/overview) and [destination](/api-reference/ingest/destination-connector/overview) connectors.
+        For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `FiltererConfig` class.
+    </Step>
+    <Step title="Download">
+        Using the information generated from the indexer and the filter, downloads the content as files on the local file system for processing. This may require manipulation of the data to prepare it for partitioning.
 
-<Info>To migrate from older, deprecated versions of the Ingest Python library that used `pip install unstructured`, see the [migration guide](#migration-guide).</Info>
+        For example, this could include information such as the path to a local directory to download files to.
+    
+        - For the Unstructured CLI, you can control this behavior through a connector's `--download-dir` command option.
+        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through a connector's `<Prefix>DownloaderConfig` class.
+    </Step>
+    <Step title="Post-Download Filter">
+        After downloading, if uncompression is enabled, you might not want to uncompress everything that was downloaded. The filter that was defined at the beginning is repeated here.
+    </Step>
+    <Step title="Uncompress"> 
+        If enabled, searches for any compressed files (Unstructured supports TAR and ZIP) and uncompresses them.
 
-### Generate Python code examples
+        - For the Unstructured CLI, you can control this behavior through the `--uncompress` command option.
+        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `UncompressConfig` class.
+    </Step>
+    <Step title="Post-Uncompress Filter">
+        After downloading, and uncompressing if enabled, you might not want to partition everything that was downloaded, and uncompressed if enabled. The filter that was defined at the beginning is repeated here again.
+    </Step>
+    <Step title="Partition"> 
+        Generates the structured enriched content from the local files that have been downloaded, uncompressed if enabled, and filtered. Both local-based partitioning and Unstructured-based partitioning is supported, with API services-based partitioning set to run asynchronously and local-based partitioning set to run through multiprocessing.
+
+        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `PartitionerConfig` class.
+        - For the Unstructured Ingest Python library's v1 calling pattern, you can control this behavior through the `PartitionConfig` class.
+    </Step>
+    <Step title="Chunk">
+        Optionally, chunks the partitioned content. Chunking can also be run locally or through Unstructured, with asynchronous or multiprocessing behaviors set in the same approach as the partitioner.
+    
+        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `ChunkerConfig` class.
+        - For the Unstructured Ingest Python library's v1 calling pattern, you can control this behavior through the `ChunkingConfig` class.
+    </Step>
+    <Step title="Embed">
+        Optionally, generates vector embeddings for each element in the structured output. Most of the time, this is done through API calls to a third-party embedding vendor and therefore runs asynchronously. But it can also use a locally available Hugging Face model, which will run through multiprocessing.
+    
+        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `EmbedderConfig` class.
+        - For the Unstructured Ingest Python library's v1 calling pattern, you can control this behavior through the `EmbeddingConfig` class.
+    </Step>
+    <Step title="Stage">
+        This is an optional step that does not apply most of the time. However, sometimes the data needs to be modified from the existing structure to better support the upload step, such as converting it to a CSV file for tabular-based destinations.
+    
+        For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior, where available for a connector, through its `<Prefix>UploadStagerConfig` class.
+    </Step>
+    <Step title="Upload">
+        Writes the local content to the destination. If no destination is provided, the local one will be used, which writes the final result to a location on the local filesystem. If batch uploads are needed, this will run in a single process with access to all documents. If batch uploads are not supported, all documents can be uploaded concurrently by using the asynchronous approach.
+    
+        For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through a connector's `<Prefix>UploaderConfig` class.
+    </Step>
+</Steps>
+
+## Generate Python code examples
 
 import GeneratePythonCodeExamples from '/snippets/ingestion/code-generator.mdx';
 
 <GeneratePythonCodeExamples />
 
-## Migration guide
+## Learn more
 
-import MigrationGuideSteps from '/snippets/general-shared-text/ingest-migration.mdx';
+- [Ingest configuration](/ingestion/ingest-configuration/overview) settings enable you to control how batches are sent and processed.
+- [Source connectors](/ingestion/source-connectors/overview) enable you to send batches from local or remote locations to be ingested by Unstructured for processing.
+- [Destination connectors](/ingestion/destination-connectors/overview) enable Unstructured to send the processed data to local or remote locations.
 
-<MigrationGuideSteps/>
+## See also
 
+- The [Unstructured UI](/ui/overview) enables you to send batches to Unstructured from remote locations, and to have Unstructured send the processed data to remote locations, all without using code or a CLI.
 

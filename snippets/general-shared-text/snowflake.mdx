@@ -3,7 +3,7 @@
   <iframe
   width="560"
   height="315"
-  src="https://www.youtube.com/embed/6HNmxQWqmgg"
+  src="https://www.youtube.com/embed/LgCjLyClg3o"
   title="YouTube video player"
   frameborder="0"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -27,7 +27,7 @@
   <iframe
   width="560"
   height="315"
-  src="https://www.youtube.com/embed/5hPrJNEa4aA?start=64&end=267"
+  src="https://www.youtube.com/embed/sFLPGVe4VBM"
   title="YouTube video player"
   frameborder="0"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -47,7 +47,49 @@
   SHOW USERS LIKE '<my-user>';
   ```
 
-- The Snowflake warehouse's [hostname and its port number](https://docs.snowflake.com/sql-reference/functions/system_allowlist) in the account. 
+- The name of the Snowflake [role](https://docs.snowflake.com/sql-reference/sql/create-role) that the user belongs to and that also has sufficient access to the Snowflake database, schema, table, and host.
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/cxe2Ed_-qkM"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
+
+  - To create a database in Snowflake, the role needs to be granted `CREATE DATABASE` privilege at the current account level; and `USAGE` privilege on the warehouse that is used to create the database.
+  - To create a schema in a database in Snowflake, the role needs to be granted `USAGE` privilege on the database and the warehouse that is used to create the schema; and `CREATE SCHEMA` on the database.
+  - To create a table in a schema in Snowflake, the role needs to be granted `USAGE` privilege on the database and schema and the warehouse that is used to create the table; and `CREATE TABLE` on the schema.
+  - To write to a table in Snowflake, the role needs to be granted `USAGE` privilege on the database and schema and the warehouse that is used to write to the table; and `INSERT` on the table.
+  - To read from a table in Snowflake, the role needs to be granted `USAGE` privilege on the database and schema and the warehouse that is used to write to the table; and `SELECT` on the table.
+
+  To view a list of available roles in the current Snowflake account:
+
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click **Admin > Users & Roles**.
+  3. Click the **Roles** tab.
+
+  Alternatively, the following Snowflake query returns a list of available roles in the current account:
+
+  ```text
+  SHOW ROLES;
+  ```
+
+  [Grant privileges to a role](https://docs.snowflake.com/sql-reference/sql/grant-privilege). [Learn more](https://docs.snowflake.com/user-guide/security-access-control-privileges). 
+
+- The Snowflake warehouse's [hostname and its port number](https://docs.snowflake.com/sql-reference/functions/system_allowlist) in the account.
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/ItLW0N1uEOI"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
 
   To view a list of available warehouses in the current Snowflake account:
 
@@ -68,7 +110,7 @@
   <iframe
   width="560"
   height="315"
-  src="https://www.youtube.com/embed/KrXCgpsRd0A"
+  src="https://www.youtube.com/embed/f49tin_Pehs"
   title="YouTube video player"
   frameborder="0"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -87,16 +129,6 @@
   ```
 
 - The name of the [schema](https://docs.snowflake.com/sql-reference/sql/create-schema) in the database.
-
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/4SoS_c6rT_U?start=97&end=157"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
 
   To view a list of available schemas for a database in the current Snowflake account:
 
@@ -117,16 +149,6 @@
   ```
 
 - The name of the [table](https://docs.snowflake.com/sql-reference/sql/create-table) in the schema.
-
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/ZaZzqFMGe1g?end=169"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
 
   To view a list of available tables for a schema in a database in the current Snowflake account:
 
@@ -188,29 +210,9 @@
     TEXT_AS_HTML VARCHAR,
     REGEX_METADATA VARCHAR,
     DETECTION_CLASS_PROB NUMBER,
-    PRIMARY KEY (ID)
+    PRIMARY KEY (ID),
+    PARTITIONER_TYPE VARCHAR
   );
   ```
 
 - The name of the column in the table that uniquely identifies each record (for example, `RECORD_ID`).
-- The name of the Snowflake [role](https://docs.snowflake.com/sql-reference/sql/create-role) that the user belongs to and that also has sufficient access to the Snowflake database, schema, table, and host.
-
-  - To create a database in Snowflake, the role needs to be granted `CREATE DATABASE` privilege at the current account level; and `USAGE` privilege on the warehouse that is used to create the database.
-  - To create a schema in a database in Snowflake, the role needs to be granted `USAGE` privilege on the database and the warehouse that is used to create the schema; and `CREATE SCHEMA` on the database.
-  - To create a table in a schema in Snowflake, the role needs to be granted `USAGE` privilege on the database and schema and the warehouse that is used to create the table; and `CREATE TABLE` on the schema.
-  - To write to a table in Snowflake, the role needs to be granted `USAGE` privilege on the database and schema and the warehouse that is used to write to the table; and `INSERT` on the table.
-  - To read from a table in Snowflake, the role needs to be granted `USAGE` privilege on the database and schema and the warehouse that is used to write to the table; and `SELECT` on the table.
-
-  To view a list of available roles in the current Snowflake account:
-
-  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
-  2. In Snowsight, on the navigation menu, click **Admin > Users & Roles**.
-  3. Click the **Roles** tab.
-
-  Alternatively, the following Snowflake query returns a list of available roles in the current account:
-
-  ```text
-  SHOW ROLES;
-  ```
-
-  [Grant privileges to a role](https://docs.snowflake.com/sql-reference/sql/grant-privilege). [Learn more](https://docs.snowflake.com/user-guide/security-access-control-privileges). 

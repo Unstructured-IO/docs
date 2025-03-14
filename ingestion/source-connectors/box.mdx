@@ -1,0 +1,33 @@
+---
+title: Box
+---
+
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentBox from '/snippets/sc-shared-text/box-cli-api.mdx';
+
+<SharedContentBox/>
+
+Now call the Unstructured CLI or Python. The destination connector can be any of the ones supported. This example uses the local destination connector.
+
+This example sends data to Unstructured for processing by default. To process data locally instead, see the instructions at the end of this page.
+
+import BoxSh from '/snippets/source_connectors/box.sh.mdx';
+import BoxPyV2 from '/snippets/source_connectors/box.v2.py.mdx';
+import BoxPyV1 from '/snippets/source_connectors/box.v1.py.mdx';
+
+<CodeGroup>
+
+  <BoxSh />
+
+  <BoxPyV2 />
+
+  <BoxPyV1 />
+
+</CodeGroup>
+
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>

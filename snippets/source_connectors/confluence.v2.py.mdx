@@ -26,8 +26,13 @@ if __name__ == "__main__":
             max_num_of_spaces=500,
             max_num_of_docs_from_each_space=150
         ),
-        downloader_config=ConfluenceDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
-        
+        downloader_config=ConfluenceDownloaderConfig(
+            download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")
+            extract_images=True,
+            extract_files=True,
+            force_download=True,
+            allow_list=[] 
+        ),
         # For API token authentication:
         source_connection_config=ConfluenceConnectionConfig(
             access_config=ConfluenceAccessConfig(

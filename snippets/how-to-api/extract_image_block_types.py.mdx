@@ -10,8 +10,7 @@ import io
 
 if __name__ == "__main__":
     client = UnstructuredClient(
-        api_key_auth=os.getenv("UNSTRUCTURED_API_KEY"),
-        server_url=os.getenv("UNSTRUCTURED_API_URL")
+        api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
     )
 
     # Source: https://github.com/Unstructured-IO/unstructured/blob/main/example-docs/embedded-images-tables.pdf
@@ -29,7 +28,9 @@ if __name__ == "__main__":
     request = operations.PartitionRequest(
         shared.PartitionParameters(
             files=files,
-            strategy=shared.Strategy.HI_RES,
+            strategy=shared.Strategy.VLM,
+            vlm_model="gpt-4o",
+            vlm_model_provider="openai",
             split_pdf_page=True,
             split_pdf_allow_failed=True,
             split_pdf_concurrency_level=15,
@@ -45,7 +46,9 @@ if __name__ == "__main__":
     )
 
     try:
-        result = await client.general.partition_async(request)
+        result = await client.general.partition_async(
+            request=request
+        )
 
         for element in result.elements:
             if "image_base64" in element["metadata"]:

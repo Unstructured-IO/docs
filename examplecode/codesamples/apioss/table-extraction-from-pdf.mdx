@@ -4,7 +4,7 @@ description: This section describes two methods for extracting tables from PDF f
 ---
 
 <Note>
-This sample code utilizes the [Unstructured Open Source](/open-source/introduction/overview "Open Source") library and also provides an alternative method the utilizing the [Unstructured Serverless API](api-reference/api-services/overview "Serverless API"). 
+This sample code utilizes the [Unstructured Open Source](/open-source/introduction/overview "Open Source") library and also provides an alternative method the utilizing the [Unstructured Partition Endpoint](/api-reference/partition/overview). 
 </Note>
 
 ## Method 1: Using partition\_pdf
@@ -33,7 +33,7 @@ print(tables[0].metadata.text_as_html)
 
 ## Method 2: Using Auto Partition or Unstructured API
 
-By default, table extraction from all file types is enabled. To extract tables from PDFs and images using [Auto Partition](/open-source/core-functionality/partitioning#partition) or [Unstructured API parameters](/api-reference/api-services/api-parameters) simply set `strategy` parameter to `hi_res`.
+By default, table extraction from all file types is enabled. To extract tables from PDFs and images using [Auto Partition](/open-source/core-functionality/partitioning#partition) or [Unstructured API parameters](/api-reference/partition/api-parameters) simply set `strategy` parameter to `hi_res`.
 
 **Usage: Auto Partition**
 

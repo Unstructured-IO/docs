@@ -3,6 +3,10 @@ title: Unstructured
 sidebarTitle: Overview
 ---
 
+Unstructured provides a platform and tools to ingest and process unstructured documents for Retrieval Augmented Generation (RAG) and model fine-tuning.
+
+This 60-second video describes more about what Unstructured does and its benefits:
+
 <iframe
   width="560"
   height="315"
@@ -12,8 +16,6 @@ sidebarTitle: Overview
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowfullscreen
 ></iframe>
-
-Unstructured provides a platform and tools to ingest and process unstructured documents for Retrieval Augmented Generation (RAG) and model fine-tuning.
 
 This 40-second video demonstrates a simple use case that Unstructured helps solve:
 
@@ -27,53 +29,55 @@ This 40-second video demonstrates a simple use case that Unstructured helps solv
   allowfullscreen
 ></iframe>
 
-### Product offerings
+Unstructured offers the Unstructured user interface (UI) and the Unstructured API. Read on to learn more.
 
-<Icon icon="dash" iconType="duotone"/>&nbsp;&nbsp;<Icon icon="computer" />&nbsp;&nbsp;[Unstructured Platform](/platform/overview) - No-code UI. Production-ready. Pay as you go.<br/><br/>
+## <Icon icon="computer" />    Unstructured user interface (UI) 
 
-<Tip>To start using the Unstructured Platform right away, skip ahead to the [quickstart](#quickstart-unstructured-platform).</Tip>
+No-code UI. Production-ready. Pay as you go. [Learn more](/ui/overview).
+
+Here is a screenshot of the Unstructured UI **Start** page:
+
+![Partial view of the Unstructured UI](/img/ui/Start-Screen-Partial.png)
+
+This 90-second video provides a brief overview of the Unstructured UI:
 
 <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/IVKcQDZa9Zc"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
+width="560"
+height="315"
+src="https://www.youtube.com/embed/IVKcQDZa9Zc"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
 ></iframe>
 
-<Icon icon="blog"/>&nbsp;&nbsp;[Read the announcement](https://unstructured.io/blog/introducing-unstructured-platform-the-enterprise-etl-platform-for-the-genai-tech-stackintroducing-unstructured-platform-beta-the-enterprise-etl-platform-for-the-genai-tech-stack).
+<Tip>To start using the Unstructured UI right away, skip ahead to the [quickstart](#unstructured-ui-quickstart).</Tip>
 
-![Partial view of the Unstructured Platform](/img/platform/Start-Screen-Partial.png)
+## <Icon icon="square-terminal" />    Unstructured API 
 
-<Icon icon="dash" iconType="duotone"/>&nbsp;&nbsp;<Icon icon="square-terminal" />&nbsp;&nbsp;[Unstructured Serverless API services](/api-reference/api-services/overview) - Use scripts or code. Production-ready. Pay as you go. (There is also a non-production, free edition with [limits](/api-reference/api-services/free-api#free-unstructured-api-limitations).)<br/><br/>
+Use scripts or code. Production-ready. Pay as you go. [Learn more](/api-reference/overview).
 
-<Tip>To start using Unstructured Serverless API services right away, skip ahead to the [quickstart](#quickstart-unstructured-serverless-api).</Tip>
+The Unstructured API consists of two parts:
 
-![Unstructured Ingest Python library example code](/img/api/Ingest-IDE.png)
+- The [Unstructured Workflow Endpoint](/api-reference/overview) enables a full range of partitioning, chunking, embedding, and 
+  enrichment options for your files and data. It is designed to batch-process files and data in remote locations; send processed results to 
+  various storage, databases, and vector stores; and use the latest and highest-performing models on the market today. It has built-in logic 
+  to deliver the highest quality results at the lowest cost. [Learn more](/api-reference/overview).
+- The [Unstructured Partition Endpoint](/api-reference/partition/overview) is intended for rapid prototyping of Unstructured's 
+  various partitioning strategies, with limited support for chunking. It is designed to work only with processing of local files, one file 
+  at a time. Use the [Unstructured Workflow Endpoint](/api-reference/overview) for production-level scenarios, file processing in 
+  batches, files and data in remote locations, generating embeddings, applying post-transform enrichments, using the latest and 
+  highest-performing models, and for the highest quality results at the lowest cost. [Learn more](/api-reference/partition/overview).
 
-Learn more about these products:
+Here is a screenshot of some Python code that calls the Unstructured Workflow Endpoint:
 
-<Card title="Unstructured Platform" icon="computer" href="/platform/overview">
-  <br/>No-code user interface, pay-as-you-go platform to get all of your data RAG-ready.<br/><br/>
-  Data is processed on Unstructured-hosted compute resources.<br/><br/>
-  [Try the quickstart](#quickstart-unstructured-platform).<br/><br/>
-  [Learn more](/platform/overview).<br/><br/>
-  <Icon icon="blog"/>&nbsp;&nbsp;[Read the announcement](https://unstructured.io/blog/introducing-unstructured-platform-the-enterprise-etl-platform-for-the-genai-tech-stackintroducing-unstructured-platform-beta-the-enterprise-etl-platform-for-the-genai-tech-stack).
-</Card>
-<Card title="Unstructured Serverless API services" icon="square-terminal" href="/api-reference/api-services/overview">
-  <br/>Use scripts or code to call the Unstructured Ingest CLI or Ingest Python library, to get all of your data RAG-ready.<br/><br/>
-  Unstructured Serverless API services have a [Serverless](api-reference/api-services/saas-api-development-guide) pay-as-you-go edition and a [Free](/api-reference/api-services/free-api_) [limited](/api-reference/api-services/free-api#free-unstructured-api-limitations) edition that process data on Unstructured-hosted compute resources.<br/><br/>
-  If you need to use compute resources that you host instead, there are also [Azure](/api-reference/api-services/azure) pay-as-you-go and [AWS](/api-reference/api-services/aws) pay-as-you-go editions; these editions process data by using the Unstructured API installed on compute resources hosted in your own Azure or AWS account.<br/><br/>
-  [Try the quickstart](#quickstart-unstructured-serverless-api).<br/><br/>
-  [Learn more](/api-reference/api-services/overview).<br/><br/>
-  <Icon icon="blog"/>&nbsp;&nbsp;[Read the launch announcement](https://unstructured.io/blog/introducing-unstructured-serverless-api).
-</Card>
+![Python code that calls the Unstructured Workflow Endpoint](/img/ui/Python-Workflow-Code-Partial.png)
+
+<Tip>To start using the Unstructured Workflow Endpoint right away, skip ahead to the [quickstart](#unstructured-workflow-endpoint-quickstart).</Tip>
 
 ---
 
-### <Icon icon="files" />   Supported file types 
+## <Icon icon="files" />   Supported file types 
 
 import SupportedFileTypes from '/snippets/general-shared-text/supported-file-types.mdx';
 
@@ -81,107 +85,30 @@ import SupportedFileTypes from '/snippets/general-shared-text/supported-file-typ
 
 ---
 
-### <Icon icon="computer" />   Quickstart: Unstructured Platform
+## <Icon icon="computer" />   Unstructured UI quickstart
 
-<Info>If you want to use your local machine for either your source (input) files, or the destination (output) location for Unstructured to deliver the processed data, you cannot use this quickstart. You must run code on your local machine instead: skip to the [Quickstart: Unstructured Serverless API](#quickstart-unstructured-serverless-api), later in this article.</Info>
+import SharedPlatformUI from '/snippets/quickstarts/platform.mdx';
 
-import SharedPlatform from '/snippets/quickstarts/platform.mdx';
+<SharedPlatformUI />
 
-<SharedPlatform />
-
-[Learn more about the Unstructured Platform](/platform/overview).
+[Learn more about the Unstructured UI](/ui/overview).
 
 ---
 
 import LocalToLocalPythonIngestLibrary from '/snippets/ingestion/local-to-local.v2.py.mdx';
 import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
 
-### <Icon icon="square-terminal" />   Quickstart: Unstructured Serverless API
+## <Icon icon="square-terminal" />   Unstructured Workflow Endpoint quickstart
 
-This quickstart uses your local machine, with the [Unstructured Ingest Python library](/ingestion/overview#unstructured-ingest-python-library) installed. It preprocesses source (input) files on your local machine, and it uses the Unstructured Serverless API to deliver the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
+import SharedPlatformAPI from '/snippets/quickstarts/platform-api.mdx';
 
-The requirements are as follows.
+<SharedPlatformAPI />
 
-- Python installed on your local machine.
-- Compatible files on your local machine to be processed. [See the list of supported file types](#supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
-
-<Steps>
-    <Step title="Sign up">
-        Sign up for an Unstructured account by going to the [For Developers](https://unstructured.io/developers) page and choosing one of the following plans:
-
-        - Sign up for a [pay-per-page plan](https://unstructured.io/developers#get-started).
-        - Save money by signing up for a [subscribe-and-save plan](https://unstructured.io/subscribeandsave) instead.
-
-        If you're not sure which plan to sign up for, start with a [pay-per-page plan](https://unstructured.io/developers#get-started). You can always switch plans later.
-
-        <Note>
-            By signing up through the [For Developers](https://unstructured.io/developers) page, your Unstructured account will run within the context of the Unstructured Platform on 
-            Unstructured's own hosted cloud resources. 
-            
-            If you choose a pay-per-page plan, after your first 14 days of usage or more than 1000 processed pages per day, 
-            whichever comes first, your account is then billed at Unstructured's standard service usage rates. You must provide 
-            Unstructured with your payment details to keep using the service.
-            
-            To save money by switching from a pay-per-page to a subscribe-and-save plan, go to the 
-            [Unstructured Subscribe & Save](https://unstructured.io/subscribeandsave) page and complete the on-screen instructions.
-            
-            If you would rather use Unstructured within the context of your own virtual private cloud (VPC), 
-            or you want to make a long-term billing commitment in exchange for deeply discounted service usage rates, 
-            stop here and sign up through the [For Enterprise](https://unstructured.io/enterprise) page instead.
-        </Note>
-    </Step>
-    <Step title="Sign in">
-        ![Sign in to your Unstructured account](/img/platform/Signin.png)
-        1. After you have signed up through the [For Developers](https://unstructured.io/developers) page, the Unstructured account sign-in page appears.
-
-           <Note>
-              If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page instead, your sign-in process will 
-              be different. For enterprise sign-in guidance, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
-           </Note>
-
-        2. Click **Google** or **GitHub** to sign in with the Google or GitHub account that you signed up with through the **For Developers** page. 
-           Or, enter the email address that you signed up with, and then click **Sign In**.
-        3. If you entered your email address, check your email inbox for a message from Unstructured. In that email, click the **Sign In** link.
-        4. The first time you sign in, read the terms and conditions, and then click **Accept**.
-    </Step> 
-    <Step title="Get your API key and API URL">
-        ![Unstructured account settings](/img/platform/AccountSettings.png)
-
-        ![Unstructured API key and API URL](/img/platform/APIKeyURL.png)
-        1. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
-        2. Click the **API Keys** tab, if it is not already selected.
-        3. To get your API key, click the copy icon in the **Actions** column for your API key, and then click **Key Only**. Store your copied API key in a secure location. Do not share it with others.
-        4. To get your API URL, click the copy icon next to the URL next to **API URL**. Store your copied API URL in a secure location. Do not share it with others.
-    </Step>
-    <Step title="Set environment variables">
-        1. Set an environment variable named `UNSTRUCTURED_API_KEY` to the value of your Unstructured API key.
-        2. Set another environment variable named `UNSTRUCTURED_API_URL` to the value of your Unstructured API URL.
-    </Step>
-    <Step title="Install the Ingest Python library">
-        Run the following command:
-        ```bash
-        pip install unstructured-ingest
-        ```
-        <AdditionalIngestDependencies />
-    </Step>
-    <Step title="Run the code">
-        Run the following code, replacing:
-
-        - `<path/to/input>` with the source (input) path to the directory on your local machine that contains the compatible files for Unstructured to process on its hosted compute resources.
-        - `<path/to/output>` with the destination (output) path to the directory on your local machine that will contain the processed data that Unstructured returns from its hosted compute resources.
-
-        <LocalToLocalPythonIngestLibrary />
-    </Step>
-    <Step title="View the processed data">
-        Go to your destination location to view the processed data.
-    </Step>
-</Steps>
-
-[Learn more about the Unstructured Serverless API](/api-reference/api-services/overview).
+[Learn more about the Unstructured API](/api-reference/overview).
 
 ---
 
-## Get in touch
+## <Icon icon="question" />    Get in touch
 
 If you can't find the information you're looking for in the documentation, or if you need help,
 [contact us directly](https://unstructured.io/contact), 

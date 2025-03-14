@@ -1,0 +1,29 @@
+---
+title: Airtable
+---
+
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentAirtable from '/snippets/sc-shared-text/airtable-cli-api.mdx';
+
+<SharedContentAirtable/>
+
+Now call the Unstructured CLI or Python. The destination connector can be any of the ones supported. This example uses the local destination connector.
+
+This example sends data to Unstructured for processing by default. To process data locally instead, see the instructions at the end of this page.
+
+import AirtableSh from '/snippets/source_connectors/airtable.sh.mdx';
+import AirtablePyV2 from '/snippets/source_connectors/airtable.v2.py.mdx';
+import AirtablePyV1 from '/snippets/source_connectors/airtable.v1.py.mdx';
+
+<CodeGroup>
+  <AirtableSh />
+  <AirtablePyV2 />
+  <AirtablePyV1 />
+</CodeGroup>
+
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>

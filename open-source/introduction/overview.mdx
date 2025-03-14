@@ -3,7 +3,7 @@ title: Unstructured Open Source
 sidebarTitle: Overview
 ---
 
-<Note>The `unstructured` open source library is designed as a starting point for quick prototyping and has [limits](#limits). For production scenarios, see [Unstructured API services](/api-reference/api-services/overview) and [Unstructured Platform](/platform/overview).</Note>
+<Note>The `unstructured` open source library is designed as a starting point for quick prototyping and has [limits](#limits). For production scenarios, see the [Unstructured API](/api-reference/overview) instead.</Note>
 
 The `unstructured` [library](https://github.com/Unstructured-IO/unstructured) offers an open-source toolkit
 designed to simplify the ingestion and pre-processing of diverse data formats, including images and text-based documents
@@ -30,7 +30,7 @@ and use cases.
         
     *   [Chunking](/open-source/core-functionality/chunking): The chunking process in Unstructured is distinct from conventional methods. Instead of relying solely on text-based features to form chunks, Unstructured uses a deep understanding of document formats to partition documents into semantic units (document elements).
                 
-*   **High-performant Connectors**: The platform includes optimized connectors for efficient data ingestion and output. These comprise [Source Connectors](../ingest/source-connectors/overview) for data input and [Destination Connectors](../ingest/destination-connectors/overview) for data export.
+*   **High-performant Connectors**: The platform includes optimized connectors for efficient data ingestion and output. These comprise [Source Connectors](/ingestion/source-connectors/overview) for data input and [Destination Connectors](/ingestion/destination-connectors/overview) for data export.
     
 
 ## Common use cases
@@ -44,7 +44,7 @@ and use cases.
 
 ## Limits
 
-The open source library has the following limits as compared to [Unstructured API services](/api-reference/api-services/overview) and the [Unstructured Platform](/platform/overview):
+The open source library has the following limits as compared to the [Unstructured UI](/ui/overview) and the [Unstructured API](/api-reference/overview): 
 
 * Not designed for production scenarios.
 * Significantly decreased performance on document and table extraction.
@@ -62,7 +62,7 @@ The open source library has the following limits as compared to [Unstructured AP
 
 ## Telemetry
 
-The open source library allows you to make calls to Unstructured Serverless API services. If you do plan to make such calls, please note:
+The open source library allows you to make calls to the Unstructured Partition Endpoint. If you do plan to make such calls, please note:
 
 import SharedTelemetry from '/snippets/general-shared-text/telemetry.mdx';
 

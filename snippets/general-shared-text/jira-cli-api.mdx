@@ -1,0 +1,38 @@
+The Jira connector dependencies:
+
+  ```bash CLI, Python
+  pip install "unstructured-ingest[jira]"
+  ```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `JIRA_URL` - The site URL for your Jira Data Center installation or Jira Cloud account, represented by `--url` (CLI) or `url` (Python).
+- One of the following:
+
+  - For Jira Cloud or Jira Data Center, the target user's name or email address, and password, as follows:
+
+    - `JIRA_USERNAME` - The name or email address of the target user, represented by `--username` (CLI) or `username` (Python).
+    - `JIRA_PASSWORD_OR_API_TOKEN` - The user's password, represented by `--password` (CLI) or `password` (Python).
+
+  - For Jira Cloud only, the target user's name or email address, and API token, as follows:
+
+    - `JIRA_USERNAME` - The name or email address of the target user, represented by `--username` (CLI) or `username` (Python).
+    - `JIRA_PASSWORD_OR_API_TOKEN` - The user's API token, represented by `--password` (CLI) or `password` (Python).
+
+  - For Jira Data Center only, the target user's personal access token (PAT), as follows:
+
+    - `JIRA_PERSONAL_ACCESS_TOKEN` - The user's personal access token (PAT), represented by `--token` (CLI) or `token` (Python).
+
+Also:
+
+- For Jira Cloud, you must specify `--cloud` (CLI) or set `cloud` to `True` (Python).
+- For Jira Data Center, you can specify `--no-cloud` (CLI) or set `cloud` to `False` (Python). This is the default if not otherwise specified.
+- To process specific projects, boards, or issues, use:
+
+  - `--projects` with a comma-delimited list of target project IDs (CLI) or `project` with an array of target project IDs (Python).
+  - `--boards` with a comma-delmited list of target board IDs (CLI) or `boards` with an array of target board IDs (Python).
+  - `--issues` with a comma-delimited list of target issue IDs (CLI) or `issues` with an array of target issue IDs (Python).

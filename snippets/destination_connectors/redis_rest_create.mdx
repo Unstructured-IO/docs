@@ -1,0 +1,26 @@
+```bash curl
+curl --request 'POST' --location \
+"$UNSTRUCTURED_API_URL/destinations" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header 'content-type: application/json' \
+--data \
+'{
+    "name": "<name>",
+    "type": "redis",
+    "config": {
+        "database": <database>,
+        "ssl": <true|false>,
+        "batch_size": <batch-size>,
+
+        # For URI authentication:
+        "uri": "<uri>"
+      
+        # For password authentication:
+        "host": "<host>",
+        "port": <port>,
+        "username": "<username>",
+        "password": "<password>"   
+    }
+}'
+```

@@ -1,13 +1,22 @@
-```bash Shell
+```bash CLI
 #!/usr/bin/env bash
+
+# Chunking and embedding are optional.
 
 unstructured-ingest \
   jira \
-  --metadata-exclude filename,file_directory,metadata.data_source.date_processed \
-  --url https://unstructured-jira-connector-test.atlassian.net \
-  --user-email 12345678@unstructured.io \
-  --api-token ABCDE1234ABDE1234ABCDE1234 \
-  --output-dir $LOCAL_FILE_OUTPUT_DIR \
-  --num-processes 2 \
-  --strategy hi_res
+    --url $JIRA_URL \
+    --username $JIRA_USERNAME \
+    --password $JIRA_PASSWORD_OR_API_TOKEN \ # Password or API token authentication.
+    --token $JIRA_PERSONAL_ACCESS_TOKEN \ # Personal access token authentication only.
+    --cloud \ # True for Jira Cloud.
+    --no-cloud \ # For Jira Data Center (default).
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --chunking-strategy by_title \
+    --embedding-provider huggingface \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --strategy hi_res \
+    --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}"
 ```

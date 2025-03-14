@@ -8,12 +8,12 @@ For the Unstructured Ingest CLI and the Unstructured Ingest Python library, you 
   - `--partition-endpoint $UNSTRUCTURED_API_URL` (CLI) or `partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")` (Python)
   - The environment variables `UNSTRUCTURED_API_KEY` and `UNSTRUCTURED_API_URL`
 
-- To send files to [Unstructured API services](/api-reference/api-services/overview) for processing, specify `--partition-by-api` (CLI) or `partition_by_api=True` (Python). 
+- To send files to the [Unstructured Partition Endpoint](/api-reference/partition/overview) for processing, specify `--partition-by-api` (CLI) or `partition_by_api=True` (Python). 
 
-  Unstructured API services also requires an Unstructured API key and API URL, by adding the following:
+  Unstructured also requires an Unstructured API key and API URL, by adding the following:
 
   - `--api-key $UNSTRUCTURED_API_KEY` (CLI) or `api_key=os.getenv("UNSTRUCTURED_API_KEY")` (Python)
   - `--partition-endpoint $UNSTRUCTURED_API_URL` (CLI) or `partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")` (Python)
   - The environment variables `UNSTRUCTURED_API_KEY` and `UNSTRUCTURED_API_URL`, representing your API key and API URL, respectively.
 
-  [Get an API key and API URL](/api-reference/api-services/saas-api-development-guide#get-started).
+  [Get an API key and API URL](/api-reference/partition/overview).

@@ -1,0 +1,71 @@
+---
+title: Tables to HTML
+---
+
+After partitioning and chunking, you can have Unstructured generate representations of each detected table in HTML markup format.
+
+This table-to-HTML output is done by using [GPT-4o](https://openai.com/index/hello-gpt-4o/), provided through OpenAI.
+
+Here is an example of the HTML markup output of a detected table using GPT-4o. Note specifically the `text_as_html` field that is added.
+Line breaks have been inserted here for readability. The output will not contain these line breaks.
+
+```json
+{
+    "type": "Table",
+    "element_id": "31aa654088742f1388d46ea9c8878272",
+    "text": "Inhibitor Polarization Corrosion be (V/dec) ba (V/dec) Ecorr (V) icorr 
+        (AJcm?) concentration (g) resistance (Q) rate (mmj/year) 0.0335 0.0409 
+        \u20140.9393 0.0003 24.0910 2.8163 1.9460 0.0596 .8276 0.0002 121.440 
+        1.5054 0.0163 0.2369 .8825 0.0001 42121 0.9476 s NO 03233 0.0540 
+        \u20140.8027 5.39E-05 373.180 0.4318 0.1240 0.0556 .5896 5.46E-05 
+        305.650 0.3772 = 5 0.0382 0.0086 .5356 1.24E-05 246.080 0.0919",
+    "metadata": {
+        "text_as_html": "```html\n
+            <table>\n
+                <tr>\n<th>Inhibitor concentration (g)</th>\n
+                    <th>bc (V/dec)</th>\n<th>ba (V/dec)</th>\n<th>Ecorr (V)</th>\n
+                    <th>icorr (A/cm\u00b2)</th>\n<th>Polarization resistance (\u03a9)</th>\n
+                    <th>Corrosion rate (mm/year)</th>\n
+                </tr>\n  
+                <tr>\n
+                    <td>0</td>\n<td>0.0335</td>\n<td>0.0409</td>\n<td>\u22120.9393</td>\n
+                    <td>0.0003</td>\n<td>24.0910</td>\n<td>2.8163</td>\n  
+                </tr>\n
+                <tr>\n   
+                    <td>2</td>\n<td>1.9460</td>\n<td>0.0596</td>\n<td>\u22120.8276</td>\n<td>0.0002</td>\n<td>121.440</td>\n<td>1.5054</td>\n  
+                </tr>\n
+                <tr>\n
+                    <td>4</td>\n<td>0.0163</td>\n<td>0.2369</td>\n<td>\u22120.8825</td>\n<td>0.0001</td>\n<td>42.121</td>\n<td>0.9476</td>\n  
+                </tr>\n  
+                <tr>\n
+                    <td>6</td>\n<td>0.3233</td>\n<td>0.0540</td>\n<td>\u22120.8027</td>\n<td>5.39E-05</td>\n<td>373.180</td>\n<td>0.4318</td>\n  
+                </tr>\n  
+                <tr>\n
+                    <td>8</td>\n<td>0.1240</td>\n<td>0.0556</td>\n<td>\u22120.5896</td>\n<td>5.46E-05</td>\n<td>305.650</td>\n<td>0.3772</td>\n  
+                </tr>\n  
+                <tr>\n
+                    <td>10</td>\n<td>0.0382</td>\n<td>0.0086</td>\n<td>\u22120.5356</td>\n<td>1.24E-05</td>\n<td>246.080</td>\n<td>0.0919</td>\n
+                </tr>\n
+            </table>\n```",
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 1,
+        "image_base64": "/9j...<full results omitted for brevity>...//Z",
+        "image_mime_type": "image/jpeg",
+        "filename": "embedded-images-tables.pdf",
+        "data_source": {}
+    }
+}
+```
+
+## Generate table-to-HTML output
+
+To generate table-to-HTML output, in the **Task** drop-down list of an **Enrichment** node in a workflow, select **Table to HTML**.
+
+<Note>
+    You can change a workflow's table description settings only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.
+    
+    Table-to-HTML output is generated only when the **Partitioner** node in a workflow is set to use the **High Res** partitioning strategy. [Learn more](/ui/partitioning).
+</Note>

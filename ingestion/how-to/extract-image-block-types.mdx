@@ -1,0 +1,29 @@
+---
+title: Extract images and tables from documents
+---
+
+## Task
+
+You want to get, decode, and show elements, such as images and tables, that are embedded in a PDF document.
+
+## Approach
+
+Extract the Base64-encoded representation of specific elements, such as images and tables, in the document. 
+For each of these extracted elements, decode the Base64-encoded representation of the element into its original visual representation 
+and then show it.
+
+## To run this example
+
+You will need a document that is one of the document types supported by the `extract_image_block_types` argument. 
+See the `extract_image_block_types` entry in [API Parameters](/api-reference/partition/api-parameters). 
+This example uses a PDF file with embedded images and tables.
+
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+import ExtractImageBlockTypesIngestPy from '/snippets/how-to-api/extract_image_block_types_ingest.py.mdx';
+
+## Code
+
+For the [Unstructured Ingest Python library](/ingestion/python-ingest), you can use the standard Python 
+[json.load](https://docs.python.org/3/library/json.html#json.load) function to load into a Python dictionary the contents of a JSON 
+file that the Ingest Python library outputs after the processing is complete.
+<ExtractImageBlockTypesIngestPy />

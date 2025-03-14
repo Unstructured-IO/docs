@@ -5,7 +5,7 @@ A common chunking configuration is a critical element in the data processing pip
 
 *   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`chunk_api_key`: If `chunk_by_api` is set to `True`, requests that are sent to the Unstructured API will use this Unstructured API key to make authenticated calls.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`chunk_by_api`: Default: `False`. If set to `True`, uses Unstructured API services to run chunking. If set to `False`, runs chunking locally.
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`chunk_by_api`: Default: `False`. If set to `True`, uses Unstructured to run chunking. If set to `False`, runs chunking locally.
 
 *   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`chunk_combine_text_under_n_chars`: Combine consecutive chunks when the first does not exceed length `n` and the second will fit without exceeding the hard-maximum length. Only operative for the `by_title` chunking strategy.
 
@@ -23,7 +23,7 @@ A common chunking configuration is a critical element in the data processing pip
 
 *   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`chunk_overlap_all`: Applies overlap to chunks formed from whole elements as well as those formed by text-splitting oversized elements. The overlap length is taken from the `chunk_overlap` value.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`chunking_endpoint`: If `chunk_by_api` is set to `True`, chunking requests are sent to this Unstructured API URL. By default, this URL is the Unstructured Serverless API URL: `https://api.unstructuredapp.io/general/v0/general`.
+*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`chunking_endpoint`: If `chunk_by_api` is set to `True`, chunking requests are sent to this Unstructured API URL. By default, this URL is the Unstructured Partition Endpoint URL: `https://api.unstructuredapp.io/general/v0/general`.
 
 *   <Icon icon="v"/><Icon icon="2"/>&nbsp;,<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`chunking_strategy`: One of `basic` or `by_title`. When omitted, no chunking is performed. The `basic` strategy maximally fills each chunk with whole elements, up the specified size limits as specified by `max_characters` and `new_after_n_chars`. A single element that exceeds this length is divided into two or more chunks using text-splitting. A `Table` element is never combined with any other element and appears as a chunk of its own or as a sequence of `TableChunk` elements splitting is required. The `by_title` behaviors are the same except that section and optionally page boundaries are respected such that two consecutive elements from different sections appear in separate chunks.
 

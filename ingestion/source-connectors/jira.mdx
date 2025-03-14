@@ -1,0 +1,29 @@
+---
+title: Jira
+---
+
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentJira from '/snippets/sc-shared-text/jira-cli-api.mdx';
+
+<SharedContentJira/>
+
+Now call the Unstructured CLI or Python. The destination connector can be any of the ones supported. This example uses the local destination connector.
+
+This example sends data to Unstructured for processing by default. To process data locally instead, see the instructions at the end of this page.
+
+import JiraSh from '/snippets/source_connectors/jira.sh.mdx';
+import JiraPyV2 from '/snippets/source_connectors/jira.v2.py.mdx';
+import JiraPyV1 from '/snippets/source_connectors/jira.v1.py.mdx';
+
+<CodeGroup>
+  <JiraSh />
+  <JiraPyV2 />
+  <JiraPyV1 />
+</CodeGroup>
+
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>

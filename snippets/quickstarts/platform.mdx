@@ -2,14 +2,14 @@ This quickstart uses a no-code, point-and-click user interface in your web brows
 
 The requirements are as follows.
 
-- A compatible source (input) location that contains your data for Unstructured to process. [See the list of supported source types](/platform/connectors#sources).
-- For document-based source locations, compatible files in that location. [See the list of supported file types](/platform/supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
-- A compatible destination (output) location for Unstructured to put the processed data. [See the list of supported destination types](/platform/connectors#destinations).
+- A compatible source (input) location that contains your data for Unstructured to process. [See the list of supported source types](/ui/connectors#sources).
+- For document-based source locations, compatible files in that location. [See the list of supported file types](/ui/supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+- A compatible destination (output) location for Unstructured to put the processed data. [See the list of supported destination types](/ui/connectors#destinations).
 
 <iframe
 width="560"
 height="315"
-src="https://www.youtube.com/embed/25u3qJ_7WiA"
+src="https://www.youtube.com/embed/Wn2FfHT6H-o"
 title="YouTube video player"
 frameborder="0"
 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -18,7 +18,7 @@ allowfullscreen
 
 <Steps>
     <Step title="Sign up">
-        To sign up for the Unstructured Platform, go to the [For Developers](https://unstructured.io/developers) page and choose one of the following plans:
+        To sign up for Unstructured, go to the [For Developers](https://unstructured.io/developers) page and choose one of the following plans:
 
         - Sign up for a [pay-per-page plan](https://unstructured.io/developers#get-started).
         - Save money by signing up for a [subscribe-and-save plan](https://unstructured.io/subscribeandsave) instead.
@@ -29,15 +29,15 @@ allowfullscreen
             If you choose a pay-per-page plan, after your first 14 days of usage or more than 1000 processed pages per day, 
             whichever comes first, your account is then billed at Unstructured's standard service usage rates. To keep using the service, 
             you must 
-            [provide Unstructured with your payment details](/platform/billing#add-view-or-change-pay-per-page-payment-details).
+            [provide Unstructured with your payment details](/ui/billing#add-view-or-change-pay-per-page-payment-details).
             
             To save money by switching from a pay-per-page to a subscribe-and-save plan, go to the 
             [Unstructured Subscribe & Save](https://unstructured.io/subscribeandsave) page and complete the on-screen instructions. 
             To save even more money by making a long-term billing commitment, 
             stop here and sign up through the [For Enterprise](https://unstructured.io/enterprise) page instead.
             
-            By signing up for a pay-per-page or subscribe-and-save plan, your Unstructured account will run within the context of the Unstructured Platform on 
-            Unstructured's own hosted cloud resources. If you would rather run the Unstructured Platform within the context of your own virtual private cloud (VPC), 
+            By signing up for a pay-per-page or subscribe-and-save plan, your Unstructured account will run within the context of Unstructured on 
+            Unstructured's own hosted cloud resources. If you would rather run Unstructured within the context of your own virtual private cloud (VPC), 
             stop here and sign up through the [For Enterprise](https://unstructured.io/enterprise) page instead.
         </Note>
     </Step>
@@ -50,9 +50,9 @@ allowfullscreen
             be different. For enterprise sign-in guidance, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
         </Note>
 
-        1. After you have signed up for a pay-per-page plan, the Unstructured Platform sign-in page appears.
+        1. After you have signed up for a pay-per-page plan, the Unstructured account sign-in page appears.
 
-           ![Sign in to your Unstructured account](/img/platform/Signin.png)
+           ![Sign in to your Unstructured account](/img/ui/Signin.png)
         
         2. Click **Google** or **GitHub** to sign in with the Google or GitHub account that you signed up with. 
            Or, enter the email address that you signed up with, and then click **Sign In**.
@@ -67,36 +67,36 @@ allowfullscreen
         </Tip>
     </Step>
     <Step title="Set the source (input) location">
-        ![Sources in the sidebar](/img/platform/Sources-Sidebar.png)
-        1. From your Unstructured Platform dashboard, in the sidebar, click **Connectors**.
+        ![Sources in the sidebar](/img/ui/Sources-Sidebar.png)
+        1. From your Unstructured  dashboard, in the sidebar, click **Connectors**.
         2. Click **Sources**.
         3. Cick **New** or **Create Connector**.
         4. For **Name**, enter some unique name for this connector.
         5. In the **Provider** area, click the source location type that matches yours.
         6. Click **Continue**.
-        7. Fill in the fields with the appropriate settings. [Learn more](/platform/sources/overview).
+        7. Fill in the fields with the appropriate settings. [Learn more](/ui/sources/overview).
         8. If a **Continue** button appears, click it, and fill in any additional settings fields.
         9. Click **Save and Test**. 
     </Step>
     <Step title="Set the destination (output) location">
-        ![Destinations in the sidebar](/img/platform/Destinations-Sidebar.png)
+        ![Destinations in the sidebar](/img/ui/Destinations-Sidebar.png)
         1. In the sidebar, click **Connectors**.
         2. Click **Destinations**.
         3. Cick **New** or **Create Connector**.
         4. For **Name**, enter some unique name for this connector.
         5. In the **Provider** area, click the destination location type that matches yours.
         6. Click **Continue**.
-        7. Fill in the fields with the appropriate settings. [Learn more](/platform/sources/overview).
+        7. Fill in the fields with the appropriate settings. [Learn more](/ui/sources/overview).
         8. If a **Continue** button appears, click it, and fill in any additional settings fields.
         9. Click **Save and Test**. 
     </Step>
     <Step title="Define the workflow">
-        ![Workflows in the sidebar](/img/platform/Workflows-Sidebar.png)
+        ![Workflows in the sidebar](/img/ui/Workflows-Sidebar.png)
         1. In the sidebar, click **Workflows**.
         2. Click **New Workflow**.
-        3. Next to **Build it with Me**, click **Create Workflow**.
+        3. Next to **Build it for Me**, click **Create Workflow**.
 
-           <Note>If a radio button appears instead of **Build it with Me**, select it, and then click **Continue**.</Note>
+           <Note>If a radio button appears instead of **Build it for Me**, select it, and then click **Continue**.</Note>
 
         4. For **Workflow Name**, enter some unique name for this workflow.
         5. In the **Sources** dropdown list, select your source location from Step 3.
@@ -105,35 +105,23 @@ allowfullscreen
            <Note>You can select multiple source and destination locations. Files will be ingested from all of the selected source locations, and the processed data will be delivered to all of the selected destination locations.</Note>
 
         7. Click **Continue**.
-        8. In the **Optimize for** section, select the option to choose one of these preconfigured workflow settings groups:
-
-            - **Basic**: Ideal for simple, text-only documents.
-            - **Advanced**: Best for PDFs, images, and complex file types.
-            - **Platinum**: For your most challenging documents, including scanned and handwritten content. It uses vision language models (VLMs). 
-              During processing, files that are not PDFs or images are processed by using the **Advanced** strategy and are charged at the **Advanced** rate instead.
-
-              <Note>
-                When you use the **Platinum** strategy for PDF files of 200 or more pages, you might notice some errors when 
-                these files are processed. These errors typically occur when these larger PDF files have lots of tables and high-resolution images.
-              </Note>
-
-        9. The **Reprocess All** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
+        8. The **Reprocess All** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
 
            - Checking this box reprocesses all documents in the source location on every workflow run.
            - Unchecking this box causes new documents that have been added to the source location, as well as existing documents in the source location that have had their contents or titles changed, since the last workflow run to be processed on future runs. Other previously processed documents are not processed again.
-
-        10. Click **Continue**.
-        11. If you want this workflow to run on a schedule, in the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
-        12. Click **Complete**.
+       
+        9. Click **Continue**.
+        10. If you want this workflow to run on a schedule, in the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
+        11. Click **Complete**.
     </Step>
     <Step title="Process the documents">
-        ![Workflows in the sidebar](/img/platform/Workflows-Sidebar.png)
+        ![Workflows in the sidebar](/img/ui/Workflows-Sidebar.png)
         1. If you did not choose to run this workflow on a schedule in Step 5, you can run the workflow now: on the sidebar, click **Workflows**.
         2. Next to your workflow from Step 5, click **Run**.
     </Step>
     <Step title="Monitor the processing job">
-        ![Select a job](/img/platform/Select-Job.png)
-        ![Completed job](/img/platform/Job-Complete.png)
+        ![Select a job](/img/ui/Select-Job.png)
+        ![Completed job](/img/ui/Job-Complete.png)
         1. In the sidebar, click **Jobs**.
         2. In the list of jobs, wait for the job's **Status** to change to **Finished**.
         3. Click the row for the job.

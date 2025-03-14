@@ -1,0 +1,18 @@
+
+For certain document types, such as images and PDFs, for example, Unstructured products offer a variety of different
+ways to preprocess them, controlled by the `strategy` parameter.
+
+PDF documents, for example, vary in quality and complexity. In simple cases, traditional NLP extraction techniques may
+be enough to extract all the text out of a document. In other cases, advanced image-to-text models are required
+to process a PDF. You can think of the strategies as being "rule-based" workflows (thus they are "fast"), or
+"model-based" workflows (slower workflow because it requires model inference, but you get "higher resolution", thus "hi_res").
+When choosing a partitioning strategy for your files, you have to be mindful of the quality/speed trade-off.
+To give you an example, the `fast` strategy is roughly 100x faster than leading image-to-text models.
+
+**Available options:**
+
+*   `auto` (default strategy): The "auto" strategy will choose the partitioning strategy based on document characteristics and the function kwargs.
+*   `fast`:  The "rule-based" strategy leverages traditional NLP extraction techniques to quickly pull all the text elements. "Fast" strategy is not recommended for image-based file types.
+*   `hi_res`: The "model-based" strategy identifies the layout of the document. The advantage of "hi_res" is that it uses the document layout to gain additional information about document elements. We recommend using this strategy if your use case is highly sensitive to correct classifications for document elements.
+*   `ocr_only`: Another "model-based" strategy that leverages Optical Character Recognition to extract text from the image-based files.
+*   `vlm`: Uses a vision language model (VLM) to extract text from these file types: `.bmp`, `.gif`, `.heic`, `.jpeg`, `.jpg`, `.pdf`, `.png`, `.tiff`, and `.webp`.

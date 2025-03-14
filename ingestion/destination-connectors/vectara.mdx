@@ -1,0 +1,29 @@
+---
+title: Vectara
+---
+
+<NewDocument />
+
+import SharedContentVectara from '/snippets/dc-shared-text/vectara-cli-api.mdx';
+
+<SharedContentVectara/>
+
+Now call the Unstructured CLI or Python SDK. The source connector can be any of the ones supported.
+
+This example uses the local source connector.
+
+This example sends files to Unstructured for processing by default. To process files locally instead, see the instructions at the end of this page.
+
+import VectaraAPISh from '/snippets/destination_connectors/vectara.sh.mdx';
+import VectaraAPIPyV2 from '/snippets/destination_connectors/vectara.v2.py.mdx';
+import VectaraAPIPyV1 from '/snippets/destination_connectors/vectara.v1.py.mdx';
+
+<CodeGroup>
+  <VectaraAPISh />
+  <VectaraAPIPyV2 />
+  <VectaraAPIPyV1 />
+</CodeGroup>
+
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>

@@ -1,0 +1,38 @@
+---
+title: Delta Tables in Amazon S3
+---
+
+<Tip>
+    This article covers connecting Unstructured to Delta Tables in Amazon S3. For information about 
+    connecting Unstructured to Delta Tables in Databricks instead, see 
+    [Delta Tables in Databricks](/api-reference/workflow/destinations/databricks-delta-table).
+</Tip>
+
+import FirstTimeAPIDestinationConnector from '/snippets/general-shared-text/first-time-api-destination-connector.mdx';
+
+<FirstTimeAPIDestinationConnector />
+
+Send processed data from Unstructured to a Delta Table, stored in Amazon S3.
+
+The requirements are as follows.
+
+import DeltaTablePrerequisites from '/snippets/general-shared-text/delta-table.mdx';
+
+<DeltaTablePrerequisites />
+
+To create a Delta Tables in Amazon S3 destination connector, see the following examples.
+
+import DeltaTableSDK from '/snippets/destination_connectors/delta_table_sdk.mdx';
+import DeltaTableAPIRESTCreate from '/snippets/destination_connectors/delta_table_rest_create.mdx';
+
+<CodeGroup>
+    <DeltaTableSDK />
+    <DeltaTableAPIRESTCreate />
+</CodeGroup>
+
+Replace the preceding placeholders as follows:
+
+import DeltaTableAPIPlaceholders from '/snippets/general-shared-text/delta-table-api-placeholders.mdx';
+
+<DeltaTableAPIPlaceholders />
+

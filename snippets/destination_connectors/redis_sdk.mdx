@@ -1,0 +1,37 @@
+```python Python SDK
+import os
+
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import CreateDestinationRequest
+from unstructured_client.models.shared import (
+    CreateDestinationConnector,
+    DestinationConnectorType,
+    RedisDestinationConnectorConfigInput
+)
+
+with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+    response = client.destinations.create_destination(
+        request=CreateDestinationRequest(
+            create_destination_connector=CreateDestinationConnector(
+                name="<name>",
+                type=DestinationConnectorType.REDIS,
+                config=RedisDestinationConnectorConfigInput(
+                    database="<database>",
+                    ssl=<True|False>,
+                    batch_size=<batch-size>,
+
+                    # For URI authentication:
+                    uri="<uri>"
+                
+                    # For password authentication:
+                    host="<host>",
+                    port=<port>,
+                    username="<username>",
+                    password="<password>"   
+                )
+            )
+        )
+    )
+
+    print(response.destination_connector_information)
+```

@@ -1,3 +1,13 @@
+<iframe
+width="560"
+height="315"
+src="https://www.youtube.com/embed/tj_0qmvPpJQ"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
+
 - A [MotherDuck account](https://app.motherduck.com).
 - A [MotherDuck access token](https://motherduck.com/docs/key-tasks/authenticating-and-connecting-to-motherduck/authenticating-to-motherduck/#creating-an-access-token) for the account.
 - A database in the account. 
@@ -74,7 +84,8 @@
       emphasized_text_tags VARCHAR[],
       text_as_html TEXT,
       regex_metadata TEXT,
-      detection_class_prob DECIMAL
+      detection_class_prob DECIMAL,
+      partitioner_type VARCHAR
   );
   ```
 

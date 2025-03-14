@@ -1,0 +1,168 @@
+---
+title: Overview
+---
+
+The Unstructured Partition Endpoint, part of the [Unstructured API](/api-reference/overview), is intended for rapid prototyping of Unstructured's 
+various partitioning strategies, with limited support for chunking. It is designed to work only with processing of local files, one file 
+at a time. Use the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) for production-level scenarios, file processing in 
+batches, files and data in remote locations, generating embeddings, applying post-transform enrichments, using the latest and 
+highest-performing models, and for the highest quality results at the lowest cost.
+
+## Get started
+
+To call the Unstructured Partition Endpoint, you need an Unstructured account and an Unstructured API key:
+
+<Steps>
+    <Step title="Sign up">
+        To sign up for an Unstructured account, go to the [For Developers](https://unstructured.io/developers) page and choose one of the following plans:
+
+        - Sign up for a [pay-per-page plan](https://unstructured.io/developers#get-started).
+        - Save money by signing up for a [subscribe-and-save plan](https://unstructured.io/subscribeandsave) instead.
+
+        If you're not sure which plan to sign up for, start with a [pay-per-page plan](https://unstructured.io/developers#get-started). You can always switch plans later.
+
+        <Note>
+            If you choose a pay-per-page plan, after your first 14 days of usage or more than 1000 processed pages per day, 
+            whichever comes first, your account is then billed at Unstructured's standard service usage rates. To keep using the service, 
+            you must provide Unstructured with your payment details.
+            
+            To save money by switching from a pay-per-page to a subscribe-and-save plan, go to the 
+            [Unstructured Subscribe & Save](https://unstructured.io/subscribeandsave) page and complete the on-screen instructions.
+            
+            By signing up for a pay-per-page or subscribe-and-save plan, your Unstructured account will run within the context of the Unstructured API on 
+            Unstructured's own hosted cloud resources. If you would rather run the Unstructured API within the context of your own virtual private cloud (VPC), 
+            (or you want to save even more money by making a long-term billing commitment), 
+            stop here and sign up through the [For Enterprise](https://unstructured.io/enterprise) page instead.
+        </Note>
+    </Step>
+    <Step title="Sign in">
+        <Note>
+            If you initially signed up for a subscribe-and-save plan instead of a pay-per-page plan, wait to complete this step until after you receive confirmation from Unstructured that your 
+            plan is activated. Then go to the Unstructured home page at [https://unstructured.io](https://unstructured.io) and click **Login**.
+
+            If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page instead, your sign-in process will 
+            be different. For enterprise sign-in guidance, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+        </Note>
+
+        1. After you have signed up for a pay-per-page plan, the Unstructured account sign-in page appears.
+
+           ![Sign in to your Unstructured account](/img/ui/Signin.png)
+        
+        2. Click **Google** or **GitHub** to sign in with the Google or GitHub account that you signed up with. 
+           Or, enter the email address that you signed up with, and then click **Sign In**.
+        3. If you entered your email address, check your email inbox for a message from Unstructured. In that email, click the **Sign In** link.
+        4. The first time you sign in, read the terms and conditions, and then click **Accept**.
+
+        <Tip>
+            After you have signed in for the first time, you can 
+            sign in the second time and beyond by going to the Unstructured home page at [https://unstructured.io](https://unstructured.io) and clicking **Login**.
+        
+            For enterprise sign-in guidance, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+        </Tip>
+
+    </Step> 
+    <Step title="Get your API key">
+
+        <img src="https://unstructured-tech-docs.s3.amazonaws.com/Unstructured-Platform-APIKeyURL.gif" alt="Unstructured API key how-to" width="500" />
+
+        ![Unstructured account settings](/img/ui/AccountSettings.png)
+
+        ![Unstructured API key](/img/ui/APIKeyOnly.png)
+
+        1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+        2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
+        3. On the **API Keys** tab, click **Generate New Key**.
+        4. Enter some descriptive name for the API key, and then click **Save**.
+        5. Click the **Copy** icon for your new API key. The API key's value is copied to your system's clipboard.
+    </Step>
+</Steps>
+
+[Try the quickstart](#quickstart).
+
+## Set up billing
+
+If you signed up for a pay-per-page plan, you can enjoy a free 14-day trial with usage capped at 1000 pages per day.
+
+<Note>
+    If you initially signed up for a subscribe-and-save plan instead, of if you signed up through the [For Enterprise](https://unstructured.io/enterprise) page instead, your billing setup and terms will 
+    be different. For billing guidance, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+</Note>
+
+At the end of the 14-day free trial, or if you need to go past the trial's page processing limits during the 14-day free trial, you must set up your billing information to keep using
+the Unstructured Partition Endpoint:
+
+![Unstructured account settings](/img/ui/AccountSettings.png)
+
+![Unstructured account payment method](/img/ui/AccountBillingPaymentMethod.png)
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
+3. Click the **Billing** tab.
+4. Click **Manage Payment Method**, follow the on-screen instructions to enter or update your payment details, and then click **Save card**.
+
+Your card is billed monthly based on your usage. The **Billing** page shows a billing overview for the current month and a list of your billing invoices.
+
+<Tip>
+    You can save money by switching from a pay-per-page plan to a subscribe-and-save plan. To do this, 
+    go to the [Unstructured Subscribe & Save](https://unstructured.io/subscribeandsave) page and complete the on-screen instructions.
+</Tip>
+
+import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx';
+
+<SharedPagesBilling />
+
+## Quickstart
+
+This example uses the [curl](https://curl.se/) utility on your local machine to call the Unstructured Partition Endpoint. It sends a source (input) file from your local machine to the Unstructured Partition Endpoint which then delivers the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
+
+If you do not have a source file readily available, you could use for example a sample PDF file containing the text of the United States Constitution, 
+available for download from [https://constitutioncenter.org/media/files/constitution.pdf](https://constitutioncenter.org/media/files/constitution.pdf).
+
+<Steps>
+    <Step title="Set environment variables">
+        From your terminal or Command Prompt, set the following two environment variables. 
+        
+        - Replace `<your-unstructured-api-url>` with the Unstructured Partition Endpoint URL, which is `https://api.unstructuredapp.io/general/v0/general`
+        - Replace `<your-unstructured-api-key>` with your Unstructured API key, which you generated earlier on this page.
+
+        ```bash
+        export UNSTRUCTURED_API_URL=<your-unstructured-api-url>
+        export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
+        ```
+    </Step>
+    <Step title="Run the curl command">
+        Run the following `curl` command, replacing `<path/to/file>` with the path to the source file on your local machine.
+
+        If the source file is not a PDF file, then remove `;type=application/pdf` from the final `--form` option in this command.
+
+        ```bash
+        curl --request 'POST' \
+        "$UNSTRUCTURED_API_URL" \
+        --header 'accept: application/json' \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header 'content-Type: multipart/form-data' \
+        --form 'content_type=string' \
+        --form 'strategy=vlm' \
+        --form 'vlm_model_provider=openai' \
+        --form 'vlm_model=gpt-4o' \
+        --form 'output_format=application/json' \
+        --form 'files=@<path/to/file>;type=application/pdf'
+        ```
+    </Step>
+    <Step title="Examine the results">
+        After you run the `curl` command, the results are printed to your terminal or Command Prompt. The command might take several 
+        minutes to complete.
+
+        By default, the JSON is printed without indenting or other whitespace. You can pretty-print the JSON output by using utilities such as [jq](https://jqlang.org/tutorial/) in future command runs. 
+        
+        You can also pipe the JSON output to a local file by using the `curl` option [-o, --output \<file\>](https://curl.se/docs/manpage.html#-o) in future command runs.
+    </Step>
+</Steps>
+
+You can also call the Unstructured Partition Endpoint by using the [Unstructured Python SDK](/api-reference/partition/sdk-python) or the [Unstructured JavaScript/TypeScript SDK](/api-reference/partition/sdk-jsts).
+
+## Telemetry
+
+import SharedTelemetry from '/snippets/general-shared-text/telemetry.mdx';
+
+<SharedTelemetry />
