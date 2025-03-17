@@ -193,7 +193,7 @@ specify the settings for the workflow, as follows:
         asyncio.run(create_workflow())
         ```
     </Accordion>
-    <Accordion title="curl">
+    <Accordion title="curl (remote source and remote destination)">
         ```bash
         curl --request 'POST' --location \
         "$UNSTRUCTURED_API_URL/workflows" \
@@ -222,7 +222,41 @@ specify the settings for the workflow, as follows:
         }'
         ```
     </Accordion>
-    <Accordion title="Postman">
+    <Accordion title="curl (local source and local destination)">
+        To use a local source and a local destination, do not specify a `source_id` or `destination_id` value. Also, the `workflow_type` must be set to `custom`.
+
+        The source and destination must both be local. You cannot specify a local source and a remote destination, nor can you specify a remote source 
+        and a local destination.
+
+        The Unstructured user interface (UI) and the Unstructured Python SDK currently do not support creating a workflow with a local source 
+        and a local destination.
+
+        ```bash
+        curl --request 'POST' --location \
+        "$UNSTRUCTURED_API_URL/workflows" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header 'accept: application/json' \
+        --data \
+        '{
+            "name": "<name>",
+            "workflow_type": "custom",
+            "workflow_nodes": [
+                {
+                    "name": "<node-name>",
+                    "type": "<node-type>",
+                    "subtype": "<node-subtype>",
+                    "settings": {
+                        "...": "..."
+                    }
+                },
+                {
+                    "...": "..." 
+                } 
+            ]
+        }'
+        ```
+    </Accordion>
+    <Accordion title="Postman (remote source and remote destination)">
         1. In the method drop-down list, select **POST**.
         2. In the address box, enter the following URL:
 
@@ -257,6 +291,51 @@ specify the settings for the workflow, as follows:
                    } 
                ],
                "schedule": "<schedule-timeframe>"
+           }
+           ```
+
+        5. Click **Send**.
+    </Accordion>
+    <Accordion title="Postman (local source and local destination)">
+        To use a local source and a local destination do not specify a `source_id` or `destination_id` value. Also, the `workflow_type` must be set to `custom`.
+
+        The source and destination must both be local. You cannot specify a local source and a remote destination, nor can you specify a remote source 
+        and a local destination.
+
+        The Unstructured user interface (UI) and the Unstructured Python SDK currently do not support creating a workflow with a local source 
+        and a local destination.
+
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/workflows
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify the settings for the workflow:
+
+           ```json
+           {
+               "name": "<name>",
+               "workflow_type": "custom",
+               "workflow_nodes": [
+                   {
+                       "name": "<node-name>",
+                       "type": "<node-type>",
+                       "subtype": "<node-subtype>",
+                       "settings": {
+                           "...": "..."
+                       }
+                   },
+                   {
+                       "...": "..." 
+                   } 
+               ]
            }
            ```
 
