@@ -44,14 +44,9 @@ import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-s
 
 <GetStartedSimpleAPIOnly/>
 
-### Python toolchain setup, project setup, and Claude for Desktop
+### Python toolchain and Claude for Desktop setup
 
-Before you can start coding on your local machine, you must install the Python package and project manager `uv`, 
-create and initialize a project directory for your code, create a virtual environment to isolate and manage your 
-project's code and its dependencies, and install the MCP SDK and its dependencies, as follows.
-
-These steps are also covered in the [Quickstart For Server Developers](https://modelcontextprotocol.io/quickstart/server) in the 
-MCP documentation.
+Before you can start coding on your local machine, you must install the Python package and project manager `uv`, and install Claude for Desktop, as follows.
 
 <Steps>
     <Step>
@@ -76,6 +71,21 @@ MCP documentation.
         (To learn more about `uv`, see the [uv documentation](https://docs.astral.sh/uv/).)
     </Step>
     <Step>
+        [Install Claude for Desktop](https://claude.ai/download).
+    </Step>
+</Steps>
+
+You are now ready to start coding.
+
+## Step 1: Create the MCP server
+
+<Tip>
+    If you are not interested in building an MCP server from the beginning and want to use a pre-built MCP server instead, 
+    skip ahead to [Optional Step 3: Extend the MCP server](#optional-step-3-extend-the-mcp-server).
+</Tip>
+
+<Steps>
+    <Step>
         From your current working directory, create a project directory and then initialize it. This example creates a 
         project directory named `mcp-unstructured-demo`. Then go to the project directory:
 
@@ -83,6 +93,7 @@ MCP documentation.
         uv init mcp-unstructured-demo
         cd mcp-unstructured-demo
         ```
+
     </Step>
     <Step>
         Create a virtual environment in the root of the project directory. Then activate the virtual environment:
@@ -102,6 +113,7 @@ MCP documentation.
         ```bash
         deactivate
         ```
+
     </Step>
     <Step>
         With the virtual environment activated, install the Python SDK for Model Context Protocol and additional code dependencies:
@@ -109,17 +121,8 @@ MCP documentation.
         ```bash
         uv add "mcp[cli]" "unstructured-client>=0.30.6" dotenv
         ```
+
     </Step>
-    <Step>
-        [Install Claude for Desktop](https://claude.ai/download).
-    </Step>
-</Steps>
-
-You are now ready to start coding.
-
-## Step 1: Create the MCP server
-
-<Steps>
     <Step>
         In the root of the project directory, create a new Python file. This example names the file `workflow.py`. 
         Then add the following code to this new `workflow.py` file:
@@ -255,6 +258,7 @@ You are now ready to start coding.
             # Initialize and run the MCP server.
             mcp.run(transport='stdio')
         ```
+
     </Step>
     <Step>
         In the root of the project directory, create a new file named `.env`. 
@@ -275,6 +279,7 @@ You are now ready to start coding.
         # For Windows:
         code $env:AppData\Claude\claude_desktop_config.json
         ```
+
     </Step>
     <Step>
         Add the following code to the `claude_desktop_config.json` file, and then save the file.
@@ -320,6 +325,7 @@ You are now ready to start coding.
             }
         }
         ```
+
     </Step>
 </Steps>
 
@@ -353,7 +359,7 @@ You are now ready to start coding.
 
 ## Optional Step 3: Extend the MCP server
 
-Unstructured offers an initial experimental MCP server implementation, with much more functionality than the MCP server that you just created. 
+Unstructured offers an initial experimental MCP server implementation, with much more functionality then the MCP server that you just created in the previous Steps 1-2. 
 This initial MCP server is intended only for experimentation purposes and is not recommended for production usage. A more complete, supported, 
 production-level implementation is coming soon. 
 
@@ -361,7 +367,7 @@ To use Unstructured's initial experimental MCP server implementation, do the fol
 
 <Steps>
     <Step>
-        From a different working directory than the one you used in the previous steps, use Git to clone the 
+        From a different working directory than the one you used in the previous Steps 1-2, use Git to clone the 
         [Unstructured API MCP Server](https://github.com/Unstructured-IO/UNS-MCP) repository in GitHub, and then switch to the cloned 
         repository's root directory:
 
@@ -379,6 +385,34 @@ To use Unstructured's initial experimental MCP server implementation, do the fol
         ```
     </Step>
     <Step>
+        In the cloned repository's root directory, create a virtual environment. Then activate the virtual environment:
+
+        ```bash
+        # For macOS and Linux:
+        uv venv
+        source .venv/bin/activate
+
+        # For Windows:
+        uv venv
+        .venv\Scripts\activate
+        ```
+
+        To deactivate and exit the virtual environment at any time, simply run the `deactivate` command:
+
+        ```bash
+        deactivate
+        ```
+
+    </Step>
+    <Step>
+        With the virtual environment activated, install the cloned repository's code dependencies:
+
+        ```bash
+        uv sync
+        ```
+
+    </Step>
+    <Step>
         Open the Claude for Desktop App configuration file from the following location, for example by using Visual Studio Code:
 
         ```text
@@ -388,6 +422,7 @@ To use Unstructured's initial experimental MCP server implementation, do the fol
         # For Windows:
         code $env:AppData\Claude\claude_desktop_config.json
         ```
+
     </Step>
     <Step>
         Overwrite the contents of the `claude_desktop_config.json` file with the following content, and then save the file.
@@ -427,13 +462,20 @@ To use Unstructured's initial experimental MCP server implementation, do the fol
             }
         }
         ```
-    </Step>
-    <Step>
-        Restart Claude for Desktop.
-    </Step>
-    <Step>
-        Here are some additional sample questions that you could try in Claude for Desktop:
 
+    </Step>
+    <Step>
+        Start Claude for Desktop. If it is already running, restart it.
+    </Step>
+    <Step>
+        Here are some questions that you can ask in the chat window to test the MCP server. Replace the placeholders with the appropriate values.
+
+        For a list of available source connector types, see the [Workflow Endpoint Sources overview](/api-reference/workflow/sources/overview).
+
+        For a list of available destination connector types, see the [Workflow Endpoint Destinations overview](/api-reference/workflow/destinations/overview).
+
+        - `List all available source connectors of type <source-connector-type>.`
+        - `Provide information about the source connector with ID <source-connector-id>.`
         - `List all available source connectors of type <destination-connector-type>.`
         - `Provide information about the source connector with ID <destination-connector-id>.`
         - `List all available destination connectors of type <destination-connector-type>.`
