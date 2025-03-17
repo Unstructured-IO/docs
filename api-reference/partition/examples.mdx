@@ -151,7 +151,7 @@ Here's how you can modify partition strategy for a PDF file, and select an alter
                         // If successfully processed, write the processed data to
                         // the destination directory.
                         if (res.statusCode == 200) {
-                            const jsonElements = JSON.stringify(res.elements, null, 2)
+                            const jsonElements = JSON.stringify(res, null, 2)
                             fs.writeFileSync(outputPath + ".json", jsonElements)
                         }
                     }).catch((e) => {
@@ -321,7 +321,7 @@ For better OCR results, you can specify what languages your document is in using
                         // If successfully processed, write the processed data to
                         // the destination directory.
                         if (res.statusCode == 200) {
-                            const jsonElements = JSON.stringify(res.elements, null, 2)
+                            const jsonElements = JSON.stringify(res, null, 2)
                             fs.writeFileSync(outputPath + ".json", jsonElements)
                         }
                     }).catch((e) => {
@@ -488,7 +488,7 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
                         // If successfully processed, write the processed data to
                         // the destination directory.
                         if (res.statusCode == 200) {
-                            const jsonElements = JSON.stringify(res.elements, null, 2)
+                            const jsonElements = JSON.stringify(res, null, 2)
                             fs.writeFileSync(outputPath + ".json", jsonElements)
                         }
                     }).catch((e) => {
@@ -663,7 +663,7 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
                         // If successfully processed, write the processed data to
                         // the destination directory.
                         if (res.statusCode == 200) {
-                            const jsonElements = JSON.stringify(res.elements, null, 2)
+                            const jsonElements = JSON.stringify(res, null, 2)
                             fs.writeFileSync(outputPath + ".json", jsonElements)
                         }
                     }).catch((e) => {
@@ -839,7 +839,7 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
                         // If successfully processed, write the processed data to
                         // the destination directory.
                         if (res.statusCode == 200) {
-                            const jsonElements = JSON.stringify(res.elements, null, 2)
+                            const jsonElements = JSON.stringify(res, null, 2)
                             fs.writeFileSync(outputPath + ".json", jsonElements)
                         }
                     }).catch((e) => {
