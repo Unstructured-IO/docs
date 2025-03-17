@@ -42,7 +42,7 @@ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; pic
 allowfullscreen
 ></iframe>
 
-Watch the following 3-minute video to learn how to use the Python SDK to call the Unstructured Workflow Endpoint to 
+Watch the following 4-minute video to learn how to use the Python SDK to call the Unstructured Workflow Endpoint to 
 create [workflows](#workflows) and [jobs](#jobs) in the Unstructured UI.
 
 <iframe
@@ -84,11 +84,9 @@ you from storing scripts that contain sensitive API keys in public source code r
 
 To get your Unstructured API key, do the following:
 
-1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
-2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
-3. On the **API Keys** tab, click **Generate New Key**.
-4. Enter some descriptive name for the API key, and then click **Save**.
-5. Click the **Copy** icon for your new API key. The API key's value is copied to your system's clipboard.
+import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-simple-api-only.mdx';
+
+<GetStartedSimpleAPIOnly/>
 
 Calls made by the Unstructured Python SDK's `unstructured_client` functions for creating, listing, updating, 
 and deleting connectors, workflows, and jobs in the Unstructured UI all use the Unstructured Workflow Endpoint URL (`https://platform.unstructuredapp.io/api/v1`) by default. You do not need to 
@@ -148,18 +146,7 @@ you from storing scripts that contain sensitive URLs and API keys in public sour
 
 To get your Unstructured API key, do the following:
 
-1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
-2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
-3. On the **API Keys** tab, click **Generate New Key**.
-4. Enter some descriptive name for the API key, and then click **Save**.
-5. Click the **Copy** icon for your new API key. The API key's value is copied to your system's clipboard.
-
-<Note>
-    If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API URL and API key creation guidance 
-    might be different. For guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
-    If your API URL is different, be sure to substitute `https://platform.unstructuredapp.io/api/v1` for your 
-    API URL throughout the following examples.
-</Note>
+<GetStartedSimpleAPIOnly/>
 
 The following Postman examples use variables, which you can set as follows:
 
@@ -184,18 +171,7 @@ Postman collections that contain sensitive URLs and API keys in public source co
 
 To get your Unstructured API key, do the following:
 
-1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
-2. At the bottom of the sidebar, click your user icon, and then click **Account Settings**.
-3. On the **API Keys** tab, click **Generate New Key**.
-4. Enter some descriptive name for the API key, and then click **Save**.
-5. Click the **Copy** icon for your new API key. The API key's value is copied to your system's clipboard.
-
-<Note>
-    If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API URL and API key creation guidance 
-    might be different. For guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
-    If your API URL is different, be sure to substitute `https://platform.unstructuredapp.io/api/v1` for your 
-    API URL throughout the following examples.
-</Note>
+<GetStartedSimpleAPIOnly/>
 
 The Unstructured Workflow Endpoint enables you to work with [connectors](#connectors),
 [workflows](#workflows), and [jobs](#jobs) in the Unstructured UI.
