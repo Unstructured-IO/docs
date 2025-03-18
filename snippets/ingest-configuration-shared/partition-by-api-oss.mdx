@@ -16,4 +16,15 @@ For the Unstructured Ingest CLI and the Unstructured Ingest Python library, you 
   - `--partition-endpoint $UNSTRUCTURED_API_URL` (CLI) or `partition_endpoint=os.getenv("UNSTRUCTURED_API_URL")` (Python)
   - The environment variables `UNSTRUCTURED_API_KEY` and `UNSTRUCTURED_API_URL`, representing your API key and API URL, respectively.
 
-  [Get an API key and API URL](/api-reference/partition/overview).
+  <Note>
+      You must specify the API URL only if you are not using the default API URL for Unstructured Ingest, for example, if you are using a version of the Unstructured API that is hosted on your own compute infrastructure.
+
+      The default API URL for Unstructured Ingest is `https://api.unstructuredapp.io/general/v0/general`, which is the API URL for the [Unstructured Partition Endpoint](/api-reference/partition/overview).
+
+      If you do not have an API key, [get one now](/api-reference/partition/overview).
+
+      If the Unstructured API is hosted on your own compute infrastructure, the process
+      for generating Unstructured API keys, and the Unstructured API URL that you use, are different. 
+      For details, contact Unstructured Sales at 
+      [sales@unstructured.io](mailto:sales@unstructured.io).
+  </Note>
