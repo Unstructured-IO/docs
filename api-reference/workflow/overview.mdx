@@ -1760,15 +1760,18 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
         - `<filename.extension>` with the filename of the local file to upload.
         - `<local-file-media-type>` with the local file's media type. For a list of available media types, such as `application/pdf`, see [Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml).
 
+        To upload multiple files, add additional `--form` entries, one per file.
+
         ```bash
         curl --request 'POST' --location \
         "$UNSTRUCTURED_API_URL/workflows/<workflow-id>/run" \
         --header 'accept: application/json' \
         --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
-        --form "input_files=@</full/path/to/local/filename.extension>" \
-        --form "filename=<filename.extension>" \
-        --form "type=<local-file-media-type>" \
+        --form "input_files=@</full/path/to/local/filename.extension>;filename=<filename.extension>;type=<local-file-media-type>" \
+        --form "input_files=@</full/path/to/local/filename.extension>;filename=<filename.extension>;type=<local-file-media-type>" # For each additional file to be uploaded.
         ```
+
+        To access the processed files' data, [download a processed local file](#download-a-processed-local-file-from-a-job) from the workflow's job run.
     </Accordion>
     <Accordion title="Postman (remote source and remote destination)">
         1. In the method drop-down list, select **POST**.
@@ -1810,12 +1813,24 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
         4. On the **Body** tab, select **form-data**, and specify the settings for the workflow run:
             
             - **Key**: `input_files`, **File**, **Value**: Click the **Value** box, then click **New file from local machine**, and select the file to upload.
+
+              To upload multiple files, add additional `input_files` entries after this one, one entry per additional file to upload.
+
             - **Key**: `filename`, **Text**, **Value**: Type the name of the file that you just uploaded.
+
+              To upload multiple files, add additional `filename` entries after this one, one entry per additional file to upload. Make sure the order of these 
+              `filename` entries matches the order of the `input_files` entries, respectively.
+
             - **Key**: `type`, **Text**, **Value**: `<local-file-media-type>`
+
+              To upload multiple files, add additional `type` entries after this one, one entry per additional file to upload. Make sure the order of these 
+              `type` entries matches the order of the `input_files` entries, respectively.
 
             For a list of available media types, such as `application/pdf`, see [Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml).
 
         5. Click **Send**.
+
+        To access the processed files' data, [download a processed local file](#download-a-processed-local-file-from-a-job) from the workflow's job run.
     </Accordion>
 </AccordionGroup>
 
