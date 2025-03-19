@@ -234,7 +234,15 @@
           },
           "ui/workflows",
           "ui/jobs",
-          "ui/billing"
+          {
+            "group": "Account",
+            "pages": [
+              "ui/account/overview",
+              "ui/account/billing",
+              "ui/account/usage",
+              "ui/account/api-key-url"
+            ]
+          }
         ]
       },
       {
@@ -645,6 +653,10 @@
       {
         "source": "/platform-api/partition-api/:slug*",
         "destination": "/api-reference/partition/:slug*"
+      },
+      {
+        "source": "/ui/billing",
+        "destination": "/ui/account/billing"
       }
     ],
     "analytics": {
