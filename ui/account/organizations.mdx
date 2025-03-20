@@ -4,14 +4,14 @@ sidebarTitle: Organizations
 ---
 
 An _organization_ is a collection of Unstructured [workspaces](/account/workspaces). An Unstructured _organizational account_ manages 
-Unstructured _account user access_ to workspaces within organizations.
+access by Unstructured _account users_ to workspaces within organizations. 
 
-Currently, only Unstructured representatives can create organizational accounts. To request an organizational account to be created, 
-contact your Unstructured representative.
+A _workspace_ is a collection of resources 
+(such as connectors, workflows, jobs, and API keys) within an organization.
 
-## Organizational account structure
+## Organization architecture
 
-An organizational account operates independently of all other organizational accounts. Each organization can have multiple [workspaces](/account/workspaces).
+An organization account operates independently of all other organizations. Each organization can have multiple [workspaces](/account/workspaces).
 
 ```mermaid
 graph LR
@@ -35,7 +35,7 @@ graph LR
     Org3 --> WS3C
 ```
 
-An account user can have access to multiple organizational accounts.
+A user can have access to multiple organizations.
 
 ```mermaid
 graph LR
