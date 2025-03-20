@@ -1,0 +1,30 @@
+```python Python SDK
+import os
+
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import CreateSourceRequest
+from unstructured_client.models.shared import (
+    CreateSourceConnector,
+    SourceConnectorType,
+    ZendeskSourceConnectorConfigInput
+)
+
+with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+    response = client.sources.create_source(
+        request=CreateSourceRequest(
+            create_source_connector=CreateSourceConnector(
+                name="<name>",
+                type=SourceConnectorType.ZENDESK,
+                config=ZendeskSourceConnectorConfigInput(
+                    subdomain="<subdomain>",
+                    email="<email>",
+                    api_token="<api-token>",
+                    item_type="<item-type>",
+                    batch_size=<batch-size> 
+                )
+            )
+        )
+    )
+
+    print(response.source_connector_information)
+```
