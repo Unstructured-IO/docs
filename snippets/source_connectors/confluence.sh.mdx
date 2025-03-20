@@ -4,7 +4,7 @@
 # For API token authentication:
 unstructured-ingest \
   confluence \
-    --token $CONFLUENCE_TOKEN \
+    --api-token $CONFLUENCE_API_TOKEN \
     --url $CONFLUENCE_URL \
     --username $CONFLUENCE_USERNAME \
     --cloud \
@@ -24,7 +24,7 @@ unstructured-ingest \
 # For personal access token (PAT) authentication:
 unstructured-ingest \
   confluence \
-    --token $CONFLUENCE_TOKEN \
+    --token $CONFLUENCE_PERSONAL_ACCESS_TOKEN \
     --url $CONFLUENCE_URL \
     --spaces luke,paul \
     --max-num-of-spaces 500 \

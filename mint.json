@@ -194,6 +194,7 @@
                 "ui/sources/elasticsearch",
                 "ui/sources/google-cloud",
                 "ui/sources/google-drive",
+                "ui/sources/jira",
                 "ui/sources/kafka",
                 "ui/sources/mongodb",
                 "ui/sources/onedrive",
@@ -234,7 +235,15 @@
           },
           "ui/workflows",
           "ui/jobs",
-          "ui/billing"
+          {
+            "group": "Account",
+            "pages": [
+              "ui/account/overview",
+              "ui/account/billing",
+              "ui/account/usage",
+              "ui/account/api-key-url"
+            ]
+          }
         ]
       },
       {
@@ -280,7 +289,9 @@
               "api-reference/workflow/sources/elasticsearch",
               "api-reference/workflow/sources/google-cloud",
               "api-reference/workflow/sources/google-drive",
+              "api-reference/workflow/sources/jira",
               "api-reference/workflow/sources/kafka",
+              "api-reference/workflow/sources/local",
               "api-reference/workflow/sources/mongodb",
               "api-reference/workflow/sources/onedrive",
               "api-reference/workflow/sources/outlook",
@@ -304,6 +315,7 @@
               "api-reference/workflow/destinations/elasticsearch",
               "api-reference/workflow/destinations/google-cloud",
               "api-reference/workflow/destinations/kafka",
+              "api-reference/workflow/destinations/local",
               "api-reference/workflow/destinations/milvus",
               "api-reference/workflow/destinations/mongodb",
               "api-reference/workflow/destinations/motherduck",
@@ -598,10 +610,6 @@
         "destination": "/ingestion/:slug*"
       },
       {
-        "source": "/api-reference/troubleshooting/api-key-url",
-        "destination": "/api-reference/troubleshooting/api-key-url"
-      },
-      {
         "source": "/glossary/glossary",
         "destination": "/welcome"
       },
@@ -644,6 +652,10 @@
       {
         "source": "/platform-api/partition-api/:slug*",
         "destination": "/api-reference/partition/:slug*"
+      },
+      {
+        "source": "/ui/billing",
+        "destination": "/ui/account/billing"
       }
     ],
     "analytics": {

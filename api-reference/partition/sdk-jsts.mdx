@@ -75,7 +75,7 @@ import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-s
             console.log(res.elements?.[0])
 
             // Write the processed data to a local file.
-            const jsonElements = JSON.stringify(res.elements, null, 2)
+            const jsonElements = JSON.stringify(res, null, 2)
 
             fs.writeFileSync("PATH_TO_OUTPUT_FILE", jsonElements)
         }
@@ -257,7 +257,7 @@ import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-s
                     // If successfully processed, write the processed data to
                     // the destination directory.
                     if (res.statusCode == 200) {
-                        const jsonElements = JSON.stringify(res.elements, null, 2)
+                        const jsonElements = JSON.stringify(res, null, 2)
                         fs.writeFileSync(outputPath + ".json", jsonElements)
                     }
                 }).catch((e) => {

@@ -1,0 +1,93 @@
+---
+title: Account API keys and API URLs
+sidebarTitle: API keys and URLs
+---
+
+import EnterpriseSelfHostedDifferences from '/snippets/general-shared-text/enterprise-self-hosted-differences.mdx';
+
+<EnterpriseSelfHostedDifferences />
+
+An API key is a unique string of characters used to authenticate calls to an application programming interface (API). 
+In Unstructured, API keys are used as a kind of password that allows code or scripts to call the 
+[Unstructured API](/api-reference/overview) to automate an Unstructured account on behalf of an associated account user 
+or other entity tied to the API key that is provided with each call. This API key also enables Unstructured to associate 
+usage and billing information with the related Unstructured account.
+
+You need an API key whenever you want to call the Unstructured API's 
+[Unstructured Workflow Endpoint](/api-reference/workflow/overview) or 
+[Unstructured Partition Endpoint](/api-reference/partition/overview).
+
+You do not need an API key to use the [Unstructured user interface](/ui/overview) (UI) to create or manage connectors, workflows, 
+or jobs in your Unstructured account, or to manage your Unstructured account.
+
+## View available API keys
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. On the sidebar, click **API Keys**.
+3. Existing API keys are listed on the **API Keys** tab.
+
+## Create a new API key
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. On the sidebar, click **API Keys**.
+3. On the **API Keys** tab, click **Generate New Key**.
+4. Enter some descriptive name for the API key, and then click **Save**.
+
+The new API key is created and appears in the list of available API keys.
+
+The only setting you can change for this new API key is its [status](#enable-or-disable-an-existing-api-key). You cannot change its 
+name, value, or any other settings. 
+
+## Get an existing API key's value
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. On the sidebar, click **API Keys**.
+3. On the **API Keys** tab, in the list of available keys, click the **Copy** icon for the target key. The key's value is copied to your system's clipboard.
+
+If you lose this API key's value, simply repeat this procedure.
+
+If you are concerned that an unauthorized user or other entity might have this API key's value, you should [permanently delete](#permanently-delete-an-existing-api-key) this key.
+
+## Enable or disable an existing API key
+
+You might want to temporarily disable an existing API key that you suspect is causing some kind of issue or might be compromised in some way. 
+However, you might want the option to re-enable it after you solve your issues or determine that it was not compromised.
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. On the sidebar, click **API Keys**.
+3. On the **API Keys** tab, in the list of available keys, switch the **Status** toggle on or off for the target API key to enable or disable that key, respectively.
+
+## Permanently delete an existing API key
+
+<Caution>
+    Deleting an existing API key is a permanent operation. Deleted API keys cannot be recovered.
+
+    You cannot use a deleted API key to call the Unstructured APIs.
+</Caution>
+
+You might want to permanently delete an existing API key that you know is causing issues or is compromised.
+
+If you have any code or scripts that rely on the old, existing API key that you want to permanently delete, you should rotate the key first. 
+To rotate an old, existing API key before you permanently delete it:
+
+1. Create a new, replacement API key by following the steps in [Create a new API key](#create-a-new-api-key), earlier on this page.
+2. Update your code or scripts that rely on the old, existing API key's value that you want to permanently delete with the new, replacement API key's value.
+3. Delete the old, existing API key.
+
+To permanently delete an existing API key:
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. On the sidebar, click **API Keys**.
+3. On the **API Keys** tab, in the list of available keys, click the **Options** vertical ellipsis for the target API key.
+4. Click **Delete**.
+5. Confirm that you want to permanently delete the API key by clicking **Continue**.
+
+## View available API URLs
+
+In some cases, you might need to specify a particular API URL to call one of the Unstructured API's available Endpoints. For more information, see the getting started instructions for the 
+Unstructured API's [Unstructured Workflow Endpoint](/api-reference/workflow/overview) or 
+[Unstructured Partition Endpoint](/api-reference/partition/overview).
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. On the sidebar, click **API Keys**.
+3. On the **API Keys** tab, the available API URLs are listed.

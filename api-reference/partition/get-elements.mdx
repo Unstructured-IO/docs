@@ -99,7 +99,7 @@ The programmatic approach you take to get these document elements will depend on
         }).then((res) => {
             if (res.statusCode == 200) {
                 // Do something with the elements, for example:
-                saveElementsToFile(res.elements)
+                saveElementsToFile(res)
             }
         } // ...
         ```
@@ -124,7 +124,7 @@ The programmatic approach you take to get these document elements will depend on
             }
         }).then((res) => {
             if (res.statusCode == 200) {
-                res.elements?.forEach(element => {
+                res.forEach(element => {
                     // Do something with each element, for example:
                     saveElementToDatabase(`${element["element_id"]}`)
                     saveElementToDatabase(`${element["text"]}`)
@@ -152,7 +152,7 @@ The programmatic approach you take to get these document elements will depend on
             }
         }).then((res) => {
             if (res.statusCode == 200) {    
-                const jsonElements = JSON.stringify(res.elements, null, 2)
+                const jsonElements = JSON.stringify(res, null, 2)
 
                 fs.writeFileSync(outputFilepath, jsonElements)
             }
