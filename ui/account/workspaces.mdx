@@ -1,0 +1,59 @@
+---
+title: Workspaces
+sidebarTitle: Workspaces
+---
+
+A _workspace_ is a collection of resources within an Unstructured account. Workspaces are used to manage 
+access to those resources by users within the related organization.
+
+## Workspace structure
+
+A workspace is part of one (and only one) [organization](/account/organizations) in an Unstructured account.
+
+An organization can have multiple workspaces. An Unstructured account can have multiple organizations.
+
+```mermaid
+graph TD
+    Account --> Org1[Organization 1]
+    Account --> Org2[Organization 2]
+    
+    Org1 --> Workspace1A[Workspace 1A]
+    Org1 --> Workspace1B[Workspace 1B]
+    
+    Org2 --> Workspace2A[Workspace 2A]
+    Org2 --> Workspace2B[Workspace 2B]
+```
+
+Organization users can have access to multiple workspaces within the same organization.
+
+
+```mermaid
+graph TD
+    OrgA[Organization A]
+    
+    OrgA -.-> User1[User 1]
+    OrgA -.-> User2[User 2]
+    OrgA -.-> User3[User 3]
+    
+    OrgA --> WorkspaceA1[Workspace A1]
+    OrgA --> WorkspaceA2[Workspace A2]
+    OrgA --> WorkspaceA3[Workspace A3]
+    OrgA --> WorkspaceA4[Workspace A4]
+    
+    User1[User 1] -.-> WorkspaceA1
+    User1[User 1] -.-> WorkspaceA2
+    User2[User 2] -.-> WorkspaceA2
+    User2[User 2] -.-> WorkspaceA3
+    User3[User 3] -.-> WorkspaceA4
+```
+
+## Create a workspace
+
+Currently, only Unstructured representatives can create organizations in Unstructured accounts. To request an organization to be created in your account, 
+contact your Unstructured representative.
+
+## Set a budget limit for a workspace
+
+
+## Track usage for a workspace against a budget limit
+

@@ -1,0 +1,51 @@
+---
+title: Organizations
+sidebarTitle: Organizations
+---
+
+An _organization_ is a collection of users and [workspaces](/account/workspaces) within an Unstructured account. Organizations are used to manage
+user access to workspaces within the organization.
+
+Currently, only Unstructured representatives can create organizations in Unstructured accounts. To request an organization to be created in your account, 
+contact your Unstructured representative.
+
+## Organizational structure
+
+An organization is part of one (and only one) Unstructured account. An account can have multiple organizations. 
+Each organization can have multiple [workspaces](/account/workspaces).
+
+```mermaid
+graph TD
+    Account --> Org1[Organization 1]
+    Account --> Org2[Organization 2]
+    
+    Org1 --> Workspace1A[Workspace 1A]
+    Org1 --> Workspace1B[Workspace 1B]
+    
+    Org2 --> Workspace2A[Workspace 2A]
+    Org2 --> Workspace2B[Workspace 2B]
+```
+
+An organization can have multiple users. A user can have access to multiple workspaces within the same organization.
+
+Although an Unstructured account can have multiple users, each user must be added separately to each organization that they are allowed to access. 
+
+```mermaid
+graph TD
+    Account --> Org1[Organization 1]
+    Account --> Org2[Organization 2]
+
+    Account -.-> User1[User 1]
+    Account -.-> User2[User 2]
+    Account -.-> User3[User 3]
+    
+    User1 -.-> Org1
+    User2 -.-> Org1
+    User2 -.-> Org2
+    User3 -.-> Org2
+```
+
+## Add a user to an organization
+
+
+## Remove a user from an organization
