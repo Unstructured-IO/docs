@@ -3,49 +3,163 @@ title: Organizations
 sidebarTitle: Organizations
 ---
 
-An _organization_ is a collection of users and [workspaces](/account/workspaces) within an Unstructured account. Organizations are used to manage
-user access to workspaces within the organization.
+An _organization_ is a collection of Unstructured [workspaces](/account/workspaces). An Unstructured _organizational account_ manages 
+Unstructured _account user access_ to workspaces within organizations.
 
-Currently, only Unstructured representatives can create organizations in Unstructured accounts. To request an organization to be created in your account, 
+Currently, only Unstructured representatives can create organizational accounts. To request an organizational account to be created, 
 contact your Unstructured representative.
 
-## Organizational structure
+## Organizational account structure
 
-An organization is part of one (and only one) Unstructured account. An account can have multiple organizations. 
-Each organization can have multiple [workspaces](/account/workspaces).
+An organizational account operates independently of all other organizational accounts. Each organization can have multiple [workspaces](/account/workspaces).
 
 ```mermaid
-graph TD
-    Account --> Org1[Organization 1]
-    Account --> Org2[Organization 2]
+graph LR
+    Org1[Organization 1]
+    Org2[Organization 2]
+    Org3[Organization 3]
+    WS1A[Workspace 1A]
+    WS2A[Workspace 2A]
+    WS2B[Workspace 2B]
+    WS3A[Workspace 3A]
+    WS3B[Workspace 3B]
+    WS3C[Workspace 3C]
+
+    Org1 --> WS1A
     
-    Org1 --> Workspace1A[Workspace 1A]
-    Org1 --> Workspace1B[Workspace 1B]
-    
-    Org2 --> Workspace2A[Workspace 2A]
-    Org2 --> Workspace2B[Workspace 2B]
+    Org2 --> WS2A
+    Org2 --> WS2B
+
+    Org3 --> WS3A
+    Org3 --> WS3B
+    Org3 --> WS3C
 ```
 
-An organization can have multiple users. A user can have access to multiple workspaces within the same organization.
-
-Although an Unstructured account can have multiple users, each user must be added separately to each organization that they are allowed to access. 
+An account user can have access to multiple organizational accounts.
 
 ```mermaid
-graph TD
-    Account --> Org1[Organization 1]
-    Account --> Org2[Organization 2]
+graph LR
+    User1[User 1]
+    User2[User 2]
+    User3[User 3]
+    Org1[Organization 1]
+    Org2[Organization 2]
+    Org3[Organization 3]
 
-    Account -.-> User1[User 1]
-    Account -.-> User2[User 2]
-    Account -.-> User3[User 3]
-    
     User1 -.-> Org1
     User2 -.-> Org1
     User2 -.-> Org2
+    User3 -.-> Org1
     User3 -.-> Org2
+    User3 -.-> Org3
 ```
 
-## Add a user to an organization
+Each user also has access to their own personal account, which is separate from any organizational accounts. Personal accounts do not have workspaces.
 
+```mermaid
+graph LR
+    User1[User 1]
+    User2[User 2]
+    User3[User 3]
+    PA1[Personal Account for User 1]
+    PA2[Personal Account for User 2]
+    PA3[Personal Account for User 3]
+    Org1[Organization 1]
+    Org2[Organization 2]
+    Org3[Organization 3]
 
-## Remove a user from an organization
+    User1 --> PA1
+    User2 --> PA2
+    User3 --> PA3
+    User1 -.-> Org1
+    User2 -.-> Org1
+    User2 -.-> Org2
+    User3 -.-> Org1
+    User3 -.-> Org2
+    User3 -.-> Org3
+```
+
+Within an organization, a user can have access to multiple workspaces within that organization.
+
+```mermaid
+graph LR
+    User1[User 1]
+    User2_Org1[User 2]
+    User2_Org2[User 2]
+    User3_Org1[User 3] 
+    User3_Org2[User 3]
+    User3_Org3[User 3]
+
+    Org1[Organization 1]
+    Org2[Organization 2]
+    Org3[Organization 3]
+
+    WS1A[Workspace 1A]
+    WS2A[Workspace 2A]
+    WS2B[Workspace 2B]
+    WS3A[Workspace 3A]
+    WS3B[Workspace 3B]
+    WS3C[Workspace 3C]
+    
+    Org1 --> WS1A
+    Org1 -.-> User1
+    Org1 -.-> User2_Org1
+    Org1 -.-> User3_Org1
+    User1 -.-> WS1A
+    User2_Org1 -.-> WS1A
+    User3_Org1 -.-> WS1A
+    
+    Org2 --> WS2A
+    Org2 --> WS2B
+    Org2 -.-> User2_Org2
+    Org2 -.-> User3_Org2
+    User2_Org2 -.-> WS2A
+    User2_Org2 -.-> WS2B
+    User3_Org2 -.-> WS2B
+    
+    Org3 --> WS3A
+    Org3 --> WS3B
+    Org3 --> WS3C
+    Org3 -.-> User3_Org3
+    User3_Org3 -.-> WS3A
+    User3_Org3 -.-> WS3B
+    User3_Org3 -.-> WS3C
+```
+
+Each user must be explicitly added to the organizations&mdash;and workspaces within those organizations&mdash;that they are allowed to access.
+
+## Create an organization
+
+## Access an organization
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...
+
+## Add a member to an organization
+
+An Unstructured user account that is added to an organization is referred to an a _member_ of that organization.
+
+To add a user account to an organization as a member:
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...
+
+## Remove a member from an organization
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...
+
+## Permanently delete an organization
+
+<Caution>
+    Deleting an organization is a permanent action and is not recoverable. Once an organization is deleted, all workspaces associated with that 
+    organization are also deleted and are not recoverable.
+    
+    The organization's users are not deleted, but they will no longer have access to the deleted organization or any of its workspaces.
+
+    Any code or scripts that reference connectors, workflows, jobs, or API keys that are associated with workflows in the deleted 
+    organization will fail.
+</Caution>
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...

@@ -3,57 +3,139 @@ title: Workspaces
 sidebarTitle: Workspaces
 ---
 
-A _workspace_ is a collection of resources within an Unstructured account. Workspaces are used to manage 
-access to those resources by users within the related organization.
+A _workspace_ is a collection of resources (such as connectors, workflows, jobs, and API keys) 
+within an Unstructured _organizational account_. Workspaces are used to manage 
+access to those resources by Unstructured _account users_ that have access to the workspace's related _organization_.
 
-## Workspace structure
+## Workspace architecture
 
-A workspace is part of one (and only one) [organization](/account/organizations) in an Unstructured account.
+A workspace is part of one (and only one) [organization](/account/organizations).
 
-An organization can have multiple workspaces. An Unstructured account can have multiple organizations.
-
-```mermaid
-graph TD
-    Account --> Org1[Organization 1]
-    Account --> Org2[Organization 2]
-    
-    Org1 --> Workspace1A[Workspace 1A]
-    Org1 --> Workspace1B[Workspace 1B]
-    
-    Org2 --> Workspace2A[Workspace 2A]
-    Org2 --> Workspace2B[Workspace 2B]
-```
-
-Organization users can have access to multiple workspaces within the same organization.
-
+An organization can have multiple workspaces.
 
 ```mermaid
-graph TD
-    OrgA[Organization A]
+graph LR
+    Org1[Organization 1]
+    Org2[Organization 2]
+    Org3[Organization 3]
+    WS1A[Workspace 1A]
+    WS2A[Workspace 2A]
+    WS2B[Workspace 2B]
+    WS3A[Workspace 3A]
+    WS3B[Workspace 3B]
+    WS3C[Workspace 3C]
+
+    Org1 --> WS1A
     
-    OrgA -.-> User1[User 1]
-    OrgA -.-> User2[User 2]
-    OrgA -.-> User3[User 3]
-    
-    OrgA --> WorkspaceA1[Workspace A1]
-    OrgA --> WorkspaceA2[Workspace A2]
-    OrgA --> WorkspaceA3[Workspace A3]
-    OrgA --> WorkspaceA4[Workspace A4]
-    
-    User1[User 1] -.-> WorkspaceA1
-    User1[User 1] -.-> WorkspaceA2
-    User2[User 2] -.-> WorkspaceA2
-    User2[User 2] -.-> WorkspaceA3
-    User3[User 3] -.-> WorkspaceA4
+    Org2 --> WS2A
+    Org2 --> WS2B
+
+    Org3 --> WS3A
+    Org3 --> WS3B
+    Org3 --> WS3C
 ```
+
+Unstructured account users can have access to multiple workspaces within an organization.
+
+```mermaid
+graph LR
+    User1[User 1]
+    User2_Org1[User 2]
+    User2_Org2[User 2]
+    User3_Org1[User 3] 
+    User3_Org2[User 3]
+    User3_Org3[User 3]
+
+    Org1[Organization 1]
+    Org2[Organization 2]
+    Org3[Organization 3]
+
+    WS1A[Workspace 1A]
+    WS2A[Workspace 2A]
+    WS2B[Workspace 2B]
+    WS3A[Workspace 3A]
+    WS3B[Workspace 3B]
+    WS3C[Workspace 3C]
+    
+    Org1 --> WS1A
+    Org1 -.-> User1
+    Org1 -.-> User2_Org1
+    Org1 -.-> User3_Org1
+    User1 -.-> WS1A
+    User2_Org1 -.-> WS1A
+    User3_Org1 -.-> WS1A
+    
+    Org2 --> WS2A
+    Org2 --> WS2B
+    Org2 -.-> User2_Org2
+    Org2 -.-> User3_Org2
+    User2_Org2 -.-> WS2A
+    User2_Org2 -.-> WS2B
+    User3_Org2 -.-> WS2B
+    
+    Org3 --> WS3A
+    Org3 --> WS3B
+    Org3 --> WS3C
+    Org3 -.-> User3_Org3
+    User3_Org3 -.-> WS3A
+    User3_Org3 -.-> WS3B
+    User3_Org3 -.-> WS3C
+```
+
+Each user must be explicitly added to each workspace that they are allowed to access. This assumes that the user has first been added 
+to the workspace's parent organization.
 
 ## Create a workspace
 
-Currently, only Unstructured representatives can create organizations in Unstructured accounts. To request an organization to be created in your account, 
+To create a workspace, you must first have an available Unstructured organizational account.
+
+Currently, only Unstructured representatives can create organizational accounts. To request an organizational account to be created, 
 contact your Unstructured representative.
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...
+
+## Access a workspace
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...
+
+## Add a member to a workspace
+
+An Unstructured user account that is added to a workspace is referred to an a _member_ of that workspace.
+
+To add a user account to a workspace as a member:
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...
+3. Make sure the user account that you want to add has already been added as a member of the workspace's parent organization. [Learn how]().
+4. ...
+
+## Remove a member from a workspace
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...
 
 ## Set a budget limit for a workspace
 
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...
 
 ## Track usage for a workspace against a budget limit
 
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...
+
+## Permanently delete a workspace
+
+<Caution>
+    Deleting a workspace is a permanent action and is not recoverable. Once a workspace is deleted, all connectors, workflows, jobs, and 
+    API keys that are associated with that workspace are also deleted and are not recoverable.
+    
+    The workspace's users are not deleted, but they will no longer have access to the deleted workspace's connectors, workflows, jobs, and API keys.
+
+    Any code or scripts that reference the deleted workspace's connectors, workflows, jobs, or API keys will fail.
+</Caution>
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...
