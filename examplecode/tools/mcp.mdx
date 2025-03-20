@@ -81,7 +81,7 @@ You are now ready to start coding.
 
 <Tip>
     If you are not interested in building an MCP server from the beginning and want to use a pre-built MCP server instead, 
-    skip ahead to [Optional Step 3: Extend the MCP server](#optional-step-3-extend-the-mcp-server).
+    skip ahead to [Optional Step 4: Extend the MCP server](#optional-step-4-extend-the-mcp-server).
 </Tip>
 
 <Steps>
@@ -269,6 +269,11 @@ You are now ready to start coding.
         ```
 
     </Step>
+</Steps>
+
+## Step 2: Configure Claude for Desktop to use the MCP server
+
+<Steps>
     <Step>
         Open the Claude for Desktop App configuration file from the following location, for example by using Visual Studio Code:
 
@@ -286,7 +291,9 @@ You are now ready to start coding.
 
         In this file:
 
-        - `"worklow"` must match the value that you set in `mcp = FastMCP("workflow", lifespan=app_lifespan)` in the `workflow.py` file.
+        - `"workflow"` must match the value that you set in `mcp = FastMCP("workflow" ...` in the `workflow.py` file.
+        - "Absolute path to" `uv` must be the absolute path to the `uv` executable on your local machine.
+        - "Absolute path to project directory" must be the absolute path to the project directory.
         - `mcp_unstructured-demo` must match the name of the project directory that you created.
         - `"workflow.py"` must match the name of the Python file that you created for the MCP server.
 
@@ -299,7 +306,7 @@ You are now ready to start coding.
                     "command": "/ABSOLUTE/PATH/TO/uv",
                     "args": [
                         "--directory",
-                        "/ABSOLUTE/PATH/TO/PARENT/FOLDER/mcp-unstructured-demo",
+                        "/ABSOLUTE/PATH/TO/PROJECT/DIRECTORY/mcp-unstructured-demo/",
                         "run",
                         "workflow.py"
                     ]
@@ -317,7 +324,7 @@ You are now ready to start coding.
                     "command": "C:\\ABSOLUTE\\PATH\\TO\\uv",
                     "args": [
                         "--directory",
-                        "C:\\ABSOLUTE\\PATH\\TO\\PARENT\\FOLDER\\mcp-unstructured-demo",
+                        "C:\\ABSOLUTE\\PATH\\TO\\PROJECT\\DIRECTORY\\mcp-unstructured-demo\\",
                         "run",
                         "workflow.py"
                     ]
@@ -329,7 +336,7 @@ You are now ready to start coding.
     </Step>
 </Steps>
 
-## Step 2: Run the MCP server and call it from Claude for Desktop
+## Step 3: Run the MCP server and call it from Claude for Desktop
 
 <Steps>
     <Step>
@@ -357,9 +364,9 @@ You are now ready to start coding.
     </Step>
 </Steps>
 
-## Optional Step 3: Extend the MCP server
+## Optional Step 4: Extend the MCP server
 
-Unstructured offers an initial experimental MCP server implementation, with much more functionality then the MCP server that you just created in the previous Steps 1-2. 
+Unstructured offers an initial experimental MCP server implementation, with much more functionality then the MCP server that you just created previously in this walkthrough. 
 This initial MCP server is intended only for experimentation purposes and is not recommended for production usage. A more complete, supported, 
 production-level implementation is coming soon. 
 
@@ -367,7 +374,7 @@ To use Unstructured's initial experimental MCP server implementation, do the fol
 
 <Steps>
     <Step>
-        From a different working directory than the one you used in the previous Steps 1-2, use Git to clone the 
+        From a different working directory than the one you used in previously in this walkthrough, use Git to clone the 
         [Unstructured API MCP Server](https://github.com/Unstructured-IO/UNS-MCP) repository in GitHub, and then switch to the cloned 
         repository's root directory:
 
