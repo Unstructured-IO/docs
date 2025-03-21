@@ -82,8 +82,12 @@ graph LR
     User3_Org3 -.-> WS3C
 ```
 
-Each user must be explicitly added to each workspace that they are allowed to access. This assumes that the user has first been added 
+Each account user must be explicitly added to each workspace that they are allowed to access. This assumes that the account user has first been added 
 to the workspace's parent organization.
+
+To make API calls to a workspace, an account user must first create a _workspace API key_ for that workspace and then use that workspace API key to make API calls to that workspace.
+
+_Personal API keys_ for account users' personal accounts do not work for making API calls to workspaces. Workspace API keys for workspaces do not work for making API calls to personal accounts.
 
 ## Create a workspace
 
@@ -102,16 +106,30 @@ contact your Unstructured representative.
 
 ## Add a member to a workspace
 
-An Unstructured user account that is added to a workspace is referred to an a _member_ of that workspace.
+An Unstructured account user that is added to a workspace is referred to an a _member_ of that workspace.
 
-To add a user account to a workspace as a member:
+To add an account user to a workspace as a member:
 
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
 2. In the top navigation bar, ...
-3. Make sure the user account that you want to add has already been added as a member of the workspace's parent organization. [Learn how]().
+3. Make sure the account user that you want to add has already been added as a member of the workspace's parent organization. [Learn how]().
 4. ...
 
 ## Remove a member from a workspace
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...
+
+## Create a workspace API key
+
+To make API calls to a workspace, an account user must first create a workspace API key for that workspace and then use that workspace API key to make API calls to that workspace.
+
+Pesonal API keys for account users' personal accounts do not work for making API calls to workspaces. Workspace API keys do not work for making API calls to personal accounts.
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...
+
+## Delete an API key for a workspace
 
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
 2. In the top navigation bar, ...
@@ -130,11 +148,11 @@ To add a user account to a workspace as a member:
 
 <Caution>
     Deleting a workspace is a permanent action and is not recoverable. Once a workspace is deleted, all connectors, workflows, jobs, and 
-    API keys that are associated with that workspace are also deleted and are not recoverable.
+    workspace API keys that are associated with that workspace are also deleted and are not recoverable.
     
-    The workspace's users are not deleted, but they will no longer have access to the deleted workspace's connectors, workflows, jobs, and API keys.
+    The workspace's account users are not deleted, but they will no longer have access to the deleted workspace's connectors, workflows, jobs, and workspace API keys.
 
-    Any code or scripts that reference the deleted workspace's connectors, workflows, jobs, or API keys will fail.
+    Any code or scripts that reference the deleted workspace's connectors, workflows, jobs, or workspace API keys will fail.
 </Caution>
 
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).

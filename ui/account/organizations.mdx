@@ -7,7 +7,7 @@ An _organization_ is a collection of Unstructured [workspaces](/account/workspac
 access by Unstructured _account users_ to workspaces within organizations. 
 
 A _workspace_ is a collection of resources 
-(such as connectors, workflows, jobs, and API keys) within an organization.
+(such as connectors, workflows, jobs, and workspace API keys) within an organization.
 
 ## Organization architecture
 
@@ -35,7 +35,7 @@ graph LR
     Org3 --> WS3C
 ```
 
-A user can have access to multiple organizations.
+An account user can have access to multiple organizations.
 
 ```mermaid
 graph LR
@@ -54,7 +54,18 @@ graph LR
     User3 -.-> Org3
 ```
 
-Each user also has access to their own personal account, which is separate from any organizational accounts. Personal accounts do not have workspaces.
+Each account user also has access to their own Unstructured _personal account_, which is separate from any organizational accounts. Personal accounts do not have workspaces.
+
+Users create personal accounts when they initially sign up for Unstructured in one of the following ways:
+
+- Going to [https://platform.unstructured.io](https://platform.unstructured.io) and using their email address, Google account, or GitHub account to 
+  sign up for a new Unstructured personal account and sign into that account at the same time.
+- Going to the [For Developers](https://unstructured.io/developers) page on the Unstructured website and completing the on-screen [signup form](https://unstructured.io/developers#get-started).
+
+The user of the personal account is now an Unstructured _account user_ that can be added to organizations and workspaces within those organizations.
+
+Personal accounts are not associated with any organization. Resources in personal accounts (such as connectors, workflows, jobs, and personal API keys) cannot 
+be shared with nor migrated over into an organization.
 
 ```mermaid
 graph LR
@@ -79,7 +90,7 @@ graph LR
     User3 -.-> Org3
 ```
 
-Within an organization, a user can have access to multiple workspaces within that organization.
+Within an organization, an account user can have access to multiple workspaces within that organization.
 
 ```mermaid
 graph LR
@@ -126,7 +137,7 @@ graph LR
     User3_Org3 -.-> WS3C
 ```
 
-Each user must be explicitly added to the organizations&mdash;and workspaces within those organizations&mdash;that they are allowed to access.
+Each account user must be explicitly added to the organizations&mdash;and workspaces within those organizations&mdash;that they are allowed to access.
 
 ## Create an organization
 
@@ -137,9 +148,9 @@ Each user must be explicitly added to the organizations&mdash;and workspaces wit
 
 ## Add a member to an organization
 
-An Unstructured user account that is added to an organization is referred to an a _member_ of that organization.
+An Unstructured account user that is added to an organization is referred to an a _member_ of that organization.
 
-To add a user account to an organization as a member:
+To add an account user to an organization as a member:
 
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
 2. In the top navigation bar, ...
@@ -155,9 +166,9 @@ To add a user account to an organization as a member:
     Deleting an organization is a permanent action and is not recoverable. Once an organization is deleted, all workspaces associated with that 
     organization are also deleted and are not recoverable.
     
-    The organization's users are not deleted, but they will no longer have access to the deleted organization or any of its workspaces.
+    The organization's account users are not deleted, but they will no longer have access to the deleted organization or any of its workspaces.
 
-    Any code or scripts that reference connectors, workflows, jobs, or API keys that are associated with workflows in the deleted 
+    Any code or scripts that reference connectors, workflows, jobs, or workflow API keys that are associated with workflows in the deleted 
     organization will fail.
 </Caution>
 
