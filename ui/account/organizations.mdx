@@ -1,0 +1,176 @@
+---
+title: Organizations
+sidebarTitle: Organizations
+---
+
+An _organization_ is a collection of Unstructured [workspaces](/account/workspaces). An Unstructured _organizational account_ manages 
+access by Unstructured _account users_ to workspaces within organizations. 
+
+A _workspace_ is a collection of resources 
+(such as connectors, workflows, jobs, and workspace API keys) within an organization.
+
+## Organization architecture
+
+An organization account operates independently of all other organizations. Each organization can have multiple [workspaces](/account/workspaces).
+
+```mermaid
+graph LR
+    Org1[Organization 1]
+    Org2[Organization 2]
+    Org3[Organization 3]
+    WS1A[Workspace 1A]
+    WS2A[Workspace 2A]
+    WS2B[Workspace 2B]
+    WS3A[Workspace 3A]
+    WS3B[Workspace 3B]
+    WS3C[Workspace 3C]
+
+    Org1 --> WS1A
+    
+    Org2 --> WS2A
+    Org2 --> WS2B
+
+    Org3 --> WS3A
+    Org3 --> WS3B
+    Org3 --> WS3C
+```
+
+An account user can have access to multiple organizations.
+
+```mermaid
+graph LR
+    User1[User 1]
+    User2[User 2]
+    User3[User 3]
+    Org1[Organization 1]
+    Org2[Organization 2]
+    Org3[Organization 3]
+
+    User1 -.-> Org1
+    User2 -.-> Org1
+    User2 -.-> Org2
+    User3 -.-> Org1
+    User3 -.-> Org2
+    User3 -.-> Org3
+```
+
+Each account user also has access to their own Unstructured _personal account_, which is separate from any organizational accounts. Personal accounts do not have workspaces.
+
+Users create personal accounts when they initially sign up for Unstructured in one of the following ways:
+
+- Going to [https://platform.unstructured.io](https://platform.unstructured.io) and using their email address, Google account, or GitHub account to 
+  sign up for a new Unstructured personal account and sign into that account at the same time.
+- Going to the [For Developers](https://unstructured.io/developers) page on the Unstructured website and completing the on-screen [signup form](https://unstructured.io/developers#get-started).
+
+The user of the personal account is now an Unstructured _account user_ that can be added to organizations and workspaces within those organizations.
+
+Personal accounts are not associated with any organization. Resources in personal accounts (such as connectors, workflows, jobs, and personal API keys) cannot 
+be shared with nor migrated over into an organization.
+
+```mermaid
+graph LR
+    User1[User 1]
+    User2[User 2]
+    User3[User 3]
+    PA1[Personal Account for User 1]
+    PA2[Personal Account for User 2]
+    PA3[Personal Account for User 3]
+    Org1[Organization 1]
+    Org2[Organization 2]
+    Org3[Organization 3]
+
+    User1 --> PA1
+    User2 --> PA2
+    User3 --> PA3
+    User1 -.-> Org1
+    User2 -.-> Org1
+    User2 -.-> Org2
+    User3 -.-> Org1
+    User3 -.-> Org2
+    User3 -.-> Org3
+```
+
+Within an organization, an account user can have access to multiple workspaces within that organization.
+
+```mermaid
+graph LR
+    User1[User 1]
+    User2_Org1[User 2]
+    User2_Org2[User 2]
+    User3_Org1[User 3] 
+    User3_Org2[User 3]
+    User3_Org3[User 3]
+
+    Org1[Organization 1]
+    Org2[Organization 2]
+    Org3[Organization 3]
+
+    WS1A[Workspace 1A]
+    WS2A[Workspace 2A]
+    WS2B[Workspace 2B]
+    WS3A[Workspace 3A]
+    WS3B[Workspace 3B]
+    WS3C[Workspace 3C]
+    
+    Org1 --> WS1A
+    Org1 -.-> User1
+    Org1 -.-> User2_Org1
+    Org1 -.-> User3_Org1
+    User1 -.-> WS1A
+    User2_Org1 -.-> WS1A
+    User3_Org1 -.-> WS1A
+    
+    Org2 --> WS2A
+    Org2 --> WS2B
+    Org2 -.-> User2_Org2
+    Org2 -.-> User3_Org2
+    User2_Org2 -.-> WS2A
+    User2_Org2 -.-> WS2B
+    User3_Org2 -.-> WS2B
+    
+    Org3 --> WS3A
+    Org3 --> WS3B
+    Org3 --> WS3C
+    Org3 -.-> User3_Org3
+    User3_Org3 -.-> WS3A
+    User3_Org3 -.-> WS3B
+    User3_Org3 -.-> WS3C
+```
+
+Each account user must be explicitly added to the organizations&mdash;and workspaces within those organizations&mdash;that they are allowed to access.
+
+## Create an organization
+
+## Access an organization
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...
+
+## Add a member to an organization
+
+An Unstructured account user that is added to an organization is referred to an a _member_ of that organization.
+
+To add an account user to an organization as a member:
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...
+
+## Remove a member from an organization
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...
+
+## Permanently delete an organization
+
+<Caution>
+    Deleting an organization is a permanent action and is not recoverable. Once an organization is deleted, all workspaces associated with that 
+    organization are also deleted and are not recoverable.
+    
+    The organization's account users are not deleted, but they will no longer have access to the deleted organization or any of its workspaces.
+
+    Any code or scripts that reference connectors, workflows, jobs, or workflow API keys that are associated with workflows in the deleted 
+    organization will fail.
+</Caution>
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, ...
