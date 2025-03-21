@@ -384,12 +384,32 @@ To use Unstructured's initial experimental MCP server implementation, do the fol
         ```
     </Step>
     <Step>
-        In the cloned repository's root directory, create a new file named `.env`. 
-        Then add the following code to this new `.env` file, replacing `<your-unstructured-api-key>` with your Unstructured API key:
+        In the cloned repository's root directory, create a new file named `.env`. Then copy the contents of the repository's 
+        `.env.template` file into the `.env` file that you just created. 
+
+        As an MCP security best practice, sensitive information such as API keys should be stored in environment variables or a 
+        secrets manager, not hard-coded in MCP server code or retrieved from the user by an MCP client. 
+        The `.env` file is a common way to store environment variables in Python projects outside of MCP server code and not 
+        visible to MCP clients.
+        
+        Having your own `.env` file helps ensure that you do 
+        not accidentally commit any sensitive information from this cloned repository into other repositories (as `.env` is an 
+        entry in this cloned repository's `.gitignore` file, but `.env.template` is not).
+
+        In your `.env` file, replace `<key-here>` in the following line with your Unstructured API key:
 
         ```text
-        UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
+        UNSTRUCTURED_API_KEY="<key-here>"
         ```
+
+        As needed, replace any of the other placeholders in the `.env` file with your own values. For example, if you want to 
+        create an Amazon S3 source or destination connector, you should provide your AWS credentials in the `.env` file by specifying values 
+        for the `AWS_KEY` and `AWS_SECRET` variables. For more information, see the usage comments in the original `.env.template` 
+        file or in the content that you copied into your `.env` file.
+
+        The original `.env.template` file will be updated as more features are added to the repository. You should periodically 
+        pull down the source repository's contents into your cloned repository to get any new features, as well as the latest version 
+        of the `.env.template` file that you can copy any newly available required environment variable names over into your existing `.env` file.
     </Step>
     <Step>
         In the cloned repository's root directory, create a virtual environment. Then activate the virtual environment:
@@ -493,5 +513,10 @@ To use Unstructured's initial experimental MCP server implementation, do the fol
         - `Update the workflow with ID <workflow-id>.`
         - `List all available workflows.`
         - `Delete the worklow with ID <workflow-id>.`
+    </Step>
+    <Step>
+        New features are being added to the source repository over time, which will increase the types of questions that 
+        you can ask the MCP server. You should periodically 
+        pull down the source repository's contents into your cloned repository to get any new features as they are added.
     </Step>
 </Steps>
