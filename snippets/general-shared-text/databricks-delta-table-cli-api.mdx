@@ -22,6 +22,11 @@ The following environment variables:
 
 - `DATABRICKS_TABLE` - The name of the table inside of the schema (formerly known as a database), represented by `--table-name` (CLI) or `table_name` (Python). The default is `elements` if not otherwise specified.
 
+<Note>
+    Using dashes (`-`) in the names of catalogs, schemas (formerly known as databases), tables, and volumes might cause isolated issues with the connector. It is 
+    recommended to use underscores (`_`) instead of dashes in the names of catalogs, schemas, tables, and volumes.
+</Note>
+
 For the SQL-based implementation, add these environment variables:
 
 - `DATABRICKS_RECORD_ID_KEY` - The name of the column that uniquely identifies each record in the table, represented by `--record-id-key` (CLI) or `record_id_key` (Python).

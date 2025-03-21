@@ -61,6 +61,11 @@
     [GCP](https://docs.gcp.databricks.com/tables/managed.html)
     within that schema (formerly known as a database).
 
+  <Note>
+      Using dashes (`-`) in the names of catalogs, schemas (formerly known as databases), and tables might cause isolated issues with the connector. It is 
+      recommended to use underscores (`_`) instead of dashes in the names of catalogs, schemas, and tables.
+  </Note>
+
   The following video shows how to create a catalog, schema (formerly known as a database), and a table in Unity Catalog if you do not already have them available, and set privileges for someone other than their owner to use them:
 
   <iframe
@@ -76,7 +81,7 @@
   This table must contain the following column names and their data types:
 
   ```text
-  CREATE TABLE IF NOT EXISTS `<catalog-name>`.`<schema-name>`.elements (
+  CREATE TABLE IF NOT EXISTS `<catalog_name>`.`<schema_name>`.elements (
       id STRING NOT NULL PRIMARY KEY,
       record_id STRING,
       element_id STRING,
@@ -134,6 +139,11 @@
   or [GCP](https://docs.gcp.databricks.com/volumes/utility-commands.html). The volume can be in the same 
   schema (formerly known as a database) as the table, or the volume and table can be in separate schemas. In either case, both of these 
   schemas must share the same parent catalog.
+
+  <Note>
+      Using dashes (`-`) in the names of volumes might cause isolated issues with the connector. It is 
+      recommended to use underscores (`_`) instead of dashes in the names of volumes.
+  </Note>
 
   The following video shows how to create a catalog, schema (formerly known as a database), and a volume in Unity Catalog if you do not already have them available, and set privileges for someone other than their owner to use them:
 

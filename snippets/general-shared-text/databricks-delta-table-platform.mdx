@@ -17,3 +17,8 @@ Fill in the following fields:
 
 - **Volume** (_required_): The name of the target volume in Unity Catalog.
 - **Volume Path**: Any target folder path inside of the volume to use instead of the volume's root. If not otherwise specified, processing occurs at the volume's root.
+
+<Note>
+    Using dashes (`-`) in the names of catalogs, schemas (formerly known as databases), tables, and volumes might cause isolated issues with the connector. It is 
+    recommended to use underscores (`_`) instead of dashes in the names of catalogs, schemas, tables, and volumes.
+</Note>
