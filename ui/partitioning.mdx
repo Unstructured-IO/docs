@@ -25,7 +25,9 @@ import PlatformPartitioningStrategies from '/snippets/general-shared-text/platfo
 
 ## Supported languages
 
-**Fast** and **High Res** use Tesseract OCR. For the list of languages that Tesseract supports, see 
+**Fast** partitioning accepts any text inputs, though automatic language detection of those inputs is restricted to [langdetect](https://pypi.org/project/langdetect/)
+
+**High Res** partitioning leverages Tesseract OCR. For the list of languages that Tesseract supports, see:
 [Languages/Scripts supported in different versions of Tesseract](https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html).
 
 Language support for **VLM** depends on the model used. The list of supported languages for a particular model is maintained by 
