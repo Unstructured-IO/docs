@@ -15,3 +15,8 @@ The following environment variables:
 
   - `GCP_SERVICE_ACCOUNT_KEY_FILEPATH` - The path to the `credentials.json` key file, represented by `--service-account-key-path` (CLI) or `service_account_key_path` (Python).
   - `GCP_SERVICE_ACCOUNT_KEY_STRING` - The contents of the `credentials.json` key file as a string, represented by `--service-account-key` (CLI) or `service_account_key` (Python).
+
+<Note>
+    To use `--extensions` with a comma-separated list (CLI) or `extensions` with an array of strings (Python) to process files with only those extensions, 
+    do not include the leading dot in the file extensions. For example, use `pdf` or `docx` instead of `.pdf` or `.docx`.
+</Note>
