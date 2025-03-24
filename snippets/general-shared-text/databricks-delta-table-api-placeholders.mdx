@@ -8,13 +8,16 @@
 
   If the target table and volume are in the same schema (formerly known as a database), then `<database>` and `<schema>` will have the same values.
 
-- `<table-name>` (_required_): The name of the target table in Unity Catalog.
+- `<table_name>` (_required_): The name of the target table in Unity Catalog.
 - `<schema>`: The name of the schema  (formerly known as a database) in Unity Catalog for the target volume. The default is `default` if not otherwise specified.
 
   If the target volume and table are in the same schema (formerly known as a database), then `<schema>` and `<database>` will have the same values.
 
 - `<volume>` (_required_): The name of the target volume in Unity Catalog.
-- `<volume-path>`: Any target folder path inside of the volume to use instead of the volume's root. If not otherwise specified, processing occurs at the volume's root.
+- `<volume_path>`: Any target folder path inside of the volume to use instead of the volume's root. If not otherwise specified, processing occurs at the volume's root.
 
-
+<Note>
+    Using dashes (`-`) in the names of catalogs, schemas (formerly known as databases), tables, and volumes might cause isolated issues with the connector. It is 
+    recommended to use underscores (`_`) instead of dashes in the names of catalogs, schemas, tables, and volumes.
+</Note>
 
