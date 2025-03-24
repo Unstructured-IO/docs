@@ -87,7 +87,7 @@ Here is an example of a list of recognized entities and their types using GPT-4o
 
 # Generate a list of entities and their types
 
-To generate a list of recognized entities and their types, in the **Task** drop-down list of an **Enrichment** node in a workflow, specify the following:
+To generate a list of recognized entities and their types, in an **Enrichment** node in a workflow, specify the following:
 
 <Note>
     You can change a workflow's NER settings only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.
@@ -95,13 +95,13 @@ To generate a list of recognized entities and their types, in the **Task** drop-
     Entities are only recognized when the **Partitioner** node in a workflow is also set to use the **High Res** partitioning strategy. [Learn more](/ui/partitioning).
 </Note>
 
-1. Select **Named Entity Recognition (NER)**. By default, OpenAI's GPT-4o will follow a default set of instructions (called a _prompt_) to perform NER using a set of predefined entity types.
-2. To use Anthropic's Claude 3.5 Sonnet to perform NER instead, or to customize the prompt, click **Edit**.
-3. To switch to using Anthropic's Claude 3.5 Sonnet, click **Anthropic (Claude 3.5 Sonnet)**.
-4. To experiment with running the default prompt against some sample data, click **Run Prompt**. The selected **Model** uses the 
+1. Select **Text**.
+2. For **Model**, select either **OpenAI (GPT-4o)** or **Anthropic (Claude 3.5 Sonnet)**.
+3. The selected model will follow a default set of instructions (called a _prompt_) to perform NER using a set of predefined entity types. To experiment 
+   with running the default prompt against some sample data, click **Edit**, and then click **Run Prompt**. The selected **Model** uses the 
    **Prompt** to run NER on the **Input sample** and shows the results in the **Output**. Look specifically at the `response_json` field for the 
    entities that were recognized and their types.
-5. To customize the prompt, change the contents of **Prompt**.
+4. To customize the prompt, change the contents of **Prompt**.
 
    <Note>
        For best results, Unstructured strongly recommends that you limit your changes only to certain portions of the default prompt, specifically:
@@ -122,6 +122,6 @@ To generate a list of recognized entities and their types, in the **Task** drop-
        - Changing any other portions of the default prompt could produce unexpected results.
    </Note>
 
-6. To experiment with different data, change the contents of **Input sample**. For best results, Unstructured strongly recommends that the JSON structure in **Input sample** be preserved.
-7. When you are satisfied with the **Model** and **Prompt** that you want to use, click **Save**.
+5. To experiment with different data, change the contents of **Input sample**. For best results, Unstructured strongly recommends that the JSON structure in **Input sample** be preserved.
+6. When you are satisfied with the **Model** and **Prompt** that you want to use, click **Save**.
 
