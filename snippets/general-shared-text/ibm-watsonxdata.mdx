@@ -1,0 +1,190 @@
+- An [IBM Cloud account](https://cloud.ibm.com/login). [Create an IBM Cloud account](https://cloud.ibm.com/registration) if you do not already have one.
+- An API key for the IBM Cloud account. If you do not have one already, create one as follows:
+
+  1. [Log in to your IBM Cloud account](https://cloud.ibm.com/login).
+  2. In the top navigation bar, click **Manage** and then, under **Security and access**, click **Access (IAM)**.
+  3. On the sidebar, under **Manage identities**, click **API keys**.
+  4. With the **View** list showing **My IBM Cloud API keys**, click **Create**. 
+  5. Enter some **Name** and an optional **Description** for the API key. 
+  6. Leave **Leaked action** set to **Disable the leaked key** and **Session creation** set to **No**.
+  7. Click **Create**. 
+  8. Click **Copy** or **Download** to copy or save the API key to a secure location. You won't be able to access this API key from this screen again.
+
+- An IBM Cloud Object Storage (COS) instance in the account, and a bucket within that instance. If you do not have them already, 
+  create them as follows:
+
+  1. [Log in to your IBM Cloud account](https://cloud.ibm.com/login).
+  2. On the sidebar, click the **Resource list** icon. If the sidebar is not visible, click the **Navigation Menu** icon to the far left of the 
+     top navigation bar.
+  3. Click **Create resource**.
+  4. With **IBM Cloud catalog** selected, search for and select **Object Storage**.
+  5. Complete the on-screen instructions to finish creating the COS instance.
+  6. With the COS instance's settings page shown, on the **Buckets** tab, click **Create bucket**.
+  7. Complete the on-screen instructions to finish creating the bucket.
+
+- An HMAC access key ID and secret access key for the target Cloud Object Storage (COS) instance. If you do not have them already, 
+  get or create them as follows:
+
+  1. [Log in to your IBM Cloud account](https://cloud.ibm.com/login).
+  2. On the sidebar, click the **Resource list** icon. If the sidebar is not visible, click the **Navigation Menu** icon to the far left of the 
+     top navigation bar.
+  3. In the list of resources, expand **Storage**, and then click the target COS instance.
+  4. On the **Service credentials** tab, if there is a credential that you want to use in the list, expand the credential, and copy the following values to a secure location:
+
+     - `access_key_id` under `cos_hmac_keys`, which represents the HMAC access key ID.
+     - `secret_access_key` under `cos_hmac_keys`, which represents the HMAC secret access key.
+
+     After you have copied the preceding values, you have completed this procedure.
+
+  5. If there is not a credential that you want to use, or there are no credentials at all, click **New Credential**.
+  6. Enter some **Name** for the credential.
+  7. For **Role**, select at least **Writer**, leave **Select Service ID** set to **Auto Generated**, 
+     switch on **Include HMAC Credential**, and then click **Add**.
+  8. In the list of credentials, expand the credential, and copy the following values to a secure location:
+
+     - `access_key_id` under `cos_hmac_keys`, which represents the HMAC access key ID.
+     - `secret_access_key` under `cos_hmac_keys`, which represents the HMAC secret access key.
+
+- The name and region of the target bucket in the target Cloud Object Storage (COS) instance. To get this:
+
+  1. [Log in to your IBM Cloud account](https://cloud.ibm.com/login).
+  2. On the sidebar, click the **Resource list** icon. If the sidebar is not visible, click the **Navigation Menu** icon to the far left of the 
+     top navigation bar.
+  3. In the list of resources, expand **Storage**, and then click the target COS instance.
+  4. On the **Buckets** tab, note the **Name** and **Location** of the target bucket. For **Location**, note only the value within the 
+     parentheses. For example, if the value is **United States - Dallas (us-south)**, note only **us-south**.
+
+- An IBM watsonx.data data store instance in the IBM Cloud account. To create one:
+
+  1. [Log in to your IBM Cloud account](https://cloud.ibm.com/login).
+  2. On the sidebar, click the **Resource list** icon. If the sidebar is not visible, click the **Navigation Menu** icon to the far left of the 
+     top navigation bar.
+  3. Click **Create resource**.
+  4. With **IBM Cloud catalog** selected, search for and select **watsonx.data**.
+  5. Complete the on-screen instructions to finish creating the watsonx.data data store instance.
+
+- An Apache Iceberg-based catalog within the watsonx.data data store instance. To create one:
+
+  1. [Log in to your IBM Cloud account](https://cloud.ibm.com/login).
+  2. On the sidebar, click the **Resource list** icon. If the sidebar is not visible, click the **Navigation Menu** icon to the far left of the 
+     top navigation bar.
+  3. In the list of resources, expand **Databases**, and then click the target watsonx.data data store instance.
+  4. Click **Open web console**.
+  5. If prompted, log in to the web console.
+  6. On the sidebar, click **Infrastructure manager**. If the sidebar is not visible, click the **Global navigation** icon to the far left of the 
+     top navigation bar.
+  7. Click **Add component**.
+  8. Under **Storage**, click **IBM Cloud Object Storage**, and then click **Next**.
+  9. Complete the on-screen instructions to finish creating the Iceberg catalog. This includes manually entering the matching name of the target bucket 
+     within the target COS instance, the target COS instance's matching endpoint (such as `https://s3.us-south.cloud-object-storage.appdomain.cloud` for 
+     **Dallas (us-south)**), and the target COS instance's matching access key and secret access key.
+  10. Next to **Connection status**, click **Test connection** to test the connection. Do not proceed until **Successful** is shown. If the connection is 
+      not successful, check the values you entered for the target bucket name, region, endpoint, access key, and secret access key, and try again.
+  11. Check the box labelled **Associate Catalog**.
+  12. Check the box labelled **Activate now**.
+  13. Under **Associated catalog**, for **Catalog type**, select **Apache Iceberg**.
+  14. Enter some **Catalog name**.
+  15. Click **Associate**.
+  16. On the sidebar, click **Infrastructure manager**. Make sure the catalog is associated with the appropriate engines. If it is not, rest your mouse 
+      on an unassociated target engine, click the **Manage associations** icon, check the box next to the target catalog's name, and then 
+      click **Save and restart engine**. 
+      
+      To create an engine, click **Add component**, and follow the on-screen to add an appropriate 
+      engine from the list of available **Engines**. For example, to create tables within a catalog's schemas, you must first create an IBM Spark engine and 
+      then associate that engine with the catalog.
+
+- The catalog name and metastore REST endpoint for the target Iceberg catalog. To get this:
+
+  1. [Log in to your IBM Cloud account](https://cloud.ibm.com/login).
+  2. On the sidebar, click the **Resource list** icon. If the sidebar is not visible, click the **Navigation Menu** icon to the far left of the 
+     top navigation bar.
+  3. In the list of resources, expand **Databases**, and then click the target watsonx.data data store instance.
+  4. Click **Open web console**.
+  5. If prompted, log in to the web console.
+  6. On the sidebar, click **Infrastructure manager**. If the sidebar is not visible, click the **Global navigation** icon to the far left of the 
+     top navigation bar.
+  7. In the **Catalogs** section, click the target Iceberg catalog.
+  8. On the **Details** tab, note the value of **Name** representing the catalog name, and **Metastore REST endpoint** representing the metastore REST endpoint. (Do not accidentally copy the **Metastore Thrift endpoint**.)
+
+- A namespace (also known as a schema) and a table in the target catalog. To create these:
+
+  1. [Log in to your IBM Cloud account](https://cloud.ibm.com/login).
+  2. On the sidebar, click the **Resource list** icon. If the sidebar is not visible, click the **Navigation Menu** icon to the far left of the 
+     top navigation bar.
+  3. In the list of resources, expand **Databases**, and then click the target watsonx.data data store instance.
+  4. Click **Open web console**.
+  5. If prompted, log in to the web console.
+  6. On the sidebar, click **Data manager**. If the sidebar is not visible, click the **Global navigation** icon to the far left of the 
+     top navigation bar.
+  7. On the **Browse data** tab, under **Catalogs associated**, click the target catalog.
+  8. Click the ellipses, and then click **Create schema**.
+  9. Enter some **Name** for the schema, and then click **Create**.
+  10. On the sidebar, click **Query workspace**.
+  11. In the SQL editor, enter and run a table creation statement such as the following, replacing `<catalog-name>` with the name of the target 
+      catalog and `<schema-name>` with the name of the target schema:
+
+      ```sql      
+      CREATE TABLE <catalog-name>.<schema-name>.elements (
+         "type" varchar,
+         "element_id" varchar,
+         "text" varchar,
+         "file_directory" varchar,
+         "filename" varchar,
+         "languages" array(varchar),
+         "last_modified" double,
+         "page_number" varchar,
+         "filetype" varchar,
+         "url" varchar,
+         "version" varchar,
+         "record_locator" varchar,
+         "date_created" double,
+         "date_modified" double,
+         "date_processed" double,
+         "filesize_bytes" bigint,
+         "points" varchar,
+         "system" varchar,
+         "layout_width" bigint,
+         "layout_height" bigint,
+         "id" varchar,
+         "record_id" varchar,
+         "parent_id" varchar
+      )
+      WITH (
+         delete_mode = 'copy-on-write',
+         format = 'PARQUET',
+         format_version = '2'
+      )
+      ```
+
+      Note that incoming elements that do not have matching column 
+      names will be dropped upon record insertion. For example, if the incoming data has an element named `sent_from` and there is no 
+      column named `sent_from` in the table, the `sent_from` element will be dropped upon record insertion. You should modify the preceding 
+      sample table creation statement to add columns for any additional elements that you want to be included upon record 
+      insertion.
+
+- The name of the target namespace (also known as a schema) within the target catalog, and name of the target table within that schema. To get these:
+
+  1. [Log in to your IBM Cloud account](https://cloud.ibm.com/login).
+  2. On the sidebar, click the **Resource list** icon. If the sidebar is not visible, click the **Navigation Menu** icon to the far left of the 
+     top navigation bar.
+  3. In the list of resources, expand **Databases**, and then click the target watsonx.data data store instance.
+  4. Click **Open web console**.
+  5. If prompted, log in to the web console.
+  6. On the sidebar, click **Data manager**. If the sidebar is not visible, click the **Global navigation** icon to the far left of the 
+     top navigation bar.
+  7. On the **Browse data** tab, expand the name of the target catalog, and note the names of the target schema and target table.
+
+- The region and endpoint for the target Cloud Object Storage (COS) instance that is connected to the target watsonx.data data store instance. To get these:
+
+  1. [Log in to your IBM Cloud account](https://cloud.ibm.com/login).
+  2. On the sidebar, click the **Resource list** icon. If the sidebar is not visible, click the **Navigation Menu** icon to the far left of the 
+     top navigation bar.
+  3. In the list of resources, expand **Databases**, and then click the target watsonx.data data store instance.
+  4. Click **Open web console**.
+  5. If prompted, log in to the web console.
+  6. On the sidebar, click **Infrastructure manager**. If the sidebar is not visible, click the **Global navigation** icon to the far left of the 
+     top navigation bar.
+  7. In the **Storage** section, click the target COS instance.
+  8. On the **Details** tab, note the value of **Region** representing the COS instance's region, and **Endpoint** representing the COS instance's endpoint.
+
+- The name of the column in the target table that uniquely identifies each of the records in the table.
