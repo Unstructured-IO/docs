@@ -1,0 +1,24 @@
+The IBM watsonx.data connector dependencies:
+
+  ```bash CLI, Python
+  pip install "unstructured-ingest[ibm-watsonx-s3]"
+  ```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `IBM_IAM_API_KEY` - An API key for the target IBM Cloud account, represented by `--iam-api-key` (CLI) or `iam_api_key` (Python).
+- `IBM_COS_ACCESS_KEY_ID` - An HMAC access key ID for the target IBM Cloud Object Storage (COS) instance, represented by `--access-key-id` (CLI) or `access_key_id` (Python).
+- `IBM_COS_SECRET_ACCESS_KEY` - The associated HMAC secret access key ID for the target HMAC access key, represented by `--secret-access-key` (CLI) or `secret_access_key` (Python).
+- `IBM_ICEBERG_CATALOG_METASTORE_REST_ENDPOINT` - The metastore REST endpoint value for the target Apache Iceberg catalog in the target IBM watsonx.data data store instance, represented by `--iceberg_endpoint` (CLI) or `iceberg_endpoint` (Python).
+- `IBM_COS_ENDPOINT` - The target COS instance's endpoint value, represented by `--object-storage-endpoint` (CLI) or `object_storage_endpoint` (Python).
+- `IBM_COS_REGION` - The target COS instance's region short ID, represented by `--object-storage-region` (CLI) or `object_storage_region` (Python).
+- `IBM_ICEBERG_CATALOG` - The name of the target Iceberg catalog, represented by `--catalog` (CLI) or `catalog` (Python).
+- `IBM_ICEBERG_SCHEMA` - The name of the target namespace (also known as a schema) in the target catalog, represented by `--namespace` (CLI) or `namespace` (Python).
+- `IBM_ICEBERG_TABLE` - The name of the target table in the target schema, represented by `--table` (CLI) or `table` (Python).
+- `IBM_ICEBERG_TABLE_UNIQUE_RECORD_COLUMN` - The name of the column that uniquely identifies each record in the target table, represented by `--record-id-key` (CLI) or `record_id_key` (Python). The default is `record_id`.
+
+Additionally, `--max-retries` (CLI) or `max_retries` (Python) is an optional parameter that specifies the number of times to retry uploading data. The default is `5`. If specified, it must be a number between `2` and `10`, inclusive.
