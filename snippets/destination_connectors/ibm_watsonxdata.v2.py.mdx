@@ -44,12 +44,12 @@ if __name__ == "__main__":
         destination_connection_config=IbmWatsonxConnectionConfig(
             access_config=IbmWatsonxAccessConfig(
                 iam_api_key=os.getenv("IBM_IAM_API_KEY"),
-                access_key_id=os.getenv("IBM_COS_ACCESS_KEY_ID"),
+                access_key_id=os.getenv("IBM_COS_ACCESS_KEY"),
                 secret_access_key=os.getenv("IBM_COS_SECRET_ACCESS_KEY")
             ),
             iceberg_endpoint=os.getenv("IBM_ICEBERG_CATALOG_METASTORE_REST_ENDPOINT"),
-            object_storage_endpoint=os.getenv("IBM_COS_ENDPOINT"),
-            object_storage_region=os.getenv("IBM_COS_REGION"),
+            object_storage_endpoint=os.getenv("IBM_COS_BUCKET_PUBLIC_ENDPOINT"),
+            object_storage_region=os.getenv("IBM_COS_BUCKET_REGION"),
             catalog=os.getenv("IBM_ICEBERG_CATALOG")
         ),
         stager_config=IbmWatsonxUploadStagerConfig(),

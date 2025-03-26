@@ -15,11 +15,11 @@ unstructured-ingest \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
   ibm-watsonx-s3 \
     --iam-api-key $IBM_IAM_API_KEY \
-    --access-key-id $IBM_COS_ACCESS_KEY_ID \
+    --access-key-id $IBM_COS_ACCESS_KEY \
     --secret-access-key $IBM_COS_SECRET_ACCESS_KEY \
     --iceberg-endpoint $IBM_ICEBERG_CATALOG_METASTORE_REST_ENDPOINT \
-    --object-storage-endpoint $IBM_COS_ENDPOINT \
-    --object-storage-region $IBM_COS_REGION \
+    --object-storage-endpoint $IBM_COS_BUCKET_PUBLIC_ENDPOINT \
+    --object-storage-region $IBM_COS_BUCKET_REGION \
     --catalog $IBM_ICEBERG_CATALOG \
     --namespace $IBM_ICEBERG_SCHEMA \
     --table $IBM_ICEBERG_TABLE \
