@@ -37,7 +37,7 @@
     - If an existing collection name is specified, and Unstructured generates embeddings, 
       but the number of dimensions that are generated does not match the existing collection's embedding settings, the run will fail. 
       You must change your Unstructured embedding settings or your existing collection's embedding settings to match, and try the run again. 
-    - If a collection name is not specified, Unstructured creates a new collection in your Weaviate cluster. The new collection's name will be `Elements`.
+    - If a collection name is not specified, Unstructured creates a new collection in your Weaviate cluster. The new collection's name will be `Unstructuredautocreated`.
 
     If Unstructured creates a new collection and generates embeddings, you will not see an embeddings property in tools such as the Weaviate Cloud 
     **Collections** user interface. To view the generated embeddings, you can run a Weaviate GraphQL query such as the following. In this query, replace `<collection-name>` with 
