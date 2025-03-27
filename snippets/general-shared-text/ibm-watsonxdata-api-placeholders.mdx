@@ -1,0 +1,12 @@
+- `<name>` (_required_) - A unique name for this connector.
+- `<iceberg-endpoint>` (_required_): The metastore REST endpoint for the target Apache Iceberg-based catalog within the IBM watsonx.data data store instance. Do not include `https://` in this value.
+- `<object-storage-endpoint>` (_required_): The public endpoint for the target bucket within the IBM Cloud Object Storage (COS) instance that is associated with the catalog. Do not include `https://` in this value.
+- `<object-storage-region>` (_required_): The region short ID (such as us-east) for the bucket.
+- `<iam-api-key>` (_required_): A valid API key value for the IBM Cloud account.
+- `<access-key-id>` (_required_): A valid hash-based message authentication code (HMAC) access key ID for the COS instance.
+- `<secret-access-key>` (_required_): The HMAC secret access key for the access key ID.
+- `<catalog>` (_required_): The name of the target Apache Iceberg-based catalog within the IBM watsonx.data data store instance.
+- `<namespace>` (_required_): The name of the target namespace (also known as a schema) within the catalog.
+- `<table>` (_required_): The name of the target table within the namespace (schema).
+- `<max-retries>`: The maximum number of retries for the upload process. The default is `5`.
+- `<record-id-key>`: The name of the column that uniquely identifies each record in the target table. The default is `record_id`.
