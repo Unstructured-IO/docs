@@ -11,7 +11,7 @@
 - `<table_name>`: The name of the target table in Unity Catalog.
 
   - If a table name is specified, but a table with that name does not exist within the specified schema (formerly known as a database), the connector attempts to create a table with that name within that schema. 
-  - If no table name is specified, the connector attempts to create a table named `unstructuredautocreated` within the specified schema (formerly known as a database).
+  - If no table name is specified, the connector attempts to create a table named `u<short-workflow-id>` within the specified schema (formerly known as a database).
 
   See the beginning of this article for additional technical requirements before having the connector attempt to create a table.
 

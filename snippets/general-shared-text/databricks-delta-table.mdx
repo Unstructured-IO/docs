@@ -65,7 +65,9 @@
     do one of the following:
     
     - Specify the name of the table that you want the connector to attempt to create within the specified catalog and schema (formerly known as a database).
-    - Leave the table name blank. The connector will attempt to create a table named `unstructuredautocreated` within the specified catalog and schema (formerly known as a database).
+    - Leave the table name blank. The connector will attempt to create a table within the specified catalog and schema (formerly known as a database). 
+      For the [Unstructured UI](/ui/overview) and [Unstructured API](/api-reference/overview), the table is named `u<short-workflow-id>`. 
+      For the [Unstructured Ingest CLI and Ingest Python library](/ingestion/overview), the table is named `unstructuredautocreated`.
 
     The connector will attempt to create the table on behalf of the related Databricks workspace user or Databricks managed service principal that is referenced in the connector settings, as described later in these requirements. 
     If successful, the table's owner is set as the related Databricks workspace user or Databricks managed service principal. The owner will have all Unity Catalog 
