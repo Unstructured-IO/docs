@@ -20,7 +20,12 @@ The following environment variables:
 
    If you are also using a volume, and the target table and volume are in the same schema (formerly known as a database), then `DATABRICKS_DATABASE` and `DATABRICKS_SCHEMA` will have the same values.
 
-- `DATABRICKS_TABLE` - The name of the table inside of the schema (formerly known as a database), represented by `--table-name` (CLI) or `table_name` (Python). The default is `elements` if not otherwise specified.
+- `DATABRICKS_TABLE` - The name of the table inside of the schema (formerly known as a database), represented by `--table-name` (CLI) or `table_name` (Python). 
+
+  - If a table name is specified, but a table with that name does not exist within the specified schema (formerly known as a database), the connector attempts to create a table with that name within that schema. 
+  - If no table name is specified, the connector attempts to create a table named `u<short-workflow-id>` within the specified schema (formerly known as a database).
+
+  See the beginning of this article for additional technical requirements before having the connector attempt to create a table.
 
 <Note>
     Using dashes (`-`) in the names of catalogs, schemas (formerly known as databases), tables, and volumes might cause isolated issues with the connector. It is 
