@@ -104,7 +104,7 @@
       record_id STRING NOT NULL,
       element_id STRING NOT NULL,
       text STRING,
-      embeddings ARRAYFLOAT,
+      embeddings ARRAY<FLOAT>,
       type STRING,
       metadata VARIANT
   );
@@ -215,7 +215,7 @@
     - `USE CATALOG` on the table's parent catalog in Unity Catalog.
     - `USE SCHEMA` on the tables's parent schema (formerly known as a database) in Unity Catalog.
     - To create a new table, `CREATE TABLE` on the table's parent schema (formerly known as a database) in Unity Catalog.
-    - `MODIFY` and `SELECT` on the table.
+    - If the table already exists, `MODIFY` and `SELECT` on the table.
 
     Learn how to check and set Unity Catalog privileges for 
     [AWS](https://docs.databricks.com/data-governance/unity-catalog/manage-privileges/index.html#show-grant-and-revoke-privileges), 
