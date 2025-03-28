@@ -13,19 +13,4 @@ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; pic
 allowfullscreen
 ></iframe>
 
-Some connectors implement only version 2 (v2) of the connector specification; some connectors implement only version 1 (v1); and some connectors provide both v2 and v1 implementations.
-
-*   Connectors that implement both v2 and v1 are prefaced by <Icon icon="v"/><Icon icon="2"/>, <Icon icon="v"/><Icon icon="1"/>.
-
-*   v2-only implementations are prefaced by <Icon icon="v"/><Icon icon="2"/>.
-
-*   v1-only implementations are prefaced by <Icon icon="v"/><Icon icon="1"/>.
-
-If you're looking for parameters specific to a connector (such as authentication options)&mdash;or to determine whether a connector provides a v2 implementation, a v1 implementation, or both&mdash;browse the
-corresponding connector's source code:
-
-- [v2 non-fsspec connectors](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/unstructured_ingest/v2/processes/connectors)
-- [v2 fsspec connectors](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/unstructured_ingest/v2/processes/connectors/fsspec)
-- [v1 non-fsspec connectors](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/unstructured_ingest/connector)
-- [v1 fsspec connectors](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/unstructured_ingest/connector/fsspec)
-- [v1 Notion connector](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/unstructured_ingest/connector/notion)
+If you're looking for parameters specific to a connector (such as authentication options) see the [source code](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/unstructured_ingest/processes/connectors).
