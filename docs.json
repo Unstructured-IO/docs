@@ -12,13 +12,8 @@
     "tabs": [
       {
         "tab": "Welcome",
-        "groups": [
-          {
-            "group": "",
-            "pages": [
-              "welcome"
-            ]
-          }
+        "pages": [
+          "welcome"
         ]
       },
       {
@@ -463,6 +458,44 @@
         ]
       },
       {
+        "tab": "Self-hosted",
+        "groups": [
+          {
+            "group": "Self-hosting",
+            "pages": [
+              "self-hosted/overview"
+            ]
+          },
+          {
+            "group": "Security and compliance",
+            "pages": [
+              "self-hosted/security-compliance/overview"
+            ]
+          },
+          {
+            "group": "AWS",
+            "pages": [
+              "self-hosted/aws/overview",
+              "self-hosted/aws/onboard"
+            ]
+          },
+          {
+            "group": "Azure",
+            "pages": [
+              "self-hosted/azure/overview",
+              "self-hosted/azure/onboard"
+            ]
+          },
+          {
+            "group": "GCP",
+            "pages": [
+              "self-hosted/gcp/overview",
+              "self-hosted/gcp/onboard"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "FAQ",
         "groups": [
           {
@@ -636,6 +669,10 @@
     {
       "source": "/api-reference/ingest/:slug*",
       "destination": "/ingestion/:slug*"
+    },
+    {
+      "source": "/api-reference/troubleshooting/api-key-url",
+      "destination": "/api-reference/troubleshooting/api-key-url"
     },
     {
       "source": "/glossary/glossary",
