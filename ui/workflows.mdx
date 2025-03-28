@@ -282,9 +282,9 @@ import PlatformPartitioningStrategies from '/snippets/general-shared-text/platfo
 
     </Accordion>
     <Accordion title="Enrichment node">
-        For **Task**, choose one of the following:
+        Choose one of the following:
 
-        - **Image Description** to summarize images. Also select one of the following provider (and model) combinations to use:
+        - **Image** to summarize images. Also select one of the following provider (and model) combinations to use:
 
           - **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
           - **Anthropic (Claude 3.5 Sonnet)**. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
@@ -293,20 +293,33 @@ import PlatformPartitioningStrategies from '/snippets/general-shared-text/platfo
 
           [Learn more](/ui/enriching/image-descriptions).
         
-        - **Table Description** to summarize tables. Also select one of the following provider (and model) combinations to use:
+        - **Table** to summarize tables. Also select one of the following provider (and model) combinations to use:
 
           - **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
           - **Anthropic (Claude 3.5 Sonnet)**. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
           - **Amazon Bedrock (Claude 3.5 Sonnet)**. [Learn more](https://aws.amazon.com/bedrock/claude/). 
           - **Vertex AI (Gemini 2.0 Flash)**. [Learn more](https://cloud.google.com/vertex-ai/generative-ai/docs/gemini-v2).
 
+          Make sure after you choose the provider and model, that **Table Description** is also displayed. If **Table Description** and **Table to HTML** are both 
+          displayed, be sure to select **Table Description**.
+
           [Learn more](/ui/enriching/table-descriptions).
           
-        - **Table to HTML** to convert tables to HTML. Also select one of the following provider (and model) combinations to use:
+        - **Table** to convert tables to HTML. Also select one of the following provider (and model) combinations to use:
         
           - **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
 
+          Make sure after you choose this provider and model, that **Table to HTML** is also selected.
+
           [Learn more](/ui/enriching/table-to-html).
+
+        - **Text** to generate a list of recognized entities and their types by using a technique called _named entity recognition_ (NER). 
+          Also select one of the following provider (and model) combinations to use:
+          
+          - **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
+          - **Anthropic (Claude 3.5 Sonnet)**. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+          
+          [Learn more](/ui/enriching/ner). 
         
     </Accordion>
     <Accordion title="Embedder node">

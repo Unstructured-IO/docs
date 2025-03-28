@@ -36,7 +36,7 @@ if __name__ == "__main__":
         # For API token authentication:
         source_connection_config=ConfluenceConnectionConfig(
             access_config=ConfluenceAccessConfig(
-                token=os.getenv("CONFLUENCE_TOKEN")
+                api_token=os.getenv("CONFLUENCE_API_TOKEN")
             ),
             url=os.getenv("CONFLUENCE_URL"),
             username=os.getenv("CONFLUENCE_USERNAME"), 
@@ -46,7 +46,7 @@ if __name__ == "__main__":
         # For personal access token (PAT) authentication:
         # source_connection_config=ConfluenceConnectionConfig(
         #     access_config=ConfluenceAccessConfig(
-        #         token=os.getenv("CONFLUENCE_TOKEN")
+        #         token=os.getenv("CONFLUENCE_PERSONAL_ACCESS_TOKEN")
         #     ),
         #     url=os.getenv("CONFLUENCE_URL")
         # ),

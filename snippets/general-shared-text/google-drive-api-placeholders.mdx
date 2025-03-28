@@ -1,5 +1,10 @@
 - `<name>` (_required_) - A unique name for this connector.
 - `<drive-id>` - The ID for the target Google Drive folder.
 - `<service-account-key>` - The contents of the `credentials.json` key file as a single-line string.
-- For `extensions`, set one or more `<extension>` values (such as `.pdf` or `.docx`) to process files with only those extensions. The default is to include all extensions.
+- For `extensions`, set one or more `<extension>` values (such as `pdf` or `docx`) to process files with only those extensions. The default is to include all extensions.
+
+  <Note>
+      Do not include the leading dot in the file extensions. For example, use `pdf` or `docx` instead of `.pdf` or `.docx`.
+  </Note>
+
 - Set `recursive` to `true` to recursively process data from subfolders within the target folder. The default is `false` if not otherwise specified.

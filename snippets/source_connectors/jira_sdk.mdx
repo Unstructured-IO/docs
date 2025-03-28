@@ -1,0 +1,46 @@
+```python Python SDK
+import os
+
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import CreateSourceRequest
+from unstructured_client.models.shared import (
+    CreateSourceConnector,
+    SourceConnectorType,
+    JiraSourceConnectorConfigInput
+)
+
+with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+    response = client.sources.create_source(
+        request=CreateSourceRequest(
+            create_source_connector=CreateSourceConnector(
+                name="<name>",
+                type=SourceConnectorType.JIRA,
+                config=JiraSourceConnectorConfigInput(
+                    url="<url>",
+
+                    # For password or API token authentication:
+                    username="<username>",
+                    password="<password">,
+
+                    # For personal access token authentication:
+                    token="<token>",
+        
+                    projects=[ 
+                        "<project-id>",
+                        "<project-id>"
+                    ],
+                    boards=[ 
+                        "<board-id>",
+                        "<board-id>"
+                    ],
+                    issues=[ 
+                        "<issue-id>",
+                        "<issue-id>"
+                    ]
+                )
+            )
+        )
+    )
+
+    print(response.source_connector_information)
+```

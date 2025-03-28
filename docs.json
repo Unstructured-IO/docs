@@ -49,6 +49,7 @@
                   "ui/sources/elasticsearch",
                   "ui/sources/google-cloud",
                   "ui/sources/google-drive",
+                  "ui/sources/jira",
                   "ui/sources/kafka",
                   "ui/sources/mongodb",
                   "ui/sources/onedrive",
@@ -57,7 +58,8 @@
                   "ui/sources/s3",
                   "ui/sources/salesforce",
                   "ui/sources/sharepoint",
-                  "ui/sources/snowflake"
+                  "ui/sources/snowflake",
+                  "ui/sources/zendesk"
                 ]
               },
               {
@@ -89,7 +91,15 @@
               },
               "ui/workflows",
               "ui/jobs",
-              "ui/billing"
+              {
+                "group": "Account",
+                "pages": [
+                  "ui/account/overview",
+                  "ui/account/billing",
+                  "ui/account/usage",
+                  "ui/account/api-key-url"
+                ]
+              }
             ]
           },
           {
@@ -140,6 +150,7 @@
                   "api-reference/workflow/sources/elasticsearch",
                   "api-reference/workflow/sources/google-cloud",
                   "api-reference/workflow/sources/google-drive",
+                  "api-reference/workflow/sources/jira",
                   "api-reference/workflow/sources/kafka",
                   "api-reference/workflow/sources/local",
                   "api-reference/workflow/sources/mongodb",
@@ -149,7 +160,8 @@
                   "api-reference/workflow/sources/s3",
                   "api-reference/workflow/sources/salesforce",
                   "api-reference/workflow/sources/sharepoint",
-                  "api-reference/workflow/sources/snowflake"
+                  "api-reference/workflow/sources/snowflake",
+                  "api-reference/workflow/sources/zendesk"
                 ]
               },
               {
@@ -248,7 +260,8 @@
             "pages": [
               "examplecode/tools/langflow",
               "examplecode/tools/vectorshift",
-              "examplecode/tools/mcp"
+              "examplecode/tools/mcp",
+              "examplecode/tools/mcp-partition"
             ]
           }
         ]
@@ -338,6 +351,7 @@
                   "ingestion/destination-connectors/duckdb",
                   "ingestion/destination-connectors/elasticsearch",
                   "ingestion/destination-connectors/google-cloud-service",
+                  "ingestion/destination-connectors/ibm-watsonxdata",
                   "ingestion/destination-connectors/kafka",
                   "ingestion/destination-connectors/kdbai",
                   "ingestion/destination-connectors/lancedb",
@@ -517,7 +531,7 @@
         },
         {
           "anchor": "Product",
-          "href": "https://unstructured.io/product",
+          "href": "https://unstructured.io/",
           "icon": "square-terminal"
         },
         {
@@ -703,6 +717,10 @@
     {
       "source": "/platform-api/partition-api/:slug*",
       "destination": "/api-reference/partition/:slug*"
+    },
+    {
+      "source": "/ui/billing",
+      "destination": "/ui/account/billing"
     }
   ]
 }
