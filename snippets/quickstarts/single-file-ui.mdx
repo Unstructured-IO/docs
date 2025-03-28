@@ -19,13 +19,18 @@ To run this quickstart, you will need a local file with a size of 10 MB or less 
 | `.heic` |
 | `.html` |
 | `.jpg` |
-| Markdown |
-| OpenOffice |
-| orgmode |
+| `.md` |
+| `.odt` |
+| `.org` |
 | `.pdf` |
-| powerpoint |
-| reStructuredText |
-| richtext |
+| `.pot` |
+| `.potm` |
+| `.ppt` |
+| `.pptm` |
+| `.pptx` |
+| `.rst` |
+| `.rtf` |
+| `.sgl` |
 | `.tiff` |
 | `.txt` |
 | `.tsv` |
@@ -48,9 +53,14 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
     </Step>
     <Step title="Create a workflow">
         1. In the Unstructured UI, on the sidebar, click **Workflows**.
+
+           ![Workflows in the sidebar](/img/ui/Workflows-Sidebar.png)
+
         2. Click **New Workflow**.
         3. Select **Build it Myself**, if it is not already selected.
         4. Click **Continue**. The visual workflow editor appears. 
+
+           ![Visual workflow designer](/img/ui/Workflow-Single-File-Design.png)
            
            The workflow is represented visually as a series of directed acyclic graph (DAG) nodes. Each node represents a 
            step in the workflow. The workflow proceeds end to end from left to right. By default, the workflow starts with three nodes:
@@ -76,11 +86,15 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
 
         2. Above the **Source** node, click **Test**.
 
+           ![Testing a single local file workflow](/img/ui/Workflow-Test-Source.png)
+
            Unstructured displays a visual representation of the file and begins processing its contents, sending it through each of the workflow's nodes in sequence. 
            Depending on the file's size and the workflow's complexity, this processing could take several minutes. 
 
            After Unstructured has finished its processing, the processed data appears in the **Test output** pane, as a series of structured elements in JSON format. 
            
+           ![Viewing single local file output](/img/ui/Workflow-Test-Single-File-Output.png)
+
         3. In the **Test output** pane, you can:
         
            - Search through the processed, JSON-formatted representation of the file by using the **Search JSON** box.
@@ -103,7 +117,7 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
                If **Test** is not visible above the **Source** node, you must force a file cache reset. To do this:
                
                1. In the **Source** pane, with **Details** selected, on 
-                  the **Local file** tab, click the "trash can" button next to the file.
+                  the **Local file** tab, click the trash can button next to the file.
                2. Drag and drop the file into the **Source** node's **Drop file to test** area (even if it is the exact same file).
 
                   If you are not able to drag and drop the file, you can click **Drop file to test** and then browse to and select the file instead.
@@ -119,6 +133,8 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
     <Step title="Add more nodes to the workflow">
         1. You can now add more nodes to the workflow to do further testing of various Unstructured features and with the option of eventually moving the workflow into production. For example, you can:
         
+           ![Adding a node to the workflow](/img/ui/Workflow-Add-Node.png)
+
            - Add a **Chunker** node after the **Partitioner** node, to chunk the partitioned data into smaller pieces for your retrieval augmented generation (RAG) applications. 
              To do this, click the add (**+**) button to the right of the **Partitioner** node, and then click **Enrich > Chunker**. Click the new **Chunker** node and 
              specify its settings. For help, click the **FAQ** button in the **Chunker** node's pane. [Learn more about chunking and chunker settings](/ui/chunking).
@@ -154,6 +170,9 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
         After you get the results you want, you have the option of moving your workflow into production. To do this:
         
         1. Create a [source connector](/ui/sources/overview) for your remote source location. This is the location where you have files or data in a file or object store, website, database, or vector store that you want Unstructured to process.
+
+           ![Connectors button on the sidebar](/img/ui/Sources-Sidebar.png)
+
         2. Create a [destination connector](/ui/destinations/overview) for your remote destination location. This is the location where you want Unstructured to put the processed data as `.json` files in a file or object store, or as records in a database or vector store.
         3. Open your workflow: on the sidebar, click **Workflows**. Then, in the list of available workflows, click the workflow that you created earlier.
         4. In the visual workflow editor, click **Source**.
@@ -168,8 +187,12 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
            c. On the sidebar, click **Workflows**.<br/>
            d. In the list of available workflows, click the **Run** button for the workflow that you just saved.<br/>
            e. On the sidebar, click **Jobs**.<br/>
+
+              ![Viewing the list of available jobs](/img/ui/Select-Job.png)
+
            f. In the list of available jobs, click the job that you just ran.<br/>
            g. After the job status shows **Finished**, go to the your destination location to see the processed files or data that Unstructured put there.
 
+        See also the [remote quickstart](/ui/quickstart#remote-quickstart) for more coverage about how to set up and run production-ready Unstructured ETL+ workflows at scale.
     </Step>
 </Steps>
