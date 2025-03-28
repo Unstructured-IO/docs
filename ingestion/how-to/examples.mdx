@@ -40,15 +40,15 @@ The `hi_res` strategy supports different models, and the default is `layout_v1.1
         ```python Python
         import os
 
-        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-        from unstructured_ingest.v2.interfaces import ProcessorConfig
-        from unstructured_ingest.v2.processes.connectors.local import (
+        from unstructured_ingest.pipeline.pipeline import Pipeline
+        from unstructured_ingest.interfaces import ProcessorConfig
+        from unstructured_ingest.processes.connectors.local import (
             LocalIndexerConfig,
             LocalDownloaderConfig,
             LocalConnectionConfig,
             LocalUploaderConfig
         )
-        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+        from unstructured_ingest.processes.partitioner import PartitionerConfig
 
         if __name__ == "__main__":
             Pipeline.from_configs(
@@ -100,15 +100,15 @@ For better OCR results, you can specify what languages your document is in using
         ```python Python
         import os
 
-        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-        from unstructured_ingest.v2.interfaces import ProcessorConfig
-        from unstructured_ingest.v2.processes.connectors.local import (
+        from unstructured_ingest.pipeline.pipeline import Pipeline
+        from unstructured_ingest.interfaces import ProcessorConfig
+        from unstructured_ingest.processes.connectors.local import (
             LocalIndexerConfig,
             LocalDownloaderConfig,
             LocalConnectionConfig,
             LocalUploaderConfig
         )
-        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+        from unstructured_ingest.processes.partitioner import PartitionerConfig
 
         if __name__ == "__main__":
             Pipeline.from_configs(
@@ -157,15 +157,15 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
         ```python Python
         import os
 
-        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-        from unstructured_ingest.v2.interfaces import ProcessorConfig
-        from unstructured_ingest.v2.processes.connectors.local import (
+        from unstructured_ingest.pipeline.pipeline import Pipeline
+        from unstructured_ingest.interfaces import ProcessorConfig
+        from unstructured_ingest.processes.connectors.local import (
             LocalIndexerConfig,
             LocalDownloaderConfig,
             LocalConnectionConfig,
             LocalUploaderConfig
         )
-        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+        from unstructured_ingest.processes.partitioner import PartitionerConfig
 
         if __name__ == "__main__":
             Pipeline.from_configs(
@@ -218,15 +218,15 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
         ```python Python
         import os
 
-        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-        from unstructured_ingest.v2.interfaces import ProcessorConfig
-        from unstructured_ingest.v2.processes.connectors.local import (
+        from unstructured_ingest.pipeline.pipeline import Pipeline
+        from unstructured_ingest.interfaces import ProcessorConfig
+        from unstructured_ingest.processes.connectors.local import (
             LocalIndexerConfig,
             LocalDownloaderConfig,
             LocalConnectionConfig,
             LocalUploaderConfig
         )
-        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+        from unstructured_ingest.processes.partitioner import PartitionerConfig
 
         if __name__ == "__main__":
             Pipeline.from_configs(
@@ -279,16 +279,16 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
         ```python Python
         import os
 
-        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-        from unstructured_ingest.v2.interfaces import ProcessorConfig
-        from unstructured_ingest.v2.processes.connectors.local import (
+        from unstructured_ingest.pipeline.pipeline import Pipeline
+        from unstructured_ingest.interfaces import ProcessorConfig
+        from unstructured_ingest.processes.connectors.local import (
             LocalIndexerConfig,
             LocalDownloaderConfig,
             LocalConnectionConfig,
             LocalUploaderConfig
         )
-        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
-        from unstructured_ingest.v2.processes.chunker import ChunkerConfig
+        from unstructured_ingest.processes.partitioner import PartitionerConfig
+        from unstructured_ingest.processes.chunker import ChunkerConfig
 
         if __name__ == "__main__":
             Pipeline.from_configs(

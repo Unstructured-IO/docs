@@ -21,18 +21,18 @@
 
         Because you are calling a private API and therefore do not need an Unstructured API key, you can omit the parameter `api_key`. Or, for better code portability, it is recommended that you first set the environment variable `UNSTRUCTURED_API_KEY` to an empty string and then include the parameter `api_key`.
 
-        ```python Python Ingest v2
+        ```python Python Ingest
         import os
 
-        from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-        from unstructured_ingest.v2.interfaces import ProcessorConfig
-        from unstructured_ingest.v2.processes.connectors.local import (
+        from unstructured_ingest.pipeline.pipeline import Pipeline
+        from unstructured_ingest.interfaces import ProcessorConfig
+        from unstructured_ingest.processes.connectors.local import (
             LocalIndexerConfig,
             LocalDownloaderConfig,
             LocalConnectionConfig,
             LocalUploaderConfig
         )
-        from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+        from unstructured_ingest.processes.partitioner import PartitionerConfig
 
         if __name__ == "__main__":
             Pipeline.from_configs(

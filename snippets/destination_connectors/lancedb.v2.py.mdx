@@ -1,20 +1,20 @@
-```python Python Ingest v2
+```python Python Ingest
 import os
 
-from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-from unstructured_ingest.v2.interfaces import ProcessorConfig
+from unstructured_ingest.pipeline.pipeline import Pipeline
+from unstructured_ingest.interfaces import ProcessorConfig
 
-from unstructured_ingest.v2.processes.connectors.local import (
+from unstructured_ingest.processes.connectors.local import (
     LocalIndexerConfig,
     LocalDownloaderConfig,
     LocalConnectionConfig
 )
-from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
-from unstructured_ingest.v2.processes.chunker import ChunkerConfig
-from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+from unstructured_ingest.processes.partitioner import PartitionerConfig
+from unstructured_ingest.processes.chunker import ChunkerConfig
+from unstructured_ingest.processes.embedder import EmbedderConfig
 
 # For LanceDB OSS with local data storage:
-# from unstructured_ingest.v2.processes.connectors.lancedb.local import (
+# from unstructured_ingest.processes.connectors.lancedb.local import (
 #     LanceDBLocalConnectionConfig,
 #     LanceDBLocalAccessConfig,
 #     LanceDBUploadStagerConfig,
@@ -22,7 +22,7 @@ from unstructured_ingest.v2.processes.embedder import EmbedderConfig
 # )
 
 # For LanceDB OSS with data storage in an Amazon S3 bucket:
-from unstructured_ingest.v2.processes.connectors.lancedb.aws import (
+from unstructured_ingest.processes.connectors.lancedb.aws import (
     LanceDBS3ConnectionConfig,
     LanceDBS3AccessConfig,
     LanceDBUploadStagerConfig,
@@ -30,7 +30,7 @@ from unstructured_ingest.v2.processes.connectors.lancedb.aws import (
 )
 
 # For LanceDB OSS with data storage in an Azure Blob Storage account:
-# from unstructured_ingest.v2.processes.connectors.lancedb.azure import (
+# from unstructured_ingest.processes.connectors.lancedb.azure import (
 #     LanceDBAzureConnectionConfig,
 #     LanceDBAzureAccessConfig,
 #     LanceDBUploadStagerConfig,
@@ -38,7 +38,7 @@ from unstructured_ingest.v2.processes.connectors.lancedb.aws import (
 # )
 
 # For LanceDB OSS with data storage in a Google Cloud Storage bucket:
-# from unstructured_ingest.v2.processes.connectors.lancedb.gcp import (
+# from unstructured_ingest.processes.connectors.lancedb.gcp import (
 #     LanceDBGCSConnectionConfig,
 #     LanceDBGCSAccessConfig,
 #     LanceDBUploadStagerConfig,

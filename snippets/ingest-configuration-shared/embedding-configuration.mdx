@@ -2,32 +2,19 @@ A common embedding configuration is a critical component that allows for dynamic
 
 ## Configs
 
-*   <Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`api_key`: The API key to use, if one is required to generate the embeddings through an API service, such as OpenAI.
-
-*   <Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`aws_access_key_id`: The AWS access key ID to be used for AWS-based embedders, such as Amazon Bedrock.
-
-*   <Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`aws_region`: The AWS Region ID to be used for AWS-based embedders, such as Amazon Bedrock.
-
-*   <Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`aws_secret_access_key`: The AWS secret access key to be used for AWS-based embedders, such as Amazon Bedrock.
-
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`embedding_provider`: The embedding provider to use while doing embedding. Available values include `bedrock`, `azure-openai`, `huggingface`, `mixedbread-ai`, `octoai`, `openai`, `togetherai`, `vertexai`, and `voyageai`.
+*   `embedding_provider`: The embedding provider to use while doing embedding. Available values include `bedrock`, `azure-openai`, `huggingface`, `mixedbread-ai`, `octoai`, `openai`, `togetherai`, `vertexai`, and `voyageai`.
     
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`embedding_api_key`: The API key to use, if one is required to generate the embeddings through an API service, such as OpenAI.
+*   `embedding_api_key`: The API key to use, if one is required to generate the embeddings through an API service, such as OpenAI.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`embedding_aws_access_key_id`: The AWS access key ID to be used for AWS-based embedders, such as Amazon Bedrock.
+*   `embedding_aws_access_key_id`: The AWS access key ID to be used for AWS-based embedders, such as Amazon Bedrock.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`embedding_aws_region`: The AWS Region ID to be used for AWS-based embedders, such as Amazon Bedrock.
+*   `embedding_aws_region`: The AWS Region ID to be used for AWS-based embedders, such as Amazon Bedrock.
 
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`embedding_aws_secret_access_key`: The AWS secret access key to be used for AWS-based embedders, such as Amazon Bedrock.
+*   `embedding_aws_secret_access_key`: The AWS secret access key to be used for AWS-based embedders, such as Amazon Bedrock.
     
-*   <Icon icon="v"/><Icon icon="2"/>&nbsp;&nbsp;`embedding_model_name`: The specific model to use for the embedding provider, if necessary.
+*   `embedding_model_name`: The specific model to use for the embedding provider, if necessary.
 
-*   <Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`model_name`: The specific model to use for the embedding provider, if necessary.
-
-*   <Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;`provider`: The embedding provider to use while doing embedding. Available values include `bedrock`, `azure-openai`, `huggingface`, `mixedbread-ai`, `octoai`, `openai`, `togetherai`, `vertexai`, and `voyageai`.
-
-
-<Icon icon="v"/><Icon icon="1"/>&nbsp;&nbsp;The default `model_name` values unless otherwise specified are:
+The default `embedding_model_name` values unless otherwise specified are:
 
 * `bedrock`: None
 

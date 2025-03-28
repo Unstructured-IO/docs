@@ -58,14 +58,14 @@ An Unstructured ingest pipeline contains the following logical steps:
         For example, this could include information such as the path to the files to be analyzed.
 
         - For the Unstructured CLI, you can control this behavior, where available for a connector, through its `--input-path` command option.
-        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior, where available for a connector, through its `<Prefix>IndexerConfig` class (where `<Prefix>` represents the connector provider's name, such as `Azure` for Azure.)
+        - For the Unstructured Ingest Python library, you can control this behavior, where available for a connector, through its `<Prefix>IndexerConfig` class (where `<Prefix>` represents the connector provider's name, such as `Azure` for Azure.)
     </Step>
     <Step title="Post-Index Filter">
         After indexing, you might not want to download everything that was indexed.
 
         For example, you might want to download only files that match specific types, file names, paths, or sizes. 
 
-        For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `FiltererConfig` class.
+        For the Unstructured Ingest Python library, you can control this behavior through the `FiltererConfig` class.
     </Step>
     <Step title="Download">
         Using the information generated from the indexer and the filter, downloads the content as files on the local file system for processing. This may require manipulation of the data to prepare it for partitioning.
@@ -73,7 +73,7 @@ An Unstructured ingest pipeline contains the following logical steps:
         For example, this could include information such as the path to a local directory to download files to.
     
         - For the Unstructured CLI, you can control this behavior through a connector's `--download-dir` command option.
-        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through a connector's `<Prefix>DownloaderConfig` class.
+        - For the Unstructured Ingest Python library, you can control this behavior through a connector's `<Prefix>DownloaderConfig` class.
     </Step>
     <Step title="Post-Download Filter">
         After downloading, if uncompression is enabled, you might not want to uncompress everything that was downloaded. The filter that was defined at the beginning is repeated here.
@@ -82,7 +82,7 @@ An Unstructured ingest pipeline contains the following logical steps:
         If enabled, searches for any compressed files (Unstructured supports TAR and ZIP) and uncompresses them.
 
         - For the Unstructured CLI, you can control this behavior through the `--uncompress` command option.
-        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `UncompressConfig` class.
+        - For the Unstructured Ingest Python library, you can control this behavior through the `UncompressConfig` class.
     </Step>
     <Step title="Post-Uncompress Filter">
         After downloading, and uncompressing if enabled, you might not want to partition everything that was downloaded, and uncompressed if enabled. The filter that was defined at the beginning is repeated here again.
@@ -90,30 +90,27 @@ An Unstructured ingest pipeline contains the following logical steps:
     <Step title="Partition"> 
         Generates the structured enriched content from the local files that have been downloaded, uncompressed if enabled, and filtered. Both local-based partitioning and Unstructured-based partitioning is supported, with API services-based partitioning set to run asynchronously and local-based partitioning set to run through multiprocessing.
 
-        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `PartitionerConfig` class.
-        - For the Unstructured Ingest Python library's v1 calling pattern, you can control this behavior through the `PartitionConfig` class.
+        For the Unstructured Ingest Python library, you can control this behavior through the `PartitionerConfig` class.
     </Step>
     <Step title="Chunk">
         Optionally, chunks the partitioned content. Chunking can also be run locally or through Unstructured, with asynchronous or multiprocessing behaviors set in the same approach as the partitioner.
     
-        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `ChunkerConfig` class.
-        - For the Unstructured Ingest Python library's v1 calling pattern, you can control this behavior through the `ChunkingConfig` class.
+        For the Unstructured Ingest Python library, you can control this behavior through the `ChunkerConfig` class.
     </Step>
     <Step title="Embed">
         Optionally, generates vector embeddings for each element in the structured output. Most of the time, this is done through API calls to a third-party embedding vendor and therefore runs asynchronously. But it can also use a locally available Hugging Face model, which will run through multiprocessing.
     
-        - For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through the `EmbedderConfig` class.
-        - For the Unstructured Ingest Python library's v1 calling pattern, you can control this behavior through the `EmbeddingConfig` class.
+        For the Unstructured Ingest Python library, you can control this behavior through the `EmbedderConfig` class.
     </Step>
     <Step title="Stage">
         This is an optional step that does not apply most of the time. However, sometimes the data needs to be modified from the existing structure to better support the upload step, such as converting it to a CSV file for tabular-based destinations.
     
-        For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior, where available for a connector, through its `<Prefix>UploadStagerConfig` class.
+        For the Unstructured Ingest Python library, you can control this behavior, where available for a connector, through its `<Prefix>UploadStagerConfig` class.
     </Step>
     <Step title="Upload">
         Writes the local content to the destination. If no destination is provided, the local one will be used, which writes the final result to a location on the local filesystem. If batch uploads are needed, this will run in a single process with access to all documents. If batch uploads are not supported, all documents can be uploaded concurrently by using the asynchronous approach.
     
-        For the Unstructured Ingest Python library's v2 calling pattern, you can control this behavior through a connector's `<Prefix>UploaderConfig` class.
+        For the Unstructured Ingest Python library, you can control this behavior through a connector's `<Prefix>UploaderConfig` class.
     </Step>
 </Steps>
 

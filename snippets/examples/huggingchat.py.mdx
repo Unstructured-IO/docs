@@ -1,13 +1,13 @@
 ```python Python
-from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-from unstructured_ingest.v2.interfaces import ProcessorConfig
-from unstructured_ingest.v2.processes.connectors.local import (
+from unstructured_ingest.pipeline.pipeline import Pipeline
+from unstructured_ingest.interfaces import ProcessorConfig
+from unstructured_ingest.processes.connectors.local import (
     LocalIndexerConfig,
     LocalDownloaderConfig,
     LocalConnectionConfig,
     LocalUploaderConfig
 )
-from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
+from unstructured_ingest.processes.partitioner import PartitionerConfig
 
 import os, json
 from hugchat import hugchat

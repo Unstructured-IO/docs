@@ -1,11 +1,11 @@
-```python Python Ingest v2
+```python Python Ingest
 import os
 
-from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-from unstructured_ingest.v2.interfaces import ProcessorConfig
+from unstructured_ingest.pipeline.pipeline import Pipeline
+from unstructured_ingest.interfaces import ProcessorConfig
 
 # For all supported Databricks authentication types, you can import this:
-from unstructured_ingest.v2.processes.connectors.databricks.volumes import (
+from unstructured_ingest.processes.connectors.databricks.volumes import (
     DatabricksVolumesIndexerConfig,
     DatabricksVolumesConnectionConfig,
     DatabricksVolumesAccessConfig,
@@ -13,7 +13,7 @@ from unstructured_ingest.v2.processes.connectors.databricks.volumes import (
 )
 
 # Alternatively, for supported Databricks on AWS authentication types only, you can import this:
-# from unstructured_ingest.v2.processes.connectors.databricks.volumes_aws import (
+# from unstructured_ingest.processes.connectors.databricks.volumes_aws import (
 #     DatabricksAWSVolumesIndexerConfig,
 #     DatabricksAWSVolumesConnectionConfig,
 #     DatabricksAWSVolumesAccessConfig,
@@ -21,7 +21,7 @@ from unstructured_ingest.v2.processes.connectors.databricks.volumes import (
 # )
 
 # Alternatively, for supported Azure Databricks authentication types only, you can import this:
-# from unstructured_ingest.v2.processes.connectors.databricks.volumes_azure import (
+# from unstructured_ingest.processes.connectors.databricks.volumes_azure import (
 #     DatabricksAzureVolumesIndexerConfig,
 #     DatabricksAzureVolumesConnectionConfig,
 #     DatabricksAzureVolumesAccessConfig,
@@ -29,20 +29,20 @@ from unstructured_ingest.v2.processes.connectors.databricks.volumes import (
 # )
 
 # Alternatively, for supported Databricks on Google Cloud authentication types only, you can import this:
-# from unstructured_ingest.v2.processes.connectors.databricks.volumes_gcp import (
+# from unstructured_ingest.processes.connectors.databricks.volumes_gcp import (
 #     DatabricksGoogleVolumesIndexerConfig,
 #     DatabricksGoogleVolumesConnectionConfig,
 #     DatabricksGoogleVolumesAccessConfig,
 #     DatabricksGoogleVolumesDownloaderConfig
 # )
 
-from unstructured_ingest.v2.processes.connectors.local import (
+from unstructured_ingest.processes.connectors.local import (
     LocalConnectionConfig,
     LocalUploaderConfig
 )
-from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
-from unstructured_ingest.v2.processes.chunker import ChunkerConfig
-from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+from unstructured_ingest.processes.partitioner import PartitionerConfig
+from unstructured_ingest.processes.chunker import ChunkerConfig
+from unstructured_ingest.processes.embedder import EmbedderConfig
 
 # Chunking and embedding are optional.
 

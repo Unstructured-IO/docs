@@ -1,20 +1,20 @@
-```python Python Ingest v2
+```python Python Ingest
 import os
 
-from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-from unstructured_ingest.v2.interfaces import ProcessorConfig
+from unstructured_ingest.pipeline.pipeline import Pipeline
+from unstructured_ingest.interfaces import ProcessorConfig
 
-from unstructured_ingest.v2.processes.connectors.local import (
+from unstructured_ingest.processes.connectors.local import (
     LocalIndexerConfig,
     LocalDownloaderConfig,
     LocalConnectionConfig
 )
-from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
-from unstructured_ingest.v2.processes.chunker import ChunkerConfig
-from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+from unstructured_ingest.processes.partitioner import PartitionerConfig
+from unstructured_ingest.processes.chunker import ChunkerConfig
+from unstructured_ingest.processes.embedder import EmbedderConfig
 
 # For Qdrant local:
-# from unstructured_ingest.v2.processes.connectors.qdrant.local import (
+# from unstructured_ingest.processes.connectors.qdrant.local import (
 #     LocalQdrantConnectionConfig,
 #     LocalQdrantAccessConfig,
 #     LocalQdrantUploadStagerConfig,
@@ -22,7 +22,7 @@ from unstructured_ingest.v2.processes.embedder import EmbedderConfig
 # )
 
 # For Qdrant client-server:
-# from unstructured_ingest.v2.processes.connectors.qdrant.server import (
+# from unstructured_ingest.processes.connectors.qdrant.server import (
 #     ServerQdrantConnectionConfig,
 #     ServerQdrantAccessConfig,
 #     ServerQdrantUploadStagerConfig,
@@ -30,7 +30,7 @@ from unstructured_ingest.v2.processes.embedder import EmbedderConfig
 # )
 
 # For Qdrant Cloud:
-from unstructured_ingest.v2.processes.connectors.qdrant.cloud import (
+from unstructured_ingest.processes.connectors.qdrant.cloud import (
     CloudQdrantConnectionConfig,
     CloudQdrantAccessConfig,
     CloudQdrantUploadStagerConfig,
