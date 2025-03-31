@@ -3,13 +3,14 @@ title: Workspaces
 sidebarTitle: Workspaces
 ---
 
-A _workspace_ is a collection of resources (such as connectors, workflows, jobs, and API keys) 
-within an Unstructured _organizational account_. Workspaces are used to manage 
-access to those resources by Unstructured _account users_ that first have access to the workspace's related _organization_.
+An _organizational workspace_ is a collection of resources (such as connectors, workflows, jobs, and workspace API keys) 
+within an Unstructured _organizational account_. Organizational workspace are used to manage 
+access to those resources by invited Unstructured _personal account users_ (also known as _workspace members_) that have first 
+been added to the organizational workspace's parent organization as _organization members_.
 
 ## Workspace architecture
 
-A workspace is part of one (and only one) [organization](/account/organizations).
+An organizational workspace is part of one (and only one) [organization](/account/organizations).
 
 An organization can have multiple workspaces.
 
@@ -35,7 +36,7 @@ graph LR
     Org3 --> WS3C
 ```
 
-Unstructured account users can have access to multiple workspaces within an organization.
+Unstructured personal account users can have access to multiple workspaces within an organization.
 
 ```mermaid
 graph LR
@@ -82,27 +83,43 @@ graph LR
     User3_Org3 -.-> WS3C
 ```
 
-Each account user must be explicitly added to each workspace that they are allowed to access. This assumes that the account user has first been added 
+Each personal account user must be explicitly added to each workspace that they are allowed to access. This assumes that the account user has first been added 
 to the workspace's parent organization.
 
 To make API calls to a workspace, an account user must first create a _workspace API key_ for that workspace and then use that workspace API key to make API calls to that workspace.
 
-_Personal API keys_ for account users' personal accounts do not work for making API calls to workspaces. Workspace API keys for workspaces do not work for making API calls to personal accounts.
+Each personal account user always has access to their own personal account. This personal account has one and only one personal workspace. 
+
+_Personal API keys_ for personal accounts work only with personal workspaces; they do not work for making API calls to organization workspaces. Workspace API keys for organization workspaces do not work for making API calls to personal workspaces. 
+A personal API key is valid only for its related personal workspace. A workspace API key is valid only for its related organizational workspace.
 
 ## Create a workspace
 
 To create a workspace, you must first have an available Unstructured organizational account.
 
 Currently, only Unstructured representatives can create organizational accounts. To request an organizational account to be created, 
-contact your Unstructured representative.
+contact your Unstructured 
+sales representative, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io), or complete the online 
+[Unstructured contact form](https://unstructured.io/contact).
 
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
-2. In the top navigation bar, ...
+2. In the top navigation bar, in the organization selector, select the name of the organization that you want to add a workspace to.
+3. In the sidebar, above your user icon, click the **Settings** (gear) icon.
+4. Click **View All Workspaces**.
+5. Click **New Workspace**.
+6. In the **Create New Workspace** dialog, enter a name for the new workspace.
+7. Optionally, enter a budget usage limit for the new workspace. If you do not want to set a budget limit, leave this field blank.
+8. Click **Continue**.
 
 ## Access a workspace
 
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
-2. In the top navigation bar, ...
+2. In the top navigation bar, in the organization selector, select the name of the organization that contains the workspace you want to access.
+3. In the workspace selector, select the name of the workspace that you want to access.
+
+   If the workspace selector does not show the workspace you want to access, then 
+   your personal account has not been added to that workspace. To be added to the workspace, contact one of the workspace's administrators or its 
+   parent organization's administrators.
 
 ## Add a member to a workspace
 

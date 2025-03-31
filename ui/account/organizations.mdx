@@ -3,15 +3,16 @@ title: Organizations
 sidebarTitle: Organizations
 ---
 
-An _organization_ is a collection of Unstructured [workspaces](/account/workspaces). An Unstructured _organizational account_ manages 
-access by Unstructured _account users_ to workspaces within organizations. 
+An _organization_ is a collection of Unstructured [workspaces](/account/workspaces). 
+An Unstructured _organizational account_ manages 
+access by invited Unstructured _personal account users_ to that organization and its workspaces. 
 
-A _workspace_ is a collection of resources 
+An _organizational workspace_ is a collection of resources 
 (such as connectors, workflows, jobs, and workspace API keys) within an organization.
 
 ## Organization architecture
 
-An organization account operates independently of all other organizations. Each organization can have multiple [workspaces](/account/workspaces).
+An organizational account operates independently of all other organizational accounts. Each organization can have multiple [workspaces](/account/workspaces).
 
 ```mermaid
 graph LR
@@ -35,7 +36,7 @@ graph LR
     Org3 --> WS3C
 ```
 
-An account user can have access to multiple organizations.
+A personal account user can have access to multiple organizations.
 
 ```mermaid
 graph LR
@@ -54,7 +55,10 @@ graph LR
     User3 -.-> Org3
 ```
 
-Each account user also has access to their own Unstructured _personal account_, which is separate from any organizational accounts. Personal accounts do not have workspaces.
+## Organizational versus personal accounts
+
+Each personal account user always has access to their own Unstructured _personal account_, which is separate from any organizational accounts and all other personal accounts. Each personal 
+account has one and only one personal workspace.
 
 Users create personal accounts when they initially sign up for Unstructured in one of the following ways:
 
@@ -62,10 +66,9 @@ Users create personal accounts when they initially sign up for Unstructured in o
   sign up for a new Unstructured personal account and sign into that account at the same time.
 - Going to the [For Developers](https://unstructured.io/developers) page on the Unstructured website and completing the on-screen [signup form](https://unstructured.io/developers#get-started).
 
-The user of the personal account is now an Unstructured _account user_ that can be added to organizations and workspaces within those organizations.
-
-Personal accounts are not associated with any organization. Resources in personal accounts (such as connectors, workflows, jobs, and personal API keys) cannot 
-be shared with nor migrated over into an organization.
+Personal accounts are not associated with any organization by default. 
+Resources in personal accounts (such as personal API keys and personal workspaces and their connectors, workflows, and jobs) cannot 
+be shared with nor migrated over into any organizations.
 
 ```mermaid
 graph LR
@@ -90,7 +93,7 @@ graph LR
     User3 -.-> Org3
 ```
 
-Within an organization, an account user can have access to multiple workspaces within that organization.
+Within an organization, an invited personal account user (also known as a _member_) can have access to multiple workspaces within that organization.
 
 ```mermaid
 graph LR
@@ -137,28 +140,55 @@ graph LR
     User3_Org3 -.-> WS3C
 ```
 
-Each account user must be explicitly added to the organizations&mdash;and workspaces within those organizations&mdash;that they are allowed to access.
+Each personal account user must be explicitly added to the organizations&mdash;and workspaces within those organizations&mdash;that they are allowed to access.
 
 ## Create an organization
+
+Only authorized Unstructured representatives can create organizational accounts. To request an organization to be created, contact your Unstructured 
+sales representative, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io), or complete the online 
+[Unstructured contact form](https://unstructured.io/contact).
 
 ## Access an organization
 
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
-2. In the top navigation bar, ...
+2. In the top navigation bar, in the account selector, select the name of the organizational account that you want to access.
+
+   If the organization selector is not shown, or if the selector does not show the organization you want to access, then 
+   your personal account has not been added to that organization. To be added to the organization, contact one of the organization's administrators.
 
 ## Add a member to an organization
 
-An Unstructured account user that is added to an organization is referred to an a _member_ of that organization.
+An Unstructured personal account user that is added to an organizational account is referred to an a _member_ of that organization.
 
-To add an account user to an organization as a member:
+To add a member to an organization:
 
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
-2. In the top navigation bar, ...
+2. In the top navigation bar, in the organization selector, select the name of the organization that you want to add a member to.
+3. In the sidebar, above your user icon, click the **Settings** (gear) icon.
+4. Click **Manage Account**.
+5. In the top navigation bar, click **Members**.
+6. Click **New Member**.
+7. In the **Add New Member** dialog, enter the email address of the new team member.
+8. In the role selector, select the new team member's role for this organization. [See the available roles and their permissions](/account/roles).
+9. Click **Continue**. 
 
 ## Remove a member from an organization
 
+<Caution>
+    Removing a member from an organization also removes the member from all of the organization's workspaces. The member will no longer 
+    have access to the organization or any of its workspaces. The member will continue to be able to use their personal account.
+    
+    Any connectors, workflows, jobs, or other resources that were created by the member within the organizations's workspaces will not be removed.
+
+    The only way to reverse removing a member from an organization is to add the member back to the organization&mdash;and to each of the workspaces that the member might have previously
+    been a member of. 
+</Caution>
+
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
-2. In the top navigation bar, ...
+2. In the top navigation bar, click **Members**.
+3. In the list of members, click the member you want to remove.
+4. In the member's settings pane, click **Remove Member**.
+5. Confirm the removal by clicking **Continue**.
 
 ## Permanently delete an organization
 
@@ -166,11 +196,13 @@ To add an account user to an organization as a member:
     Deleting an organization is a permanent action and is not recoverable. Once an organization is deleted, all workspaces associated with that 
     organization are also deleted and are not recoverable.
     
-    The organization's account users are not deleted, but they will no longer have access to the deleted organization or any of its workspaces.
+    The organization's members will no longer have access to the deleted organization or any of its workspaces. 
+    The members will continue to be able to use their personal accounts.
 
     Any code or scripts that reference connectors, workflows, jobs, or workflow API keys that are associated with workflows in the deleted 
     organization will fail.
 </Caution>
 
-1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
-2. In the top navigation bar, ...
+To request an organization to be permanently deleted, contact your Unstructured 
+sales representative, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io), or complete the online 
+[Unstructured contact form](https://unstructured.io/contact).
