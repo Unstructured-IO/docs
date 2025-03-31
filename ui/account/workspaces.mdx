@@ -10,9 +10,9 @@ been added to the organizational workspace's parent organization as _organizatio
 
 ## Workspace architecture
 
-An organizational workspace is part of one (and only one) [organization](/account/organizations).
+An organizational workspace is part of one and only one [organization](/account/organizations).
 
-An organization can have multiple workspaces.
+An organization can have multiple organizational workspaces.
 
 ```mermaid
 graph LR
@@ -36,7 +36,7 @@ graph LR
     Org3 --> WS3C
 ```
 
-Unstructured personal account users can have access to multiple workspaces within an organization.
+Unstructured personal account users can have access to multiple organizational workspaces within an organization.
 
 ```mermaid
 graph LR
@@ -83,15 +83,13 @@ graph LR
     User3_Org3 -.-> WS3C
 ```
 
-Each personal account user must be explicitly added to each workspace that they are allowed to access. This assumes that the account user has first been added 
-to the workspace's parent organization.
-
-To make API calls to a workspace, an account user must first create a _workspace API key_ for that workspace and then use that workspace API key to make API calls to that workspace.
+Each personal account user must be explicitly added to each organizational workspace that they are allowed to access. This assumes that the personal account user has first been added 
+to the organizational workspace's parent organization.
 
 Each personal account user always has access to their own personal account. This personal account has one and only one personal workspace. 
 
-_Personal API keys_ for personal accounts work only with personal workspaces; they do not work for making API calls to organization workspaces. Workspace API keys for organization workspaces do not work for making API calls to personal workspaces. 
-A personal API key is valid only for its related personal workspace. A workspace API key is valid only for its related organizational workspace.
+To make API calls to a workspace, an account user must first create an API key for that workspace, and then use that API key to make API calls to that workspace. 
+An API key is valid only for its related workspace, regardless of whether it is an organizational workspace or a personal workspace.
 
 ## Create a workspace
 
@@ -108,7 +106,13 @@ sales representative, email Unstructured Sales at [sales@unstructured.io](mailto
 4. Click **View All Workspaces**.
 5. Click **New Workspace**.
 6. In the **Create New Workspace** dialog, enter a name for the new workspace.
-7. Optionally, enter a budget usage limit for the new workspace. If you do not want to set a budget limit, leave this field blank.
+7. Optionally, enter a budget limit for the new workspace. If you do not want to set a budget limit, leave this field blank.
+
+   <Caution>
+       This workspace budget limit is for informational purposes only. Workspace usage is not stopped if this 
+       limit is exceeded. 
+   </Caution>
+   
 8. Click **Continue**.
 
 ## Access a workspace
@@ -123,9 +127,9 @@ sales representative, email Unstructured Sales at [sales@unstructured.io](mailto
 
 ## Add a member to a workspace
 
-An Unstructured account user that is added to a workspace is referred to an a _member_ of that workspace.
+An Unstructured account user that is added to a workspace is referred to as a _workspace member_.
 
-To add an account user to a workspace as a member:
+To add a personal account user to a workspace as a member:
 
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
 2. In the top navigation bar, ...
@@ -137,11 +141,11 @@ To add an account user to a workspace as a member:
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
 2. In the top navigation bar, ...
 
-## Create a workspace API key
+## Create an API key for a workspace
 
-To make API calls to a workspace, an account user must first create a workspace API key for that workspace and then use that workspace API key to make API calls to that workspace.
+To make API calls to a workspace, a personal account user must first create an API key for that workspace, and then use that API key to make API calls to that workspace.
 
-Pesonal API keys for account users' personal accounts do not work for making API calls to workspaces. Workspace API keys do not work for making API calls to personal accounts.
+Each and every API key can be used only with the workspace for which it was created.
 
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
 2. In the top navigation bar, ...
@@ -165,9 +169,9 @@ Pesonal API keys for account users' personal accounts do not work for making API
 
 <Caution>
     Deleting a workspace is a permanent action and is not recoverable. Once a workspace is deleted, all connectors, workflows, jobs, and 
-    workspace API keys that are associated with that workspace are also deleted and are not recoverable.
+    API keys that are associated with that workspace are also deleted and are not recoverable.
     
-    The workspace's account users are not deleted, but they will no longer have access to the deleted workspace's connectors, workflows, jobs, and workspace API keys.
+    The workspace's account users are not deleted, but they will no longer have access to the deleted workspace's connectors, workflows, jobs, and API keys.
 
     Any code or scripts that reference the deleted workspace's connectors, workflows, jobs, or workspace API keys will fail.
 </Caution>
