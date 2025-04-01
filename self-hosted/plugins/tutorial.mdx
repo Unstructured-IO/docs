@@ -3,43 +3,232 @@ title: Self-hosted plugins tutorial
 sidebarTitle: Tutorial
 ---
 
-This hands-on tutorial shows how to use the Unstructured self-hosted plugin framework to create a simple plugin. 
-This plugin will perform a basic operation. Specifically, this plugin will ...
+This hands-on tutorial shows how to use the Unstructured self-hosted plugin framework to create a sample plugin. 
+This sample plugin uses VertexAI to perform sentiment analysis on the text that Unstructured extracts from documents. For example, 
+given the following custom prompt:
+
+```text
+Given a piece of text, classify the following types of information:
+- toxic or non-toxic
+- emotion if it conveys, such as happiness, or anger
+- intent such as "finding information", "making a reservation", or "placing an order"
+
+text:
+    {text}
+
+Output the results as JSON and nothing else. For example:
+```json
+{{
+    "toxicity": "non-toxic",
+    "emotion": "neutral",
+    "intent": "making a reservation"
+}}
+```
+
+And the following text:
+
+```text
+Hi, can you please book a table for two at Juan for May 1?
+```
+
+VertexAI returns a sentiment analysis in this format:
+
+```json
+{
+  "toxicity": "non-toxic",
+  "emotion": "neutral",
+  "intent": "making a reservation"
+}
+```
 
 ## Requirements
 
 - A [self-hosted](/self-hosted/overview) deployment of the Unstructured UI and Unstructured API into infrastructure that you maintain in your 
   Amazon Web Services (AWS), Azure, or Google Cloud Platform (GCP) account.
+- A Docker 
 - A local development machine with [Docker Desktop](https://docs.docker.com/desktop/) and the Python pacakge and project manager 
   [uv](https://docs.astral.sh/uv/getting-started/installation/) installed.
 
 ## Getting started
 
 <Steps>
-    <Step title="">
+    <Step title="Identify a directory for plugin development">
+        Create use a directory on your local machine that you want to use plugin development. If you create a new directory, be 
+        sure to switch to it after you create it. This tutorial uses a directory named `plugins` within the 
+        current working directory. For example:
+
+        ```bash
+        mkdir plugins
+        cd plugins
+        ```
 
     </Step>
-    <Step title="">
+    <Step title="Create a virtual environment">
+        Use `uv` to create a virtual environment within the directory that you want to use for plugin development. After you 
+        create the virtual environment, activate it.
+
+        This tutorial uses a virtual environment named 
+        `plugins_3_12_9`. This virtual environment uses Python 3.12.9. If this Python version is not installed 
+        on the system, `uv` installs it first. For example:
+
+        ```bash
+        uv venv --python 3.12.9 --prompt "plugins_3_12_9"
+        source .venv/bin/activate
+        ```
+
+    </Step>
+    <Step title="Install the Unstructured plugin development tools and dependencies">
+        Use `uv` to install the Unstructured plugin development tools and their dependencies:
+
+        ```bash
+        uv pip install utic-dev-tools cookiecutter
+        ```
+
+        The `cookiecutter` package is a command-line utility that uses techniques such as wizards along with Python project templates to 
+        initialize new projects based on user input.
+
+    </Step>
+    <Step title="Create a new plugin code project">
+        1. Use the `unstructured-plugins new` command to create a new plugin development project. This command starts a wizard that is used  
+           to create a new directory for the plugin and then creates the plugin's starter files and directories within that directory:
+
+           ```bash
+           unstructured-plugins new
+           ```
+
+        2. When propmpted, enter some display name for the plugin, and then press `Enter`. This tutorial uses `Sentiment Analysis` as the plugin's display name:
+
+           ```bash
+           [1/3] name (My First Plugin): Sentiment Analysis
+           ``` 
+
+        3. Next, enter the plugin's type, and then press `Enter`. This tutorial uses `sentiment` as the plugin's type:
+
+           ```bash
+           [2/3] type (): sentiment
+           ```
+
+        4. Next, enter the plugin's subtype, and then press `Enter`. This tutorial uses `analysis` as the plugin's subtype:
+
+           ```bash
+           [3/3] subtype (): analysis
+           ```
+
+        5. A project folder is created within the `plugins` directory. The project folder is named `plugin-` followed by the 
+           plugin's type and subtype. For this tutorial, the project folder's name is named `plugin-sentiment-analysis`.
+
+           Switch to the plugin's project folder and then use `uv` to install and update the project's code dependencies:
+
+           ```bash
+           cd plugin-sentiment-analysis
+           uv sync
+           ```
 
     </Step>
 </Steps>
 
-pip install utic-dev-tools cookiecutter
-
-uv init unstructured_plugin_demo
-cd unstructured_plugin_demo
-uv venv 
-source .venv/bin/activate
-uv add utic-dev-tools cookiecutter
-
-
 ## Write the plugin
 
 <Steps>
-    <Step title="">
+    <Step title="Add user interface settings">
+        In this step, you add the user interface settings for the plugin. The user interface settings are the fields that
+        users see when they add the plugin as a node to a workflow's DAG. The user interface settings are defined in the `__init__.py` file
+        of the plugin project's `src/plugin_<type>_<subtype>` subfolder. These settings are specified in the 
+        `__init__.py` file's `PluginSettings` class, which is a subclass of
+        the Pydantic `BaseModel` class. The `BaseModel` class provides a Pydantic implementation of various type validation, 
+        data parsing, and serialization functionality.
+
+        1. In the project's `src` directory, under the `plugin_sentiment_analyis` subdirectory, open the `__init__.py` file.
+        2. In the `__init__.py` file, add the necessary VertexAI settings. First, add the following import statements to the top of the file:
+
+           ```python
+           from typing import Literal
+           from pydantic import SecretStr
+           ```
+
+           The `Literal` is a type hint in Python that restricts a field to specific literal values (such as strings, numbers, or booleans). 
+           It enforces that the input must match one of the specified options.
+
+           The `SecretStr` is a specialized string type in Pydantic for sensitive data (such as passwords and API keys). It masks the value in 
+           fields by displaying `*****`.
+
+        3. In the `__init__.py` file's `PluginSettings` class, replace the sample `string_field` setting definition with settings for the `location`, `credentials`, and 
+           `model` fields. The class definition should now look as follows:
+
+           ```python
+           class PluginSettings(BaseModel):
+               """
+               Settings used to configure running instances of the plugin.
+
+               These are what can be configured by the user and what will be
+               available in the UI.
+               """
+
+               location: Literal[
+                   "us-east5", "us-south1", "us-central1", "us-east1", "us-east4", "us-west1"
+               ] = Field(title="API Location")
+               credentials: SecretStr = Field(title="Credentials JSON")
+               model: Literal["gemini-1.5-flash"] = Field("gemini-1.5-flash", title="Model")
+           ```
+
+           - The `location` field specifies the location of the VertexAI API. The field in the UI's help pane for the plugin node 
+             will display the title of `API Location`.
+           - The `credentials` field specifies the JSON credentials for the VertexAI API. The field in the UI will have the title of 
+             `Credentials JSON`. Specifying the `SecretStr` type displays the field's text with asterisks.
+           - The `model` field specifies the model for VertexAI to use. The field in the UI will have the title of `Model`. The default 
+             value for this field is `gemini-1.5-flash`.
 
     </Step>
-    <Step title="">
+    <Step title="Integrate with VertexAI">
+        1. Add the necessary VertexAI dependencies:
+
+           ```bash
+           uv pip install google-cloud-aiplatform google-auth
+           ```
+
+        2. At the top of the `__init__.py` file, add the necessary import statements for VertexAI and for logging and JSON parsing:
+
+           ```python
+           from google.cloud import aiplatform
+           from google.oauth2 import service_account
+           from vertexai.generative_models import GenerativeModel
+           import logging, json
+           ```
+
+        3. In the `__init__.py` file's `Plugin` class, replace the `__post_init__` function body with the following definition. 
+           The function body definition should now look as follows:
+
+           ```python
+           def __post_init__(self):
+               with open(self.env_settings.job_settings_file) as f:
+                   self.plugin_settings = PluginSettings.model_validate_json(f.read())
+
+               credentials_json = json.loads(
+                   self.plugin_settings.credentials.get_secret_value()
+               )
+               credentials = service_account.Credentials.from_service_account_info(
+                   credentials_json
+               )
+
+               aiplatform.init(
+                   location=self.plugin_settings.location,
+                   project=credentials_json["project_id"],
+                   credentials=credentials,
+               )
+
+               self.model = GenerativeModel(self.plugin_settings.model)
+           ```
+
+        4. In the `__init__.py` file's `Plugin` class, just before the `run` function, add the ...
+              
+           ```python
+           ```
+
+        5. In the `__init__.py` file's `Plugin` class, replace the `run` function body with the following definition. 
+           The function body definition should now look as follows:
+
+           ```python
+           ```
 
     </Step>
 </Steps>
