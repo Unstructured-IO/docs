@@ -3,8 +3,9 @@ title: Self-hosted plugins tutorial
 sidebarTitle: Tutorial
 ---
 
-This hands-on tutorial shows how to use the Unstructured self-hosted plugin framework to create a sample plugin. 
-This sample plugin uses VertexAI to perform sentiment analysis on the text that Unstructured extracts from documents. For example, 
+This hands-on tutorial shows how to use the Unstructured self-hosted plugin framework to create a sample [plugin](/self-hosted/plugins/overview). 
+This sample plugin uses a [VertexAI](https://cloud.google.com/vertex-ai) model from Google to perform sentiment analysis 
+on the text that Unstructured extracts from documents. For example, 
 given the following custom prompt:
 
 ```text
@@ -31,7 +32,7 @@ And the following text:
 Hi, can you please book a table for two at Juan for May 1?
 ```
 
-VertexAI returns a sentiment analysis in this format:
+The model returns a sentiment analysis in this format:
 
 ```json
 {
@@ -44,7 +45,9 @@ VertexAI returns a sentiment analysis in this format:
 ## Requirements
 
 - A [self-hosted](/self-hosted/overview) deployment of the Unstructured UI and Unstructured API into infrastructure that you maintain in your 
-  Amazon Web Services (AWS), Azure, or Google Cloud Platform (GCP) account.
+  Amazon Web Services (AWS), Azure, or Google Cloud Platform (GCP) account. If you do not have a self-hosted deployment, stop and contact your 
+  Unstructured sales representative, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io), or fill out the 
+  [contact form](https://unstructured.io/contact) on the Unstructured website first.
 - A local development machine with [Docker Desktop](https://docs.docker.com/desktop/) and the Python pacakge and project manager 
   [uv](https://docs.astral.sh/uv/getting-started/installation/) installed.
 - For sending requests to the plugin through Docker locally, the [curl](https://curl.se/) utility installed on the development machine.
@@ -55,11 +58,17 @@ VertexAI returns a sentiment analysis in this format:
   - For Azure accounts, [Azure Container Registry](https://azure.microsoft.com/products/container-registry).
   - For GCP accounts, [Google Artifact Registry](https://cloud.google.com/artifact-registry) (GAR).
 
+  You must also have the related command-line interface installed and configured on the development machine:
+
+  - For AWS accounts, the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html).
+  - For Azure accounts, the [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli).
+  - For GCP accounts, the [Google Cloud CLI](https://cloud.google.com/sdk/docs/install).
+
 - To call the VertexAI portions of this tutorial:
 
   - A [Google Cloud account](https://console.cloud.google.com).
-  - The **Vertex AI API** enabled in the account. [Learn how](https://cloud.google.com/apis/docs/getting-started#enabling_apis).
-  - Within the account, a Google Cloud service account and its related `credentials.json` key file or its contents in JSON format. 
+  - The **Vertex AI API** enabled in the Google Cloud account. [Learn how](https://cloud.google.com/apis/docs/getting-started#enabling_apis).
+  - Within the Google Cloud account, a Google Cloud service account and its related `credentials.json` key file or its contents in JSON format. 
     [Create a service account](https://developers.google.com/workspace/guides/create-credentials#create_a_service_account). 
     [Create credentials for a service account](https://developers.google.com/workspace/guides/create-credentials#create_credentials_for_a_service_account).
   - A single-line string that contains the contents of the downloaded `credentials.json` key file for the service account (and not the service account key file itself). 
@@ -87,7 +96,7 @@ and creating and initializing the code project for this tutorial's plugin.
 
 <Steps>
     <Step title="Identify a directory for overall plugin development">
-        We recommend creating or using a centralized directory on your local machine to use for developing this and other plugins. If you create a new directory, be 
+        We recommend creating or using a centralized directory on your local development machine to use for developing this and other plugins. If you create a new directory, be 
         sure to switch to it after you create it. This tutorial uses a directory named `plugins` within the 
         current working directory. For example:
 
@@ -112,13 +121,14 @@ and creating and initializing the code project for this tutorial's plugin.
 
     </Step>
     <Step title="Install the Unstructured plugin development tools and their dependencies">
-        Use `uv` to install the Unstructured plugin development tools and their dependencies into this virtual environment:
+        Use `uv` to install the Unstructured plugin development tools and their dependencies into this virtual environment. These tools and their 
+        dependencies will be the same for all plugins that you develop that use this virtual environment.
 
         ```bash
         uv pip install utic-dev-tools cookiecutter
         ```
 
-        The `cookiecutter` package is a command-line utility that uses techniques such as wizards along with Python project templates to 
+        The dependent `cookiecutter` package is a command-line utility that uses techniques such as wizards along with Python project templates to 
         initialize new projects based on user input.
 
     </Step>
@@ -151,7 +161,7 @@ and creating and initializing the code project for this tutorial's plugin.
         5. A project folder is created within the centralized `plugins` directory. The project folder is named `plugin-` followed by the 
            plugin's type, another dash, and the plugin's subtype. For this tutorial, the project folder's name is named `plugin-sentiment-analysis`.
 
-           Switch to the plugin's project folder and then use `uv` to install and update the project's specific code dependencies:
+           Switch to the plugin's project folder and then use `uv` to install and update this project's specific code dependencies:
 
            ```bash
            cd plugin-sentiment-analysis
@@ -208,13 +218,13 @@ In this section, you write the plugin's runtime logic. This tutorial's logic is 
            ```
 
            - The `location` field specifies the location of the VertexAI API. The field in the UI's help pane for the plugin node 
-             will display the title of `API Location`.
+             will display the title of **API Location**.
            - The `credentials` field specifies the JSON credentials for the VertexAI API. The field in the UI will have the title of 
-             `Credentials JSON`. Specifying the `SecretStr` type displays the field's text with asterisks.
-           - The `model` field specifies the model for VertexAI to use. The field in the UI will have the title of `Model`. The default 
+             **Credentials JSON**. Specifying the `SecretStr` type displays the field's text with asterisks.
+           - The `model` field specifies the model for VertexAI to use. The field in the UI will have the title of **Model**. The default 
              value for this field is `gemini-1.5-flash`.
            - At run time, the `PluginSettings` class reads these field's values from the UI and writes them as a JSON dictionary into a `settings.json` file 
-             in the project's root.
+             in the project's root for the plugin to read from later.
 
     </Step>
     <Step title="Integrate with VertexAI">
@@ -324,8 +334,12 @@ In this section, you write the plugin's runtime logic. This tutorial's logic is 
 
 ## Run plugin tests locally with pytest
 
-In this section, you run the plugin's tests locally using `pytest` to make sure that the plugin's logic is working as expected before further 
+In this section, you manually run the plugin's tests locally using `pytest` to make sure that the plugin's logic is working as expected before further 
 testing in Docker and eventual deployment for use in the UI.
+
+In practice, you would typically use a continuous integration and continuous deployment (CI/CD) pipeline to automate running these tests. 
+If any of the tests fail, the pipeline should stop and notify you of the failure. If all of the tests pass, the pipeline should then 
+continue by [running the plugin in Docker](#run-the-plugin-in-docker-locally) as a further test.
 
 <Steps>
     <Step title="">
@@ -363,7 +377,7 @@ testing in Docker and eventual deployment for use in the UI.
                    raise ValueError("VERTEXAI_CREDENTIALS env var must be set to run test")
 
                settings_filepath: Path = tmp_path / "settings.json"
-               settings = {"location": "us-west1", "credentials": credentials}
+               settings = {"location": "us-east1", "credentials": credentials}
                settings_filepath.write_text(json.dumps(settings))
 
                yield Plugin(
@@ -375,7 +389,11 @@ testing in Docker and eventual deployment for use in the UI.
            ```
 
            - The `plugin` function is a fixture that sets up the plugin's infrastructure for the `test_plugin` test function that follows. 
-           - 
+           - The function reads the `VERTEXAI_CREDENTIALS` environment variable from the `.env` file that you will create next.
+           - Instead of using the `settings.json` file that would normally be used by the `PluginSettings` class, the function creates a temporary 
+             `settings.json` file just for these tests. This temporary file contains sample values for the **API Location** and **Credentials JSON** 
+             fields that users would have 
+             otherwise specified when using the plugin in the UI.
 
        2. In the project's root, create a file named `.env`. In this file, add an environment variable named `VERTEXAI_CREDENTIALS`, and set it to the single-line representation of the `credentials.json` file that 
           you generated in this tutorial's requirements:
@@ -411,13 +429,14 @@ testing in Docker and eventual deployment for use in the UI.
           ```
 
           - The `test_plugin` function is a test case that uses the `plugin` fixture to run the plugin's logic.
-          - The function takes a list of elements as input. The first element in the list contains the text that is used to test the plugin.
+          - The function takes a list of Unstructured-formatted elements as input. The first element in the list contains the text that is used to test the plugin.
           - The function then runs the plugin's logic and checks that the output is as expected.
           - The function checks that the output contains the expected values for the `toxicity`, `emotion`, and `intent` fields that are returned. If the expected values 
             match, the test passes. Otherwise, the test fails.
+
     </Step>
     <Step title="Run the test">
-        To run the test, use the following command to run `pytest` though the `test` target in a file named `Makefile` in the root of the project:
+        To run the test, use the following command to run `pytest` though the `test` target in the file named `Makefile` in the root of the project:
         
         ```bash
         make test
@@ -436,8 +455,13 @@ testing in Docker and eventual deployment for use in the UI.
 
 ## Run the plugin in Docker locally
 
-In this section, you proceed with local testing by running the plugin in Docker locally. 
-This allows you to test the plugin's logic in an isolated environment before you deploy it into your self-hosted UI.
+In this section, you proceed with local testing by manually running the plugin in Docker locally. 
+This allows you to more fully test the plugin's logic in an isolated environment before you deploy it into your self-hosted UI.
+
+In practice, you would typically use a CI/CD pipeline to automate running the plugin in Docker and 
+testing the output against an expected result. If the plugin's output does not match the expected result, the pipeline should stop and notify you of the failure. 
+If the plugin's output matches the expected result, the pipeline should then continue by 
+[deploying the plugin to the staging version of your self-hosted Unstructured UI](#deploy-the-plugin-to-your-self-hosted-ui).
 
 <Steps>
   <Step title="">
@@ -453,9 +477,14 @@ This allows you to test the plugin's logic in an isolated environment before you
 
       In the preceding JSON: 
 
-      - Replace `<location>` with the location of the VertexAI API that you want to use, for example, `us-west1`. 
+      - Replace `<location>` with the location of the VertexAI API that you want to use, for example, `us-east1`. 
       - Replace `<single-line-credentials-json>` with the single-line representation of the `credentials.json` file that 
         you generated in this tutorial's requirements.
+
+      <Caution>
+          This `.vertex-plugin-settings.json` file contains sensitive information and 
+          is intended for local Docker testing only.
+      </Caution>
 
   </Step>
   <Step title="">
@@ -472,7 +501,7 @@ This allows you to test the plugin's logic in an isolated environment before you
              "${IMAGE_REPOSITORY}:${VERSION}"
          ```
 
-         - The `run-docker` target builds the Docker image locally and then runs it as a container representing the plugin. 
+         The `run-docker` target builds the Docker image locally and then runs it as a container representing the plugin. 
 
       2. Start Docker Desktop on your local machine, if it is not already running.
       3. Run the following command to call the `run-docker` target, which builds the Docker image and then runs the resulting container, representing the plugin:
@@ -482,7 +511,7 @@ This allows you to test the plugin's logic in an isolated environment before you
          ```
 
          You must leave this terminal window open and running while you are testing the plugin locally within the running Docker container. If you interrupt the running process here or close this 
-         terminal window, the Docker container stops running and the plugin stops working.
+         terminal window, the Docker container stops running, and the plugin stops working.
 
   </Step>
   <Step title="Send a request to the listening plugin">
@@ -573,9 +602,10 @@ This allows you to test the plugin's logic in an isolated environment before you
 
 ## Deploy the plugin to your self-hosted UI
 
-In this section, you deploy the successfully-tested plugin for your users to add to their workflows' DAGs within your self-hosted Unstructured UI. 
-This section describes how to deploy the plugin from your local development machine directly into your existing container registry. In practice, you 
-would typically use a continuous integration and continuous deployment (CI/CD) pipeline to automate this process through more robust means.
+In this section, you manually deploy the successfully-tested plugin for your users to add to their workflows' DAGs within your self-hosted Unstructured UI. 
+This section describes how to deploy the plugin from your local development machine directly into your existing container registry. 
+
+In practice, you would typically use a CI/CD pipeline to automate deploying the plugin. 
 
 <Steps>
     <Step title="Specify the name of your container registry">
@@ -632,8 +662,9 @@ would typically use a continuous integration and continuous deployment (CI/CD) p
 
     </Step>
     <Step title="Build and deploy the plugin's container">
-        Run the following commands, one command at a time, to build the plugin's container and then deploy it to your container registry:
-        
+        Run the following commands, one command at a time, to build the plugin's container, deploy it to your container registry, and make the plugin 
+        available for use in the staging version of your self-hosted Unstructured UI:
+
         ```bash
         make docker-build
         make docker-push
@@ -644,17 +675,48 @@ would typically use a continuous integration and continuous deployment (CI/CD) p
     </Step>
 </Steps>
 
-## Test the plugin in the UI
+## Test the plugin in your UI
 
 <Steps>
-    <Step title="">
+    <Step title="Test the plugin in staging">
+        1. Sign in to the staging version of your self-hosted Unstructured UI.
+        2. Create a new workflow or open an existing workflow.
+        3. In the workflow's visual DAG designer, click the `+` icon anywhere between a **Chunker** node and a **Destination** node, 
+           and select **Plugins > Sentiment Analysis**.
+        4. Click the **Sentiment Analysis** node to open its settings pane.
+        5. In the settings pane, enter the required settings for the plugin. 
+           For example, enter the location of the VertexAI API, the single-string version of the `credentials.json` file's contents for accessing the 
+           VertexAI API, and the model for VertexAI to use.
+        6. Run the workflow.
+        7. When the workflow is finished, go to the destination location, and look for the `toxicity`, `emotion`, and `intent` values that the plugin adds to the `metadata` field for each element that Unstructured generated based on the source files' contents.
 
     </Step>
-    <Step title="">
+    <Step title="Make any changes to the plugin">
+        If you need to make any changes to the plugin, you can do so by returning to the previous section titled [Write the plugin](#write-the-plugin). 
+        
+        Make the necessary code changes and then:
 
+        1. [Run plugin tests locally with pytest](#run-plugin-tests-locally-with-pytest).
+        2. [Run the plugin in Docker locally](#run-the-plugin-in-docker-locally).
+        3. [Deploy the plugin again to the staging version of your self-hosted Unstructured UI](#deploy-the-plugin-to-your-self-hosted-ui).
+        4. Test the updated plugin again in staging.
+
+        Keep repeating this loop until you are satisfied with the plugin's performance in staging.
+
+    </Step>
+    <Step title="Promote the plugin to production">
+        After you have tested the plugin in your staging UI and are satisfied with its performance, you can promote it from staging to production. 
+        To do this, run the following command: 
+
+        ```bash
+        make promote-plugin-to-production
+        ```
+        
+        Of coursse, you should immediately sign in to the production version of your self-hosted Unstructured UI and test the plugin from there 
+        there before you start advertising its availability to your users.
     </Step>
 </Steps>
 
-## Learn more 
-
+Congratulations! You have successfully created, tested, and deployed your first custom plugin into your self-hosted Unstructured UI that your users 
+can now add to their workflow DAGs to unlock new capabilities and insights for their files and data!
 
