@@ -247,23 +247,27 @@ In this section, you write the plugin's runtime logic. This tutorial's logic is 
 
            ```python
            def __post_init__(self):
-               with open(self.env_settings.job_settings_file) as f:
-                   self.plugin_settings = PluginSettings.model_validate_json(f.read())
+               try:
+                   with open(self.env_settings.job_settings_file) as f:
+                       self.plugin_settings = PluginSettings.model_validate_json(f.read())
 
-               credentials_json = json.loads(
-                   self.plugin_settings.credentials.get_secret_value()
-               )
-               credentials = service_account.Credentials.from_service_account_info(
-                   credentials_json
-               )
+                   credentials_json = json.loads(
+                       self.plugin_settings.credentials.get_secret_value()
+                   )
+                   credentials = service_account.Credentials.from_service_account_info(
+                       credentials_json
+                   )
 
-               aiplatform.init(
-                   location=self.plugin_settings.location,
-                   project=credentials_json["project_id"],
-                   credentials=credentials,
-               )
+                   aiplatform.init(
+                       location=self.plugin_settings.location,
+                       project=credentials_json["project_id"],
+                       credentials=credentials,
+                   )
 
-               self.model = GenerativeModel(self.plugin_settings.model)
+                   self.model = GenerativeModel(self.plugin_settings.model)
+               except Exception as e:
+                   print(f"Plugin initialization failed: {e}")
+                   raise 
            ```
 
            - The `__post_init__` function is called after the `Plugin` class is initialized. The function reads in the UI field values from the `settings.json` file 
@@ -365,6 +369,9 @@ continue by [running the plugin in Docker](#run-the-plugin-in-docker-locally) as
            from src.plugin_sentiment_analysis import Plugin, PluginSettings
            ```
 
+        4. In the root of the project's `test` directory, add a blank `__init__.py` file. This file is required to allow the 
+           `src` directory to be seen by the `test` directory to enable the preceding `from...import` statement to work.
+
     </Step>
     <Step title="">
         1. In the `test_plugin.py` file, replace the `plugin` function body with the following definition:
@@ -402,12 +409,12 @@ continue by [running the plugin in Docker](#run-the-plugin-in-docker-locally) as
           VERTEXAI_CREDENTIALS="<single-line-credentials-json>"
           ```
 
-          <Caution>
+          <Warning>
               If you plan to publish this plugin's source code to an external repository such as GitHub, do not include the `.env` file in the repository, as it 
               can expose sentitive information publicly, such as your credentials for the VertexAI API. 
 
               To help prevent this file from accidentally being included in the repository, add a `.env` entry to a `.gitignore` file in the root of the project.
-          </Caution>
+          </Warning>
 
        3. In the `test_plugin.py` file, replace the `test_plugin` function body with the following definition. 
            The function body definition should now look as follows:
@@ -481,10 +488,10 @@ If the plugin's output matches the expected result, the pipeline should then con
       - Replace `<single-line-credentials-json>` with the single-line representation of the `credentials.json` file that 
         you generated in this tutorial's requirements.
 
-      <Caution>
+      <Warning>
           This `.vertex-plugin-settings.json` file contains sensitive information and 
-          is intended for local Docker testing only.
-      </Caution>
+          is intended for local Docker testing only. Do not check in this file with your plugin's source code.
+      </Warning>
 
   </Step>
   <Step title="">
@@ -698,6 +705,8 @@ In practice, you would typically use a CI/CD pipeline to automate deploying the 
 
         1. [Run plugin tests locally with pytest](#run-plugin-tests-locally-with-pytest).
         2. [Run the plugin in Docker locally](#run-the-plugin-in-docker-locally).
+        3. Increment the plugin's version number. To do this, in the project's `src/plugin_sentiment_analyis/__init__.py` file, 
+           update the value of `version` in the `PLUGIN_MANIFEST` variable, for example from `0.0.1` to `0.0.2`. Then save this file.
         3. [Deploy the plugin again to the staging version of your self-hosted Unstructured UI](#deploy-the-plugin-to-your-self-hosted-ui).
         4. Test the updated plugin again in staging.
 
