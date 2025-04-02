@@ -77,3 +77,32 @@ import AzureAPIPyV2 from '/snippets/destination_connectors/azure.v2.py.mdx';
 To learn how to use the Unstructured Ingest Python library to work with a specific source (input) and destination (output) location, see the Python code examples for the [source](/ingestion/source-connectors/overview) and [destination](/ingestion/destination-connectors/overview) connectors that are available for you to choose from.
 
 See also the [ingest configuration](/ingestion/ingest-configuration/overview) settings that enable you to further control how batches are sent and processed.
+
+## Migration guide
+
+The Unstructured Ingest Python library introduced breaking changes in version 0.7.0 as follows:
+
+- The library has moved the calling pattern (formerly commonly referred to as "v2") up one level in the package. If you are using this calling pattern 
+  in your existing code, beginning with version 0.7.0 you must remove `.v2` from your related `from...import` statements. For example, if you previously had statments 
+  such as these:
+
+  ```python
+  from unstructured_ingest.v2.pipeline.pipeline import Pipeline
+  from unstructured_ingest.v2.interfaces import ProcessorConfig
+  ```
+  
+  Beginning with version 0.7.0, you must change to these by removing `.v2`:
+
+  ```python
+  from unstructured_ingest.pipeline.pipeline import Pipeline
+  from unstructured_ingest.interfaces import ProcessorConfig
+  ```
+
+  If you do not make these changes beginning with version 0.7.0, your existing code will no longer work. To run your existing code 
+  without making these changes, you must pin your installed library version to 0.6.4 or earlier.
+
+- The earlier calling pattern (commonly referred to as "v1") has been deprecated and removed from the library and will no longer work beginning with version 0.7.0. If you are using this earlier "v1" calling pattern in your code, you must 
+  either manually migrate your code to the new calling pattern (formerly commonly referred to as "v2"), or pin your installed library version to 0.6.4 or earlier to keep using this earlier "v1" calling pattern.
+
+  To learn how to use the new calling pattern (formerly commonly referred to as "v2"), see the code examples in the 
+  [source connectors](/ingestion/source-connectors/overview) and [destination connectors](/ingestion/destination-connectors/overview) documentation.
