@@ -20,38 +20,64 @@ member's initial role can be [changed](/ui/account/workspaces#change-a-workspace
 
 ## Organizational account roles 
 
-- **Super Admin**: Has access to all of the organizational account's resources. Can perform account management, invite members, assign roles and permissions, and create workspace. Has all permissions to all of the organizational account's workspaces. 
-- **Developer**: Can be added to an organizational account's workspaces and assigned a role for each workspace that they are added to. 
-- **Billing**: Can view the organizational account's billing and usage information. Can allocate budget across the organizational account's workspaces.
+Organizational account roles include:
 
-For example:
+- Super Administrator
+- Account Member
+- Billing Administrator
 
-| Permission | Super Admin | Developer | Billing |
+These roles include the following permissions:
+
+| Permission | Super Administrator | Account Member | Billing Administrator |
 |---|---|---|---|
-| Can add members | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
-| Can remove members | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
-| Can change member roles | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
+| Organizational account management | | | |
+| Can add members to the account | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
+| Can remove members from the account | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
+| Can view members of the account | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
+| Can view an account member's details | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
+| Can change an account member's role | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
+| Billing | | | |
 | Can view usage and costs | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
-| Can edit payment details | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
+| Can edit payment information | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
 | Can add budget | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
 | Can distribute budget across workspaces | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
+| Workspaces | | | |
+| Can create workspaces | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
+| Can add members to a workspace | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
+| Can view members of a workspace | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> |
+| Can be added to a workspace | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
+| Can take actions in a workspace (based on their workspace role) | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> |
 
 ## Workspace roles
 
-- **Workspace Admin**: Can invite, remove, and assign roles to the workspace's members. Can make any and all changes to the workspace.
-- **Developer**: Can create and update any and all connectors and workflows in the workspace. Can schedule and run any and all workflows in the workspace.
-- **Operations**: Can schedule and run any and all workflows in the workspace. 
-- **Viewer**: Can view information about any and all connectors and workflows in the workspace. Cannot make any changes to the workspace or run any of the workflows in the workspace.
+Workspace roles include:
 
-For example:
-| Permission | Workspace Admin | Developer | Operations | Viewer |
-|---|---|---|---|---|
-| Can create connectors | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
-| Can use connectors | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
-| Can change connectors | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
-| Can delete connectors | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
-| Can create workflows | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
-| Can schdule workflows | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> |
-| Can run workflows | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> |
-| Can change workflows | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
-| Can delete workflows | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
+- Viewer
+- Developer
+- Operator
+- Workspace administrators
+
+These roles include the following permissions:
+
+| Resource | Action | Viewer | Developer | Operator | Workspace Administrator |
+|---|---|---|---|---|---|
+| Workflows | Read | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
+| | Create | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
+| | Edit | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
+| | Delete | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | 
+| | Run | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | 
+| | Schedule | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | 
+| Connectors | Read | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
+| | Create | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
+| | Edit | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
+| | Delete | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
+| Workspace members | Add members to the workspace | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
+| | View the workspace's members | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
+| | Remove members from the workspace | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
+| | Change the workspace members' roles | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
+| Budget limits | Add budget | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
+| | Edit budget | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
+| | View budget | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
+
+Super Administrators in an organizational account have complete access to all of the organizational account's workspaces, regardless of whether they 
+are a member of those workspaces.
