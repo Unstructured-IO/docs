@@ -2,8 +2,15 @@
 title: Organizational accounts
 ---
 
-An _organizational account_ is a collection of Unstructured [workspaces](/ui/account/workspaces). A _workspace_ is a collection of Unstructured 
-resources such as connectors, workflows, jobs, and API keys.
+An _organizational account_ is an Unstructured account that allows multiple users to access Unstructured resources and share billing. 
+An organizational account contains a collection of Unstructured [workspaces](/ui/account/workspaces) that can share resources 
+with subsets of users within the account. An organizational account manages access its organization and the organization's workspaces by inviting Unstructured 
+_personal account_ users. Any usage that occurs in an organizational account by any of its invited users is applied to the shared billing for that 
+organizational account.
+
+A _workspace_ is a collection of Unstructured resources (such as connectors, workflows, jobs, and API keys) within an organization. 
+This is different from a _personal workspace_, which is a collection of resources within an Unstructured personal account. An organizational account 
+can have multiple workspaces.
 
 ## Organizational account architecture
 
@@ -53,7 +60,8 @@ graph LR
 ```
 
 Each user also has a _personal account_, which operates independently of all other organizational accounts and personal accounts. Each personal account has a 
-_personal workspace_, which operates independently of all other workspaces. 
+_personal workspace_, which operates independently of all other workspaces. Each user can add a seprate billing method to their personal account that 
+will be applied only to usage in their personal account.
 
 ```mermaid
 graph LR
