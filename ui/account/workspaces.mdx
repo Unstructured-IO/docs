@@ -3,16 +3,15 @@ title: Workspaces
 sidebarTitle: Workspaces
 ---
 
-An _organizational workspace_ is a collection of resources (such as connectors, workflows, jobs, and workspace API keys) 
-within an Unstructured _organizational account_. Organizational workspace are used to manage 
-access to those resources by invited Unstructured _personal account users_ (also known as _workspace members_) that have first 
-been added to the organizational workspace's parent organization as _organization members_.
+A _workspace_ is a collection of resources such as connectors, workflows, jobs, and API keys. 
+
+Each workspace operates independently of all other workspaces.
 
 ## Workspace architecture
 
-An organizational workspace is part of one and only one [organization](/account/organizations).
+A workspace can belong to an [organizational account](/ui/account/organizations) or to a user's personal account. 
 
-An organization can have multiple organizational workspaces.
+Every organizational account begins with one default workspace. An organizational account can have multiple workspaces. (A user's personal account always has one and only one workspace.)
 
 ```mermaid
 graph LR
@@ -36,7 +35,7 @@ graph LR
     Org3 --> WS3C
 ```
 
-Unstructured personal account users can have access to multiple organizational workspaces within an organization.
+Users can have access to multiple workspaces within an organizational account.
 
 ```mermaid
 graph LR
@@ -83,25 +82,29 @@ graph LR
     User3_Org3 -.-> WS3C
 ```
 
-Each personal account user must be explicitly added to each organizational workspace that they are allowed to access. This assumes that the personal account user has first been added 
-to the organizational workspace's parent organization.
+Each user must be explicitly added to each workspace that they are allowed to access. (A user always has access to their personal workspace within their personal account.) This assumes that the user has first been added 
+to the workspace's parent organizational account.
 
-Each personal account user always has access to their own personal account. This personal account has one and only one personal workspace. 
-
-To make API calls to a workspace, an account user must first create an API key for that workspace, and then use that API key to make API calls to that workspace. 
-An API key is valid only for its related workspace, regardless of whether it is an organizational workspace or a personal workspace.
+To make programmatic API calls to a workspace instead of using the UI, an API key must first exist for that workspace. The caller then uses that API key to make API calls to that workspace. 
+Each API key is valid only for its related workspace.
 
 ## Create a workspace
 
-To create a workspace, you must first have an available Unstructured organizational account.
+To create a workspace, you must first have an available Unstructured [organizational account](/account/organizations).
 
 Currently, only Unstructured representatives can create organizational accounts. To request an organizational account to be created, 
 contact your Unstructured 
 sales representative, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io), or complete the online 
 [Unstructured contact form](https://unstructured.io/contact).
 
+<Info>
+    Your user must have the **Super Admin** [role](/ui/account/roles) in the intended workspace's parent organizational account to create workspaces in that organizational account.
+
+    (A user always has one and only one personal workspace within their personal account. You cannot create additional workspaces in personal accounts.)
+</Info>
+
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
-2. In the top navigation bar, in the organization selector, select the name of the organization that you want to add a workspace to.
+2. In the top navigation bar, in the organizational account selector, select the name of the organizational account that you want to add a workspace to.
 3. In the sidebar, above your user icon, click the **Settings** (gear) icon.
 4. Click **View All Workspaces**.
 5. Click **New Workspace**.
@@ -118,31 +121,56 @@ sales representative, email Unstructured Sales at [sales@unstructured.io](mailto
 ## Access a workspace
 
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
-2. In the top navigation bar, in the organization selector, select the name of the organization that contains the workspace you want to access.
+2. In the top navigation bar, in the organizational account selector, select the name of the organizational account that contains the workspace you want to access.
 3. In the workspace selector, select the name of the workspace that you want to access.
 
    If the workspace selector does not show the workspace you want to access, then 
-   your personal account has not been added to that workspace. To be added to the workspace, contact one of the workspace's administrators or its 
-   parent organization's administrators.
+   your user has not been added to that workspace. To be added to the workspace, contact one of the workspace's administrators or its 
+   parent organizational account's administrators.
 
 ## Add a member to a workspace
 
-An Unstructured account user that is added to a workspace is referred to as a _workspace member_.
+<Info>
+    Your user must have either the **Super Admin** [role](/ui/account/roles) in the workspace's parent organizational account or the **Workspace Admin** role in the 
+    workspace to add members to that workspace.
 
-To add a personal account user to a workspace as a member:
+    The user to be added must also have the **Developer** role in the workspace's parent organizational account.
 
-1. Make sure the account user that you want to add has already been added as a member of the workspace's parent organization. 
-   [Learn how](/ui/account/organizations.mdx#add-a-member-to-an-organization).
+    (A user always has access to their personal workspace within their personal account.)
+</Info>
+
+To add a user to a workspace as a member:
+
+1. Make sure the account user that you want to add has already been added as a member of the workspace's parent organizational account. 
+   [Learn how](/ui/account/organizations#add-a-member-to-an-organization).
 2. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
-3. In the top navigation bar, in the organization selector, select the name of the organization that contains the workspace you want to add a member to.
+3. In the top navigation bar, in the organizational account selector, select the name of the organizational account that contains the workspace you want to add a member to.
 4. In the workspace selector, select the name of the workspace that you want to add a member to.
 5. In the sidebar, above your user icon, click the **Settings** (gear) icon.
 6. Click **Manage Workspace**.
 7. In the top navigation bar, click **Members**.
 8. Click **Add New Member**.
-9. In the **Add New Member** dialog, select one of the organization's members to add to this workspace as a member.
-10. In the role selector, select the new team member's role for this workspace. [See the available roles and their permissions](/ui/account/roles).
+9. In the **Add New Member** dialog, select one of the organizational account's members to add to this workspace as a member.
+10. In the role selector, select the new team member's [role](/ui/account/roles) for this workspace.
 11. Click **Continue**. 
+
+## Change a workspace role for a member
+
+<Info>
+    Your user must have either the **Super Admin** role in the workspace's parent organizational account or the **Workspace Admin** role in the 
+    workspace to change the roles for that workspace's members.
+</Info>
+
+1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. In the top navigation bar, in the organizational account selector, select the name of the organizational account that contains the workspace for the member you want to change roles for.
+3. In the workspace selector, select the name of the workspace that contains the member you want to change roles for.
+4. In the sidebar, above your user icon, click the **Settings** (gear) icon.
+5. Click **Manage Workspace**.
+6. In the top navigation bar, click **Members**.
+7. Next to the member you want to change roles for, click the ellipses.
+8. Click **Edit Permissions**.
+9. Select the new role.
+10. Click **Continue**.
 
 ## Remove a member from a workspace
 
@@ -151,11 +179,18 @@ To add a personal account user to a workspace as a member:
     
     Any connectors, workflows, jobs, or other resources that were created by the member within the workspace will not be removed.
 
-    The only way to reverse removing a member from a workspace is to add the member back to the workspace. 
+    The only way to reverse removing a member from a workspace is to add the member back to the workspace.
 </Warning>
 
+<Info>
+    Your user must have either the **Super Admin** [role](/ui/account/roles) in the workspace's parent organizational account or the **Workspace Admin** role in the 
+    workspace to remove members from that workspace.
+
+    (A user cannot be removed from their personal workspace within their personal account.)
+</Info>
+
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
-2. In the top navigation bar, in the organization selector, select the name of the organization that contains the workspace you want to remove a member from.
+2. In the top navigation bar, in the organizational account selector, select the name of the organizational account that contains the workspace you want to remove a member from.
 3. In the workspace selector, select the name of the workspace that you want to remove a member from.
 4. In the sidebar, above your user icon, click the **Settings** (gear) icon.
 5. Click **Manage Workspace**.
@@ -166,12 +201,17 @@ To add a personal account user to a workspace as a member:
 
 ## Create an API key for a workspace
 
-To make API calls to a workspace, a personal account user must first create an API key for that workspace, and then use that API key to make API calls to that workspace.
+<Info>
+    Your user must have either the **Super Admin** [role](/ui/account/roles) in the workspace's parent organizational account or the **Workspace Admin** or **Developer** role in the 
+    workspace to create API keys for that workspace.
+</Info>
+
+To make programmatic API calls to a workspace instead of using the UI, an API key must first exist for that workspace, and then the caller uses that API key to make API calls to that workspace.
 
 An API key can be used only with the workspace for which it was created.
 
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
-2. In the top navigation bar, in the organization selector, select the name of the organization that contains the workspace you want to create an API key for.
+2. In the top navigation bar, in the organizational account selector, select the name of the organizational account that contains the workspace you want to create an API key for.
 3. In the workspace selector, select the name of the workspace that you want to create an API key for.
 4. In the sidebar, above your user icon, click the **Settings** (gear) icon.
 5. Click **Manage Workspace**.
@@ -183,14 +223,21 @@ An API key can be used only with the workspace for which it was created.
 
 ## Delete an API key for a workspace
 
+An API key is valid only for the workspace for which it was created.
+
 <Warning>
     Deleting an existing API key is a permanent operation. Deleted API keys cannot be recovered.
 
     You cannot use a deleted API key to call the Unstructured APIs.
 </Warning>
 
+<Info>
+    Your user must have either the **Super Admin** [role](/ui/account/roles) in the workspace's parent organizational account or the **Workspace Admin** or **Developer** role in the 
+    workspace to delete API keys from that workspace.
+</Info>
+
 1. Sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
-2. In the top navigation bar, in the organization selector, select the name of the organization that contains the workspace you want to delete an API key for.
+2. In the top navigation bar, in the organizational account selector, select the name of the organizational account that contains the workspace you want to delete an API key for.
 3. In the workspace selector, select the name of the workspace that you want to delete an API key for.
 4. In the sidebar, above your user icon, click the **Settings** (gear) icon.
 5. Click **Manage Workspace**.
@@ -205,10 +252,14 @@ An API key can be used only with the workspace for which it was created.
     Deleting a workspace is a permanent action and is not recoverable. Once a workspace is deleted, all connectors, workflows, jobs, and 
     API keys that are associated with that workspace are also deleted and are not recoverable.
     
-    The workspace's account users are not deleted, but they will no longer have access to the deleted workspace's connectors, workflows, jobs, and API keys.
+    The workspace's members are not deleted, but they will no longer have access to the deleted workspace's connectors, workflows, jobs, and API keys.
 
     Any code or scripts that reference the deleted workspace's connectors, workflows, jobs, or workspace API keys will fail.
 </Warning>
+
+<Info>
+    A user's personal workspace cannot be deleted from their personal account.
+</Info>
 
 Only authorized Unstructured representatives can delete workspaces. To request a workspace to be permanently deleted, contact your Unstructured 
 sales representative, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io), or complete the online 
