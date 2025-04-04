@@ -1,4 +1,6 @@
 - `<name>` (_required_) - A unique name for this connector.
-- `<token>` - The value of the access token for the Dropbox app that is associated with the target app folder.
-- `<remote-url>` - The remote URL to the target subfolder inside of the app folder for the Dropbox app.
+- `<remote-url>` (_required_) - The remote URL to the target subfolder inside of the app folder for the Dropbox app.
 - Set `recursive` to `true` to recursively process data from subfolders within the target subfolder. The default is `false` if not otherwise specified.
+- `<app-key>` (_required_) - The app key for your Dropbox app. This allows Unstructured to automatically replace expired access tokens.
+- `<app-secret>` (_required_) - The app secret for your Dropbox app. This allows Unstructured automatically to replace expired access tokens. 
+- `<refresh-token>` (_required_) - The refresh token for the Dropbox app. This allows Unstructured to automatically replace expired access tokens. 
