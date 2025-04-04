@@ -39,7 +39,10 @@ To run this quickstart, you will need a local file with a size of 10 MB or less 
 | `.xml` |
 
 <Note>
-    For processing remote files at scale in production, Unstructured supports many more files types than these. [See the list of supported file types](/ui/supported-file-types). 
+    For processing remote files at scale in production, Unstructured supports many more files types than these. [See the list of supported file types](/ui/supported-file-types).
+
+    Unstructured also supports processing files from remote object stores, and data from remote sources in websites, web apps, databases, and vector stores. For more information, see the [source connector overview](/ui/sources/overview) and the [remote quickstart](/ui/quickstart#remote-quickstart) 
+    for how to set up and run production-ready Unstructured ETL+ workflows at scale.
 </Note>
 
 If you do not have any files available, you can use one of the sample files that Unstructured offers in the UI. Or, you can download one or more sample files 
@@ -103,33 +106,6 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
         4. When you are done, click the **Close** button in the **Test output** pane.
 
     </Step> 
-    <Step title="Optional step: Try different partitioning strategies">
-        By default, Unstructured uses the **Auto** partitioning strategy, which automatically selects the best partitioning strategy for the file type.
-        
-        You can also try out different partitioning strategies to see how they affect the results. To do this:
-        
-        1. Click the **Partitioner** node.
-        2. In the **Partitioner** pane, with **Details** selected, under **Select Partition Strategy**, select a different partitioning strategy to use. 
-           For help, click the **FAQ** button in the node's pane. [Learn more about the available partitioning strategies](/ui/partitioning).
-        3. Click **Test** above the **Source** node again to see the results of the change, if any.
-
-           <Note> 
-               If **Test** is not visible above the **Source** node, you must force a file cache reset. To do this:
-               
-               1. In the **Source** pane, with **Details** selected, on 
-                  the **Local file** tab, click the trash can button next to the file.
-               2. Drag and drop the file into the **Source** node's **Drop file to test** area (even if it is the exact same file).
-
-                  If you are not able to drag and drop the file, you can click **Drop file to test** and then browse to and select the file instead.
-
-                  If you selected an Unstructured-provided sample file, select a different sample file, and then select the original sample file again.
-
-               3. Click **Test** above the **Source** node again to see the results of the change, if any.
-
-               This behavior is planned to be fixed in a future release.
-           </Note>
-
-    </Step>
     <Step title="Add more nodes to the workflow">
         1. You can now add more nodes to the workflow to do further testing of various Unstructured features and with the option of eventually moving the workflow into production. For example, you can:
         
@@ -167,31 +143,39 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
 
     </Step>
     <Step title="Next steps">
-        After you get the results you want, you have the option of moving your workflow into production. To do this:
+        After you get the results you want, you have the option of moving your workflow into production. To do this, complete the following instructions.
+
+        <Note>
+            The following instructions have you create a new workflow that is suitable for production. 
+            This behavior is planned to be fixed in a future release, allowing you to update the workflow that you just created, rather than needing to create a new one.
+        </Note>
         
-        1. Create a [source connector](/ui/sources/overview) for your remote source location. This is the location where you have files or data in a file or object store, website, database, or vector store that you want Unstructured to process.
+        1. With your workflow remaining open in the visual workflow editor, open a new tab in your web browser, and in this new tab, 
+           sign in to your Unstructured account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+        2. In this new tab, create a [source connector](/ui/sources/overview) for your remote source location. This is the location in production where you have files or data in a file or object store, website, database, or vector store that you want Unstructured to process.
 
            ![Connectors button on the sidebar](/img/ui/Sources-Sidebar.png)
 
-        2. Create a [destination connector](/ui/destinations/overview) for your remote destination location. This is the location where you want Unstructured to put the processed data as `.json` files in a file or object store, or as records in a database or vector store.
-        3. Open your workflow: on the sidebar, click **Workflows**. Then, in the list of available workflows, click the workflow that you created earlier.
-        4. In the visual workflow editor, click **Source**.
-        5. In the **Source** pane, with **Details** selected, on the **Connectors** tab, select the source connector that you just created.
-        6. Click the **Destination** node.
-        7. In the **Destination** pane, with **Details** selected, select the destination connector that you just created.
-        8. Click **Save**.
-        9. To run the workflow:
+        3. Create a [destination connector](/ui/destinations/overview) for your remote destination location. This is the location in production where you want Unstructured to put the processed data as `.json` files in a file or object store, or as records in a database or vector store.
+        4. Create a workflow: on the sidebar, click **Workflows**, and then click **New Workflow**. Select **Build it Myself**, and then click **Continue** to open the visual workflow editor. 
+        5. In the visual workflow editor, click **Source**.
+        6. In the **Source** pane, with **Details** selected, on the **Connectors** tab, select the source connector that you just created.
+        7. Click the **Destination** node.
+        8. In the **Destination** pane, with **Details** selected, select the destination connector that you just created.
+        9. Using your original workflow on the other tab as a guide, add any additional nodes to this new workflow as needed, and configure those new nodes' settings to match the other ones. 
+        10. Click **Save**.
+        11. To run the workflow:
         
-           a. Make sure to click **Save** first.<br/>
-           b. Click the **Close** button next to the workflow's name in the top navigation bar.<br/>
-           c. On the sidebar, click **Workflows**.<br/>
-           d. In the list of available workflows, click the **Run** button for the workflow that you just saved.<br/>
-           e. On the sidebar, click **Jobs**.<br/>
+            a. Make sure to click **Save** first.<br/>
+            b. Click the **Close** button next to the workflow's name in the top navigation bar.<br/>
+            c. On the sidebar, click **Workflows**.<br/>
+            d. In the list of available workflows, click the **Run** button for the workflow that you just saved.<br/>
+            e. On the sidebar, click **Jobs**.<br/>
 
-              ![Viewing the list of available jobs](/img/ui/Select-Job.png)
+               ![Viewing the list of available jobs](/img/ui/Select-Job.png)
 
-           f. In the list of available jobs, click the job that you just ran.<br/>
-           g. After the job status shows **Finished**, go to the your destination location to see the processed files or data that Unstructured put there.
+            f. In the list of available jobs, click the job that you just ran.<br/>
+            g. After the job status shows **Finished**, go to the your destination location to see the processed files or data that Unstructured put there.
 
         See also the [remote quickstart](/ui/quickstart#remote-quickstart) for more coverage about how to set up and run production-ready Unstructured ETL+ workflows at scale.
     </Step>
