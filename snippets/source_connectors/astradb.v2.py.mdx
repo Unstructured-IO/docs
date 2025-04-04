@@ -1,16 +1,20 @@
-```python Python Ingest v2
+```python Python Ingest
 import os
 
-from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-from unstructured_ingest.v2.interfaces import ProcessorConfig
-from unstructured_ingest.v2.processes.connectors.astradb import (
-    AstraDBAccessConfig,
-    AstraDBConnectionConfig,
-    AstraDBDownloaderConfig,
+from unstructured_ingest.pipeline.pipeline import Pipeline
+from unstructured_ingest.interfaces import ProcessorConfig
+
+from unstructured_ingest.processes.connectors.astradb import (
     AstraDBIndexerConfig,
+    AstraDBDownloaderConfig,
+    AstraDBConnectionConfig,
+    AstraDBAccessConfig
 )
-from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
-from unstructured_ingest.v2.processes.connectors.local import LocalUploaderConfig
+
+from unstructured_ingest.processes.connectors.local import LocalConnectionConfig
+from unstructured_ingest.processes.partitioner import PartitionerConfig
+from unstructured_ingest.processes.chunker import ChunkerConfig
+from unstructured_ingest.processes.embedder import EmbedderConfig
 
 # Chunking and embedding are optional.
 
@@ -19,23 +23,31 @@ if __name__ == "__main__":
         context=ProcessorConfig(),
         indexer_config=AstraDBIndexerConfig(
             collection_name=os.getenv("ASTRA_DB_COLLECTION"),
-            keyspace=os.getenv("ASTRA_DB_KEYSPACE"),           
+            keyspace=os.getenv("ASTRA_DB_KEYSPACE"),
+            batch_size=20
         ),
         downloader_config=AstraDBDownloaderConfig(
-            collection_name=os.getenv("ASTRA_DB_COLLECTION"),
-            keyspace=os.getenv("ASTRA_DB_KEYSPACE"),
+            download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR"),
+            fields=["record_id", "content"]
         ),
         source_connection_config=AstraDBConnectionConfig(
             access_config=AstraDBAccessConfig(
-                token=os.getenv("ASTRA_DB_APPLICATION_TOKEN"),
                 api_endpoint=os.getenv("ASTRA_DB_API_ENDPOINT"),
-            ),
+                token=os.getenv("ASTRA_DB_APPLICATION_TOKEN")
+            )
         ),
         partitioner_config=PartitionerConfig(
             partition_by_api=True,
-            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
             api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
         ),
-        uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR")),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
+        destination_connection_config=LocalConnectionConfig()
     ).run()
 ```

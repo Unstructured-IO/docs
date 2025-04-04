@@ -3,15 +3,15 @@ title: Query processed PDF with HuggingChat
 ---
 
 This example uses the [Unstructured Ingest Python library](/ingestion/python-ingest) or the 
-[Unstructured JavaScript/TypeScript SDK](/platform-api/partition-api/sdk-jsts) to send a PDF file to 
-the [Unstructured Platform Partition Endpoint](/platform-api/partition-api/overview) for processing. Unstructured processes the PDF and extracts the PDF's content. 
+[Unstructured JavaScript/TypeScript SDK](/api-reference/partition/sdk-jsts) to send a PDF file to 
+the [Unstructured Partition Endpoint](/api-reference/partition/overview) for processing. Unstructured processes the PDF and extracts the PDF's content. 
 This example then sends some of the content to [HuggingChat](https://huggingface.co/chat/), Hugging Face's open-source AI chatbot, 
 along with some queries about this content.
 
 To run this example, you'll need:
 
 - The [hugchat](https://pypi.org/project/hugchat/) package for Python, or the [huggingface-chat](https://www.npmjs.com/package/huggingface-chat) package for JavaScript/TypeScript.
-- Your Unstructured API key and API URL. [Get an API key and API URL](/platform-api/partition-api/overview). 
+- Your Unstructured API key and API URL. [Get an API key and API URL](/api-reference/partition/overview). 
 - Your Hugging Face account's email address and account password. [Get an account](https://huggingface.co/join).
 - A PDF file for Unstructured to process. This example uses a sample PDF file containing the text of the United States Constitution, 
 available for download from [https://constitutioncenter.org/media/files/constitution.pdf](https://constitutioncenter.org/media/files/constitution.pdf).

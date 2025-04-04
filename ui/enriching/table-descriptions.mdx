@@ -1,0 +1,70 @@
+---
+title: Table descriptions
+---
+
+After partitioning and chunking, you can have Unstructured generate text-based summaries of detected tables.
+
+This summarization is done by using models offered through these providers:
+
+- [GPT-4o](https://openai.com/index/hello-gpt-4o/), provided through OpenAI.
+- [Claude 3.5 Sonnet](https://www.anthropic.com/news/claude-3-5-sonnet), provided through Anthropic. 
+- [Claude 3.5 Sonnet](https://aws.amazon.com/bedrock/claude/), provided through Amazon Bedrock.
+- [Gemini 2.0 Flash](https://cloud.google.com/vertex-ai/generative-ai/docs/gemini-v2), provided through Vertex AI.
+
+Here is an example of the output of a detected table using GPT-4o. Note specifically the `text` field that is added.
+Line breaks have been inserted here for readability. The output will not contain these line breaks.
+
+```json
+{
+    "type": "Table",
+    "element_id": "5713c0e90194ac7f0f2c60dd614bd24d",
+    "text": "The table consists of 6 rows and 7 columns. The columns represent 
+        inhibitor concentration (g), bc (V/dec), ba (V/dec), Ecorr (V), icorr 
+        (A/cm\u00b2), polarization resistance (\u03a9), and corrosion rate 
+        (mm/year). As the inhibitor concentration increases, the corrosion 
+        rate generally decreases, indicating the effectiveness of the 
+        inhibitor. Notably, the polarization resistance increases with higher 
+        inhibitor concentrations, peaking at 6 grams before slightly 
+        decreasing. This suggests that the inhibitor is most effective at 
+        6 grams, significantly reducing the corrosion rate and increasing 
+        polarization resistance. The data provides valuable insights into the 
+        optimal concentration of the inhibitor for corrosion prevention.",
+    "metadata": {
+        "text_as_html": "<table>...<full results omitted for brevity>...</table>",
+        "filetype": "application/pdf",
+        "languages": [
+            "eng"
+        ],
+        "page_number": 1,
+        "image_base64": "/9j...<full results omitted for brevity>...//Z",
+        "image_mime_type": "image/jpeg",
+        "filename": "7f239e1d4ef3556cc867a4bd321bbc41.pdf",
+        "data_source": {}
+    }
+}
+```
+
+The generated table's summary will overwrite any previous contents in the `text` field. The table's original content is available 
+in the `image_base64` field. 
+
+Any embeddings that are produced after these summaries are generated will be based on the new `text` field's contents.
+
+## Generate table descriptions
+
+To generate table descriptions, in an **Enrichment** node in a workflow, specify the following:
+
+<Note>
+    You can change a workflow's table description settings only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.
+    
+    Table summaries are generated only when the **Partitioner** node in a workflow is also set to use the **High Res** partitioning strategy. [Learn more](/ui/partitioning).
+</Note>
+
+Select **Table**, and then choose one of the following provider (and model) combinations to use:
+
+- **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
+- **Anthropic (Claude 3.5 Sonnet)**. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+- **Amazon Bedrock (Claude 3.5 Sonnet)**. [Learn more](https://aws.amazon.com/bedrock/claude/).
+- **Vertex AI (Gemini 2.0 Flash)**. [Learn more](https://cloud.google.com/vertex-ai/generative-ai/docs/gemini-v2).
+
+Make sure after you choose the provider and model, that **Table Description** is also displayed. If **Table Description** and **Table to HTML** are both 
+displayed, be sure to select **Table Description**.

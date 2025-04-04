@@ -1,22 +1,22 @@
-```python Python Ingest v2
+```python Python Ingest
 import os
 
-from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-from unstructured_ingest.v2.interfaces import ProcessorConfig
+from unstructured_ingest.pipeline.pipeline import Pipeline
+from unstructured_ingest.interfaces import ProcessorConfig
 
-from unstructured_ingest.v2.processes.connectors.fsspec.dropbox import (
+from unstructured_ingest.processes.connectors.fsspec.dropbox import (
     DropboxAccessConfig,
     DropboxConnectionConfig,
     DropboxUploaderConfig
 )
-from unstructured_ingest.v2.processes.connectors.local import (
+from unstructured_ingest.processes.connectors.local import (
     LocalIndexerConfig,
     LocalConnectionConfig,
     LocalDownloaderConfig
 )
-from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
-from unstructured_ingest.v2.processes.chunker import ChunkerConfig
-from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+from unstructured_ingest.processes.partitioner import PartitionerConfig
+from unstructured_ingest.processes.chunker import ChunkerConfig
+from unstructured_ingest.processes.embedder import EmbedderConfig
 
 # Chunking and embedding are optional.
 
@@ -41,7 +41,10 @@ if __name__ == "__main__":
         embedder_config=EmbedderConfig(embedding_provider="huggingface"),
         destination_connection_config=DropboxConnectionConfig(
             access_config=DropboxAccessConfig(
-                token=os.getenv("DROPBOX_ACCESS_TOKEN")
+                token=os.getenv("DROPBOX_ACCESS_TOKEN"),
+                refresh_token=os.getenv("DROPBOX_REFRESH_TOKEN"),
+                app_key=os.getenv("DROPBOX_APP_KEY"),
+                app_secret=os.getenv("DROPBOX_APP_SECRET")
             )
         ),
         uploader_config=DropboxUploaderConfig(

@@ -1,10 +1,10 @@
-```python Python Ingest v2
+```python Python Ingest
 import os
 
-from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-from unstructured_ingest.v2.interfaces import ProcessorConfig
+from unstructured_ingest.pipeline.pipeline import Pipeline
+from unstructured_ingest.interfaces import ProcessorConfig
 
-from unstructured_ingest.v2.processes.connectors.confluence import (
+from unstructured_ingest.processes.connectors.confluence import (
     ConfluenceIndexerConfig,
     ConfluenceDownloaderConfig,
     ConfluenceConnectionConfig,
@@ -13,10 +13,10 @@ from unstructured_ingest.v2.processes.connectors.confluence import (
 
 # Chunking and embedding are optional.
 
-from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
-from unstructured_ingest.v2.processes.chunker import ChunkerConfig
-from unstructured_ingest.v2.processes.embedder import EmbedderConfig
-from unstructured_ingest.v2.processes.connectors.local import LocalUploaderConfig
+from unstructured_ingest.processes.partitioner import PartitionerConfig
+from unstructured_ingest.processes.chunker import ChunkerConfig
+from unstructured_ingest.processes.embedder import EmbedderConfig
+from unstructured_ingest.processes.connectors.local import LocalUploaderConfig
 
 if __name__ == "__main__":
     Pipeline.from_configs(
@@ -26,12 +26,17 @@ if __name__ == "__main__":
             max_num_of_spaces=500,
             max_num_of_docs_from_each_space=150
         ),
-        downloader_config=ConfluenceDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
-        
+        downloader_config=ConfluenceDownloaderConfig(
+            download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")
+            extract_images=True,
+            extract_files=True,
+            force_download=True,
+            allow_list=[] 
+        ),
         # For API token authentication:
         source_connection_config=ConfluenceConnectionConfig(
             access_config=ConfluenceAccessConfig(
-                token=os.getenv("CONFLUENCE_TOKEN")
+                api_token=os.getenv("CONFLUENCE_API_TOKEN")
             ),
             url=os.getenv("CONFLUENCE_URL"),
             username=os.getenv("CONFLUENCE_USERNAME"), 
@@ -41,7 +46,7 @@ if __name__ == "__main__":
         # For personal access token (PAT) authentication:
         # source_connection_config=ConfluenceConnectionConfig(
         #     access_config=ConfluenceAccessConfig(
-        #         token=os.getenv("CONFLUENCE_TOKEN")
+        #         token=os.getenv("CONFLUENCE_PERSONAL_ACCESS_TOKEN")
         #     ),
         #     url=os.getenv("CONFLUENCE_URL")
         # ),

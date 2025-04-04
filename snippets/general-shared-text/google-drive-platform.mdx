@@ -2,7 +2,12 @@ Fill in the following fields:
 
 - **Name** (_required_): A unique name for this connector.
 - **Drive ID** (_required_): The target folder's ID.
-- **Extensions**: A comma-separated list of any file extensions to be included in the ingestion process (such as `.jpg,.pdf`), if filtering is needed. 
+- **Extensions**: A comma-separated list of any file extensions to be included in the ingestion process (such as `jpg,pdf`), if filtering is needed. 
   The default is to include all files, if not otherwise specified.
+
+  <Note>
+      Do not include the leading dot in the file extensions. For example, use `jpg` or `pdf` instead of `.jpg` or `.pdf`.
+  </Note>
+
 - **Recursive**: Check this box to also access files from all subfolders within the folder.
 - **Account Key** (_required_): The contents of the `credentials.json` key file for the target service account. These contents must be expressed as a single-line string without line breaks.

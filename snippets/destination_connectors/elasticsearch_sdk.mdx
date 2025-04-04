@@ -1,19 +1,28 @@
 ```python Python SDK
-# ...
+import os
+
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import CreateDestinationRequest
 from unstructured_client.models.shared import (
-    <Create|Update>DestinationConnector,
+    CreateDestinationConnector,
     DestinationConnectorType,
     ElasticsearchConnectorConfigInput
 )
-# ...
-destination_connector = <Create|Update>DestinationConnector(
-    name="<name>", # Create only.
-    type=DestinationConnectorType.ELASTICSEARCH, # Create only.
-    config=ElasticsearchConnectorConfigInput(
-        hosts=["<host-url>"],
-        es_api_key="<es-api-key>",
-        index_name="<index-name>"
+
+with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+    response = client.destinations.create_destination(
+        request=CreateDestinationRequest(
+            create_destination_connector=CreateDestinationConnector(
+                name="<name>",
+                type=DestinationConnectorType.ELASTICSEARCH,
+                config=ElasticsearchConnectorConfigInput(
+                    hosts=["<host-url>"],
+                    es_api_key="<es-api-key>",
+                    index_name="<index-name>"
+                )
+            )
+        )
     )
-)
-# ...
+
+    print(response.destination_connector_information)
 ```

@@ -14,3 +14,11 @@ These environment variables:
 - `ASTRA_DB_APPLICATION_TOKEN` - The database application token value for the database, represented by `--token` (CLI) or `token` (Python). To get the token, see the **Database Details > Application Tokens** box on your database's **Overview** tab.
 - `ASTRA_DB_KEYSPACE` - The name of the keyspace for the database, represented by `--keyspace` (CLI) or `keyspace` (Python).
 - `ASTRA_DB_COLLECTION` - The name of the collection for the keyspace, represented by `--collection-name` (CLI) or `collection_name` (Python). If no value is provided, see the beginning of this article for the behavior at run time.
+
+Additional settings include:
+
+- For the source connector only, `--fields` (CLI) or `fields` (Python): Optionally, a comma-separated list (CLI) or an array of strings (Python) of fields 
+  to include in the output. The default is ti include all fields, if not otherwise specified.
+- For the destination connector only, `--flatten-metadata` (CLI) or `flatten_metadata=True` (Python): Optionally, whether to "flatten" the metadata. Specifically, the metadata key values are 
+  brought to the top level of the element, and the `metadata` key itself is removed. To not flatten the metadata (the default), specify `--no-flatten_metadata` (CLI) or 
+  `flatten_metadata=False` (Python). The default is is to not flatten the metadata if not otherwise specified.

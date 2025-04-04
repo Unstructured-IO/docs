@@ -1,0 +1,25 @@
+---
+title: Overview
+---
+
+_Enriching_ adds enhancments to the processed data that Unstructured produces. These enrichments include:
+
+- Providing a summarized description of the contents of a detected image. [Learn more](/ui/enriching/image-descriptions).
+- Providing a summarized description of the contents of a detected table. [Learn more](/ui/enriching/table-descriptions).
+- Providing a representation of a detected table in HTML markup format. [Learn more](/ui/enriching/table-to-html).
+- Providing a list of recognized entities and their types, through a process known as _named entity recognition_ (NER). [Learn more](/ui/enriching/ner).
+
+To add an enrichment, in an **Enrichment** node in a workflow, select one of the following enrichment types:
+
+<Note>
+    You can change enrichment settings only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.
+
+    Enrichments work only when the **Partitioner** node in a workflow is also set to use the **High Res** partitioning strategy. [Learn more](/ui/partitioning).
+</Note>
+
+- **Image** to provide a summarized description of the contents of each detected image. [Learn more](/ui/enriching/image-descriptions).
+- **Table** to provide a summarized description of the contents of each detected table. [Learn more](/ui/enriching/table-descriptions).
+- **Table** can also provide a representation of each detected table in HTML markup format. [Learn more](/ui/enriching/table-to-html).
+- **Text** to provide a list of recognized entities and their types by using a technique called _named entity recognition_ (NER). [Learn more](/ui/enriching/ner).
+
+To add multiple enrichments, create an additional **Enrichment** node for each enrichment type that you want to add.

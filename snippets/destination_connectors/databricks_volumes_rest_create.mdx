@@ -1,4 +1,4 @@
-```bash REST (Create)
+```bash curl
 curl --request 'POST' --location \
 "$UNSTRUCTURED_API_URL/sources" \
 --header 'accept: application/json' \
@@ -13,9 +13,14 @@ curl --request 'POST' --location \
         "catalog": "<catalog>",
         "schema": "<schema>",
         "volume": "<volume>",
-        "volume_path": "<volume-path>",
+        "volume_path": "<volume_path>",
+
+        # For Databricks OAuth machine-to-machine (M2M) authentication:
         "client_secret": "<client-secret>",
         "client_id": "<client-id>"
+
+        # For Databricks personal access token authentication:
+        "token": "<token>"
     }
 }'
 ```

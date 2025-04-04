@@ -69,8 +69,8 @@ client.general.partition({
     if (res.statusCode == 200) {
         let voting_texts = ""
 
-        if (res.elements)
-            for (const element of res.elements) {
+        if (res)
+            for (const element of res) {
                 if (element.text.includes("vot")) {
                     voting_texts += " " + element.text;
                 }

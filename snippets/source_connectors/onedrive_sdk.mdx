@@ -1,23 +1,32 @@
 ```python Python SDK
-# ...
+import os
+
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import CreateSourceRequest
 from unstructured_client.models.shared import (
-    <Create|Update>SourceConnector,
+    CreateSourceConnector,
     SourceConnectorType,
     OneDriveSourceConnectorConfigInput
 )
-# ...
-source_connector = <Create|Update>SourceConnector(
-    name="<name>", # Create only.
-    type=SourceConnectorType.ONEDRIVE, # Create only.
-    config=OneDriveSourceConnectorConfigInput(
-        client_id="<client-id>", 
-        user_pname="<user-pname>",
-        tenant="<tenant>", 
-        authority_url="<authority-url>",
-        client_cred="<client-cred>",
-        path="<path>",
-        recursive=<True|False>
+
+with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+    response = client.sources.create_source(
+        request=CreateSourceRequest(
+            create_source_connector=CreateSourceConnector(
+                name="<name>",
+                type=SourceConnectorType.ONEDRIVE,
+                config=OneDriveSourceConnectorConfigInput(
+                    client_id="<client-id>", 
+                    user_pname="<user-pname>",
+                    tenant="<tenant>", 
+                    authority_url="<authority-url>",
+                    client_cred="<client-cred>",
+                    path="<path>",
+                    recursive=<True|False>
+                )
+            )
+        )
     )
-)
-# ...
+
+    print(response.source_connector_information)
 ```

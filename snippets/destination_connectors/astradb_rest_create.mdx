@@ -1,4 +1,4 @@
-```bash REST (Create)
+```bash curl
 curl --request 'POST' --location \
 "$UNSTRUCTURED_API_URL/destinations" \
 --header 'accept: application/json' \
@@ -13,7 +13,8 @@ curl --request 'POST' --location \
         "api_endpoint": "<api-endpoint>",
         "collection_name": "<collection-name>",
         "keyspace": "<keyspace>",
-        "batch_size": <batch-size>
+        "batch_size": <batch-size>,
+        "flatten_metadata": "<true|false>"
     }
 }'
 ```

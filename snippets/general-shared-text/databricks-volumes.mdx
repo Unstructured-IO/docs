@@ -15,30 +15,56 @@
   - Azure: `https://adb-<workspace-id>.<random-number>.azuredatabricks.net`
   - GCP: `https://<workspace-id>.<random-number>.gcp.databricks.com`
 
+  <Note>
+      Do not add a trailing slash (`/`) to the workspace URL.
+  </Note>
+
 - The Databricks authentication details. For more information, see the documentation for 
   [AWS](https://docs.databricks.com/dev-tools/auth/index.html), 
   [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/), 
   or [GCP](https://docs.gcp.databricks.com/dev-tools/auth/index.html).
 
-  For the [Unstructured Platform](/platform/overview), only Databricks OAuth machine-to-machine (M2M) authentication is supported for 
-  [AWS](https://docs.databricks.com/dev-tools/auth/oauth-m2m.html), 
-  [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/oauth-m2m), and 
-  [GCP](https://docs.gcp.databricks.com/dev-tools/auth/oauth-m2m.html). 
-  You will need the the **Client ID** (or **UUID** or **Application** ID) and OAuth **Secret** (client secret) values for the corresponding service principal. 
-  Note that for Azure, only Databricks managed service principals are supported. Microsoft Entra ID managed service principals are not supported.
-
-  The following video shows how to create a Databricks managed service principal:
-
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/wBmqv5DaA1E"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
+  For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api-reference/overview), the following Databricks authentication types are supported:
   
+  - Databricks OAuth machine-to-machine (M2M) authentication for  
+    [AWS](https://docs.databricks.com/dev-tools/auth/oauth-m2m.html), 
+    [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/oauth-m2m), or 
+    [GCP](https://docs.gcp.databricks.com/dev-tools/auth/oauth-m2m.html). 
+  
+    You will need the the **Client ID** (or **UUID** or **Application** ID) and OAuth **Secret** (client secret) values for the corresponding service principal. 
+    Note that for Azure, only Databricks managed service principals are supported. Microsoft Entra ID managed service principals are not supported.
+
+    The following video shows how to create a Databricks managed service principal:
+
+    <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/wBmqv5DaA1E"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+    ></iframe>
+  
+  - Databricks personal access token authentication for 
+    [AWS](https://docs.databricks.com/dev-tools/auth/pat.html), 
+    [Azure](https://learn.microsoft.com/azure/databricks/dev-tools/auth/pat), or 
+    [GCP](https://docs.gcp.databricks.com/dev-tools/auth/pat.html). 
+    
+    You will need the personal access token's value.
+
+    The following video shows how to create a Databricks personal access token:
+
+    <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/OzEU2miAS6I"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+    ></iframe>
+
   For [Unstructured Ingest](/ingestion/overview), the following Databricks authentication types are supported:
 
   - For Databricks personal access token authentication for 

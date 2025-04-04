@@ -1,4 +1,4 @@
-- For the [Unstructured Platform](/platform/overview): only [Weaviate Cloud](https://weaviate.io/developers/wcs) clusters are supported.
+- For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api-reference/overview): only [Weaviate Cloud](https://weaviate.io/developers/wcs) clusters are supported.
 - For [Unstructured Ingest](/ingestion/overview): Weaviate Cloud clusters, 
   [Weaviate installed locally](https://weaviate.io/developers/weaviate/quickstart/local), 
   and [Embedded Weaviate](https://weaviate.io/developers/weaviate/installation/embedded) are supported.
@@ -23,7 +23,7 @@
     
     An existing collection is not required. At runtime, the collection behavior is as follows:
 
-    For the [Unstructured Platform](/platform/overview):
+    For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api-reference/overview):
     
     - If an existing collection name is specified, and Unstructured generates embeddings, 
       but the number of dimensions that are generated does not match the existing collection's embedding settings, the run will fail. 
@@ -37,7 +37,7 @@
     - If an existing collection name is specified, and Unstructured generates embeddings, 
       but the number of dimensions that are generated does not match the existing collection's embedding settings, the run will fail. 
       You must change your Unstructured embedding settings or your existing collection's embedding settings to match, and try the run again. 
-    - If a collection name is not specified, Unstructured creates a new collection in your Weaviate cluster. The new collection's name will be `Elements`.
+    - If a collection name is not specified, Unstructured creates a new collection in your Weaviate cluster. The new collection's name will be `Unstructuredautocreated`.
 
     If Unstructured creates a new collection and generates embeddings, you will not see an embeddings property in tools such as the Weaviate Cloud 
     **Collections** user interface. To view the generated embeddings, you can run a Weaviate GraphQL query such as the following. In this query, replace `<collection-name>` with 
@@ -122,6 +122,10 @@ You can adapt the following collection schema example for your own specific sche
                 {
                     "name": "orig_elements",
                     "dataType": ["text"]
+                },
+                {
+                    "name": "partitioner_type",
+                    "dataType": ["text"]
                 }
             ]
         }
@@ -132,4 +136,4 @@ You can adapt the following collection schema example for your own specific sche
 See also :
 
 - [Collection schema](https://weaviate.io/developers/weaviate/config-refs/schema)
-- [Unstructured document elements and metadata](/platform-api/partition-api/document-elements)
+- [Unstructured document elements and metadata](/api-reference/partition/document-elements)

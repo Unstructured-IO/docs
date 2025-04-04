@@ -61,64 +61,124 @@ In the preceding diagram:
 - Each `UnstructuredElement` node has a `PART_OF_CHUNK` relationship with a `Chunk` element.
 - Each `Chunk` node, except for the "last" `Chunk` node, has a `NEXT_CHUNK` relationship with its "next" `Chunk` node.
 
-Learn more about [document elements](/platform/document-elements) and [chunking](/platform/chunking).
+Learn more about [document elements](/ui/document-elements) and [chunking](/ui/chunking).
 
 Some related example Neo4j graph queries include the following.
 
-Query for all nodes:
+Query for all available nodes and relationships:
 
 ```text
-MATCH (n)
-RETURN n
+MATCH path=(source)-[relationship]->(target)
+RETURN path
 ```
 
 Query for `Chunk` to `Document` relationships:
 
 ```text
-MATCH (chunk:Chunk)-[:PART_OF_DOCUMENT]->(doc:Document)
-RETURN chunk, doc
+MATCH (chunk:Chunk)-[relationship:PART_OF_DOCUMENT]->(doc:Document)
+RETURN chunk, relationship, doc
 ```
 
 Query for `UnstructuredElement` to `Document` relationships:
 
 ```text
-MATCH (element:UnstructuredElement)-[:PART_OF_DOCUMENT]->(doc:Document)
-RETURN element, doc
+MATCH (element:UnstructuredElement)-[relationship:PART_OF_DOCUMENT]->(doc:Document)
+RETURN element, relationship, doc
 ```
 
 Query for `UnstructuredElement` to `Chunk` relationships:
 
 ```text
-MATCH (element:UnstructuredElement)-[:PART_OF_CHUNK]->(chunk:Chunk)
-RETURN element, chunk
+MATCH (element:UnstructuredElement)-[relationship:PART_OF_CHUNK]->(chunk:Chunk)
+RETURN element, relationship, chunk
 ```
 
 Query for `Chunk` to `Chunk` relationships:
 
 ```text
-MATCH (this:Chunk)-[:NEXT_CHUNK]->(previous:Chunk)
-RETURN this, previous
+MATCH (this:Chunk)-[relationship:NEXT_CHUNK]->(previous:Chunk)
+RETURN this, relationship, previous
 ```
 
 Query for `UnstructuredElement` to `Chunk` to `Document` relationships:
 
 ```text
-MATCH (element:UnstructuredElement)-[:PART_OF_CHUNK]-(chunk:Chunk)-[:PART_OF_DOCUMENT]->(doc:Document)
-RETURN element, chunk, doc
+MATCH (element:UnstructuredElement)-[ecrelationship:PART_OF_CHUNK]-(chunk:Chunk)-[cdrelationship:PART_OF_DOCUMENT]->(doc:Document)
+RETURN element, ecrelationship, chunk, cdrelationship, doc
 ```
 
 Query for `UnstructuredElements` containing the text `jury`, and show their `Chunk` relationships:
 
 ```text
-MATCH (element:UnstructuredElement)-[:PART_OF_CHUNK]->(chunk:Chunk)
+MATCH (element:UnstructuredElement)-[relationship:PART_OF_CHUNK]->(chunk:Chunk)
 WHERE element.text =~ '(?i).*jury.*'
-RETURN element, chunk
+RETURN element, relationship, chunk
 ```
 
 Query for the `Chunk` with the specified `id`, and show its `UnstructuredElement` relationships:
 
 ```text
-MATCH (element:UnstructuredElement)-[:PART_OF_CHUNK]->(chunk:Chunk)
+MATCH (element:UnstructuredElement)-[relationship:PART_OF_CHUNK]->(chunk:Chunk)
 WHERE chunk.id = '731508bf53637ce4431fe93f6028ebdf'
-RETURN element, chunk
+RETURN element, relationship, chunk
 ```
+
+Additionally, for the [Unstructured UI](/ui/overview) and [Unstructured Workflow Endpoint](/api-reference/workflow/), 
+when a [Named entity recognition (NER)](/ui/enriching/ner) DAG node is added to a custom workflow, 
+any recognized entities are output as `Entity` nodes in the graph.
+
+This additional graph ouput of the Neo4j destination connector is represented in the following diagram:
+
+```mermaid
+graph TD
+    Chunk -->|HAS_ENTITY| Entity
+    Entity -->|ENTITY_TYPE| Entity
+```
+
+In the preceding diagram:
+
+- The `Chunk` node represents one of the source file's Unstructured `Element` objects, after chunking. 
+- The `Entity` node represents a recognized entity. 
+- A `Chunk` node can have `HAS_ENTITY` relationships with `Entity` nodes.
+- An `Entity` node can have `ENTITY_TYPE` relationships with other `Entity` nodes. 
+
+Some related example Neo4j graph queries include the following.
+
+Query for all available nodes and relationships:
+
+```text
+MATCH path=(source)-[relationship]->(target)
+RETURN path
+```
+
+Query for `Entity` to `Entity` relationships:
+
+```text
+MATCH (child:Entity)-[relationship:ENTITY_TYPE]->(parent:Entity)
+RETURN child, relationship, parent
+``` 
+
+Query for `Entity` nodes containing the text `PERSON`, and show their `Entity` relationships:
+
+```text
+MATCH (child:Entity)-[relationship:ENTITY_TYPE]->(parent:Entity)
+WHERE parent.id = 'PERSON'
+RETURN child, relationship, parent
+```
+
+Query for `Entity` nodes containing the text `amendment`, and show their `Chunk` relationships:
+
+```text
+MATCH (element:Chunk)-[relationship:HAS_ENTITY]->(entity:Entity)
+WHERE entity.id =~ '(?i).*amendment.*'
+RETURN element, relationship, entity
+```
+
+QUERY FOR `Entity` nodes containing the text `PERSON`, and show their `Entity` to `Entity` to `Chunk` relationships:
+
+```text
+MATCH (chunk:Chunk)-[ccrelationship:HAS_ENTITY]-(child:Entity)-[cprelationship:ENTITY_TYPE]->(parent:Entity)
+WHERE parent.id =~ 'PERSON'
+RETURN chunk, ccrelationship, child, cprelationship, parent
+```
+

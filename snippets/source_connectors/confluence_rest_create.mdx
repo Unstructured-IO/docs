@@ -1,4 +1,4 @@
-```bash REST (Create)
+```bash curl
 curl --request 'POST' --location \
 "$UNSTRUCTURED_API_URL/sources" \
 --header 'accept: application/json' \
@@ -13,6 +13,8 @@ curl --request 'POST' --location \
         "max_num_of_spaces": <max-num-of-spaces>,
         "max_num_of_docs_from_each_space": <max-num-of-docs-from-each-space>,
         "spaces": ["<space-name>", "<space-name>"],
+        "extract_images": "<true|false>",
+        "extract_files": "<true|false>",
 
         # For API token authentication:
 

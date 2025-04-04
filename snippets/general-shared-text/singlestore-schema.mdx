@@ -45,7 +45,8 @@ CREATE TABLE elements (
     parent_id TEXT,
     page_number TEXT,
     is_continuation BOOLEAN,
-    orig_elements TEXT
+    orig_elements TEXT,
+    partitioner_type TEXT
 );
 ```
 
@@ -53,4 +54,4 @@ See also:
 
 - [CREATE TABLE](https://docs.singlestore.com/cloud/reference/sql-reference/data-definition-language-ddl/create-table/) 
   in the SingleStore documentation
-- [Unstructured document elements and metadata](/platform-api/partition-api/document-elements)
+- [Unstructured document elements and metadata](/api-reference/partition/document-elements)

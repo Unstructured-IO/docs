@@ -1,0 +1,63 @@
+```python Python Ingest
+import os
+
+from unstructured_ingest.pipeline.pipeline import Pipeline
+from unstructured_ingest.interfaces import ProcessorConfig
+
+from unstructured_ingest.processes.connectors.local import (
+    LocalIndexerConfig,
+    LocalDownloaderConfig,
+    LocalConnectionConfig
+)
+
+from unstructured_ingest.processes.connectors.ibm_watsonx.ibm_watsonx_s3 import (
+    IbmWatsonxConnectionConfig,
+    IbmWatsonxAccessConfig,
+    IbmWatsonxUploadStagerConfig,
+    IbmWatsonxUploaderConfig
+)
+
+from unstructured_ingest.processes.partitioner import PartitionerConfig
+from unstructured_ingest.processes.chunker import ChunkerConfig
+from unstructured_ingest.processes.embedder import EmbedderConfig
+
+# Chunking and embedding are optional.
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(reprocess=True, clear_cache=True),
+        indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
+        downloader_config=LocalDownloaderConfig(),
+        source_connection_config=LocalConnectionConfig(),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
+        destination_connection_config=IbmWatsonxConnectionConfig(
+            access_config=IbmWatsonxAccessConfig(
+                iam_api_key=os.getenv("IBM_IAM_API_KEY"),
+                access_key_id=os.getenv("IBM_COS_ACCESS_KEY"),
+                secret_access_key=os.getenv("IBM_COS_SECRET_ACCESS_KEY")
+            ),
+            iceberg_endpoint=os.getenv("IBM_ICEBERG_CATALOG_METASTORE_REST_ENDPOINT"),
+            object_storage_endpoint=os.getenv("IBM_COS_BUCKET_PUBLIC_ENDPOINT"),
+            object_storage_region=os.getenv("IBM_COS_BUCKET_REGION"),
+            catalog=os.getenv("IBM_ICEBERG_CATALOG")
+        ),
+        stager_config=IbmWatsonxUploadStagerConfig(),
+        uploader_config=IbmWatsonxUploaderConfig(
+            namespace=os.getenv("IBM_ICEBERG_SCHEMA"),
+            table=os.getenv("IBM_ICEBERG_TABLE"),
+            max_retries=5,
+            record_id_key=os.getenv("IBM_ICEBERG_TABLE_UNIQUE_RECORD_COLUMN")
+        )
+    ).run()
+```

@@ -13,8 +13,8 @@ The following environment variables:
 - `CONFLUENCE_URL` - The target Confluence site's URL, represented by `--url` (CLI) or `url` (Python).
 - One of the following:
 
-  - For API token authentication: `CONFLUENCE_USERNAME` and `CONFLUENCE_TOKEN` - The name or email address,and API token of the target Confluence user, represented by `--username` (CLI) or `username` (Python) and `--token` (CLI) or `token` (Python), respectively.
-  - For personal access token (PAT) authentication: `CONFLUENCE_TOKEN` - The PAT for the target Confluence user, represented by `--token` (CLI) or `token` (Python).
+  - For API token authentication: `CONFLUENCE_USERNAME` and `CONFLUENCE_API_TOKEN` - The name or email address, and API token of the target Confluence user, represented by `--username` (CLI) or `username` (Python) and `--api-token` (CLI) or `api-token` (Python), respectively.
+  - For personal access token (PAT) authentication: `CONFLUENCE_PERSONAL_ACCESS_TOKEN` - The PAT for the target Confluence user, represented by `--token` (CLI) or `token` (Python).
   - For password authentication: `CONFLUENCE_USERNAME` and `CONFLUENCE_PASSWORD` - The name or email address, and password of the target Confluence user, represented by `--username` (CLI) or `username` (Python) and `--password` (CLI) or `password` (Python), respectively.
 
 Additional settings include:
@@ -23,3 +23,7 @@ Additional settings include:
 - `--max-num-of-spaces` (CLI) or `max_num_of_spaces` (Python): Optionally, the maximum number of spaces to access, expressed as an integer. The default value is `500` if not otherwise specified.
 - `--max-num-of-docs-from-each-space` (CLI) or `max_num_of_docs_from_each_space` (Python): Optionally, the maximum number of documents to access from each space, expressed as an integer. The default value is `100` if not otherwise specified.
 - `--cloud` or `--no-cloud` (CLI) or `cloud` (Python): Optionally, whether to use Confluence Cloud (`--cloud` for CLI or `cloud=True` for Python). The default is `--no-cloud` (CLI) or `cloud=False` (Python) if not otherwise specified.
+- `--extract-images` (CLI) or `extract_images` (Python): Optionally, download images and replace the HTML content with Base64-encoded images. The default is `--no-extract-images` (CLI) or `extract_images=False` (Python) if not otherwise specified.
+- `--extract-files` (CLI) or `extract_files` (Python): Optionally, download any embedded files. The default is `--no-extract-files` (CLI) or `extract_files=False` (Python) if not otherwise specified.
+- `--force-download` (CLI) or `force_download` (Python): Optionally, re-download extracted files even if they already exist locally. The default is `--no-force-download` (CLI) or `force_download=False` (Python) if not otherwise specified.
+- `--allow-list` (CLI) or `allow_list`: Optionally, a command-separated list (CLI) or a an array of strings (Python) of allowed URLs to download. By default, the base URL that the original HTML came from is used, if not otherwise specified.

@@ -1,0 +1,367 @@
+---
+title: Model Context Protocol (MCP) Hands-On Walkthrough for the Unstructured Partition Endpoint
+sidebarTitle: MCP for Partition Endpoint
+---
+
+[Model Context Protocol](https://modelcontextprotocol.io/introduction) (MCP) is an open protocol that standardizes 
+how applications provide context to LLMs. From the MCP documentation:
+
+> Think of MCP like a USB-C port for AI applications. Just as USB-C provides a standardized way to connect your devices to various peripherals and accessories, MCP provides a standardized way to connect AI models to different data sources and tools.
+
+This article provides a hands-on, step-by-step walkthrough to build a simple example on your local development machine
+that integrates the [Unstructured API](/api-reference/overview) with MCP. Specifically, 
+this walkthrough demonstrates how to run an MCP _server_ 
+(a lightweight program that exposes specific capabilities through MCP); this MCP server uses the 
+[Unstructured Partition Endpoint](/api-reference/workflow/overview) to partition a single file, with limited support 
+for chunking as well, processing local files one file at a time.
+
+<Note>
+    For a hands-on walkthrough of the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) instead, 
+    see the [MCP Hands-On Walkthrough for the Unstructured Workflow Endpoint](/examplecode/tools/mcp), which offers 
+    a full range of partitioning, chunking, embedding, and enrichment options for your files and data.
+</Note>
+ 
+You call this MCP server from an MCP _client_ (an application that maintains a one-to-one connection with an 
+MCP server), which in this walkthrough is [Claude for Desktop](https://claude.ai/download), a chat-based interface, by asking it plain language questions. 
+Other MCP clients are also available. [Learn more](https://modelcontextprotocol.io/clients).
+
+## Requirements
+
+To complete this walkthrough, you must first have an Unstructured account, an Unstructured API key for that account, 
+the necessary Python toolchain and project setups, Claude for Desktop, and an input file for Unstructured to process, as follows.
+
+### Unstructured account and API key
+
+Before you begin, you must have an Unstructured account and an Unstructured API key, as follows:
+
+import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-simple-api-only.mdx';
+
+<GetStartedSimpleAPIOnly/>
+
+### Python toolchain and Claude for Desktop setup
+
+Before you can start coding on your local machine, you must install the Python package and project manager `uv`, and install Claude for Desktop, as follows.
+
+<Steps>
+    <Step>
+        Install `uv`, as follows.
+
+        By using `pip`:
+
+        ```bash
+        pip install uv
+        ```
+
+        Or, by using the following script (be sure to restart your terminal or Command Prompt after running the script):
+
+        ```bash
+        # For macOS and Linux:
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+
+        # For Windows:
+        powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+        ```
+
+        (To learn more about `uv`, see the [uv documentation](https://docs.astral.sh/uv/).)
+    </Step>
+    <Step>
+        [Install Claude for Desktop](https://claude.ai/download).
+    </Step>
+</Steps>
+
+### Input file
+
+You must have an input file for Unstructured to process. This file can be any file type that Unstructured supports, such as a `.pdf` file. 
+[See the list of supported file types](/ui/supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
+
+To minimize the risk of Claude for Desktop's hard timeout limit of 60 seconds for MCP server responses, we recommend that you use small files 
+(less than 400 KB) for this walkthrough.
+
+You are now ready to start coding.
+
+## Step 1: Create the MCP server
+
+<Steps>
+    <Step>
+        From your current working directory, create a project directory and then initialize it. This example creates a 
+        project directory named `mcp-unstructured-parition-demo`. Then go to the project directory:
+
+        ```bash
+        uv init mcp-unstructured-partition-demo
+        cd mcp-unstructured-partition-demo
+        ```
+
+    </Step>
+    <Step>
+        Create a virtual environment in the root of the project directory. Then activate the virtual environment:
+
+        ```bash
+        # For macOS and Linux:
+        uv venv
+        source .venv/bin/activate
+
+        # For Windows:
+        uv venv
+        .venv\Scripts\activate
+        ```
+
+        To deactivate and exit the virtual environment at any time, simply run the `deactivate` command:
+
+        ```bash
+        deactivate
+        ```
+
+    </Step>
+    <Step>
+        With the virtual environment activated, install the Python SDK for Model Context Protocol and additional code dependencies:
+
+        ```bash
+        uv add "mcp[cli]" "unstructured-client>=0.30.6" dotenv
+        ```
+
+    </Step>
+    <Step>
+        In the root of the project directory, create a new Python file. This example names the file `doc_processor.py`. 
+        Then add the following code to this new `doc_processor.py` file.
+
+        In the following code, replace `<absolute-path-to-local-directory>` with the absolute path to the local directory where you want 
+        Unstructured to store the processed files' content. Be sure that this local directory exists before you run the code.
+
+        ```python
+        import os
+        from dotenv import load_dotenv
+        import json
+        from unstructured_client import UnstructuredClient
+        from typing import AsyncIterator
+        from dataclasses import dataclass
+        from contextlib import asynccontextmanager
+        from mcp.server.fastmcp import FastMCP, Context
+        from unstructured_client.models import operations, shared
+
+        @dataclass
+        class AppContext:
+            client: UnstructuredClient
+
+        @asynccontextmanager
+        async def app_lifespan(server: FastMCP) -> AsyncIterator[AppContext]:
+            """Manages the Unstructured API client lifecycle."""
+            api_key = os.getenv("UNSTRUCTURED_API_KEY")
+            if not api_key:
+                raise ValueError("UNSTRUCTURED_API_KEY environment variable is required")
+
+            client = UnstructuredClient(api_key_auth=api_key)
+            try:
+                yield AppContext(client=client)
+            finally:
+                # No cleanup needed for the API client.
+                pass
+
+        # Create the MCP server instance.
+        mcp = FastMCP("unstructured-partition-mcp", lifespan=app_lifespan, dependencies=["unstructured-client", "python-dotenv"])
+        # Specify the absolute path to the local directory to store processed files.
+        PROCESSED_FILES_FOLDER = "<absolute-path-to-local-directory>"
+
+        def load_environment_variables() -> None:
+            """
+            Load environment variables from .env file.
+            Raises an error if critical environment variables are missing.
+            """
+            load_dotenv()
+            required_vars = [
+                "UNSTRUCTURED_API_KEY"
+            ]
+
+            for var in required_vars:
+                if not os.getenv(var):
+                    raise ValueError(f"Missing required environment variable: {var}")
+
+        def json_to_text(file_path) -> str:
+            with open(file_path, 'r') as file:
+                elements = json.load(file)
+
+            doc_texts = []
+
+            for element in elements:
+                text = element.get("text", "").strip()
+                element_type = element.get("type", "")
+                metadata = element.get("metadata", {})
+
+                if element_type == "Title":
+                    doc_texts.append(f"<h1> {text}</h1><br>")
+                elif element_type == "Header":
+                    doc_texts.append(f"<h2> {text}</h2><br/>")
+                elif element_type == "NarrativeText" or element_type == "UncategorizedText":
+                    doc_texts.append(f"<p>{text}</p>")
+                elif element_type == "ListItem":
+                    doc_texts.append(f"<li>{text}</li>")
+                elif element_type == "PageNumber":
+                    doc_texts.append(f"Page number: {text}")
+                elif element_type == "Table":
+                    table_html = metadata.get("text_as_html", "")
+                    doc_texts.append(table_html)  # Keep the table as HTML.
+                else:
+                    doc_texts.append(text)
+
+            return " ".join(doc_texts)
+
+        @mcp.tool()
+        async def process_document(ctx: Context, filepath: str) -> str:
+            """
+            Sends the document to Unstructured for processing. 
+            Returns the processed contents of the document
+            
+            Args:
+                filepath: The local path to the document.
+            """
+
+            filepath = os.path.abspath(filepath)
+
+            if not os.path.isfile(filepath):
+                return "File does not exist"
+
+            # Check whether Unstructured supports the file's extension.
+            _, ext = os.path.splitext(filepath)
+            supported_extensions = {".abw", ".bmp", ".csv", ".cwk", ".dbf", ".dif", ".doc", ".docm", ".docx", ".dot",
+                                    ".dotm", ".eml", ".epub", ".et", ".eth", ".fods", ".gif", ".heic", ".htm", ".html",
+                                    ".hwp", ".jpeg", ".jpg", ".md", ".mcw", ".mw", ".odt", ".org", ".p7s", ".pages",
+                                    ".pbd", ".pdf", ".png", ".pot", ".potm", ".ppt", ".pptm", ".pptx", ".prn", ".rst",
+                                    ".rtf", ".sdp", ".sgl", ".svg", ".sxg", ".tiff", ".txt", ".tsv", ".uof", ".uos1",
+                                    ".uos2", ".web", ".webp", ".wk2", ".xls", ".xlsb", ".xlsm", ".xlsx", ".xlw", ".xml",
+                                    ".zabw"}
+
+            if ext.lower() not in supported_extensions:
+                return "File extension not supported by Unstructured"
+
+            client = ctx.request_context.lifespan_context.client
+            file_basename = os.path.basename(filepath)
+
+            req = operations.PartitionRequest(
+                partition_parameters=shared.PartitionParameters(
+                    files=shared.Files(
+                        content=open(filepath, "rb"),
+                        file_name=filepath,
+                    ),
+                    strategy=shared.Strategy.AUTO,
+                ),
+            )
+
+            try:
+                res = client.general.partition(request=req)
+                element_dicts = [element for element in res.elements]
+                json_elements = json.dumps(element_dicts, indent=2)
+                output_json_file_path = os.path.join(PROCESSED_FILES_FOLDER, f"{file_basename}.json")
+                with open(output_json_file_path, "w") as file:
+                    file.write(json_elements)
+
+                return json_to_text(output_json_file_path)
+            except Exception as e:
+                return f"The following exception happened during file processing: {e}"
+
+        if __name__ == "__main__":
+            load_environment_variables()
+            # Initialize and run the server.
+            mcp.run(transport='stdio')
+        ```
+
+    </Step>
+    <Step>
+        In the root of the project directory, create a new file named `.env`. 
+        Then add the following code to this new `.env` file, replacing `<your-unstructured-api-key>` with your Unstructured API key:
+
+        ```text
+        UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
+        ```
+
+    </Step>
+</Steps>
+ 
+## Step 2: Configure Claude for Desktop to use the MCP server
+
+<Steps>
+    <Step>
+        Open the Claude for Desktop App configuration file from the following location, for example by using Visual Studio Code:
+
+        ```text
+        # For macOS or Linux:
+        code ~/Library/Application\ Support/Claude/claude_desktop_config.json
+
+        # For Windows:
+        code $env:AppData\Claude\claude_desktop_config.json
+        ```
+
+    </Step>
+    <Step>
+        Add the following code to the `claude_desktop_config.json` file, and then save the file.
+
+        In this file:
+
+        - `"unstructured-partition-mcp"` must match the value that you set in `mcp = FastMCP("unstructured-partition-mcp" ...` in the `doc_processor.py` file.
+        - "Absolute path to" `uv` must be the absolute path to the `uv` executable on your local machine.
+        - "Absolute path to project directory" must be the absolute path to the project directory.
+        - `mcp-unstructured-partition-demo` must match the name of the project directory that you created.
+        - `"doc_processor.py"` must match the name of the Python file that you created for the MCP server.
+
+        For macOS or Linux:
+
+        ```json
+        {
+            "mcpServers": {
+                "unstructured-partition-mcp": {
+                    "command": "/ABSOLUTE/PATH/TO/uv",
+                    "args": [
+                        "--directory",
+                        "/ABSOLUTE/PATH/TO/PROJECT/DIRECTORY/mcp-unstructured-partition-demo/",
+                        "run",
+                        "doc_processor.py"
+                    ]
+                }
+            }
+        }
+        ```
+
+        For Windows:
+
+        ```json
+        {
+            "mcpServers": {
+                "unstructured-partition-mcp": {
+                    "command": "C:\\ABSOLUTE\\PATH\\TO\\uv",
+                    "args": [
+                        "--directory",
+                        "C:\\ABSOLUTE\\PATH\\TO\\PROJECT\\DIRECTORY\\mcp-unstructured-partition-demo\\",
+                        "run",
+                        "doc_processor.py"
+                    ]
+                }
+            }
+        }
+        ```
+
+    </Step>
+</Steps>
+
+## Step 3: Run the MCP server and call it from Claude for Desktop
+
+<Steps>
+    <Step>
+        Start Claude for Desktop. If it is already running, restart it.
+    </Step>
+    <Step>
+        Ask the following question in the chat window, replacing `<absolute-path-to-local-file>` with the absolute path to the local file that you 
+        want Unstructured to process.
+
+        <Note>
+            This walkthrough has been tested with small files (less than 400 KB), due to Claude for Desktop's hard timeout limit of 60 seconds for MCP server responses.
+
+            Larger files might take longer for Unstructured to process, and Claude for Desktop might time out before such files are fully processed. 
+        </Note>
+
+        ```text
+        Process the document at <absolute-path-to-local-file>
+        ```
+
+        Claude for Desktop responds with information about the processed document.
+        
+        You can find the processed file's content in the path that you specified for `PROCESSED_FILES_FOLDER` in the MCP server's `doc_processor.py` file.
+    </Step>
+</Steps>

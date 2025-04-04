@@ -1,27 +1,36 @@
 ```python Python SDK
-# ...
+import os
+
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import CreateDestinationRequest
 from unstructured_client.models.shared import (
-    <Create|Update>DestinationConnector,
+    CreateDestinationConnector,
     DestinationConnectorType,
     DatabricksVDTDestinationConnectorConfigInput
 )
-# ...
-destination_connector = <Create|Update>DestinationConnector(
-    name="<name>", # Create only.
-    type=DestinationConnectorType.DATABRICKS_VOLUME_DELTA_TABLES, # Create only.
-    config=DatabricksVDTDestinationConnectorConfigInput(
-        server_hostname="<server-hostname>",
-        http_path="<http-path>",
-        token="<token>",
-        client_id="<client-id>",
-        client_secret="<client-secret>",
-        volume="<volume>",
-        catalog="<catalog>",
-        volume_path="<volume-path>",
-        schema="<schema>",
-        database="<database>",
-        table_name="<table-name>"
+
+with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+    response = client.destinations.create_destination(
+        request=CreateDestinationRequest(
+            create_destination_connector=CreateDestinationConnector(
+                name="<name>",
+                type=DestinationConnectorType.DATABRICKS_VOLUME_DELTA_TABLES,
+                config=DatabricksVDTDestinationConnectorConfigInput(
+                    server_hostname="<server-hostname>",
+                    http_path="<http-path>",
+                    token="<token>",
+                    client_id="<client-id>",
+                    client_secret="<client-secret>",
+                    volume="<volume>",
+                    catalog="<catalog>",
+                    volume_path="<volume_path>",
+                    schema="<schema>",
+                    database="<database>",
+                    table_name="<table_name>"
+                )
+            )
+        )
     )
-)
-# ...
+
+    print(response.destination_connector_information)
 ```
