@@ -12,8 +12,10 @@ sidebarTitle: Onboarding
 </Note>
 
 After your organization has signed the self-hosting agreement with Unstructured, a member of the Unstructured technical enablement team will reach out to you to begin the 
-deployment onboarding process. To streamline this process, you are encouraged to begin setting up your target environment as soon as possible. To do this, you 
-must first set up your Azure account as follows.
+deployment onboarding process. To streamline this process, you are encouraged to begin setting up your target environment as soon as possible. Choose one of the following setup options:
+
+- [Do it all for me](#do-it-all-for-me): Have Unstructured set up the required infrastructure in your AWS account and then deploy the Unstructured UI and API into that newly created infrastructure.
+- [Bring my own infrastructure](#bring-my-own-infrastructure): Set up the required infrastructure yourself in your AWS account, and then have Unstructured deploy the Unstructured UI and API into your existing infrastructure.
 
 ## Questions? Need help?
 
@@ -22,9 +24,68 @@ email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io
 [contact form](https://unstructured.io/contact) on the Unstructured website, and a member of the Unstructured sales or technical enablement teams 
 will get back to you as soon as possible.
 
-## Onboarding checklist
+## Do it all for me
 
-Set up the following infrastructure within your Azure account for Unstructured to deploy the Unstructured UI and API into.
+If you want Unstructured to set up the required infrastructure for you into your Azure account and then deploy the Unstructured UI and API into that newly created infrastrucrure, then provide your Unstructured sales representative or technical enablement contact with 
+the access credentials for a Microsoft Entra ID user or service principal in your Azure account that has the following required permissions.
+
+### Subscription and resource group
+
+- `Microsoft.Resources/subscriptions/resourceGroups/write` (to create the resource group)
+- `Microsoft.Resources/subscriptions/resourceGroups/read` (to read the resource group)
+
+### VNet and networking
+
+- `Microsoft.Network/virtualNetworks/write` (to create the VNet)
+- `Microsoft.Network/virtualNetworks/read` (to read the VNet)
+- `Microsoft.Network/publicIPAddresses/write` (to create the public IPs)
+- `Microsoft.Network/publicIPAddresses/read` (to read the public IPs)
+- `Microsoft.Network/natGateways/write` (to create the NAT Gateway)
+- `Microsoft.Network/natGateways/read` (to read the NAT Gateway)
+- `Microsoft.Network/routeTables/write` (to create the route tables)
+- `Microsoft.Network/routeTables/read` (to read the route tables)
+- `Microsoft.Network/networkSecurityGroups/write` (to create the NSGs)
+- `Microsoft.Network/networkSecurityGroups/read` (to read the NSGs)
+
+### AKS cluster
+
+- `Microsoft.ContainerService/managedClusters/write` (to create the AKS cluster)
+- `Microsoft.ContainerService/managedClusters/read` (to read the AKS cluster)
+- `Microsoft.ContainerService/agentPools/write` (to create the node pools)
+- `Microsoft.ContainerService/agentPools/read` (to read the node pools)
+
+### Managed identities and RBAC
+
+- `Microsoft.ManagedIdentity/userAssignedIdentities/write` (to create the managed identities)
+- `Microsoft.ManagedIdentity/userAssignedIdentities/read` (to read managed identities)
+- Assign built-in roles such as:
+
+  - **Contributor** or scoped **Network Contributor** for the AKS cluster identity
+  - **Monitoring Metrics Publisher**, **AcrPull**, and **Storage Blob Data Reader** for the node pool identity
+  - **Storage Blob Data Contributor** for workload identities
+
+### Kubernetes add-ons
+
+Permissions depend on the Helm/YAML installation, but Azure RBAC integration requires `Microsoft.ContainerService/managedClusters/accessProfiles/*/read` (to access kubeconfig)
+
+### Storage class
+
+- `Microsoft.Storage/storageAccounts/write` (to create the storage account for CSI driver provisioning)
+- `Microsoft.Storage/storageAccounts/read`
+
+### PostgreSQL database
+
+- `Microsoft.DBforPostgreSQL/flexibleServers/write` (to create the PostgreSQL server)
+- `Microsoft.DBforPostgreSQL/flexibleServers/read`
+- NSG permissions for database access: allow traffic from the VNet CIDR
+
+## Bring my own infrastructure
+
+If you want to set up the required infrastructure yourself, set things up as follows within your Azure account for Unstructured to deploy the Unstructured UI and API into.
+
+You must also provide your Unstructured sales representative or technical enablement contact with 
+the access credentials for an IAM user or service principal in your AWS account that has access to the target Azure Kubernetes Service (AKS) cluster to deploy the 
+Unstructured UI and API into.
 
 ### **Azure subscription and resource group**
 
