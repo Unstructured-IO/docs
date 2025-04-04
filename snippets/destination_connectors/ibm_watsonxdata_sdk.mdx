@@ -1,0 +1,36 @@
+```python Python SDK
+import os
+
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import CreateDestinationRequest
+from unstructured_client.models.shared import (
+    CreateDestinationConnector,
+    DestinationConnectorType,
+    IbmWatsonxDestinationConnectorConfigInput
+)
+
+with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+    response = client.destinations.create_destination(
+        request=CreateDestinationRequest(
+            create_destination_connector=CreateDestinationConnector(
+                name="<name>",
+                type=DestinationConnectorType.IBM_WATSONX_S3,
+                config=IbmWatsonxDestinationConnectorConfigInput(
+                    iceberg_endpoint="<iceberg-endpoint>",
+                    object_storage_endpoint="<object-storage-endpoint>",
+                    object_storage_region="<object-storage-region>",
+                    iam_api_key="<iam-api-key>",
+                    access_key_id="<access-key-id>",
+                    secret_access_key="<secret-access-key>",
+                    catalog="<catalog>",
+                    namespace="<namespace>",
+                    table="<table>",
+                    max_retries=<max-retries>,
+                    record_id_key="<record-id-key>"
+                )
+            )
+        )
+    )
+
+    print(response.destination_connector_information)
+```
