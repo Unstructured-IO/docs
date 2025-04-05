@@ -11,9 +11,10 @@ import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-d
 The following environment variables:
 
 - `DROPBOX_REMOTE_URL` - The remote URL to the target subfolder inside of the app folder for the Dropbox app, represented by `--remote-url` (CLI) or `remote_url` (Python).
-- `DROPBOX_ACCESS_TOKEN` - The value of the access token for the Dropbox app that is associated with the target app folder, represented by `--token` (CLI) or `token` (Python).
+- `DROPBOX_ACCESS_TOKEN` - The value of the access token for the Dropbox app that is associated with the target app folder, represented by `--token` (CLI) or `token` (Python). 
+  Provide this only if for some reason you do not want Unstructured to automatically refresh expired access tokens. 
 
-To have Unstructured refresh expired Dropbox App access tokens on your behalf, you must also provide the following environment variables:
+To have Unstructured automatically refresh expired Dropbox App access tokens on your behalf, do not provide an access token. Instead, provide the following environment variables:
 
 - `DROPBOX_REFRESH_TOKEN` - The value of the refresh token for the corresponding access token, represented by `--refresh-token` (CLI) or `refresh_token` (Python).
 - `DROPBOX_APP_KEY` - The app key for the Dropbox app, represented by `--app-key` (CLI) or `app_key` (Python).

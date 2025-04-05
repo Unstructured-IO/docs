@@ -41,7 +41,6 @@ if __name__ == "__main__":
         embedder_config=EmbedderConfig(embedding_provider="huggingface"),
         destination_connection_config=DropboxConnectionConfig(
             access_config=DropboxAccessConfig(
-                token=os.getenv("DROPBOX_ACCESS_TOKEN"),
                 refresh_token=os.getenv("DROPBOX_REFRESH_TOKEN"),
                 app_key=os.getenv("DROPBOX_APP_KEY"),
                 app_secret=os.getenv("DROPBOX_APP_SECRET")
