@@ -35,11 +35,9 @@ allowfullscreen
       If you do not already have the corresponding refresh token for an existing access token, or if you lose a refresh token after you generate it, 
       you must generate a new access token and its corresponding refresh token.
 
-      For [Unstructured Ingest](/ingestion/overview), instead of continualy replacing expired access tokens yourself, you can have Unstructured do it for you as needed; just supply Unstructured 
-      with the original access token and its corresponding refresh token along with the Dropbox app's **App key** and **App secret** values. 
-      To learn how to supply these to Unstructured, look for mentions of "access token, "refresh token," "app key," and "app secret" in the connector settings later in this article.
-
-      For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api-reference/overview), or if you want to otherwise use the refresh token to replace the expired access token yourself, currently you must manually replace expired access tokens.
+      Instead of continualy replacing expired access tokens yourself, you can have Unstructured do it for you as needed; just supply Unstructured 
+      with the refresh token along with the Dropbox app's **App key** and **App secret** values. 
+      To learn how to supply these to Unstructured, look for mentions of "refresh token," "app key," and "app secret" in the connector settings later in this article.
    </Warning>
 
 3. The app folder that your Dropbox app will use for access can be found in your Dropbox account under the `Apps` top-level folder. For example, if the value of the **App folder name** 
@@ -66,7 +64,7 @@ allowfullscreen
 
 Dropbox app access tokens are valid for **only four hours**. After this time, you can no longer use the expired access token.
 
-To replace an old, expired access token with a new, valid one, do the following:
+To have Unstructured automatically replace expired access tokens on your behalf, do the following:
 
 1. Get the app key and app secret values for your Dropbox app. To do this:
 
@@ -101,16 +99,25 @@ To replace an old, expired access token with a new, valid one, do the following:
 
 7. In the response, copy the following two values:
 
-   - The value of `access_token` (starting with the characters `sl`) is the new, valid access token. In your Dropbox connector settings, replace the old, 
-     expired access token value with this new, valid access token value.
-   - The value of `refresh_token` is the refresh token that you can use to replace this access token much faster and easier next time. 
+   - The value of `access_token` (starting with the characters `sl`) is the new, valid access token.
+   - The value of `refresh_token` is the refresh token that can be used to replace this access token much faster and easier next time. 
      If you lose this refresh token, you must go back to Step 2.
 
-   For [Unstructured Ingest](/ingestion/overview), if you want Unstructured to use this refresh token to automatically replace the expired access token instead of replacing it yourself, then 
-   simply supply Unstructured with these `access_token` and `refresh_token` values, along with the `<app-key>` and `<app-secret>` values 
-   as described earlier in this procedure, and then stop here.
+   For the [Unstructured UI](/ui/overview), if you want Unstructured to use this refresh token to automatically replace the expired access token instead of replacing it yourself, then 
+   add the following values to your connector settings, and then stop here:
+   
+   - Add the `refresh_token` value to the connector settings **Refresh token** field.
+   - Add the `<app-key>` value to the connector settings **App key** field.
+   - Add the `<app-secret>` value to the connector settings **App secret** field.
 
-8. For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api-reference/overview), or if you want to otherwise use the refresh token to replace the expired access token yourself, make the following REST API call, replacing the following placeholders:
+   For the [Unstructured API](/api-reference/overview) and [Unstructured Ingest](/ingestion/overview), if you want Unstructured to use this refresh token to automatically replace the expired access token instead of replacing it yourself, then 
+   add the following values to your connector settings, and then stop here:
+
+   - Add the `refresh_token` value to the `refresh_token` parameter.
+   - Add the `<app-key>` value to the `app_key` parameter.
+   - Add the `<app-secret>` value to the connector settings `app_secret` parameter.
+
+8. If for some reason you need to manually replace the expired access token yourself instead of having Unstructured do it for you, you can use the refresh token that you just copied to get a new access token:
 
    - Replace `<refresh-token>` with the refresh token.
    - Replace `<app-key>` with the app key for your Dropbox app.

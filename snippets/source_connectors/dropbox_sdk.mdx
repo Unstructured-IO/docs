@@ -16,9 +16,11 @@ with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as clien
                 name="<name>",
                 type=SourceConnectorType.DROPBOX,
                 config=DropboxSourceConnectorConfigInput(
-                    token="<token>",
                     remote_url="<remote-url>",
-                    recursive=<True|False>
+                    recursive=<True|False>,
+                    refresh_token="<refresh-token>",
+                    app_key="<app-key>",
+                    app_secret="<app-secret>"
                 )
             )
         )
