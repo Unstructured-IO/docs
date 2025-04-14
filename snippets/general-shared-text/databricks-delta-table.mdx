@@ -61,10 +61,28 @@
     [GCP](https://docs.gcp.databricks.com/tables/managed.html)
     within that schema (formerly known as a database).
 
-  <Note>
-      Using dashes (`-`) in the names of catalogs, schemas (formerly known as databases), and tables might cause isolated issues with the connector. It is 
-      recommended to use underscores (`_`) instead of dashes in the names of catalogs, schemas, and tables.
-  </Note>
+    You can have the connector attempt to create a table for you automatically at run time. To do this, in the connector settings as described later in this article, 
+    do one of the following:
+    
+    - Specify the name of the table that you want the connector to attempt to create within the specified catalog and schema (formerly known as a database).
+    - Leave the table name blank. The connector will attempt to create a table within the specified catalog and schema (formerly known as a database). 
+      For the [Unstructured UI](/ui/overview) and [Unstructured API](/api-reference/overview), the table is named `u<short-workflow-id>`. 
+      For the [Unstructured Ingest CLI and Ingest Python library](/ingestion/overview), the table is named `unstructuredautocreated`.
+
+    The connector will attempt to create the table on behalf of the related Databricks workspace user or Databricks managed service principal that is referenced in the connector settings, as described later in these requirements. 
+    If successful, the table's owner is set as the related Databricks workspace user or Databricks managed service principal. The owner will have all Unity Catalog 
+    privileges on the table by default. No other Databricks workspace users or Databricks managed service principals will have any privileges on the table by default.
+
+    <Warning>
+        If the table's parent schema (formerly known as a database) is not owned by the same Databricks workspace user or Databricks managed service principal that is 
+        referenced in the connector settings, then you should grant the new table's owner the `CREATE TABLE` privilege on that parent schema (formerly known as a database) 
+        before the connector attempts to create the table. Otherwise, table creation could fail.
+    </Warning>
+
+    <Note>
+        Using dashes (`-`) in the names of catalogs, schemas (formerly known as databases), and tables might cause isolated issues with the connector. It is 
+        recommended to use underscores (`_`) instead of dashes in the names of catalogs, schemas, and tables.
+    </Note>
 
   The following video shows how to create a catalog, schema (formerly known as a database), and a table in Unity Catalog if you do not already have them available, and set privileges for someone other than their owner to use them:
 
@@ -78,56 +96,17 @@
   allowfullscreen
   ></iframe>
 
-  This table must contain the following column names and their data types:
+  If you want to use an existing table or create one yourself beforehand, this table must contain at minimum the following column names and their data types:
 
   ```text
-  CREATE TABLE IF NOT EXISTS `<catalog_name>`.`<schema_name>`.elements (
+  CREATE TABLE IF NOT EXISTS <catalog_name>.<schema_name>.<table_name> (
       id STRING NOT NULL PRIMARY KEY,
-      record_id STRING,
-      element_id STRING,
+      record_id STRING NOT NULL,
+      element_id STRING NOT NULL,
       text STRING,
       embeddings ARRAY<FLOAT>,
       type STRING,
-      date_created TIMESTAMP,
-      date_modified TIMESTAMP,
-      date_processed TIMESTAMP,
-      permissions_data STRING,
-      filesize_bytes FLOAT,
-      url STRING,
-      version STRING,
-      record_locator STRING,
-      category_depth DOUBLE,
-      parent_id STRING,
-      attached_filename STRING,
-      filetype STRING,
-      last_modified TIMESTAMP,
-      file_directory STRING,
-      filename STRING,
-      languages ARRAY<STRING>,
-      page_number STRING,
-      links STRING,
-      page_name STRING,
-      link_urls STRING,
-      link_texts STRING,
-      sent_from STRING,
-      sent_to STRING,
-      subject STRING,
-      section STRING,
-      header_footer_type STRING,
-      emphasized_text_contents STRING,
-      emphasized_text_tags STRING,
-      text_as_html STRING,
-      regex_metadata STRING,
-      detection_class_prob FLOAT,
-      is_continuation BOOLEAN,
-      orig_elements STRING,
-      coordinates_points STRING,
-      coordinates_system STRING,
-      coordinates_layout_width FLOAT,
-      coordinates_layout_height FLOAT,
-      partitioner_type STRING,
-      image_mime_type STRING,
-      image_base64 STRING
+      metadata VARIANT
   );
   ```
 
@@ -208,7 +187,9 @@
   ></iframe>
 
 - The Databricks workspace user or Databricks managed service principal must have the following _minimum_ set of permissions and privileges to write to an 
-  existing volume or table in Unity Catalog:
+  existing volume or table in Unity Catalog. If the owner of these is that Databricks workspace user or Databricks managed service principal, then 
+  they will have all necessary permissions and privileges by default. If the owner is someone else, then the following permissions and privileges must be 
+  explicitly granted to them before using the connector:
 
   - To use an all-purpose cluster for access, `Can Restart` permission on that cluster. Learn how to check and set cluster permissions for 
     [AWS](https://docs.databricks.com/compute/clusters-manage.html#compute-permissions), 
@@ -233,7 +214,8 @@
 
     - `USE CATALOG` on the table's parent catalog in Unity Catalog.
     - `USE SCHEMA` on the tables's parent schema (formerly known as a database) in Unity Catalog.
-    - `MODIFY` and `SELECT` on the table.
+    - To create a new table, `CREATE TABLE` on the table's parent schema (formerly known as a database) in Unity Catalog.
+    - If the table already exists, `MODIFY` and `SELECT` on the table.
 
     Learn how to check and set Unity Catalog privileges for 
     [AWS](https://docs.databricks.com/data-governance/unity-catalog/manage-privileges/index.html#show-grant-and-revoke-privileges), 

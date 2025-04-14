@@ -9,7 +9,7 @@ This sample code utilizes the [Unstructured Open Source](/open-source/introducti
 
 ## Method 1: Using partition\_pdf
 
-To extract the tables from PDF files using the [partition\_pdf](/open-source/core-functionality/partitioning#partition-pdf), set the `infer_table_structure` parameter to `True` and `strategy` parameter to `hi_res`.
+To extract the tables from PDF files using the [partition\_pdf](/open-source/core-functionality/partitioning#partition-pdf), set the `skip_infer_table_types` parameter to `False` and `strategy` parameter to `hi_res`.
 
 **Usage**
 
@@ -19,7 +19,7 @@ from unstructured.partition.pdf import partition_pdf
 fname = "example-docs/pdf/layout-parser-paper.pdf"
 
 elements = partition_pdf(filename=fname,
-                         infer_table_structure=True,
+                         skip_infer_table_types=False,
                          strategy='hi_res',
            )
 

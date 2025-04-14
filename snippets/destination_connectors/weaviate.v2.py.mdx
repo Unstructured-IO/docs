@@ -1,21 +1,21 @@
-```python Python Ingest v2
+```python Python Ingest
 import os
 
-from unstructured_ingest.v2.pipeline.pipeline import Pipeline
-from unstructured_ingest.v2.interfaces import ProcessorConfig
+from unstructured_ingest.pipeline.pipeline import Pipeline
+from unstructured_ingest.interfaces import ProcessorConfig
 
-from unstructured_ingest.v2.processes.connectors.local import (
+from unstructured_ingest.processes.connectors.local import (
     LocalIndexerConfig,
     LocalDownloaderConfig,
     LocalConnectionConfig
 )
 
-from unstructured_ingest.v2.processes.partitioner import PartitionerConfig
-from unstructured_ingest.v2.processes.chunker import ChunkerConfig
-from unstructured_ingest.v2.processes.embedder import EmbedderConfig
+from unstructured_ingest.processes.partitioner import PartitionerConfig
+from unstructured_ingest.processes.chunker import ChunkerConfig
+from unstructured_ingest.processes.embedder import EmbedderConfig
 
 # For Weaviate installed locally:
-# from unstructured_ingest.v2.processes.connectors.weaviate.local import (
+# from unstructured_ingest.processes.connectors.weaviate.local import (
 #     LocalWeaviateConnectionConfig,
 #     LocalWeaviateAccessConfig,
 #     LocalWeaviateUploadStagerConfig,
@@ -23,7 +23,7 @@ from unstructured_ingest.v2.processes.embedder import EmbedderConfig
 # )
 
 # For Embedded Weaviate:
-# from unstructured_ingest.v2.processes.connectors.weaviate.embedded import (
+# from unstructured_ingest.processes.connectors.weaviate.embedded import (
 #     EmbeddedWeaviateConnectionConfig,
 #     EmbeddedWeaviateAccessConfig,
 #     EmbeddedWeaviateUploadStagerConfig,
@@ -31,7 +31,7 @@ from unstructured_ingest.v2.processes.embedder import EmbedderConfig
 # )
 
 # For Weaviate Cloud:
-from unstructured_ingest.v2.processes.connectors.weaviate.cloud import (
+from unstructured_ingest.processes.connectors.weaviate.cloud import (
     CloudWeaviateConnectionConfig,
     CloudWeaviateAccessConfig,
     CloudWeaviateUploaderConfig,

@@ -74,6 +74,7 @@
                   "ui/destinations/databricks-delta-table",
                   "ui/destinations/elasticsearch",
                   "ui/destinations/google-cloud",
+                  "ui/destinations/ibm-watsonxdata",
                   "ui/destinations/kafka",
                   "ui/destinations/milvus",
                   "ui/destinations/mongodb",
@@ -176,6 +177,7 @@
                   "api-reference/workflow/destinations/databricks-delta-table",
                   "api-reference/workflow/destinations/elasticsearch",
                   "api-reference/workflow/destinations/google-cloud",
+                  "api-reference/workflow/destinations/ibm-watsonxdata",
                   "api-reference/workflow/destinations/kafka",
                   "api-reference/workflow/destinations/local",
                   "api-reference/workflow/destinations/milvus",
@@ -223,7 +225,6 @@
             "group": "Legacy APIs",
             "pages": [
               "api-reference/legacy-api/overview",
-              "api-reference/legacy-api/free-api",
               "api-reference/legacy-api/aws",
               "api-reference/legacy-api/azure"
             ]
@@ -281,13 +282,9 @@
                 "pages": [
                   "ingestion/ingest-configuration/overview",
                   "ingestion/ingest-configuration/processor-configuration",
-                  "ingestion/ingest-configuration/read-configuration",
                   "ingestion/ingest-configuration/partition-configuration",
-                  "ingestion/ingest-configuration/permissions-configuration",
-                  "ingestion/ingest-configuration/retry-strategy-configuration",
                   "ingestion/ingest-configuration/chunking-configuration",
-                  "ingestion/ingest-configuration/embedding-configuration",
-                  "ingestion/ingest-configuration/fsspec-configuration"
+                  "ingestion/ingest-configuration/embedding-configuration"
                 ]
               },
               {
@@ -297,20 +294,17 @@
                   "ingestion/source-connectors/airtable",
                   "ingestion/source-connectors/astradb",
                   "ingestion/source-connectors/azure",
-                  "ingestion/source-connectors/biomed",
                   "ingestion/source-connectors/box",
                   "ingestion/source-connectors/confluence",
                   "ingestion/source-connectors/couchbase",
                   "ingestion/source-connectors/databricks-volumes",
                   "ingestion/source-connectors/delta-table",
-                  "ingestion/source-connectors/discord",
                   "ingestion/source-connectors/dropbox",
                   "ingestion/source-connectors/elastic-search",
                   "ingestion/source-connectors/github",
                   "ingestion/source-connectors/gitlab",
                   "ingestion/source-connectors/google-cloud-storage",
                   "ingestion/source-connectors/google-drive",
-                  "ingestion/source-connectors/hubspot",
                   "ingestion/source-connectors/jira",
                   "ingestion/source-connectors/kafka",
                   "ingestion/source-connectors/local",
@@ -320,7 +314,6 @@
                   "ingestion/source-connectors/opensearch",
                   "ingestion/source-connectors/outlook",
                   "ingestion/source-connectors/postgresql",
-                  "ingestion/source-connectors/reddit",
                   "ingestion/source-connectors/s3",
                   "ingestion/source-connectors/salesforce",
                   "ingestion/source-connectors/sftp",
@@ -329,7 +322,6 @@
                   "ingestion/source-connectors/slack",
                   "ingestion/source-connectors/snowflake",
                   "ingestion/source-connectors/sqlite",
-                  "ingestion/source-connectors/wikipedia",
                   "ingestion/source-connectors/zendesk"
                 ]
               },
@@ -342,7 +334,6 @@
                   "ingestion/destination-connectors/azure-ai-search",
                   "ingestion/destination-connectors/box",
                   "ingestion/destination-connectors/chroma",
-                  "ingestion/destination-connectors/clarifai",
                   "ingestion/destination-connectors/couchbase",
                   "ingestion/destination-connectors/databricks-volumes",
                   "ingestion/destination-connectors/delta-table",
@@ -458,6 +449,44 @@
         ]
       },
       {
+        "tab": "Self-hosted",
+        "groups": [
+          {
+            "group": "Self-hosting",
+            "pages": [
+              "self-hosted/overview"
+            ]
+          },
+          {
+            "group": "Security and compliance",
+            "pages": [
+              "self-hosted/security-compliance/overview"
+            ]
+          },
+          {
+            "group": "AWS",
+            "pages": [
+              "self-hosted/aws/overview",
+              "self-hosted/aws/onboard"
+            ]
+          },
+          {
+            "group": "Azure",
+            "pages": [
+              "self-hosted/azure/overview",
+              "self-hosted/azure/onboard"
+            ]
+          },
+          {
+            "group": "GCP",
+            "pages": [
+              "self-hosted/gcp/overview",
+              "self-hosted/gcp/onboard"
+            ]
+          }
+        ]
+      },
+      {
         "tab": "FAQ",
         "groups": [
           {
@@ -545,6 +574,9 @@
   "integrations": {
     "ga4": {
       "measurementId": "G-VBMH3T0RTX"
+    },
+    "gtm": {
+        "tagId": "GTM-KJQHTZ6F"
     }
   },
   "redirects": [
@@ -631,6 +663,14 @@
     {
       "source": "/api-reference/ingest/:slug*",
       "destination": "/ingestion/:slug*"
+    },
+    {
+      "source": "/api-reference/legacy/free-api",
+      "destination": "/api-reference/overview"
+    },
+    {
+      "source": "/api-reference/troubleshooting/api-key-url",
+      "destination": "/api-reference/troubleshooting/api-key-url"
     },
     {
       "source": "/glossary/glossary",

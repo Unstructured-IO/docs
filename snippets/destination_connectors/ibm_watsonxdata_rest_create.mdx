@@ -1,0 +1,25 @@
+```bash curl
+curl --request 'POST' --location \
+"$UNSTRUCTURED_API_URL/destinations" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header 'content-type: application/json' \
+--data \
+'{
+    "name": "<name>",
+    "type": "ibm_watsonx_s3",
+    "config": {
+        "iceberg_endpoint": "<iceberg-endpoint>",
+        "object_storage_endpoint": "<object-storage-endpoint>",
+        "object_storage_region": "<object-storage-region>",
+        "iam_api_key": "<iam-api-key>",
+        "access_key_id": "<access-key-id>",
+        "secret_access_key": "<secret-access-key>",
+        "catalog": "<catalog>",
+        "namespace": "<namespace>",
+        "table": "<table>",
+        "max_retries": <max-retries>,
+        "record_id_key": "<record-id-key>"
+    }
+}'
+```

@@ -291,6 +291,9 @@ import PlatformPartitioningStrategies from '/snippets/general-shared-text/platfo
           - **Amazon Bedrock (Claude 3.5 Sonnet)**. [Learn more](https://aws.amazon.com/bedrock/claude/). 
           - **Vertex AI (Gemini 2.0 Flash)**. [Learn more](https://cloud.google.com/vertex-ai/generative-ai/docs/gemini-v2).
 
+          You can also customize the prompt used for image enrichment. In the **Details** tab, under **Prompt**, click **Edit**. Use the preview button on the 
+          **Input Sample** tab to view the image input, and click **Run Prompt** in the **Edit & Test Prompt** section to test the prompt.
+
           [Learn more](/ui/enriching/image-descriptions).
         
         - **Table** to summarize tables. Also select one of the following provider (and model) combinations to use:
@@ -302,6 +305,9 @@ import PlatformPartitioningStrategies from '/snippets/general-shared-text/platfo
 
           Make sure after you choose the provider and model, that **Table Description** is also displayed. If **Table Description** and **Table to HTML** are both 
           displayed, be sure to select **Table Description**.
+
+          You can also customize the prompt used for table enrichment. In the **Details** tab, under **Prompt**, click **Edit**. Use the preview button on the 
+          **Input Sample** tab to view the table input, and click **Run Prompt** in the **Edit & Test Prompt** section to test the prompt.
 
           [Learn more](/ui/enriching/table-descriptions).
           
@@ -395,3 +401,14 @@ To stop running a workflow that is set to run on a repeating schedule:
 Turning off the **Status** toggle also disables the workflow's **Run** button, which prevents that workflow from being run manually as well.
 
 To resume running the workflow on its original repeating schedule, as well as enable the workflow to be run manually as needed, turn on the workflow's **Status** toggle.
+
+## Duplicate a workflow
+
+To duplicate (copy or clone) a workflow:
+
+1. On the sidebar, click **Workflows**.
+2. In the list of workflows, click the ellipses (the three dots) in the row for the workflow that you want to duplicate.
+3. Click **Duplicate**.
+
+   A duplicate of the workflow is created with the same configuration as the original workflow. The duplicate workflow has the same display name as the original 
+   workflow but with **(Copy)** at the end.
