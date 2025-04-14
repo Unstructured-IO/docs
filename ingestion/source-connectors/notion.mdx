@@ -2,6 +2,26 @@
 title: Notion
 ---
 
-import SharedContentNotion from '/snippets/sc-shared-text/notion.mdx';
+import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+
+<NewDocument />
+
+import SharedContentNotion from '/snippets/sc-shared-text/notion-cli-api.mdx';
 
 <SharedContentNotion/>
+
+Now call the Unstructured CLI or Python. The destination connector can be any of the ones supported. This example uses the local destination connector.
+
+This example sends data to Unstructured for processing by default. To process data locally instead, see the instructions at the end of this page.
+
+import NotionSh from '/snippets/source_connectors/notion.sh.mdx';
+import NotionPyV2 from '/snippets/source_connectors/notion.v2.py.mdx';
+
+<CodeGroup>
+  <NotionSh />
+  <NotionPyV2 />
+</CodeGroup>
+
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>
