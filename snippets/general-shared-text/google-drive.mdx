@@ -37,3 +37,71 @@ allowfullscreen
   [Learn how](https://support.google.com/drive/answer/7166529). 
   [Learn more](https://www.googlecloudcommunity.com/gc/Workspace-Q-A/Can-i-give-access-to-document-of-google-drive-to-service-account/m-p/530106).  
 - Get the folder's ID. This is a part of the URL for your Google Drive folder represented in the following URL as `{folder_id}`: `https://drive.google.com/drive/folders/{folder-id}`.
+
+## Document permissions metadata
+
+The source connector outputs any permissions information that it can find in the source location about the processed source documents and associates that information with each 
+corresponding element that is generated. This permissions information is output into the `permissions_data` field, which is within the 
+`data_source` field under the element's `metadata` field. This information lists the users or groups, if any, that have 
+permissions to read, update, or delete the element's associated source document.
+
+The following example shows what the output looks like. Ellipses indicate content that has been omitted from this example for brevity. 
+
+```json
+[
+    {
+        "...": "...",
+        "metadata": {
+            "...": "...",
+            "data_source": {
+                "...": "...",
+                "permissions_data": [
+                    {
+                        "read": {
+                            "users": [
+                                "11111111111111111111"
+                            ],
+                            "groups": [
+                                "22222222222222222222",
+                                "33333333333333333333"
+                            ]
+                        }
+                    },
+                    {
+                        "update": {
+                            "users": [
+                                "44444444444444444444",
+                                "55555555555555555555"
+                            ],
+                            "groups": [
+                                "66666666666666666666",
+                            ]
+                        }
+                    },
+                    {
+                        "delete": {
+                            "users": [
+                                "77777777777777777777"
+                            ],
+                            "groups": [
+                                "88888888888888888888"
+                            ]
+                        }
+                    }
+                ],
+                "...": "..."
+            }
+        }
+    }
+]
+```
+
+To look up information about a particular Google Cloud user, use the user's ID along with the 
+[Admin SDK API](https://developers.google.com/workspace/admin/directory/reference/rest/v1/users/get) or the 
+[People API](https://developers.google.com/people/api/rest/v1/people/get) for Google Cloud.
+
+
+To look up information about a particular Google Cloud group, use the group's ID along with the 
+[Admin SDK API](https://developers.google.com/workspace/admin/directory/reference/rest/v1/groups/get) or the 
+[Cloud Identity API](https://cloud.google.com/identity/docs/reference/rest/v1/groups/get) for Google Cloud.  
+
