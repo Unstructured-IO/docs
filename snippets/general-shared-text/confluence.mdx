@@ -31,3 +31,69 @@ frameborder="0"
 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 allowfullscreen
 ></iframe>
+
+## Document permissions metadata
+
+The source connector outputs any permissions information that it can find in the source location about the processed source documents and associates that information with each 
+corresponding element that is generated. This permissions information is output into the `permissions_data` field, which is within the 
+`data_source` field under the element's `metadata` field. This information lists the users or groups, if any, that have 
+permissions to read, update, or delete the element's associated source document.
+
+The following example shows what the output looks like. Ellipses indicate content that has been omitted from this example for brevity. 
+
+```json
+[
+    {
+        "...": "...",
+        "metadata": {
+            "...": "...",
+            "data_source": {
+                "...": "...",
+                "permissions_data": [
+                    {
+                        "read": {
+                            "users": [
+                                "11111:11111111-1111-1111-1111-111111111111"
+                            ],
+                            "groups": [
+                                "22222222-2222-2222-2222-22222222",
+                                "33333333-3333-3333-3333-33333333"
+                            ]
+                        }
+                    },
+                    {
+                        "update": {
+                            "users": [
+                                "44444:44444444-4444-4444-4444-44444444",
+                                "55555:55555555-5555-5555-5555-55555555"
+                            ],
+                            "groups": [
+                                "66666666-6666-6666-6666-66666666",
+                            ]
+                        }
+                    },
+                    {
+                        "delete": {
+                            "users": [
+                                "77777:77777777-7777-7777-7777-77777777"
+                            ],
+                            "groups": [
+                                "88888888-8888-8888-8888-88888888"
+                            ]
+                        }
+                    }
+                ],
+                "...": "..."
+            }
+        }
+    }
+]
+```
+
+To look up information about a particular Confluence user, use the user's ID (also known as their _account ID_) from the preceding output to call the 
+[GET /wiki/rest/api/user](https://developer.atlassian.com/cloud/confluence/rest/v1/api-group-users/#api-wiki-rest-api-user-get) 
+operation in the Confluence REST API.
+
+To look up information about a particular Confluence group, use the group's ID from the preceding output to call the 
+[GET /wiki/rest/api/group/by-id](https://developer.atlassian.com/cloud/confluence/rest/v1/api-group-group/#api-wiki-rest-api-group-by-id-get) 
+operation in the Confluence REST API.
