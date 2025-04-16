@@ -42,24 +42,26 @@ of the file and not care about its headers and footers. You can easily filter ou
 Here are some examples of the element types your file might contain:
 
 | Element type        | Description                                                                                                                                          |
-|---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `Address`           | A text element for capturing physical addresses.                                                                                                     |
-| `CodeSnippet`       | A text element for capturing code snippets.                                                                                                          |
-| `EmailAddress`      | A text element for capturing email addresses.                                                                                                        |
-| `FigureCaption`     | An element for capturing text associated with figure captions.                                                                                       |
-| `Footer`            | An element for capturing document footers.                                                                                                           |
-| `FormKeysValues`    | An element for capturing key-value pairs in a form.                                                                                                  | 
-| `Formula`           | An element containing formulas in a file.                                                                                                            |
-| `Header`            | An element for capturing document headers.                                                                                                           |
-| `Image`             | A text element for capturing image metadata.                                                                                                         |
-| `ListItem`          | `ListItem` is a `NarrativeText` element that is part of a list.                                                                                      |
-| `NarrativeText`     | `NarrativeText` is an element consisting of multiple, well-formulated sentences. This excludes elements such titles, headers, footers, and captions. |
-| `PageBreak`         | An element for capturing page breaks.                                                                                                                |
-| `PageNumber`        | An element for capturing page numbers.                                                                                                               |
-| `Table`             | An element for capturing tables.                                                                                                                     |
-| `Title`             | A text element for capturing titles.                                                                                                                 |
-| `UncategorizedText` | Base element for capturing free text from within files. Applies to extracted text not associated with bounding boxes if the input is a PDF file.     |
-
+|--------------------- |------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `Address`            | A text element for capturing physical addresses.                                                                                                     |
+| `CodeSnippet`        | A text element for capturing code snippets.                                                                                                          |
+| `EmailAddress`       | A text element for capturing email addresses.                                                                                                        |
+| `FigureCaption`      | An element for capturing text associated with figure captions.                                                                                       |
+| `Footer`             | An element for capturing document footers.                                                                                                           |
+| `FormKeysValues`     | An element for capturing key-value pairs in a form.                                                                                                  | 
+| `Formula`            | An element containing formulas in a file.                                                                                                            |
+| `Header`             | An element for capturing document headers.                                                                                                           |
+| `Image`              | A text element for capturing image metadata.                                                                                                         |
+| `ListItem`           | `ListItem` is a `NarrativeText` element that is part of a list.                                                                                      |
+| `NarrativeText`      | `NarrativeText` is an element consisting of multiple, well-formulated sentences. This excludes elements such titles, headers, footers, and captions. |
+| `PageBreak`          | An element for capturing page breaks.                                                                                                                |
+| `PageNumber`         | An element for capturing page numbers.                                                                                                               |
+| `SceneDescription`   | An element for capturing scene descriptions, for example a description of a scene in a video.                                                        |
+| `Table`              | An element for capturing tables.                                                                                                                     |
+| `Title`              | A text element for capturing titles.                                                                                                                 |
+| `TranscriptFragment` | An element for capturing transcription of speech, for example a short dialogue between two speakers who each speak one sentence.                     |    
+| `UncategorizedText`  | Base element for capturing free text from within files. Applies to extracted text not associated with bounding boxes if the input is a PDF file.     |
+ 
 If you apply chunking, you will also see the `CompositeElement` type. 
 `CompositeElement` is a chunk formed from text (non-`Table`) elements. 
 A composite element might be formed by combining one or more sequential elements produced by partitioning. For example, 
@@ -148,6 +150,18 @@ file.
 
 Headers and footers in Word files include a `header_footer_type` indicating which page a header or footer applies to.
 Valid values are `"primary"`, `"even_only"`, and `"first_page"`.
+
+#### Video files
+
+Elements for video files include a `start_time` and `end_time`, representing the start and end times of a clip of video 
+from the parent video file to which this element belongs. Also included are the `model_version` representing ..., 
+and the `average_log_probability` representing ....
+
+#### Audio files
+
+Elements for audio files include a `start_time`, `end_time`, and `speaker`, representing the start and end times of a clip of audio 
+made by a specific speaker, as part of the parent audio file to which this element belongs. 
+If the speaker cannot be determined, `speaker` is set to `unknown`.
 
 ### Table-specific metadata
 
