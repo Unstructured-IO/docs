@@ -2,14 +2,16 @@
 title: Named entity recognition (NER)
 ---
 
-After partitioning and chunking, you can have Unstructured generate a list of recognized entities and their types (such as the names of organizations, products, and people) in the content, through a process known as _named entity recognition_ (NER).
+After partitioning and chunking, you can have Unstructured generate a list of recognized entities and their types (such as the names of organizations, products, and people) in the content, through a process known as _named entity recognition_ (NER). 
+You can also have Unstructured generate a list of relationships between the entities that are recognized.
 
 This NER is done by using models offered through these providers:
 
 - [GPT-4o](https://openai.com/index/hello-gpt-4o/), provided through OpenAI.
 - [Claude 3.5 Sonnet](https://www.anthropic.com/news/claude-3-5-sonnet), provided through Anthropic. 
 
-Here is an example of a list of recognized entities and their types using GPT-4o. Note specifically the `entities` field that is added.
+Here is an example of a list of recognized entities and their entity types, along with a list of relationships between those 
+entities and their relationship types, using GPT-4o. Note specifically the `entities` field that is added to the `metadata` field.
 
 ```json
 {
@@ -31,63 +33,109 @@ Here is an example of a list of recognized entities and their types using GPT-4o
             "eng"
         ],
         "page_number": 2,
-        "entities": [
-            {
-                "entity": "Senate",
-                "type": "ORGANIZATION"
-            },
-            {
-                "entity": "United States",
-                "type": "LOCATION"
-            },
-            {
-                "entity": "Senators",
-                "type": "PERSON"
-            },
-            {
-                "entity": "State",
-                "type": "LOCATION"
-            },
-            {
-                "entity": "Legislature",
-                "type": "ORGANIZATION"
-            },
-            {
-                "entity": "six Years",
-                "type": "DATE"
-            },
-            {
-                "entity": "first Election",
-                "type": "EVENT"
-            },
-            {
-                "entity": "second Year",
-                "type": "DATE"
-            },
-            {
-                "entity": "fourth Year",
-                "type": "DATE"
-            },
-            {
-                "entity": "sixth Year",
-                "type": "DATE"
-            },
-            {
-                "entity": "Executive",
-                "type": "PERSON"
-            },
-            {
-                "entity": "C O N S T I T U T I O N O F T H E U N I T E D S T A T E S",
-                "type": "ARTIFACT"
-            }
-        ]
+        "entities": {
+            "items": [
+                {
+                    "entity": "Senate",
+                    "type": "ORGANIZATION"
+                },
+                {
+                    "entity": "United States",
+                    "type": "LOCATION"
+                },
+                {
+                    "entity": "Senator",
+                    "type": "ROLE"
+                },
+                {
+                    "entity": "State",
+                    "type": "LOCATION"
+                },
+                {
+                    "entity": "Legislature",
+                    "type": "ORGANIZATION"
+                },
+                {
+                    "entity": "Executive",
+                    "type": "ROLE"
+                },
+                {
+                    "entity": "C O N S T I T U T I O N O F T H E U N I T E D S T A T E S",
+                    "type": "DOCUMENT"
+                }
+            ],
+            "relationships": [
+                {
+                    "from": "Senate",
+                    "relationship": "based_in",
+                    "to": "United States"
+                },
+                {
+                    "from": "Senator",
+                    "relationship": "has_role",
+                    "to": "Senate"
+                },
+                {
+                    "from": "Legislature",
+                    "relationship": "has_office_in",
+                    "to": "State"
+                },
+                {
+                    "from": "Executive",
+                    "relationship": "has_role",
+                    "to": "State"
+                },
+                {
+                    "from": "C O N S T I T U T I O N O F T H E U N I T E D S T A T E S",
+                    "relationship": "dated",
+                    "to": "DATE"
+                }
+            ]
+        }
     }
 }
 ```
 
-# Generate a list of entities and their types
+By default, the following entity types are supported for NER:
 
-To generate a list of recognized entities and their types, in an **Enrichment** node in a workflow, specify the following:
+- `PERSON`
+- `ORGANIZATION`
+- `LOCATION`
+- `DATE`
+- `TIME`
+- `EVENT`
+- `MONEY`
+- `PERCENT`
+- `FACILITY`
+- `PRODUCT`
+- `ROLE`
+- `DOCUMENT`
+- `DATASET`
+
+By default, the following entity relationships are supported for NER:
+
+- `PERSON` - `ORGANIZATION`: `works_for`, `affiliated_with`, `founded`
+- `PERSON` - `LOCATION`: `born_in`, `lives_in`, `traveled_to`
+- `ORGANIZATION` - `LOCATION`: `based_in`, `has_office_in`
+- Entity - `DATE`: `occurred_on`, `founded_on`, `died_on`, `published_in`
+- `PERSON` - `PERSON`: `married_to`, `parent_of`, `colleague_of`
+- `PRODUCT` - `ORGANIZATION`: `developed_by`, `owned_by`
+- `EVENT` - `LOCATION`: `held_in`, `occurred_in`
+- Entity - `ROLE`: `has_title`, `acts_as`, `has_role`
+- `DATASET` - `PERSON`: `mentions`
+- `DATASET` - `DOCUMENT`: `located_in`
+- `PERSON` - `DATASET`: `published`
+- `DOCUMENT` - `DOCUMENT`: `referenced_in`, `contains`
+- `DOCUMENT` - `DATE`: `dated`
+- `PERSON` - `DOCUMENT`: `published`
+
+You can add, rename, or delete items in this list of default entity types and default entity relationship types. 
+You can also add any clarifying instructions to the 
+prompt that is used to run NER. To do this, see the next section. 
+
+# Generate a list of entities and their relationships
+
+To generate a list of recognized entities and their relationships, in an **Enrichment** node in a workflow, specify the following:
 
 <Note>
     You can change a workflow's NER settings only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.
@@ -97,16 +145,17 @@ To generate a list of recognized entities and their types, in an **Enrichment** 
 
 1. Select **Text**.
 2. For **Model**, select either **OpenAI (GPT-4o)** or **Anthropic (Claude 3.5 Sonnet)**.
-3. The selected model will follow a default set of instructions (called a _prompt_) to perform NER using a set of predefined entity types. To experiment 
+3. The selected model will follow a default set of instructions (called a _prompt_) to perform NER using a set of predefined entity types and relationships. To experiment 
    with running the default prompt against some sample data, click **Edit**, and then click **Run Prompt**. The selected **Model** uses the 
    **Prompt** to run NER on the **Input sample** and shows the results in the **Output**. Look specifically at the `response_json` field for the 
-   entities that were recognized and their types.
+   entities that were recognized and their relationships.
 4. To customize the prompt, change the contents of **Prompt**.
 
    <Note>
        For best results, Unstructured strongly recommends that you limit your changes only to certain portions of the default prompt, specifically:
 
        - Adding, renaming, or deleting items in the list of predefined types (such as `PERSON`, `ORGANIZATION`, `LOCATION`, and so on).
+       - Adding, renaming, or deleting items in the list of predefined relationships (such as `works_for`, `based_in`, `has_role`, and so on).
        - As needed, adding any clarifying instructions only between these two lines:
 
          ```text
@@ -124,4 +173,3 @@ To generate a list of recognized entities and their types, in an **Enrichment** 
 
 5. To experiment with different data, change the contents of **Input sample**. For best results, Unstructured strongly recommends that the JSON structure in **Input sample** be preserved.
 6. When you are satisfied with the **Model** and **Prompt** that you want to use, click **Save**.
-

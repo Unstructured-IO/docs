@@ -1,0 +1,15 @@
+The GitHub connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[github]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+The following environment variables:
+
+- `GITHUB_URL` - The user or organization name, and the repository name, for the target GitHub repository; for example `Unstructured-IO/docs`, represented by `--url` (CLI) or `url` (Python).
+- `GITHUB_BRANCH` - The name of the target branch in the repository, for example `main`, represented by `--branch` (CLI) or `branch` (Python). By default, the repository's default branch is used.
+- `GITHUB_ACCESS_TOKEN` - The value of your GitHub access token, represented by `--access-token` (CLI) or `access_token` (Python).
