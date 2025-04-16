@@ -27,7 +27,8 @@ Here's an example of what an element might look like:
 
 Every element has a [type](#element-type); an [element_id](#element-id); the extracted `text`; and some [metadata](#metadata) which might 
 vary depending on the element type, file structure, and some additional settings that are applied during 
-[partitioning](/ui/partitioning), chunking, summarizing, and embedding.
+[partitioning](/ui/partitioning), [chunking](/ui/chunking), and [enriching](/ui/enriching/overview). Optionally, the element can also have an 
+[embeddings](/ui/embedding) derived from the `text`; the length of `embeddings` depends on the embedding model that is used.
 
 ## Element type
 
@@ -43,18 +44,21 @@ Here are some examples of the element types your file might contain:
 | Element type        | Description                                                                                                                                          |
 |---------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `Address`           | A text element for capturing physical addresses.                                                                                                     |
+| `CodeSnippet`       | A text element for capturing code snippets.                                                                                                          |
 | `EmailAddress`      | A text element for capturing email addresses.                                                                                                        |
 | `FigureCaption`     | An element for capturing text associated with figure captions.                                                                                       |
 | `Footer`            | An element for capturing document footers.                                                                                                           |
+| `FormKeysValues`    | An element for capturing key-value pairs in a form.                                                                                                  | 
 | `Formula`           | An element containing formulas in a file.                                                                                                            |
 | `Header`            | An element for capturing document headers.                                                                                                           |
 | `Image`             | A text element for capturing image metadata.                                                                                                         |
 | `ListItem`          | `ListItem` is a `NarrativeText` element that is part of a list.                                                                                      |
 | `NarrativeText`     | `NarrativeText` is an element consisting of multiple, well-formulated sentences. This excludes elements such titles, headers, footers, and captions. |
 | `PageBreak`         | An element for capturing page breaks.                                                                                                                |
+| `PageNumber`        | An element for capturing page numbers.                                                                                                               |
 | `Table`             | An element for capturing tables.                                                                                                                     |
 | `Title`             | A text element for capturing titles.                                                                                                                 |
-| `UncategorizedText` | Base element for capturing free text from within files.                                                                                              |
+| `UncategorizedText` | Base element for capturing free text from within files. Applies to extracted text not associated with bounding boxes if the input is a PDF file.     |
 
 If you apply chunking, you will also see the `CompositeElement` type. 
 `CompositeElement` is a chunk formed from text (non-`Table`) elements. 
@@ -172,6 +176,7 @@ Documents can include additional file metadata, based on the specified source co
 - `date_created`
 - `date_modified`
 - `date_processed`
+- `permissions_data`
 - `record_locator`
 - `url`
 - `version`
