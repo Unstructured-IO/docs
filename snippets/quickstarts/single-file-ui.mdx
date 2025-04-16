@@ -49,6 +49,7 @@ If you do not have any files available, you can use one of the sample files that
 from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 
 import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-simple-ui-only.mdx';
+import ViewConnectorError from '/snippets/general-shared-text/view-connector-error.mdx';
 
 <Steps>
     <Step title="Sign up and sign in">
@@ -139,6 +140,8 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
         2. In this new tab, create a [source connector](/ui/sources/overview) for your remote source location. This is the location in production where you have files or data in a file or object store, website, database, or vector store that you want Unstructured to process.
 
            ![Connectors button on the sidebar](/img/ui/Sources-Sidebar.png)
+
+           <ViewConnectorError />
 
         3. Create a [destination connector](/ui/destinations/overview) for your remote destination location. This is the location in production where you want Unstructured to put the processed data as `.json` files in a file or object store, or as records in a database or vector store.
         4. Create a workflow: on the sidebar, click **Workflows**, and then click **New Workflow**. Select **Build it Myself**, and then click **Continue** to open the visual workflow editor. 
