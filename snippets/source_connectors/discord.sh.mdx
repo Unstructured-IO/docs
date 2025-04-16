@@ -1,0 +1,12 @@
+```bash CLI
+#!/usr/bin/env bash
+
+unstructured-ingest \
+  discord \
+    --token $DISCORD_ACCESS_TOKEN \
+    --channels 475182341782896651,847950191108554762 \
+    --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --partition-by-api \
+    --api-key $UNSTRUCTURED_API_KEY \
+    --partition-endpoint $UNSTRUCTURED_API_URL
+```
