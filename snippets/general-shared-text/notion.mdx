@@ -1,0 +1,27 @@
+- A Notion access token for an 
+  [internal integration](https://developers.notion.com/docs/authorization#internal-integration-auth-flow-set-up) or 
+  [public integration](https://developers.notion.com/docs/authorization#public-integration-auth-flow-set-up).
+- The IDs of any specific target Notion [databases](https://developers.notion.com/docs/working-with-databases). To get a database's ID:
+
+  1. Open the database as a full page in Notion.
+  2. Click **Share**, and then click **Copy link**. 
+  3. Paste the link in your text editor. The URL uses the following format:
+
+     ```text
+     https://www.notion.so/{workspace_name}/{database_id}?v={view_id}
+     ```
+
+  4. Find the part that corresponds to `{database_id}` in the URL you pasted. It is a 36-character string. This value is the database's ID.
+  
+     Note that if you receive a database ID by calling the Notion API, for example from the Notion search endpoint, it will contain hyphens in the UUIDv4 format. You may use either the hyphenated or un-hyphenated ID.
+
+- The IDs of any specific target Notion [pages](https://developers.notion.com/docs/working-with-page-content). To get a page's ID:
+
+  1. Open the page in Notion. 
+  2. Click **Share**, and then click **Copy link**.
+  3. Paste the link in your text editor. The URL ends in a page ID. It should be a 32-character string.
+  4. Format this value by inserting hyphens (`-`) in the following pattern: `8-4-4-4-12` (each number is the length of characters between the hyphens).
+     
+     Example: `1429989fe8ac4effbc8f57f56486db54` becomes `1429989f-e8ac-4eff-bc8f-57f56486db54`.
+
+     This value is the page's ID.

@@ -1,0 +1,49 @@
+```python Python Ingest
+import os
+
+from unstructured_ingest.pipeline.pipeline import Pipeline
+from unstructured_ingest.interfaces import ProcessorConfig
+
+from unstructured_ingest.processes.connectors.discord import (
+    DiscordIndexerConfig,
+    DiscordDownloaderConfig,
+    DiscordConnectionConfig,
+    DiscordAccessConfig
+)
+
+from unstructured_ingest.processes.partitioner import PartitionerConfig
+from unstructured_ingest.processes.chunker import ChunkerConfig
+from unstructured_ingest.processes.embedder import EmbedderConfig
+
+from unstructured_ingest.processes.connectors.local import LocalUploaderConfig
+
+# Chunking and embedding are optional.
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=DiscordIndexerConfig(
+            channels=[
+                "475182341782896651",
+                "847950191108554762"
+            ]
+        ),
+        downloader_config=DiscordDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
+        source_connection_config=DiscordConnectionConfig(
+            access_config=DiscordAccessConfig(token=os.getenv("DISCORD_ACCESS_TOKEN"))
+        ),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
+        uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
+    ).run()
+```

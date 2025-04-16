@@ -32,11 +32,11 @@ allowfullscreen
     (Get-Content -Path "<path-to-downloaded-key-file>" -Raw).Replace("`r`n", "").Replace("`n", "")
     ```
 
-- A [Google Drive folder](https://support.google.com/drive/answer/2375091).
-- Give the service account access to the folder. To do this, share the folder with the service account's email address. 
+- A Google Drive [shared folder](https://support.google.com/drive/answer/2375091) or [shared drive](https://support.google.com/a/users/answer/7212025).
+- Give the service account access to the shared folder or shared drive. To do this, share the folder or drive with the service account's email address. 
   [Learn how](https://support.google.com/drive/answer/7166529). 
   [Learn more](https://www.googlecloudcommunity.com/gc/Workspace-Q-A/Can-i-give-access-to-document-of-google-drive-to-service-account/m-p/530106).  
-- Get the folder's ID. This is a part of the URL for your Google Drive folder represented in the following URL as `{folder_id}`: `https://drive.google.com/drive/folders/{folder-id}`.
+- Get the shared folder's ID or shared drive's ID. This is a part of the URL for your Google Drive shared folder or shared drive, represented in the following URL as `{folder_id}`: `https://drive.google.com/drive/folders/{folder-id}`.
 
 ## Document permissions metadata
 
@@ -100,8 +100,6 @@ To look up information about a particular Google Cloud user, use the user's ID a
 [Admin SDK API](https://developers.google.com/workspace/admin/directory/reference/rest/v1/users/get) or the 
 [People API](https://developers.google.com/people/api/rest/v1/people/get) for Google Cloud.
 
-
 To look up information about a particular Google Cloud group, use the group's ID along with the 
 [Admin SDK API](https://developers.google.com/workspace/admin/directory/reference/rest/v1/groups/get) or the 
 [Cloud Identity API](https://cloud.google.com/identity/docs/reference/rest/v1/groups/get) for Google Cloud.  
-
