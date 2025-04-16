@@ -1,0 +1,54 @@
+```python Python Ingest
+import os
+
+from unstructured_ingest.pipeline.pipeline import Pipeline
+from unstructured_ingest.interfaces import ProcessorConfig
+
+from unstructured_ingest.processes.connectors.notion.connector import (
+    NotionIndexerConfig,
+    NotionDownloaderConfig,
+    NotionConnectionConfig,
+    NotionAccessConfig
+)
+
+from unstructured_ingest.processes.partitioner import PartitionerConfig
+from unstructured_ingest.processes.chunker import ChunkerConfig
+from unstructured_ingest.processes.embedder import EmbedderConfig
+
+from unstructured_ingest.processes.connectors.local import LocalUploaderConfig
+
+# Chunking and embedding are optional.
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=NotionIndexerConfig(
+            page_ids=[
+                "4b1a4fff-d740-4e59-aa9f-cc5c7c2b4789",
+                "47dcbd6d-13f1-4fc1-af7d-5fc147697c00"
+            ],
+            database_ids=[
+                "1382c376-5a0a-8034-a3c3-d33402979df2", 
+                "f2a60ad9-c466-4b06-859d-1ab176dea8c8"
+            ],
+            recursive=True
+        ),
+        downloader_config=NotionDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
+        source_connection_config=NotionConnectionConfig(
+            access_config=NotionAccessConfig(notion_api_key=os.getenv("NOTION_ACCESS_TOKEN"))
+        ),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
+        uploader_config=LocalUploaderConfig(output_dir=os.getenv("LOCAL_FILE_OUTPUT_DIR"))
+    ).run()
+```
