@@ -26,6 +26,7 @@ with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as clien
                     namespace="<namespace>",
                     table="<table>",
                     max_retries=<max-retries>,
+                    max_retries_connection=<max-retries-connection>,
                     record_id_key="<record-id-key>"
                 )
             )
