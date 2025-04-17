@@ -13,8 +13,8 @@ allowfullscreen
     [Jira Data Center installation](https://confluence.atlassian.com/adminjiraserver/installing-jira-data-center-938846870.html).
 - The site URL for your [Jira Data Center installation](https://confluence.atlassian.com/jirakb/find-your-site-url-to-set-up-the-jira-data-center-and-server-mobile-app-954244798.html) or Jira Cloud account. 
   For Jira Cloud, open Jira in your web browser and copy the address from the browser's address bar. 
-  If you're unsure, check the dashboard URL, or if viewing an issue, project or board, the site URL is typically everything that comes before and including `/jira`, such as 
-  `https://<organization>.atlassian.net/jira`. 
+  If you're unsure, check the dashboard URL, or if viewing an issue, project or board, the site URL is typically everything that comes before **but not including** `/jira`, such as 
+  `https://<organization>.atlassian.net`. 
 - To process Jira projects, provide the IDs for the target projects. To get a project's ID, sign in to your Jira Cloud account or Jira Data Center installation, and then go to the following URL: `https://<organization>.atlassian.net/rest/api/latest/project/<project-key>`, 
   replacing `<organization>` with yours, and replacing `<project-key>` with the target project's key. In the 
   response, look for the URL `https://<organization>.atlassian.net/rest/api/3/project/<project-id>`, where `<project-id>` is the target project's ID.
