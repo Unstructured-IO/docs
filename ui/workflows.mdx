@@ -47,7 +47,10 @@ To create an automatic workflow:
 8. The **Reprocess All** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
 
    - Checking this box reprocesses all documents in the source location on every workflow run.
-   - Unchecking this box causes only new documents that are added to the source location since the last workflow run to be processed on future runs. Previously processed documents are not processed again, even if those documents' contents change.
+   - Unchecking this box causes only new documents that are added to the source location, or existing documents that are updated in the source location, since the last workflow run to be processed on future runs. Previously processed documents are not processed again. However:
+
+     - Even if this box is unchecked, a renamed file is always treated as a new file, regardless of whether the file's original contents have changed.
+     - Even if this box is unchecked, a file that is removed but is added back later with the same file name is processed on future runs only if the file's contents have changed since the file was originally processed.
 
 9. Click **Continue**.
 10. If you want this workflow to run on a schedule, in the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings. Otherwise, select **Don't repeat**.
@@ -136,10 +139,13 @@ If you did not previously set the workflow to run on a schedule, you can [run th
 6. If you want this workflow to run on a schedule, click the **Schedule** button. In the **Repeat Run** dropdown list, select one of the scheduling options, and fill in the scheduling settings.
 7. To overwrite any previously processed files, or to retry any documents that fail to process, click the **Settings** button, and check either or both of the boxes.
 
-   The **Reprocess All** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
+   The **Reprocess All Files** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
 
    - Checking this box reprocesses all documents in the source location on every workflow run.
-   - Unchecking this box causes new documents that have been added to the source location, as well as existing documents in the source location that have had their contents or titles changed, since the last workflow run to be processed on future runs. Other previously processed documents are not processed again.
+   - Unchecking this box causes only new documents that are added to the source locations, or existing documents that are updated in the source location, since the last workflow run to be processed on future runs. Previously processed documents are not processed again. However:
+
+     - Even if this box is unchecked, a renamed file is always treated as a new file, regardless of whether the file's original contents have changed.
+     - Even if this box is unchecked, a file that is removed but is added back later with the same file name is processed on future runs only if the file's contents have changed since the file was originally processed.
 
 8. The workflow begins with the following layout:
 
