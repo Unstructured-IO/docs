@@ -209,12 +209,14 @@ You can [list](#list-source-connectors),
 [get](#get-a-source-connector), 
 [create](#create-a-source-connector), 
 [update](#update-a-source-connector), 
-and [delete](#delete-a-source-connector) source connectors. 
+[delete](#delete-a-source-connector), and 
+[test](#test-a-source-connector) source connectors. 
 You can also [list](#list-destination-connectors), 
 [get](#get-a-destination-connector), 
 [create](#create-a-destination-connector), 
 [update](#update-a-destination-connector), 
-and [delete](#delete-a-destination-connector) destination connectors.
+[delete](#delete-a-destination-connector), and
+[test](#test-a-destination-connector) destination connectors. 
 
 For general information, see [Connectors](/ui/connectors).
 
@@ -749,6 +751,70 @@ the `DELETE` method to call the `/sources/<connector-id>` endpoint (for `curl` o
     </Accordion>
 </AccordionGroup>
 
+### Test a source connector
+
+To test a source connector, use the `POST` method to call the `/sources/<connector-id>/connection-check` endpoint (for `curl` or Postman), replacing 
+`<connector-id>` with the connector's unique ID. To get this ID, see [List source connectors](#list-source-connectors).
+
+The Python SDK does not support testing source connectors.
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'POST' --location \
+        "$UNSTRUCTURED_API_URL/sources/<connector-id>/connection-check" \
+        --header 'accept: application/json' \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/sources/<connector-id>/connection-check
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+To get information about the most recent connector check for a source connector, use the `GET` method to call the `/sources/<connector-id>/connection-check` endpoint (for `curl` or Postman), replacing 
+`<connector-id>` with the connector's unique ID. To get this ID, see [List source connectors](#list-source-connectors).
+
+The Python SDK does not support getting information about the most recent connector check for a source connector.
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'GET' --location \
+        "$UNSTRUCTURED_API_URL/sources/<connector-id>/connection-check" \
+        --header 'accept: application/json' \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/sources/<connector-id>/connection-check
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
 ### List destination connectors
 
 To list destination connectors, use the `UnstructuredClient` object's `destinations.list_destinations` function (for the Python SDK) or 
@@ -1263,6 +1329,72 @@ the `DELETE` method to call the `/destinations/<connector-id>` endpoint (for `cu
 
             ```text
             {{UNSTRUCTURED_API_URL}}/destinations/<connector-id>
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+### Test a destination connector
+
+To test a destination connector, use the `POST` method to call the `/destinations/<connector-id>/connection-check` endpoint (for `curl` or Postman), replacing 
+`<connector-id>` with the connector's unique ID. To get this ID, see 
+[List destination connectors](#list-destination-connectors).
+
+The Python SDK does not support testing destination connectors.
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'POST' --location \
+        "$UNSTRUCTURED_API_URL/destinations/<connector-id>/connection-check" \
+        --header 'accept: application/json' \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/destinations/<connector-id>/connection-check
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+To get information about the most recent connector check for a destination connector, use the `GET` method to call the `/destinations/<connector-id>/connection-check` endpoint (for `curl` or Postman), replacing 
+`<connector-id>` with the connector's unique ID. To get this ID, see 
+[List destination connectors](#list-destination-connectors).
+
+The Python SDK does not support getting information about the most recent connector check for a destination connector.
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'GET' --location \
+        "$UNSTRUCTURED_API_URL/destinations/<connector-id>/connection-check" \
+        --header 'accept: application/json' \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/destinations/<connector-id>/connection-check
             ```
 
         3. On the **Headers** tab, enter the following headers:
