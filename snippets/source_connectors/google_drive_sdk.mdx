@@ -9,6 +9,8 @@ from unstructured_client.models.shared import (
     GoogleDriveSourceConnectorConfigInput
 )
 
+import base64
+
 with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
     response = client.sources.create_source(
         request=CreateSourceRequest(
@@ -17,7 +19,7 @@ with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as clien
                 type=SourceConnectorType.GOOGLE_DRIVE,
                 config=GoogleDriveSourceConnectorConfigInput(
                     drive_id="<drive-id>",
-                    service_account_key="<service-account-key>",
+                    service_account_key=base64.b64decode(s=os.getenv("GCP_SERVICE_ACCOUNT_KEY_STRING")).decode(encoding="utf-8").replace('"', '\\"'),
                     extensions=[
                         "<extension>",
                         "<extension>"

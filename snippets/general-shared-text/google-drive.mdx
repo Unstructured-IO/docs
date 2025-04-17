@@ -15,22 +15,51 @@ allowfullscreen
   [Create a service account](https://developers.google.com/workspace/guides/create-credentials#create_a_service_account). 
   [Create credentials for a service account](https://developers.google.com/workspace/guides/create-credentials#create_credentials_for_a_service_account).
 
-  To ensure maximum compatibility across Unstructured service offerings, you should give the service account key information to Unstructured as 
-  a single-line string that contains the contents of the downloaded service account key file (and not the service account key file itself). 
-  To print this single-line string without line breaks, suitable for copying, you can run one of the following commands from your Terminal or Command Prompt. 
-  In this command, replace `<path-to-downloaded-key-file>` with the path to the `credentials.json` key file that you downloaded by following the preceding instructions.
+  To ensure maximum compatibility across Unstructured service offerings, you should give Unstructured 
+  the contents of the downloaded service account key file (and not the service account key file itself). The approach you use 
+  to give Unstructured this information depends on how you intend to call Unstructured, as well as the operating system you're using, as follows.
 
-  - For macOS or Linux: 
+  - For the [Unstructured user interface (UI)](/ui/overview):
 
-    ```text
+    Print the contents of the downloaded service account key file as a single-line string without line breaks, suitable for copying, by running one of the following commands from your Terminal or Command Prompt. 
+    In this command, replace `<path-to-downloaded-key-file>` with the path to the `credentials.json` key file that you downloaded by following the preceding instructions.
+
+    For macOS or Linux: 
+
+    ```bash Bash
     tr -d '\n' < <path-to-downloaded-key-file>
     ```
 
-  - For Windows:
+    For Windows:
 
-    ```text
+    ```powershell PowerShell
     (Get-Content -Path "<path-to-downloaded-key-file>" -Raw).Replace("`r`n", "").Replace("`n", "")
     ```
+
+    Copy the output of this command into the **Account Key** field in the Unstructured UI.
+
+  - For the [Unstructured API](/api-reference/overview) and [Unstructured Ingest](/ingestion/overview):
+
+    Save the contents of the downloaded service account key file as a Base64-encoded string, by running one of the following commands from your Terminal or Command Prompt. 
+    In this command, replace `<path-to-downloaded-key-file>` with the path to the `credentials.json` key file that you downloaded by following the preceding instructions.
+
+    For macOS or Linux:
+
+    ```bash Bash
+    base64 -i < <path-to-downloaded-key-file>
+    ```
+    
+    For Windows:
+
+    ```powershell PowerShell
+    [Convert]::ToBase64String([IO.File]::ReadAllBytes("<path-to-downloaded-key-file>"))
+    ```
+    
+    Set the value of the `GCP_SERVICE_ACCOUNT_KEY_STRING` environment variable to the output of this command. 
+
+    Then, in your code or script, before making your Unstructured API or Unstructured Ingest request, 
+    decode the value of this environment variable and add it to the request. In some cases, 
+    you must also escape all double quotes in the decoded string. For more information, see the following code examples.
 
 - A Google Drive [shared folder](https://support.google.com/drive/answer/2375091) or [shared drive](https://support.google.com/a/users/answer/7212025).
 - Give the service account access to the shared folder or shared drive. To do this, share the folder or drive with the service account's email address. 

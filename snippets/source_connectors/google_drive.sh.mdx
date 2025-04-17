@@ -3,19 +3,24 @@
 
 # Chunking and embedding are optional.
 
+service_account_key=$(python3 -c "import base64, json, os; \
+decoded = base64.b64decode(os.environ['GCP_SERVICE_ACCOUNT_KEY_STRING']).decode('utf-8'); \
+parsed = json.loads(decoded); \
+print(parsed)" | sed "s/'/\"/g")
+
 unstructured-ingest \
   google-drive \
-    --download-dir $LOCAL_FILE_DOWNLOAD_DIR \
-    --drive-id $GOOGLE_DRIVE_FOLDER_ID \
+    --download-dir "$LOCAL_FILE_DOWNLOAD_DIR" \
     --service-account-key-path $GCP_SERVICE_ACCOUNT_KEY_FILEPATH \ # Or
-    --service-account-key $GCP_SERVICE_ACCOUNT_KEY_STRING \
+    --service-account-key "$service_account_key" \
+    --drive-id "$GOOGLE_DRIVE_FOLDER_ID" \
     --partition-by-api \
-    --api-key $UNSTRUCTURED_API_KEY \
-    --partition-endpoint $UNSTRUCTURED_API_URL \
+    --api-key "$UNSTRUCTURED_API_KEY" \
+    --partition-endpoint "$UNSTRUCTURED_API_URL" \
     --strategy hi_res \
     --chunking-strategy by_title \
     --embedding-provider huggingface \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
   local \
-    --output-dir $LOCAL_FILE_OUTPUT_DIR
+    --output-dir "$LOCAL_FILE_OUTPUT_DIR"
 ```
