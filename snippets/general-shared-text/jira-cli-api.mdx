@@ -27,12 +27,14 @@ The following environment variables:
 
     - `JIRA_PERSONAL_ACCESS_TOKEN` - The user's personal access token (PAT), represented by `--token` (CLI) or `token` (Python).
 
-Also:
+Also, to process specific projects, boards, or issues, use:
 
-- For Jira Cloud, you must specify `--cloud` (CLI) or set `cloud` to `True` (Python).
-- For Jira Data Center, you can specify `--no-cloud` (CLI) or set `cloud` to `False` (Python). This is the default if not otherwise specified.
-- To process specific projects, boards, or issues, use:
+- `--projects` with a comma-delimited list of target project IDs (CLI) or `project` with an array of target project IDs (Python).
+- `--boards` with a comma-delmited list of target board IDs (CLI) or `boards` with an array of target board IDs (Python).
+- `--issues` with a comma-delimited list of target issue IDs (CLI) or `issues` with an array of target issue IDs (Python).
 
-  - `--projects` with a comma-delimited list of target project IDs (CLI) or `project` with an array of target project IDs (Python).
-  - `--boards` with a comma-delmited list of target board IDs (CLI) or `boards` with an array of target board IDs (Python).
-  - `--issues` with a comma-delimited list of target issue IDs (CLI) or `issues` with an array of target issue IDs (Python).
+<Warning>
+    Specifying `--cloud` (CLI) and setting `cloud` to `True` (Python) are reserved for future use. 
+    
+    Do not specify `--cloud` (CLI) or set `cloud` to `True` (Python). Doing so could lead to unexpected results or failures.
+</Warning>

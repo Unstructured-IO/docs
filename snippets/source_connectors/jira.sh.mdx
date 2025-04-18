@@ -9,8 +9,6 @@ unstructured-ingest \
     --username $JIRA_USERNAME \
     --password $JIRA_PASSWORD_OR_API_TOKEN \ # Password or API token authentication.
     --token $JIRA_PERSONAL_ACCESS_TOKEN \ # Personal access token authentication only.
-    --cloud \ # True for Jira Cloud.
-    --no-cloud \ # For Jira Data Center (default).
     --output-dir $LOCAL_FILE_OUTPUT_DIR \
     --chunking-strategy by_title \
     --embedding-provider huggingface \
