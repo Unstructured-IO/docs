@@ -37,7 +37,6 @@ specify the settings for the workflow, as follows:
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.shared import (
             WorkflowNode,
-            WorkflowNodeType,
             CreateWorkflow,
             WorkflowType,
             Schedule
@@ -51,8 +50,8 @@ specify the settings for the workflow, as follows:
 
         workflow_node = WorkflowNode(
             name="<node-name>",
+            type="<node-type>",
             subtype="<node-subtype>",
-            type=WorkflowNodeType.<NODE-TYPE>,
             settings={
                 "...": "..."
             }
@@ -60,8 +59,8 @@ specify the settings for the workflow, as follows:
 
         another_workflow_node = WorkflowNode(
             name="<node-name>",
+            type="<node-type>",
             subtype="<node-subtype>",
-            type=WorkflowNodeType.<NODE-TYPE>,
             settings={
                 "...": "..."
             }
@@ -118,7 +117,6 @@ specify the settings for the workflow, as follows:
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.shared import (
             WorkflowNode,
-            WorkflowNodeType,
             CreateWorkflow,
             WorkflowType,
             Schedule
@@ -132,8 +130,8 @@ specify the settings for the workflow, as follows:
 
             workflow_node = WorkflowNode(
                 name="<node-name>",
+                type="<node-type>",
                 subtype="<node-subtype>",
-                type=WorkflowNodeType.<NODE-TYPE>,
                 settings={
                     "...": "..."
                 }
@@ -141,8 +139,8 @@ specify the settings for the workflow, as follows:
 
             another_workflow_node = WorkflowNode(
                 name="<node-name>",
+                type="<node-type>",
                 subtype="<node-subtype>",
-                type=WorkflowNodeType.<NODE-TYPE>,
                 settings={
                     "...": "..."
                 }
@@ -396,7 +394,6 @@ In the request body, specify the settings for the workflow. For the specific set
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.shared import (
             WorkflowNode,
-            WorkflowNodeType,
             UpdateWorkflow,
             WorkflowType,
             Schedule,
@@ -459,7 +456,6 @@ In the request body, specify the settings for the workflow. For the specific set
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.shared import (
             WorkflowNode,
-            WorkflowNodeType,
             UpdateWorkflow,
             WorkflowType,
             Schedule,
@@ -585,7 +581,7 @@ flowchart LR
 
 ### Partitioner node
 
-A **Partitioner** node has a `type` of `WorkflowNodeType.PARTITION` (for the Python SDK) or `partition` (for `curl` and Postman). 
+A **Partitioner** node has a `type` of `partition`. 
 
 [Learn about the available partitioning strategies](/ui/partitioning).
 
@@ -597,7 +593,7 @@ A **Partitioner** node has a `type` of `WorkflowNodeType.PARTITION` (for the Pyt
         auto_partitioner_workflow_node = WorkflowNode(
             name="Partitioner",
             subtype="vlm",
-            type=WorkflowNodeType.PARTITION,
+            type="partition",
             settings={
                "provider": "anthropic",
                "model": "claude-3-5-sonnet-20241022",
@@ -640,7 +636,7 @@ A **Partitioner** node has a `type` of `WorkflowNodeType.PARTITION` (for the Pyt
         vlm_partitioner_workflow_node = WorkflowNode(
             name="Partitioner",
             subtype="vlm",
-            type=WorkflowNodeType.PARTITION,
+            type="partition",
             settings={
                 "provider": "<provider>",
                 "model": "<model>",
@@ -704,7 +700,7 @@ Allowed values for `provider` and `model` include:
         high_res_paritioner_workflow_node = WorkflowNode(
             name="Partitioner",
             subtype="unstructured_api",
-            type=WorkflowNodeType.PARTITION,
+            type="partition",
             settings={
                 "strategy": "hi_res",
                 "include_page_breaks": <True|False>,
@@ -765,7 +761,7 @@ Allowed values for `provider` and `model` include:
         fast_partitioner_workflow_node = WorkflowNode(
             name="Partitioner",
             subtype="unstructured_api",
-            type=WorkflowNodeType.PARTITION,
+            type="partition",
             settings={
                 "strategy": "fast",
                 "include_page_breaks": <True|False>,
@@ -820,7 +816,7 @@ Allowed values for `provider` and `model` include:
 
 ### Chunker node
 
-A **Chunker** node has a `type` of `WorkflowNodeType.CHUNK` (for the Python SDK) or `chunk` (for `curl` and Postman). 
+A **Chunker** node has a `type` of `chunk`. 
 
 [Learn about the available chunking strategies](/ui/chunking).
 
@@ -832,7 +828,7 @@ A **Chunker** node has a `type` of `WorkflowNodeType.CHUNK` (for the Python SDK)
         chunk_by_character_chunker_workflow_node = WorkflowNode(
             name="Chunker",
             subtype="chunk_by_character",
-            type=WorkflowNodeType.CHUNK,
+            type="chunk",
             settings={
                 "include_orig_elements": <True|False>,
                 "new_after_n_chars": <new-after-n-chars>,
@@ -871,7 +867,7 @@ A **Chunker** node has a `type` of `WorkflowNodeType.CHUNK` (for the Python SDK)
         chunk_by_title_chunker_workflow_node = WorkflowNode(
             name="Chunker",
             subtype="chunk_by_title",
-            type=WorkflowNodeType.CHUNK,
+            type="chunk",
             settings={
                 "multipage_sections": <True|False>,
                 "combine_text_under_n_chars": <combine-text-under-n-chars>,
@@ -914,7 +910,7 @@ A **Chunker** node has a `type` of `WorkflowNodeType.CHUNK` (for the Python SDK)
         chunk_by_page_chunker_workflow_node = WorkflowNode(
             name="Chunker",
             subtype="chunk_by_page",
-            type=WorkflowNodeType.CHUNK,
+            type="chunk",
             settings={
                 "include_orig_elements": <True|False>,
                 "new_after_n_chars": <new-after-n-chars>,
@@ -953,7 +949,7 @@ A **Chunker** node has a `type` of `WorkflowNodeType.CHUNK` (for the Python SDK)
         chunk_by_similarity_chunker_workflow_node = WorkflowNode(
             name="Chunker",
             subtype="chunk_by_similarity",
-            type=WorkflowNodeType.CHUNK,
+            type="chunk",
             settings={
                 "include_orig_elements": <True|False>,
                 "new_after_n_chars": <True|False>,
@@ -988,7 +984,7 @@ A **Chunker** node has a `type` of `WorkflowNodeType.CHUNK` (for the Python SDK)
 
 ### Enrichment node
 
-An **Enrichment** node has a `type` of `WorkflowNodeType.PROMPTER` (for the Python SDK) or `prompter` (for `curl` and Postman). 
+An **Enrichment** node has a `type` of `prompter`. 
 
 [Learn about the available enrichments](/ui/enriching/overview).
 
@@ -1000,7 +996,7 @@ An **Enrichment** node has a `type` of `WorkflowNodeType.PROMPTER` (for the Pyth
         image_description_enrichment_workflow_node = WorkflowNode(
             name="Enrichment",
             subtype="<subtype>",
-            type=WorkflowNodeType.PROMPTER,
+            type="prompter",
             settings={}
         )
         ```
@@ -1032,7 +1028,7 @@ Allowed values for `<subtype>` include:
         table_description_enrichment_workflow_node = WorkflowNode(
             name="Enrichment",
             subtype="<subtype>",
-            type=WorkflowNodeType.PROMPTER,
+            type="prompter",
             settings={}
         )
         ```
@@ -1064,7 +1060,7 @@ Allowed values for `<subtype>` include:
         table_to_html_enrichment_workflow_node = WorkflowNode(
             name="Enrichment",
             subtype="openai_table2html",
-            type=WorkflowNodeType.PROMPTER,
+            type="prompter",
             settings={}
         )
         ```
@@ -1089,7 +1085,7 @@ Allowed values for `<subtype>` include:
         ner_enrichment_workflow_node = WorkflowNode(
             name="Enrichment",
             subtype="openai_ner",
-            type=WorkflowNodeType.PROMPTER,
+            type="prompter",
             settings={
                 "prompt_interface_overrides": {
                     "prompt": {
@@ -1120,7 +1116,7 @@ Allowed values for `<subtype>` include:
 
 ### Embedder node
 
-An **Embedder** node has a `type` of `WorkflowNodeType.EMBED` (for the Python SDK) or `embed` (for `curl` and Postman). 
+An **Embedder** node has a `type` of `embed`. 
 
 [Learn about the available embedding providers and models](/ui/embedding).
 
@@ -1130,7 +1126,7 @@ An **Embedder** node has a `type` of `WorkflowNodeType.EMBED` (for the Python SD
        embedder_workflow_node = WorkflowNode(
             name="Embedder",
             subtype="<subtype>",
-            type=WorkflowNodeType.EMBED,
+            type="embed",
             settings={
                 "model_name": "<model-name>"             
             }
