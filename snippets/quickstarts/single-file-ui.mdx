@@ -6,39 +6,20 @@ You can download that processed data as a `.json` file to your local machine.
 This approach enables rapid, local, run-adjust-repeat prototyping of end-to-end Unstructured ETL+ workflows with a full range of Unstructured features. 
 After you get the results you want, you can then attach remote source and destination connectors to both ends of your existing workflow to begin processing remote files and data at scale in production.
 
-To run this quickstart, you will need a local file with a size of 10 MB or less and one of the following file types:
+To run this quickstart, you will need a local file with a size of 20 MB or less for video and audio files, and 10 MB or less for 
+all other file types. This quickstart supports the following file types:
 
-| File type |
-|---|
-| `.bmp` |
-| `.csv` |
-| `.doc` |
-| `.docx` |
-| `.email` |
-| `.epub` |
-| `.heic` |
-| `.html` |
-| `.jpg` |
-| `.md` |
-| `.odt` |
-| `.org` |
-| `.pdf` |
-| `.pot` |
-| `.potm` |
-| `.ppt` |
-| `.pptm` |
-| `.pptx` |
-| `.rst` |
-| `.rtf` |
-| `.sgl` |
-| `.tiff` |
-| `.txt` |
-| `.tsv` |
-| `.xls` |
-| `.xlsx` |
-| `.xml` |
+| | | | | | | | | |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `.3gp` | `.aac` | `.avi` | `.bmp` | `.csv` | `.doc` | `.docx` | `.email` | `.epub` |
+| `.flac` | `.flv` | `.heic` | `.html` | `.jpg` | `.m4a` | `.md` | `.mov` | `.mp2` |
+| `.mp3` | `.mp4` | `.mpeg` | `.mpg` | `.odt` | `.ogg` | `.opus` | `.org` | `.pcm` |
+| `.pdf` | `.pot` | `.potm` |  `.ppt` | `.pptm` | `.pptx` | `.rst` | `.rtf` | `.sgl` |
+| `.tiff` | `.txt` | `.tsv` | `.wav` | `.webm` | `.wmv` | `.xls` | `.xlsx` | `.xml` |
 
 <Note>
+    Video and audio file processing is available only for [self-hosted](/self-hosted/overview) deployments of Unstructured.
+
     For processing remote files at scale in production, Unstructured supports many more files types than these. [See the list of supported file types](/ui/supported-file-types).
 
     Unstructured also supports processing files from remote object stores, and data from remote sources in websites, web apps, databases, and vector stores. For more information, see the [source connector overview](/ui/sources/overview) and the [remote quickstart](/ui/quickstart#remote-quickstart) 
@@ -79,7 +60,8 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
     </Step>
     <Step title="Process a local file">
         1. Drag the file that you want Unstructured to process from your local machine's file browser app and drop it into the **Source** node's **Drop file to test** area. 
-           The file must have a size of 10 MB or less and one of the file types listed at the beginning of this quickstart.
+           The file must have a size of 20 MB or less for video and audio files, and 10 MB or less for all other file types. 
+           The file must be one of the supported file types listed at the beginning of this quickstart.
 
            If you are not able to drag and drop the file, you can click **Drop file to test** and then browse to and select the file instead.
 
@@ -87,7 +69,14 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
            **Details** selected, on the **Local file** tab, click one of the files under **Or use a provided sample file**. To view the file's contents before you 
            select it, click the eyes button next to the file.
 
-        2. Above the **Source** node, click **Test**.
+        2. If you are using a video or audio file, you must use a multimedia paritioning strategy; otherwise, you might get an error during processing. 
+           To select the multimedia partitioning strategy, click the **Partitioner** node, and then click **Auto** or **Multimedia**.
+
+           <Note>
+               Video and audio file processing is available only for [self-hosted](/self-hosted/overview) deployments of Unstructured.
+           </Note>
+
+        3. Above the **Source** node, click **Test**.
 
            ![Testing a single local file workflow](/img/ui/Workflow-Test-Source.png)
 
@@ -98,12 +87,12 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
            
            ![Viewing single local file output](/img/ui/Workflow-Test-Single-File-Output.png)
 
-        3. In the **Test output** pane, you can:
+        4. In the **Test output** pane, you can:
         
            - Search through the processed, JSON-formatted representation of the file by using the **Search JSON** box.
            - Download the full JSON as a `.json` file to your local machine by clicking **Download full JSON**.
 
-        4. When you are done, click the **Close** button in the **Test output** pane.
+        5. When you are done, click the **Close** button in the **Test output** pane.
 
     </Step> 
     <Step title="Add more nodes to the workflow">

@@ -59,9 +59,13 @@ Here are some examples of the element types your file might contain:
 | `SceneDescription`   | An element for capturing scene descriptions, for example a description of a scene in a video.                                                        |
 | `Table`              | An element for capturing tables.                                                                                                                     |
 | `Title`              | A text element for capturing titles.                                                                                                                 |
-| `TranscriptFragment` | An element for capturing transcription of speech, for example a short dialogue between two speakers who each speak one sentence.                     |    
+| `TranscriptFragment` | An element for capturing transcription of speech, for example a speaker's words in an audio clip or video.                                           |    
 | `UncategorizedText`  | Base element for capturing free text from within files. Applies to extracted text not associated with bounding boxes if the input is a PDF file.     |
- 
+
+<Note>
+    `SceneDescription` and `TranscriptFragment` are specific to video and audio file processing, which is available only for [self-hosted](/self-hosted/overview) deployments of Unstructured.
+</Note>
+
 If you apply chunking, you will also see the `CompositeElement` type. 
 `CompositeElement` is a chunk formed from text (non-`Table`) elements. 
 A composite element might be formed by combining one or more sequential elements produced by partitioning. For example, 
@@ -153,15 +157,23 @@ Valid values are `"primary"`, `"even_only"`, and `"first_page"`.
 
 #### Video files
 
+<Note>
+    Video file processing is available only for [self-hosted](/self-hosted/overview) deployments of Unstructured.
+</Note>
+
 Elements for video files include a `start_time` and `end_time`, representing the start and end times of a clip of video 
-from the parent video file to which this element belongs. Also included are the `model_version` representing ..., 
-and the `average_log_probability` representing ....
+from the parent video file to which this element belongs. Also included are the `model_version` representing the model that was used to 
+generate the element, and the `average_log_probability` representing the model's confidence level.
 
 #### Audio files
 
+<Note>
+    Audio file processing is available only for [self-hosted](/self-hosted/overview) deployments of Unstructured.
+</Note>
+
 Elements for audio files include a `start_time`, `end_time`, and `speaker`, representing the start and end times of a clip of audio 
 made by a specific speaker, as part of the parent audio file to which this element belongs. 
-If the speaker cannot be determined, `speaker` is set to `unknown`.
+If the speaker cannot be determined, `speaker` is set to `0` or `unknown`.
 
 ### Table-specific metadata
 
