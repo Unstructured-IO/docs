@@ -163,7 +163,8 @@ Valid values are `"primary"`, `"even_only"`, and `"first_page"`.
 
 Elements for video files include a `start_time` and `end_time`, representing the start and end times of a clip of video 
 from the parent video file to which this element belongs. Also included are the `model_version` representing the model that was used to 
-generate the element, and the `average_log_probability` representing the model's confidence level.
+generate the element, and the `average_log_probability` representing the model's overall average confidence level for the model's output across the document, with values closer to 
+zero indicating higher confidence.
 
 #### Audio files
 
