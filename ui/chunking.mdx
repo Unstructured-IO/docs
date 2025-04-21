@@ -7,20 +7,20 @@ the limits of an embedding model and to improve retrieval precision. The goal is
 that contain only the information that is relevant to a user's query. You can specify if and how Unstructured chunks 
 those elements, based on your intended end use. 
 
-During chunking, Unstructured uses a basic chunking strategy that attempts to combine two or more consecutive text elements 
-into each chunk that fits together within **Max characters**. To determine the best **Max characters** length, see the documentation 
+During chunking, Unstructured uses a [basic](#basic-chunking-strategy) chunking strategy that attempts to combine two or more consecutive text elements 
+into each chunk that fits together within the [max characters](#max-characters-setting) setting. To determine the best max characters setting, see the documentation 
 for the embedding model that you want to use.
 
-You can further control this behavior with by-title, by-page, or by-similarity chunking strategies. 
-In all cases, Unstructured will only split individual elements if they exceed the specified **Max characters** length. 
+You can further control this behavior with [by title](#chunk-by-title-strategy), [by page](#chunk-by-page-strategy), and [by similarity](#chunk-by-similarity-strategy) chunking strategies. 
+In all cases, Unstructured will only split individual elements if they exceed the specified max characters length. 
 After chunking, you will have document elements of only the following types:
 
 - `CompositeElement`: Any text element will become a `CompositeElement` after chunking. A composite element can be a
-combination of two or more original text elements that together fit within the **Max characters** length. It can also be a single
+combination of two or more original text elements that together fit within the max characters setting. It can also be a single
 element that doesn't leave room in the chunk for any others but fits by itself. Or it can be a fragment of an original
 text element that was too big to fit in one chunk and required splitting.
-- `Table`: A table element is not combined with other elements, and if it fits within **Max characters** it will remain as is.
-- `TableChunk`: Large tables that exceed **Max characters** are split into special `TableChunk` elements.
+- `Table`: A table element is not combined with other elements, and if it fits within the max characters setting it will remain as is.
+- `TableChunk`: Large tables that exceed the max characters setting are split into special `TableChunk` elements.
 
 Here are a few examples:
 
@@ -65,16 +65,69 @@ The following sections provide information about the available chunking strategi
 
 ## Basic chunking strategy
 
-The basic chunking strategy uses only **Max characters** and **New after n characters** to combine sequential elements to maximally fill each chunk. 
-This strategy does not use section boundaries, page boundaries, or content similarities to determine the chunks' contents.
+The basic chunking strategy uses only the [max characters](#max-characters-setting) setting (an absolute or "hard" limit) and 
+[new after n characters](#new-after-n-characters-setting) setting (an approximate or "soft" limit) to combine sequential elements to maximally 
+fill each chunk. 
+
+This strategy adds elements to a chunk until the new after n characters limit is reached. A new chunk is then started. 
+No chunk will exceed the max characters limit. For elements larger than the "max characters" limit, the text is split into 
+multiple chunks at spaces or new lines to avoid cutting words.
+
+Table elements are always treated as standalone chunks. If a table is too large, the table is chunked by rows.
+
+This strategy does not use section boundaries, page boundaries, or content similarities to determine 
+the chunks' contents.
+
+The following diagram illustrates conceptually how a candidate element is chunked to fit within the max characters (hard) and 
+new after n characters (soft) limits:
+
+![Chunking with hard and soft limits](/img/chunking/Chunking_Soft_Hard_Limits.png)
+
+Context between chunks can be maintained by using the [overlap](#overlap-setting) and [overlap all](#overlap-all-setting) settings. 
+The overlap setting repeats the specified number of characters from the end of the previous chunk at the beginning of the next chunk. 
+By default, overlap all is applied only to relatively large elements If overlap all is set to true, the overlap is applied to all chunks, regardless.
+
+The overlap setting is based on the number of characters, so words might be split. 
+The overlap setting's character count is included in the chunk size; nonetheless, the chunk's total size must not exceed the max characters setting. 
+
+The following diagram illustrates conceptually how chunks are calculated by setting overlap all to true or false. In this diagram, 
+setting overlap all to true results in a portion at the end of each chunk always being copied over to the beginning of the next chunk. 
+By default (or by setting overalp all to false) results in only a portion at the end of Element 6 Part 1 in Chunk 2 being copied over 
+to the beginning of Element 6 Part 2 in Chunk 3, because Element 6 is larger than the max characters setting:
+
+![Chunking with overall all set to true or false](/img/chunking/Chunking_Overlap_All.png)
 
 To use this chunking strategy, choose **Chunk by character** in the **Chunkers** section of a **Chunker** node in a workflow.
 
 ## Chunk by title strategy
 
-The by-title chunking strategy attempts to preserve section boundaries when determining the chunks' contents. 
+The by-title chunking strategy attempts to preserve section boundaries when determining the chunks' contents, primarily when 
+a **Title** element is encountered. The title is used as the section header for the chunk. The max characters and new after n 
+characters settings are still respected.
+
+The following diagram illustrates conceptually how elements are chunked when **Title** elements are encountered (see 
+Chunks 1, 4, and 6), while still respecting the max characters and new after n characters settings (see Chunks 2 and 3):
+
+![Chunking by title](/img/chunking/Chunking_By_Title.png)
+
 A single chunk should not contain text that occurred in two different sections. When a new section starts, the existing 
 chunk is closed and a new one is started, even if the next element would fit in the prior chunk.
+
+The following conceptual diagram illustrates this point, in that many **Title** elements can produce many relatively small chunks:
+
+![Many titles can lead to many chunks by title](/img/chunking/Chunking_By_Title_Segmentation.png)
+
+To reduce the number of chunks, you can use the [combine text under n characters](#combine-text-under-n-characters-setting) setting. This 
+settings attempts to combine elements into a single chunk until the combine text under n characters limit is reached, as shown in the 
+following conceptual diagram:
+
+![Chunking with combine text under n characters](/img/chunking/Chunking_Combine_Text.png)
+
+Setting combine text under n characters to a value equal to or greater than the new after n characters setting is not recommended, as it 
+can result in substantially longer chunks overall and also pushing titles by themselves into previous chunks. The following conceptual 
+diagram illustrates this point:
+
+![Chunking with combine text under n characters issue](/img/chunking/Chunking_Combine_Text_Limits.png)
 
 To use this chunking strategy, choose **Chunk by title** in the **Chunkers** section of a **Chunker** node in a workflow.
 
@@ -86,7 +139,7 @@ chunk is closed and a new one is started, even if the next element would fit in 
 
 To use this chunking strategy, choose **Chunk by page** in the **Chunkers** section of a **Chunker** node in a workflow.
 
-## Chunk By similarity strategy
+## Chunk by similarity strategy
 
 The by-similarity chunking strategy uses the 
 [sentence-transformers/multi-qa-mpnet-base-dot-v1](https://huggingface.co/sentence-transformers/multi-qa-mpnet-base-dot-v1) embedding model 
