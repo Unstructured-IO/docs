@@ -12,7 +12,10 @@ unstructured-ingest \
     --partition-endpoint $UNSTRUCTURED_API_URL \
     --additional-partition-args="{\"split_pdf_page\":\"true\", \"split_pdf_allow_failed\":\"true\", \"split_pdf_concurrency_level\": 15}" \
   redis \
-    --uri $REDIS_URI
+    --uri $REDIS_URI,
+    --no-ssl \
+    --key-prefix $REDIS_KEY_PREFIX \
+    --batch-size 100
 
 # Use Redis connection properties:
 unstructured-ingest \
@@ -30,4 +33,6 @@ unstructured-ingest \
     --database 0 \
     --username $REDIS_USERNAME \
     --password $REDIS_PASSWORD \
-    --no-ssl
+    --no-ssl \
+    --key-prefix $REDIS_KEY_PREFIX \
+    --batch-size 100
