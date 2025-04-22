@@ -23,6 +23,7 @@ unstructured-ingest \
     --catalog $IBM_ICEBERG_CATALOG \
     --namespace $IBM_ICEBERG_SCHEMA \
     --table $IBM_ICEBERG_TABLE \
-    --max-retries 5 \
+    --max-retries 50 \
+    --max-retries-connection 10 \
     --record-id-key $IBM_ICEBERG_TABLE_UNIQUE_RECORD_COLUMN
 ```
