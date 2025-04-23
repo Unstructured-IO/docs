@@ -183,8 +183,8 @@
          "filesize_bytes" bigint,
          "points" varchar,
          "system" varchar,
-         "layout_width" bigint,
-         "layout_height" bigint,
+         "layout_width" double,
+         "layout_height" double,
          "id" varchar,
          "record_id" varchar,
          "parent_id" varchar
@@ -192,7 +192,8 @@
       WITH (
          delete_mode = 'copy-on-write',
          format = 'PARQUET',
-         format_version = '2'
+         format_version = '2',
+         partitioning = ARRAY['record_id']
       )
       ```
 
@@ -201,6 +202,19 @@
       column named `sent_from` in the table, the `sent_from` element will be dropped upon record insertion. You should modify the preceding 
       sample table creation statement to add columns for any additional elements that you want to be included upon record 
       insertion.
+
+- The target table should be set to regularly remove old metadata files. To do this, you can use a Python such as the following, 
+  replacing `<catalog-name>` with the name of the target catalog and `<schema-name>` with the name of the target schema:
+
+  ```sql
+  ALTER TABLE <catalog-name>.<schema-name>.elements
+  SET TBLPROPERTIES (
+      'commit.manifest.min-count-to-merge' = '10',
+      'commit.manifest-merge.enabled' = 'true',
+      'write.metadata.previous-versions-max' = '10',
+      'write.metadata.delete-after-commit.enabled' = 'true'
+  );
+  ```
 
 - The name of the target namespace (also known as a schema) within the target catalog, and name of the target table within that schema. To get these:
 
