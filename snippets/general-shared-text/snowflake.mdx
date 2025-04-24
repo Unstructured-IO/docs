@@ -142,10 +142,10 @@
   SHOW SCHEMAS;
   ```
 
-  The following Snowflake query returns a list of available schemas for the database named `<database-name>` in the current account:
+  The following Snowflake query returns a list of available schemas for the database named `<database_name>` in the current account:
 
   ```text
-  SHOW SCHEMAS IN DATABASE <database-name>;
+  SHOW SCHEMAS IN DATABASE <database_name>;
   ```
 
 - The name of the [table](https://docs.snowflake.com/sql-reference/sql/create-table) in the schema.
@@ -159,35 +159,41 @@
   5. Expand **Tables**.
 
   Alternatively, the following Snowflake query returns a list of available tables for the schema named `<schema_name>` in the datbase named 
-  `<database-name>` in the current account:
+  `<database_name>` in the current account:
 
   ```text
-  SHOW TABLES IN SCHEMA <database-name>.<schema_name>;
+  SHOW TABLES IN SCHEMA <database_name>.<schema_name>;
   ```
 
   Snowflake requires the target table to have a defined schema before Unstructured can write to the table. The recommended table 
-  schema for Unstructured is as follows:
+  schema for Unstructured is as follows. In the following `CREATE TABLE` statement, replace the following placeholders with the appropriate values:
+
+  - `<database_name>`: The name of the target database in the Snowflake account.
+  - `<schema_name>`: The name of the target schema in the database.
+  - `<number-of-dimensions>`: The number of dimensions for any embeddings that you plan to use. This value must match the number of dimensions for any embeddings that are  
+    specified in your related Unstructured workflows or pipelines. If you plan to use Snowflake vector embedding generation or Snowflake vector search, 
+    this value must match the number of dimensions that you plan to have Snowflake generate or search against.
 
   ```sql SQL
-  CREATE TABLE ELEMENTS (
-    ID VARCHAR(36) NOT NULL DEFAULT UUID_STRING(),
+  CREATE TABLE <database_name>.<schema_name>.ELEMENTS (
+    ID VARCHAR(36) PRIMARY KEY NOT NULL DEFAULT UUID_STRING(),
     RECORD_ID VARCHAR,
     ELEMENT_ID VARCHAR,
-    TEXT VARCHAR,
-    EMBEDDINGS ARRAY,
+    TEXT TEXT,
+    EMBEDDINGS VECTOR(FLOAT, <number-of-dimensions>),
     TYPE VARCHAR,
     SYSTEM VARCHAR,
-    LAYOUT_WIDTH NUMBER,
-    LAYOUT_HEIGHT NUMBER,
-    POINTS VARCHAR,
-    URL VARCHAR,
+    LAYOUT_WIDTH DECIMAL,
+    LAYOUT_HEIGHT DECIMAL,
+    POINTS TEXT,
+    URL TEXT,
     VERSION VARCHAR,
     DATE_CREATED TIMESTAMP_TZ,
     DATE_MODIFIED TIMESTAMP_TZ,
     DATE_PROCESSED TIMESTAMP_TZ,
-    PERMISSIONS_DATA VARCHAR,
-    RECORD_LOCATOR VARCHAR,
-    CATEGORY_DEPTH NUMBER,
+    PERMISSIONS_DATA TEXT,
+    RECORD_LOCATOR TEXT,
+    CATEGORY_DEPTH INTEGER,
     PARENT_ID VARCHAR,
     ATTACHED_FILENAME VARCHAR,
     FILETYPE VARCHAR,
@@ -196,7 +202,7 @@
     FILENAME VARCHAR,
     LANGUAGES ARRAY,
     PAGE_NUMBER VARCHAR,
-    LINKS VARCHAR,
+    LINKS TEXT,
     PAGE_NAME VARCHAR,
     LINK_URLS ARRAY,
     LINK_TEXTS ARRAY,
@@ -207,11 +213,13 @@
     HEADER_FOOTER_TYPE VARCHAR,
     EMPHASIZED_TEXT_CONTENTS ARRAY,
     EMPHASIZED_TEXT_TAGS ARRAY,
-    TEXT_AS_HTML VARCHAR,
-    REGEX_METADATA VARCHAR,
-    DETECTION_CLASS_PROB NUMBER,
-    PRIMARY KEY (ID),
-    PARTITIONER_TYPE VARCHAR
+    TEXT_AS_HTML TEXT,
+    REGEX_METADATA TEXT,
+    DETECTION_CLASS_PROB DECIMAL,
+    IMAGE_BASE64 VARCHAR,
+    IMAGE_MIME_TYPE VARCHAR,
+    ORIG_ELEMENTS VARCHAR,
+    IS_CONTINUATION BOOLEAN
   );
   ```
 
