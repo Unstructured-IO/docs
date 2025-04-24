@@ -88,6 +88,25 @@ requirements. For more information about requirements, see the following:
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowfullscreen
   ></iframe>
+
+  <Warning>
+      AWS STS credentials can be valid for as little as 15 minutes or as long as 36 hours, depending on how the credentials were initially 
+      generated. After the expiry time, the credentials are no longer valid will no longer work with the corresponding S3 connector. 
+      You must get a new set of credentials to replace the expired ones by calling 
+      [GetSessionToken](https://docs.aws.amazon.com/STS/latest/APIReference/API_GetSessionToken.html) in the AWS STS API. 
+      To overwrite the expired credentials with the new set:
+    
+      - For the Unstructured user interface (UI), manually update the AWS Key, AWS Secret Key, and STS Token fields in the Unstructured UI 
+        for the corresponding S3 [source](/ui/sources/s3) or [destination](/ui/destinations/overview) connector.
+      - For the Unstructured API, use the Unstructured Workflow Endpoint to call the 
+        [update source](/api-reference/workflow/overview#update-a-source-connector) or 
+        [update destination](/api-reference/workflow/overview#update-a-destination-connector) connector operation 
+        for the corresponding S3 [source](/api-reference/workflow/sources/s3) or 
+        [destination](/api-reference/workflow/destinations/s3) connector.
+      - For Unstructured Ingest, change the values of `--key`, `--secret`, and `--token` (CLI) or `key`, `secret`, and `token` (Python) in your command or code for the 
+        corresponding S3 [source](/ingestion/source-connectors/s3) or [destination](/ingestion/destination-connectors/s3) connector.
+
+  </Warning>
   
 - If the target files are in the root of the bucket, the path to the bucket, formatted as `protocol://bucket/` (for example, `s3://my-bucket/`). 
   If the target files are in a folder, the path to the target folder in the S3 bucket, formatted as `protocol://bucket/path/to/folder/` (for example, `s3://my-bucket/my-folder/`). 
