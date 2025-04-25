@@ -112,8 +112,15 @@ specify the settings for the workflow, as follows:
     <Accordion title="Python SDK (local source and local destination)">
         To use a local source and a local destination, do not specify a `source_id` or `destination_id` value. Also, the `workflow_type` must be set to `CUSTOM`.
 
-        Workflows with a local source cannot be set to run on a repeating schedule.
+        <Note>
+            A workflow with a local source has the following limitations:
 
+            - The workflow cannot be set to run on a repeating schedule.
+            - The workflow cannot be run with the Unstructured Python SDK or from the Unstructured user interface (UI), 
+              even though the workflows is visible in the UI. However, you can 
+              run the workflow with REST API clients such as `curl` or Postman. [Learn how](/api-reference/workflow/overview#run-a-workflow).
+        </Note>
+        
         ```python
         import os
 
@@ -187,7 +194,14 @@ specify the settings for the workflow, as follows:
     <Accordion title="Python SDK (local source and remote destination)">
         To use a local source and a remote destination, specify a `destination_id` value, and do not specify a `source_id` value. Also, the `workflow_type` must be set to `CUSTOM`.
 
-        Workflows with a local source cannot be set to run on a repeating schedule.
+        <Note>
+            A workflow with a local source has the following limitations:
+
+            - The workflow cannot be set to run on a repeating schedule.
+            - The workflow cannot be run with the Unstructured Python SDK or from the Unstructured user interface (UI), 
+              even though the workflows is visible in the UI. However, you can 
+              run the workflow with REST API clients such as `curl` or Postman. [Learn how](/api-reference/workflow/overview#run-a-workflow).
+        </Note>
 
         ```python
         import os
@@ -345,7 +359,14 @@ specify the settings for the workflow, as follows:
     <Accordion title="Python SDK (async) (local source and local destination)">
         To use a local source and a local destination, do not specify a `source_id` or `destination_id` value. Also, the `workflow_type` must be set to `CUSTOM`.
 
-        Workflows with a local source cannot be set to run on a repeating schedule.
+        <Note>
+            A workflow with a local source has the following limitations:
+
+            - The workflow cannot be set to run on a repeating schedule.
+            - The workflow cannot be run with the Unstructured Python SDK or from the Unstructured user interface (UI), 
+              even though the workflows is visible in the UI. However, you can 
+              run the workflow with REST API clients such as `curl` or Postman. [Learn how](/api-reference/workflow/overview#run-a-workflow).
+        </Note>
 
         ```python
         import os
@@ -424,7 +445,14 @@ specify the settings for the workflow, as follows:
     <Accordion title="Python SDK (async) (local source and remote destination)">
         To use a local source and a remote destination, specify a `destination_id` value, and do not specify a `source_id` value. Also, the `workflow_type` must be set to `CUSTOM`.
 
-        Workflows with a local source cannot be set to run on a repeating schedule.
+        <Note>
+            A workflow with a local source has the following limitations:
+
+            - The workflow cannot be set to run on a repeating schedule.
+            - The workflow cannot be run with the Unstructured Python SDK or from the Unstructured user interface (UI), 
+              even though the workflows is visible in the UI. However, you can 
+              run the workflow with REST API clients such as `curl` or Postman. [Learn how](/api-reference/workflow/overview#run-a-workflow).
+        </Note>
 
         ```python
         import os
@@ -533,7 +561,14 @@ specify the settings for the workflow, as follows:
     <Accordion title="curl (local source and local destination)">
         To use a local source and a local destination, do not specify a `source_id` or `destination_id` value. Also, the `workflow_type` must be set to `custom`.
 
-        Workflows with a local source cannot be set to run on a repeating schedule.
+        <Note>
+            A workflow with a local source has the following limitations:
+
+            - The workflow cannot be set to run on a repeating schedule.
+            - The workflow cannot be run with the Unstructured Python SDK or from the Unstructured user interface (UI), 
+              even though the workflows is visible in the UI. However, you can 
+              run the workflow with REST API clients such as `curl` (or Postman). [Learn how](/api-reference/workflow/overview#run-a-workflow).
+        </Note>
 
         ```bash
         curl --request 'POST' --location \
@@ -563,7 +598,14 @@ specify the settings for the workflow, as follows:
     <Accordion title="curl (local source and remote destination)">
         To use a local source and a remote destination, specify a `destination_id` value, and do not specify a `source_id` value. Also, the `workflow_type` must be set to `custom`.
 
-        Workflows with a local source cannot be set to run on a repeating schedule.
+        <Note>
+            A workflow with a local source has the following limitations:
+
+            - The workflow cannot be set to run on a repeating schedule.
+            - The workflow cannot be run with the Unstructured Python SDK or from the Unstructured user interface (UI), 
+              even though the workflows is visible in the UI. However, you can 
+              run the workflow with REST API clients such as `curl` (or Postman). [Learn how](/api-reference/workflow/overview#run-a-workflow).
+        </Note>
 
         ```bash
         curl --request 'POST' --location \
@@ -634,7 +676,14 @@ specify the settings for the workflow, as follows:
     <Accordion title="Postman (local source and local destination)">
         To use a local source and a local destination do not specify a `source_id` or `destination_id` value. Also, the `workflow_type` must be set to `custom`.
 
-        Workflows with a local source cannot be set to run on a repeating schedule.
+        <Note>
+            A workflow with a local source has the following limitations:
+
+            - The workflow cannot be set to run on a repeating schedule.
+            - The workflow cannot be run with the Unstructured Python SDK or from the Unstructured user interface (UI), 
+              even though the workflows is visible in the UI. However, you can 
+              run the workflow with REST API clients such as Postman (or `curl`). [Learn how](/api-reference/workflow/overview#run-a-workflow).
+        </Note>
 
         1. In the method drop-down list, select **POST**.
         2. In the address box, enter the following URL:
@@ -675,7 +724,14 @@ specify the settings for the workflow, as follows:
     <Accordion title="Postman (local source and remote destination)">
         To use a local source and a remote destination, specify a `destination_id` value, and do not specify a `source_id` value. Also, the `workflow_type` must be set to `custom`.
 
-        Workflows with a local source cannot be set to run on a repeating schedule.
+        <Note>
+            A workflow with a local source has the following limitations:
+
+            - The workflow cannot be set to run on a repeating schedule.
+            - The workflow cannot be run with the Unstructured Python SDK or from the Unstructured user interface (UI), 
+              even though the workflows is visible in the UI. However, you can 
+              run the workflow with REST API clients such as Postman (or `curl`). [Learn how](/api-reference/workflow/overview#run-a-workflow).
+        </Note>
 
         1. In the method drop-down list, select **POST**.
         2. In the address box, enter the following URL:
