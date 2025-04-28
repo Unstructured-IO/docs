@@ -24,7 +24,9 @@ Unstructured provides two types of workflow builders:
 <Warning>
     You must first have an existing source connector and destination connector to add to the workflow.
 
-    If you do not have an existing connector for either your target source (input) or destination (output) location, [create the source connector](/ui/sources/overview), [create the destination connector](/ui/destinations/overview), and then return here.
+    You cannot create an automatic workflow that uses a local source connector.
+
+    If you do not have an existing remote connector for either your target source (input) or destination (output) location, [create the source connector](/ui/sources/overview), [create the destination connector](/ui/destinations/overview), and then return here.
 
     To see your existing connectors, on the sidebar, click **Connectors**, and then click **Sources** or **Destinations**.
 </Warning>
@@ -123,6 +125,8 @@ If you did not previously set the workflow to run on a schedule, you can [run th
 <Warning>
     You must first have an existing source connector and destination connector to add to the workflow.
 
+    You can create a custom workflow that uses a local source connector, but you cannot save the workflow.
+
     If you do not have an existing connector for either your target source (input) or destination (output) location, [create the source connector](/ui/sources/overview), [create the destination connector](/ui/destinations/overview), and then return here.
 
     To see your existing connectors, on the sidebar, click **Connectors**, and then click **Sources** or **Destinations**.
@@ -177,6 +181,19 @@ If you did not previously set the workflow to run on a schedule, you can [run th
 9. In the pipeline designer, click the **Source** node. In the **Source** pane, select the source location. Then click **Save**.
 
    ![Workflow designer](/img/ui/Workflow-Designer.png)
+
+   <Note>
+       To use a local source location, do not choose a source connector. 
+
+       If the workflow uses a local source location, in the **Source** node, drag or click to specify a local file, and then click **Test**. The workflow's 
+       results are displayed on-screen.
+
+       A workflow that uses a local source location has the following limitations:
+       
+       - You cannot save the workflow.
+       - You cannot send the results to a remote destination location, even if you have attached a destination connector to 
+         the workflow. However, you can save the results to a local JSON-formatted file.
+   </Note>
 
 10. Click the **Destination** node. In the **Destination** pane, select the destination location. Then click **Save**.
 11. As needed, add more nodes by clicking the plus icon (recommended) or **Add Node** button:

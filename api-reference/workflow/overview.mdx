@@ -1822,7 +1822,14 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
 
 <AccordionGroup>
-    <Accordion title="Python SDK">
+    <Accordion title="Python SDK (remote source and remote destination)">
+        <Note>
+            If the target workflow was originally created programmatically by the Unstructured Python SDK or with a REST API client such as `curl` or Postman, 
+            and the workflow uses a local source connector, you can run the workflow only with a REST API client such as `curl` or Postman, 
+            as described later in this section. 
+            You cannot run the workflow with the Python SDK or the Unstructured user interface (UI), even though the workflow is visible in the UI.
+        </Note>
+
         ```python
         import os
 
@@ -1842,7 +1849,14 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
         print(response.raw_response)
         ```
     </Accordion>
-    <Accordion title="Python SDK (async)">
+    <Accordion title="Python SDK (async) (remote source and remote destination)">
+        <Note>
+            If the target workflow was originally created programmatically by the Unstructured Python SDK or with a REST API client such as `curl` or Postman, 
+            and the workflow uses a local source connector, you can run the workflow only with a REST API client such as `curl` or Postman, 
+            as described later in this section. 
+            You cannot run the workflow with the Python SDK or the Unstructured user interface (UI), even though the workflow is visible in the UI.
+        </Note>
+
         ```python
         import os
         import asyncio
@@ -1874,16 +1888,7 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
         --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
         ```
     </Accordion>
-    <Accordion title="curl (local source and local destination)">
-        To run a workflow that uses a local source and local destination, the workflow must have already been created to use a local source and a local destination. Also, 
-        the workflow must have already been created as a custom worklow, and the workflow cannot have been created to run on a schedule.
-
-        The workflow's source and destination must both be local. You cannot run a workflow that specifies a local source and a remote destination, nor can you run a worklow that specifies a remote source 
-        and a local destination.
-
-        The Unstructured user interface (UI) and the Unstructured Python SDK currently do not support running workflows that use a local source 
-        and a local destination.
-
+    <Accordion title="curl (local source and local or remote destination)">
         In the following command, replace:
 
         - `</full/path/to/local/filename.extension>` with the full path to the local file to upload.
@@ -1901,7 +1906,7 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
         --form "input_files=@</full/path/to/local/filename.extension>;filename=<filename.extension>;type=<local-file-media-type>" # For each additional file to be uploaded.
         ```
 
-        To access the processed files' data, [download a processed local file](#download-a-processed-local-file-from-a-job) from the workflow's job run.
+        For a local destination, to access the processed files' data, [download a processed local file](#download-a-processed-local-file-from-a-job) from the workflow's job run.
     </Accordion>
     <Accordion title="Postman (remote source and remote destination)">
         1. In the method drop-down list, select **POST**.
@@ -1918,16 +1923,7 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
 
         4. Click **Send**.
     </Accordion>
-    <Accordion title="Postman (local source and local destination)">
-        To run a workflow that uses a local source and local destination, the workflow must have already been created to use a local source and a local destination. Also, 
-        the workflow must have already been created as a custom worklow, and the workflow cannot have been created to run on a schedule.
-
-        The workflow's source and destination must both be local. You cannot run a workflow that specifies a local source and a remote destination, nor can you run a worklow that specifies a remote source 
-        and a local destination.
-
-        The Unstructured user interface (UI) and the Unstructured Python SDK currently do not support running workflows that use a local source 
-        and a local destination.
-
+    <Accordion title="Postman (local source and local or remote destination)">
         1. In the method drop-down list, select **POST**.
         2. In the address box, enter the following URL:
 
@@ -1960,7 +1956,7 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
 
         5. Click **Send**.
 
-        To access the processed files' data, [download a processed local file](#download-a-processed-local-file-from-a-job) from the workflow's job run.
+        For a local destination, to access the processed files' data, [download a processed local file](#download-a-processed-local-file-from-a-job) from the workflow's job run.
     </Accordion>
 </AccordionGroup>
 
