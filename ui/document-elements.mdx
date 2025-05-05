@@ -228,14 +228,20 @@ Documents can include additional file metadata, based on the specified source co
 
 #### Additional metadata fields by connector type (within record_locator)
 
-| Source connector | Additional metadata                  |
-|------------------|--------------------------------------|
-| Azure            | `protocol`, `remote_file_path`       |
-| Elasticsearch    | `document_id`, `index_name`, `url`   |
-| Google Drive     | `drive_id`, `file_id`                |
-| OneDrive         | `server_relative_path`, `user_pname` |
-| S3               | `protocol`, `remote_file_path`       |
-| SharePoint       | `server_path`, `site_url`            |
+| Source connector | Additional metadata                                  |
+|------------------|------------------------------------------------------|
+| Astra DB         | `document_id`                                        | 
+| Confluence       | `document_id`, `space_id`                            |
+| Discord          | `channel_id`                                         |
+| Dropbox          | `file_id`, `protocol`, `remote_file_path`            |
+| Elasticsearch    | `hosts`                                              | 
+| Google Drive     | `file_id`                                            | 
+| Jira             | `id`, `key`                                          | 
+| MongoDB          | `collection`, `database`, `document_id`              |
+| Notion           | `database_id` (for databases), `page_id` (for pages) |
+| OpenSearch       | `hosts`                                              |
+| S3               | `protocol`, `remote_file_path`                       | 
+| SharePoint       | `server_relative_path`, `user_pname`                 |
 
 ### VLM generated HTML elements
 
