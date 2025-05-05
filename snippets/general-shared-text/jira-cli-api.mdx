@@ -32,9 +32,5 @@ Also, to process specific projects, boards, or issues, use:
 - `--projects` with a comma-delimited list of target project IDs (CLI) or `project` with an array of target project IDs (Python).
 - `--boards` with a comma-delmited list of target board IDs (CLI) or `boards` with an array of target board IDs (Python).
 - `--issues` with a comma-delimited list of target issue IDs (CLI) or `issues` with an array of target issue IDs (Python).
-
-<Warning>
-    Specifying `--cloud` (CLI) and setting `cloud` to `True` (Python) are reserved for future use. 
-    
-    Do not specify `--cloud` (CLI) or set `cloud` to `True` (Python). Doing so could lead to unexpected results or failures.
-</Warning>
+- `--cloud` (CLI) or `cloud=True` (Python) to specify using Jira Cloud. The default is to use Jira Data Center.
+- `--no-cloud` (CLI) or `cloud=False` (Python) to specify using Jira Data Center. This is the default behavior.
