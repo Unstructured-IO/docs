@@ -160,7 +160,8 @@
   8. Click the ellipses, and then click **Create schema**.
   9. Enter some **Name** for the schema, and then click **Create**.
   10. On the sidebar, click **Query workspace**.
-  11. In the SQL editor, enter and run a table creation statement such as the following, replacing `<catalog-name>` with the name of the target 
+  11. In the SQL editor, enter and run a table creation statement such as the following one that uses 
+      [Presto SQL](https://prestodb.io/docs/current/connector/iceberg.html) syntax, replacing `<catalog-name>` with the name of the target 
       catalog and `<schema-name>` with the name of the target schema:
 
       ```sql      
@@ -183,8 +184,8 @@
          "filesize_bytes" bigint,
          "points" varchar,
          "system" varchar,
-         "layout_width" bigint,
-         "layout_height" bigint,
+         "layout_width" double,
+         "layout_height" double,
          "id" varchar,
          "record_id" varchar,
          "parent_id" varchar
@@ -196,11 +197,16 @@
       )
       ```
 
-      Note that incoming elements that do not have matching column 
+      Incoming elements that do not have matching column 
       names will be dropped upon record insertion. For example, if the incoming data has an element named `sent_from` and there is no 
       column named `sent_from` in the table, the `sent_from` element will be dropped upon record insertion. You should modify the preceding 
       sample table creation statement to add columns for any additional elements that you want to be included upon record 
       insertion.
+
+      To increase query performance, Iceberg uses [hidden partitioning](https://iceberg.apache.org/docs/latest/partitioning/) to 
+      group similar rows together when writing. You can also 
+      [explicitly define partitions](https://prestodb.io/docs/current/connector/iceberg.html#create-table) as part of the 
+      preceding `CREATE TABLE` statement.
 
 - The name of the target namespace (also known as a schema) within the target catalog, and name of the target table within that schema. To get these:
 
@@ -215,3 +221,90 @@
   7. On the **Browse data** tab, expand the name of the target catalog, and note the names of the target schema and target table.
 
 - The name of the column in the target table that uniquely identifies each of the records in the table.
+
+- To improve performance, the target table should be set to regularly remove old metadata files. To do this, run the following Python script. 
+  (You cannot use the preceding `CREATE TABLE` statement, or other SQL statements such as `ALTER TABLE`, to set this behavior.) To get the 
+  values for the specified environment variables, see the preceding instructions.
+
+  ```python
+  # Improves performance by setting the target table to regularly remove 
+  # old metadata files. 
+  #
+  # First, install the following dependencies into your Python virtual 
+  # environment:
+  # 
+  # pip install requests pyiceberg pyarrow
+  #
+  # Then, set the following environment variables:
+  #
+  # IBM_IAM_API_KEY - An API key value for the target IBM Cloud account.
+  # IBM_ICEBERG_CATALOG_METASTORE_REST_ENDPOINT - The metastore REST endpoint 
+  #     value for the target Apache Iceberg catalog in the target IBM watsonx.data 
+  #     data store instance.
+  # IBM_COS_BUCKET_PUBLIC_ENDPOINT - The target IBM Cloud Object Storage (COS) 
+  #     instance’s endpoint value.
+  # IBM_COS_ACCESS_KEY_ID - An HMAC access key ID for the target COS instance.
+  # IBM_COS_SECRET_ACCESS_KEY - The associated HMAC secret access key ID for the 
+  #     target HMAC access key.
+  # IBM_COS_REGION - The target COS instance’s region short ID.
+  # IBM_ICEBERG_CATALOG - The name of the target Iceberg catalog.
+  # IBM_ICEBERG_SCHEMA - The name of the target namespace (also known as a schema) 
+  #     in the target catalog.
+  # IBM_ICEBERG_TABLE - The name of the target table in the target schema.
+  #
+  # To get these values, see the Unstructured documentation for the 
+  #     IBM watsonx.data connector.
+
+  import os
+  import requests
+  from pyiceberg.catalog import load_catalog
+
+  def main():
+     # Get a bearer token for the target IBM Cloud account.   
+     bearer_token = requests.post(
+        url="https://iam.cloud.ibm.com/identity/token",
+        headers={
+              "Content-Type": "application/x-www-form-urlencoded",
+              "Accept": "application/json"
+        },
+        data={
+              "grant_type": "urn:ibm:params:oauth:grant-type:apikey", 
+              "apikey": os.getenv("IBM_IAM_API_KEY")
+        }
+     ).json().get("access_token")
+
+     # Connect to the target Iceberg catalog.
+     catalog = load_catalog(
+        os.getenv("IBM_ICEBERG_CATALOG"),
+        **{
+              "type": "rest",
+              "uri": f"https://{os.getenv("IBM_ICEBERG_CATALOG_METASTORE_REST_ENDPOINT")}/mds/iceberg",
+              "token": bearer_token,
+              "warehouse": os.getenv("IBM_ICEBERG_CATALOG"),
+              "s3.endpoint": os.getenv("IBM_COS_BUCKET_PUBLIC_ENDPOINT"),
+              "s3.access-key-id": os.getenv("IBM_COS_ACCESS_KEY"),
+              "s3.secret-access-key": os.getenv("IBM_COS_SECRET_ACCESS_KEY"),
+              "s3.region": os.getenv("IBM_COS_BUCKET_REGION")
+        },
+     )
+              
+     # Load the target table.
+     table = catalog.load_table(f"{os.getenv("IBM_ICEBERG_SCHEMA")}.{os.getenv("IBM_ICEBERG_TABLE")}")
+
+     # Set the target table's properties to remove old metadata files.
+     with table.transaction() as transaction:
+        transaction.set_properties(
+              {
+                 "commit.manifest.min-count-to-merge": 10,
+                 "commit.manifest-merge.enabled": True,
+                 "write.metadata.previous-versions-max": 10,
+                 "write.metadata.delete-after-commit.enabled": True,
+              }
+        )
+
+     # Confirm that the target table's properties were set as expected.
+     print(table.metadata.properties)
+
+  if __name__ == "__main__":
+     main()
+  ```
