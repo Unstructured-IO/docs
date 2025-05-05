@@ -160,7 +160,8 @@
   8. Click the ellipses, and then click **Create schema**.
   9. Enter some **Name** for the schema, and then click **Create**.
   10. On the sidebar, click **Query workspace**.
-  11. In the SQL editor, enter and run a table creation statement such as the following, replacing `<catalog-name>` with the name of the target 
+  11. In the SQL editor, enter and run a table creation statement such as the following one that uses 
+      [Presto SQL](https://prestodb.io/docs/current/connector/iceberg.html) syntax, replacing `<catalog-name>` with the name of the target 
       catalog and `<schema-name>` with the name of the target schema:
 
       ```sql      
@@ -192,16 +193,20 @@
       WITH (
          delete_mode = 'copy-on-write',
          format = 'PARQUET',
-         format_version = '2',
-         partitioning = ARRAY['record_id']
+         format_version = '2'
       )
       ```
 
-      Note that incoming elements that do not have matching column 
+      Incoming elements that do not have matching column 
       names will be dropped upon record insertion. For example, if the incoming data has an element named `sent_from` and there is no 
       column named `sent_from` in the table, the `sent_from` element will be dropped upon record insertion. You should modify the preceding 
       sample table creation statement to add columns for any additional elements that you want to be included upon record 
       insertion.
+
+      To increase query performance, Iceberg uses [hidden partitioning](https://iceberg.apache.org/docs/latest/partitioning/) to 
+      group similar rows together when writing. You can also 
+      [explicitly define partitions](https://prestodb.io/docs/current/connector/iceberg.html#create-table) as part of the 
+      preceding `CREATE TABLE` statement.
 
 - The name of the target namespace (also known as a schema) within the target catalog, and name of the target table within that schema. To get these:
 
