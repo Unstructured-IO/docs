@@ -32,9 +32,10 @@ Also, to process specific projects, boards, or issues, use:
 - `--projects` with a comma-delimited list of target project IDs (CLI) or `project` with an array of target project IDs (Python).
 - `--boards` with a comma-delmited list of target board IDs (CLI) or `boards` with an array of target board IDs (Python).
 - `--issues` with a comma-delimited list of target issue IDs (CLI) or `issues` with an array of target issue IDs (Python).
+- `--status-filter` with a comma-delimited list of statuses to filter Jira issues by (CLI) or `status_filter` with an array of statuses to filter Jira issues by (Python).
+- `--download-attachments` (CLI) or `download_attachments=True` (Python) to download attachments from Jira issues.
+- `--no-download-attachments` (CLI) or `download_attachments=False` (Python) to not download attachments from Jira issues. This is the default behavior.
 
 <Warning>
-    Specifying `--cloud` (CLI) and setting `cloud` to `True` (Python) are reserved for future use. 
-    
     Do not specify `--cloud` (CLI) or set `cloud` to `True` (Python). Doing so could lead to unexpected results or failures.
 </Warning>
