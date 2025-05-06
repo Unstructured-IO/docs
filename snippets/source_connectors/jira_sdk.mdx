@@ -37,6 +37,11 @@ with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as clien
                         "<issue-id>",
                         "<issue-id>"
                     ],
+                    status_filters=[
+                        "<status>",
+                        "<status>"
+                    ],
+                    download_attachments=<True|False>,
                     cloud=<True|False>
                 )
             )

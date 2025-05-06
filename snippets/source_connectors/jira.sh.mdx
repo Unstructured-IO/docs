@@ -12,6 +12,11 @@ unstructured-ingest \
     --cloud \ # For Jira Cloud.
     --no-cloud \ # For Jira Data Center (default).
     --output-dir $LOCAL_FILE_OUTPUT_DIR \
+    --projects <project-id>,<project-id> \
+    --boards <board-id>,<board-id> \
+    --issues <issue-id>,<issue-id> \
+    --status-filters <status>,<status> \
+    --download-attachments \
     --chunking-strategy by_title \
     --embedding-provider huggingface \
     --partition-by-api \
