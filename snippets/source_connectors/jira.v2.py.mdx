@@ -47,7 +47,8 @@ if __name__ == "__main__":
                 # token=os.getenv("JIRA_PERSONAL_ACCESS_TOKEN") # Personal access token authentication only.
             ),
             url=os.getenv("JIRA_URL"),
-            username=os.getenv("JIRA_USERNAME") # For password or API token authentication.
+            username=os.getenv("JIRA_USERNAME"), # For password or API token authentication.
+            cloud=True # True for Jira Cloud, False (default) for Jira Data Center.
         ),
         partitioner_config=PartitionerConfig(
             partition_by_api=True,

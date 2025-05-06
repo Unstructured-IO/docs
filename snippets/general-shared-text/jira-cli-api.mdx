@@ -35,7 +35,5 @@ Also, to process specific projects, boards, or issues, use:
 - `--status-filter` with a comma-delimited list of statuses to filter Jira issues by (CLI) or `status_filter` with an array of statuses to filter Jira issues by (Python).
 - `--download-attachments` (CLI) or `download_attachments=True` (Python) to download attachments from Jira issues.
 - `--no-download-attachments` (CLI) or `download_attachments=False` (Python) to not download attachments from Jira issues. This is the default behavior.
-
-<Warning>
-    Do not specify `--cloud` (CLI) or set `cloud` to `True` (Python). Doing so could lead to unexpected results or failures.
-</Warning>
+- `--cloud` (CLI) or `cloud=True` (Python) to specify using Jira Cloud. The default is to use Jira Data Center.
+- `--no-cloud` (CLI) or `cloud=False` (Python) to specify using Jira Data Center. This is the default behavior.
