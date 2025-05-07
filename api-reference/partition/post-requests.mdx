@@ -3,21 +3,7 @@ title: Process an individual file by making a direct POST request
 sidebarTitle: POST request
 ---
 
-Watch the following 4-minute video to learn how to make POST requests to the Unstructured Partition Endpoint to process individual files:
-
-<iframe
-width="560"
-height="315"
-src="https://www.youtube.com/embed/fU080EahKwc"
-title="YouTube video player"
-frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-allowfullscreen
-></iframe>
-
-Open the related [notebook](https://colab.research.google.com/drive/1rJOZYZfsTQ_JV2hXaY4kgYvbA7xEWBZn?usp=sharing) that is shown in the preceding video.
-
-To make POST requests to the Unstructured Partition Endpoint, you will need:
+To make POST requests to the [Unstructured Partition Endpoint](/api-reference/partition/overview), you will need:
 
 import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
 
@@ -29,7 +15,7 @@ import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-s
 
 <GetStartedSimpleAPIOnly/>
 
-The API URL is `https://api.unstructuredapp.io/general/v0/general`
+The API base URL is `https://api.unstructuredapp.io`
 
 Let's start with a simple example in which you use [curl](https://curl.se/) to send a local PDF file (`*.pdf`) to partition via the Unstructured Partition Endpoint.
 
@@ -37,11 +23,10 @@ In this command, be sure to replace `<path/to/file>` with the path to your local
 
 ```bash
 curl --request 'POST' \
-"$UNSTRUCTURED_API_URL" \
+"$UNSTRUCTURED_API_URL/v1/partition_async" \
 --header 'accept: application/json' \
 --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
 --header 'content-Type: multipart/form-data' \
---form 'content_type=string' \
 --form 'strategy=vlm' \
 --form 'vlm_model_provider=openai' \
 --form 'vlm_model=gpt-4o' \
@@ -49,8 +34,104 @@ curl --request 'POST' \
 --form 'files=@<path/to/file>;type=application/pdf'
 ```
 
-In the example above we're representing the API endpoint with the environment variable `UNSTRUCTURED_API_URL`. Note, however, that you also need to authenticate yourself with
+In the example above we're representing the base API endpoint with the environment variable `UNSTRUCTURED_API_URL`. Note, however, that you also need to authenticate yourself with
 your individual API Key, represented by the environment variable `UNSTRUCTURED_API_KEY`. Learn how to obtain an API URL and API key in the [Unstructured Partition Endpoint guide](/api-reference/partition/overview).
+
+The results are printed to your terminal or Command Prompt with a format similar to the following:
+
+```json
+{
+   "partition_id": "<job-id>",
+   "partition_status": "scheduled",
+   "partition_status_message": "Partition job created"
+}
+```
+
+Make a note of the `<job-id>` value.
+
+Next, run the following `curl` command, replacing `<job_id>` with the `<job_id>` value:
+
+```bash
+curl --request 'GET' \
+"$UNSTRUCTURED_API_URL/v1/partition_async/<job_id>" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+```
+
+The results are printed to your terminal or Command Prompt with a format similar to the following:
+
+```json
+{
+   "partition_id": "<job-id>",
+   "partition_status": "in_progress",
+   "partition_status_message": "Started processing partition request",
+   "elements": null
+}
+```
+
+If the job is still in progress, repeat the `curl` command until the job is complete. However, if you run the `curl` command 
+and the job has successfully completed, the results that are printed to your terminal or Command Prompt will contain the processed data within the 
+`elements` array, for example:
+
+```json
+{
+    "partition_id": "<job-id>",
+    "partition_status": "completed",
+    "partition_status_message": "Partition job completed",
+    "elements": [
+        {
+            "type": "...",
+            "element_id": "...",
+            "text": "...",
+            "metadata": {
+                "...": "..."
+            }
+        },
+        {
+            "type": "...",
+            "element_id": "...",
+            "text": "...",
+            "metadata": {
+                "...": "..."
+            }
+        }
+    ]   
+}
+```
+
+By default, the JSON is printed without indenting or other whitespace. You can pretty-print the JSON output by using utilities such as [jq](https://jqlang.org/tutorial/) in future command runs. 
+
+You can also pipe the JSON output to a local file by using the `curl` option [-o, --output \<file\>](https://curl.se/docs/manpage.html#-o) in future command runs.
+
+## Synchronous requests
+
+The preceding section describes how to make _asynchronous_ requests to the Unstructured Partition Endpoint. 
+The Unstructured Partition Endpoint also supports _synchronous_ requests. 
+
+To make a synchronous request, replace `/v1/partition_async` with `/general/v0/general` as follows:
+
+```bash
+curl --request 'POST' \
+"$UNSTRUCTURED_API_URL/general/v0/general" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header 'content-Type: multipart/form-data' \
+--form 'strategy=fast' \
+--form 'output_format=application/json' \
+--form 'files=@<path/to/file>;type=text/plain'
+```
+
+If the request is successfully completed, the processed data is returned directly to your terminal or Command Prompt, without needing to make any 
+additional requests. However, you must wait for the request to complete and return the results. 
+
+While supported, synchronous requests are not recommended for the following reasons: 
+
+- A synchronous request must wait until the operation is complete, which might result in a timeout error.
+- A waiting synchronous request is a poor user experience, as it can give the user the mistaken impression that nothing is happening.
+- While waiting, you cannot poll to check the current status of a synchronous request.
+- If the related network connection is lost during a synchronous request, the request might fail.
+
+For these reasons, if you must make synchronous requests, they should be limited to processing only relatively small, text-based files.
 
 ## Parameters & examples
 

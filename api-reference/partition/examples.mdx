@@ -20,7 +20,7 @@ Here's how you can modify partition strategy for a PDF file, and select an alter
     <Accordion title="POST">
         <UseIngestOrPlatformInstead />
         ```bash POST
-        curl -X 'POST' $UNSTRUCTURED_API_URL \
+        curl -X 'POST' "$UNSTRUCTURED_API_URL/v1/partition_async" \
         -H 'accept: application/json' \
         -H 'Content-Type: multipart/form-data' \
         -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
@@ -29,6 +29,9 @@ Here's how you can modify partition strategy for a PDF file, and select an alter
         -F 'vlm_model_provider=openai' \
         -F 'vlm_model=gpt-4o'
         ```
+
+        To get the results of this request, you must make a follow-up request with the job ID that is returned in the response. See the `/v1/partition_async/<job_id>` example 
+        in [Process an individual file by making a direct POST request](/api-reference/partition/post-requests).
     </Accordion>
     <Accordion title="Python SDK">
         <UseIngestOrPlatformInstead />
@@ -191,7 +194,7 @@ For better OCR results, you can specify what languages your document is in using
     <Accordion title="POST">
         <UseIngestOrPlatformInstead />
         ```bash POST
-        curl -X 'POST' $UNSTRUCTURED_API_URL \
+        curl -X 'POST' "$UNSTRUCTURED_API_URL/v1/partition_async" \
         -H 'accept: application/json' \
         -H 'Content-Type: multipart/form-data' \
         -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
@@ -200,6 +203,9 @@ For better OCR results, you can specify what languages your document is in using
         -F 'vlm_model_provider=openai' \
         -F 'vlm_model=gpt-4o' \-F 'languages=kor'
         ```
+
+        To get the results of this request, you must make a follow-up request with the job ID that is returned in the response. See the `/v1/partition_async/<job_id>` example 
+        in [Process an individual file by making a direct POST request](/api-reference/partition/post-requests).
     </Accordion>
     <Accordion title="Python SDK">
         <UseIngestOrPlatformInstead />
@@ -359,7 +365,7 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
     <Accordion title="POST">
         <UseIngestOrPlatformInstead />
         ```bash POST
-        curl -X 'POST' $UNSTRUCTURED_API_URL \
+        curl -X 'POST' "$UNSTRUCTURED_API_URL/v1/partition_async" \
         -H 'accept: application/json' \
         -H 'Content-Type: multipart/form-data' \
         -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
@@ -367,6 +373,9 @@ Set the `coordinates` parameter to `true` to add this field to the elements in t
         -F 'coordinates=true' \
         -F 'strategy=hi_res'
         ```
+
+        To get the results of this request, you must make a follow-up request with the job ID that is returned in the response. See the `/v1/partition_async/<job_id>` example 
+        in [Process an individual file by making a direct POST request](/api-reference/partition/post-requests).
     </Accordion>
     <Accordion title="Python SDK">
         <UseIngestOrPlatformInstead />
@@ -530,7 +539,7 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
     <Accordion title="POST">
         <UseIngestOrPlatformInstead />
         ```bash POST
-        curl -X 'POST' $UNSTRUCTURED_API_URL \
+        curl -X 'POST' "$UNSTRUCTURED_API_URL/v1/partition_async" \
         -H 'accept: application/json'  \
         -H 'Content-Type: multipart/form-data' \
         -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
@@ -540,6 +549,9 @@ This can be helpful if you'd like to use the IDs as a primary key in a database,
         -F 'vlm_model_provider=openai' \
         -F 'vlm_model=gpt-4o'
         ```
+
+        To get the results of this request, you must make a follow-up request with the job ID that is returned in the response. See the `/v1/partition_async/<job_id>` example 
+        in [Process an individual file by making a direct POST request](/api-reference/partition/post-requests).
     </Accordion>
     <Accordion title="Python SDK">
         <UseIngestOrPlatformInstead />
@@ -703,7 +715,7 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
     <Accordion title="POST">
         <UseIngestOrPlatformInstead />
         ```bash POST
-        curl -X 'POST' $UNSTRUCTURED_API_URL \
+        curl -X 'POST' "$UNSTRUCTURED_API_URL/v1/partition_async" \
         -H 'accept: application/json'  \
         -H 'Content-Type: multipart/form-data' \
         -H 'unstructured-api-key: $UNSTRUCTURED_API_KEY' \
@@ -714,6 +726,9 @@ By default, the `chunking_strategy` is set to `None`, and no chunking is perform
         -F 'vlm_model_provider=openai' \
         -F 'vlm_model=gpt-4o'
         ```
+
+        To get the results of this request, you must make a follow-up request with the job ID that is returned in the response. See the `/v1/partition_async/<job_id>` example 
+        in [Process an individual file by making a direct POST request](/api-reference/partition/post-requests).
     </Accordion>
     <Accordion title="Python SDK">
         <UseIngestOrPlatformInstead />
