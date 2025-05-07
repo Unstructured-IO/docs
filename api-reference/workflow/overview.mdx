@@ -169,6 +169,30 @@ The following Postman examples use variables, which you can set as follows:
 These variables enable you to more easily run the following examples in Postman and help prevent you from storing 
 Postman collections that contain sensitive URLs and API keys in public source code repositories.
 
+Unstructured offers a [Postman collection](https://learning.postman.com/docs/collections/collections-overview/) that you can import into Postman to make Workflow Endpoint requests through a graphical user interface.
+
+1. [Install Postman](https://learning.postman.com/docs/getting-started/installation/installation-and-updates/).
+2. [Sign in to Postman](https://learning.postman.com/docs/getting-started/installation/postman-account/#signing-in-to-postman).
+3. In your workspace, click **Import**.
+
+   ![Import a Postman collection](/img/api/post/import.png)
+
+4. In the **Paste cURL, Raw text or URL** box, enter the following URL, and then press `Enter`:
+
+   ```
+   https://raw.githubusercontent.com/Unstructured-IO/docs/main/examplecode/codesamples/api/Unstructured-REST-API-Workflow-Endpoint.postman_collection.json
+
+5. On the sidebar, click **Collections**.
+6. Expand **Unstructured REST API - Workflow Endpoint**.
+7. Select the request that you want to use.
+8. As applicable, modify the URL as needed to specify any required resource IDs for the request.
+9. On the **Headers** tab, next to `unstructured-api-key`, enter your Unstructured API key in the **Value** column. 
+   As applicable, add, remove, or modify any other required headers for the request.
+10. As applicable, on the **Params** tab, add, remove, or modify any required parameters for the request.
+11. As applicable, on the **Body** tab, add, remove, or modify the required request body for the request.
+12. Click **Send**.
+13. To save the response, in the response area, click the ellipses, and then click **Save response to file**.
+
 To get your Unstructured API key, do the following:
 
 <GetStartedSimpleAPIOnly/>
