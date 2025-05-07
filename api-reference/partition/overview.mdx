@@ -5,7 +5,7 @@ title: Overview
 The Unstructured Partition Endpoint, part of the [Unstructured API](/api-reference/overview), is intended for rapid prototyping of Unstructured's 
 various partitioning strategies, with limited support for chunking. It is designed to work only with processing of local files, one file 
 at a time. Use the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) for production-level scenarios, file processing in 
-batches, files and data in remote locations, generating embeddings, applying post-transform enrichments, using the latest and 
+large batches, files and data in remote locations, generating embeddings, applying post-transform enrichments, using the latest and 
 highest-performing models, and for the highest quality results at the lowest cost.
 
 ## Get started
@@ -52,16 +52,16 @@ import SharedPagesBilling from '/snippets/general-shared-text/pages-billing.mdx'
 
 ## Quickstart
 
-This example uses the [curl](https://curl.se/) utility on your local machine to call the Unstructured Partition Endpoint. It sends a source (input) file from your local machine to the Unstructured Partition Endpoint which then delivers the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
+This example uses the [curl](https://curl.se/) utility on your local machine to call the Unstructured Partition Endpoint. It sends one or more source (input) files from your local machine to the Unstructured Partition Endpoint which then delivers the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
 
-If you do not have a source file readily available, you could use for example a sample PDF file containing the text of the United States Constitution, 
+If you do not have source files readily available, you could use for example a sample PDF file containing the text of the United States Constitution, 
 available for download from [https://constitutioncenter.org/media/files/constitution.pdf](https://constitutioncenter.org/media/files/constitution.pdf).
 
 <Steps>
     <Step title="Set environment variables">
         From your terminal or Command Prompt, set the following two environment variables. 
         
-        - Replace `<your-unstructured-api-url>` with the Unstructured Partition Endpoint URL, which is `https://api.unstructuredapp.io/general/v0/general`
+        - Replace `<your-unstructured-api-url>` with the Unstructured Partition Endpoint base URL, which is `https://api.unstructuredapp.io`
         - Replace `<your-unstructured-api-key>` with your Unstructured API key, which you generated earlier on this page.
 
         ```bash
@@ -69,28 +69,90 @@ available for download from [https://constitutioncenter.org/media/files/constitu
         export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
         ```
     </Step>
-    <Step title="Run the curl command">
-        Run the following `curl` command, replacing `<path/to/file>` with the path to the source file on your local machine.
+    <Step title="Create a partition job">
+        Run the following `curl` command, replacing `<path/to/file-1>` with the path to the source file on your local machine. To specify 
+        multiple files, repeat the `--form 'files=@<path/to/file-N>;type=application/pdf'` option in this command for each additional file.
 
-        If the source file is not a PDF file, then remove `;type=application/pdf` from the final `--form` option in this command.
+        If the source file is not a PDF file, then remove `;type=application/pdf` from the related `--form` option in this command.
 
         ```bash
         curl --request 'POST' \
-        "$UNSTRUCTURED_API_URL" \
+        "$UNSTRUCTURED_API_URL/v1/partition_async" \
         --header 'accept: application/json' \
         --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
         --header 'content-Type: multipart/form-data' \
-        --form 'content_type=string' \
         --form 'strategy=vlm' \
         --form 'vlm_model_provider=openai' \
         --form 'vlm_model=gpt-4o' \
         --form 'output_format=application/json' \
-        --form 'files=@<path/to/file>;type=application/pdf'
+        --form 'files=@<path/to/file-1>;type=application/pdf' \
+        --form 'files=@<path/to/file-N>;type=application/pdf'
         ```
+
+        The results are printed to your terminal or Command Prompt with a format similar to the following:
+
+        ```json
+        {
+            "partition_id": "<job-id>",
+            "partition_status": "scheduled",
+            "partition_status_message": "Partition job created"
+        }
+        ```
+
+        Make a note of the `<job-id>` value, as you will need it in the next step.
+    </Step>
+    <Step title="Check the status of the job">
+        Run the following `curl` command, replacing `<job_id>` with the `<job_id>` value from the previous step.
+
+        ```bash
+        curl --request 'GET' \
+        "$UNSTRUCTURED_API_URL/v1/partition_async/<job_id>" \
+        --header 'accept: application/json' \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+
+        The results are printed to your terminal or Command Prompt with a format similar to the following:
+
+        ```json
+        {
+            "partition_id": "<job-id>",
+            "partition_status": "in_progress",
+            "partition_status_message": "Started processing partition request",
+            "elements": null
+        }
+        ```
+
+        If the job is still in progress, repeat the `curl` command until the job is complete.
     </Step>
     <Step title="Examine the results">
-        After you run the `curl` command, the results are printed to your terminal or Command Prompt. The command might take several 
-        minutes to complete.
+        If you run the preceding command and the job has successfully completed, the results that are printed to your terminal or Command Prompt will contain the processed data within the 
+        `elements` array, for example:
+
+        ```json
+        {
+            "partition_id": "<job-id>",
+            "partition_status": "in_progress",
+            "partition_status_message": "Started processing partition request",
+            "elements": [
+                {
+                    "type": "...",
+                    "element_id": "...",
+                    "text": "...",
+                    "metadata": {
+                        "...": "..."
+                    }
+                },
+                {
+                    "type": "...",
+                    "element_id": "...",
+                    "text": "...",
+                    "metadata": {
+                        "...": "..."
+                    }
+                }
+            ]   
+        }
+        ```
 
         By default, the JSON is printed without indenting or other whitespace. You can pretty-print the JSON output by using utilities such as [jq](https://jqlang.org/tutorial/) in future command runs. 
         
