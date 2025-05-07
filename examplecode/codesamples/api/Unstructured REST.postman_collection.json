@@ -1,0 +1,195 @@
+{
+	"info": {
+		"_postman_id": "b555a869-7de2-4bb3-9adb-3e58c310a71f",
+		"name": "Unstructured REST",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38317384"
+	},
+	"item": [
+		{
+			"name": "Partition Endpoint",
+			"item": [
+				{
+					"name": "Asynchronous Job Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"description": "\n",
+								"type": "text"
+							},
+							{
+								"key": "unstructured-api-key",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "strategy",
+									"value": "vlm",
+									"type": "text"
+								},
+								{
+									"key": "vlm_model_provider",
+									"value": "openai",
+									"type": "text"
+								},
+								{
+									"key": "vlm_model",
+									"value": "gpt-4o",
+									"type": "text"
+								},
+								{
+									"key": "files",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api.unstructuredapp.io/v1/partition_async/",
+							"protocol": "https",
+							"host": [
+								"api",
+								"unstructuredapp",
+								"io"
+							],
+							"path": [
+								"v1",
+								"partition_async",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Asynchronous Job Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "unstructured-api-key",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://api.unstructuredapp.io/v1/partition_async/<partition-id>",
+							"protocol": "https",
+							"host": [
+								"api",
+								"unstructuredapp",
+								"io"
+							],
+							"path": [
+								"v1",
+								"partition_async",
+								"<partition-id>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Synchronous Request",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content",
+								"value": "multipart/form-data",
+								"type": "text"
+							},
+							{
+								"key": "unstructured-api-key",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "strategy",
+									"value": "vlm",
+									"type": "text"
+								},
+								{
+									"key": "vlm_model_provider",
+									"value": "openai",
+									"type": "text"
+								},
+								{
+									"key": "vlm_model",
+									"value": "gpt-4o",
+									"type": "text"
+								},
+								{
+									"key": "files",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api.unstructuredapp.io/general/v0/general",
+							"protocol": "https",
+							"host": [
+								"api",
+								"unstructuredapp",
+								"io"
+							],
+							"path": [
+								"general",
+								"v0",
+								"general"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Healthcheck",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.unstructuredapp.io/healthcheck",
+					"protocol": "https",
+					"host": [
+						"api",
+						"unstructuredapp",
+						"io"
+					],
+					"path": [
+						"healthcheck"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

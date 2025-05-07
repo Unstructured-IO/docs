@@ -155,16 +155,40 @@ Unstructured offers a [Postman collection](https://learning.postman.com/docs/col
 4. In the **Paste cURL, Raw text or URL** box, enter the following URL, and then press `Enter`:
 
    ```
-   https://raw.githubusercontent.com/Unstructured-IO/docs/main/examplecode/codesamples/api/Unstructured-POST.postman_collection.json
+   https://raw.githubusercontent.com/Unstructured-IO/docs/main/examplecode/codesamples/api/Unstructured-REST.postman_collection.json
    ```
 
 5. On the sidebar, click **Collections**.
-6. Expand **Unstructured POST**.
-7. Click **(Partition Endpoint) Basic Request**.
-8. On the **Headers** tab, next to `unstructured-api-key`, enter your Unstructured API key in the **Value** column.
-9. On the **Body** tab, next to `files`, click the **Select files** box in the **Value** column.
-10. Click **New file from local machine**.
-11. Browse to and select the file that you want Unstructured to process. 
-12. Click **Send**. Processing could take several minutes.
+6. Expand **Unstructured REST**.
+7. Expand **Partition Endpoint**.
 
-To download the processed data to your local machine, in the response area, click the ellipses, and then click **Save response to file**.
+To create an asynchronous request, do the following:
+
+1. Click **Asynchronous Job Request**.
+2. On the **Headers** tab, next to `unstructured-api-key`, enter your Unstructured API key in the **Value** column.
+3. On the **Body** tab, next to `files`, click the **Select files** box in the **Value** column.
+4. Click **New file from local machine**.
+5. Browse to and select the file that you want Unstructured to process. 
+6. Repeat steps 3-5 for any additional files that you want to process.
+7. On the **Body** tab, add, remove, or modify any allowed [parameters](/api-reference/partition/api-parameters) that you want to use. 
+8. Click **Send**. Note the value of the `partition_id` field in the response, as you will need it for the next procedure.
+
+To check the status of an asynchronous request, do the following:
+
+1. Click **Asynchronous Job Status**.
+2. In the URL, replace `<partition-id>` with the `partition_id` value that you noted in the previous procedure.
+3. On the **Headers** tab, next to `unstructured-api-key`, enter your Unstructured API key in the **Value** column.
+4. Click **Send**.
+5. Keep clicking **Send** periodically until the job is complete.
+6. To download the processed data to your local machine, in the response area, click the ellipses, and then click **Save response to file**.
+
+To create a synchronous request, do the following:
+
+1. Click **Synchronous Request**.
+2. On the **Headers** tab, next to `unstructured-api-key`, enter your Unstructured API key in the **Value** column.
+3. On the **Body** tab, next to `files`, click the **Select files** box in the **Value** column.
+4. Click **New file from local machine**.
+5. Browse to and select the file that you want Unstructured to process. 
+6. On the **Body** tab, add, remove, or modify any allowed [parameters](/api-reference/partition/api-parameters) that you want to use. 
+7. Click **Send**. Processing could take several minutes.
+8. To download the processed data to your local machine, in the response area, click the ellipses, and then click **Save response to file**.
