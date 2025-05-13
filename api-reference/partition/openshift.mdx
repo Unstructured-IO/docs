@@ -1,0 +1,132 @@
+---
+title: Red Hat OpenShift
+---
+
+You can use the [Unstructured Partition Endpoint](/api-reference/partition/overview) on Red Hat OpenShift. 
+The Unstructured Partition Endpoint is intended for rapid prototyping of Unstructured's 
+various partitioning strategies, with limited support for chunking. It is designed to work only with processing of local files, one file 
+at a time. File processing happens in a containerized environment, running within your Red Hat OpenShift deployment.
+
+Unstructured on Red Hat OpenShift does not support the following:
+
+- The [Unstructured Workflow Endpoint](/api-reference/workflow/overview). Use the Unstructured Workflow Endpoint instead of the 
+  Unstructured Partition Endpoint for production-level scenarios, 
+  file processing in batches, files and data in remote locations, generating embeddings, applying post-transform enrichments, 
+  using the latest and highest-performing models, and for the highest quality results at the lowest cost.
+- The [Unstructured Ingest CLI](/ingestion/ingest-cli).
+- The [Unstructured Ingest Python library](/ingestion/python-ingest).
+- The [Unstructured open source libary](/open-source/introduction/overview).
+- The Unstructured API base URL for calling Unstructured-hosted services: `https://api.unstructuredapp.io`
+- Unstructured API keys.
+- Partitioning of files by using a vision language model (VLM) without appropriate user-supplied API credentials for the target VLM provider.
+
+To get started with Unstructured on Red Hat OpenShift, complete the following steps. This procedure uses the Red Hat Developer Sandbox. To use 
+other methods, see the [additional resources](#additional-resources) section for links to how-to documentation for your specific Red Hat edition.
+
+1. [Create a new Red Hat login ID and account](https://access.redhat.com/articles/5832311), if you do not already have one.
+2. [Log in to your Red Hat account](https://access.redhat.com/).
+3. [Start your Red Hat Developer Sandbox](https://developers.redhat.com/developer-sandbox).
+4. In the sidebar, the **OpenShift** view should be visible. If not, to show it, at the top of the sidebar, in the view selector, click **Red Hat Hybrid Cloud Console** 
+   and then, under **Platforms**, click **Red Hat OpenShift**.
+5. In the sidebar, under **Products**, expand **OpenShift AI**, and then click **Developer Sandbox | OpenShift AI**.
+6. Under **Available Services**, in the **OpenShift** tile, click **Launch**.
+7. In the sidebar, the **Developer** view should be visible. If not, to show it, at the top of the sidebar, in the view selector, click **Developer**.
+8. Click **+Add**.
+9. Click the **Container images** tile. 
+10. On the **Deploy Image** page, for **Image name from external registry**, enter the name for the Unstructured on Red Hat OpenShift image:
+
+    a. On a separate tab in your web browser, go to the 
+       [unstructured-api-core](https://catalog.redhat.com/software/containers/unstructured/unstructured-api-plus/67e1a6dd1290604dbbaf0f34) 
+       container artict page in the Red Hat Ecosystem Catalog.<br/>
+    b. Click the **Get this image** tab.<br/>
+    c. On the **Using Red Hat login** tab, click the copy icon next to **Manifest List Digest**.<br/>
+    d. Paste the copied value into the **Image name from external registry** field on the other tab in your web browser.<br/>
+
+11. Leave all of the other fields on the **Deploy Image** page set to their default values.
+12. Note the value of the **Target port** field (such as `8080`).
+13. Click **Create**.
+14. If the **Topology** view is not visible, to show it, at the top of the sidebar, in the view selector, click **Topology**.
+15. If the **unstructured-api-plus** Knative service (KSVC) is not already selected, select it.
+16. In the properties pane, on the **Resources** tab, note the value of the **Routes** field.
+
+You can now use the route and target port that you noted previously to call the Unstructured Partition Endpoint that is running in the container 
+within your Red Hat Developer Sandbox.
+
+For example, to make a [POST request to the Unstructured Partition Endpoint](/api-reference/partition/post-requests) 
+to process an individual file, you can use the following `curl` command example, replacing the following values:
+
+- Replace `<route>` with your route value.
+- Replace `<target-port>` with your target port value.
+- Replace `<path/to/local/file>` with the path to the local file that you want to process.
+- Replace `<mime-type>` with the [MIME type](https://mimetype.io/all-types) (for example, `application/pdf`) of the local file that you want to process.
+
+```bash
+curl --request 'POST' \
+"<route>:<target-port>/general/v0/general" \
+--header 'content-Type: multipart/form-data' \
+--form 'strategy=hi_res' \
+--form 'output_format=application/json' \
+--form 'files=@<path/to/local/file>;type=<mime-type>'
+```
+
+For additional command options that you can use with the Unstructured Partition Endpoint, see [Partition Endpoint parameters](/api-reference/partition/api-parameters).
+
+The preceding command example uses the Hi-Res [partitioning strategy](/api-reference/partition/partitioning), 
+which is best for PDFs with embedded images, tables, or varied layouts.
+
+To use the VLM paritioning strategy, which uses a vision language model (VLM) and is best for PDFs with scanned images, handwritten layous, 
+highly complex layouts, or visually degraded pages, use a command similar to the following. 
+This command example uses the OpenAI VLM provider and the gpt-4o vision language model provided by OpenAI:
+
+```bash
+curl --request 'POST' \
+"<route>:<target-port>/general/v0/general" \
+--header 'content-Type: multipart/form-data' \
+--form 'strategy=vlm' \
+--form 'vlm_model_provider=openai' \
+--form 'vlm_model=gpt-4o' \
+--form 'output_format=application/json' \
+--form 'files=@<path/to/local/file>;type=<mime-type>'
+```
+
+To use the VLM strategy, you must also provide your own API credentials for the target VLM provider. For the preceding command, 
+you provide your OpenAI API key by adding an environment variable named `OPENAI_API_KEY` for your  
+[OpenAPI API key](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key) to your container deployment. 
+To add this environment variable, do the following:
+
+1. In your Red Hat Developer Sandbox, on the sidebar, if the **Topology** view is not visible, to show it, at the top of the sidebar, in the view selector, click **Topology**.
+2. If the **unstructured-api-plus** Knative service (KSVC) is not already selected, select it.
+3. In the **Actions** drop-down list, select **Edit unstructured-api-plus**.
+4. At the bottom of the settings pane, click the **Deployment** link next to **Click on the names to access advanced options**.
+5. Under **Environment variables (runtime) only**, for **Name**, enter `OPENAI_API_KEY`. For **Value**, enter your OpenAI API key.
+6. Click **Save**.
+
+To use other VLM providers, you must add the following environment variables:
+
+- For Anthropic, add `ANTHROPIC_API_KEY`. 
+- For AWS Bedrock, set `AWS_BEDROCK_ACCESS_KEY`, `AWS_BEDROCK_SECRET_KEY`, and `AWS_BEDROCK_REGION`.
+- For Vertex AI, set `GOOGLE_VERTEX_AI_API_KEY`.
+
+To learn how to get the values for these environment variables, see the following:
+
+- For Anthropic, [sign in to your Anthropic account](https://console.anthropic.com/account/keys) and then go to **Account Settings** to generate your Anthropic API key.
+- For AWS Bedrock, see [Getting started with the API](https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started-api.html) 
+  in the Amazon Bedrock documentation to generate your IAM user's access key, secret key, and region.
+- For Vertex AI, go to your Google Cloud account's [APIs & Services > Credentials](https://console.cloud.google.com/apis/credentials) page, and then click **Create credentials > API key** to generate your Google Cloud API key.
+
+You can also use Unstructured on Red Hat OpenShift with the 
+[Unstructured Python SDK](/api-reference/partition/sdk-python) or the [Unstructured JavaScript/TypeScript SDK](/api-reference/partition/sdk-jsts). 
+To use these SDKs, note the following:
+
+- When initializing an instance of `UnstructuredClient`, you must specify the Unstructured API URL as `https://<route>:<target-port>/general/v0/general`, 
+  replacing `<route>` with your route value and `<target-port>` with your target port value.
+- When initializing an instance of `UnstructuredClient`, you do not specify an Unstructured API key.
+- To use VLM providers, you must first set the appropriate environment variables for each target VLM provider in your container deployment, as described previously in this article.
+
+## Additional resources
+
+- [Red Hat OpenShift Service on AWS documentation](https://docs.redhat.com/en/documentation/red_hat_openshift_service_on_aws)
+- [OpenShift Dedicated documentation](https://docs.redhat.com/en/documentation/openshift_dedicated)
+- [Red Hat OpenShift on IBM Cloud documentation](https://cloud.ibm.com/docs/openshift?topic=openshift-getting-started&interface=ui)
+- [OpenShift Platform Plus documentation](https://docs.redhat.com/en/documentation/openshift_platform_plus)
+- [OpenShift Container Platform documentation](https://docs.redhat.com/en/documentation/openshift_container_platform)
