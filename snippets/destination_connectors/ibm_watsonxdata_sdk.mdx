@@ -6,7 +6,7 @@ from unstructured_client.models.operations import CreateDestinationRequest
 from unstructured_client.models.shared import (
     CreateDestinationConnector,
     DestinationConnectorType,
-    IbmWatsonxDestinationConnectorConfigInput
+    IBMWatsonxS3DestinationConnectorConfigInput
 )
 
 with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
@@ -15,7 +15,7 @@ with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as clien
             create_destination_connector=CreateDestinationConnector(
                 name="<name>",
                 type=DestinationConnectorType.IBM_WATSONX_S3,
-                config=IbmWatsonxDestinationConnectorConfigInput(
+                config=IBMWatsonxS3DestinationConnectorConfigInput(
                     iceberg_endpoint="<iceberg-endpoint>",
                     object_storage_endpoint="<object-storage-endpoint>",
                     object_storage_region="<object-storage-region>",

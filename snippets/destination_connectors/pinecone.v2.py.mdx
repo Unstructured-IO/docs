@@ -47,6 +47,9 @@ if __name__ == "__main__":
             index_name=os.getenv("PINECONE_INDEX_NAME")
         ),
         stager_config=PineconeUploadStagerConfig(),
-        uploader_config=PineconeUploaderConfig()
+        uploader_config=PineconeUploaderConfig(
+            batch_size=100,
+            namespace=os.getenv("PINECONE_NAMESPACE_NAME")
+        )
     ).run()
 ```
