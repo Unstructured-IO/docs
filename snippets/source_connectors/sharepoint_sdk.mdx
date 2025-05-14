@@ -16,14 +16,15 @@ with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as clien
                 name="<name>",
                 type=SourceConnectorType.SHAREPOINT,
                 config=SharePointSourceConnectorConfigInput(
-                    client_id="<client_id>",
                     site="<site>",
+                    path="<path>",
+                    recursive=<True|False>,
+                    client_id="<client_id>",
                     tenant="<tenant>",
                     authority_url="<authority_url>",
-                    user_pname="<user_pname>",
                     client_cred="<client_cred>",
-                    path="<path>",
-                    recursive=<True|False>
+                    user_pname="<user_pname>", # For username and password authentication.
+                    password="<password>" # For username and password authentication.   
                 )
             )
         )

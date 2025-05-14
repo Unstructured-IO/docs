@@ -31,13 +31,14 @@ if __name__ == "__main__":
         downloader_config=SharepointDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
         source_connection_config=SharepointConnectionConfig(
             access_config=SharepointAccessConfig(
-                client_cred=os.getenv("ENTRA_ID_APP_CLIENT_SECRET")
+                client_cred=os.getenv("ENTRA_ID_APP_CLIENT_SECRET"),
+                password=os.getenv("ENTRA_ID_USER_PASSWORD"), # For username and password authentication.
             ),
+            site=os.getenv("SHAREPOINT_SITE_URL"),
             client_id=os.getenv("ENTRA_ID_APP_CLIENT_ID"),
-            user_pname=os.getenv("ENTRA_ID_USER_PRINCIPAL_NAME"),
             tenant=os.getenv("ENTRA_ID_APP_TENANT_ID"),
             authority_url=os.getenv("ENTRA_ID_TOKEN_AUTHORITY_URL"),
-            site=os.getenv("SHAREPOINT_SITE_URL")
+            user_pname=os.getenv("ENTRA_ID_USER_PRINCIPAL_NAME") # For username and password authentication.            
         ),
         partitioner_config=PartitionerConfig(
             partition_by_api=True,

@@ -30,26 +30,6 @@
   OneDrive personal accounts, and Microsoft 365 Free, Basic, Personal, and Family plans are not supported.
 - The SharePoint Online and OneDrive plans must share the same Microsoft Entra ID tenant. 
   [Learn more](https://learn.microsoft.com/microsoft-365/enterprise/subscriptions-licenses-accounts-and-tenants-for-microsoft-cloud-offerings?view=o365-worldwide). 
-- The User Principal Name (UPN) for the OneDrive account in the Microsoft Entra ID tenant. This is typically the OneDrive account user's email address. To find a UPN:
-
-  1. Depending on your plan, sign in to your Microsoft 365 admin center (typically [https://admin.microsoft.com](https://admin.microsoft.com)) using your administrator credentials, 
-     or sign in to your Office 365 portal (typically [https://portal.office.com](https://portal.office.com)) using your credentials.
-  2. In the **Users** section, click **Active users**.
-  3. Locate the user account in the list of active users.
-  4. The UPN is displayed in the **Username** column.
-
-  The following video shows how to get a UPN:
-
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/H0yYfhfyCE0"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
-
 - The SharePoint Online site URL.
 
   - Site collection-level URLs typically have the format `https://<tenant>.sharepoint.com/sites/<site-collection-name>`.
@@ -58,7 +38,12 @@
 
   [Learn more](https://learn.microsoft.com/microsoft-365/community/query-string-url-tricks-sharepoint-m365).
 
-- The path in the SharePoint Online site from which to start parsing files, for example `"Shared Documents"`. If the SharePoint connector is to process all sites within the tenant, this filter will be applied to all site document libraries.
+- The path in the SharePoint Online site from which to start parsing files. By default, parsing starts from the site's **Documents** folder (if viewed from the site's UI) or the 
+  `Shared Documents` folder (if viewed from the site's URL). 
+
+  To start parsing from a path than **Documents** (in the UI) or `Shared Documents/` (in the URL), specify only the part of the path that 
+  comes after that. For example, to start parsing from **Documents > my-folder > my-subfolder** (in the UI) or 
+  `Shared Documents/my-folder/my-subfolder` (in the URL), specify `my-folder/my-subfolder`.
 
   The following video shows how to get the site URL and a path within the site:
 
@@ -72,8 +57,10 @@
   allowfullscreen
   ></iframe>
 
-- The **Application (client) ID**, **Directory (tenant) ID**, and **Client secret** for the Microsoft Entra ID app registration with 
-  the correct set of Microsoft Graph access permissions. These permissions include:
+- Two types of authentication are supported: client credentials and a username and password. Both authentication types require a 
+  Microsoft Entra ID app registration. You will need to provide 
+  the **Application (client) ID**, **Directory (tenant) ID**, and **Client secret** for the Entra ID app registration, and the 
+  app registration must have the correct set of Microsoft Graph access permissions. These permissions include:
 
   - `Sites.ReadWrite.All` (if both reading and writing are needed)
   - `User.Read.All`
@@ -107,3 +94,22 @@
   ></iframe>
 
 - The token authority URL for your Microsoft Entra ID app registration. This is typically `https://login.microsoftonline.com`
+- For username and password authentication, you must also provide the User Principal Name (UPN) and its password for the OneDrive account in the Microsoft Entra ID tenant. This UPN is typically the OneDrive account user's email address. To find a UPN:
+
+  1. Depending on your plan, sign in to your Microsoft 365 admin center (typically [https://admin.microsoft.com](https://admin.microsoft.com)) using your administrator credentials, 
+     or sign in to your Office 365 portal (typically [https://portal.office.com](https://portal.office.com)) using your credentials.
+  2. In the **Users** section, click **Active users**.
+  3. Locate the user account in the list of active users.
+  4. The UPN is displayed in the **Username** column.
+
+  The following video shows how to get a UPN:
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/H0yYfhfyCE0"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
