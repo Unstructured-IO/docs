@@ -17,6 +17,7 @@ with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as clien
                 type=DestinationConnectorType.PINECONE,
                 config=PineconeDestinationConnectorConfigInput(
                     index_name="<index-name>", 
+                    namespace="<namespace-name>",
                     api_key="<api-key>",
                     batch_size=<batch-size>
                 )

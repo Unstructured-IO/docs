@@ -13,15 +13,10 @@ The following environment variables:
 - `JIRA_URL` - The site URL for your Jira Data Center installation or Jira Cloud account, represented by `--url` (CLI) or `url` (Python).
 - One of the following:
 
-  - For Jira Cloud or Jira Data Center, the target user's name or email address, and password, as follows:
+  - For Jira Cloud or Jira Data Center, the target user's name or email address, and password or API token, as follows:
 
     - `JIRA_USERNAME` - The name or email address of the target user, represented by `--username` (CLI) or `username` (Python).
-    - `JIRA_PASSWORD_OR_API_TOKEN` - The user's password, represented by `--password` (CLI) or `password` (Python).
-
-  - For Jira Cloud only, the target user's name or email address, and API token, as follows:
-
-    - `JIRA_USERNAME` - The name or email address of the target user, represented by `--username` (CLI) or `username` (Python).
-    - `JIRA_PASSWORD_OR_API_TOKEN` - The user's API token, represented by `--password` (CLI) or `password` (Python).
+    - `JIRA_PASSWORD_OR_API_TOKEN` - The user's password (for password authentication) or API token (for API token authentication), represented by `--password` (CLI) or `password` (Python).
 
   - For Jira Data Center only, the target user's personal access token (PAT), as follows:
 

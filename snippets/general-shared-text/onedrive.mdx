@@ -10,26 +10,6 @@
   [Shop for enterprise plans](https://www.microsoft.com/microsoft-365/enterprise/microsoft365-plans-and-pricing). 
 - The OneDrive and SharePoint Online plans must share the same Microsoft Entra ID tenant. 
   [Learn more](https://learn.microsoft.com/microsoft-365/enterprise/subscriptions-licenses-accounts-and-tenants-for-microsoft-cloud-offerings?view=o365-worldwide). 
-- The User Principal Name (UPN) for the OneDrive account. This is typically the OneDrive account user's email address. To find a UPN:
-
-  1. Depending on your plan, sign in to your Microsoft 365 admin center (typically [https://admin.microsoft.com](https://admin.microsoft.com)) using your administrator credentials, 
-     or sign in to your Office 365 portal (typically [https://portal.office.com](https://portal.office.com)) using your credentials.
-  2. In the **Users** section, click **Active users**.
-  3. Locate the user account in the list of active users.
-  4. The UPN is displayed in the **Username** column.
-
-  The following video shows how to get a UPN:
-
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/H0yYfhfyCE0"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
-
 - The path to the target OneDrive folder, starting from the OneDrive account's root folder, for example `my-folder/my-subfolder`.
 
   The following video shows how to get a path:
@@ -44,8 +24,9 @@
   allowfullscreen
   ></iframe>
 
-- The client ID, tenant ID, and client secret for the Microsoft Entra ID app registration that has access to the target OneDrive account and 
-  also has the correct set of Microsoft Graph access permissions. These permissions include:
+- Two types of authentication are supported: client credentials and a username and password. Both authentication types require a Microsoft Entra ID app registration. 
+  You will need to provide the **Application (client) ID**, **Directory (tenant) ID**, and **Client secret** for the Entra ID app registration that has access to the target OneDrive account, and 
+  the app registration must have the correct set of Microsoft Graph access permissions. These permissions include:
 
   - `Files.ReadWrite.All` (if both reading and writing are needed)
   - `Sites.ReadWrite.All` (if both reading and writing are needed)
@@ -78,3 +59,25 @@
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowfullscreen
   ></iframe>
+
+- Both authentication types also require the User Principal Name (UPN) for the OneDrive account. This is typically the OneDrive account user's email address. To find a UPN:
+
+  1. Depending on your plan, sign in to your Microsoft 365 admin center (typically [https://admin.microsoft.com](https://admin.microsoft.com)) using your administrator credentials, 
+     or sign in to your Office 365 portal (typically [https://portal.office.com](https://portal.office.com)) using your credentials.
+  2. In the **Users** section, click **Active users**.
+  3. Locate the user account in the list of active users.
+  4. The UPN is displayed in the **Username** column.
+
+  The following video shows how to get a UPN:
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/H0yYfhfyCE0"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
+
+- For username and password authentication, you will also need the password for the target UPN.
