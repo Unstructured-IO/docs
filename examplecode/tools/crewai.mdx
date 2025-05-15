@@ -1,0 +1,143 @@
+---
+title: CrewAI
+---
+
+[CrewAI](https://github.com/crewai/crewai) is a framework for building AI agents and multi-agent workflows.
+
+This article provides a hands-on, step-by-step walkthrough that uses CrewAI, 
+along with the [Unstructured Workflow Endpoint MCP Server](/examplecode/tools/mcp), to 
+build a multi-agent workflow. This multi-agent workflow uses the MCP server to call various functions within the 
+[Unstructured Workflow Endpoint](/api-reference/workflow/overview) to build Unstructured ETL+ workflows from the ground up. 
+You can run this multi-agent workflow again and again with different inputs, without needing to touch the agents' original code 
+or even knowing how to program, to have AI agents quickly build on your behalf multiple Unstructured ETL+ workflows with varying configurations.
+
+## Requirements
+
+To complete this walkthrough, you must first have an Unstructured account, an Unstructured API key for that account, 
+an OpenAI API key, and the necessary Python and CrewAI open-source toolchain and project setups, as follows.
+
+### Unstructured account and API key
+
+Before you begin, you must have an Unstructured account and an Unstructured API key, as follows:
+
+import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-simple-api-only.mdx';
+
+<GetStartedSimpleAPIOnly/>
+
+### OpenAI API key
+
+This example uses OpenAI with gpt-4o-mini. So, before you begin, you must also have an OpenAI API key. 
+[Create or log in to your OpenAI account](https://auth.openai.com/create-account), and then 
+[get an OpenAI API key](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key) for your OpenAI account.
+
+### Python and CrewAI open-source toolchain and project setup
+
+Before you can start coding on your local machine, you must install the Python package and project manager [uv](https://docs.astral.sh/uv/), 
+and install the CrewAI open source package, as follows.
+
+<Steps>
+    <Step>
+        Install `uv`, as follows.
+
+        By using `pip`:
+
+        ```bash
+        pip install uv
+        ```
+
+        Or, by using the following script (be sure to restart your terminal or Command Prompt after running the script):
+
+        ```bash
+        # For macOS and Linux:
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+
+        # For Windows:
+        powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+        ```
+
+        (To learn more about `uv`, see the [uv documentation](https://docs.astral.sh/uv/).)
+    </Step>
+    <Step>
+        Install the CrewAI open-source package, as follows:
+
+        ```bash
+        uv tool install crewai
+        ```
+
+    </Step>
+    <Step>
+        Switch to the directory on you development machine where you want to create the project directory for this example, and then initialize the project. 
+        This example creates a project directory named `crewai_unstructured_demo` within your current working directory and then 
+        initializes the project.
+
+        <Note>
+            CrewAI open source works only with Python 3.10, 3.11, and 3.12.
+        </Note>
+
+        ```bash
+        crewai create crew crewai-unstructured-demo
+        ```
+
+        When prompted, select the LLM provider that you want to use. This example uses OpenAI with gpt-4o, so type the number for `openai` and then press `Enter`. 
+        Then type the number next to `gpt-4o-mini` and press `Enter`.
+
+        Then, when prompted, enter your OpenAI API key and press `Enter`.
+    </Step>
+    <Step>
+        Switch to the newly created project directory:
+
+         ```bash
+         cd crewai_unstructured_demo
+         ```
+
+        The core files that you will be working with in this example are in the `src/crewai_unstructured_demo` subdirectory. These core files include:
+
+        - `config/agents.yaml`, which defines the AI agents that you will be using in this example.
+        - `config/tasks.yaml`, which defines the tasks that the AI agents will be performing in this example.
+        - `crew.py`, which defines the multi-agent workflow that you will be running in this example.
+        - `main.py`, which runs the multi-agent workflow.
+        - `.env`, which contains environment variables for this example, such as the LLM to use and your OpenAI API key.
+
+    </Step>
+    <Step>
+        In the project's `.env` file, add the following environment variable, replacing `<key-here>` with your Unstructured API key:
+
+        ```bash
+        UNSTRUCTURED_API_KEY=<key-here>
+        ```
+
+    </Step>
+    <Step>
+        ```bash
+        crewai install
+        ```
+    </Step>
+</Steps>
+
+### ...
+
+<Steps>
+    <Step>
+        In the root of the project directory, use Git to clone the Unstructured Workflow Endpoint MCP Server repository:
+
+        ```bash
+        git clone https://github.com/Unstructured-IO/UNS-MCP.git
+        ```
+    </Step>
+    <Step>
+        ```bash
+        cd UNS-MCP
+        uv sync
+        uv add mcp
+        uv add -U unstructured-client
+        ```
+    </Step>
+    
+    <Step>
+        ```bash
+        uv run uns_mcp/server.py --port=8080
+        ```
+    </Step>
+</Steps>
+
+You are now ready to start coding.
