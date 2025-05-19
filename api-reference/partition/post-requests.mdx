@@ -131,7 +131,7 @@ While supported, synchronous requests are not recommended for the following reas
 - While waiting, you cannot poll to check the current status of a synchronous request.
 - If the related network connection is lost during a synchronous request, the request might fail.
 
-For these reasons, if you must make synchronous requests, they should be limited to processing only relatively small, text-based files.
+For these reasons, if you must make synchronous requests, they should be limited to processing only relatively small, text-based files, partitioning such files with only the `fast` partitioning strategy.
 
 ## Parameters & examples
 
