@@ -84,7 +84,7 @@ metadata as input into your RAG applications, AI agents, model fine-tuning tasks
         ```
     </Step>
     <Step title="Activate the virtual environment">
-        To activate the virtual environment, run one of the following commands:
+        To activate the `venv` virtual environment, run one of the following commands:
         
         <Tabs>
             <Tab title="macOS, Linux">
@@ -102,7 +102,7 @@ metadata as input into your RAG applications, AI agents, model fine-tuning tasks
         To deactivate the virtual environment at any time, run `deactivate`.
     </Step>
     <Step title="Install the Unstructured open source library">
-        With the virtual environment activated, install the Unstructured open source library by running the following command:
+        With the virtual environment activated, use `uv` toinstall the Unstructured open source library by running the following command:
 
         ```bash
         uv add unstructured
@@ -179,7 +179,7 @@ metadata as input into your RAG applications, AI agents, model fine-tuning tasks
         ```
     </Step>
     <Step title="Run the Python code">
-        Run the preceding Python code by running the following command:
+        Use `uv` to run the preceding Python code by running the following command:
 
         ```bash
         uv run main.py
@@ -198,20 +198,25 @@ metadata as input into your RAG applications, AI agents, model fine-tuning tasks
 import SharedOSSSingleFile from '/snippets/general-shared-text/multi-file-oss-use-connectors.mdx';
 
 - Learn more about the [available partition functions](/open-source/core-functionality/partitioning) in addition to `partition_pdf` for converting other types of files into standard [Unstructured document elements and metadata](/open-source/concepts/document-elements).
-- Learn about [available partitioning strategies](/open-source/concepts/partitioning-strategies) for optimal approaches for converting different types of files into Unstructured document elements.
+- By default, the preceding example uses the `auto` partitioning strategy. Learn about other [available partitioning strategies](/open-source/concepts/partitioning-strategies) for fine-tuned approaches to converting different types of files into Unstructured document elements.
 - Learn about [available chunking functions](/open-source/core-functionality/chunking) for splitting up the text in your document elements into manageable chunks as needed to fit into your models' limited context windows.
 - Learn about [available cleaning functions](/open-source/core-functionality/cleaning) for cleaning up your document elements' data as needed.
 - Learn about [available extraction functions](/open-source/core-functionality/extracting) for getting precise information out of your document elements as needed.
 - Learn about how to [generate vector embeddings](/open-source/core-functionality/embedding) for the text in your document elements for use in RAG applications, AI agents, model fine-tuning tasks, and more.
 - For an additional code example, see the [Unstructured Quick Tour](https://colab.research.google.com/drive/1U8VCjY2-x8c6y5TYMbSFtQGlQVFHCVIW) Google Colab notebook. 
 - The Unstructured open source library is also available as a [Docker container](/open-source/installation/docker-installation).
-
-<SharedOSSSingleFile />
+- The [Unstructured Ingest CLI and Unstructured Ingest Python library](/ingestion/overview) build upon the Unstructured open source library by providing additional functionality such as batch file processing, 
+  ingesting files from remote source locations and sending the processed files' data to remote destination locations, creating programmatic ETL pipelines, optionally processing files on Unstructured-hosted compute resource instead of locally for improved performance and quality on a pay-as-you-go basis, and more.
+- The [Unstructured user interface (UI)](/ui/overview) and [Unstructured API](/api-reference/overview) are superior to the Unstructured open source library, the 
+  Unstructured Ingest CLI, and the Unstructured Ingest Python library. The Unstructured UI and API are designed for production scenarios, with significantly increased performance and quality, 
+  the latest OCR and vision language models, advanced chunking strategies, security compliance, multi-user account management, job scheduling and monitoring, self-hosted deployment options, and more on a pay-as-you-go or subscription basis.
 
 ## Need help?
 
-To get help, join the [Unstructured Slack community](https://short.unstructured.io/pzw05l7) and post your 
-questions in the **# ask-for-help-open-source-library** channel.
+- Join the [Unstructured Slack community](https://short.unstructured.io/pzw05l7) and post your 
+  questions in the **# ask-for-help-open-source-library** channel.
+- Post your bug reports and feature requests in the [Unstructured open source library GitHub repository](https://github.com/Unstructured-IO/unstructured/issues). These bug reports and feature requests are evaluated and addressed  
+  based on the interest and availability of the open source community.
 
 
 
