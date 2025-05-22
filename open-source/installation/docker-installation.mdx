@@ -1,64 +1,280 @@
 ---
-title: Docker Installation 
-description: The instructions below guide you on how to use the unstructured library inside a Docker container.
+title: Docker installation 
 ---
 
-## Prerequisites
+Follow these steps to run the Unstructured open source library inside a Docker container.
 
-If you haven’t installed Docker on your machine, you can find the installation guide [here](https://docs.docker.com/get-docker/).
+<Steps>
+    <Step title="Install and run Docker">
+        If you do not have Docker already installed and running, you can install and run a tool such as Docker Desktop, which is 
+        available for macOS, Windows, and Linux. Learn how to install and run:
+        
+        - [Docker Desktop on Mac](https://docs.docker.com/desktop/setup/install/mac-install/)
+        - [Docker Desktop on Windows](https://docs.docker.com/desktop/setup/install/windows-install/)
+        - [Docker Desktop on Linux](https://docs.docker.com/desktop/setup/install/linux/)
+    </Step>
+    <Step title="Pull the Unstructured Docker image">
+        <Info>If you are an experienced Docker user, you plan to parse only a single type of data, and you want to accelerate the image-building process, you can [build your own Docker image](#building-your-own-docker-image) instead of pulling the latest prebuilt image.</Info>
+        <Tabs>
+            <Tab title="Docker Desktop UI">
+                <Note>
+                    The following steps are for AMD64-based systems.
 
-<Note>
-    We build multi-platform images to support both x86\_64 and Apple silicon hardware. Using docker pull should download the appropriate image for your architecture. However, if needed, you can specify the platform with the –platform flag, e.g., –platform linux/amd64.
+                    If you are using an ARM64-based system (such as Apple Silicon), follow the instructions on the **Docker CLI** tab in this step instead.
+                </Note>  
 
-    We do not support GPU usage with the Unstructured library inside a Docker container.
-</Note>
+                1. In your Docker Desktop UI's search box, enter `downloads.unstructured.io/unstructured-io/unstructured:latest`.
+                2. On the **Images** tab, next to **unstructured-io/unstructured**, click **Pull**.
 
-## Pulling the Docker Image
+                To list the available images on your machine, in the sidebar, click **Images**.
 
-We create Docker images for every push to the main branch. These images are tagged with the respective short commit hash (like fbc7a69) and the application version (e.g., 0.5.5-dev1). The most recent image also receives the latest tag. To use these images, pull them from our repository:
+                To remove this image from your machine at any time, click the trash can (**Delete**) icon next to the image in the 
+                list of available images.
+            </Tab>
+            <Tab title="Docker CLI">
+                From your terminal or command prompt, run the following command.
 
-```go
-docker pull downloads.unstructured.io/unstructured-io/unstructured:latest
+                <Tip>If you have the Docker Desktop UI running, you can click the **Terminal** button in the UI's lower right corner to run a Docker CLI session from within the Docker Desktop UI.</Tip>
 
-```
+                For AMD64-based systems, run the following command:
 
+                ```bash
+                # The AMD64 platform is the default.
+                docker pull downloads.unstructured.io/unstructured-io/unstructured:latest
 
-## Using the Docker Image
+                # Or, to explicitly specify the AMD64 platform:
+                docker pull --platform=linux/amd64 downloads.unstructured.io/unstructured-io/unstructured:latest
+                ```
 
-After pulling the image, you can create and start a container from it:
+                For ARM64-based systems (such as Apple Silicon), run the following command instead:
 
-```go
-# create the container
-docker run -dt --name unstructured downloads.unstructured.io/unstructured-io/unstructured:latest
+                ```bash
+                docker pull --platform=linux/arm64 downloads.unstructured.io/unstructured-io/unstructured:latest
+                ```
 
-# start a bash shell inside the running Docker container
-docker exec -it unstructured bash
+                To list the available images on your machine, run the following command:
+                
+                ```bash
+                docker images
+                ```
 
-```
+                To remove this image from your machine at any time, run the following command:
+                
+                ```bash
+                docker rmi downloads.unstructured.io/unstructured-io/unstructured:latest
+                ```
+            </Tab>
+        </Tabs>
+    </Step>
+    <Step title="Create and run a container from the image">
+        <Tabs>
+            <Tab title="Docker Desktop UI">
+                <Note>
+                    The following steps are for AMD64-based systems.
 
+                    If you are using an ARM64-based system (such as Apple Silicon), follow the instructions on the **Docker CLI** tab in this step instead.
+                </Note>  
+                     
+                1. In the Docker Desktop UI's sidebar, click **Images**.
+                2. Next to **unstructured-io/unstructured**, click the play (**Run**) icon.
+                3. Expand **Optional settings**.
+                4. For **Container name**, enter some name for your container, such as `unstructured`.
+                5. In the sidebar, click **Containers**.
+                6. Next to your container, click the play (**Start**) icon.
+            </Tab>
+            <Tab title="Docker CLI">
+                For AMD64-based systems, run the following command, replacing `<container-name>` with some name for your container, such as `unstructured`:
 
-## Building Your Own Docker Image
-You can also build your own Docker image. If you only plan to parse a single type of data, you can accelerate the build process by excluding certain packages or requirements needed for other data types. Refer to the Dockerfile to determine which lines are necessary for your requirements.
+                ```bash
+                # The AMD64 platform is the default.
+                docker run -dt --name <container-name> downloads.unstructured.io/unstructured-io/unstructured:latest
 
-```go
+                # Or, to explicitly specify the AMD64 platform:
+                docker run -dt --platform=linux/amd64 --name <container-name> downloads.unstructured.io/unstructured-io/unstructured:latest
+                ```
+
+                For ARM64-based systems (such as Apple Silicon), run the following command instead, replacing `<container-name>` with some name for your container, such as `unstructured`:
+
+                ```bash
+                docker run -dt --platform=linux/arm64 --name <container-name> downloads.unstructured.io/unstructured-io/unstructured:latest
+                ```
+            </Tab>
+        </Tabs>
+    </Step>
+    <Step title="Interact with the Unstructured open source library by running code inside the container">
+        <Tabs>
+            <Tab title="Docker Desktop UI">
+                1. In the Docker Desktop UI, in the lower right corner, click the **Terminal** button.
+                2. To start a terminal session inside the container, run the following command, replacing `<container-name>` with the name of your container, such as `unstructured`:
+
+                   ```bash
+                   docker exec -it <container-name> bash
+                   ```
+                
+                3. Run Unstructured open source library calls from inside the container. For example, start the Python interpreter:
+
+                   ```bash
+                   python
+                   ```
+
+                   And then run the following commands, one command at a time, to make calls to the Unstructured open source library. 
+                   These calls process a PDF file in the `/app/example-docs/pdf` directory named `layout-parser-paper.pdf`. The 
+                   processed data is written as a JSON file named `layout-parser-paper-output.json` in that same directory:
+                   
+                   ```bash
+                   >>> from unstructured.partition.pdf import partition_pdf
+                   >>> from unstructured.staging.base import elements_to_json
+                   >>> elements = partition_pdf(filename="/app/example-docs/pdf/layout-parser-paper.pdf")
+                   >>> elements_to_json(elements=elements, filename="/app/example-docs/pdf/layout-parser-paper-output.json")
+                   ```
+                   
+                   After the last call finishes running, exit the Python interpreter, and then print the contents of the JSON file to the terminal: 
+
+                   ```bash
+                   >>> exit()
+
+                   cat ./example-docs/pdf/layout-parser-paper-output.json
+                   ```
+                
+                4. To exit the terminal session, run the following command, or press `Ctrl+D`:
+
+                   ```bash
+                   exit
+                   ```
+            </Tab>
+            <Tab title="Docker CLI">
+                1. Run the following command, replacing `<container-name>` with the name of your container, such as `unstructured`:
+
+                   ```bash
+                   docker exec -it <container-name> bash
+                   ```
+                
+                2. Run Unstructured open source library calls from inside the container. For example, start the Python interpreter:
+
+                   ```bash
+                   python
+                   ```
+
+                   And then run the following commands, one command at a time, to make calls to the Unstructured open source library. 
+                   These calls process a PDF file in the `/app/example-docs/pdf` directory named `layout-parser-paper.pdf`. The 
+                   processed data is written as a JSON file named `layout-parser-paper-output.json` in that same directory:
+                   
+                   ```bash
+                   >>> from unstructured.partition.pdf import partition_pdf
+                   >>> from unstructured.staging.base import elements_to_json
+                   >>> elements = partition_pdf(filename="/app/example-docs/pdf/layout-parser-paper.pdf")
+                   >>> elements_to_json(elements=elements, filename="/app/example-docs/pdf/layout-parser-paper-output.json")
+                   ```
+                   
+                   After the last call finishes running, exit the Python interpreter, and then print the contents of the JSON file to the terminal: 
+
+                   ```bash
+                   >>> exit()
+
+                   cat ./example-docs/pdf/layout-parser-paper-output.json
+                   ```
+                
+                4. To exit the terminal session, run the following command, or press `Ctrl+D`:
+
+                   ```bash
+                   exit
+                   ```
+            </Tab>
+        </Tabs>
+    </Step>
+    <Step title="Interact with the Unstructured open source library by running code outside the container">
+        You can also interact with the Unstructured open source library by running code that is on the 
+        same machine as the running container but not within the container itself. To do this, you can 
+        use the Docker CLI to create a container that mounts the local directory containing the 
+        code into the container itself, and then run that code from the container.
+
+        1. Run one of the following commands, replacing the following placeholders with the appropriate values:
+
+           - Replace `<host-path>` with the path to the directory containing your code, for example `/Users/<username>/my_example_code/`.
+           - Replace `<container-path>` with the path to some directory within the container to mount `<host-path>` into, for example `/app/my_example_code/`. If 
+             `<container-path>` does not already exist, it will be created at the same time that the container is created.
+           - Replace `<container-name>` with some name for your container, such as `unstructured_mount`. 
+           
+           For AMD64-based systems, run the following command:
+
+           ```bash
+           # The AMD64 platform is the default.
+           docker run -dt -v <host-path>:<container-path>--name <container-name> downloads.unstructured.io/unstructured-io/unstructured:latest
+
+           # Or, to explicitly specify the AMD64 platform:
+           docker run -dt -v <host-path>:<container-path> --platform=linux/amd64 --name <container-name> downloads.unstructured.io/unstructured-io/unstructured:latest
+           ```
+
+           For ARM64-based systems (such as Apple Silicon), run the following command instead:
+
+           ```bash
+           docker run -dt -v <host-path>:<container-path> --platform=linux/arm64 --name <container-name> downloads.unstructured.io/unstructured-io/unstructured:latest
+           ```
+
+        2. Start a terminal session inside the container by running the following command, replacing `<container-name>` with the name of your container, such as `unstructured_mount`:
+
+           ```bash
+           docker exec -it <container-name> bash
+           ```
+
+        3. Add `<container-path>` to the `PYTHONPATH` environment variable within the container by running the following commands, 
+           replacing `<container-path>` with the path to the target directory within the container:
+
+           ```bash
+           PYTHONPATH="${PYTHONPATH}:<container-path>"
+           export PYTHONPATH
+           ```
+
+        4. Run Unstructured open source library calls, referencing your code from `<container-path>`.
+
+           For example, if you have a file named `main.py` in `<host-path>`that contains the four commands following `>>>` from the previous step, 
+           you can run it as follows, replacing `<container-path>` with the path to the target directory within the container:
+
+           ```bash
+           python <container-path>/main.py
+           ```
+
+           To print the contents of the JSON file to the terminal, run the following command:
+
+           ```bash
+           cat /app/example-docs/pdf/layout-parser-paper-output.json
+           ```
+           
+        5. To exit the terminal session, run the following command, or press `Ctrl+D`:
+
+           ```bash
+           exit
+           ``` 
+    </Step>
+    <Step title="Stop running the container">
+        If you do not need the keep running the container, you can stop it as follows:
+        <Tabs>
+            <Tab title="Docker Desktop UI">
+                1. In the Docker Desktop UI, in the sidebar, click **Containers**.
+                2. Next to your container, click the square (**Stop**) icon.
+            </Tab>
+            <Tab title="Docker CLI">
+                Run the following command, replacing `<container-name>` with the name of your container, such as `unstructured` or `unstructured_mount`:
+
+                ```bash
+                docker stop <container-name>
+                ```
+            </Tab>
+        </Tabs>
+    </Step>
+</Steps>
+
+## Building your own Docker image
+
+You can build your own Docker image instead of pulling the latest prebuilt image. 
+If you only plan to parse a single type of data, you can accelerate the 
+build process by excluding certain packages or requirements needed for other data types. Refer to the 
+[Dockerfile](https://github.com/Unstructured-IO/unstructured/blob/main/Dockerfile) to determine which lines 
+are necessary for your requirements.
+
+```bash
 make docker-build
 
-# start a bash shell inside the running Docker container
+# Start a Bash shell inside of the running Docker container.
 make docker-start-bash
-
-```
-
-
-## Interacting with Python Inside the Container
-Once inside the running Docker container, you can directly test the library using Python’s interactive mode:
-
-```go
-python3
-
->>> from unstructured.partition.pdf import partition_pdf
->>> elements = partition_pdf(filename="example-docs/pdf/layout-parser-paper-fast.pdf")
-
->>> from unstructured.partition.text import partition_text
->>> elements = partition_text(filename="example-docs/fake-text.txt")
-
 ```
