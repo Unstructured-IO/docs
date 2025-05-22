@@ -2,19 +2,27 @@
 title: CrewAI
 ---
 
-[CrewAI](https://github.com/crewai/crewai) is a framework for building AI agents and multi-agent workflows.
+[CrewAI](https://www.crewai.com/) is a popular framework for building AI agents and multi-agent workflows.
 
-This article provides a hands-on, step-by-step walkthrough that uses CrewAI, 
-along with the [Unstructured Workflow Endpoint MCP Server](/examplecode/tools/mcp), to 
+This article provides a hands-on, step-by-step walkthrough that uses [CrewAI open source](https://www.crewai.com/open-source), 
+along with the [Unstructured Workflow Endpoint MCP Server](/examplecode/tools/mcp) and Python, to 
 build a multi-agent workflow. This multi-agent workflow uses the MCP server to call various functions within the 
-[Unstructured Workflow Endpoint](/api-reference/workflow/overview) to build Unstructured ETL+ workflows from the ground up. 
-You can run this multi-agent workflow again and again with different inputs, without needing to touch the agents' original code 
-or even knowing how to program, to have AI agents quickly build on your behalf multiple Unstructured ETL+ workflows with varying configurations.
+[Unstructured Workflow Endpoint](/api-reference/workflow/overview) to build Unstructured ETL+ workflows from connector creation all 
+the way through to workflow job completion. This walkthrough uses an Amazon S3 bucket as both the workflow's source and destination. However, you can modify this multi-agent workflow 
+later to use a different S3 bucket or even different sources and destinations, to have a collection of AI agents quickly build multiple Unstructured ETL+ workflows 
+on your behalf with varying configurations.
 
 ## Requirements
 
-To complete this walkthrough, you must first have an Unstructured account, an Unstructured API key for that account, 
-an OpenAI API key, and the necessary Python and CrewAI open-source toolchain and project setups, as follows.
+To complete this walkthrough, you must first have:
+
+- An Unstructured account and an Unstructured API key for that account.
+- An Anthropic account and an Anthropic API key for that account. 
+- A properly configured Amazon S3 bucket with bucket access credentials.
+- A Firecrawl account and a Firecrawl API key for that account.
+- Python and the CrewAI open-source toolchain installed on your local development machine. 
+
+The following sections describe how to get these requirements.
 
 ### Unstructured account and API key
 
@@ -24,121 +32,573 @@ import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-s
 
 <GetStartedSimpleAPIOnly/>
 
-### OpenAI API key
+### Anthropic account and API key
 
-This example uses OpenAI with gpt-4o-mini. So, before you begin, you must also have an OpenAI API key. 
-[Create or log in to your OpenAI account](https://auth.openai.com/create-account), and then 
-[get an OpenAI API key](https://help.openai.com/en/articles/4936850-where-do-i-find-my-openai-api-key) for your OpenAI account.
+This walkthrough uses a Claude Opus 3 model from Anthropic. So, before you begin, you must also have an Anthropic account and an Anthropic API key for that account. 
+[Sign in to or create your Anthropic account](https://console.anthropic.com/login). After you sign in to your 
+Anthropic account, [get your Anthropic API key](https://console.anthropic.com/settings/keys).
+
+### Amazon S3 bucket and access credentials
+
+This walkthrough uses an Amazon S3 bucket as both the workflow's source and destination. So, before you begin, you must also have a properly configured Amazon S3 bucket, with bucket access credentials 
+consisting of an access key ID and a secret access key for the AWS IAM user that has access to the bucket. 
+Follow the S3 connector instructions to 
+[create and configure the bucket and get the bucket access credentials](/ui/sources/s3) if you do not already have this all set up. (In these 
+instructions, do not follow the directions to use the Unstructured UI to create the S3 source connector. CrewAI will do this for you 
+later automatically.)
+
+This walkthrough expects two folders to exist within the bucket, as follows:
+
+- An `input` folder, which contains the files to process. This `input` folder must contain at least one file to process. 
+  If you do not have any files available to upload into the `input` folder, you can get some from the [example-docs](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs) folder in the Unstructured open source library repository on GitHub.
+- An `output` folder, which will contain the processed files' data from Unstructured after CrewAI runs the workflow. 
+  This `output` folder should be empty for now.
+
+### Firecrawl account and API key
+
+This walkthrough uses Firecrawl to monitor job statuses. So, before you begin, you must also have a Firecrawl account and a Firecrawl API key for that account.
+[Sign in to or create your Firecrawl account](https://www.firecrawl.dev/signin/signup). After you sign in to your Firecrawl account, [get your Firecrawl API key](https://www.firecrawl.dev/app/api-keys).
 
 ### Python and CrewAI open-source toolchain and project setup
 
-Before you can start coding on your local machine, you must install the Python package and project manager [uv](https://docs.astral.sh/uv/), 
-and install the CrewAI open source package, as follows.
+Before you can start coding on your local machine, you must install Python, and you should also install a Python package and project manager to manage your project's code dependencies. 
+This walkthrough uses the popular Python pacakge and project manager [uv](https://docs.astral.sh/uv/) (although `uv` is not required to use CrewAI or the Unstructured Workflow Endpoint MCP Server). 
 
 <Steps>
-    <Step>
-        Install `uv`, as follows.
+    <Step title="Install uv">
+        To install `uv`, run one of the following commands, depending on your operating system:
 
-        By using `pip`:
+        <Tabs>
+            <Tab title="macOS, Linux">
+                To use `curl` with `sh`:
 
-        ```bash
-        pip install uv
-        ```
+                ```bash
+                curl -fsSL https://get.uv.dev | bash
+                ```
 
-        Or, by using the following script (be sure to restart your terminal or Command Prompt after running the script):
+                To use `wget` with `sh` instead:
 
-        ```bash
-        # For macOS and Linux:
-        curl -LsSf https://astral.sh/uv/install.sh | sh
+                ```bash
+                wget -qO- https://astral.sh/uv/install.sh | sh
+                ```
+            </Tab>
+            <Tab title="Windows">
+                To use PowerShell with `irm` to download the script and run it with `iex`:
 
-        # For Windows:
-        powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
-        ```
+                ```powershell
+                powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+                ```
+            </Tab>
+        </Tabs>
 
-        (To learn more about `uv`, see the [uv documentation](https://docs.astral.sh/uv/).)
+        If you need to install `uv` by using other approaches such as PyPI, Homebrew, or WinGet, 
+        see [Installing uv](https://docs.astral.sh/uv/getting-started/installation/).
     </Step>
-    <Step>
-        Install the CrewAI open-source package, as follows:
+    <Step title="Install CrewAI open source">
+        Use `uv` to install the CrewAI open-source toolchain, by running the following command:
 
         ```bash
         uv tool install crewai
         ```
 
     </Step>
-    <Step>
-        Switch to the directory on you development machine where you want to create the project directory for this example, and then initialize the project. 
-        This example creates a project directory named `crewai_unstructured_demo` within your current working directory and then 
-        initializes the project.
-
+    <Step title="Install Python">
         <Note>
             CrewAI open source works only with Python 3.10, 3.11, and 3.12.
         </Note>
 
-        ```bash
-        crewai create crew crewai-unstructured-demo
-        ```
-
-        When prompted, select the LLM provider that you want to use. This example uses OpenAI with gpt-4o, so type the number for `openai` and then press `Enter`. 
-        Then type the number next to `gpt-4o-mini` and press `Enter`.
-
-        Then, when prompted, enter your OpenAI API key and press `Enter`.
-    </Step>
-    <Step>
-        Switch to the newly created project directory:
-
-         ```bash
-         cd crewai_unstructured_demo
-         ```
-
-        The core files that you will be working with in this example are in the `src/crewai_unstructured_demo` subdirectory. These core files include:
-
-        - `config/agents.yaml`, which defines the AI agents that you will be using in this example.
-        - `config/tasks.yaml`, which defines the tasks that the AI agents will be performing in this example.
-        - `crew.py`, which defines the multi-agent workflow that you will be running in this example.
-        - `main.py`, which runs the multi-agent workflow.
-        - `.env`, which contains environment variables for this example, such as the LLM to use and your OpenAI API key.
-
-    </Step>
-    <Step>
-        In the project's `.env` file, add the following environment variable, replacing `<key-here>` with your Unstructured API key:
+        `uv` will detect and use Python if you already have it installed. 
+        To view a list of installed Python versions, run the following command:
 
         ```bash
-        UNSTRUCTURED_API_KEY=<key-here>
+        uv python list
         ```
 
-    </Step>
-    <Step>
+        If, however, you do not already have Python installed, you can install a version of Python for use with `uv` 
+        by running the following command. For example, this command installs Python 3.12 for use with `uv`:
+
         ```bash
-        crewai install
-        ```
+        uv python install 3.12
+        ```        
     </Step>
 </Steps>
 
-### ...
+## Build and run the CrewAIproject
+
+You are now ready to start coding.
 
 <Steps>
-    <Step>
-        In the root of the project directory, use Git to clone the Unstructured Workflow Endpoint MCP Server repository:
+    <Step title="Create the project directory">
+        Switch to the directory on your local development machine where you want to create the project directory for this walkthrough. 
+        This example creates a project directory named `crewai_unstructured_demo` within your current working directory and then 
+        switches to this new project directory:
+
+        ```bash
+        mkdir crewai_unstructured_demo
+        cd crewai_unstructured_demo
+        ```
+    </Step>
+    <Step title="Intiialize the project">
+        From within the new project directory, use `uv` to initialize the project by running the following command:
+
+        ```bash
+        uv init
+        ```
+    </Step>
+    <Step title="Create a venv virtual environment">
+        To isolate and manage your project's code dependencies, you should create a virtual environment. This walkthrough uses 
+        the popular Python virtual environment manager [venv](https://docs.python.org/3/library/venv.html) (although `venv` is not required to use CrewAI or the Unstructured Workflow Endpoint MCP Server). 
+        From the root of your project directory, use `uv` to create a virtual environment with `venv` by running the following command:
+
+        ```bash
+        # Create the virtual environment by using the current Python version:
+        uv venv
+
+        # Or, if you want to use a specific Python version:
+        uv venv --python 3.12
+        ```
+    </Step>
+    <Step title="Activate the virtual environment">
+        To activate the `venv` virtual environment, run one of the following commands from the root of your project directory:
+
+        <Tabs>
+            <Tab title="macOS, Linux">
+                - For `bash` or `zsh`, run `source .venv/bin/activate`
+                - For `fish`, run `source .venv/bin/activate.fish`
+                - For `csh` or `tcsh`, run `source .venv/bin/activate.csh`
+                - For `pwsh`, run `.venv/bin/Activate.ps1`
+            </Tab>
+            <Tab title="Windows">
+                - For `cmd.exe`, run `.venv\Scripts\activate.bat`
+                - For `PowerShell`, run `.venv\Scripts\Activate.ps1`
+            </Tab>
+        </Tabs>
+
+        If you need to deactivate the virtual environment at any time, run the following command:
+
+        ```bash
+        deactivate
+        ```
+    </Step>
+    <Step title="Get the Unstructured Workflow Endpoint MCP Server's source code">
+        The Unstructured Workflow Endpoint MCP Server is a Python package that provides an MCP server for the Unstructured Workflow Endpoint.
+        To get the MCP server's source code, run the following command from the root of your project directory:
 
         ```bash
         git clone https://github.com/Unstructured-IO/UNS-MCP.git
         ```
     </Step>
-    <Step>
+    <Step title="Install the Unstructured Workflow Endpoint MCP Server's code dependencies">
+        From the root of your project directory, switch to the cloned Unstructured Workflow Endpoint MCP Server's source directory, and then use `uv` to install the MCP server's code dependencies, by running the following commands:
+
         ```bash
         cd UNS-MCP
         uv sync
-        uv add mcp
-        uv add -U unstructured-client
-        uv add -U "crewai-tools[mcp]"
         ```
     </Step>
-    
-    <Step>
+    <Step title="Install the CrewAI project's code dependencies">
+        Switch back to the CrewAI project's root directory, and then use `uv` to install the CrewAI project's dependencies, by running the following commands:
+
         ```bash
-        uv run uns_mcp/server.py --port=8080
+        cd ..
+        uv add "crewai>=0.11.0" "crewai-tools[mcp]>=0.0.5" "pydantic>=2.11.0" python-dotenv
         ```
+    </Step>
+    <Step title="Add the CrewAI project's source code">
+        In the `main.py` file in the CrewAI project's root directory, replace that file's contents with the following Python code. This code defines a set of 
+        CrewAI-compatible [agents](https://docs.crewai.com/concepts/agents) and [tasks](https://docs.crewai.com/concepts/tasks) that make up a 
+        multi-agent [crew](https://docs.crewai.com/concepts/crews). This code then uses the crew's agents to run the tasks in order to build an Unstructured ETL+ workflows 
+        from connector creation all the way through to workflow job completion:
+
+        ```python
+        import os
+        from typing import Optional
+        from crewai import LLM, Agent, Crew, Task
+        from crewai_tools import MCPServerAdapter
+        from dotenv import load_dotenv
+        from pydantic import BaseModel, Field
+        from rich.pretty import pprint
+
+        load_dotenv()
+
+        class SourceConfigurationResult(BaseModel):
+            source_id: Optional[str] = Field(
+                default=None,
+                description="The ID of the configured data source.",
+            )
+            source_type: Optional[str] = Field(
+                default=None,
+                description="The type of data source configured.",
+            )
+            source_name: Optional[str] = Field(
+                default=None,
+                description="The name of the configured data source.",
+            )
+            source_config: Optional[dict] = Field(
+                default=None,
+                description="The configuration details of the data source.",
+            )
+
+        class DestinationConfigurationResult(BaseModel):
+            destination_id: Optional[str] = Field(
+                default=None,
+                description="The ID of the configured data destination.",
+            )
+            destination_type: Optional[str] = Field(
+                default=None,
+                description="The type of data destination configured.",
+            )
+            destination_name: Optional[str] = Field(
+                default=None,
+                description="The name of the configured data destination.",
+            )
+            destination_config: Optional[dict] = Field(
+                default=None,
+                description="The configuration details of the data destination.",
+            )
+
+        class WorkflowConfigurationResult(BaseModel):
+            workflow_id: Optional[str] = Field(
+                default=None,
+                description="The ID of the created workflow.",
+            )
+            workflow_name: Optional[str] = Field(
+                default=None,   
+                description="The name of the created workflow.",
+            )
+            workflow_type: Optional[str] = Field(
+                default=None,
+                description="The type of workflow created.",
+            )
+            workflow_config: Optional[dict] = Field(
+                default=None,
+                description="The configuration details of the workflow.",
+            )
+
+        class JobConfigurationResult(BaseModel):
+            job_id: Optional[str] = Field(
+                default=None,
+                description="The ID of the created job.",
+            )
+
+        class JobStatusResult(BaseModel):
+            job_status: Optional[str] = Field(
+                default=None,
+                description="The status of the job.",
+            )
+
+        def main():
+
+            with MCPServerAdapter(
+                {"url": os.getenv("MCP_SERVER_URL", "http://127.0.0.1:8080/sse")},
+            ) as tools:
+                llm = LLM(model="anthropic/claude-3-opus-20240229", temperature=0.7, max_tokens=4096)
+
+                source_agent = Agent(
+                    role="Source Configuration Specialist",
+                    goal="Configure and manage data sources for the MCP server",
+                    backstory="""You are an expert in data source configuration and management.
+                    You specialize in setting up and configuring various types of data sources
+                    including AWS S3, Google Drive, and other storage systems. You ensure
+                    proper configuration and validation of data sources.""",
+                    tools=tools,
+                    llm=llm,
+                    verbose=True,
+                )
+
+                destination_agent = Agent(
+                    role="Destination Configuration Specialist",
+                    goal="Configure and manage data destinations for the MCP server",
+                    backstory="""You are an expert in data destination configuration and management.
+                    You specialize in setting up and configuring various types of data destinations
+                    including AWS S3, Google Drive, and other storage systems. You ensure
+                    proper configuration and validation of data destinations.""",
+                    tools=tools,
+                    llm=llm,
+                    verbose=True,
+                )
+
+                workflow_agent = Agent(
+                    role="Workflow Configuration Specialist",
+                    goal="Configure and manage workflows for the MCP server",
+                    backstory="""You are an expert in workflow configuration and management.
+                    You specialize in setting up and configuring various types of workflows
+                    including AWS S3, Google Drive, and other storage systems. You ensure
+                    proper configuration and validation of workflows.""",
+                    tools=tools,
+                    llm=llm,
+                    verbose=True,
+                )
+
+                run_workflow_agent = Agent(
+                    role="Workflow Run Specialist",
+                    goal="Run workflows for the MCP server",
+                    backstory="""You are an expert in workflow run management.
+                    You specialize in running various types of workflows
+                    including AWS S3, Google Drive, and other storage systems. You ensure
+                    proper running of workflows.""",
+                    tools=tools,
+                    llm=llm,
+                    verbose=True,
+                )
+
+                job_agent = Agent(
+                    role="Job Management Specialist",
+                    goal="Manage jobs for the MCP server",
+                    backstory="""You are an expert in job management.
+                    You specialize in monitoring  various types of jobs
+                    proper monitoring of jobs.""",
+                    tools=tools,
+                    llm=llm,
+                    verbose=True,
+                )
+
+                source_task = Task(
+                    description=f"""Configure an S3 source with the following specifications:
+                    - Name: {os.getenv("S3_SOURCE_CONNECTOR_NAME")}
+                    - URI: {os.getenv("S3_SOURCE_URI")}
+                    - Recursive: true
+                    Ensure the source is properly configured and return the configuration details.""",
+                    agent=source_agent,
+                    expected_output="""A result containing:
+                    - source_id: The ID of the configured source
+                    - source_config: The configuration details
+                    - source_name: The name of the configured source
+                    - source_type: The type of data source configured
+                    """,
+                    output_pydantic=SourceConfigurationResult,
+                )
+
+                destination_task = Task(
+                    description=f"""Configure an S3 destination with the following specifications:
+                    - Name: {os.getenv("S3_DESTINATION_CONNECTOR_NAME")}
+                    - URI: {os.getenv("S3_DESTINATION_URI")}
+                    Ensure the destination is properly configured and return the configuration details.""",
+                    agent=destination_agent,
+                    expected_output="""A result containing:
+                    - destination_id: The ID of the configured destination
+                    - destination_config: The configuration details
+                    - destination_name: The name of the configured destination
+                    - destination_type: The type of data destination configured
+                    """,
+                    output_pydantic=DestinationConfigurationResult,
+                )
+
+                workflow_task = Task(
+                    description=f"""Create a workflow that uses the High Res partitioner and the following specifications:
+                    - Name: {os.getenv("WORKFLOW_NAME")}
+                    - Type: custom
+                    Use the source and destination IDs from the previous tasks to create the workflow.
+                    Ensure the workflow is properly configured to connect these endpoints.""",
+                    agent=workflow_agent,
+                    expected_output="""A result containing:
+                    - workflow_id: The ID of the created workflow
+                    - workflow_config: The configuration details
+                    - workflow_name: The name of the created workflow
+                    - workflow_type: The type of workflow created
+                    """,
+                    output_pydantic=WorkflowConfigurationResult,
+                    context=[source_task, destination_task],
+                )
+
+                run_workflow_task = Task(
+                    description=f"""Run a workflow.
+                    Use the workflow ID from the previous task to run the workflow.""",
+                    agent=run_workflow_agent,
+                    expected_output="""A result containing:
+                    - job_id: The ID of the running workflow
+                    """,
+                    output_pydantic=JobConfigurationResult,
+                    context=[workflow_task],
+                )
+
+                job_task = Task(
+                    description=f"""Monitor a job.
+                    Use the job ID from the previous task.
+                    Keep monitoring the job every 15 seconds until it is completed.
+                    Each time you check, report the current job status.
+                    When the job status is completed, stop reporting and return the final job status.""",
+                    agent=job_agent,
+                    expected_output="""A result containing:
+                    - job_status: The status of the job
+                    """,
+                    output_pydantic=JobStatusResult,
+                    context=[run_workflow_task],
+                ) 
+
+                crew = Crew(agents=[
+                                       source_agent,
+                                       destination_agent,
+                                       workflow_agent,
+                                       run_workflow_agent,
+                                       job_agent
+                                    ], 
+                            tasks=[
+                                       source_task, 
+                                       destination_task, 
+                                       workflow_task, 
+                                       run_workflow_task,
+                                       job_task
+                                  ], 
+                            verbose=True
+                    )
+
+                result = crew.kickoff()
+                pprint("Source Task Result:")
+                pprint(result.tasks_output[0].pydantic)
+                pprint("Destination Task Result:")
+                pprint(result.tasks_output[1].pydantic)
+                pprint("Workflow Task Result:")
+                pprint(result.tasks_output[2].pydantic)
+                pprint("Run Workflow Task Result:")
+                pprint(result.tasks_output[3].pydantic)
+                pprint("Job Task Result:")
+                pprint(result.tasks_output[4].pydantic)
+
+        if __name__ == "__main__":
+            main()
+        ```
+
+        The preceding code does the following:
+
+        1. Imports the necessary library modules for the rest of the code to use.
+        2. Loads the environment variables that the code relies on from a `.env` file, which you will create in the next step.
+        3. Defines the [Pydantic](https://docs.pydantic.dev/)-formatted models for the expected output of each task. These models format the tasks' output for consistent presentation.
+        4. Defines the agents and tasks for the crew. These agents use their related tasks to create a source connector, 
+           a destination connector, and a workflow that uses these connectors, and then runs the newly created workflow as a job and reports the job's status.
+        5. After the crew is finished, the results of each task are printed.
+    </Step>
+    <Step title="Create the .env file">
+        Create an `.env` file in the root of your CrewAI project directory, and then add the following environment variables to the file:
+
+        - `UNSTRUCTURED_API_KEY` - Your Unstructured API key.
+        - `ANTHROPIC_API_KEY` - Your Anthropic API key.
+        - `FIRECRAWL_API_KEY` - Your Firecrawl API key.
+        - `AWS_KEY` - The AWS access key ID for the AWS IAM user that has access to the S3 bucket.
+        - `AWS_SECRET` - The IAM user's AWS secret access key.
+        - `S3_SOURCE_CONNECTOR_NAME` - Some display name for the S3 source connector.
+        - `S3_SOURCE_URI` - The URI of the `input` folder in the S3 bucket.
+        - `S3_DESTINATION_CONNECTOR_NAME` - The name of the S3 destination connector.
+        - `S3_DESTINATION_URI` - The URI of the `output` folder in the S3 bucket.
+        - `WORKFLOW_NAME` - Some display name for the workflow.
+
+        For example, your `.env` file might look like this:
+
+        ```bash
+        - UNSTRUCTURED_API_KEY=7F1...<redacted>hZV4
+        - ANTHROPIC_API_KEY=sk-ant-api03-09b...<redacted>...wAA
+        - FIRECRAWL_API_KEY=fc-af337...<redacted>...329
+        - AWS_KEY=AKI...<redacted>...3DX
+        - AWS_SECRET=end...<redacted>...Xxb
+        - S3_SOURCE_CONNECTOR_NAME=My-MCP-S3-Source
+        - S3_SOURCE_URI=s3://my-bucket/input
+        - S3_DESTINATION_CONNECTOR_NAME=My-MCP-S3-Destination
+        - S3_DESTINATION_URI=s3://my-bucket/output
+        - WORKFLOW_NAME=My-MCP-S3-To-S3-Workflow
+        ```
+    </Step>
+    <Step title="Unstructured Workflow Endpoint MCP Server">
+        From the root of your project directory, switch to the Unstructured Workflow Endpoint MCP Server's source directory, and then use `make` to run the MCP server locally, by running the following commands:
+
+        ```bash
+        cd UNS-MCP
+        make sse-server
+        ```
+
+        <Note>If you do not have `make` available, see your operating system's documentation for installation instructions.</Note>
+
+        The MCP server will start running at `http://127.0.0.1:8080/sse`.
+
+        You must leave the MCP server running in your terminal or command prompt window while you run the CrewAI project.
+    </Step>
+    <Step title="Run the CrewAI project">
+        1. In a separate terminal or command prompt window, from the root of your project directory, run the CrewAI project by running the following command:
+
+           ```bash
+           uv run main.py
+           ```
+
+        2. The CrewAI project will run and create an Unstructured ETL+ workflow. You can see the crew's progress in the terminal or command prompt window where you ran the `uv run main.py` command.
+        3. The crew's agents will create a source connector, a destination connector, and a workflow that uses these connectors.
+        4. The crew's agents will then run the workflow as a job and report on the job's status.
+        5. After the job is completed, the crew will report final information about the tasks that were completed, for example:
+
+           ```bash
+           'Source Task Result:'
+           SourceConfigurationResult(
+           │   source_id='c26...<redacted>...83b',
+           │   source_type='s3',
+           │   source_name='My-MCP-S3-Source',
+           │   source_config={
+           │   │   'anonymous': False,
+           │   │   'recursive': True,
+           │   │   'remote_url': 's3://my-bucket/input',
+           │   │   'endpoint_url': None,
+           │   │   'key': '**********',
+           │   │   'secret': '**********',
+           │   │   'token': None
+           │   }
+           )
+           'Destination Task Result:'
+           DestinationConfigurationResult(
+           │   destination_id='d57...<redacted>...ea4',
+           │   destination_type='s3',
+           │   destination_name='My-MCP-S3-Destination',
+           │   destination_config={
+           │   │   'anonymous': False,
+           │   │   'remote_url': 's3://my-bucket/output',
+           │   │   'endpoint_url': None,
+           │   │   'key': '**********',
+           │   │   'secret': '**********',
+           │   │   'token': None
+           │   }
+           )
+           'Workflow Task Result:'
+           WorkflowConfigurationResult(
+           │   workflow_id='ae5...<redacted>...cae',
+           │   workflow_name='My-MCP-S3-To-S3-Workflow',
+           │   workflow_type='custom',
+           │   workflow_config={
+           │   │   'name': 'My-MCP-S3-To-S3-Workflow',
+           │   │   'workflow_type': 'custom',
+           │   │   'source_id': 'c26...<redacted>...83b',
+           │   │   'destination_id': 'd57...<redacted>...ea4',
+           │   │   'workflow_nodes': [
+           │   │   │   {
+           │   │   │   │   'name': 'Partitioner',
+           │   │   │   │   'type': 'partition',
+           │   │   │   │   'subtype': 'unstructured_api',
+           │   │   │   │   'settings': {
+           │   │   │   │   │   'strategy': 'hi_res',
+           │   │   │   │   │   'include_page_breaks': False,
+           │   │   │   │   │   'pdf_infer_table_structure': False,
+           │   │   │   │   │   'exclude_elements': None,
+           │   │   │   │   │   'xml_keep_tags': False,
+           │   │   │   │   │   'encoding': 'utf-8',
+           │   │   │   │   │   'ocr_languages': ['eng'],
+           │   │   │   │   │   'extract_image_block_types': ['image', 'table']
+           │   │   │   │   }
+           │   │   │   }
+           │   │   ]
+           │   }
+           )
+           'Run Workflow Task Result:'
+           JobConfigurationResult(job_id='c3a5...<redacted>...bfa')
+           'Job Task Result:'
+           JobStatusResult(job_status='Completed')
+           ```
+        6. You can sign in to your Unstructured account to see the results:
+        
+           - On the sidebar, click **Connectors** to see the source and destination connectors.
+           - On the sidebar, click **Workflows** to see the workflow.
+           - On the sidebar, click **Jobs** to see the job.
+
+        7. If you do not want to keep the MCP server running, you can stop it by pressing `Ctrl+C` in the terminal or command prompt window where you ran the `make sse-server` command.
     </Step>
 </Steps>
 
-You are now ready to start coding.
+## Learn more
+
+- [Model Context Protocol (MCP) Hands-On Walkthrough for the Unstructured Workflow Endpoint](/examplecode/tools/mcp)
+- [Unstructured Workflow Endpoint Reference](/api-reference/workflow/overview)
+- [CrewAI Documentation](https://docs.crewai.com/)
