@@ -101,7 +101,7 @@ Follow these steps to run the Unstructured open source library inside a Docker c
             </Tab>
         </Tabs>
     </Step>
-    <Step title="Interact with the Unstructured open source library from inside the running container">
+    <Step title="Interact with the Unstructured open source library by running code inside the container">
         <Tabs>
             <Tab title="Docker Desktop UI">
                 1. In the Docker Desktop UI, in the lower right corner, click the **Terminal** button.
@@ -111,15 +111,26 @@ Follow these steps to run the Unstructured open source library inside a Docker c
                    docker exec -it <container-name> bash
                    ```
                 
-                3. Run Unstructured open source library calls from inside the container, for example: 
+                3. Run Unstructured open source library calls from inside the container. For example, start the Python interpreter:
 
                    ```bash
                    python
+                   ```
 
+                   And then run the following commands, one command at a time, to make calls to the Unstructured open source library. 
+                   These calls process a PDF file in the `/app/example-docs/pdf` directory named `layout-parser-paper.pdf`. The 
+                   processed data is written as a JSON file named `layout-parser-paper-output.json` in that same directory:
+                   
+                   ```bash
                    >>> from unstructured.partition.pdf import partition_pdf
                    >>> from unstructured.staging.base import elements_to_json
-                   >>> elements = partition_pdf(filename="./example-docs/pdf/layout-parser-paper.pdf")
-                   >>> elements_to_json(elements=elements, filename="./example-docs/pdf/layout-parser-paper-output.json")
+                   >>> elements = partition_pdf(filename="/app/example-docs/pdf/layout-parser-paper.pdf")
+                   >>> elements_to_json(elements=elements, filename="/app/example-docs/pdf/layout-parser-paper-output.json")
+                   ```
+                   
+                   After the last call finishes running, exit the Python interpreter, and then print the contents of the JSON file to the terminal: 
+
+                   ```bash
                    >>> exit()
 
                    cat ./example-docs/pdf/layout-parser-paper-output.json
@@ -138,27 +149,102 @@ Follow these steps to run the Unstructured open source library inside a Docker c
                    docker exec -it <container-name> bash
                    ```
                 
-                2. Run Unstructured open source library calls from inside the container, for example: 
+                2. Run Unstructured open source library calls from inside the container. For example, start the Python interpreter:
 
                    ```bash
                    python
+                   ```
 
+                   And then run the following commands, one command at a time, to make calls to the Unstructured open source library. 
+                   These calls process a PDF file in the `/app/example-docs/pdf` directory named `layout-parser-paper.pdf`. The 
+                   processed data is written as a JSON file named `layout-parser-paper-output.json` in that same directory:
+                   
+                   ```bash
                    >>> from unstructured.partition.pdf import partition_pdf
                    >>> from unstructured.staging.base import elements_to_json
-                   >>> elements = partition_pdf(filename="./example-docs/pdf/layout-parser-paper.pdf")
-                   >>> elements_to_json(elements=elements, filename="./example-docs/pdf/layout-parser-paper-output.json")
+                   >>> elements = partition_pdf(filename="/app/example-docs/pdf/layout-parser-paper.pdf")
+                   >>> elements_to_json(elements=elements, filename="/app/example-docs/pdf/layout-parser-paper-output.json")
+                   ```
+                   
+                   After the last call finishes running, exit the Python interpreter, and then print the contents of the JSON file to the terminal: 
+
+                   ```bash
                    >>> exit()
 
                    cat ./example-docs/pdf/layout-parser-paper-output.json
                    ```
                 
-                3. To exit the terminal session, run the following command, or press `Ctrl+D`:
+                4. To exit the terminal session, run the following command, or press `Ctrl+D`:
 
                    ```bash
                    exit
                    ```
             </Tab>
         </Tabs>
+    </Step>
+    <Step title="Interact with the Unstructured open source library by running code outside the container">
+        You can also interact with the Unstructured open source library by running code that is on the 
+        same machine as the running container but not within the container itself. To do this, you can 
+        use the Docker CLI to create a container that mounts the local directory containing the 
+        code into the container itself, and then run that code from the container.
+
+        1. Run one of the following commands, replacing the following placeholders with the appropriate values:
+
+           - Replace `<host-path>` with the path to the directory containing your code, for example `/Users/<username>/my_example_code/`.
+           - Replace `<container-path>` with the path to some directory within the container to mount `<host-path>` into, for example `/app/my_example_code/`. If 
+             `<container-path>` does not already exist, it will be created at the same time that the container is created.
+           - Replace `<container-name>` with some name for your container, such as `unstructured_mount`. 
+           
+           For AMD64-based systems, run the following command:
+
+           ```bash
+           # The AMD64 platform is the default.
+           docker run -dt -v <host-path>:<container-path>--name <container-name> downloads.unstructured.io/unstructured-io/unstructured:latest
+
+           # Or, to explicitly specify the AMD64 platform:
+           docker run -dt -v <host-path>:<container-path> --platform=linux/amd64 --name <container-name> downloads.unstructured.io/unstructured-io/unstructured:latest
+           ```
+
+           For ARM64-based systems (such as Apple Silicon), run the following command instead:
+
+           ```bash
+           docker run -dt -v <host-path>:<container-path> --platform=linux/arm64 --name <container-name> downloads.unstructured.io/unstructured-io/unstructured:latest
+           ```
+
+        2. Start a terminal session inside the container by running the following command, replacing `<container-name>` with the name of your container, such as `unstructured_mount`:
+
+           ```bash
+           docker exec -it <container-name> bash
+           ```
+
+        3. Add `<container-path>` to the `PYTHONPATH` environment variable within the container by running the following commands, 
+           replacing `<container-path>` with the path to the target directory within the container:
+
+           ```bash
+           PYTHONPATH="${PYTHONPATH}:<container-path>"
+           export PYTHONPATH
+           ```
+
+        4. Run Unstructured open source library calls, referencing your code from `<container-path>`.
+
+           For example, if you have a file named `main.py` in `<host-path>`that contains the four commands following `>>>` from the previous step, 
+           you can run it as follows, replacing `<container-path>` with the path to the target directory within the container:
+
+           ```bash
+           python <container-path>/main.py
+           ```
+
+           To print the contents of the JSON file to the terminal, run the following command:
+
+           ```bash
+           cat /app/example-docs/pdf/layout-parser-paper-output.json
+           ```
+           
+        5. To exit the terminal session, run the following command, or press `Ctrl+D`:
+
+           ```bash
+           exit
+           ``` 
     </Step>
     <Step title="Stop running the container">
         If you do not need the keep running the container, you can stop it as follows:
@@ -168,7 +254,7 @@ Follow these steps to run the Unstructured open source library inside a Docker c
                 2. Next to your container, click the square (**Stop**) icon.
             </Tab>
             <Tab title="Docker CLI">
-                Run the following command, replacing `<container-name>` with the name of your container, such as `unstructured`:
+                Run the following command, replacing `<container-name>` with the name of your container, such as `unstructured` or `unstructured_mount`:
 
                 ```bash
                 docker stop <container-name>
