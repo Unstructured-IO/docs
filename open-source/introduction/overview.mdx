@@ -3,22 +3,24 @@ title: Unstructured Open Source
 sidebarTitle: Overview
 ---
 
-<Note>The `unstructured` open source library is designed as a starting point for quick prototyping and has [limits](#limits). For production scenarios, see the [Unstructured API](/api-reference/overview) instead.</Note>
+<Note>The Unstructured open source library is designed as a starting point for quick prototyping and has [limits](#limits). For production scenarios, use the [Unstructured user interface (UI)](/ui/overview) or the [Unstructured API](/api-reference/overview) instead.</Note>
 
-The `unstructured` [library](https://github.com/Unstructured-IO/unstructured) offers an open-source toolkit
+<Tip>To start using the Unstructured open source library right away, skip ahead to the [quickstart](/open-source/introduction/quick-start).</Tip>
+
+The Unstructured open source library ([GitHub](https://github.com/Unstructured-IO/unstructured), [PyPI](https://pypi.org/project/unstructured/)) offers an open-source toolkit
 designed to simplify the ingestion and pre-processing of diverse data formats, including images and text-based documents
 such as PDFs, HTML files, Word documents, and more. With a focus on optimizing data workflows for Large Language Models (LLMs),
-`unstructured` provides modular functions and connectors that work seamlessly together. This cohesive system ensures
+the Unstructured open source library provides modular functions and connectors that work seamlessly together. This cohesive system ensures
 efficient transformation of unstructured data into structured formats, while also offering adaptability to various platforms
 and use cases.
 
 ## Key functionality
 
-*   **Precise Document Extraction**: Unstructured offers advanced capabilities in extracting elements and metadata from documents. This includes a variety of document element types and metadata. Learn more about [Document elements and metadata](../concepts/document-elements).
+*   **Precise document extraction**: Unstructured offers advanced capabilities in extracting elements and metadata from documents. This includes a variety of document element types and metadata. Learn more about [Document elements and metadata](../concepts/document-elements).
     
-*   **Extensive File Support**: The platform supports a wide array of file types, ensuring versatility in handling different document formats from PDF, Images, HTML, and many more. Detailed information on supported file types can be found [here](/open-source/introduction/supported-file-types).
+*   **Robust file support**: The platform supports a wide array of file types, ensuring versatility in handling different document formats from PDF, Images, HTML, and many more. Detailed information on supported file types can be found [here](/open-source/introduction/supported-file-types).
     
-*   **Robust Core Functionality**: Unstructured provides a suite of core functionalities critical for efficient data processing. This includes:
+*   **Robust core functionality**: Unstructured provides a suite of core functionalities critical for efficient data processing. This includes:
     
     *   [Partitioning](/open-source/core-functionality/partitioning): The partitioning functions in Unstructured enable the extraction of structured content from raw, unstructured documents. This feature is crucial for transforming unorganized data into usable formats, aiding in efficient data processing and analysis.
         
@@ -26,13 +28,10 @@ and use cases.
         
     *   [Extracting](/open-source/core-functionality/extracting): This functionality allows for the extraction of specific entities within documents. It is designed to identify and isolate relevant pieces of information, making it easier for users to focus on the most pertinent data in their documents.
         
-    *   [Staging](/open-source/core-functionality/staging): Staging functions help prepare your data for ingestion into downstream systems. Please note that this functionality is being deprecated in favor of `Destination Connectors`.
-        
-    *   [Chunking](/open-source/core-functionality/chunking): The chunking process in Unstructured is distinct from conventional methods. Instead of relying solely on text-based features to form chunks, Unstructured uses a deep understanding of document formats to partition documents into semantic units (document elements).
-                
-*   **High-performant Connectors**: The platform includes optimized connectors for efficient data ingestion and output. These comprise [Source Connectors](/ingestion/source-connectors/overview) for data input and [Destination Connectors](/ingestion/destination-connectors/overview) for data export.
+    *   [Staging](/open-source/core-functionality/staging): Staging functions help prepare your data for ingestion into downstream systems. Please note that this functionality is being deprecated in favor of [destination connectors](/ingestion/destination-connectors/overview) in the [Unstructured Ingest CLI and Unstructured Ingest Python library](/ingestion/overview).        
     
-
+    *   [Chunking](/open-source/core-functionality/chunking): The chunking process in Unstructured is distinct from conventional methods. Instead of relying solely on text-based features to form chunks, Unstructured uses a deep understanding of document formats to partition documents into semantic units (document elements).
+    
 ## Common use cases
 
 *   Pretraining models
@@ -40,11 +39,11 @@ and use cases.
 *   Retrieval Augmented Generation (RAG)
 *   Traditional ETL
 
-<Note>We do not support GPU usage with the open source library.</Note>
+<Note>GPU usage is not supported for the Unstructured open source library.</Note>
 
 ## Limits
 
-The open source library has the following limits as compared to the [Unstructured UI](/ui/overview) and the [Unstructured API](/api-reference/overview): 
+The Unstructured open source library has the following limits as compared to the [Unstructured UI](/ui/overview) and the [Unstructured API](/api-reference/overview): 
 
 * Not designed for production scenarios.
 * Significantly decreased performance on document and table extraction.
