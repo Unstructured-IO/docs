@@ -1025,17 +1025,21 @@ A **Partitioner** node has a `type` of `partition`.
         ```python
         auto_partitioner_workflow_node = WorkflowNode(
             name="Partitioner",
-            subtype="vlm",
+            subtype="unstructured_api",
             type="partition",
             settings={
-               "provider": "anthropic",
-               "model": "claude-3-5-sonnet-20241022",
-               "output_format": "text/html",
-               "user_prompt": None,
-               "format_html": True,
-               "unique_element_ids": True,
-               "is_dynamic": True,
-               "allow_fast": True
+                "strategy": "auto",
+                "provider": "anthropic",
+                "provider_api_key": None,
+                "model": "claude-3-5-sonnet-20241022",
+                "output_format": "text/html",
+                "prompt": {
+                    "text": "<alternative-prompt>"
+                },
+                "format_html": <True|False>,
+                "unique_element_ids": <True|False>,
+                "is_dynamic": <True|False>,
+                "allow_fast": <True|False>
            }
         )
         ```
@@ -1045,21 +1049,52 @@ A **Partitioner** node has a `type` of `partition`.
         {
             "name": "Partitioner",
             "type": "partition",
-            "subtype": "vlm",
+            "subtype": "unstructured_api",
             "settings": {
+                "strategy": "auto",
                 "provider": "anthropic",
+                "provider_api_key": null,
                 "model": "claude-3-5-sonnet-20241022",
                 "output_format": "text/html",
-                "user_prompt": null,
-                "format_html": true,
-                "unique_element_ids": true,
-                "is_dynamic": true,
-                "allow_fast": true
+                "prompt": {
+                    "text": "<alternative-prompt>"
+                },
+                "format_html": <true|false>,
+                "unique_element_ids": <true|false>,
+                "is_dynamic": <true|false>,
+                "allow_fast": <true|false>
             }
         }
         ```
     </Accordion>
 </AccordionGroup>
+
+Fields for `settings` include:
+
+- `strategy`: _Required_. The partitioning strategy to use. This field must be set to `auto`.
+- `provider`: _Required_. If the Auto partitioning strategy needs to use the VLM partitioning strategy, then use the specified VLM provider. Allowed values include `auto`, `openai`, `anthropic`, and `bedrock`. The default value is `anthropic`.
+- `provider_api_key`: _Optional_. If specified, use a non-default API key for calls to the specified VLM provider as needed. The default is none, which means to rely on using Unstructured's internal default API key for the VLM provider.
+- `model`: _Optional_. If the Auto partitioning strategy needs to use the VLM partitioning strategy, then use the specified VLM. The default value is `claude-3-5-sonnet-20241022`.
+
+  - For `openai`, available values for `model` are `gpt-4o` and `gpt-4o-mini`.
+  - For `anthropic`, available values for `model` are `claude-3-5-sonnet-20241022` and `claude-3-7-sonnet-20250219`.
+  - For `bedrock`, available values for `model` are:
+
+    - `us.amazon.nova-lite-v1:0` 
+    - `us.amazon.nova-pro-v1:0`
+    - `us.anthropic.claude-3-opus-20240229-v1:0`
+    - `us.anthropic.claude-3-haiku-20240307-v1:0`
+    - `us.anthropic.claude-3-sonnet-20240229-v1:0`
+    - `us.anthropic.claude-3-5-sonnet-20241022-v2:0`
+    - `us.meta.llama3-2-11b-instruct-v1:0` 
+    - `us.meta.llama3-2-90b-instruct-v1:0`
+
+- `output_format`: _Required_. The format of the response. Allowed values include `text/html` and `application/json`. The default is `text/html`.
+- `prompt.text`: _Optional_. If the Auto partitioning strategy needs to use the VLM partitioning strategy, the use the specified prompt when calling the specified VLM. The default value is none, which means to rely on using Unstructured's internal default prompt when calling the VLM.
+- `format_html`: _Required_. ... True (the default) to ...
+- `unique_element_ids`: _Required_. True (the default) to assign UUIDs to element IDs, which guarantees their uniqueness. This is useful for example when using them as primary keys in a database. False to assign a SHA-256 of the element's text as its element ID.
+- `is_dynamic`: _Optional_. ... True to ... False (the default) to ...
+- `allow_fast`: _Optional_. ... True (the default) to ...
 
 #### VLM strategy
 
@@ -1071,12 +1106,17 @@ A **Partitioner** node has a `type` of `partition`.
             subtype="vlm",
             type="partition",
             settings={
-                "provider": "<provider>",
-                "model": "<model>",
+                "provider": "anthropic",
+                "provider_api_key": None,
+                "model": "claude-3-5-sonnet-20241022",
                 "output_format": "text/html",
-                "user_prompt": None,
-                "format_html": True,
-                "unique_element_ids": <True|False>
+                 "prompt": {
+                    "text": "<alternative-prompt>"
+                },
+                "format_html": <True|False>,
+                "unique_element_ids": <True|False>,
+                "is_dynamic": <True|False>,
+                "allow_fast": <True|False>
             }
         )
         ```
@@ -1088,17 +1128,35 @@ A **Partitioner** node has a `type` of `partition`.
             "type": "partition",
             "subtype": "vlm",
             "settings": {
-                "provider": "<provider>",
-                "model": "<model>",
+                "provider": "anthropic",
+                "provider_api_key": null,
+                "model": "claude-3-5-sonnet-20241022",
                 "output_format": "text/html",
-                "user_prompt": null,
-                "format_html": true,
-                "unique_element_ids": <true|false>
+                "prompt": {
+                    "text": "<alternative-prompt>"
+                },
+                "format_html": <true|false>,
+                "unique_element_ids": <true|false>,
+                "is_dynamic": <true|false>,
+                "allow_fast": <true|false>
             }
         }
         ```
     </Accordion>
 </AccordionGroup>
+
+Fields for `settings` include:
+
+- `strategy`: _Required_. The partitioning strategy to use. This field must be set to `vlm`.
+- `provider`: _Required_. ... The default is `anthropic`.
+- `provider_api_key`: _Optional_. ... The default is none.
+- `model`: _Optional_. ... The default is `claude-3-5-sonnet-20241022`.
+- `output_format`: _Required_. Allowed values include `text/html` and `application/json`. The default is `text/html`.
+- `prompt`: _Optional_. The default is none.
+- `format_html`: _Required_. ... The default is true.
+- `unique_element_ids`: _Required_. ... The default is true.
+- `is_dynamic`: _Optional_. ... The default is false.
+- `allow_fast`: _Optional_. ... The default is true.
 
 Allowed values for `provider` and `model` include:
 
@@ -1137,6 +1195,7 @@ Allowed values for `provider` and `model` include:
             settings={
                 "strategy": "hi_res",
                 "include_page_breaks": <True|False>,
+                "pdf_infer_table_structure": <True|False>,
                 "exclude_elements": [
                     "<element-name>",
                     "<element-name>"
@@ -1151,7 +1210,7 @@ Allowed values for `provider` and `model` include:
                     "image",
                     "table"
                 ],
-                "skip_infer_table_types": <True|False>
+                "infer_table_structure": <True|False>,
             }
         )
         ```
@@ -1165,6 +1224,7 @@ Allowed values for `provider` and `model` include:
             "settings": {
                 "strategy": "hi_res",
                 "include_page_breaks": <true|false>,
+                "pdf_infer_table_structure": <true|false>,
                 "exclude_elements": [
                     "<element-name>",
                     "<element-name>"
@@ -1179,12 +1239,37 @@ Allowed values for `provider` and `model` include:
                     "image",
                     "table"
                 ],
-                "skip_infer_table_types": <true|false>
+                "infer_table_structure": <true|false>,
             }
         }
         ```
     </Accordion>
 </AccordionGroup>
+
+- `strategy`: _Required_. The partitioning strategy to use. This field must be set to `hi_res`.
+- `include_page_breaks: _Required_. True to include page breaks in the output if supported by the file type. The default is false.
+- `pdf_infer_table_structure`: _Required_. True to ... The default is false.
+- `exclude_elements`: _Optional_. A list of any Unstructured element types to exclude from the output. The default is none. Available values include:
+
+   - `FigureCaption`
+   - `NarrativeText`
+   - `ListItem`
+   - `Title`
+   - `Address`
+   - `Table`
+   - `PageBreak`
+   - `Header`
+   - `Footer`
+   - `UncategorizedText`
+   - `Image`
+   - `Formula`
+   - `EmailAddress`
+
+- `xml_keep_tags`: _Required_. True to retain any XML tags in the output. False (the default) to just extract the text from any XML tags instead.
+- `encoding`: _Required_. The encoding method used to decode the text input. The default is `utf-8`.
+- `ocr_languages`: _Required_. A list of languages present in the input, for use in partitioning, OCR, or both. Multiple languages indicate that the text could be in any of the specified languages. The default is `[ 'eng' ]`. [See the language codes list](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/common/lang.py).
+- `extract_image_block_types`: _Required_. A list of the Unstructured element types for use in extracting image blocks as Base64 encoded data stored in `metadata` fields. Available values include `Image` and `Table`. The default is `[ 'Image', 'Table' ]`.
+- `infer_table_structure`: _Required_. True to have any table elements extracted from a PDF to include an additional `metadata` field named `text_as_html`, containing an HTML `<table>` transformation. The default is false.
 
 #### Fast strategy
 
@@ -1198,6 +1283,7 @@ Allowed values for `provider` and `model` include:
             settings={
                 "strategy": "fast",
                 "include_page_breaks": <True|False>,
+                "pdf_infer_table_structure": <True|False>,
                 "exclude_elements": [
                     "<element-name>",
                     "<element-name>"
@@ -1212,7 +1298,7 @@ Allowed values for `provider` and `model` include:
                     "image",
                     "table"
                 ],
-                "skip_infer_table_types": <True|False>
+                "infer_table_structure": <True|False>
             }
         )
         ```
@@ -1226,6 +1312,7 @@ Allowed values for `provider` and `model` include:
             "settings": {
                 "strategy": "fast",
                 "include_page_breaks": <true|false>,
+                "pdf_infer_table_structure": <true|false>,
                 "exclude_elements": [
                     "<element-name>",
                     "<element-name>"
@@ -1240,12 +1327,24 @@ Allowed values for `provider` and `model` include:
                     "image",
                     "table"
                 ],
-                "skip_infer_table_types": <true|false>
+                "infer_table_structure": <true|false>
             }
         }
         ```   
     </Accordion>
 </AccordionGroup>
+
+Fields for `settings` include:
+
+- `strategy`: _Required_. The partitioning strategy to use. This field must be set to `fast`.
+- `include_page_breaks: _Required_. ... The default is false.
+- `pdf_infer_table_structure`: _Required_. ... The default is false.
+- `exclude_elements`: _Optional_. ... The default is none.
+- `xml_keep_tags`: _Required_. ... The default is false.,
+- `encoding`: _Required_. ... The default is `utf-8`.
+- `ocr_languages`: _Required_. The default is `[ 'eng' ]`.
+- `extract_image_block_types`: _Required_. ... The default is `[ 'image', 'table' ]`.
+- `infer_table_structure`: _Required_. ... The default is false.
 
 ### Chunker node
 
@@ -1263,6 +1362,8 @@ A **Chunker** node has a `type` of `chunk`.
             subtype="chunk_by_character",
             type="chunk",
             settings={
+                "unstructured_api_url": None,
+                "unstructured_api_key": None,
                 "include_orig_elements": <True|False>,
                 "new_after_n_chars": <new-after-n-chars>,
                 "max_characters": <max-characters>,
@@ -1280,6 +1381,8 @@ A **Chunker** node has a `type` of `chunk`.
             "type": "chunk",
             "subtype": "chunk_by_character",
             "settings": {
+                "unstructured_api_url": null,
+                "unstructured_api_key": null,
                 "include_orig_elements": <true|false>,
                 "new_after_n_chars": <new-after-n-chars>,
                 "max_characters": <max-characters>,
@@ -1292,6 +1395,17 @@ A **Chunker** node has a `type` of `chunk`.
     </Accordion>
 </AccordionGroup>
 
+Fields for `settings` include:
+
+- `unstructured_api_url`: _Optional_. ... The default is none.
+- `unstructured_api_key`: _Optional_. ... The default is none.
+- `include_orig_elements`: _Optional_. ... True to have the elements that are used to form a chunk appear in `.metadata.orig_elements` for that chunk. The default is false.
+- `new_after_n_chars`: _Optional_. ... The default is none.
+- `max_characters`: _Optional_. ... The default is none. 
+- `overlap`: _Optional_. ... The default is none.
+- `overlap_all`: _Optional_. ... The default is false.
+- `contextual_chunking_strategy`: _Optional_. ... Allowed values include `v1`. The default is none.
+
 #### Chunk by Title strategy
 
 <AccordionGroup>
@@ -1302,6 +1416,8 @@ A **Chunker** node has a `type` of `chunk`.
             subtype="chunk_by_title",
             type="chunk",
             settings={
+                "unstructured_api_url": None,
+                "unstructured_api_key": None,
                 "multipage_sections": <True|False>,
                 "combine_text_under_n_chars": <combine-text-under-n-chars>,
                 "include_orig_elements": <True|False>,
@@ -1321,6 +1437,8 @@ A **Chunker** node has a `type` of `chunk`.
             "type": "chunk",
             "subtype": "chunk_by_title",
             "settings": {
+                "unstructured_api_url": null,
+                "unstructured_api_key": null,
                 "multipage_sections": <true|false>,
                 "combine_text_under_n_chars": <combine-text-under-n-chars>,
                 "include_orig_elements": <true|false>,
@@ -1335,6 +1453,19 @@ A **Chunker** node has a `type` of `chunk`.
     </Accordion>
 </AccordionGroup>
 
+Fields for `settings` include:
+
+- `unstructured_api_url`: _Optional_. ... The default is none.
+- `unstructured_api_key`: _Optional_. ... The default is none.
+- `multipage_sections`: _Optional_. ... The default is false.
+- `combine_text_under_n_chars`: _Optional_. ... The default is none.
+- `include_orig_elements`: _Optional_. ... The default is false.
+- `new_after_n_chars`: _Optional_. ... The default is none.
+- `max_characters`: _Optional_. ... The default is none. 
+- `overlap`: _Optional_. ... The default is none.
+- `overlap_all`: _Optional_. ... The default is false.
+- `contextual_chunking_strategy`: _Optional_. ... Allowed values include `v1`. The default is none.
+
 #### Chunk by Page strategy
 
 <AccordionGroup>
@@ -1345,6 +1476,8 @@ A **Chunker** node has a `type` of `chunk`.
             subtype="chunk_by_page",
             type="chunk",
             settings={
+                "unstructured_api_url": None,
+                "unstructured_api_key": None,
                 "include_orig_elements": <True|False>,
                 "new_after_n_chars": <new-after-n-chars>,
                 "max_characters": <max-characters>,
@@ -1362,6 +1495,8 @@ A **Chunker** node has a `type` of `chunk`.
             "type": "chunk",
             "subtype": "chunk_by_page",
             "settings": {
+                "unstructured_api_url": null,
+                "unstructured_api_key": null,
                 "include_orig_elements": <true|false>,
                 "new_after_n_chars": <new-after-n-chars>,
                 "max_characters": <max-characters>,
@@ -1374,6 +1509,17 @@ A **Chunker** node has a `type` of `chunk`.
     </Accordion>
 </AccordionGroup>
 
+Fields for `settings` include:
+
+- `unstructured_api_url`: _Optional_. ... The default is none.
+- `unstructured_api_key`: _Optional_. ... The default is none.
+- `include_orig_elements`: _Optional_. ... The default is false.
+- `new_after_n_chars`: _Optional_. ... The default is none.
+- `max_characters`: _Optional_. ... The default is none. 
+- `overlap`: _Optional_. ... The default is none.
+- `overlap_all`: _Optional_. ... The default is false.
+- `contextual_chunking_strategy`: _Optional_. ... Allowed values include `v1`. The default is none.
+
 #### Chunk by Similarity strategy
 
 <AccordionGroup>
@@ -1384,6 +1530,8 @@ A **Chunker** node has a `type` of `chunk`.
             subtype="chunk_by_similarity",
             type="chunk",
             settings={
+                "unstructured_api_url": None,
+                "unstructured_api_key": None,
                 "include_orig_elements": <True|False>,
                 "new_after_n_chars": <True|False>,
                 "max_characters": <max-characters>,
@@ -1402,6 +1550,8 @@ A **Chunker** node has a `type` of `chunk`.
             "type": "chunk",
             "subtype": "chunk_by_similarity",
             "settings": {
+                "unstructured_api_url": null,
+                "unstructured_api_key": null,
                 "include_orig_elements": <true|false>,
                 "new_after_n_chars": <true|false>,
                 "max_characters": <max-characters>,
@@ -1414,6 +1564,18 @@ A **Chunker** node has a `type` of `chunk`.
         ```
     </Accordion>
 </AccordionGroup>
+
+Fields for `settings` include:
+
+- `unstructured_api_url`: _Optional_. ... The default is none.
+- `unstructured_api_key`: _Optional_. ... The default is none.
+- `include_orig_elements`: _Optional_. ... The default is false.
+- `new_after_n_chars`: _Optional_. ... The default is none.
+- `max_characters`: _Optional_. ... The default is none. 
+- `overlap`: _Optional_. ... The default is none.
+- `overlap_all`: _Optional_. ... The default is false.
+- `contextual_chunking_strategy`: _Optional_. ... Allowed values include `v1`. The default is none.
+- `similarity_threshold`: _Optional_. ... The default is none.
 
 ### Enrichment node
 
@@ -1451,7 +1613,6 @@ Allowed values for `<subtype>` include:
 - `openai_image_description`
 - `anthropic_image_description`
 - `bedrock_image_description`
-- `vertexai_image_description`
 
 #### Table Description task
 
@@ -1483,7 +1644,6 @@ Allowed values for `<subtype>` include:
 - `openai_table_description`
 - `anthropic_table_description`
 - `bedrock_table_description`
-- `vertexai_table_description`
 
 #### Table to HTML task
 
@@ -1517,7 +1677,7 @@ Allowed values for `<subtype>` include:
         ```python
         ner_enrichment_workflow_node = WorkflowNode(
             name="Enrichment",
-            subtype="openai_ner",
+            subtype="<subtype>",
             type="prompter",
             settings={
                 "prompt_interface_overrides": {
@@ -1534,7 +1694,7 @@ Allowed values for `<subtype>` include:
         {
             "name": "Enrichment",
             "type": "prompter",
-            "subtype": "openai_ner",
+            "subtype": "<subtype>",
             "settings": {
                 "prompt_interface_overrides": {
                     "prompt": {
@@ -1546,6 +1706,15 @@ Allowed values for `<subtype>` include:
         ```
     </Accordion>
 </AccordionGroup>
+
+Fields for settings include:
+
+- `prompt_interface_overrides.prompt.user`: _Optional_. Any alternative prompt to use with the underlying NER model. The default is none, which means to rely on using Unstructured's internal default prompt when calling the NER model.
+
+Allowed values for `<subtype>` include:
+
+- `openai_ner`
+- `anthropic_ner`
 
 ### Embedder node
 
@@ -1601,3 +1770,14 @@ Allowed values for `subtype` and `model_name` include:
   - `"model_name": "togethercomputer/m2-bert-80M-2k-retrieval"`
   - `"model_name": "togethercomputer/m2-bert-80M-8k-retrieval"`
   - `"model_name": "togethercomputer/m2-bert-80M-32k-retrieval"`
+
+- `"subtype": "voyageai"`
+
+  - `"model_name": "voyage-3"`
+  - `"model_name": "voyage-3-large"`
+  - `"model_name": "voyage-3-lite"`
+  - `"model_name": "voyage-code-3"`
+  - `"model_name": "voyage-finance-2"`
+  - `"model_name": "voyage-law-2"`
+  - `"model_name": "voyage-code-2"`
+  - `"model_name": "voyage-multimodal-3"`
