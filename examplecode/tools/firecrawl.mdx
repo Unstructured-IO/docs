@@ -17,7 +17,7 @@ vector embeddings, and then sends the results over into a serverless index withi
 
 To complete this walkthrough, you must first have:
 
-- An Unstructured account and an Unstructured API key for that account.
+- An Unstructured account.
 - A Firecrawl account and a Firecrawl API key for that account.
 - An AWS account and a properly configured Amazon S3 bucket with bucket access credentials within that account.
 - A Pinecone account and a Pinecone API key for that account.
@@ -25,13 +25,13 @@ To complete this walkthrough, you must first have:
 
 The following sections describe how to get these requirements.
 
-### Unstructured account and API key
+### Unstructured account
 
 Before you begin, you must have an Unstructured account and an Unstructured API key, as follows:
 
-import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-simple-api-only.mdx';
+import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-simple-ui-only.mdx';
 
-<GetStartedSimpleAPIOnly/>
+<GetStartedSimpleUIOnly/>
 
 ### Firecrawl account and API key
 
@@ -57,8 +57,8 @@ Before you begin, you must have a Pinecone account and a Pinecone API key, as fo
 
 ### Python and development toolchain installation
 
-Before you can start coding on your local machine, you must install Python, and you should also install a Python package and project manager to manage your project's Firecrawl, Pinecone, and other code dependencies. 
-This walkthrough uses the popular Python package and project manager [uv](https://docs.astral.sh/uv/) (although `uv` is not required to use Firecrawl or Pinecone with Python). 
+Before you can start coding on your local machine, you must install Python, and you should also install a Python package and project manager to manage your project's Firecrawl, AWS, Pinecone, and other code dependencies. 
+This walkthrough uses the popular Python package and project manager [uv](https://docs.astral.sh/uv/) (although `uv` is not required to use Firecrawl, AWS, or Pinecone with Python). 
 
 <Steps>
     <Step title="Install uv">
