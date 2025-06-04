@@ -2,7 +2,7 @@
 title: Firecrawl
 ---
 
-[Firecrawl](https://firecrawl.dev/) is an open source tool that allows you to crawl websites and extract data from them.
+[Firecrawl](https://firecrawl.dev/) is a tool that allows you to crawl websites and extract data from them.
 
 You can use Unstructured to process the data that Firecrawl extracts from these websites. Unstructured turns this extracted 
 website data into a single set of standard [Unstructured document elements and metadata](/ui/document-elements), 
@@ -11,7 +11,7 @@ improving the accuracy, relevance, and performance of your RAG applications, age
 This example provides a hands-on walkthrough of how to use Firecrawl with Unstructured. In this example, you use Python code to have Firecrawl 
 extract data from a ficticious website and then add the extracted data to an Amazon S3 bucket within your AWS account. From there, you use the Unstructured user interface (UI) to set up an 
 ETL+ workflow that takes the extracted data from the S3 bucket, converts it into Unstructured document elements and metadata, adds 
-vector embeddings, and then sends the results over into a serverless index within a Pinecone vector store. An optional step at the end shows how to use LangChain to automate RAG chat on this Pineconeindex's data.
+vector embeddings, and then sends the results over into a serverless index within a Pinecone vector store. 
 
 ## Requirements
 
@@ -500,119 +500,6 @@ Unstructured elements and metadata, add vector embeddings to the elements, and t
     </Step>
 </Steps>
 
-## Step 4 (Optional): Use the Pinecone index for RAG chat by using LangChain
-
-In this optional step, you use [LangChain](https://www.langchain.com/) to perform RAG chat on the data in the Pinecone index. To 
-complete this step, you will need the necessary LangChain packages and an OpenAI API key, which are described later in this step.
-
-<Steps>
-    <Step title="Install the LangChain packages">
-        Use `uv` to install the necessary LangChain packages in your project by running the following command:
-
-        ```python
-        uv add langchain langchain-openai langchain-pinecone langchain-community
-        ```
-    </Step>
-    <Step title="Get an OpenAI API key and add it to your project">
-        1. [Sign up](https://auth.openai.com/create-account) or [log in](https://auth.openai.com/log-in) to your OpenAI account.
-        2. [Get your OpenAI API key](https://platform.openai.com/api-keys) for your OpenAI account.
-        3. Add the following line to your `.env` file, and replace `<your-openai-api-key>` with your OpenAI API key:
-
-           ```text
-           OPENAI_API_KEY=<your-openai-api-key>
-           ```
-    </Step>
-    <Step title="Create the Python script to perform RAG chat">
-        Create a file named `langchain_rag_chatbot.py` in the root of your project directory and add the following code to it:
-
-        ```python
-        from langchain_openai import ChatOpenAI
-        from langchain.chains import create_retrieval_chain
-        from langchain.chains.combine_documents import create_stuff_documents_chain
-        from langchain import hub
-        from langchain_pinecone import PineconeVectorStore
-        from langchain_community.embeddings import FakeEmbeddings
-        from pinecone.grpc import PineconeGRPC as Pinecone
-        import os
-        from dotenv import load_dotenv
-
-        load_dotenv()
-
-        # Initialize the Pinecone client to check index stats and get the total count.
-        pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
-        index = pc.Index(os.getenv("PINECONE_INDEX_NAME"))
-        stats = index.describe_index_stats()
-        total_vectors = stats['total_vector_count']
-
-        # Create the vector store instance from the existing serverless index.
-        pcvs = PineconeVectorStore(
-            index_name=os.getenv("PINECONE_INDEX_NAME"),
-            embedding=FakeEmbeddings(size=3072),
-            pinecone_api_key=os.getenv("PINECONE_API_KEY")
-        )
-
-        # Set up the the retrieval chain with supported search parameters.
-        retrieval_qa_chat_prompt = hub.pull("langchain-ai/retrieval-qa-chat")
-        retriever = pcvs.as_retriever(
-            search_kwargs={
-                "k": total_vectors,  # Retrieve all documents.
-                "namespace": "default"  # Specify the namespace where the vectors are stored.
-            }
-        )
-
-        llm = ChatOpenAI(
-            openai_api_key=os.environ.get('OPENAI_API_KEY'),
-            model_name='gpt-4',
-            temperature=0.0
-        )
-
-        # Create the RAG chain.
-        combine_docs_chain = create_stuff_documents_chain(
-            llm, retrieval_qa_chat_prompt
-        )
-        retrieval_chain = create_retrieval_chain(retriever, combine_docs_chain)
-
-        while True:
-            # Get user input for the query.
-            user_query = input("Enter your question, or enter 'q' or 'quit' to exit: ")
-            
-            # Check if the user wants to quit.
-            if user_query.lower() in ['q', 'quit']:
-                break
-                
-            # Run the query.
-            response = retrieval_chain.invoke({
-                "input": user_query,
-                "chat_history": []
-            })
-
-            print("\nAnswer:", response['answer'], "\n")
-
-        ```
-
-        This script does the following:
-
-        - Initializes the Pinecone client to check index stats and get the total count.
-        - Creates a vector store instance from the existing serverless index.
-        - Sets up the the retrieval chain with supported search parameters.
-        - Creates the RAG chain.
-        - Runs the chatbot loop, which prompts the user for a question and then uses the RAG chain to respond.
-
-    </Step>
-    <Step title="Run the script to perform RAG chat">
-        1. From the root of your project, use `uv` to run the script to perform RAG chat by running the following command:
-
-           ```bash
-           uv run langchain_rag_chatbot.py
-           ```
-
-        2. When prompted, enter a question to ask the chatbot.
-        3. The chatbot will attempt to respond with an answer based on the data in the Pinecone index.
-        4. You can keep asking more questions, or enter `q` or `quit` to exit the chatbot.
-    </Step>
-</Steps>
-
 ## Additional resources
 
 - [Mastering Firecrawl's Crawl Endpoint: A Complete Web Scraping Guide](https://www.firecrawl.dev/blog/mastering-the-crawl-endpoint-in-firecrawl)
-- [LangChain and Pinecone](https://docs.pinecone.io/integrations/langchain)
