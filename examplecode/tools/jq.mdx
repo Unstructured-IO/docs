@@ -1,0 +1,170 @@
+---
+title: Query JSON with jq
+---
+
+[jq](https://jqlang.org/) is a lightweight and flexible command-line JSON processor. You can use `jq` on a local development machine to 
+slice, filter, map, and transform the JSON data that Unstructured outputs in much the same ways that tools such as `sed`, `awk`, and `grep` let you work with text.
+
+To get `jq`, see the [Download jq](https://jqlang.org/download/) page.
+
+<Info>
+    `jq` is not owned or supported by Unstructured. For questions about `jq`and 
+    feature requests for future versions of `jq`, see the [Issues](https://github.com/jqlang/jq/issues) tab of the 
+    `jq` repository in GitHub.
+</Info>
+
+The following command examples use `jq` with the 
+[spring-weather.html.json](https://github.com/Unstructured-IO/unstructured/blob/main/example-docs/spring-weather.html.json) file in the 
+**example-docs** directory within the **Unstructured-IO/unstructured** repository in GitHub.
+
+Find the element with a `type` of `Address`, and print the element's `text` field value.
+
+```bash
+jq '.[] 
+  | select(.type == "Address") 
+  | .text' spring-weather.html.json
+
+# Output:
+#
+# "Silver Spring, MD 20910"
+```
+
+Find all elements with a `type` of `Title`, and print the `text` field of each found element as a string in a JSON array.
+
+```bash
+jq '[
+  .[] 
+  | select(.type == "Title") 
+  | .text]' spring-weather.html.json
+
+# Output:
+#
+# [
+#   "News Around NOAA",
+#   "National Program",
+#   "Are You Weather-Ready for the Spring?",
+#   "Weather.gov >",
+#   "News Around NOAA > Are You Weather-Ready for the Spring?",
+#   "US Dept of Commerce",
+#   "National Oceanic and Atmospheric Administration",
+#   "National Weather Service",
+#   "News Around NOAA",
+#   "1325 East West Highway",
+#   "Comments? Questions? Please Contact Us.",
+#   "Disclaimer",
+#   "Information Quality",
+#   "Help",
+#   "Glossary",
+#   "Privacy Policy",
+#   "Freedom of Information Act (FOIA)",
+#   "About Us",
+#   "Career Opportunities"
+# ]
+```
+
+Find all elements with a `type` of `Title`. Of these, find the ones that have a `text` field that contains the phrase "Contact Us", and print the contents of each element's `metadata.link_urls` field.
+
+```bash
+jq '.[] 
+  | select(.type == "Title") 
+  | select(.text 
+  | contains("Contact Us")) 
+  | .metadata.link_urls' spring-weather.html.json
+
+# Output:
+#
+# [
+#     "https://www.weather.gov/news/contact"
+# ]
+```
+
+Find all elements with a `type` of `ListItem`. Of these, find the ones that have a `text` field that contains the phrase "Weather Safety". 
+For each item in `metadata.link_texts`, print the item's value as the key, followed by the matching item in 
+`metadata.link_urls` as the value. Trim any leading and trailing whitespace from all values. Wrap the output in a JSON array.
+
+```bash
+jq '[
+  .[]
+  | select(.type == "ListItem")
+  | select(.text | test("Weather Safety"; "i"))
+  | [.metadata.link_texts, .metadata.link_urls]
+  | transpose[]
+  | {
+      (.[0] | gsub("^\\s+|\\s+$"; "")) : (.[1] | gsub("^\\s+|\\s+$"; ""))
+    }
+]' spring-weather.html.json
+
+# Output:
+#
+# [
+#   {
+#     "Weather Safety": "http://www.weather.gov/safetycampaign"
+#   },
+#   {
+#     "Air Quality": "https://www.weather.gov/safety/airquality"
+#   },
+#   {
+#     "Beach Hazards": "https://www.weather.gov/safety/beachhazards"
+#   },
+#   {
+#     "Cold": "https://www.weather.gov/safety/cold"
+#   },
+#   {
+#     "Cold Water": "https://www.weather.gov/safety/coldwater"
+#   },
+#   {
+#     "Drought": "https://www.weather.gov/safety/drought"
+#   },
+#   {
+#     "Floods": "https://www.weather.gov/safety/flood"
+#   },
+#   {
+#     "Fog": "https://www.weather.gov/safety/fog"
+#   },
+#   {
+#     "Heat": "https://www.weather.gov/safety/heat"
+#   },
+#   {
+#     "Hurricanes": "https://www.weather.gov/safety/hurricane"
+#   },
+#   {
+#     "Lightning Safety": "https://www.weather.gov/safety/lightning"
+#   },
+#   {
+#     "Rip Currents": "https://www.weather.gov/safety/ripcurrent"
+#   },
+#   {
+#     "Safe Boating": "https://www.weather.gov/safety/safeboating"
+#   },
+#   {
+#     "Space Weather": "https://www.weather.gov/safety/space"
+#   },
+#   {
+#     "Sun (Ultraviolet Radiation)": "https://www.weather.gov/safety/heat-uv"
+#   },
+#   {
+#     "Thunderstorms & Tornadoes": "https://www.weather.gov/safety/thunderstorm"
+#   },
+#   {
+#     "Tornado": "https://www.weather.gov/safety/tornado"
+#   },
+#   {
+#     "Tsunami": "https://www.weather.gov/safety/tsunami"
+#   },
+#   {
+#     "Wildfire": "https://www.weather.gov/safety/wildfire"
+#   },
+#   {
+#     "Wind": "https://www.weather.gov/safety/wind"
+#   },
+#   {
+#     "Winter": "https://www.weather.gov/safety/winter"
+#   }
+# ]
+```
+
+## Additional resources
+
+- [jq Tutorial](https://jqlang.org/tutorial/)
+- [jq Manual](https://jqlang.org/manual/)
+- [jq Playground](https://play.jqlang.org/)
