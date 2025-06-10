@@ -17,7 +17,7 @@ The following command examples use `jq` with the
 [spring-weather.html.json](https://github.com/Unstructured-IO/unstructured/blob/main/example-docs/spring-weather.html.json) file in the 
 **example-docs** directory within the **Unstructured-IO/unstructured** repository in GitHub.
 
-Find the element with a `type` of `Address`, and print the element's `text` field value.
+Find the element with a `type` of `Address`, and print the element's `text` field's value.
 
 ```bash
 jq '.[] 
@@ -62,7 +62,7 @@ jq '[
 # ]
 ```
 
-Find all elements with a `type` of `Title`. Of these, find the ones that have a `text` field that contains the phrase "Contact Us", and print the contents of each element's `metadata.link_urls` field.
+Find all elements with a `type` of `Title`. Of these, find the ones that have a `text` field that contains the phrase `Contact Us`, and print the contents of each found element's `metadata.link_urls` field.
 
 ```bash
 jq '.[] 
@@ -78,7 +78,7 @@ jq '.[]
 # ]
 ```
 
-Find all elements with a `type` of `ListItem`. Of these, find the ones that have a `text` field that contains the phrase "Weather Safety". 
+Find all elements with a `type` of `ListItem`. Of these, find the ones that have a `text` field that contains the phrase `Weather Safety`. 
 For each item in `metadata.link_texts`, print the item's value as the key, followed by the matching item in 
 `metadata.link_urls` as the value. Trim any leading and trailing whitespace from all values. Wrap the output in a JSON array.
 
