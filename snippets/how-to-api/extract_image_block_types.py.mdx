@@ -19,7 +19,7 @@ if __name__ == "__main__":
     local_input_filepath = "local-ingest-input-pdf/embedded-images-tables.pdf"
     local_output_filepath = "local-ingest-output/embedded-images-tables.json"
 
-    with open(local_filepath, "rb") as f:
+    with open(local_input_filepath, "rb") as f:
         files = shared.Files(
             content=f.read(),
             file_name=local_input_filepath
@@ -28,7 +28,6 @@ if __name__ == "__main__":
     request = operations.PartitionRequest(
         shared.PartitionParameters(
             files=files,
-            strategy=shared.Strategy.HI_RES,
             split_pdf_page=True,
             split_pdf_allow_failed=True,
             split_pdf_concurrency_level=15,
@@ -44,7 +43,7 @@ if __name__ == "__main__":
     )
 
     try:
-        result = await client.general.partition_async(
+        result = client.general.partition(
             request=request
         )
 
@@ -56,7 +55,26 @@ if __name__ == "__main__":
                 image_data = base64.b64decode(element["metadata"]["image_base64"])
                 image = Image.open(io.BytesIO(image_data))
                 image.show()
+        
+        # Optionally, prepare to print or save the elements as JSON.
+        dict_elements = elements_from_dicts(
+            element_dicts=result.elements
+        )
 
+        # Print the elements as JSON...
+        json_elements = elements_to_json(
+            elements=dict_elements,
+            indent=2
+        )
+
+        print(json_elements)
+
+        # ...or save as JSON.
+        elements_to_json(
+            elements=dict_elements,
+            indent=2,
+            filename=local_output_filepath
+        )
     except Exception as e:
         print(e)
 ```
