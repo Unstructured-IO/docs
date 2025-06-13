@@ -274,119 +274,39 @@
         ]
       },
       {
-        "tab": "Ingest",
+        "tab": "Self-hosted",
         "groups": [
           {
-            "group": "Ingestion",
+            "group": "Self-hosting",
             "pages": [
-              "ingestion/overview",
-              "ingestion/supported-file-types",
-              "ingestion/ingest-cli",
-              "ingestion/python-ingest",
-              "ingestion/ingest-dependencies",
-              {
-                "group": "Ingest configuration",
-                "pages": [
-                  "ingestion/ingest-configuration/overview",
-                  "ingestion/ingest-configuration/processor-configuration",
-                  "ingestion/ingest-configuration/partition-configuration",
-                  "ingestion/ingest-configuration/chunking-configuration",
-                  "ingestion/ingest-configuration/embedding-configuration"
-                ]
-              },
-              {
-                "group": "Source connectors",
-                "pages": [
-                  "ingestion/source-connectors/overview",
-                  "ingestion/source-connectors/airtable",
-                  "ingestion/source-connectors/astradb",
-                  "ingestion/source-connectors/azure",
-                  "ingestion/source-connectors/box",
-                  "ingestion/source-connectors/confluence",
-                  "ingestion/source-connectors/couchbase",
-                  "ingestion/source-connectors/databricks-volumes",
-                  "ingestion/source-connectors/delta-table",
-                  "ingestion/source-connectors/discord",
-                  "ingestion/source-connectors/dropbox",
-                  "ingestion/source-connectors/elastic-search",
-                  "ingestion/source-connectors/github",
-                  "ingestion/source-connectors/gitlab",
-                  "ingestion/source-connectors/google-cloud-storage",
-                  "ingestion/source-connectors/google-drive",
-                  "ingestion/source-connectors/jira",
-                  "ingestion/source-connectors/kafka",
-                  "ingestion/source-connectors/local",
-                  "ingestion/source-connectors/mongodb",
-                  "ingestion/source-connectors/notion",
-                  "ingestion/source-connectors/one-drive",
-                  "ingestion/source-connectors/opensearch",
-                  "ingestion/source-connectors/outlook",
-                  "ingestion/source-connectors/postgresql",
-                  "ingestion/source-connectors/s3",
-                  "ingestion/source-connectors/salesforce",
-                  "ingestion/source-connectors/sftp",
-                  "ingestion/source-connectors/sharepoint",
-                  "ingestion/source-connectors/singlestore",
-                  "ingestion/source-connectors/slack",
-                  "ingestion/source-connectors/snowflake",
-                  "ingestion/source-connectors/sqlite",
-                  "ingestion/source-connectors/zendesk"
-                ]
-              },
-              {
-                "group": "Destination connectors",
-                "pages": [
-                  "ingestion/destination-connectors/overview",
-                  "ingestion/destination-connectors/astradb",
-                  "ingestion/destination-connectors/azure",
-                  "ingestion/destination-connectors/azure-ai-search",
-                  "ingestion/destination-connectors/box",
-                  "ingestion/destination-connectors/chroma",
-                  "ingestion/destination-connectors/couchbase",
-                  "ingestion/destination-connectors/databricks-volumes",
-                  "ingestion/destination-connectors/delta-table",
-                  "ingestion/destination-connectors/databricks-delta-table",
-                  "ingestion/destination-connectors/dropbox",
-                  "ingestion/destination-connectors/duckdb",
-                  "ingestion/destination-connectors/elasticsearch",
-                  "ingestion/destination-connectors/google-cloud-service",
-                  "ingestion/destination-connectors/ibm-watsonxdata",
-                  "ingestion/destination-connectors/kafka",
-                  "ingestion/destination-connectors/kdbai",
-                  "ingestion/destination-connectors/lancedb",
-                  "ingestion/destination-connectors/local",
-                  "ingestion/destination-connectors/milvus",
-                  "ingestion/destination-connectors/mongodb",
-                  "ingestion/destination-connectors/motherduck",
-                  "ingestion/destination-connectors/neo4j",
-                  "ingestion/destination-connectors/onedrive",
-                  "ingestion/destination-connectors/opensearch",
-                  "ingestion/destination-connectors/pinecone",
-                  "ingestion/destination-connectors/postgresql",
-                  "ingestion/destination-connectors/qdrant",
-                  "ingestion/destination-connectors/redis",
-                  "ingestion/destination-connectors/s3",
-                  "ingestion/destination-connectors/sftp",
-                  "ingestion/destination-connectors/singlestore",
-                  "ingestion/destination-connectors/snowflake",
-                  "ingestion/destination-connectors/sqlite",
-                  "ingestion/destination-connectors/vectara",
-                  "ingestion/destination-connectors/weaviate"
-                ]
-              },
-              {
-                "group": "How-to",
-                "pages": [
-                  "ingestion/how-to/examples",
-                  "ingestion/how-to/speed-up-large-files-batches",
-                  "ingestion/how-to/get-elements",
-                  "ingestion/how-to/filter-files",
-                  "ingestion/how-to/embedding",
-                  "ingestion/how-to/text-as-html",
-                  "ingestion/how-to/extract-image-block-types",
-                  "ingestion/how-to/get-chunked-elements"
-                ]
-              }
+              "self-hosted/overview"
+            ]
+          },
+          {
+            "group": "Security and compliance",
+            "pages": [
+              "self-hosted/security-compliance/overview"
+            ]
+          },
+          {
+            "group": "AWS",
+            "pages": [
+              "self-hosted/aws/overview",
+              "self-hosted/aws/onboard"
+            ]
+          },
+          {
+            "group": "Azure",
+            "pages": [
+              "self-hosted/azure/overview",
+              "self-hosted/azure/onboard"
+            ]
+          },
+          {
+            "group": "GCP",
+            "pages": [
+              "self-hosted/gcp/overview",
+              "self-hosted/gcp/onboard"
             ]
           }
         ]
@@ -428,8 +348,116 @@
             ]
           },
           {
+            "group": "Ingestion",
+            "pages": [
+              "open-source/ingestion/overview",
+              "open-source/ingestion/supported-file-types",
+              "open-source/ingestion/ingest-cli",
+              "open-source/ingestion/python-ingest",
+              "open-source/ingestion/ingest-dependencies",
+              {
+                "group": "Ingest configuration",
+                "pages": [
+                  "open-source/ingestion/ingest-configuration/overview",
+                  "open-source/ingestion/ingest-configuration/processor-configuration",
+                  "open-source/ingestion/ingest-configuration/partition-configuration",
+                  "open-source/ingestion/ingest-configuration/chunking-configuration",
+                  "open-source/ingestion/ingest-configuration/embedding-configuration"
+                ]
+              },
+              {
+                "group": "Source connectors",
+                "pages": [
+                  "open-source/ingestion/source-connectors/overview",
+                  "open-source/ingestion/source-connectors/airtable",
+                  "open-source/ingestion/source-connectors/astradb",
+                  "open-source/ingestion/source-connectors/azure",
+                  "open-source/ingestion/source-connectors/box",
+                  "open-source/ingestion/source-connectors/confluence",
+                  "open-source/ingestion/source-connectors/couchbase",
+                  "open-source/ingestion/source-connectors/databricks-volumes",
+                  "open-source/ingestion/source-connectors/delta-table",
+                  "open-source/ingestion/source-connectors/discord",
+                  "open-source/ingestion/source-connectors/dropbox",
+                  "open-source/ingestion/source-connectors/elastic-search",
+                  "open-source/ingestion/source-connectors/github",
+                  "open-source/ingestion/source-connectors/gitlab",
+                  "open-source/ingestion/source-connectors/google-cloud-storage",
+                  "open-source/ingestion/source-connectors/google-drive",
+                  "open-source/ingestion/source-connectors/jira",
+                  "open-source/ingestion/source-connectors/kafka",
+                  "open-source/ingestion/source-connectors/local",
+                  "open-source/ingestion/source-connectors/mongodb",
+                  "open-source/ingestion/source-connectors/notion",
+                  "open-source/ingestion/source-connectors/one-drive",
+                  "open-source/ingestion/source-connectors/opensearch",
+                  "open-source/ingestion/source-connectors/outlook",
+                  "open-source/ingestion/source-connectors/postgresql",
+                  "open-source/ingestion/source-connectors/s3",
+                  "open-source/ingestion/source-connectors/salesforce",
+                  "open-source/ingestion/source-connectors/sftp",
+                  "open-source/ingestion/source-connectors/sharepoint",
+                  "open-source/ingestion/source-connectors/singlestore",
+                  "open-source/ingestion/source-connectors/slack",
+                  "open-source/ingestion/source-connectors/snowflake",
+                  "open-source/ingestion/source-connectors/sqlite",
+                  "open-source/ingestion/source-connectors/zendesk"
+                ]
+              },
+              {
+                "group": "Destination connectors",
+                "pages": [
+                  "open-source/ingestion/destination-connectors/overview",
+                  "open-source/ingestion/destination-connectors/astradb",
+                  "open-source/ingestion/destination-connectors/azure",
+                  "open-source/ingestion/destination-connectors/azure-ai-search",
+                  "open-source/ingestion/destination-connectors/box",
+                  "open-source/ingestion/destination-connectors/chroma",
+                  "open-source/ingestion/destination-connectors/couchbase",
+                  "open-source/ingestion/destination-connectors/databricks-volumes",
+                  "open-source/ingestion/destination-connectors/delta-table",
+                  "open-source/ingestion/destination-connectors/databricks-delta-table",
+                  "open-source/ingestion/destination-connectors/dropbox",
+                  "open-source/ingestion/destination-connectors/duckdb",
+                  "open-source/ingestion/destination-connectors/elasticsearch",
+                  "open-source/ingestion/destination-connectors/google-cloud-service",
+                  "open-source/ingestion/destination-connectors/ibm-watsonxdata",
+                  "open-source/ingestion/destination-connectors/kafka",
+                  "open-source/ingestion/destination-connectors/kdbai",
+                  "open-source/ingestion/destination-connectors/lancedb",
+                  "open-source/ingestion/destination-connectors/local",
+                  "open-source/ingestion/destination-connectors/milvus",
+                  "open-source/ingestion/destination-connectors/mongodb",
+                  "open-source/ingestion/destination-connectors/motherduck",
+                  "open-source/ingestion/destination-connectors/neo4j",
+                  "open-source/ingestion/destination-connectors/onedrive",
+                  "open-source/ingestion/destination-connectors/opensearch",
+                  "open-source/ingestion/destination-connectors/pinecone",
+                  "open-source/ingestion/destination-connectors/postgresql",
+                  "open-source/ingestion/destination-connectors/qdrant",
+                  "open-source/ingestion/destination-connectors/redis",
+                  "open-source/ingestion/destination-connectors/s3",
+                  "open-source/ingestion/destination-connectors/sftp",
+                  "open-source/ingestion/destination-connectors/singlestore",
+                  "open-source/ingestion/destination-connectors/snowflake",
+                  "open-source/ingestion/destination-connectors/sqlite",
+                  "open-source/ingestion/destination-connectors/vectara",
+                  "open-source/ingestion/destination-connectors/weaviate"
+                ]
+              }
+            ]
+          },
+          {
             "group": "How to",
             "pages": [
+              "open-source/how-to/examples",
+              "open-source/how-to/speed-up-large-files-batches",
+              "open-source/how-to/get-elements",
+              "open-source/how-to/filter-files",
+              "open-source/how-to/embedding",
+              "open-source/how-to/text-as-html",
+              "open-source/how-to/extract-image-block-types",
+              "open-source/how-to/get-chunked-elements",
               "open-source/how-to/set-ocr-agent"
             ]
           },
@@ -452,44 +480,6 @@
             "group": "Integrations",
             "pages": [
               "open-source/integrations"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Self-hosted",
-        "groups": [
-          {
-            "group": "Self-hosting",
-            "pages": [
-              "self-hosted/overview"
-            ]
-          },
-          {
-            "group": "Security and compliance",
-            "pages": [
-              "self-hosted/security-compliance/overview"
-            ]
-          },
-          {
-            "group": "AWS",
-            "pages": [
-              "self-hosted/aws/overview",
-              "self-hosted/aws/onboard"
-            ]
-          },
-          {
-            "group": "Azure",
-            "pages": [
-              "self-hosted/azure/overview",
-              "self-hosted/azure/onboard"
-            ]
-          },
-          {
-            "group": "GCP",
-            "pages": [
-              "self-hosted/gcp/overview",
-              "self-hosted/gcp/onboard"
             ]
           }
         ]
@@ -670,7 +660,7 @@
     },
     {
       "source": "/api-reference/ingest/:slug*",
-      "destination": "/ingestion/:slug*"
+      "destination": "/open-source/ingestion/:slug*"
     },
     {
       "source": "/api-reference/legacy/free-api",
@@ -681,8 +671,16 @@
       "destination": "/welcome"
     },
     {
+      "source": "/ingestion/:slug*",
+      "destination": "/open-source/ingestion/:slug*"
+    },
+    {
       "source": "/open-source/ingest/:slug*",
-      "destination": "/ingestion/:slug*"
+      "destination": "/open-source/ingestion/:slug*"
+    },
+    {
+      "source": "/open-source/ingestion/how-to/:slug*",
+      "destination": "/open-source/how-to/:slug*"
     },
     {
       "source": "/platform/:slug*",
@@ -714,7 +712,7 @@
     },
     {
       "source": "/platform-api/partition-api/filter-files",
-      "destination": "/ingestion/how-to/filter-files"
+      "destination": "/open-source/ingestion/how-to/filter-files"
     },
     {
       "source": "/platform-api/partition-api/:slug*",
