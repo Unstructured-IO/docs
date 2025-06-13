@@ -17,6 +17,7 @@ with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as clien
                 type=SourceConnectorType.SHAREPOINT,
                 config=SharePointSourceConnectorConfigInput(
                     site="<site>",
+                    library="<library>",
                     path="<path>",
                     recursive=<True|False>,
                     client_id="<client_id>",
