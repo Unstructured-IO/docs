@@ -8,7 +8,7 @@ Vector databases often require data to be in smaller, consistent chunks for effi
 
 ## Data ingestion
 
-Unstructured `Source Connectors` make data ingestion easy. They ensure that your data is accessible, up to date, and usable for any downstream task. If you’d like to read more on our source connectors, you can find details [here](/ingestion/source-connectors/overview).
+Unstructured `Source Connectors` make data ingestion easy. They ensure that your data is accessible, up to date, and usable for any downstream task. If you’d like to read more on our source connectors, you can find details [here](/open-source/ingestion/source-connectors/overview).
 
 ## Data preprocessing
 
@@ -46,7 +46,7 @@ Moreover, RAG offers a cost-effective solution. Instead of bearing the extensive
 
 A RAG workflow can be broken down into the following steps:
 
-1.  **Data ingestion**: The first step is acquiring data from your relevant sources. We make this easy with our [source connectors](/ingestion/source-connectors/overview).
+1.  **Data ingestion**: The first step is acquiring data from your relevant sources. We make this easy with our [source connectors](/open-source/ingestion/source-connectors/overview).
 
 2.  **Data preprocessing and cleaning**: Once you’ve identified and collected your data sources, removing any unnecessary artifacts within the dataset is a good practice. At Unstructured, we have various tools for data processing in our [core functionalities](/open-source/core-functionality/overview).
 
@@ -54,7 +54,7 @@ A RAG workflow can be broken down into the following steps:
 
 4.  **Embedding**: After chunking, you must convert the text into a numerical representation (vector embedding) that an LLM can understand. To use the various embedding models using Unstructured tools, please refer to [this page](/open-source/core-functionality/embedding).
 
-5.  **Vector Database**: The next step is to choose a location for storing your chunked embeddings. There are many options for your vector database (Astra DB, ChromaDB, Clarifai, Pinecone, Qdrant, Weaviate, and more). For complete list of Unstructured `Destination Connectors`, please visit [this page](/ingestion/destination-connectors/overview).
+5.  **Vector Database**: The next step is to choose a location for storing your chunked embeddings. There are many options for your vector database (Astra DB, ChromaDB, Clarifai, Pinecone, Qdrant, Weaviate, and more). For complete list of Unstructured `Destination Connectors`, please visit [this page](/open-source/ingestion/destination-connectors/overview).
 
 6.  **User Prompt**: Take the user prompt and grab the most relevant chunks of information in the vector database via similarity search.
 

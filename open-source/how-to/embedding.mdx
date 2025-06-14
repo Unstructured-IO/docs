@@ -3,14 +3,14 @@ title: Set embedding behavior
 ---
 
 <Note>
-   The following information applies only to the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli) and the [Unstructured Ingest Python library](/ingestion/python-ingest).
+   The following information applies only to the [Unstructured Ingest CLI](/open-source/ingestion/overview#unstructured-ingest-cli) and the [Unstructured Ingest Python library](/open-source/ingestion/python-ingest).
 
    The Unstructured SDKs for Python and JavaScript/TypeScript, and the Unstructured open-source library, do not support this functionality.
 </Note>
 
 ## Concepts
 
-You can use the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli) or the [Unstructured Ingest Python library](/ingestion/python-ingest) 
+You can use the [Unstructured Ingest CLI](/open-source/ingestion/overview#unstructured-ingest-cli) or the [Unstructured Ingest Python library](/open-source/ingestion/python-ingest) 
 to generate _embeddings_ after the partitioning and chunking steps in an ingest pipeline. The chunking step is particularly important to ensure that the text pieces 
 (also known as the _documents_ or _elements_) can fit the input limits of an _embedding model_.
 
@@ -89,7 +89,7 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
 
 <AccordionGroup>
     <Accordion title="Ingest CLI">
-        For the [source connector](/ingestion/source-connectors/overview) command:
+        For the [source connector](/open-source/ingestion/source-connectors/overview) command:
 
         - Set the command's `--embedding-provider` to the provider's ID, for example `huggingface`.
         - Set `--embedding-model-name` to the model name, as applicable, for example `sentence-transformers/sentence-t5-xl`. Or omit this to use the default model, as applicable.
@@ -101,7 +101,7 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
           - Set `--embedding-aws-region` to the corresponding AWS Region identifier.
     </Accordion>
     <Accordion title="Ingest Python library">
-        For the [source connector's](/ingestion/source-connectors/overview) `EmbedderConfig` object:
+        For the [source connector's](/open-source/ingestion/source-connectors/overview) `EmbedderConfig` object:
 
         - Set the `embedding_provider` parameter to the provider's ID, for example `huggingface`.
         - Set `embedding_model_name` to the model name, as applicable, for example `sentence-transformers/sentence-t5-xl`. Or omit this to use the default model, as applicable.
