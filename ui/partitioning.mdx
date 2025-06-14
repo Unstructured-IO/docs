@@ -23,6 +23,44 @@ import PlatformPartitioningStrategies from '/snippets/general-shared-text/platfo
 
 <PlatformPartitioningStrategies />
 
+## Images and tables in PDF files
+
+The differences between the various partitioning strategies can be more clearly demonstrated by the ways each of these strategies handle images and tables within PDF files.
+
+For example, the **Fast** partitioning strategy skips processing images altogether in PDF files:
+
+![The Fast strategy skips processing images in PDF files](/img/partitioning/Fast-Image-Example.png)
+
+For tables, the **Fast** strategy interprets table cells in PDF files as a mixture of title, list, and uncategorized text elements:
+
+![The Fast strategy interprets table cells in PDF files as text](/img/partitioning/Fast-Table-Example.png)
+
+The **High Res** strategy, by itself, processes images in PDF files sometimes with limited output:
+
+![The High Res strategy processes images in PDF files with limited results](/img/partitioning/Hi-Res-Image-Example.png)
+
+However, when combined with the [image description](/ui/enriching/image-descriptions) enrichment, the **High Res** strategy can process images in PDF files with better result output:
+
+![The High Res strategy with image description produces better results](/img/partitioning/Hi-Res-Image-Enriched-Example.png)
+
+For tables, the **High Res** strategy processes tables in PDF files with the table's text and an HTML representation of the table as output:
+
+![The High Res strategy processes tables in PDF files with the table's text and HTML as output](/img/partitioning/Hi-Res-Table-Example.png)
+
+When combined with the [table description](/ui/enriching/table-descriptions) and [tables to HTML](/ui/enriching/table-to-html) enrichments, the **High Res** strategy can process tables in PDF files with even richer result output:
+
+![The High Res strategy with table summarization and table-to-HTML enrichments produces better results](/img/partitioning/Hi-Res-Table-Enriched-Example.png)
+
+The **VLM** strategy processes images in PDF files with image summaries and text as HTML elements as output. The following example shows GPT-4o by OpenAI being used. If 
+the **Auto** strategy is selected in this example, Unstructured will route to the **VLM** strategy for processing:
+
+![The VLM strategy processes images in PDF files with image summaries and text as HTML](/img/partitioning/VLM-Auto-Image-GPT-4o-Example.png)
+
+For tables, the **VLM** strategy processes tables in PDF files with the table's text and an HTML representation of the table as output, similar to the **High Res** strategy. 
+The following example shows GPT-4o by OpenAI being used. If the **Auto** strategy is selected in this example, Unstructured will route to the **VLM** strategy for processing:
+
+![The VLM strategy processes tables in PDF files with table summaries and text as HTML](/img/partitioning/VLM-Auto-Table-GPT-4o-Example.png)
+
 ## Supported languages
 
 **Fast** partitioning accepts any text inputs, though automatic language detection of those inputs is restricted to [langdetect](https://pypi.org/project/langdetect/).
