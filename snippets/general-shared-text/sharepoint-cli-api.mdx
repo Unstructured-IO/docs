@@ -11,7 +11,8 @@ import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-d
 The following environment variables:
 
 - `SHAREPOINT_SITE_URL` - The SharePoint site URL, represented by `--site` (CLI) or `site` (Python).
-- `SHAREPOINT_SITE_PATH` - The path in the SharePoint site from which to start parsing files, represented by `--path` (CLI) or `path` (Python). The default is **Documents** (in the UI) or `Shared Documents/` (in the URL). To start parsing from somewhere else, specify the correct path format as described previously in this article.
+- `SHAREPOINT_LIBRARY_NAME` - The display name of the SharePoint library to use, represented by `--library` (CLI) or `library` (Python). The default is `Documents`.
+- `SHAREPOINT_SITE_PATH` - The path to use within the library, represented by `--path` (CLI) or `path` (Python). The default is the root of the target library. To use a different path, specify the correct path format as described previously in this article.
 - `ENTRA_ID_APP_CLIENT_ID` - The **Application (client) ID** value for the Microsoft Entra ID app registration, represented by `--client-id` (CLI) or `client_id` (Python).
 - `ENTRA_ID_APP_TENANT_ID` - The **Directory (tenant) ID** value for the Entra ID app registration, represented by `--client-id` (CLI) or `client_id` (Python).
 - `ENTRA_ID_TOKEN_AUTHORITY_URL` - The token authority URL for the Entra ID app registration, represented by `--authority-url` (CLI) or `authority_url` (Python). The default is `https://login.microsoftonline.com`.

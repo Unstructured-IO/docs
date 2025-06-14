@@ -35,6 +35,7 @@ if __name__ == "__main__":
                 password=os.getenv("ENTRA_ID_USER_PASSWORD"), # For username and password authentication.
             ),
             site=os.getenv("SHAREPOINT_SITE_URL"),
+            library=os.getenv("SHAREPOINT_LIBRARY_NAME"),
             client_id=os.getenv("ENTRA_ID_APP_CLIENT_ID"),
             tenant=os.getenv("ENTRA_ID_APP_TENANT_ID"),
             authority_url=os.getenv("ENTRA_ID_TOKEN_AUTHORITY_URL"),

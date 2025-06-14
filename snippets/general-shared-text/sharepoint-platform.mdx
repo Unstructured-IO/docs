@@ -2,8 +2,9 @@ Fill in the following fields:
 
 - **Name** (_required_): A unique name for this connector.
 - **Site URL** (_required_): The base URL of the SharePoint site to connect to.
-- **Path**: The path from which to start parsing files. The default is **Documents** (in the UI) or `Shared Documents/` (in the URL). To start parsing from somewhere else, specify the correct path format as described previously in this article.
-- **Recursive**: Check this box to recursively process data from subfolders within the specified path.
+- **Documents Library**: The display name of the SharePoint library to use. The default is `Documents`.
+- **Path**: The path to use within the library. The default is the root of the target library. To use a different path, specify the correct path format as described previously in this article.
+- **Recursive**: Check this box to recursively process data from subfolders within the target path.
 - **Client ID** (_required_): The **Application (client) ID** for the Microsoft Entra ID app registration with the correct set of Microsoft Graph access permissions.
 - **Tenant ID** (_required_): The **Directory (tenant) ID** for the Entra ID app registration.
 - **Authority URL** (_required_): The authentication token provider URL for the Entra ID app registration. The default is `https://login.microsoftonline.com`.
