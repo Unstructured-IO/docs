@@ -72,11 +72,11 @@ example, Japanese hiragana characters are processed as text, but the output can 
 
 ![The Fast strategy produces cryptic CID codes for hiragana characters](/img/partitioning/Hiragana-Fast.png)
 
-For handwriting, the **High Res** strategy typically produces unusable results, for example failing to properly recognize Japanese hiragana:
+For handwriting, the **High Res** strategy typically produces unusable results, for example:
 
 ![The High Res strategy typically produces unusable results for handwriting](/img/partitioning/Handwriting-Hi-Res.png)
 
-For multilanguage characters, the **High Res** strategy also typically produces unusable results:
+For multilanguage characters, the **High Res** strategy also typically produces unusable results, for example failing to recognize Japanese hiragana characters:
 
 ![The High Res strategy typically produces unusable results for multilanguage characters](/img/partitioning/Hiragana-Hi-Res.png)
 
@@ -84,7 +84,7 @@ The **VLM** strategy can produce great results for handwriting, such as this exa
 
 ![The VLM strategy can process handwriting well](/img/partitioning/Handwriting-VLM-GPT-4o.png)
 
-The **VLM** strategy also has great support for recognizing multilanguage characters, such as this example that uses GPT-4o by OpenAI to recognize Japanese hiragana:
+The **VLM** strategy also has great support for recognizing multilanguage characters, such as this example that uses GPT-4o by OpenAI to recognize Japanese hiragana characters:
 
 ![The VLM strategy can process Japanese hiragana well](/img/partitioning/Hiragana-VLM.png)
 
