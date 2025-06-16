@@ -4,12 +4,12 @@ title: Speed up processing of large files and batches
 
 When you use Unstructured, here are some techniques that you can try to help speed up the processing of large files and large batches of files.
 
-- Choose your partitioning strategy wisely. For example, if you have simple PDFs that don't have images and tables, you might be able to use the `fast` strategy. Try the `fast` strategy on a few of your documents before you try using the `hi_res` strategy. [Learn more](/ingestion/ingest-configuration/partition-configuration).
-- For processing large numbers of documents, use [ingestion](/ingestion/overview) and [add CPUs](#adding-cpus).
+- Choose your partitioning strategy wisely. For example, if you have simple PDFs that don't have images and tables, you might be able to use the `fast` strategy. Try the `fast` strategy on a few of your documents before you try using the `hi_res` strategy. [Learn more](/open-source/ingestion/ingest-configuration/partition-configuration).
+- For processing large numbers of documents, use [ingestion](/open-source/ingestion/overview) and [add CPUs](#adding-cpus).
 
 ## Adding CPUs
 
-For speeding up file processing during [ingestion](/ingestion/overview), the Unstructured CLI and Unstructured Python Ingest enable you to instruct Unstructured to use additional local CPUs where applicable. 
+For speeding up file processing during [ingestion](/open-source/ingestion/overview), the Unstructured CLI and Unstructured Python Ingest enable you to instruct Unstructured to use additional local CPUs where applicable. 
 
 Using additional local CPUs applies only to pipeline steps that Unstructured logs as being processed across CPUs. It does not apply to pipeline steps that are logged as being processed asynchronously. To get a list of which operations are processed where, look for the following log messages when you run an ingest pipeline:
 
@@ -50,7 +50,7 @@ In Python, to specify the maximum number of available local logical CPUs that ca
 
 ## PDF files
 
-To speed up PDF file processing, the [Unstructured Ingest CLI](/ingestion/overview#unstructured-ingest-cli) and the [Unstructured Ingest Python library](/ingestion/python-ingest) provide the following parameters to help speed up processing a large PDF file:
+To speed up PDF file processing, the [Unstructured Ingest CLI](/open-source/ingestion/overview#unstructured-ingest-cli) and the [Unstructured Ingest Python library](/open-source/ingestion/python-ingest) provide the following parameters to help speed up processing a large PDF file:
 
 - `split_pdf_page`, when set to true, splits the PDF file on the client side before sending it as batches to Unstructured for processing. The number of pages in each batch is determined internally. Batches can contain between 2 and 20 pages.
 - `split_pdf_concurrency_level` is an integer that specifies the number of parallel requests. The default is 5. The maximum is 15. This behavior is ignored unless `split_pdf_page` is also set to true.
