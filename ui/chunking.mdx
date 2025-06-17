@@ -79,17 +79,23 @@ This strategy does not use section boundaries, page boundaries, or content simil
 the chunks' contents.
 
 The following diagram illustrates conceptually how a candidate element is chunked to fit within the max characters (hard) and 
-new after n characters (soft) limits:
+new after n characters (soft) limits.
+
+- In scenario 1, the candidate element exceeds the hard limit, and so the candidate element will become the first element in the next chunk.
+- In scenario 2, the first candidate element exceeds the soft limit but remains within the hard limit. Because the second candidate element begins 
+  after the soft limit has been reached, the second candidate element will become the first element in the next chunk.
+- In scenario 3, the first two candidate elements exceed the soft limit but remain within the hard limit. Even though the third candidate element 
+  remains within the hard limit, because it begins after the soft limit has been reached, the third candidate element will become the first element in the next chunk.
 
 ![Chunking with hard and soft limits](/img/chunking/Chunking_Soft_Hard_Limits.png)
 
-The following two diagrams show how a basic chunking strategy with a max characters setting of 200 would chunk the following text and table elements.
+The following two conceptualdiagrams show how a basic chunking strategy with a max characters setting of 200 would chunk the following text and table elements.
 
-In this first diagram, each chunk of text gets as close as possible to the 200-character hard limit without going over, and lexical constructs such as sentence endings are not recognized:
+In this first conceptual diagram, each chunk of text gets as close as possible to the 200-character hard limit without going over, and lexical constructs such as sentence endings are not recognized:
 
 ![Basic chunking of text with a 200-character hard limit](/img/chunking/Chunk-By-Character-200-Paragraph.png)
 
-In this second diagram, each chunk for the table also gets as close as possible to the 200-character hard limit without going over. However, for tables, 
+In this second conceptual diagram, each chunk for the table also gets as close as possible to the 200-character hard limit without going over. However, for tables, 
 row endings are also considered in determining chunk boundaries. For this table, the first chunk is close to the 200-character hard limit and also a row ending. 
 The second chunk is well short of the 200-character hard limit because of a row (and, in this case, also the table) ending:
 
@@ -102,10 +108,10 @@ By default, overlap all is applied only to relatively large elements. If overlap
 The overlap setting is based on the number of characters, so words might be split. 
 The overlap setting's character count is included in the chunk size; nonetheless, the chunk's total size must not exceed the max characters setting. 
 
-The following diagram illustrates conceptually how chunks are calculated by setting overlap all to true or false. In this diagram, 
-setting overlap all to true results in a portion at the end of each chunk always being copied over to the beginning of the next chunk. 
-By default (or by setting overalp all to false) results in only a portion at the end of Element 6 Part 1 in Chunk 2 being copied over 
-to the beginning of Element 6 Part 2 in Chunk 3, because Element 6 is larger than the max characters setting:
+The following conceptual diagram illustrates conceptually how chunks are calculated by setting overlap all to true or false. In this diagram, setting overlap all to true results in a portion at the end of each chunk always being copied over to the beginning of the next chunk. 
+
+By default (or by setting overalp all to false), only a portion at the end of Element 6 Part 1 in Chunk 2 being is copied over 
+to the beginning of Element 6 Part 2 in Chunk 3, because Element 6 is larger than the max characters setting.
 
 ![Chunking with overall all set to true or false](/img/chunking/Chunking_Overlap_All.png)
 
@@ -122,7 +128,7 @@ The by-title chunking strategy attempts to preserve section boundaries when dete
 a **Title** element is encountered. The title is used as the section header for the chunk. The max characters and new after n 
 characters settings are still respected.
 
-The following diagram illustrates conceptually how elements are chunked when **Title** elements are encountered (see 
+The following conceptual diagram illustrates conceptually how elements are chunked when **Title** elements are encountered (see 
 Chunks 1, 4, and 6), while still respecting the max characters and new after n characters settings (see Chunks 2 and 3):
 
 ![Chunking by title](/img/chunking/Chunking_By_Title.png)
@@ -130,21 +136,18 @@ Chunks 1, 4, and 6), while still respecting the max characters and new after n c
 A single chunk should not contain text that occurred in two different sections. When a new section starts, the existing 
 chunk is closed and a new one is started, even if the next element would fit in the prior chunk.
 
-The following conceptual diagram illustrates this point, in that many **Title** elements can produce many relatively small chunks:
+The following conceptual diagram illustrates this point, in that many **Title** elements can produce many relatively small chunks.
 
 ![Many titles can lead to many chunks by title](/img/chunking/Chunking_By_Title_Segmentation.png)
 
 To reduce the number of chunks, you can use the [combine text under n characters](#combine-text-under-n-characters-setting) setting. This 
-settings attempts to combine elements into a single chunk until the combine text under n characters limit is reached, as shown in the 
-following conceptual diagram:
+setting attempts to combine elements into a single chunk until the combine text under n characters limit is reached, as shown in the 
+following conceptual diagram. In this case, multiple **Title** elements are combined into a single chunk. However, when the 
+combine text under n characters limit is reached, the chunk is closed and a new one is started. In any case, the new chunk must start with a **Title** element. 
+For instance, if Element 3 exceeded the combine text under n characters limit, the chunk would be closed and a new one would be started, beginning 
+with Title 2, followed by Element 3.
 
 ![Chunking with combine text under n characters](/img/chunking/Chunking_Combine_Text.png)
-
-Setting combine text under n characters to a value equal to or greater than the new after n characters setting is not recommended, as it 
-can result in substantially longer chunks overall and also pushing titles by themselves into previous chunks. The following conceptual 
-diagram illustrates this point:
-
-![Chunking with combine text under n characters issue](/img/chunking/Chunking_Combine_Text_Limits.png)
 
 The following diagram shows how a chunk by title strategy with a max characters setting of 200 would chunk the following text. 
 Although the first chunk is close to the 200-character hard limit, the second chunk is well short of this limit due to encountering the 
