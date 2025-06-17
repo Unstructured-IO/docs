@@ -2346,9 +2346,18 @@ For `curl` or Postman, you can specify multiple query parameters as `?workflow_i
 
 ### Get a job
 
-To get information about a job, use the `UnstructuredClient` object's `jobs.get_job` function (for the Python SDK) or 
+To get basic information about a job, use the `UnstructuredClient` object's `jobs.get_job` function (for the Python SDK) or 
 the `GET` method to call the `/jobs/<job-id>` endpoint (for `curl` or Postman), replacing 
 `<job-id>` with the job's unique ID. To get this ID, see [List jobs](#list-jobs).
+
+This function/endpoint returns basic information about the job, such as:
+
+- The job's unique ID.
+- The unique ID and name of the workflow that created the job.
+- The job's current status.
+- When the job was created.
+
+To get details about a job's current processing status, see [Get processing details for a job](#get-processing-details-for-a-job).
 
 <AccordionGroup>
     <Accordion title="Python SDK">
@@ -2419,6 +2428,180 @@ the `GET` method to call the `/jobs/<job-id>` endpoint (for `curl` or Postman), 
 
             ```text
             {{UNSTRUCTURED_API_URL}}/jobs/<job-id>
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+### Get processing details for a job
+
+To get current processing information about a job, use the `UnstructuredClient` object's `jobs.get_job_details` function (for the Python SDK) or 
+the `GET` method to call the `/jobs/<job-id>/details` endpoint (for `curl` or Postman), replacing 
+`<job-id>` with the job's unique ID. To get this ID, see [List jobs](#list-jobs).
+
+To get basic information about a job, see [Get a job](#get-a-job).
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import GetJobDetailsRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.jobs.get_job_details(
+            request=GetJobRequest(
+                job_id="<job-id>"
+            )
+        )
+
+        info = response.job_information
+
+        print(f"id:            {info.id}")
+        print(f"status:        {info.status}")
+        print(f"workflow name: {info.workflow_name}")
+        print(f"workflow id:   {info.workflow_id}")
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import GetJobRequest
+
+        async def get_job():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = await client.jobs.get_job_async(
+                request=GetJobRequest(
+                    job_id="<job-id>"
+                )
+            )
+
+            info = response.job_information
+
+            print(f"id: {info.id}")
+            print(f"status: {info.status}")
+            print(f"workflow name: {info.workflow_name}")
+            print(f"workflow id: {info.workflow_id}")
+
+        asyncio.run(get_job())
+        ```
+    </Accordion>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'GET' --location \
+        "$UNSTRUCTURED_API_URL/jobs/<job-id>/details" \
+        --header 'accept: application/json' \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/jobs/<job-id>/details
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+### Get failed file details for a job
+
+To get the list of any failed files for a job and why those files failed, use the `UnstructuredClient` object's `jobs.get_failed_files` function (for the Python SDK) or 
+the `GET` method to call the `/jobs/<job-id>/failed-files` endpoint (for `curl` or Postman), replacing 
+`<job-id>` with the job's unique ID. To get this ID, see [List jobs](#list-jobs).
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import GetJobDetailsRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.jobs.get_job_details(
+            request=GetJobRequest(
+                job_id="<job-id>"
+            )
+        )
+
+        info = response.job_information
+
+        print(f"id:            {info.id}")
+        print(f"status:        {info.status}")
+        print(f"workflow name: {info.workflow_name}")
+        print(f"workflow id:   {info.workflow_id}")
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import GetJobRequest
+
+        async def get_job():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = await client.jobs.get_job_async(
+                request=GetJobRequest(
+                    job_id="<job-id>"
+                )
+            )
+
+            info = response.job_information
+
+            print(f"id: {info.id}")
+            print(f"status: {info.status}")
+            print(f"workflow name: {info.workflow_name}")
+            print(f"workflow id: {info.workflow_id}")
+
+        asyncio.run(get_job())
+        ```
+    </Accordion>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'GET' --location \
+        "$UNSTRUCTURED_API_URL/jobs/<job-id>/failed-files" \
+        --header 'accept: application/json' \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/jobs/<job-id>/failed-files
             ```
 
         3. On the **Headers** tab, enter the following headers:
