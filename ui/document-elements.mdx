@@ -145,7 +145,17 @@ Here are some notes on additional metadata fields by file type:
 
 #### Email
 
-Emails will include `sent_from`, `sent_to`, and `subject` metadata. `sent_from` is a list of strings because
+For emails, metadata will contain the following fields, where available:
+
+- `bcc_recipient`
+- `cc_recipient`
+- `email_message_id`
+- `sent_from`
+- `sent_to`
+- `signature`
+- `subject` 
+
+`sent_from` is a list of strings because
 the [RFC 822](https://www.rfc-editor.org/rfc/rfc822) spec for emails allows for multiple sent from email addresses.
 
 #### Microsoft Excel files
