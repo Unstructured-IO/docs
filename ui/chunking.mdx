@@ -83,9 +83,21 @@ new after n characters (soft) limits:
 
 ![Chunking with hard and soft limits](/img/chunking/Chunking_Soft_Hard_Limits.png)
 
+The following two diagrams show how a basic chunking strategy with a max characters setting of 200 would chunk the following text and table elements.
+
+In this first diagram, each chunk of text gets as close as possible to the 200-character hard limit without going over, and lexical constructs such as sentence endings are not recognized:
+
+![Basic chunking of text with a 200-character hard limit](/img/chunking/Chunk-By-Character-200-Paragraph.png)
+
+In this second diagram, each chunk for the table also gets as close as possible to the 200-character hard limit without going over. However, for tables, 
+row endings are also considered in determining chunk boundaries. For this table, the first chunk is close to the 200-character hard limit and also a row ending. 
+The second chunk is well short of the 200-character hard limit because of a row (and, in this case, also the table) ending:
+
+![Basic chunking of a table with a 200-character hard limit](/img/chunking/Chunk-By-Character-200-Table.png)
+
 Context between chunks can be maintained by using the [overlap](#overlap-setting) and [overlap all](#overlap-all-setting) settings. 
 The overlap setting repeats the specified number of characters from the end of the previous chunk at the beginning of the next chunk. 
-By default, overlap all is applied only to relatively large elements If overlap all is set to true, the overlap is applied to all chunks, regardless.
+By default, overlap all is applied only to relatively large elements. If overlap all is set to true, the overlap is applied to all chunks, regardless.
 
 The overlap setting is based on the number of characters, so words might be split. 
 The overlap setting's character count is included in the chunk size; nonetheless, the chunk's total size must not exceed the max characters setting. 
@@ -96,6 +108,11 @@ By default (or by setting overalp all to false) results in only a portion at the
 to the beginning of Element 6 Part 2 in Chunk 3, because Element 6 is larger than the max characters setting:
 
 ![Chunking with overall all set to true or false](/img/chunking/Chunking_Overlap_All.png)
+
+The following diagram shows how a basic chunking strategy with a max characters setting of 200, an overlap of 25 characters, and 
+overlap all set to true would chunk the following text. Note that some of the text is split in the middle of a word:
+
+![Basic chunking of text with a 200-character hard limit, an overlap of 25 characters, and overlap all set to true](/img/chunking/Chunk-By-Character-200-Overlap-25.png)
 
 To use this chunking strategy, choose **Chunk by character** in the **Chunkers** section of a **Chunker** node in a workflow.
 
@@ -129,6 +146,12 @@ diagram illustrates this point:
 
 ![Chunking with combine text under n characters issue](/img/chunking/Chunking_Combine_Text_Limits.png)
 
+The following diagram shows how a chunk by title strategy with a max characters setting of 200 would chunk the following text. 
+Although the first chunk is close to the 200-character hard limit, the second chunk is well short of this limit due to encountering the 
+title immediately after it, which starts a new chunk:
+
+![Chunking by title with a 200-character hard limit](/img/chunking/Chunk-By-Title-200-Paragraph.png)
+
 To use this chunking strategy, choose **Chunk by title** in the **Chunkers** section of a **Chunker** node in a workflow.
 
 ## Chunk by page strategy
@@ -136,6 +159,12 @@ To use this chunking strategy, choose **Chunk by title** in the **Chunkers** sec
 The by-page chunking strategy attempts to preserve page boundaries when determining the chunks' contents. 
 A single chunk should not contain text that occurred in two different page. When a new page starts, the existing 
 chunk is closed and a new one is started, even if the next element would fit in the prior chunk.
+
+The following diagram shows how a chunk by page strategy with a max characters setting of 200 would chunk the following text. 
+Notice that due to the page break, the second chunk is very small, as it could not fit into the first chunk's hard character limit.  
+Nonetheless, the second chunk is still part of same page as the first chunk:
+
+![Chunking by page with a 200-character hard limit](/img/chunking/Chunk-By-Page-200.png)
 
 To use this chunking strategy, choose **Chunk by page** in the **Chunkers** section of a **Chunker** node in a workflow.
 
@@ -152,6 +181,12 @@ guarantee that two elements with low similarity will not be combined in a single
 To use this chunking strategy, choose **Chunk by similarity** in the **Chunkers** section of a **Chunker** node in a workflow.
 
 You can control the level of topic similarity you require for elements to have by setting [Similarity threshold](#similarity-threshold).
+
+The following diagram shows how a chunk by similarity strategy with a max characters setting of 1000 and similarity threshold of 0.5 would chunk the following text. 
+Notice that the two chunks are well short of the 1000-character hard limit, as the paragraph break introduces a convenient lexical construct for 
+helping determinine the similarities of sentences to each other:
+
+![Chunking by similarity with a 1000-character hard limit and 0.5 similarity threshold](/img/chunking/Chunk-By-Similarity-1000-50.png)
 
 ## Max characters setting
 

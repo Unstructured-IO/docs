@@ -1,6 +1,5 @@
 ---
-title: Unstructured Open Source 
-sidebarTitle: Overview
+title: Overview
 ---
 
 <Note>The Unstructured open source library is designed as a starting point for quick prototyping and has [limits](#limits). For production scenarios, use the [Unstructured user interface (UI)](/ui/overview) or the [Unstructured API](/api-reference/overview) instead.</Note>
@@ -28,7 +27,7 @@ and use cases.
         
     *   [Extracting](/open-source/core-functionality/extracting): This functionality allows for the extraction of specific entities within documents. It is designed to identify and isolate relevant pieces of information, making it easier for users to focus on the most pertinent data in their documents.
         
-    *   [Staging](/open-source/core-functionality/staging): Staging functions help prepare your data for ingestion into downstream systems. Please note that this functionality is being deprecated in favor of [destination connectors](/ingestion/destination-connectors/overview) in the [Unstructured Ingest CLI and Unstructured Ingest Python library](/ingestion/overview).        
+    *   [Staging](/open-source/core-functionality/staging): Staging functions help prepare your data for ingestion into downstream systems. Please note that this functionality is being deprecated in favor of [destination connectors](/open-source/ingestion/destination-connectors/overview) in the [Unstructured Ingest CLI and Unstructured Ingest Python library](/open-source/ingestion/overview).        
     
     *   [Chunking](/open-source/core-functionality/chunking): The chunking process in Unstructured is distinct from conventional methods. Instead of relying solely on text-based features to form chunks, Unstructured uses a deep understanding of document formats to partition documents into semantic units (document elements).
     
@@ -58,3 +57,23 @@ The Unstructured open source library has the following limits as compared to the
 * Less sophisticated document hierarchy detection.
 * You must manage many of your own code dependencies, for instance for libraries such as Poppler and Tesseract.
 * You must manage your own infrastructure, including parallelization and other performance optimizations.
+
+## Pricing
+
+Calls to the Unstructured open source library that are routed to Unstructured's software-as-a-service (SaaS) 
+for processing (for example, by calling the 
+[partition_via_api](/open-source/core-functionality/partitioning#partition-via-api) or 
+[partition_multiple_via_api](/open-source/core-functionality/partitioning#partition-multiple-via-api) functions with an 
+Unstructured API key and an Unstructured SaaS URL) require an Unstructured account for billing purposes. 
+
+import Pricing from '/snippets/general-shared-text/pricing-platform.mdx';
+
+<Pricing />
+
+
+
+
+
+
+
+

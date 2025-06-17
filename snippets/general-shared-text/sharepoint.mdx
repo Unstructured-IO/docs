@@ -38,12 +38,10 @@
 
   [Learn more](https://learn.microsoft.com/microsoft-365/community/query-string-url-tricks-sharepoint-m365).
 
-- The path in the SharePoint Online site from which to start parsing files. By default, parsing starts from the site's **Documents** folder (if viewed from the site's UI) or the 
-  `Shared Documents` folder (if viewed from the site's URL). 
-
-  To start parsing from a path than **Documents** (in the UI) or `Shared Documents/` (in the URL), specify only the part of the path that 
-  comes after that. For example, to start parsing from **Documents > my-folder > my-subfolder** (in the UI) or 
-  `Shared Documents/my-folder/my-subfolder` (in the URL), specify `my-folder/my-subfolder`.
+- The display name of the SharePoint Online library to use. The default is `Documents`.
+- The path to the SharePoint Online library to use. By default, the root of the target library is used. 
+  To start from a path other than the root, enter the path that you want to use, beginning from the root. For example, to use 
+  the **my-folder > my-subfolder** path in the target library, you would specify `my-folder/my-subfolder`.
 
   The following video shows how to get the site URL and a path within the site:
 
