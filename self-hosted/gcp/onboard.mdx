@@ -12,8 +12,10 @@ sidebarTitle: Onboarding
 </Note>
 
 After your organization has signed the self-hosting agreement with Unstructured, a member of the Unstructured technical enablement team will reach out to you to begin the 
-deployment onboarding process. To streamline this process, you are encouraged to begin setting up your target environment as soon as possible. To do this, you 
-must first set up your GCP account as follows.
+deployment onboarding process. To streamline this process, you are encouraged to begin setting up your target environment as soon as possible. Choose one of the following setup options:
+
+- [Do it all for me](#do-it-all-for-me): Have Unstructured set up the required infrastructure in your AWS account and then deploy the Unstructured UI and API into that newly created infrastructure.
+- [Bring my own infrastructure](#bring-my-own-infrastructure): Set up the required infrastructure yourself in your AWS account, and then have Unstructured deploy the Unstructured UI and API into your existing infrastructure.
 
 ## Questions? Need help?
 
@@ -22,9 +24,102 @@ email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io
 [contact form](https://unstructured.io/contact) on the Unstructured website, and a member of the Unstructured sales or technical enablement teams 
 will get back to you as soon as possible.
 
-## Onboarding checklist
+## Do it all for me
 
-Set up the following infrastructure within your GCP account for Unstructured to deploy the Unstructured UI and API into.
+If you want Unstructured to set up the required infrastructure for you in your GCP account and then deploy the Unstructured UI and API into that newly created infrastructure, then provide your Unstructured sales representative or technical enablement contact with 
+the access credentials for an IAM user or service account in your GCP account that has the following required permissions:
+
+### Core networking permissions
+
+VPC/subnet management:
+
+- `compute.networks.create`
+- `compute.subnetworks.create`
+- `compute.routers.create` (for Cloud NAT)
+- `compute.addresses.create` (for NAT IPs)
+- `compute.firewalls.create` (for intra-cluster traffic rules)
+
+Shared VPC (if used):
+
+- `compute.organizations.admin` (for the host project)
+- `compute.networks.use` (for the service project)
+
+### GKE cluster permissions
+
+Control plane:
+
+- `container.clusters.create`
+- `container.clusters.update` (for private cluster settings)
+- `compute.networks.useExternalIp` (for public endpoint access)
+
+Node pools:
+
+- `compute.instances.create`
+- `compute.disks.create` (for node disks)
+- `compute.instanceGroups.create` (for autoscaling)
+
+IAM roles:
+
+- For the GKE cluster SA service account: `roles/container.hostServiceAgentUser`
+- For the node SA	service account: `roles/container.nodeServiceAccount`
+- For the workload identity	service account: `roles/iam.workloadIdentityUser`
+
+### Storage and database
+
+GCS buckets:
+
+- `storage.buckets.create`
+- `storage.objects.create` (for versioning)
+- `storage.buckets.update` (for encryption/lifecycle rules)
+
+Cloud SQL:
+
+- `cloudsql.instances.create`
+- `cloudsql.instances.connect` (for private IPs)
+- `vpcaccess.connectors.use` (if using Serverless VPC Access)
+
+Persistent disks (CSI):
+
+- `compute.disks.create` (for `pd.csi.storage.gke.io`)
+- `compute.subnetworks.use` (for regional disks)
+
+### Advanced configurations
+
+Workload identity:
+
+- `iam.serviceAccounts.getAccessToken` (for federated access)
+- `iam.serviceAccounts.setIamPolicy` (to bind Kubernetes SAs to GCP SAs)
+
+Cloud NAT:
+
+- `compute.routers.update` (for NAT configuration)
+- `compute.addresses.use` (for NAT IP allocation)
+
+OS login/SSH:
+
+- `compute.projects.setCommonInstanceMetadata` (for SSH key upload)
+- `compute.instances.osAdminLogin`
+
+### Minimum required roles
+
+Project level:
+
+- `roles/editor` (broad access, or scope with custom roles)
+
+Scoped roles:
+
+- `roles/compute.networkAdmin` (for VPC and subnets)
+- `roles/container.admin` (for GKE)
+- `roles/storage.admin` (for GCS)
+- `roles/cloudsql.admin` (for Postgres)
+
+## Bring my own infrastructure
+
+If you want to set up the required infrastructure yourself, set things up as follows within your GCP account for Unstructured to deploy the Unstructured UI and API into.
+
+You must also provide your Unstructured sales representative or technical enablement contact with 
+the access credentials for an IAM user or service account in your GCP account that has access to the target Google Kubernetes Engine (GKE) cluster to deploy the 
+Unstructured UI and API into.
 
 ### **VPC and networking (GCP equivalent)**
 
