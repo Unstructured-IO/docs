@@ -1,0 +1,5 @@
+- `<name>` (_required_) - A unique name for this connector.
+- `<channel>` (_required_): The ID of the target Slack channel to read messages from.
+- `<start-date>`: The starting date and time, in ISO 8601 format such as `YYYY-MM-DDTHH:MM:SSZ`, to start reading messages from. Messages that were created earlier than this date and time are ignored. By default, all messages are read unless `<end-date>` is specified.
+- `<end-date>`: The ending date and time, in ISO 8601 format such as `YYYY-MM-DDTHH:MM:SSZ`, to stop reading messages at. Messages that are created after this date and time are ignored. By default, all messages are read unless `<start-date>` is specified.
+- `<token>` (_required_): The access token for the Slack app that has access to the target Slack channels to read messages from.
