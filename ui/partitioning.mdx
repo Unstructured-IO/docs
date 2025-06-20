@@ -61,6 +61,33 @@ The following example shows GPT-4o by OpenAI being used. If the **Auto** strateg
 
 ![The VLM strategy processes tables in PDF files with table summaries and text as HTML](/img/partitioning/VLM-Auto-Table-GPT-4o-Example.png)
 
+## Handwriting and multilanguage characters in PDF files
+
+The differences between the various partitioning strategies can be more clearly demonstrated by the ways each of these strategies handle handwriting and multilanguage characters within PDF files.
+
+For example, the **Fast** partitioning strategy skips processing handwriting altogether in PDF files. 
+
+The **Fast** strategy processes multilanguage characters in PDF files with limited output, depending on the language. In the following 
+example, Japanese hiragana characters are processed as text, but the output can be very difficult to work with:
+
+![The Fast strategy produces cryptic CID codes for hiragana characters](/img/partitioning/Hiragana-Fast.png)
+
+For handwriting, the **High Res** strategy typically produces unusable results, for example:
+
+![The High Res strategy typically produces unusable results for handwriting](/img/partitioning/Handwriting-Hi-Res.png)
+
+For multilanguage characters, the **High Res** strategy also typically produces unusable results, for example failing to recognize Japanese hiragana characters:
+
+![The High Res strategy typically produces unusable results for multilanguage characters](/img/partitioning/Hiragana-Hi-Res.png)
+
+The **VLM** strategy can produce great results for handwriting, such as this example that uses GPT-4o by OpenAI:
+
+![The VLM strategy can process handwriting well](/img/partitioning/Handwriting-VLM-GPT-4o.png)
+
+The **VLM** strategy also has great support for recognizing multilanguage characters, such as this example that uses GPT-4o by OpenAI to recognize Japanese hiragana characters:
+
+![The VLM strategy can process Japanese hiragana well](/img/partitioning/Hiragana-VLM.png)
+
 ## Supported languages
 
 **Fast** partitioning accepts any text inputs, though automatic language detection of those inputs is restricted to [langdetect](https://pypi.org/project/langdetect/).
