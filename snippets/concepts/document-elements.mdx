@@ -142,28 +142,40 @@ print(element.metadata.coordinates.system.height)
 
 ```
 
-
 ### Additional metadata fields by document type
 
-| Field Name             | Applicable Doc Types | Description                                                                   |
-|------------------------|----------------------|-------------------------------------------------------------------------------|
-| `page_number`          | DOCX, PDF, PPT, XLSX | Page number                                                                   |
-| `page_name`            | XLSX                 | Sheet name in an Excel document                                               |
-| `sent_from`            | EML                  | Email sender                                                                  |
-| `sent_to`              | EML                  | Email recipient                                                               |
-| `subject`              | EML                  | Email subject                                                                 |
-| `attached_to_filename` | MSG                  | filename that attachment file is attached to                                  |
-| `header_footer_type`   | Word Doc             | Pages a header or footer applies to: "primary", "even_only", and "first_page" |
-| `link_urls`            | HTML                 | The url associated with a link in a document.                                 |
-| `link_texts`           | HTML                 | The text associated with a link in a document.                                |
-| `section`              | EPUB                 | Book section title corresponding to table of contents                         |
+| Field name             | Applicable file types | Description                                                                                                                         |
+|------------------------|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| `attached_to_filename` | MSG                   | The name of the file that the attached file is attached to.                                                                         |
+| `bcc_recipient`        | EML                   | The related [email](#email) BCC recipient.                                                                                          |
+| `cc_recipient`         | EML                   | The related [email](#email) CC recipient.                                                                                           |
+| `email_message_id`     | EML                   | The related [email](#email) message ID.                                                                                             |
+| `header_footer_type`   | Word Doc              | The pages that a header or footer applies to in a [Word document](#microsoft-word-files): `primary`, `even_only`, and `first_page`. |
+| `link_urls`            | HTML                  | The URL that is associated with a link in a document.                                                                               |
+| `link_texts`           | HTML                  | The text that is associated with a link in a document.                                                                              |
+| `page_name`            | XLSX                  | The related sheet's name in an [Excel file](#microsoft-excel-files).                                                                |
+| `page_number`          | DOCX, PDF, PPT, XLSX  | The related file's page number.                                                                                                     |
+| `section`              | EPUB                  | The book section title corresponding to a table of contents.                                                                        |
+| `sent_from`            | EML                   | The related [email](#email) sender.                                                                                                 |
+| `sent_to`              | EML                   | The related [email](#email) recipient.                                                                                              |
+| `signature`            | EML                   | The related [email](#email) signature.                                                                                              |
+| `subject`              | EML                   | The related [email](#email) subject.                                                                                                |
 
 Notes on additional metadata by document type:
 
 #### Email
 
-Emails will include `sent_from`, `sent_to`, and `subject` metadata. `sent_from` is a list of strings because
-the [RFC 822](https://www.rfc-editor.org/rfc/rfc822) spec for emails allows for multiple sent from email addresses.
+For emails, metadata will contain the following fields, where available:
+
+- `bcc_recipient`
+- `cc_recipient`
+- `email_message_id`
+- `sent_from`
+- `sent_to`
+- `signature`
+- `subject` 
+
+`sent_from` is a list of strings because the [RFC 822](https://www.rfc-editor.org/rfc/rfc822) spec for emails allows for multiple sent from email addresses.
 
 #### Microsoft Excel documents
 
