@@ -89,17 +89,16 @@ import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-s
 <GetStartedSimpleAPIOnly/>
 
 Calls made by the Unstructured Python SDK's `unstructured_client` functions for creating, listing, updating, 
-and deleting connectors, workflows, and jobs in the Unstructured UI all use the Unstructured Workflow Endpoint URL (`https://platform.unstructuredapp.io/api/v1`) by default. You do not need to 
-use the `server_url` parameter to specify this API URL in your Python code for these particular functions.
+and deleting connectors, workflows, and jobs in the Unstructured UI all use the Unstructured Workflow Endpoint URL. 
+This URL was provided to you when your Unstructured account was created. 
+If you do not have this URL, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
 
 <Note>
-    If you signed up through the [For Enterprise](https://unstructured.io/enterprise) page, your API URL and API key creation guidance 
-    might be different. For guidance, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io). 
-    If your API URL is different, be sure to substitute `https://platform.unstructuredapp.io/api/v1` for your 
-    API URL throughout the following examples.
-
-    To specify an API URL in your code, set the `server_url` parameter in the `UnstructuredClient` constructor to the target API URL.
+    The default URL for the Unstructured Worfklow Endpoint is `https://platform.unstructuredapp.io/api/v1`. 
+    However, you should always use the URL that was provided to you when your Unstructured account was created.
 </Note>
+
+To specify an API URL in your code, set the `server_url` parameter in the `UnstructuredClient` constructor to the target API URL.
 
 The Unstructured Workflow Endpoint enables you to work with [connectors](#connectors),
 [workflows](#workflows), and [jobs](#jobs) in the Unstructured UI.
@@ -128,8 +127,11 @@ utilities, tools, programming languages, packages, and libraries. The examples, 
 
 <Tip>
     You can also use the [Unstructured Workflow Endpoint - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
-    that are available through `https://platform.unstructuredapp.io`. To use the Swagger UI, you must provide your Unstructured API key with each call. To 
+    that are available through the default Unstructured Workflow Endpoint URL: `https://platform.unstructuredapp.io`. To use the Swagger UI, you must provide your Unstructured API key with each call. To 
     get this API key, see the [quickstart](#quickstart), earlier on this page.
+
+    Note that you should always use the URL that was provided to you when your Unstructured account was created. 
+    If you do not have this URL, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
 </Tip>
 
 ### curl and Postman
@@ -140,6 +142,14 @@ The following `curl` examples use the following environment variables, which you
 export UNSTRUCTURED_API_URL="https://platform.unstructuredapp.io/api/v1"
 export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
 ```
+
+For the API URL, this URL was provided to you when your Unstructured account was created. 
+If you do not have this URL, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+
+<Note>
+    The default URL for the Unstructured Worfklow Endpoint is `https://platform.unstructuredapp.io/api/v1`. 
+    However, you should always use the URL that was provided to you when your Unstructured account was created.
+</Note>
 
 These environment variables enable you to more easily run the following `curl` examples and help prevent 
 you from storing scripts that contain sensitive URLs and API keys in public source code repositories.
@@ -156,8 +166,8 @@ The following Postman examples use variables, which you can set as follows:
 
    - **Variable**: `UNSTRUCTURED_API_URL`
    - **Type**: `default`
-   - **Initial value**: `https://platform.unstructuredapp.io/api/v1`
-   - **Current value**: `https://platform.unstructuredapp.io/api/v1`
+   - **Initial value**: The Unstructured Workflow Endpoint URL that was provided to you when your Unstructured account was created.
+   - **Current value**: The Unstructured Workflow Endpoint URL that was provided to you when your Unstructured account was created.
    <br/>
    - **Variable**: `UNSTRUCTURED_API_KEY`
    - **Type**: `secret`
@@ -225,7 +235,7 @@ The following Unstructured SDKs, tools, and libraries do _not_ work with the Uns
 - The [Unstructured Ingest CLI](/open-source/ingestion/ingest-cli)
 - The [Unstructured Ingest Python library](/open-source/ingestion/python-ingest)
 
-The following Unstructured API URL is also _not_ supported: `https://api.unstructuredapp.io/general/v0/general` (the Unstructured Partition Endpoint URL).
+The following Unstructured API URL is also _not_ supported: `https://api.unstructuredapp.io/general/v0/general` (the default Unstructured Partition Endpoint URL).
 
 ## Connectors
 

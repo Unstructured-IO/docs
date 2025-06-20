@@ -6,11 +6,14 @@ description: This page provides some examples of accessing Unstructured Partitio
 To use these examples, you'll first need to set an environment variable named `UNSTRUCTURED_API_KEY`, 
 representing your Unstructured API key. [Get your API key](/api-reference/partition/overview).
 
-For the POST and Unstructured JavaScript/TypeScript SDK examples, you'll also need to set an environment variable named `UNSTRUCTURED_API_URL` to the 
-value `https://api.unstructuredapp.io/general/v0/general`
+Also, you'll need to set an environment variable named `UNSTRUCTURED_API_URL` to the 
+value of the Unstructured API URL for your account. This API URL was provided to you when your Unstructured account was created. 
+If you do not have this API URL, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
 
-For the Unstructured Python SDK, you do not need to set an environment variable named `UNSTRUCTURED_API_URL`, as the Python SDK uses the API URL of 
-`https://api.unstructuredapp.io/general/v0/general` by default. (The Unstructured JavaScript/TypeScript SDK does not have this feature yet; you must always specify the API URL.)
+<Note>
+    For the Unstructured Python SDK, the API URL is set to `https://api.unstructuredapp.io/general/v0/general` by default. 
+    However, you should always use the API URL that was provided to you when your Unstructured account was created.
+</Note>
 
 ### Changing partition strategy for a PDF
 
