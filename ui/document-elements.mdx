@@ -135,8 +135,12 @@ The `coordinates` metadata field contains:
 | `cc_recipient`         | EML                   | The related [email](#email) CC recipient.                                                                                           |
 | `email_message_id`     | EML                   | The related [email](#email) message ID.                                                                                             |
 | `header_footer_type`   | Word Doc              | The pages that a header or footer applies to in a [Word document](#microsoft-word-files): `primary`, `even_only`, and `first_page`. |
-| `link_urls`            | HTML                  | The URL that is associated with a link in a document.                                                                               |
-| `link_texts`           | HTML                  | The text that is associated with a link in a document.                                                                              |
+| `image_mime_type`      | HTML, image, PDF      | The MIME type of the image.                                                                                                         |
+| `image_url`            | HTML                  | The URL to the image.                                                                                                               |
+| `link_start_indexes`   | HTML, PDF             | A list of the index locations within the extracted content where the `links` can be found.                                          |
+| `link_texts`           | HTML                  | A list of text strings that are associated with the `link_urls`.                                                                    |
+| `link_urls`            | HTML                  | A list of URLs within the extracted content.                                                                                        |
+| `links`                | PDF                   | A list of links within the extracted content.                                                                                       |
 | `page_name`            | XLSX                  | The related sheet's name in an [Excel file](#microsoft-excel-files).                                                                |
 | `page_number`          | DOCX, PDF, PPT, XLSX  | The related file's page number.                                                                                                     |
 | `section`              | EPUB                  | The book section title corresponding to a table of contents.                                                                        |
