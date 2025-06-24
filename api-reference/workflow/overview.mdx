@@ -2460,17 +2460,27 @@ To get basic information about a job, see [Get a job](#get-a-job).
         )
 
         response = client.jobs.get_job_details(
-            request=GetJobRequest(
+            request=GetJobDetailsRequest(
                 job_id="<job-id>"
             )
         )
 
-        info = response.job_information
+        info = response.job_details
 
-        print(f"id:            {info.id}")
-        print(f"status:        {info.status}")
-        print(f"workflow name: {info.workflow_name}")
-        print(f"workflow id:   {info.workflow_id}")
+        print(f"job id:            {info.id}")
+        print(f"processing status: {info.processing_status}")
+        print(f"message:           {info.message}")
+        print(f"node stats:")
+
+        for node_stat in info.node_stats:
+            print(f"---")
+            print(f"name:        {node_stat.node_name}")
+            print(f"type:        {node_stat.node_type}")
+            print(f"subtype:     {node_stat.node_subtype}")
+            print(f"ready:       {node_stat.ready}")
+            print(f"in progress: {node_stat.in_progress}")
+            print(f"success:     {node_stat.success}")
+            print(f"failure:     {node_stat.failure}")
         ```
     </Accordion>
     <Accordion title="Python SDK (async)">
@@ -2479,27 +2489,37 @@ To get basic information about a job, see [Get a job](#get-a-job).
         import asyncio
 
         from unstructured_client import UnstructuredClient
-        from unstructured_client.models.operations import GetJobRequest
+        from unstructured_client.models.operations import GetJobDetailsRequest
 
-        async def get_job():
+        async def get_job_details():
             client = UnstructuredClient(
                 api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
             )
 
-            response = await client.jobs.get_job_async(
-                request=GetJobRequest(
+            response = client.jobs.get_job_details(
+                request=GetJobDetailsRequest(
                     job_id="<job-id>"
                 )
             )
 
-            info = response.job_information
+            info = response.job_details
 
-            print(f"id: {info.id}")
-            print(f"status: {info.status}")
-            print(f"workflow name: {info.workflow_name}")
-            print(f"workflow id: {info.workflow_id}")
+            print(f"job id:            {info.id}")
+            print(f"processing status: {info.processing_status}")
+            print(f"message:           {info.message}")
+            print(f"node stats:")
 
-        asyncio.run(get_job())
+            for node_stat in info.node_stats:
+                print(f"---")
+                print(f"name:        {node_stat.node_name}")
+                print(f"type:        {node_stat.node_type}")
+                print(f"subtype:     {node_stat.node_subtype}")
+                print(f"ready:       {node_stat.ready}")
+                print(f"in progress: {node_stat.in_progress}")
+                print(f"success:     {node_stat.success}")
+                print(f"failure:     {node_stat.failure}")
+
+        asyncio.run(get_job_details())
         ```
     </Accordion>
     <Accordion title="curl">
@@ -2529,7 +2549,7 @@ To get basic information about a job, see [Get a job](#get-a-job).
 
 ### Get failed file details for a job
 
-To get the list of any failed files for a job and why those files failed, use the `UnstructuredClient` object's `jobs.get_failed_files` function (for the Python SDK) or 
+To get the list of any failed files for a job and why those files failed, use the `UnstructuredClient` object's `jobs.get_job_failed_files` function (for the Python SDK) or 
 the `GET` method to call the `/jobs/<job-id>/failed-files` endpoint (for `curl` or Postman), replacing 
 `<job-id>` with the job's unique ID. To get this ID, see [List jobs](#list-jobs).
 
@@ -2539,24 +2559,29 @@ the `GET` method to call the `/jobs/<job-id>/failed-files` endpoint (for `curl` 
         import os
 
         from unstructured_client import UnstructuredClient
-        from unstructured_client.models.operations import GetJobDetailsRequest
+        from unstructured_client.models.operations import GetJobFailedFilesRequest
 
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
-        response = client.jobs.get_job_details(
-            request=GetJobRequest(
+        response = client.jobs.get_job_failed_files(
+            request=GetJobFailedFilesRequest(
                 job_id="<job-id>"
             )
         )
 
-        info = response.job_information
+        info = response.job_failed_files
 
-        print(f"id:            {info.id}")
-        print(f"status:        {info.status}")
-        print(f"workflow name: {info.workflow_name}")
-        print(f"workflow id:   {info.workflow_id}")
+        if info.failed_files.__len__() > 0:
+            print(f"{info.failed_files.__len__()} failed file(s):")
+
+            for failed_file in info.failed_files:
+                print(f"---")
+                print(f"document: {failed_file.document}")
+                print(f"error:    {failed_file.error}")
+        else:
+            print(f"No failed files.")
         ```
     </Accordion>
     <Accordion title="Python SDK (async)">
@@ -2565,27 +2590,32 @@ the `GET` method to call the `/jobs/<job-id>/failed-files` endpoint (for `curl` 
         import asyncio
 
         from unstructured_client import UnstructuredClient
-        from unstructured_client.models.operations import GetJobRequest
+        from unstructured_client.models.operations import GetJobFailedFilesRequest
 
-        async def get_job():
+        async def get_job_failed_files():
             client = UnstructuredClient(
                 api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
             )
 
-            response = await client.jobs.get_job_async(
-                request=GetJobRequest(
+            response = client.jobs.get_job_failed_files(
+                request=GetJobFailedFilesRequest(
                     job_id="<job-id>"
                 )
             )
 
-            info = response.job_information
+            info = response.job_failed_files
 
-            print(f"id: {info.id}")
-            print(f"status: {info.status}")
-            print(f"workflow name: {info.workflow_name}")
-            print(f"workflow id: {info.workflow_id}")
+            if info.failed_files.__len__() > 0:
+                print(f"{info.failed_files.__len__()} failed file(s):")
 
-        asyncio.run(get_job())
+                for failed_file in info.failed_files:
+                    print(f"---")
+                    print(f"document: {failed_file.document}")
+                    print(f"error:    {failed_file.error}")
+            else:
+                print(f"No failed files.")
+
+        asyncio.run(get_job_failed_files())
         ```
     </Accordion>
     <Accordion title="curl">
