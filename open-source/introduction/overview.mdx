@@ -46,17 +46,22 @@ The Unstructured open source library has the following limits as compared to the
 
 * Not designed for production scenarios.
 * Significantly decreased performance on document and table extraction.
-* Access only to older and less sophisticated vision transformer models.
+* No access to Unstructured's latest vision language model (VLM) offerings.
 * No access to Unstructured's fine-tuned OCR models.
 * No access to Unstructured's by-page and by-similarity chunking strategies.
-* Lack of security and SOC2 and HIPAA compliance.
-* No authentication or identity management.
+* No support for generating embeddings in the core [Unstructured](https://github.com/Unstructured-IO/unstructured) open source offering. (However, you can 
+  generate embeddings as a separate step manually. [Learn how](/open-source/core-functionality/embedding). Also, there is built-in support for generating embeddings by using the open source's 
+  [Unstructured Ingest CLI](/open-source/ingestion/ingest-cli) and [Unstructured Ingest Python library](/open-source/ingestion/python-ingest) offerings. 
+  [Learn more](/open-source/how-to/embedding).)
+* No support for Unstructured's enrichment types such as image descriptions, table descriptions, and named entity recognition (NER).
+* Lack of support for SOC2 Type 2, HIPAA, and GDPR compliance.
+* No authentication or identity management in the core open source offering for local document processing.
 * No incremental data loading.
 * No ETL job scheduling or monitoring.
 * No image extraction from documents.
 * Less sophisticated document hierarchy detection.
 * You must manage many of your own code dependencies, for instance for libraries such as Poppler and Tesseract.
-* You must manage your own infrastructure, including parallelization and other performance optimizations.
+* For local document processing, you must manage your own infrastructure, including parallelization and other performance optimizations.
 
 ## Pricing
 
