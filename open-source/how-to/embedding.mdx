@@ -91,7 +91,7 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
 4. Note the special settings to connect to the provider:
 
    <Note>
-       The following list assumes that you are calling the embedding provider directly. If you are calling Unstructured's software-as-a-service (SaaS) 
+       The following special settings assume that you are calling the embedding provider directly. If you are calling Unstructured's software-as-a-service (SaaS) 
        for processing instead (for example, by specifying an Unstructured API key and an Unstructured SaaS URL), do not include any of these special 
        settings. Unstructured uses its own internal special settings when using the specified provider to generate the embeddings.
    </Note>
@@ -144,7 +144,7 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
 
             Unstructured uses its own internal settings for these parameters when using the specified provider to generate the embeddings.
         </Note>
-        
+
         For the [source connector's](/open-source/ingestion/source-connectors/overview) `EmbedderConfig` object:
 
         - Set the `embedding_provider` parameter to the provider's ID, for example `huggingface`.
