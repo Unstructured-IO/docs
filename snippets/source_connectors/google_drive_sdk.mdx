@@ -17,7 +17,10 @@ with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as clien
                 type=SourceConnectorType.GOOGLE_DRIVE,
                 config=GoogleDriveSourceConnectorConfigInput(
                     drive_id="<drive-id>",
-                    service_account_key="<service-account-key>",
+                    service_account_key={
+                        "id": "<registered-secret-id>",
+                        "type": "<encryption-type>"
+                    },
                     extensions=[
                         "<extension>",
                         "<extension>"
