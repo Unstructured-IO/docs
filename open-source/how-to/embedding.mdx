@@ -43,6 +43,13 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
 
 1. Choose an embedding provider that you want to use from among the following allowed providers, and note the provider's ID:
 
+   <Note>
+       The following list assumes that you are calling the embedding provider directly. If you are calling Unstructured's software-as-a-service (SaaS) 
+       for processing instead (for example, by specifying an Unstructured API key and an Unstructured SaaS URL), you are limited to 
+       the provider and model names that are supported by the Unstructured API. 
+       [See the list of supported provider names](/api-reference/workflow/workflows#embedder-node).
+   </Note>
+
    - The provider ID `bedrock` for [Amazon Bedrock](https://aws.amazon.com/bedrock/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/bedrock/).
    - `huggingface` for [Hugging Face](https://huggingface.co/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/huggingfacehub/).
    - `mixedbread-ai` for [Mixedbread](https://www.mixedbread.ai/). [Learn more](https://www.mixedbread.ai/docs/embeddings/overview).
@@ -65,6 +72,13 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
 
 3. For the following embedding providers, you can choose the model that you want to use. If you do choose a model, note the model's name:
 
+   <Note>
+       The following list assumes that you are calling the embedding provider directly. If you are calling Unstructured's software-as-a-service (SaaS) 
+       for processing instead (for example, by specifying an Unstructured API key and an Unstructured SaaS URL), you are limited to 
+       the model names that are supported by the Unstructured API. 
+       [See the list of supported model names](/api-reference/workflow/workflows#embedder-node).
+   </Note>
+
    - `bedrock`. [Choose a model](https://docs.aws.amazon.com/bedrock/latest/userguide/model-ids.html). No default model is provided. [Learn more about the supported models](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html).
    - `huggingface`. [Choose a model](https://huggingface.co/models?other=embeddings), or use the default model [sentence-transformers/all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2).
    - `mixedbread-ai`. [Choose a model](https://www.mixedbread.ai/docs/embeddings/models), or use the default model [mixedbread-ai/mxbai-embed-large-v1](https://www.mixedbread.ai/docs/embeddings/mxbai-embed-large-v1).
@@ -75,6 +89,12 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
    - `voyageai`.  [Choose a model](https://docs.voyageai.com/docs/embeddings). No default model is provided.
 
 4. Note the special settings to connect to the provider:
+
+   <Note>
+       The following special settings assume that you are calling the embedding provider directly. If you are calling Unstructured's software-as-a-service (SaaS) 
+       for processing instead (for example, by specifying an Unstructured API key and an Unstructured SaaS URL), do not include any of these special 
+       settings. Unstructured uses its own internal special settings when using the specified provider to generate the embeddings.
+   </Note>
 
    - For `bedrock`, you'll need an AWS access key value, the corresponding AWS secret access key value, and the corresponding AWS Region identifier. [Get an AWS access key and secret access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html).
    - For `huggingface`, if you use a gated model (a model with special conditions that you must accept before you can use it, or a privately published model), you'll need an HF inference API key value, beginning with `hf_`. [Get an HF inference API key](https://huggingface.co/docs/api-inference/en/quicktour#get-your-api-token). To learn whether your model requires an HF inference API key, see your model provider's documentation. 
@@ -89,6 +109,18 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
 
 <AccordionGroup>
     <Accordion title="Ingest CLI">
+        <Note>
+            The following options assume that you are calling the embedding provider directly. If you are calling Unstructured's software-as-a-service (SaaS) 
+            for processing instead (for example, by specifying an Unstructured API key and an Unstructured SaaS URL), do not include any of the following options:
+           
+            - `--embedding-api-key`
+            - `--embedding-aws-access-key-id`
+            - `--embedding-aws-secret-access-key`
+            - `--embedding-aws-region`
+
+            Unstructured uses its own internal settings for these options when using the specified provider to generate the embeddings.
+        </Note>
+
         For the [source connector](/open-source/ingestion/source-connectors/overview) command:
 
         - Set the command's `--embedding-provider` to the provider's ID, for example `huggingface`.
@@ -101,6 +133,18 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
           - Set `--embedding-aws-region` to the corresponding AWS Region identifier.
     </Accordion>
     <Accordion title="Ingest Python library">
+         <Note>
+            The following parameters assume that you are calling the embedding provider directly. If you are calling Unstructured's software-as-a-service (SaaS) 
+            for processing instead (for example, by specifying an Unstructured API key and an Unstructured SaaS URL), do not include any of the following parameters:
+           
+            - `embedding_api_key`
+            - `embedding_aws_access_key_id`
+            - `embedding_aws_secret_access_key`
+            - `embedding_aws_region`
+
+            Unstructured uses its own internal settings for these parameters when using the specified provider to generate the embeddings.
+        </Note>
+
         For the [source connector's](/open-source/ingestion/source-connectors/overview) `EmbedderConfig` object:
 
         - Set the `embedding_provider` parameter to the provider's ID, for example `huggingface`.
