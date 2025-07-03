@@ -1,0 +1,144 @@
+---
+title: Google Drive event triggers
+---
+
+You can use Google Drive events, such as adding new files to&mdash;or updating existing files in&mdash;Google Drive shared folders or shared drives, to automatically run Unstructured ETL+ workflows 
+that rely on those folders or drives as sources. This enables a no-touch approach to having Unstructured automatically process new and updated files in Google Drive as they are added or updated.
+
+This example shows how to automate this process by adding a custom [Google Apps Script](https://developers.google.com/apps-script) project in your Google account. This project runs 
+a script on a regular time interval. This script automatically checks for new or updated files within the specified Google Drive shared folder or shared drive. If the script 
+detects at least one new or updated file, it then calls the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to automatically run the 
+specified corresponding Unstructured ETL+ workflow in your Unstructured account.
+
+## Requirements
+
+import GetStartedSimpleApiOnly from '/snippets/general-shared-text/get-started-simple-api-only.mdx'
+
+To use this example, you will need the following:
+
+- An Unstructured account, and an Unstructured API key for your account, as follows:
+
+  <GetStartedSimpleApiOnly />
+
+- The Unstructured Workflow Endpoint URL for your account, as follows:
+
+  1. In the Unstructured UI, click **API Keys** on the sidebar.<br/>
+  2. Note the value of the **Unstructured Workflow Endpoint** field.
+
+- A Google Drive source connector in your Unstructured account. [Learn how](/ui/sources/google-drive). 
+- Some available [destination connector](/ui/destinations/overview) in your Unstructured account.
+- A workflow that uses the preceding source and destination connectors. [Learn how](/ui/workflows).
+
+## Step 1: Create the Google Apps Script project
+
+1. Sign in to your Google account.
+2. Go to [http://script.google.com/](http://script.google.com/).
+3. Click **+ New project**.
+4. Click the new project's default name (such as **Untitled project**), and change it to something more descriptive, such as **Unstructured ETL Scripts**.
+
+## Step 2: Add the script
+
+1. With the project still open, on the sidebar, click the **< >** (**Editor**) icon.
+2. In the **Files** tab, click **Code.gs**.
+3. Replace the contents of the `Code.gs` file with the following code instead:
+
+   ```javascript
+   function checkForNewOrUpdatedFiles() {
+     const folder = DriveApp.getFolderById(FOLDER_ID);
+     const files = folder.getFiles();
+     const now = new Date();
+     const thresholdMillis = 5 * 60 * 1000; // 5 minutes (adjust as needed).
+     
+     while (files.hasNext()) {
+       const file = files.next();
+       const created = file.getDateCreated();
+       const lastUpdated = file.getLastUpdated();
+
+       // If at least one file was created or updated within the last 5 minutes...
+       if ((now - created < thresholdMillis) || (now - lastUpdated < thresholdMillis)) {
+         // ...then make the HTTP POST request.
+         UrlFetchApp.fetch(UNSTRUCTURED_API_URL, {
+           method: 'post',
+           headers: {
+             'accept': 'application/json',
+             'unstructured-api-key': UNSTRUCTURED_API_KEY
+           }
+         });
+         // Then stop the script after the first fetch (no need to check any more files).
+         return;
+       }
+     }
+   }
+   ```
+
+4. Click the **Save project to Drive** button. 
+
+## Step 3: Customize the script for your workflow
+
+1. With the project still open, on the **Files** tab, click the **Add a file** button, and then click **Script**.
+2. Name the new file `Constants`. The `.gs` extension is added automatically.
+3. Replace the contents of the `Constants.gs` file with the following code instead:
+
+   ```javascript
+   const FOLDER_ID = '<folder-id>';
+   const UNSTRUCTURED_API_URL = '<unstructured-api-url>' + '/workflows/<workflow-id>/run';
+   const UNSTRUCTURED_API_KEY = '<unstructured-api-key>';
+   ```
+
+   Replace the following placeholders:
+   
+   - Replace `<folder-id>` with the ID of your Google Drive shared folder or shared drive. This is the same ID that you specified 
+     when you created your Google Drive source connector in your Unstructured account.
+   - Replace `<unstructured-api-url>` with your Unstructured API URL value.
+   - Replace `<unstructured-api-key>` with your Unstructured API key value.
+
+4. Click the disk (**Save project to Drive**) icon. 
+
+## Step 4: Create the script trigger
+
+1. With the project still open, on the sidebar, click the alarm clock (**Triggers**) icon.
+2. Click the **+ Add Trigger** button.
+3. Set the following values:
+
+   - For **Choose which function to run**, select `checkForNewOrUpdatedFiles`.
+   - For **Choose which deployment should run**, select **Head**.
+   - For **Select event source**, select **Time-driven**.
+   - For **Select type of time based trigger**, select **Minutes timer**.
+   - For **Select minute interval**, select **Every 5 minutes**.
+
+     <Note>
+         If you change **Minutes timer** or **Every 5 minutes** to a different interval, you should also go back and change the number `5` in the following 
+         line of code in the `checkForNewOrUpdatedFiles` function. Change the number `5` to the number of minutes that correspond to the alternate interval you 
+         selected:
+
+         ```javascript
+         const thresholdMillis = 5 * 60 * 1000;
+         ```
+     </Note>
+
+   - For **Failure notification settings**, select an interval such as immediately, hourly, or daily.
+
+4. Click **Save**.
+
+## Step 5: View trigger results
+
+1. With the project still open, on the sidebar, click the three lines (**Executions**) icon.
+2. As soon as the first script execution completes, you should see a corresponding message appear in the **Executions** list. If the **Status** column shows 
+   **Completed**, then keep going with this procedure. 
+   
+   If the **Status** column shows **Failed**, expand the message to 
+   get any details about the failure. Fix the failure, and then wait for the next script execution to complete.
+
+3. When the **Status** column shows **Completed** then, in your Unstructured account, click **Jobs** on the sidebar to see if a new job 
+   is running for that worklow.
+   
+   If no new job is running for that workflow, then add at least one new file to&mdash;or update at least one existing file in&mdash;the Google Drive shared folder or shared drive, 
+   within 5 minutes of the next script execution. After the next script execution, check the **Jobs** list again.
+
+## Step 6 (Optional): Delete the trigger
+
+1. To stop the script from automatically executing on a regular basis, with the project still open, on the sidebar, click the alarm clock (**Triggers**) icon.
+2. Rest your mouse pointer on the trigger you created in Step 4.
+3. Click the ellipsis (three dots) icon, and then click **Delete trigger**.
+
+
