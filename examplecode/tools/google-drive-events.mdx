@@ -10,6 +10,13 @@ a script on a regular time interval. This script automatically checks for new or
 detects at least one new or updated file, it then calls the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to automatically run the 
 specified corresponding Unstructured ETL+ workflow in your Unstructured account.
 
+<Note>
+    This example uses a custom Google Apps Script that you create and maintain. 
+    Any issues with file detection, timing, or script execution could be related to your custom script, 
+    rather than with Unstructured. If you are getting unexpected or no results, be sure to check your custom 
+    script's execution logs first for any informational and error messages.
+</Note>
+
 ## Requirements
 
 import GetStartedSimpleApiOnly from '/snippets/general-shared-text/get-started-simple-api-only.mdx'
@@ -53,9 +60,26 @@ To use this example, you will need the following:
        const file = files.next();
        const created = file.getDateCreated();
        const lastUpdated = file.getLastUpdated();
+       const fileName = file.getName();
+
+       // Calculate time differences.
+       const millisSinceCreated = now - created;
+       const createdWithinThreshold = millisSinceCreated < thresholdMillis;
+       const millisSinceUpdated = now - lastUpdated;
+       const updatedWithinThreshold = millisSinceUpdated < thresholdMillis;
+
+       // Log file details and calculations.
+       console.log('File Name:                       ' + fileName);
+       console.log('Created:                         ' + created);
+       console.log('Last updated:                    ' + lastUpdated);
+       console.log('Milliseconds since created:      ' + millisSinceCreated);
+       console.log('Milliseconds since last updated: ' + millisSinceUpdated);
+       console.log('Created within threshold of ' + thresholdMillis + ' milliseconds? ' + createdWithinThreshold);
+       console.log('Updated within threshold of ' + thresholdMillis + ' milliseconds? ' + updatedWithinThreshold);
+       console.log('-----')
 
        // If at least one file was created or updated within the last 5 minutes...
-       if ((now - created < thresholdMillis) || (now - lastUpdated < thresholdMillis)) {
+       if ((createdWithinThreshold) || (updatedWithinThreshold)) {
          // ...then make the HTTP POST request.
          UrlFetchApp.fetch(UNSTRUCTURED_API_URL, {
            method: 'post',
@@ -65,9 +89,12 @@ To use this example, you will need the following:
            }
          });
          // Then stop the script after the first fetch (no need to check any more files).
+         console.log('At least one file created or updated within threshold of ' + thresholdMillis + ' milliseconds.')
+         console.log('Unstructured workflow request sent to ' + UNSTRUCTURED_API_URL)
          return;
        }
      }
+     console.log('No files created or updated within threshold of ' + thresholdMillis + ' milliseconds. No Unstructured workflow request sent.')
    }
    ```
 
