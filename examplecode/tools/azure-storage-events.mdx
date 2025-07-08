@@ -70,6 +70,8 @@ To use this example, you will need the following:
    | **Path** | `samples-workitems/{name}` | The path to the Azure Blob Storage account that the function will monitor. You can leave the default path. |
    | **Storage account connection** | `AzureWebJobsStorage` | You can leave the default storage account connection name. |
 
+   ![Azure Function template details](/img/tools/azure-function.png)
+
 5. Click **Create**. The function is created, and the **Code + Test** page appears.
 
 ## Step 3: Customize the function for your workflow
@@ -111,6 +113,12 @@ To use this example, you will need the following:
    - Replace `<unstructured-api-url>` with your Unstructured Worfklow Endpoint value.
    - Replace `<workflow-id>` with the ID of your Unstructured workflow. For now, because the workflow does not yet exist, enter some fictitious value, such as `1234567890`. You will 
      update this value later in Step 6 after you create the workflow.
+
+   The **Value** should now look similar to the following:
+
+   ```text
+   https://platform.unstructuredapp.io/api/v1/workflows/1234567890/run
+   ```
 
 8. Click **Apply**.
 9. Click **+ Add** again.
@@ -177,4 +185,4 @@ If you are done with this example and do not want to keep the resource group in 
 
 1. In the Azure portal, with the storage account's settings page open from Step 7, in the navigation breadcrumb toward the top of the page, click your resource group's name. The resource group's settings page appears.
 2. Click **Delete resource group**.
-3. Enter the resource group's name, and then click **Delete**. The resource group, along with the function app, storage account, and other related resources, are permanentlydeleted.
+3. Enter the resource group's name, and then click **Delete**. The resource group, along with the function app, storage account, and other related resources, are permanently deleted.
