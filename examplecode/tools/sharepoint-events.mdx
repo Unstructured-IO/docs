@@ -1,0 +1,163 @@
+---
+title: SharePoint event triggers
+---
+
+You can use SharePoint events, such as adding new files to&mdash;or updating existing files within&mdash;SharePoint document libraries, to automatically run Unstructured ETL+ workflows 
+that rely on those document libraries as sources. This enables a no-touch approach to having Unstructured automatically process new and updated files in SharePoint document libraries as they are added or updated.
+
+This example shows how to automate this process by adding a custom [Power Automate](https://www.microsoft.com/power-platform/products/power-automate) flow to your Microsoft 365 or Office 365 account. This flow runs 
+whenever a new or updated file is detected in the specified SharePoint document library. This flow then calls the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to automatically run the 
+specified corresponding Unstructured ETL+ workflow within your Unstructured account.
+
+<Note>
+    This example uses a custom Power Automate flow that you create and maintain. 
+    Any issues with file detection, timing, or flow invocation could be related to your custom flow, 
+    rather than with Unstructured. If you are getting unexpected or no results, be sure to check your custom 
+    flow's run history first for any informational and error messages.
+</Note>
+
+## Requirements
+
+import GetStartedSimpleApiOnly from '/snippets/general-shared-text/get-started-simple-api-only.mdx'
+
+To use this example, you will need the following:
+
+- A Microsoft 365 or Office 365 Business or enterprise plan that includes SharePoint Online, OneDrive, and Power Automate. 
+  [Shop for business plans](https://www.microsoft.com/microsoft-365/business/compare-all-microsoft-365-business-products). 
+  [Shop for enterprise plans](https://www.microsoft.com/microsoft-365/enterprise/microsoft365-plans-and-pricing). 
+
+- A Power Automate Premium license. [Learn how](https://learn.microsoft.com/power-platform/admin/power-automate-licensing/buy-licenses).
+
+- An Unstructured account, and an Unstructured API key for your account, as follows:
+
+  <GetStartedSimpleApiOnly />
+
+- The Unstructured Workflow Endpoint URL for your account, as follows:
+
+  1. In the Unstructured UI, click **API Keys** on the sidebar.<br/>
+  2. Note the value of the **Unstructured Workflow Endpoint** field.
+
+- A SharePoint source connector in your Unstructured account. [Learn how](/ui/sources/sharepoint). 
+- Some available [destination connector](/ui/destinations/overview) in your Unstructured account.
+- A workflow that uses the preceding source and destination connectors. [Learn how](/ui/workflows).
+
+## Step 1: Create an app registration
+
+In this step, you create an app registration in Microsoft Entra ID to access the Azure key vault that you will create in the next step.
+
+1. Sign in to your [Azure portal](https://portal.azure.com).
+2. In the **Search resources, services, and docs** box, enter **App registrations**, and then in the list of **Services**, click **App registrations**.
+3. Click **+ New registration**.
+4. Enter some **Name** for the app registration.
+5. For **Supported account types**, select **Accounts in this organizational directory only**.
+6. For **Redirect URI**, select **Web**, and then enter `https://localhost`.
+7. Click **Register**.
+8. In the sidebar, click **Overview**.
+9. Expand **Essentials**, and note the values of the **Application (client) ID** and **Directory (tenant) ID** fields.
+10. Click **Client credentials**.
+11. On the **Client secrets** tab, click **+ New client secret**.
+12. (Optional) Enter some **Description** for the client secret.
+13. (Optional) Enter some non-default **Expires** value.
+14. Click **Add**.
+15. Note the value of the **Value** field. This is the app registration's client secret value. (Do not use the **Secret ID** value.)
+
+## Step 2: Create an Azure key vault
+
+In this step, you store your Unstructured API key in an Azure key vault for your Power Automate flow to access later.
+
+1. With your Azure portal still open from the previous step, in the **Search resources, services, and docs** box, enter **Key vaults**, and then in the list of **Services**, click **Key vaults**.
+2. Click **Create**.
+3. On the **Basics** tab, set the following key vault settings:
+
+   | Setting | Suggested value | Description |
+   |---|---|---|
+   | **Subscription** | Your subscription | The Azure subscription within which to create your new key vault. |
+   | **Resource Group** | **Create new** | After you click **Create new**, enter some name for the new resource group within which to create your new key vault. |
+   | **Key vault name**	| Some globally unique name | Some name that identifies your new key vault. Valid characters are `A`-`Z`, `a`-`z`, `0`-`9`, and `-`. |
+   | **Region** | Your preferred region | Select a region that's near you or near other services that your key vault can access. |
+   | **Pricing tier** | **Standard** | Choose the pricing tier for your key vault. |
+
+4. Click **Review + create**.
+5. Click **Create**.
+6. After the deployment is complete, click **Go to resource**.
+7. In the sidebar, click **Access control (IAM)**.
+8. Click **+ Add > Add role assignment**.
+9. On the **Role** tab, in the **Job function roles** list, select **Key Vault Administrator**.
+10. Click **Next**.
+11. On the **Members** tab, with **Assign access to** set to **User, group, or service principal**, click **+ Select members**.
+12. Search for and select the name of the app registration that you created earlier in Step 1.
+13. Search also for and select your user account.
+14. Click **Select**.
+15. Click **Review + assign** twice.
+16. In the sidebar, expand **Objects**, and then click **Secrets**.
+17. Click **+ Generate/import**.
+18. Enter some **Name** for the secret.
+19. For **Secret value**, enter your Unstructured API key value.
+20. Click **Create**.
+
+## Step 3: Create a Power Automate flow
+
+1. Sign in to [Power Automate](https://make.powerautomate.com).
+2. On the sidebar, click **Create**.
+3. In the **Start from blank** area, click **Automated cloud flow**.
+4. Enter some **Flow name** for your new flow.
+5. For **Search all triggers**, enter `When a file is created or modified (properties only)`, and then click 
+   **When a file is created or modified (properties only) (SharePoint)**.
+6. Click **Create**.
+7. In the flow designer, click the **When a file is created or modified (properties only)** node.
+8. On the **Parameters** tab, set the following node properties:
+
+   - For **Site Address**, enter the **Site URL** value of the SharePoint source connector for your workflow.
+   - For **Library Name**, enter the **Documents Library** value of the SharePoint source connector for your workflow.
+   - (Optional) If you specified a **Path** value for the SharePoint source connector for your workflow, select **Folder** in the **Advanced parameters** list and then select the corresponding folder name.
+
+9. Below the **When a file is created or modified (properties only)** node, click the plus (**Insert a new action...**) button.
+10. In the **Search for an action or connector** box, enter `Get secret`, and then under **Azure Key Vault**, select **Get secret**.
+11. Set the following node properties:
+
+    - Enter some **Connection name** for the connection.
+    - For **Authentication type**, select **Service principal authentication**.
+    - For **Client ID**, enter the **Application (client) ID** value of the app registration that you created earlier in Step 1.
+    - For **Client secret**, enter the client secret value of the app registration that you created earlier in Step 1.
+    - For **Tenant ID**, enter the **Directory (tenant) ID** value of the app registration that you created earlier in Step 1.
+    - For **Key vault name**, enter the name of the key vault that you created earlier in Step 2.
+
+12. Click **Create new**.
+13. Below the **Get secret** node, click the plus (**Insert a new action...**) button.
+14. In the **Search for an action or connector** box, enter `HTTP`, and then under **HTTP**, select **HTTP**.
+15. On the **Parameters** tab, set the following node properties:
+
+    - For **URI**, enter `<unstructured-api-url>/workflows/<workflow-id>/run`, and replace the following placeholders:
+
+      - Replace `<unstructured-api-url>` with your Unstructured Worfklow Endpoint value.
+      - Replace `<workflow-id>` with the ID of your Unstructured workflow.
+
+      The **URI** should now look similar to the following:
+
+      ```text
+      https://platform.unstructuredapp.io/api/v1/workflows/11111111-1111-1111-1111-111111111111/run
+      ```
+
+    - For **Method**, select **POST**.
+    - For **Headers**, enter the following:
+
+      - `accept`, set to `application/json`
+      - `unstructured-api-key`, set to your Unstructured API key value.
+
+16. In the top navigation bar, click the disk (**Save**) button.
+17. Click **Back** to go to the flow's home page.
+18. In the top navigation bar, click the power (**Turn on**) button.
+
+## Step 4: Trigger the flow and view results
+
+1. On a separate tab in your web browser, go to the SharePoint document library that corresponds to both your Unstructured workflow's 
+   SharePoint source connector and the Power Automate flow's **When a file is created or modified (properties only)** node.
+2. Add or update a file in the document library.
+3. On a separate tab in your web browser, in the Unstructured user interface for your account, click **Jobs** on the sidebar.
+4. In the list of jobs, click the newly running job for your workflow. It might take a minute or so for the new job to appear in the list.
+5. After the job status shows **Finished**, go to your destination location to see the results.
+
+## Step 5 (Optional): Turn off the flow
+
+To stop the Power Automate flow from running automatically, go back to the web browser tab from earlier in Step 3. Then, 
+with the flow's home page still open, in the top navigation bar, click the power (**Turn off**) button.
