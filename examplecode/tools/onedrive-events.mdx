@@ -1,19 +1,19 @@
 ---
-title: SharePoint event triggers
+title: OneDrive event triggers
 ---
 
-You can use SharePoint events, such as adding new files to&mdash;or updating existing files within&mdash;SharePoint document libraries, to automatically run Unstructured ETL+ workflows 
-that rely on those document libraries as sources. This enables a no-touch approach to having Unstructured automatically process new and updated files in SharePoint document libraries as they are added or updated.
+You can use OneDrive events, such as adding new files to&mdash;or updating existing files within&mdash;OneDrive folders, to automatically run Unstructured ETL+ workflows 
+that rely on those folders as sources. This enables a no-touch approach to having Unstructured automatically process new and updated files in OneDrive folders as they are added or updated.
 
-This example shows how to automate this process by adding a custom [Power Automate](https://www.microsoft.com/power-platform/products/power-automate) flow to your Microsoft 365 or Office 365 account. This flow runs 
-whenever a new or updated file is detected in the specified SharePoint document library. This flow then calls the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to automatically run the 
+This example shows how to automate this process by adding two custom [Power Automate](https://www.microsoft.com/power-platform/products/power-automate) flows to your Microsoft 365 or Office 365 account. One flow runs 
+whenever a new file is detected in the specified OneDrive folder. The other flow runs whenever an existing is file is updated within that folder. These flows then call the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to automatically run the 
 specified corresponding Unstructured ETL+ workflow within your Unstructured account.
 
 <Note>
-    This example uses a custom Power Automate flow that you create and maintain. 
-    Any issues with file detection, timing, or flow invocation could be related to your custom flow, 
+    This example uses custom Power Automate flows that you create and maintain. 
+    Any issues with file detection, timing, or flow invocation could be related to your custom flows, 
     rather than with Unstructured. If you are getting unexpected or no results, be sure to check your custom 
-    flow's run history first for any informational and error messages.
+    flows' run histories first for any informational and error messages.
 </Note>
 
 ## Requirements
@@ -23,6 +23,7 @@ import GetStartedSimpleApiOnly from '/snippets/general-shared-text/get-started-s
 To use this example, you will need the following:
 
 - A Microsoft 365 or Office 365 Business or enterprise plan that includes SharePoint Online, OneDrive, and Power Automate. 
+  (Even if you only plan to use OneDrive, you still need a plan that includes SharePoint Online, because OneDrive is built on SharePoint technology.) 
   [Shop for business plans](https://www.microsoft.com/microsoft-365/business/compare-all-microsoft-365-business-products). 
   [Shop for enterprise plans](https://www.microsoft.com/microsoft-365/enterprise/microsoft365-plans-and-pricing). 
 
@@ -37,7 +38,7 @@ To use this example, you will need the following:
   1. In the Unstructured UI, click **API Keys** on the sidebar.<br/>
   2. Note the value of the **Unstructured Workflow Endpoint** field.
 
-- A SharePoint source connector in your Unstructured account. [Learn how](/ui/sources/sharepoint). 
+- A OneDrive source connector in your Unstructured account. [Learn how](/ui/sources/onedrive). 
 - Some available [destination connector](/ui/destinations/overview) in your Unstructured account.
 - A workflow that uses the preceding source and destination connectors. [Learn how](/ui/workflows).
 
@@ -95,25 +96,25 @@ In this step, you store your Unstructured API key in an Azure key vault for your
 19. For **Secret value**, enter your Unstructured API key value.
 20. Click **Create**.
 
-## Step 3: Create a Power Automate flow
+## Step 3: Create the first Power Automate flow
 
 1. Sign in to [Power Automate](https://make.powerautomate.com).
 2. On the sidebar, click **Create**.
 3. In the **Start from blank** area, click **Automated cloud flow**.
 4. Enter some **Flow name** for your new flow.
-5. For **Search all triggers**, enter `When a file is created or modified (properties only)`, and then click 
-   **When a file is created or modified (properties only) (SharePoint)**.
+5. For **Search all triggers**, enter `When a file is created`, and then click 
+   **When a file is created (OneDrive for Business)**.
 6. Click **Create**.
-7. In the flow designer, click the **When a file is created or modified (properties only)** node.
-8. On the **Parameters** tab, set the following node properties:
+7. In the flow designer, click the **When a file is created** node.
+8. When prompted, sign in to OneDrive.
+9. On the **Parameters** tab, set the following node properties:
 
-   - For **Site Address**, enter the **Site URL** value of the SharePoint source connector for your workflow.
-   - For **Library Name**, enter the **Documents Library** value of the SharePoint source connector for your workflow.
-   - (Optional) If you specified a **Path** value for the SharePoint source connector for your workflow, select **Folder** in the **Advanced parameters** list and then select the corresponding folder name.
+   - For **Folder**, click the folder icon, and the select the folder that matches the value of the **Path** value for the OneDrive source connector for your workflow.
+   - For **Include subfolders**, select **Yes** only if you also checked the **Recursive** checkbox for the OneDrive source connector for your workflow.
 
-9. Below the **When a file is created or modified (properties only)** node, click the plus (**Insert a new action...**) button.
-10. In the **Search for an action or connector** box, enter `Get secret`, and then under **Azure Key Vault**, select **Get secret**.
-11. Set the following node properties:
+10. Below the **When a file is created** node, click the plus (**Insert a new action...**) button.
+11. In the **Search for an action or connector** box, enter `Get secret`, and then under **Azure Key Vault**, select **Get secret**.
+12. Set the following node properties:
 
     - Enter some **Connection name** for the connection.
     - For **Authentication type**, select **Service principal authentication**.
@@ -122,11 +123,11 @@ In this step, you store your Unstructured API key in an Azure key vault for your
     - For **Tenant ID**, enter the **Directory (tenant) ID** value of the app registration that you created earlier in Step 1.
     - For **Key vault name**, enter the name of the key vault that you created earlier in Step 2.
 
-12. Click **Create new**.
-13. In the **Name of the secret** list, select the name of the secret that you created earlier in Step 2.
-14. Below the **Get secret** node, click the plus (**Insert a new action...**) button.
-15. In the **Search for an action or connector** box, enter `HTTP`, and then under **HTTP**, select **HTTP**.
-16. On the **Parameters** tab, set the following node properties:
+13. Click **Create new**.
+14. In the **Name of the secret** list, select the name of the secret that you created earlier in Step 2.
+15. Below the **Get secret** node, click the plus (**Insert a new action...**) button.
+16. In the **Search for an action or connector** box, enter `HTTP`, and then under **HTTP**, select **HTTP**.
+17. On the **Parameters** tab, set the following node properties:
 
     - For **URI**, enter `<unstructured-api-url>/workflows/<workflow-id>/run`, and replace the following placeholders:
 
@@ -143,23 +144,50 @@ In this step, you store your Unstructured API key in an Azure key vault for your
     - For **Headers**, enter the following:
 
       - `accept`, set to `application/json`
-      - `unstructured-api-key`, set to your Unstructured API key value.
+      - `unstructured-api-key`, set to your key vault value. To do this, type `/` and select **Insert dynamic content**. 
+        Under **Get secret**, select **body/value**.
 
-17. In the top navigation bar, click the disk (**Save**) button.
-18. Click **Back** to go to the flow's home page.
-19. In the top navigation bar, if the power button shows **Turn on**, click it to change it to **Turn off** (which means that the flow is on and active).
+18. In the top navigation bar, click the disk (**Save**) button.
+19. Click **Back** to go to the flow's home page.
+20. In the top navigation bar, if the power button shows **Turn on**, click it to change it to **Turn off** (which means that the flow is on and active).
 
-## Step 4: Trigger the flow and view results
+## Step 4: Create the second Power Automate flow
 
-1. On a separate tab in your web browser, go to the SharePoint document library that corresponds to both your Unstructured workflow's 
-   SharePoint source connector and the Power Automate flow's **When a file is created or modified (properties only)** node.
-2. Add or update a file in the document library.
+1. With the flow's home page still open, on the sidebar, click **My flows**.
+2. In the list of flows, rest your mouse pointer on the flow that you created earlier in Step 3, and then click the ellipsis (three dots, **More commands**) icon.
+3. Click **Save as**.
+4. Give the new flow a **Flow name** that is different from the original flow's name.
+5. Click **Save**.
+6. In the list of flows, rest your mouse pointer on the flow that you just created, and then click the pencil (**Edit**) icon.
+7. In the flow designer, right click the **When a file is created** node, and then click **Delete**.
+8. Click the **Add a trigger** node.
+9. In the **Search for an action or connector** box, enter `When a file is modified`, and then click 
+   **When a file is modified (OneDrive for Business)**.
+10. On the **Parameters** tab, set the following node properties:
+
+   - For **Folder**, click the folder icon, and the select the folder that matches the value of the **Path** value for the OneDrive source connector for your workflow.
+   - For **Include subfolders**, select **Yes** only if you also checked the **Recursive** checkbox for the OneDrive source connector for your workflow.
+
+11. In the top navigation bar, click the disk (**Save**) button.
+12. Click **Back** to go to the flow's home page.
+13. In the top navigation bar, if the power button shows **Turn on**, click it to change it to **Turn off** (which means that the flow is on and active).
+
+## Step 5: Trigger the flows and view results
+
+1. On a separate tab in your web browser, go to the OneDrive folder that corresponds to both your Unstructured workflow's 
+   OneDrive source connector and the Power Automate flows' **When a file is created** and **When a file is modified** nodes.
+2. Add a file to the OneDrive folder.
 3. On a separate tab in your web browser, in the Unstructured user interface for your account, click **Jobs** on the sidebar.
 4. In the list of jobs, click the newly running job for your workflow. It might take a minute or so for the new job to appear in the list.
 5. After the job status shows **Finished**, go to your destination location to see the results.
+6. Repeat this step, but this time, update an existing file in the OneDrive folder.
 
-## Step 5 (Optional): Turn off the flow
+## Step 6 (Optional): Turn off the flows
 
-To stop the Power Automate flow from running automatically, go back to the web browser tab from earlier in Step 3. Then, 
-with the flow's home page still open, in the top navigation bar, click the power (**Turn off**) button 
-to change it to **Turn on** (which means that the flow is off and inactive).
+To stop the Power Automate flows from running automatically, go back to the web browser tab from earlier in Steps 3 and 4. Then, do the following:
+
+1. On the sidebar, click **My flows**.
+2. In the list of flows, click the name of the flow that you created earlier in Step 3.
+3. With the flow's home page still open, in the top navigation bar, click the power (**Turn off**) button 
+   to change it to **Turn on** (which means that the flow is off and inactive).
+4. Repeat this step, but this time, click the name of the flow that you created earlier in Step 4.
