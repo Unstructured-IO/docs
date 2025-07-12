@@ -16,6 +16,18 @@ import GoogleDrivePrerequisites from '/snippets/general-shared-text/google-drive
 
 To create a Google Drive source connector, see the following examples.
 
+<Warning>
+    In the following examples, you must specify the `service_account_key` value as a JSON-formatted object 
+    that contains the ID of the related registered secret and its encryption type. This information represents the 
+    encrypted version of the contents of the Google Cloud service account's `credentials.json` key file. You get this 
+    information by following the instructions in [Secrets](/api-reference/workflow/secrets).
+
+    If you specify the `service_account_key` value as a plain-text string instead, 
+    Unstructured might still create the connector successfully. However, when you then try to test or use the new connector, 
+    the connector will fail and the following error message is returned: 
+    `Field is sensitive and must be wrapped in as a secret reference or new secret value`.
+</Warning>
+
 import GoogleDriveSDK from '/snippets/source_connectors/google_drive_sdk.mdx';
 import GoogleDriveAPIRESTCreate from '/snippets/source_connectors/google_drive_rest_create.mdx';
 
