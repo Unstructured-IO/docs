@@ -41,7 +41,51 @@ To use this example, you will need the following:
 
 1. Sign in to the Databricks workspace within your Databricks account for AWS, Azure, or GCP that 
    corresponds to the workspace you specified for your Databricks Volumes source connector.
-2. ...
+2. On the sidebar, click **+ New > Notebook**.
+3. Click the notebook's title and change it to something more descriptive, such as `Unstructured Workflow Runner`.
+4. In the notebook's first cell, add the following code:
+
+   ```python
+   ...
+   ```
+
+5. Click **Edit > Insert cell below**.
+6. In this second cell, add the following code:
+
+   ```python
+   import requests, os
+
+   url = '<unstructured-api-url>' + '/workflows/<workflow-id>/run'
+
+   # Option 1: Get the Unstructured API key from an environment variable.
+   api_key = os.getenv("UNSTRUCTURED_API_KEY")
+
+   # Option 2: Get the Unstructured API key from Databricks Secrets.
+   api_key = dbutils.secrets.get(scope="<scope>", key="<key>")
+
+   headers = {
+       'accept': 'application/json',
+       'content-type': 'application/json',
+       'unstructured-api-key': api_key
+   }
+
+   json_data = {}
+
+   try:
+       response = requests.post(url, headers=headers, json=json_data)
+       response.raise_for_status()
+       print(f'Status Code: {response.status_code}')
+       print('Response:', response.json())
+   except Exception as e:
+       print('An error occurred:', e)
+   ```
+
+7. Replace the placeholders in this second cell as follows:
+
+   - Replace `<unstructured-api-url>` with the value of the **Unstructured Workflow Endpoint** field from the previous step.
+   - Replace `<workflow-id>` with the ID of the workflow that you want to run.
+   - If you ..., 
+   - If, however, you ..., replace `<scope>` and `<key>` with the scope and key names for the existing secret that you have already created in Databricks Secrets.
 
 ## Step 2: Create a job in Lakeview Jobs to run the notebook
 
