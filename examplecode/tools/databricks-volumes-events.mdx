@@ -1,0 +1,49 @@
+---
+title: Databricks Volumes events
+---
+
+You can use Databricks Volumes events, such as adding new files to&mdash;or updating existing files within&mdash;Databricks Volumes, to automatically run Unstructured ETL+ workflows 
+that rely on those Databricks Volumes as sources. This enables a no-touch approach to having Unstructured automatically process new and updated files in Databricks Volumes as they are added or updated.
+
+This example shows how to automate this process by adding a custom job in Lakeflow Jobs for your Databricks workspace in 
+[AWS](https://docs.databricks.com/aws/jobs/), [Azure](https://learn.microsoft.com/azure/databricks/jobs/), or 
+[GCP](https://docs.databricks.com/gcp/jobs). This job runs 
+whenever a new or updated file is detected in the specified Databricks Volume. This job then calls the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to automatically run the 
+specified corresponding Unstructured ETL+ workflow within your Unstructured account.
+
+<Note>
+    This example uses a custom job in Lakeflow Jobs that you create and maintain. 
+    Any issues with file detection, timing, or job execution could be related to your custom job, 
+    rather than with Unstructured. If you are getting unexpected or no results, be sure to check your custom 
+    job's execution logs first for any informational and error messages.
+</Note>
+
+## Requirements
+
+import GetStartedSimpleApiOnly from '/snippets/general-shared-text/get-started-simple-api-only.mdx'
+
+To use this example, you will need the following:
+
+- An Unstructured account, and an Unstructured API key for your account, as follows:
+
+  <GetStartedSimpleApiOnly />
+
+- The Unstructured Workflow Endpoint URL for your account, as follows:
+
+  1. In the Unstructured UI, click **API Keys** on the sidebar.<br/>
+  2. Note the value of the **Unstructured Workflow Endpoint** field.
+
+- A Databricks Volumes source connector in your Unstructured account. [Learn how](/ui/sources/databricks-volumes). 
+- Some available [destination connector](/ui/destinations/overview) in your Unstructured account.
+- A workflow that uses the preceding source and destination connectors. [Learn how](/ui/workflows).
+
+## Step 1: Create a notebook to run the Unstructuredworkflow
+
+1. Sign in to the Databricks workspace within your Databricks account for AWS, Azure, or GCP that 
+   corresponds to the workspace you specified for your Databricks Volumes source connector.
+2. ...
+
+## Step 2: Create a job in Lakeview Jobs to run the notebook
+
+1. With your Databricks workspace still open from the previous step, ...
+2. ...
