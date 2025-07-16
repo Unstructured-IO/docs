@@ -1,0 +1,143 @@
+---
+title: Databricks Volumes event triggers
+---
+
+You can use Databricks Volumes events, such as uploading files to Databricks Volumes, to automatically run Unstructured ETL+ workflows 
+that rely on those Databricks Volumes as sources. This enables a no-touch approach to having Unstructured automatically process files as they are uploaded to Databricks Volumes.
+
+This example shows how to automate this process by adding a custom job in Lakeflow Jobs for your Databricks workspace in 
+[AWS](https://docs.databricks.com/aws/jobs/), [Azure](https://learn.microsoft.com/azure/databricks/jobs/), or 
+[GCP](https://docs.databricks.com/gcp/jobs). This job runs 
+whenever a file upload event is detected in the specified Databricks Volume. This job uses a custom Databricks notebook to call the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to automatically run the 
+specified corresponding Unstructured ETL+ workflow within your Unstructured account.
+
+<Note>
+    This example uses a custom job in Lakeflow Jobs and a custom Databricks notebookthat you create and maintain. 
+    Any issues with file detection, timing, or job execution could be related to your custom job or notebook, 
+    rather than with Unstructured. If you are getting unexpected or no results, be sure to check your custom 
+    job's run logs first for any informational and error messages.
+</Note>
+
+## Requirements
+
+import GetStartedSimpleApiOnly from '/snippets/general-shared-text/get-started-simple-api-only.mdx'
+
+To use this example, you will need the following:
+
+- An Unstructured account, and an Unstructured API key for your account, as follows:
+
+  <GetStartedSimpleApiOnly />
+
+- The Unstructured Workflow Endpoint URL for your account, as follows:
+
+  1. In the Unstructured UI, click **API Keys** on the sidebar.<br/>
+  2. Note the value of the **Unstructured Workflow Endpoint** field.
+
+- A Databricks Volumes source connector in your Unstructured account. [Learn how](/ui/sources/databricks-volumes). 
+- Some available [destination connector](/ui/destinations/overview) in your Unstructured account.
+- A workflow that uses the preceding source and destination connectors. [Learn how](/ui/workflows).
+
+## Step 1: Create a notebook to run the Unstructured workflow
+
+1. Sign in to the Databricks workspace within your Databricks account for AWS, Azure, or GCP that 
+   corresponds to the workspace you specified for your Databricks Volumes source connector.
+2. On the sidebar, click **+ New > Notebook**.
+3. Click the notebook's title and change it to something more descriptive, such as `Unstructured Workflow Runner Notebook`.
+4. In the notebook's first cell, add the following code:
+
+   ```python
+   !pip install requests
+   ```
+
+5. Click **Edit > Insert cell below**.
+6. In this second cell, add the following code:
+
+   ```python
+   import requests, os
+
+   url = '<unstructured-api-url>' + '/workflows/<workflow-id>/run'
+
+   # Option 1 (Recommended): Get your Unstructured API key from Databricks Secrets.
+   api_key = dbutils.secrets.get(scope="<scope>", key="<key>")
+
+   # Option 2: Get your Unstructured API key from an environment variable stored on 
+   # the notebook's attached compute resource.
+   api_key = os.getenv("UNSTRUCTURED_API_KEY")
+
+   headers = {
+       'accept': 'application/json',
+       'content-type': 'application/json',
+       'unstructured-api-key': api_key
+   }
+
+   json_data = {}
+
+   try:
+       response = requests.post(url, headers=headers, json=json_data)
+       response.raise_for_status()
+       print(f'Status Code: {response.status_code}')
+       print('Response:', response.json())
+   except Exception as e:
+       print('An error occurred:', e)
+   ```
+
+7. Replace the placeholders in this second cell as follows:
+
+   - Replace `<unstructured-api-url>` with the value of the **Unstructured Workflow Endpoint** field earlier from the requirements.
+   - Replace `<workflow-id>` with the ID of the workflow that you want to run.
+   - For your Unstructured API key, do one of the following:
+
+     - (Recommended) If you want to use Databricks Secrets, replace `<scope>` and `<key>` with the scope and key names for the existing secret that you have already created in Databricks Secrets. 
+       Learn how to work with Databricks Secrets for 
+       [AWS](https://docs.databricks.com/aws/security/secrets/#secrets-overview), 
+       [Azure](https://learn.microsoft.com/azure/databricks/security/secrets/#secrets-overview), or 
+       [GCP](https://docs.databricks.com/gcp/security/secrets#secrets-overview).
+     - If you want to use environment variables on the attached compute resource, set the `UNSTRUCTURED_API_KEY` to your Unstructured API key value. Learn how for 
+       [AWS](https://docs.databricks.com/aws/compute/configure#environment-variables), 
+       [Azure](https://learn.microsoft.com/azure/databricks/compute/configure#environment-variables), or 
+       [GCP](https://docs.databricks.com/gcp/compute/configure#environment-variables).
+
+
+## Step 2: Create a job in Lakeflow Jobs to run the notebook
+
+1. With your Databricks workspace still open from the previous step, on the sidebar, click **Jobs & Pipelines**.
+2. Expand **Create new**, and then click **Job**.
+3. Click the job's title and change it to something more descriptive, such as `Unstructured Workflow Runner Job`.
+4. On the **Tasks** tab, enter some **Task name** such as `Run_Unstructured_Workflow_Runner_Notebook`.
+5. With **Notebook** selected for **Type**, and with **Workspace** selected for **Source**, use the **Path** dropdown to select the notebook you created in the previous step.
+6. For **Cluster**, select the cluster you want to use to run the notebook.
+7. Click **Create task**.
+8. In the **Job details** pane, under **Schedules & Triggers**, click **Add trigger**.
+9. For **Trigger type**, select **File arrival**.
+10. For **Storage location**, enter the path to the volume to monitor or, if you are monitoring a folder within that volume, the path to the folder. To get this path, do the following:
+
+    a. On the sidebar, click **Catalog**.<br/>
+    b. In the list of catalogs, expand the catalog that contains the volume you want to monitor.<br/>
+    c. In the list of schemas (formerly known as databases), expand the schema that contains the volume you want to monitor.<br/>
+    d. Expand **Volumes**.<br/>
+    e. Click the volume you want to monitor.<br/>
+    f. On the **Overview** tab, copy the path to the volume you want to monitor or, if you are monitoring a folder within that volume, click the path to the folder and then copy the path to that folder.<br/>
+
+11. Click **Save**.
+
+## Step 3: Trigger the job
+
+1. With your Databricks workspace still open from the previous step, on the sidebar, click **Catalog**.
+2. In the list of catalogs, expand the catalog that contains the volume that is being monitored.
+3. In the list of schemas (formerly known as databases), expand the schema that contains the volume that is being monitored.
+4. Expand **Volumes**.
+5. Click the volume that is being monitored or, if you are monitoring a folder within that volume, click the folder.
+6. Click **Upload to this volume**, and follow the on-screen instructions to upload a file to the volume or folder that is being monitored.
+
+## Step 4: View trigger results
+
+1. With your Databricks workspace still open from the previous step, on the sidebar, click **Jobs & Pipelines**.
+2. On the **Jobs & pipelines** tab, click the name of the job you created earlier in Step 2.
+3. On the **Runs** tab, wait until the current job run shows a **Status** of **Succeeded**.
+4. In the Unstructured user interface for your account, click **Jobs** on the sidebar.
+5. In the list of jobs, click the newly running job for your workflow.
+6. After the job status shows **Finished**, go to your destination location to see the results.
+
+## Step 5 (Optional): Pause the trigger
+
+To stop triggering the job, with your job in Lakeflow Jobs still open earlier from Step 4, in the **Job details** pane, under **Schedules & Triggers**, click **Pause**.
