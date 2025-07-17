@@ -1728,7 +1728,79 @@ import EnrichmentTableToHTMLHiResOnly from '/snippets/general-shared-text/enrich
 
 Fields for settings include:
 
-- `prompt_interface_overrides.prompt.user`: _Optional_. Any alternative prompt to use with the underlying NER model. The default is none, which means to rely on using Unstructured's internal default prompt when calling the NER model.
+- `prompt_interface_overrides.prompt.user`: _Optional_. Any alternative prompt to use with the underlying NER model. The default is none, which means to rely on using Unstructured's internal default prompt when calling the NER model. 
+  The internal default prompt is as follows, which you can override by providing an alternative prompt:
+
+  ```text
+  Extract named entities and their relationships from the following text.
+
+  Provide the entities, their corresponding types and relationships as a structured JSON response.
+
+  Entity types:
+  - PERSON
+  - ORGANIZATION
+  - LOCATION
+  - DATE
+  - TIME
+  - EVENT
+  - MONEY
+  - PERCENT
+  - FACILITY
+  - PRODUCT
+  - ROLE
+  - DOCUMENT
+  - DATASET
+
+  Relationship types:
+  - PERSON - ORGANIZATION: works_for, affiliated_with, founded
+  - PERSON - LOCATION: born_in, lives_in, traveled_to
+  - ORGANIZATION - LOCATION: based_in, has_office_in
+  - Entity - DATE: occurred_on, founded_on, died_on, published_in
+  - PERSON - PERSON: married_to, parent_of, colleague_of
+  - PRODUCT - ORGANIZATION: developed_by, owned_by
+  - EVENT - LOCATION: held_in, occurred_in
+  - Entity - ROLE: has_title, acts_as, has_role
+  - DATASET - PERSON: mentions
+  - DATASET - DOCUMENT: located_in
+  - PERSON - DATASET: published
+  - DOCUMENT - DOCUMENT: referenced_in, contains
+  - DOCUMENT - DATE: dated
+  - PERSON - DOCUMENT: published
+
+  [START OF TEXT]
+  {{text}}
+  [END OF TEXT]
+
+
+  Response format json schema: {
+      "items": [
+          { "entity": "Entity name", "type": "Entity type" },
+          { "entity": "Entity name", "type": "Entity type" }
+      ],
+      "relationships": [
+          {"from": "Entity name", "relationship": "Relationship type", "to": "Entity name"},
+          {"from": "Entity name", "relationship": "Relationship type", "to": "Entity name"}
+      ]
+  }
+  ```
+
+  If you provide an alternative prompt, you must provide the entire alternativeprompt in the preceding format. For best results, Unstructured strongly recommends that you limit your changes only to certain portions of the internal default prompt, specifically:
+
+  - Adding, renaming, or deleting items in the list of predefined types (such as `PERSON`, `ORGANIZATION`, `LOCATION`, and so on).
+  - Adding, renaming, or deleting items in the list of predefined relationships (such as `works_for`, `based_in`, `has_role`, and so on).
+  - As needed, adding any clarifying instructions only between these two lines:
+
+    ```text
+    ...
+    Provide the entities and their corresponding types as a structured JSON response.
+
+    (Add any clarifying instructions here only.)
+
+    [START OF TEXT]
+    ...
+    ```
+
+  - Changing any other portions of the internaldefault prompt could produce unexpected results.
 
 Allowed values for `<subtype>` include:
 
