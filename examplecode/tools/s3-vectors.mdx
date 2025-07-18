@@ -69,9 +69,12 @@ To use this example, you will need:
 5. Select the appropriate **Distance metric** for your embedding model. For example, for the 
    **Titan Text Embeddings V2** (`amazon.titan-embed-text-v2:0`) embedding model, select **Cosine**. If you are not sure which distance metric to use, 
    see your embedding model's documentation.
-8. Click **Create vector index**.
-9. After the vector index is created, copy the value of the index's **Amazon Resource Name (ARN)**, as you will need it in 
-   later steps. This ARN takes the format `arn:aws:s3vectors:<region-id>:<account>:bucket/<bucket-name>/index/<index-name>`.
+6. Expand **Additional settings**.
+7. Within **Metadata configuration**, under **Non-filterable metadata**, click **Add key**.
+8. For **Key**, enter `text`. This allows you to query the vector index by the `text` field within each object that will be coming over into the index from the JSON output files.
+9. Click **Create vector index**.
+10. After the vector index is created, copy the value of the index's **Amazon Resource Name (ARN)**, as you will need it in 
+    later steps. This ARN takes the format `arn:aws:s3vectors:<region-id>:<account>:bucket/<bucket-name>/index/<index-name>`.
 
 ## Step 3: Add the source JSON output files' contents to the vector index
 
