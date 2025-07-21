@@ -10,7 +10,10 @@ curl --request 'POST' --location \
     "type": "google_drive",
     "config": {
         "drive_id": "<drive-id>",
-        "service_account_key": "<service-account-key>",
+        "service_account_key": {
+            "id": "<registered-secret-id>",
+            "type": "<encryption-type>"
+        },
         "extensions": [
             "<extension>",
             "<extension>"
