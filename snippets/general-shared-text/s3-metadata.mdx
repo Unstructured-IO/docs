@@ -1,0 +1,40 @@
+User-defined metadata in S3 is metadata that you can choose to set at the time that you upload a file to an S3 bucket. 
+User-defined metadata is specified in S3 as a set of name-value pairs. Each name-value pair begins with `x-amz-meta-` and is 
+followed by a unique name.
+
+For more information about how to add or replace user-defined metadata for a file in S3, see the following:
+
+- [Working with object metadata](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingMetadata.html)
+- [User-defined metadata](https://docs.aws.amazon.com/AmazonS3/latest/userguide/UsingMetadata.html#UserMetadata)
+- [Editing object metadata in the Amazon S3 console](https://docs.aws.amazon.com/AmazonS3/latest/userguide/add-object-metadata.html)
+
+Unstructured outputs any user-defined metadata that it finds for a file into the `metadata.data_source.record_locator.metadata` field of 
+the document elements' output for the corresponding file. For example, if Unstructured processes a file with the user-defined metadata 
+`x-amz-meta-mymetadata` name set to the value `myvalue`, Unstructured outputs the following into the `metadata.data_source.record_locator.metadata` field of 
+the document elements' output for the corresponding file:
+
+```json
+[
+    {
+        "type": "...",
+        "element_id": "...",
+        "text": "...",
+        "metadata": {
+            "data_source": {
+                "record_locator": {
+                    "metadata": {
+                        "mymetadata": "myvalue"
+                    }
+                }
+            }
+        }
+    }
+]
+```
+
+
+
+
+
+
+
