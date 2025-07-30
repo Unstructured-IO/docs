@@ -132,17 +132,17 @@ import EnrichmentImagesTablesHiResOnly from '/snippets/general-shared-text/enric
            allowfullscreen
            ></iframe>
 
-           - Add a **Chunker** node after the **Partitioner** node, to chunk the partitioned data into smaller pieces for your retrieval-augmented generation (RAG) applications. 
-             To do this, click the add (**+**) button to the right of the **Partitioner** node, and then click **Enrich > Chunker**. Click the new **Chunker** node and 
-             specify its settings. For help, click the **FAQ** button in the **Chunker** node's pane. [Learn more about chunking and chunker settings](/ui/chunking).
-           - Add an **Enrichment** node after the **Chunker** node, to apply enrichments to the chunked data such as image summaries, table summaries, table-to-HTML transforms, and 
-             named entity recognition (NER). To do this, click the add (**+**) button to the right of the **Chunker** node, and then click **Enrich > Enrichment**. 
+           - Add an **Enrichment** node after the **Partitioner** node, to apply enrichments to the partitioned data such as image summaries, table summaries, table-to-HTML transforms, and 
+             named entity recognition (NER). To do this, click the add (**+**) button to the right of the **Partitioner** node, and then click **Enrich > Enrichment**. 
              Click the new **Enrichment** node and specify its settings. For help, click the **FAQ** button in the **Enrichment** node's pane. [Learn more about enrichments and enrichment settings](/ui/enriching/overview).
 
              <EnrichmentImagesTablesHiResOnly />
 
-           - Add an **Embedder** node after the **Enrichment** node, to generate vector embeddings for performing vector-based searches. To do this, click the add (**+**) button to the 
-             right of the **Enrichment** node, and then click **Transform > Embedder**. Click the new **Embedder** node and specify its settings. For help, click the **FAQ** button 
+           - Add a **Chunker** node after the **Enrichment** node, to chunk the enriched data into smaller pieces for your retrieval-augmented generation (RAG) applications. 
+             To do this, click the add (**+**) button to the right of the **Enrichment** node, and then click **Enrich > Chunker**. Click the new **Chunker** node and 
+             specify its settings. For help, click the **FAQ** button in the **Chunker** node's pane. [Learn more about chunking and chunker settings](/ui/chunking).
+           - Add an **Embedder** node after the **Chunker** node, to generate vector embeddings for performing vector-based searches. To do this, click the add (**+**) button to the 
+             right of the **Chunker** node, and then click **Transform > Embedder**. Click the new **Embedder** node and specify its settings. For help, click the **FAQ** button 
              in the **Embedder** node's pane. [Learn more about embedding and embedding settings](/ui/embedding).
     
         2. Each time you add a node or change its settings, you can click **Test** above the **Source** node again to test the current workflow end to end and see the results of the changes, if any.

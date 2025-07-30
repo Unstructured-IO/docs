@@ -986,8 +986,8 @@ directed acyclic graph (DAG) nodes. These nodes' settings are specified in the `
   `workflow_nodes` array.
 - A **Destination** node is automatically created when you specify the `destination_id` value outside of the 
   `workflow_nodes` array.
-- You can specify [Partitioner](#partitioner-node), [Chunker](#chunker-node), 
-  [Enrichment](#enrichment-node), and [Embedder](#embedder-node) nodes.
+- You can specify [Partitioner](#partitioner-node), [Enrichment](#enrichment-node), 
+  [Chunker](#chunker-node), and [Embedder](#embedder-node) nodes.
 
   <EnrichmentImagesTablesHiResOnly />
 
@@ -1016,6 +1016,11 @@ flowchart LR
 flowchart LR
     Partitioner-->Enrichment-->Chunker-->Embedder
 ```
+
+<Note>
+    For workflows that use **Chunker** and **Enrichment** nodes together, the **Chunker** node should be placed after all **Enrichment** nodes. Placing the 
+    **Chunker** node before any **Enrichment** nodes could cause incomplete or no enrichment results to be generated.
+</Note>
 
 ### Partitioner node
 
@@ -1352,6 +1357,231 @@ Fields for `settings` include:
 - `extract_image_block_types`: _Optional_. A list of the Unstructured element types for use in extracting image blocks as Base64 encoded data stored in `metadata` fields. Available values include `Image` and `Table`. The default is `[ 'Image', 'Table' ]`.
 - `infer_table_structure`: _Optional_. True to have any table elements extracted from a PDF to include an additional `metadata` field named `text_as_html`, containing an HTML `<table>` transformation. The default is false.
 
+### Enrichment node
+
+An **Enrichment** node has a `type` of `prompter`. 
+
+[Learn about the available enrichments](/ui/enriching/overview).
+
+<EnrichmentImagesTablesHiResOnly />
+
+#### Image Description task
+
+import EnrichmentImageSummaryHiResOnly from '/snippets/general-shared-text/enrichment-image-summary-hi-res-only.mdx';
+
+<EnrichmentImageSummaryHiResOnly />
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        image_description_enrichment_workflow_node = WorkflowNode(
+            name="Enrichment",
+            subtype="<subtype>",
+            type="prompter",
+            settings={}
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Enrichment",
+            "type": "prompter",
+            "subtype": "<subtype>",
+            "settings": {}
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
+
+Allowed values for `<subtype>` include:
+
+- `openai_image_description`
+- `anthropic_image_description`
+- `bedrock_image_description`
+
+#### Table Description task
+
+import EnrichmentTableSummaryHiResOnly from '/snippets/general-shared-text/enrichment-table-summary-hi-res-only.mdx';
+
+<EnrichmentTableSummaryHiResOnly />
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        table_description_enrichment_workflow_node = WorkflowNode(
+            name="Enrichment",
+            subtype="<subtype>",
+            type="prompter",
+            settings={}
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Enrichment",
+            "type": "prompter",
+            "subtype": "<subtype>",
+            "settings": {}
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
+
+Allowed values for `<subtype>` include:
+
+- `openai_table_description`
+- `anthropic_table_description`
+- `bedrock_table_description`
+
+#### Table to HTML task
+
+import EnrichmentTableToHTMLHiResOnly from '/snippets/general-shared-text/enrichment-table-to-html-hi-res-only.mdx';
+
+<EnrichmentTableToHTMLHiResOnly />
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        table_to_html_enrichment_workflow_node = WorkflowNode(
+            name="Enrichment",
+            subtype="openai_table2html",
+            type="prompter",
+            settings={}
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Enrichment",
+            "type": "prompter",
+            "subtype": "openai_table2html",
+            "settings": {}
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
+
+#### Named Entity Recognition (NER) task
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        ner_enrichment_workflow_node = WorkflowNode(
+            name="Enrichment",
+            subtype="<subtype>",
+            type="prompter",
+            settings={
+                "prompt_interface_overrides": {
+                    "prompt": {
+                        "user": "<user-prompt-override>"
+                    } 
+                }             
+            }
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Enrichment",
+            "type": "prompter",
+            "subtype": "<subtype>",
+            "settings": {
+                "prompt_interface_overrides": {
+                    "prompt": {
+                        "user": "<user-prompt-override>"
+                    } 
+                }
+            }
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
+
+Fields for settings include:
+
+- `prompt_interface_overrides.prompt.user`: _Optional_. Any alternative prompt to use with the underlying NER model. The default is none, which means to rely on using Unstructured's internal default prompt when calling the NER model. 
+  The internal default prompt is as follows, which you can override by providing an alternative prompt:
+
+  ```text
+  Extract named entities and their relationships from the following text.
+
+  Provide the entities, their corresponding types and relationships as a structured JSON response.
+
+  Entity types:
+  - PERSON
+  - ORGANIZATION
+  - LOCATION
+  - DATE
+  - TIME
+  - EVENT
+  - MONEY
+  - PERCENT
+  - FACILITY
+  - PRODUCT
+  - ROLE
+  - DOCUMENT
+  - DATASET
+
+  Relationship types:
+  - PERSON - ORGANIZATION: works_for, affiliated_with, founded
+  - PERSON - LOCATION: born_in, lives_in, traveled_to
+  - ORGANIZATION - LOCATION: based_in, has_office_in
+  - Entity - DATE: occurred_on, founded_on, died_on, published_in
+  - PERSON - PERSON: married_to, parent_of, colleague_of
+  - PRODUCT - ORGANIZATION: developed_by, owned_by
+  - EVENT - LOCATION: held_in, occurred_in
+  - Entity - ROLE: has_title, acts_as, has_role
+  - DATASET - PERSON: mentions
+  - DATASET - DOCUMENT: located_in
+  - PERSON - DATASET: published
+  - DOCUMENT - DOCUMENT: referenced_in, contains
+  - DOCUMENT - DATE: dated
+  - PERSON - DOCUMENT: published
+
+  [START OF TEXT]
+  {{text}}
+  [END OF TEXT]
+
+
+  Response format json schema: {
+      "items": [
+          { "entity": "Entity name", "type": "Entity type" },
+          { "entity": "Entity name", "type": "Entity type" }
+      ],
+      "relationships": [
+          {"from": "Entity name", "relationship": "Relationship type", "to": "Entity name"},
+          {"from": "Entity name", "relationship": "Relationship type", "to": "Entity name"}
+      ]
+  }
+  ```
+
+  If you provide an alternative prompt, you must provide the entire alternative prompt in the preceding format. For best results, Unstructured strongly recommends that you limit your changes only to certain portions of the internal default prompt, specifically:
+
+  - Adding, renaming, or deleting items in the list of predefined types (such as `PERSON`, `ORGANIZATION`, `LOCATION`, and so on).
+  - Adding, renaming, or deleting items in the list of predefined relationships (such as `works_for`, `based_in`, `has_role`, and so on).
+  - As needed, adding any clarifying instructions only between these two lines:
+
+    ```text
+    ...
+    Provide the entities and their corresponding types as a structured JSON response.
+
+    (Add any clarifying instructions here only.)
+
+    [START OF TEXT]
+    ...
+    ```
+
+  - Changing any other portions of the internal default prompt could produce unexpected results.
+
+Allowed values for `<subtype>` include:
+
+- `openai_ner`
+- `anthropic_ner`
+
 ### Chunker node
 
 A **Chunker** node has a `type` of `chunk`. 
@@ -1581,231 +1811,6 @@ Fields for `settings` include:
 - `overlap_all`: _Optional_. True to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. The default is false.
 - `contextual_chunking_strategy`: _Optional_. If specified, prepends chunk-specific explanatory context to each chunk. Allowed values include `v1`. The default is none.
 - `similarity_threshold`: _Optional_. The minimum similarity that text in consecutive elements must have to be included in the same chunk. This must be a value between `0.0` and `1.0`, exclusive (`0.01` to `0.99`). The default is none.
-
-### Enrichment node
-
-An **Enrichment** node has a `type` of `prompter`. 
-
-[Learn about the available enrichments](/ui/enriching/overview).
-
-<EnrichmentImagesTablesHiResOnly />
-
-#### Image Description task
-
-import EnrichmentImageSummaryHiResOnly from '/snippets/general-shared-text/enrichment-image-summary-hi-res-only.mdx';
-
-<EnrichmentImageSummaryHiResOnly />
-
-<AccordionGroup>
-    <Accordion title="Python SDK">
-        ```python
-        image_description_enrichment_workflow_node = WorkflowNode(
-            name="Enrichment",
-            subtype="<subtype>",
-            type="prompter",
-            settings={}
-        )
-        ```
-    </Accordion>
-    <Accordion title="curl, Postman">
-        ```json
-        {
-            "name": "Enrichment",
-            "type": "prompter",
-            "subtype": "<subtype>",
-            "settings": {}
-        }
-        ```
-    </Accordion>
-</AccordionGroup>
-
-Allowed values for `<subtype>` include:
-
-- `openai_image_description`
-- `anthropic_image_description`
-- `bedrock_image_description`
-
-#### Table Description task
-
-import EnrichmentTableSummaryHiResOnly from '/snippets/general-shared-text/enrichment-table-summary-hi-res-only.mdx';
-
-<EnrichmentTableSummaryHiResOnly />
-
-<AccordionGroup>
-    <Accordion title="Python SDK">
-        ```python
-        table_description_enrichment_workflow_node = WorkflowNode(
-            name="Enrichment",
-            subtype="<subtype>",
-            type="prompter",
-            settings={}
-        )
-        ```
-    </Accordion>
-    <Accordion title="curl, Postman">
-        ```json
-        {
-            "name": "Enrichment",
-            "type": "prompter",
-            "subtype": "<subtype>",
-            "settings": {}
-        }
-        ```
-    </Accordion>
-</AccordionGroup>
-
-Allowed values for `<subtype>` include:
-
-- `openai_table_description`
-- `anthropic_table_description`
-- `bedrock_table_description`
-
-#### Table to HTML task
-
-import EnrichmentTableToHTMLHiResOnly from '/snippets/general-shared-text/enrichment-table-to-html-hi-res-only.mdx';
-
-<EnrichmentTableToHTMLHiResOnly />
-
-<AccordionGroup>
-    <Accordion title="Python SDK">
-        ```python
-        table_to_html_enrichment_workflow_node = WorkflowNode(
-            name="Enrichment",
-            subtype="openai_table2html",
-            type="prompter",
-            settings={}
-        )
-        ```
-    </Accordion>
-    <Accordion title="curl, Postman">
-        ```json
-        {
-            "name": "Enrichment",
-            "type": "prompter",
-            "subtype": "openai_table2html",
-            "settings": {}
-        }
-        ```
-    </Accordion>
-</AccordionGroup>
-
-#### Named Entity Recognition (NER) task
-
-<AccordionGroup>
-    <Accordion title="Python SDK">
-        ```python
-        ner_enrichment_workflow_node = WorkflowNode(
-            name="Enrichment",
-            subtype="<subtype>",
-            type="prompter",
-            settings={
-                "prompt_interface_overrides": {
-                    "prompt": {
-                        "user": "<user-prompt-override>"
-                    } 
-                }             
-            }
-        )
-        ```
-    </Accordion>
-    <Accordion title="curl, Postman">
-        ```json
-        {
-            "name": "Enrichment",
-            "type": "prompter",
-            "subtype": "<subtype>",
-            "settings": {
-                "prompt_interface_overrides": {
-                    "prompt": {
-                        "user": "<user-prompt-override>"
-                    } 
-                }
-            }
-        }
-        ```
-    </Accordion>
-</AccordionGroup>
-
-Fields for settings include:
-
-- `prompt_interface_overrides.prompt.user`: _Optional_. Any alternative prompt to use with the underlying NER model. The default is none, which means to rely on using Unstructured's internal default prompt when calling the NER model. 
-  The internal default prompt is as follows, which you can override by providing an alternative prompt:
-
-  ```text
-  Extract named entities and their relationships from the following text.
-
-  Provide the entities, their corresponding types and relationships as a structured JSON response.
-
-  Entity types:
-  - PERSON
-  - ORGANIZATION
-  - LOCATION
-  - DATE
-  - TIME
-  - EVENT
-  - MONEY
-  - PERCENT
-  - FACILITY
-  - PRODUCT
-  - ROLE
-  - DOCUMENT
-  - DATASET
-
-  Relationship types:
-  - PERSON - ORGANIZATION: works_for, affiliated_with, founded
-  - PERSON - LOCATION: born_in, lives_in, traveled_to
-  - ORGANIZATION - LOCATION: based_in, has_office_in
-  - Entity - DATE: occurred_on, founded_on, died_on, published_in
-  - PERSON - PERSON: married_to, parent_of, colleague_of
-  - PRODUCT - ORGANIZATION: developed_by, owned_by
-  - EVENT - LOCATION: held_in, occurred_in
-  - Entity - ROLE: has_title, acts_as, has_role
-  - DATASET - PERSON: mentions
-  - DATASET - DOCUMENT: located_in
-  - PERSON - DATASET: published
-  - DOCUMENT - DOCUMENT: referenced_in, contains
-  - DOCUMENT - DATE: dated
-  - PERSON - DOCUMENT: published
-
-  [START OF TEXT]
-  {{text}}
-  [END OF TEXT]
-
-
-  Response format json schema: {
-      "items": [
-          { "entity": "Entity name", "type": "Entity type" },
-          { "entity": "Entity name", "type": "Entity type" }
-      ],
-      "relationships": [
-          {"from": "Entity name", "relationship": "Relationship type", "to": "Entity name"},
-          {"from": "Entity name", "relationship": "Relationship type", "to": "Entity name"}
-      ]
-  }
-  ```
-
-  If you provide an alternative prompt, you must provide the entire alternative prompt in the preceding format. For best results, Unstructured strongly recommends that you limit your changes only to certain portions of the internal default prompt, specifically:
-
-  - Adding, renaming, or deleting items in the list of predefined types (such as `PERSON`, `ORGANIZATION`, `LOCATION`, and so on).
-  - Adding, renaming, or deleting items in the list of predefined relationships (such as `works_for`, `based_in`, `has_role`, and so on).
-  - As needed, adding any clarifying instructions only between these two lines:
-
-    ```text
-    ...
-    Provide the entities and their corresponding types as a structured JSON response.
-
-    (Add any clarifying instructions here only.)
-
-    [START OF TEXT]
-    ...
-    ```
-
-  - Changing any other portions of the internal default prompt could produce unexpected results.
-
-Allowed values for `<subtype>` include:
-
-- `openai_ner`
-- `anthropic_ner`
 
 ### Embedder node
 
