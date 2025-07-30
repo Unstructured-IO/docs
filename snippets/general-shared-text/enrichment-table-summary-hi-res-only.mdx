@@ -1,7 +1,17 @@
 <Warning>
-    Table summary descriptions are generated only when the **Partitioner** node in a workflow is set to use the **High Res** [partitioning strategy](/ui/partitioning) and 
-    the workflow also contains a table description enrichment node.
+    Unstructured can potentially generate table summary descriptions only for workflows that are configured as follows:
+    
+    - With a **Partitioner** node set to use the **Auto** or **High Res** partitioning strategy, and a table summary description node is added.  
+    - With a **Partitioner** node set to use the **VLM** partitioning strategy. No table summary description node is needed (or allowed).
+    
+    Even with these configurations, Unstructured actually generates table summary descriptions only for files that contain tables and are also eligible 
+    for processing with the following partitioning strategies:
+    
+    - **High Res**, when the workflow's **Partitioner** node is set to use **Auto** or **High Res**.
+    - **VLM** or **High Res**, when the workflow's **Partitioner** node is set to use **VLM**.
 
-    Setting the **Partitioner** node to use **Auto**, **VLM**, or **Fast** in a workflow that also contains a table description enrichment node 
-    will not produce any table summary descriptions, and it could also cause the workflow to stop running or produce unexpected results.
+    Unstructured never generates table summary descriptions for workflows that are configured as follows:
+    
+    - With a **Partitioner** node set to use the **Fast** partitioning strategy.
+    - With a **Partitioner** node set to use the **Auto**, **High Res**, or **VLM** partitioning strategy, for all files that Unstructured encounters that do not contain tables.
 </Warning>
