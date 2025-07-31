@@ -1,45 +1,132 @@
 ---
-title: Endpoint validation errors 
-description: This section details the structure of HTTP validation errors returned by the Unstructured Partition Endpoint.
+title: Endpoint errors
 ---
 
-## HTTPValidationError
+For the [Unstructured Python SDK](/api-reference/partition/sdk-python), 
+the [Unstructured Partition Endpoint](/api-reference/partition/overview) returns errors primarily through 
+the `UnstructuredClientError` class (the base class for all errors raised by the Unstructured Python SDK) and 
+the `HTTPValidationError` class (inherited from `UnstructuredClientError`). Less common errors are returned through the following classes:
 
-**Type**: object
+- `httpx.RequestError`, the base class for request errors.
+- `httpx.ConnectError`, for HTTP connection request errors.
+- `httpx.TimeoutException`, for HTTP request timeout errors.
+- `ServerError` (inherited from `UnstructuredClientError`), for server-side errors.
+- `ResponseValidationError` (inherited from `UnstructuredClientError`), for type mismatches between the response data and the expected Pydantic model.
 
-**Title**: HTTPValidationError
+Each of the preceding classes has the following members:
 
-**Detail**
+| Member | Type | Description |
+|--------|------|-------------|
+| `message`      | `str`            | The eror message.                                                                           |
+| `status_code`  | `int`            | The HTTP response status code, for example `401`.                                                      |
+| `headers`      | `httpx.Headers`  | A collection of HTTP response headers.                                                                   |
+| `body`         | `str`            | The HTTP body. This can be an empty string if no body is returned.                                  |
+| `raw_response` | `httpx.Response` | The raw HTTP response.
 
-*   **Type**: array
+The following example shows how to handle the preceding errors. In this example, 
+a required Unstructured API key is intentionally commented out of the code, so that a 
+`401 Unauthorized` error is intentionally thrown.
+
+```python
+import os
+import json
+
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import PartitionRequest
+from unstructured_client.models.shared import (
+    PartitionParameters,
+    Files,
+    Strategy
+)
+from unstructured_client.models.errors import (
+    UnstructuredClientError,
+    HTTPValidationError
+)
+from unstructured_client.models.errors.servererror import ServerError
+from unstructured_client.models.errors.responsevalidationerror import ResponseValidationError
+import httpx
+
+try:
+    client = UnstructuredClient(
+        # For example, intentionally leave out the API key to intentionally throw an error.
+        # api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+    )
+
+    filename = "PATH_TO_INPUT_FILE"
+
+    request = PartitionRequest(
+        partition_parameters=PartitionParameters(
+            files=Files(
+                content=open(filename, "rb"),
+                file_name=filename,
+            ),
+            strategy=Strategy.VLM,
+            vlm_model="gpt-4o",
+            vlm_model_provider="openai",
+            languages=['eng'],
+            split_pdf_page=True,            # If True, splits the PDF file into smaller chunks of pages.
+            split_pdf_allow_failed=True,    # If True, the partitioning continues even if some pages fail.
+            split_pdf_concurrency_level=15  # Set the number of concurrent request to the maximum value: 15.
+        ),
+    )
+
+    response = client.general.partition(
+        request=request
+    )
+    element_dicts = [element for element in response.elements]
     
-*   **Description**: An array of ValidationError items, providing detailed information about the validation errors encountered.
-    
+    # Print the processed data's first element only.
+    print(element_dicts[0])
 
-## ValidationError
+    # Write the processed data to a local file.
+    json_elements = json.dumps(element_dicts, indent=2)
 
-**Type**: object
+    with open("PATH_TO_OUTPUT_FILE", "w") as file:
+        file.write(json_elements)
 
-**Title**: ValidationError
+except HTTPValidationError as e:
+    print("Validation error (HTTP 422):", e)
+except ServerError as e:
+    print("Server error (HTTP 5XX):", e)
+except ResponseValidationError as e:
+    print("Response validation/type mismatch:", e)
+except UnstructuredClientError as e:
+    # This catches any other UnstructuredClientError not already caught above.
+    # This and all of the other error classes in this example expose the following members:
+    print("Other Unstructured client error:")
+    print(f"Message:      {e.message}")
+    print(f"Status code:  {e.status_code}")
+    print(f"Body:         {e.body}")
+    print(f"Raw response: {e.raw_response}")
+    print(f"Headers:")
 
-**Required Fields**: loc, msg, type
+    for header in e.headers.raw:
+        key = header[0].decode('utf-8')
+        value = header[1].decode('utf-8')
+        print(f"              {key}: {value}")
 
-*   **Location (loc)**
-    
-    *   **Type**: array
-        
-    *   **Description**: The location of the validation error in the request. Each item in the array can be either a string (e.g., field name) or an integer (e.g., array index).
-        
-    
-*   **Message (msg)**
-    
-    *   **Type**: string
-        
-    *   **Description**: A descriptive message about the validation error.
-        
-    
-*   **Error Type (type)**
-    
-    *   **Type**: string
-        
-    *   **Description**: The type of validation error, categorizing the nature of the error.
+except httpx.ConnectError as e:
+    print("HTTP connection error:", e)
+except httpx.TimeoutException as e:
+    print("HTTP timeout error:", e)
+except httpx.RequestError as e:
+    # This catches catch-all network errors from HTTP not already caught above.
+    print("Other HTTPX request error:", e)
+except Exception as e:
+    # Optional: this catches any other unforeseen errors.
+    print("Unexpected error:", e)
+```
+
+The results of running the preceding code are similar to the following:
+
+```text
+Message:      API error occurred: Status 401. Body: {"detail":"API key is missing, please provide an API key in the header."}
+Status code:  401
+Body:         {"detail":"API key is missing, please provide an API key in the header."}
+Raw response: <Response [401 Unauthorized]>
+Headers:
+              date: <date-and-time-of-the-error>
+              server: <server-identifier>
+              content-length: 73
+              content-type: application/json
+```
