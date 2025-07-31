@@ -163,7 +163,7 @@ To use this example, you will need:
        if isinstance(obj, dict):
            for key, value in obj.items():
                # Skip analyzing Base64-encoded fields.
-               if key == 'image_base64' || key == 'orig_elements':
+               if key == 'image_base64' or key == 'orig_elements':
                    pass
                elif isinstance(value, str):
                    anonymized_results = anonymizer.anonymize(
