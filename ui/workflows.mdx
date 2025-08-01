@@ -157,7 +157,6 @@ If you did not previously set the workflow to run on a schedule, you can [run th
 
 8. The workflow begins with the following layout:
 
-
    ```mermaid
    flowchart LR
      Source-->Partitioner-->Destination
@@ -181,6 +180,11 @@ If you did not previously set the workflow to run on a schedule, you can [run th
    flowchart LR
      Source-->Partitioner-->Enrichment-->Chunker-->Embedder-->Destination
    ```
+
+   <Note>
+       For workflows that use **Chunker** and **Enrichment** nodes together, the **Chunker** node should be placed after all **Enrichment** nodes. Placing the 
+       **Chunker** node before any **Enrichment** nodes could cause incomplete or no enrichment results to be generated.
+   </Note>
 
 9. In the pipeline designer, click the **Source** node. In the **Source** pane, select the source location. Then click **Save**.
 

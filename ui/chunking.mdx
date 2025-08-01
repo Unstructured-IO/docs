@@ -22,6 +22,10 @@ text element that was too big to fit in one chunk and required splitting.
 - `Table`: A table element is not combined with other elements, and if it fits within the max characters setting it will remain as is.
 - `TableChunk`: Large tables that exceed the max characters setting are split into special `TableChunk` elements.
 
+<Note>
+    During chunking, Unstructured removes all detected `Image` elements from the output.
+</Note>
+
 Here are a few examples:
 
 ```json

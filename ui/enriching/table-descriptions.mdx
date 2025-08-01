@@ -2,7 +2,7 @@
 title: Table descriptions
 ---
 
-After partitioning and chunking, you can have Unstructured generate text-based summaries of detected tables.
+After partitioning, you can have Unstructured generate text-based summaries of detected tables.
 
 This summarization is done by using models offered through these providers:
 
@@ -49,8 +49,14 @@ Here are two examples of the descriptions for detected tables. These description
 
 ![Description of a table with information about potentiodynamic polarization of stainless steel](/img/enriching/Table-Description-2.png)
 
-The generated table's summary will overwrite any previous contents in the `text` field. The table's original content is available 
-in the `image_base64` field. 
+The generated table's summary will overwrite any text that Unstructured had previously extracted from that table into the `text` field. 
+The table's original content is available in the `image_base64` field. 
+
+For workflows that use [chunking](/ui/chunking), note the following changes:
+
+- If a `Table` element must be chunked, the `Table` element is replaced by a set of related `TableChunk` elements.
+- Each of these `TableChunk` elements will contain a summary description only for its own element, as part of the element's `text` field.
+- These `TableChunk` elements will not contain an `image_base64` field.
 
 Any embeddings that are produced after these summaries are generated will be based on the new `text` field's contents.
 
@@ -63,6 +69,8 @@ To generate table descriptions, in an **Enrichment** node in a workflow, specify
 <Note>
     You can change a workflow's table description settings only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.
     
+    For workflows that use [chunking](/ui/chunking), the **Chunker** node should be placed after all **Enrichment** nodes. Placing the 
+    **Chunker** node before a table descriptions **Enrichment** node could cause incomplete or no table descriptions to be generated.
 </Note>
 
 <EnrichmentTableSummaryHiResOnly />
