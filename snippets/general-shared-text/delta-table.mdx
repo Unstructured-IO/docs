@@ -26,8 +26,8 @@ For more information about requirements, see the following:
   allowfullscreen
   ></iframe>
 
-- An S3 bucket. [Create an S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html). 
-  Additional approaches are in the following video and in the how-to sections at the end of this page.
+- An S3 bucket. You can create an S3 bucket by using the S3 console, following the steps [in the S3 documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html) or in the following video. 
+  Additional approaches that use AWS CloudFormation or the AWS CLI are in the how-to sections later on this page.
 
   <iframe
   width="560"
@@ -39,8 +39,15 @@ For more information about requirements, see the following:
   allowfullscreen
   ></iframe>
 
-- For authenticated bucket read access, the authenticated AWS IAM user must have at minimum the permissions of `s3:ListBucket` and `s3:GetObject` for that bucket. [Learn how](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-policies-s3.html).
+- For authenticated bucket write access or both, you should first 
+  [block all public access to the bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/configuring-block-public-access-bucket.html).
 
+  After blocking all public access to the bucket, for read access, the authenticated AWS IAM user must have at minimum the permissions of `s3:ListBucket` and `s3:GetObject` for that bucket. 
+  For write access, the authenticated AWS IAM user must have at minimum the permission of `s3:PutObject` for that bucket. To grant permissions, 
+  attach the appropriate bucket policy to the bucket. See the policy examples later on this page, and [learn about bucket policies for S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html). These permissions remain in effect until the bucket policy is removed from the bucket. 
+  To apply a bucket policy by using the S3 console, follow the steps [in the S3 documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/add-bucket-policy.html) or in the following video. 
+  Additional approaches that use AWS CloudFormation or the AWS CLI are in the how-to sections later on this page.
+  
   <iframe
   width="560"
   height="315"
@@ -51,11 +58,8 @@ For more information about requirements, see the following:
   allowfullscreen
   ></iframe>
 
-- For bucket write access, authenticated access to the bucket must be enabled (anonymous access must not be enabled), and the authenticated AWS IAM user must have at 
-  minimum the permission of `s3:PutObject` for that bucket. [Learn how](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-policies-s3.html).
-
-- For authenticated access, an AWS access key and secret access key for the authenticated AWS IAM user in the account. 
-  [Create an AWS access key and secret access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
+- Provide an AWS access key and secret access key for the authenticated AWS IAM user in the account. 
+  Create an AWS access key and secret access key by following the steps [in the IAM documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey) or in the following video.
 
   <iframe
   width="560"
@@ -67,10 +71,10 @@ For more information about requirements, see the following:
   allowfullscreen
   ></iframe>
   
-- If the target files are in the root of the bucket, the path to the bucket, formatted as `protocol://bucket/` (for example, `s3://my-bucket/`). 
+- If the target files are in the root of the bucket, provide the path to the bucket, formatted as `protocol://bucket/` (for example, `s3://my-bucket/`). 
   If the target files are in a folder, the path to the target folder in the S3 bucket, formatted as `protocol://bucket/path/to/folder/` (for example, `s3://my-bucket/my-folder/`). 
 - If the target files are in a folder, make sure the authenticated AWS IAM user has 
-  authenticated access to the folder as well. [Enable authenticated folder access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html#example-bucket-policies-folders).
+  authenticated access to the folder as well. [See examples of authenticated folder access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html#example-bucket-policies-folders).
 
 ## Add an access policy to an existing bucket
 
