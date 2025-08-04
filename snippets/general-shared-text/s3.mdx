@@ -66,10 +66,10 @@ requirements. For more information about requirements, see the following:
     ></iframe>
 
   - Have the IAM user temporarily assume an IAM role that contains the appropriate user policy. See the policy examples later on this page, and [learn about user policies for S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html). These permission remain in effect until the assumed role's time period expires. 
-    Learn how to use the IAM console to [create a role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user.html) and then 
-    [grant the user permission to assume the role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_use_permissions-to-switch.html). Finally, 
+    Learn how to use the IAM console to [create a policy](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_create-console.html), 
+    [create a role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user.html) that references this policy, and then 
     [have the user temporarily assume the role by using the AWS CLI or an AWS SDK](https://docs.aws.amazon.com/code-library/latest/ug/sts_example_sts_AssumeRole_section.html), which produces 
-    a temporary AWS access key, AWS secret access key, and AWS STS session token.
+    a temporary AWS access key (`AccessKeyId`), AWS secret access key (`SecretAccessKey`), and AWS STS session token (`SessionToken`).
 
     <Warning>
       AWS STS credentials (consisting of an AWS access key, AWS secret access key, and AWS STS session token) can be valid for as little as 15 minutes or as long as 36 hours, depending on how the credentials were initially 
