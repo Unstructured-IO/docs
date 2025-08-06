@@ -1,0 +1,112 @@
+---
+title: Migration
+---
+
+This page contains information about how to migrate from previous versions of the 
+[UnstructuredWorkflow Endpoint](/api-reference/workflow/overview).
+
+## ConnectorConfigInput and ConnectorType classes are deprecated
+
+**Applies to**: The [Unstructured Python SDK](/api-reference/workflow/overview#unstructured-python-sdk) only.
+
+**Issue**: Referencing classes that end in `ConnectorConfigInput` such as `S3SourceConnectorConfigInput` 
+and `S3DestinationConnectorConfigInput`, and referencing classes that end in `ConnectorType` such as 
+`S3SourceConnectorType` and `S3DestinationConnectorType`, produce warnings at design time and errors at run time.
+
+**Cause**: The preceding classes have been deprecated and are no longer supported.
+
+**Solution**:
+
+- Remove references to classes that end in `ConnectorConfigInput` from your code. Replace these references with a 
+  typed dictionary (a [TypedDict](https://docs.pydantic.dev/latest/api/standard_library_types/#typeddict) in 
+  [Pydantic](https://docs.pydantic.dev/latest/)). This typed dictionary must contain the same fields as the 
+  class that you removed, with dictionary key/value pairs instead of object parameter/argument pairs.
+- Remove references to classes that end in `ConnectorType` from your code. Replace these references with a string reference instead. This 
+  string corresponds to Unstructured's programmatic identifier for the connector type, for example `s3` for Amazon S3.
+
+For example, the following code template shows the deprecated approach for programmatically creating an S3 source connector.
+
+```python Python SDK
+# Deprecated code example. Do not use.
+import os
+
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import CreateSourceRequest
+# The SourceConnectorType and S3SourceConnectorConfigInput classes are deprecated.
+from unstructured_client.models.shared import (
+    CreateSourceConnector,
+    SourceConnectorType,         # <- Remove. Deprecated.
+    S3SourceConnectorConfigInput # <- Remove. Deprecated.
+)
+
+with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+    response = client.sources.create_source(
+        request=CreateSourceRequest(
+            create_source_connector=CreateSourceConnector(
+                name="<name>",
+                type=SourceConnectorType.S3, # <- Replace SourceConnectorType.S3 with a string reference to "s3".
+                # Replace S3SourceConnectorConfigInput with a typed dictionary.
+                config=S3SourceConnectorConfigInput(
+                    # For anonymous authentication:
+                    anonymous=True,
+
+                    # For AWS access key ID with AWS secret access key authentication:
+                    key="<key>", 
+                    secret="<secret>", 
+
+                    # For AWS STS token authentication:
+                    token="<token>", 
+                    key="<key>", 
+                    secret="<secret>", 
+
+                    remote_url="<remote_url>",
+                    endpoint_url="<endpoint-url>", 
+                    recursive=<True|False>
+                )
+            )
+        )
+    )
+
+    print(response.source_connector_information)
+```
+
+To address this issue, use the following code template instead, which removes the 
+`SourceConnectorType` and `S3SourceConnectorConfigInput` class references and replaces them 
+with the correct substitutions.
+
+```python Python SDK
+import os
+
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import CreateSourceRequest
+from unstructured_client.models.shared import CreateSourceConnector
+
+with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+    response = client.sources.create_source(
+        request=CreateSourceRequest(
+            create_source_connector=CreateSourceConnector(
+                name="<name>",
+                type="s3",
+                config={
+                    # For anonymous authentication:
+                    "anonymous": True,
+
+                    # For AWS access key ID with AWS secret access key authentication:
+                    "key": "<key>", 
+                    "secret": "<secret>", 
+
+                    # For AWS STS token authentication:
+                    "token": "<token>", 
+                    "key": "<key>", 
+                    "secret": "<secret>", 
+
+                    "remote_url": "<remote_url>",
+                    "endpoint_url": "<endpoint-url>", 
+                    "recursive": <True|False>
+                }
+            )
+        )
+    )
+
+    print(response.source_connector_information)
+```
