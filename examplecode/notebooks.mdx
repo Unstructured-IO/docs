@@ -6,10 +6,31 @@ description: "Notebooks contain complete working sample code for end-to-end solu
 ---
 
 <CardGroup cols={2}>
+    <Card title="Preserving Table Structure for Better Retrieval" href="https://colab.research.google.com/drive/1__axq0MRDR9i1M_uEW-pR8aKYH_Qk1hj?usp=sharing">
+    <br/>
+       This notebook explores using Unstructured API to process financial documents while preserving tabular structure in a way that's usable by downstream applications.
+    <br/>
+       ``Unstructured API`` ``Workflows`` ``S3``  ``Astra DB``
+    <br/>
+    </Card>
     <Card title="Historical research about MLK with the Unstructured API" href="https://colab.research.google.com/github/Unstructured-IO/unstructured-mlk-archive-public/blob/main/MLK_Archive_RAG_Application.ipynb">
     <br/>This notebook explores how you can use Unstructured to gather and process declassified historical records surrounding the assassination of Dr. Martin Luther King, Jr. These processed documents can then be analyzed by using Elasticsearch and RAG.
     <br/>
        ``Unstructured API`` ``Workflows`` ``S3`` ``VLM`` ``NER`` ``Elasticsearch`` ``MLK`` ``National Archives``
+    <br/>
+    </Card>
+    <Card title="Rag without Embeddings" href="https://colab.research.google.com/drive/1s2sD4FXj8Kw0gzx_00D_09tuYMepKK3_?usp=sharing">
+    <br/>
+       Learn how to build a RAG pipeline without any embedding models. Use Unstructured to preprocess documents, index them into Elasticsearch, and retrieve using classic BM25 scoring. 
+    <br/>
+       ``Unstructured API`` ``Workflows`` ``Elasticsearch`` ``BM25`` 
+    <br/>
+    </Card>
+    <Card title="Getting Started with Unstructured API and Redis" href="https://colab.research.google.com/drive/1MOi3OSpR14BFF6aaMwrld1d0u4mn8LGE?usp=sharing">
+    <br/>
+       Learn how to build data processing workflows using the Unstructured API and Python SDK to preprocess unstructured files from S3 and store the structured outputs in Redis Cloud for retrieval.
+    <br/>
+       ``Unstructured API`` ``Workflows`` ``S3`` ``Redis`` 
     <br/>
     </Card>
     <Card title="Create a S3 to Qdrant Pipeline using the Unstructured API" href="https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/S3_to_Qdrant_Workflow_using_Unstructured_API.ipynb">
@@ -17,6 +38,13 @@ description: "Notebooks contain complete working sample code for end-to-end solu
        This notebook walks through using the Unstructured Workflow Endpoint to set up a complete pipeline that pulls documents from S3, processes them using Unstructured, and stores the resulting embeddings in Qdrant for fast vector search and retrieval.
     <br/>
        ``Unstructured API`` ``Workflows`` ``S3`` ``Qdrant`` ``VLM`` ``Embeddings``
+    <br/>
+    </Card>
+    <Card title="Two-stage retrieval: similarity search + rerankers" href="https://colab.research.google.com/drive/1paDKrn_3WepcZ0D4eN-dhIv1s3oGU9Tl?usp=sharing">
+    <br/>
+        Improve RAG precision with a two-stage retrieval pipeline: fast vector search followed by reranking using Cohere’s re-ranker models. 
+    <br/>
+       ``Unstructured API`` ``Workflows`` ``Cohere`` ``Pinecone`` 
     <br/>
     </Card>
     <Card title="Create a S3 to MongoDB Pipeline using the Unstructured API" href="https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/S3_to_MongoDB_Workflow_using_Unstructured_API.ipynb">
