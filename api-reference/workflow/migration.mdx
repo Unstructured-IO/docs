@@ -18,8 +18,7 @@ and `S3DestinationConnectorConfigInput`, and referencing classes that end in `Co
 **Solution**:
 
 - Remove references to classes that end in `ConnectorConfigInput` from your code. Replace these references with a 
-  typed dictionary (a [TypedDict](https://docs.pydantic.dev/latest/api/standard_library_types/#typeddict) in 
-  [Pydantic](https://docs.pydantic.dev/latest/)). This typed dictionary must contain the same fields as the 
+  dictionary. This dictionary must contain the same fields as the 
   class that you removed, with dictionary key/value pairs instead of object parameter/argument pairs.
 - Remove references to classes that end in `ConnectorType` from your code. Replace these references with a string reference instead. This 
   string corresponds to Unstructured's programmatic identifier for the connector type, for example `s3` for Amazon S3.
