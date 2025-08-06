@@ -3,36 +3,31 @@ import os
 
 from unstructured_client import UnstructuredClient
 from unstructured_client.models.operations import CreateSourceRequest
-from unstructured_client.models.shared import (
-    CreateSourceConnector,
-    SourceConnectorType,
-    AzureSourceConnectorConfigInput
-)
+from unstructured_client.models.shared import CreateSourceConnector
 
 with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
     response = client.sources.create_source(
         request=CreateSourceRequest(
             create_source_connector=CreateSourceConnector(
                 name="<name>",
-                type=SourceConnectorType.AZURE,
-                config=AzureSourceConnectorConfigInput(
-                    remote_url="az://<container-name>/<path/to/file/or/folder>",
-                    recursive=<True|False>,
-                
-                    # For anonymous authentication, do not set any of the 
-                    # following fields.
+                type="azure",
+                config={
+                    "remote_url": "az://<container-name>/<path/to/file/or/folder>",
+                    "recursive": <True|False>,
 
+                    # For anonymous authentication, omit the following auth keys.
+                    
                     # For SAS token authentication:
-                    account_name="<account-name>",
-                    sas_token="<sas-token>"
+                    # "account_name": "<account-name>",
+                    # "sas_token": "<sas-token>",
 
                     # For account key authentication:
-                    account_name="<account-name>",
-                    account_key="<account-key>"
+                    # "account_name": "<account-name>",
+                    # "account_key": "<account-key>",
 
                     # For connection string authentication:
-                    connection_string="<connection-string>"
-                )
+                    # "connection_string": "<connection-string>"
+                }
             )
         )
     )

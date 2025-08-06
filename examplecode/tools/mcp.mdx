@@ -140,8 +140,7 @@ You are now ready to start coding.
             ListSourcesRequest,
             GetSourceRequest
         )
-        from unstructured_client.models.shared import SourceConnectorType
-
+        
         def load_environment_variables() -> None:
             """
             Loads environment variables from a .env file and checks for required variables. 
@@ -209,7 +208,7 @@ You are now ready to start coding.
 
             if source_type:
                 try:
-                    request.source_type = SourceConnectorType[source_type]
+                    request.source_type = [source_type]
                 except KeyError:
                     return f"Invalid source type: {source_type}"
 

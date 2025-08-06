@@ -3,32 +3,28 @@ import os
 
 from unstructured_client import UnstructuredClient
 from unstructured_client.models.operations import CreateSourceRequest
-from unstructured_client.models.shared import (
-    CreateSourceConnector,
-    SourceConnectorType,
-    PostgresSourceConnectorConfigInput
-)
+from unstructured_client.models.shared import CreateSourceConnector
 
 with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
     response = client.sources.create_source(
         request=CreateSourceRequest(
             create_source_connector=CreateSourceConnector(
                 name="<name>",
-                type=SourceConnectorType.POSTGRES,
-                config=PostgresSourceConnectorConfigInput(
-                    host="<host>",
-                    database="<database>",
-                    port="<port>",
-                    username="<username>",
-                    password="<password>",
-                    table_name="<table_name>",
-                    batch_size=<batch-size>,
-                    id_column="<id-column>",
-                    fields=[
+                type="postgres",
+                config={
+                    "host": "<host>",
+                    "database": "<database>",
+                    "port": <port>,
+                    "username": "<username>",
+                    "password": "<password>",
+                    "table_name": "<table_name>",
+                    "batch_size": <batch-size>,
+                    "id_column": "<id-column>",
+                    "fields": [
                         "<field>",
                         "<field>"
                     ]
-                )
+                }
             )
         )
     )

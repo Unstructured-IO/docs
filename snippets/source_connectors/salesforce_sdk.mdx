@@ -3,27 +3,23 @@ import os
 
 from unstructured_client import UnstructuredClient
 from unstructured_client.models.operations import CreateSourceRequest
-from unstructured_client.models.shared import (
-    CreateSourceConnector,
-    SourceConnectorType,
-    SalesforceSourceConnectorConfigInput
-)
+from unstructured_client.models.shared import CreateSourceConnector
 
 with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
     response = client.sources.create_source(
         request=CreateSourceRequest(
             create_source_connector=CreateSourceConnector(
                 name="<name>",
-                type=SourceConnectorType.SALESFORCE,
-                config=SalesforceSourceConnectorConfigInput( 
-                    username="<user-name>",
-                    consumer_key="<consumer-key>",
-                    private_key="<private-key>",
-                    categories=[
+                type="salesforce",
+                config={
+                    "username": "<user-name>",
+                    "consumer_key": "<consumer-key>",
+                    "private_key": "<private-key>",
+                    "categories": [
                         "<category>",
                         "<category>"
                     ]
-                )
+                }
             )
         )
     )

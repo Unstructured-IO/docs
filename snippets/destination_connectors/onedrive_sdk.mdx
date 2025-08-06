@@ -3,27 +3,23 @@ import os
 
 from unstructured_client import UnstructuredClient
 from unstructured_client.models.operations import CreateDestinationRequest
-from unstructured_client.models.shared import (
-    CreateDestinationConnector,
-    DestinationConnectorType,
-    OneDriveDestinationConnectorConfigInput
-)
+from unstructured_client.models.shared import CreateDestinationConnector
 
 with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
     response = client.destinations.create_destination(
         request=CreateDestinationRequest(
             create_destination_connector=CreateDestinationConnector(
                 name="<name>",
-                type=DestinationConnectorType.ONEDRIVE,
-                config=OneDriveDestinationConnectorConfigInput(
-                    client_id="<client-id>", 
-                    user_pname="<user-pname>",
-                    password="<password>", # For username and password authentication.
-                    tenant="<tenant>", 
-                    authority_url="<authority-url>",
-                    client_cred="<client-cred>",
-                    remote_url="<remote-url>" 
-                )
+                type="onedrive",
+                config={
+                    "client_id": "<client-id>",
+                    "user_pname": "<user-pname>",
+                    "password": "<password>",  # For username and password authentication
+                    "tenant": "<tenant>",
+                    "authority_url": "<authority-url>",
+                    "client_cred": "<client-cred>",
+                    "remote_url": "<remote-url>"
+                }
             )
         )
     )
