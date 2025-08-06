@@ -3,27 +3,23 @@ import os
 
 from unstructured_client import UnstructuredClient
 from unstructured_client.models.operations import CreateSourceRequest
-from unstructured_client.models.shared import (
-    CreateSourceConnector,
-    SourceConnectorType,
-    SlackSourceConnectorConfigInput
-)
+from unstructured_client.models.shared import CreateSourceConnector
 
 with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
     response = client.sources.create_source(
         request=CreateSourceRequest(
             create_source_connector=CreateSourceConnector(
                 name="<name>",
-                type=SourceConnectorType.SLACK,
-                config=SlackSourceConnectorConfigInput(
-                    channels=[
+                type="slack",
+                config={
+                    "channels": [
                         "<channel>",
                         "<channel>"
                     ],
-                    start_date="<start-date>",
-                    end_date="<end-date>",
-                    token="<token>"
-                )
+                    "start_date": "<start-date>",
+                    "end_date": "<end-date>",
+                    "token": "<token>"
+                }
             )
         )
     )

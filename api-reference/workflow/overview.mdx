@@ -272,15 +272,14 @@ To get this ID, see [Sources](/api-reference/workflow/sources/overview).
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import ListSourcesRequest
-        from unstructured_client.models.shared import SourceConnectorType
-
+        
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         response = client.sources.list_sources(
             request=ListSourcesRequest(
-                source_type=SourceConnectorType.<type> # Optional, list only for this source type.
+                source_type="<type>" # Optional, list only for this source type.
             )
         )
 
@@ -301,8 +300,7 @@ To get this ID, see [Sources](/api-reference/workflow/sources/overview).
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import ListSourcesRequest
-        from unstructured_client.models.shared import SourceConnectorType
-
+        
         async def list_sources():
             client = UnstructuredClient(
                 api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
@@ -310,7 +308,7 @@ To get this ID, see [Sources](/api-reference/workflow/sources/overview).
 
             response = await client.sources.list_sources_async(
                 request=ListSourcesRequest(
-                    source_type=SourceConnectorType.<type> # Optional, list only for this source type. 
+                    source_type="<type>" # Optional, list only for this source type. 
                 )
             )
 
@@ -471,22 +469,18 @@ To get this ID, see [Sources](/api-reference/workflow/sources/overview).
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import CreateSourceRequest
-        from unstructured_client.models.shared import (
-            CreateSourceConnector,
-            SourceConnectorType,
-            <type>SourceConnectorConfigInput
-        )
+        from unstructured_client.models.shared import CreateSourceConnector
 
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
-        destination_connector = CreateSourceConnector(
+        source_connector = CreateSourceConnector(
             name="<name>",
-            type=SourceConnectorType.<type>,
-            config=<type>SourceConnectorConfigInput(
+            type="<type>",
+            config={
                 # Specify the settings for the connector here.
-            )
+            }
         )
 
         response = client.sources.create_source(
@@ -512,11 +506,7 @@ To get this ID, see [Sources](/api-reference/workflow/sources/overview).
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import CreateSourceRequest
-        from unstructured_client.models.shared import (
-            CreateSourceConnector,
-            SourceConnectorType,
-            <type>SourceConnectorConfigInput
-        )
+        from unstructured_client.models.shared import CreateSourceConnector
 
         async def create_source():
             client = UnstructuredClient(
@@ -525,10 +515,10 @@ To get this ID, see [Sources](/api-reference/workflow/sources/overview).
 
             source_connector = CreateSourceConnector(
                 name="<name>",
-                type=SourceConnectorType.<type>,
-                config=<type>SourceConnectorConfigInput(
+                type="<type>",
+                config={
                     # Specify the settings for the connector here.
-                )
+                }
             )
 
             response = await client.sources.create_source_async(
@@ -604,19 +594,16 @@ You can change any of the connector's settings except for its `name` and `type`.
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import UpdateSourceRequest
-        from unstructured_client.models.shared import (
-            UpdateSourceConnector,
-            <type>SourceConnectorConfigInput
-        )
+        from unstructured_client.models.shared import UpdateSourceConnector
 
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         source_connector = UpdateSourceConnector(
-            config=<type>SourceConnectorConfigInput(
+            config={
                 # Specify the settings for the connector here.
-            )
+            }
         )
 
         response = client.sources.update_source(
@@ -643,20 +630,17 @@ You can change any of the connector's settings except for its `name` and `type`.
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import UpdateSourceRequest
-        from unstructured_client.models.shared import (
-            UpdateSourceConnector,
-            <type>SourceConnectorConfigInput
-        )
-
+        from unstructured_client.models.shared import UpdateSourceConnector
+        
         async def update_source():
             client = UnstructuredClient(
                 api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
             )
 
             source_connector = UpdateSourceConnector(
-                config=<type>SourceConnectorConfigInput(
+                config={
                     # Specify the settings for the connector here.
-                )
+                }
             )
 
             response = await client.sources.update_source_async(
@@ -867,15 +851,14 @@ To get this ID, see [Destinations](/api-reference/workflow/destinations/overview
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import ListDestinationsRequest
-        from unstructured_client.models.shared import DestinationConnectorType
-
+        
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         response = client.destinations.list_destinations(
             request=ListDestinationsRequest(
-                destination_type=DestinationConnectorType.<type> # Optional, list only for this destination type.
+                destination_type="<type>" # Optional, list only for this destination type.
             )
         )
 
@@ -896,8 +879,7 @@ To get this ID, see [Destinations](/api-reference/workflow/destinations/overview
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import ListDestinationsRequest
-        from unstructured_client.models.shared import DestinationConnectorType
-
+        
         async def list_destinations():
             client = UnstructuredClient(
                 api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
@@ -905,7 +887,7 @@ To get this ID, see [Destinations](/api-reference/workflow/destinations/overview
 
             response = await client.destinations.list_destinations_async(
                 request=ListDestinationsRequest(
-                    destination_type=DestinationConnectorType.<type>  # Optional, list only for this destination type.
+                    destination_type="<type>" # Optional, list only for this destination type.
                 )
             )
 
@@ -1065,11 +1047,7 @@ To get this ID, see [Destinations](/api-reference/workflow/destinations/overview
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import CreateDestinationRequest
-        from unstructured_client.models.shared import (
-            CreateDestinationConnector,
-            DestinationConnectorType,
-            <type>DestinationConnectorConfigInput
-        )
+        from unstructured_client.models.shared import CreateDestinationConnector
 
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
@@ -1077,10 +1055,10 @@ To get this ID, see [Destinations](/api-reference/workflow/destinations/overview
 
         destination_connector = CreateDestinationConnector(
             name="<name>",
-            type=DestinationConnectorType.<type>,
-            config=<type>DestinationConnectorConfigInput(
+            type="<type>",
+            config={
                 # Specify the settings for the connector here.
-            )
+            }
         )
 
         response = client.destinations.create_destination(
@@ -1105,11 +1083,7 @@ To get this ID, see [Destinations](/api-reference/workflow/destinations/overview
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import CreateDestinationRequest
-        from unstructured_client.models.shared import (
-            CreateDestinationConnector,
-            DestinationConnectorType,
-            <type>DestinationConnectorConfigInput
-        )
+        from unstructured_client.models.shared import CreateDestinationConnector
 
         async def create_destination():
             client = UnstructuredClient(
@@ -1117,11 +1091,11 @@ To get this ID, see [Destinations](/api-reference/workflow/destinations/overview
             )
 
             destination_connector = CreateDestinationConnector(
-                name="my-s3-connector",
-                type=DestinationConnectorType.<type>,
-                config=<type>DestinationConnectorConfigInput(
+                name="<name>",
+                type="<type>",
+                config={
                     # Specify the settings for the connector here.
-                )
+                }
             )
 
             response = await client.destinations.create_destination_async(
@@ -1194,19 +1168,16 @@ You can change any of the connector's settings except for its `name` and `type`.
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import UpdateDestinationRequest
-        from unstructured_client.models.shared import (
-            UpdateDestinationConnector,
-            <type>DestinationConnectorConfigInput
-        )
+        from unstructured_client.models.shared import UpdateDestinationConnector
 
         client = UnstructuredClient(
             api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
         )
 
         destination_connector = UpdateDestinationConnector(
-            config=<type>DestinationConnectorConfigInput(
+            config={
                 # Specify the settings for the connector here.
-            )
+            }
         )
 
         response = client.destinations.update_destination(
@@ -1232,10 +1203,7 @@ You can change any of the connector's settings except for its `name` and `type`.
 
         from unstructured_client import UnstructuredClient
         from unstructured_client.models.operations import UpdateDestinationRequest
-        from unstructured_client.models.shared import (
-            UpdateDestinationConnector,
-            <type>DestinationConnectorConfigInput
-        )
+        from unstructured_client.models.shared import UpdateDestinationConnector
 
         async def update_destination():
             client = UnstructuredClient(
@@ -1243,9 +1211,9 @@ You can change any of the connector's settings except for its `name` and `type`.
             )
 
             destination_connector = UpdateDestinationConnector(
-                config=<type>DestinationConnectorConfigInput(
+                config={
                     # Specify the settings for the connector here.
-                )
+                }
             )
 
             response = await client.destinations.update_destination_async(

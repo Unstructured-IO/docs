@@ -3,47 +3,43 @@ import os
 
 from unstructured_client import UnstructuredClient
 from unstructured_client.models.operations import CreateSourceRequest
-from unstructured_client.models.shared import (
-    CreateSourceConnector,
-    SourceConnectorType,
-    JiraSourceConnectorConfigInput
-)
+from unstructured_client.models.shared import CreateSourceConnector
 
 with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
     response = client.sources.create_source(
         request=CreateSourceRequest(
             create_source_connector=CreateSourceConnector(
                 name="<name>",
-                type=SourceConnectorType.JIRA,
-                config=JiraSourceConnectorConfigInput(
-                    url="<url>",
+                type="jira",
+                config={
+                    "url": "<url>",
 
                     # For password or API token authentication:
-                    username="<username>",
-                    password="<password">,
+                    # "username": "<username>",
+                    # "password": "<password>",
 
                     # For personal access token authentication:
-                    token="<token>",
-        
-                    projects=[ 
+                    # "token": "<token>",
+
+                    "projects": [
                         "<project-id>",
                         "<project-id>"
                     ],
-                    boards=[ 
+                    "boards": [
                         "<board-id>",
                         "<board-id>"
                     ],
-                    issues=[ 
+                    "issues": [
                         "<issue-id>",
                         "<issue-id>"
                     ],
-                    status_filters=[
+                    "status_filters": [
                         "<status>",
                         "<status>"
                     ],
-                    download_attachments=<True|False>,
-                    cloud=<True|False>
-                )
+                    "download_attachments": <True|False>,
+                    "cloud": <True|False>
+                }
             )
         )
     )
