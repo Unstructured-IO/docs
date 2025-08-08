@@ -25,18 +25,16 @@ To run this code, you will need the following:
 - Add the following code to a Python file on your local machine; make the following code changes; and then run the code file to see the results.
 
   - Replace `<unstructured-api-key>` with your Unstructured API key. 
-  - To process all files within a directory, change `None` for `input_dir` to a string that contains the path to the directory.
+  - To process all files within a directory, change `None` for `input_dir` to a string that contains the path to the directory on your local machine. This can be a relative or absolute path.
   - To process specific files within a directory or across multiple directories, change `None` for `input_file` to a string that contains 
-    a comma-separated list of filepaths, for example `"./input/2507.13305v1.pdf,./input2/table-multi-row-column-cells.pdf"`. These filepaths 
-    can be relative to the following code file, or absolute references.
+    a comma-separated list of filepaths on your local machine, for example `"./input/2507.13305v1.pdf,./input2/table-multi-row-column-cells.pdf"`. These filepaths 
+    can be relative or absolute.
 
     <Note>
         If `input_dir` and `input_file` are both set to something other than `None`, then the `input_dir` setting takes precedence, and the `input_file` setting is ignored.
     </Note>
 
-  - For the `output_dir` parameter, specify a string that contains the path to the directory that you want Unstructured to send its JSON output files. If the specified directory does not exist at that location,  
-    the code will create the missing directory for you. You can change this to any relative or absolute
-    directory path.
+  - For the `output_dir` parameter, specify a string that contains the path to the directory on your local machine that you want Unstructured to send its JSON output files. If the specified directory does not exist at that location,  the code will create the missing directory for you. This path can be relative or absolute.
     
 ## Sample code
 
