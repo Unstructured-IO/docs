@@ -32,8 +32,8 @@ To run this code, you will need the following:
         If `input_dir` and `input_file` are both set to something other than `None`, then the `input_dir` setting takes precedence, and the `input_file` setting is ignored.
     </Note>
 
-  - For the `output_dir` parameter, specify a string that contains the path to the directory that you want Unstructured to send its JSON output files. This code assumes 
-    a directory named `output` exists in the same directory as the code file. You can change this to any relative or absolute
+  - For the `output_dir` parameter, specify a string that contains the path to the directory that you want Unstructured to send its JSON output files. If the specified directory does not exist at that location,  
+    the code will create the missing directory for you. You can change this to any relative or absolute
     directory path.
 
 ```python Python SDK
