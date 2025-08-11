@@ -298,39 +298,39 @@
         ]
       },
       {
-        "tab": "Self-hosted",
+        "tab": "Enterprise",
         "groups": [
           {
-            "group": "Self-hosting",
+            "group": "Enterprise",
             "pages": [
-              "self-hosted/overview"
+              "enterprise/overview"
             ]
           },
           {
             "group": "Security and compliance",
             "pages": [
-              "self-hosted/security-compliance/overview"
+              "enterprise/security-compliance/overview"
             ]
           },
           {
             "group": "AWS",
             "pages": [
-              "self-hosted/aws/overview",
-              "self-hosted/aws/onboard"
+              "enterprise/aws/overview",
+              "enterprise/aws/onboard"
             ]
           },
           {
             "group": "Azure",
             "pages": [
-              "self-hosted/azure/overview",
-              "self-hosted/azure/onboard"
+              "enterprise/azure/overview",
+              "enterprise/azure/onboard"
             ]
           },
           {
             "group": "GCP",
             "pages": [
-              "self-hosted/gcp/overview",
-              "self-hosted/gcp/onboard"
+              "enterprise/gcp/overview",
+              "enterprise/gcp/onboard"
             ]
           }
         ]
@@ -747,6 +747,10 @@
     {
       "source": "/platform-api/partition-api/:slug*",
       "destination": "/api-reference/partition/:slug*"
+    },
+    {
+      "source": "/self-hosted/:slug*",
+      "destination": "/enterprise/:slug*"
     },
     {
       "source": "/ui/billing",
