@@ -1934,7 +1934,7 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
                     )
 
             with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
-                response = client.workflows.run_workflow(
+                response = client.workflows.run_workflow_async(
                     request={
                         "workflow_id": "<workflow-id>"
                         "body_run_workflow": {
@@ -2779,7 +2779,7 @@ response:
 - The ID for the file to download is in the `output_node_files` array's `file_id` field.
 - The ID for the workflow's output node is in the `output_node_files` array's `node_id` field.
 
-Currently, you cannot use the Unstructured user interface (UI) or the Unstructured Python SDK to download a file from a job that uses a 
+Currently, you cannot use the Unstructured user interface (UI) to download a file from a job that uses a 
 workflow with a local source and a local destination.
 
 <AccordionGroup>
@@ -2823,7 +2823,7 @@ workflow with a local source and a local destination.
                 api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
             )
 
-            response = client.jobs.download_job_output(
+            response = client.jobs.download_job_output_async(
                 request=DownloadJobOutputRequest(
                     job_id="<job-id>",
                     file_id="<file-id>",
