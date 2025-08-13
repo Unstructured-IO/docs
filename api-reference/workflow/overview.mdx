@@ -2783,6 +2783,62 @@ Currently, you cannot use the Unstructured user interface (UI) or the Unstructur
 workflow with a local source and a local destination.
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+        import json
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import DownloadJobOutputRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.jobs.download_job_output(
+            request=DownloadJobOutputRequest(
+                job_id="<job-id>",
+                file_id="<file-id>",
+                node_id="<node-id>"
+            )
+        )
+
+        output_path = "</path/to/save/json/output/file>"
+
+        with open(output_path, "w") as f:
+            json.dump(response.any, f, indent=4)
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import json
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import DownloadJobOutputRequest
+
+        async def download_job_output():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = client.jobs.download_job_output(
+                request=DownloadJobOutputRequest(
+                    job_id="<job-id>",
+                    file_id="<file-id>",
+                    node_id="<node-id>"
+                )
+            )
+
+            output_path = "</path/to/save/json/output/file>"
+
+            with open(output_path, "w") as f:
+                json.dump(response.any, f, indent=4)
+
+        asyncio.run(download_job_output())
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'GET' --location \
