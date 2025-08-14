@@ -1825,13 +1825,6 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
 
 <AccordionGroup>
     <Accordion title="Python SDK (remote source and remote destination)">
-        <Note>
-            If the target workflow was originally created programmatically by the Unstructured Python SDK or with a REST API client such as `curl` or Postman, 
-            and the workflow uses a local source connector, you can run the workflow only with a REST API client such as `curl` or Postman, 
-            as described later in this section. 
-            You cannot run the workflow with the Python SDK or the Unstructured user interface (UI), even though the workflow is visible in the UI.
-        </Note>
-
         ```python
         import os
 
@@ -1852,13 +1845,6 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
         ```
     </Accordion>
     <Accordion title="Python SDK (async) (remote source and remote destination)">
-        <Note>
-            If the target workflow was originally created programmatically by the Unstructured Python SDK or with a REST API client such as `curl` or Postman, 
-            and the workflow uses a local source connector, you can run the workflow only with a REST API client such as `curl` or Postman, 
-            as described later in this section. 
-            You cannot run the workflow with the Python SDK or the Unstructured user interface (UI), even though the workflow is visible in the UI.
-        </Note>
-
         ```python
         import os
         import asyncio
@@ -1881,6 +1867,88 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
 
         asyncio.run(run_workflow())
         ```
+    </Accordion>
+    <Accordion title="Python SDK (local source and local or remote destination)">
+        In the following code, replace `</path/to/input/file>` with a relative or absolute path to a local input file for Unstructured to process. You can add multiple files, with one entry per file.
+
+        ```python
+        import os
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import RunWorkflowRequest
+        from unstructured_client.models.shared import InputFiles
+
+        input_files = []
+
+        for filename in [
+            "<path/to/input/file>",
+            "<path/to/input/file>"
+        ]:
+            with open(filename, "rb") as f:
+                input_files.append(
+                    InputFiles(
+                        content=f.read(),
+                        file_name=filename
+                    )
+                )
+
+        with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+            response = client.workflows.run_workflow(
+                request={
+                    "workflow_id": "<workflow-id>"
+                    "body_run_workflow": {
+                        "input_files": input_files
+                    }
+                }
+            )
+
+            print(response.raw_response)
+        ```
+
+        For a local destination, to access the processed files' data, [download a processed local file](#download-a-processed-local-file-from-a-job) from the workflow's job run.
+    </Accordion>
+    <Accordion title="Python SDK (async) (local source and local or remote destination)">
+        In the following code, replace `</path/to/input/file>` with a relative or absolute path to a local input file for Unstructured to process. You can add multiple files, with one entry per file.
+        
+        ```python
+        import os
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import RunWorkflowRequest
+        from unstructured_client.models.shared import InputFiles
+
+        async def run_workflow():
+            input_files = []
+
+            for filename in [
+                "<path/to/input/file>",
+                "<path/to/input/file>"
+            ]:
+                with open(filename, "rb") as f:
+                    input_files.append(
+                        InputFiles(
+                            content=f.read(),
+                            file_name=filename
+                        )
+                    )
+
+            with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+                response = client.workflows.run_workflow_async(
+                    request={
+                        "workflow_id": "<workflow-id>"
+                        "body_run_workflow": {
+                            "input_files": input_files
+                        }
+                    }
+                )
+
+            print(response.raw_response)
+
+        asyncio.run(run_workflow())
+        ```
+
+        For a local destination, to access the processed files' data, [download a processed local file](#download-a-processed-local-file-from-a-job) from the workflow's job run.
     </Accordion>
     <Accordion title="curl (remote source and remote destination)">
         ```bash
@@ -2711,10 +2779,66 @@ response:
 - The ID for the file to download is in the `output_node_files` array's `file_id` field.
 - The ID for the workflow's output node is in the `output_node_files` array's `node_id` field.
 
-Currently, you cannot use the Unstructured user interface (UI) or the Unstructured Python SDK to download a file from a job that uses a 
+Currently, you cannot use the Unstructured user interface (UI) to download a file from a job that uses a 
 workflow with a local source and a local destination.
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+        import json
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import DownloadJobOutputRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.jobs.download_job_output(
+            request=DownloadJobOutputRequest(
+                job_id="<job-id>",
+                file_id="<file-id>",
+                node_id="<node-id>"
+            )
+        )
+
+        output_path = "</path/to/save/json/output/file>"
+
+        with open(output_path, "w") as f:
+            json.dump(response.any, f, indent=4)
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import json
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import DownloadJobOutputRequest
+
+        async def download_job_output():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = client.jobs.download_job_output_async(
+                request=DownloadJobOutputRequest(
+                    job_id="<job-id>",
+                    file_id="<file-id>",
+                    node_id="<node-id>"
+                )
+            )
+
+            output_path = "</path/to/save/json/output/file>"
+
+            with open(output_path, "w") as f:
+                json.dump(response.any, f, indent=4)
+
+        asyncio.run(download_job_output())
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'GET' --location \
