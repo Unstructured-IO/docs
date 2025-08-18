@@ -1,13 +1,15 @@
 ---
-title: Unstructured
-sidebarTitle: Overview
+title: Welcome to Unstructured!
+sidebarTitle: Welcome!
 ---
 
-![ETL plus for GenAI data banner](/img/welcome/ETL-For-GenAI-Data.png)
+<Tip>To start using Unstructured right away, skip ahead to the <Icon icon="desktop" /> [UI quickstart](#unstructured-ui-quickstart) or <Icon icon="rectangle-terminal" /> [API quickstart](#unstructured-api-quickstart) now!</Tip>
+
+## What is Unstructured?
 
 Unstructured provides a platform and tools to ingest and process unstructured documents for retrieval-augmented generation (RAG), agentic AI, and model fine-tuning.
 
-This 60-second video describes more about what Unstructured does and its benefits:
+This 60-second video describes more about what Unstructured does and its benefits (no sound):
 
 <iframe
   width="560"
@@ -19,7 +21,7 @@ This 60-second video describes more about what Unstructured does and its benefit
   allowfullscreen
 ></iframe>
 
-This 40-second video demonstrates a simple use case that Unstructured helps solve:
+This 40-second video demonstrates a simple use case that Unstructured helps solve (no sound):
 
 <iframe
   width="560"
@@ -31,7 +33,7 @@ This 40-second video demonstrates a simple use case that Unstructured helps solv
   allowfullscreen
 ></iframe>
 
-This one-minute video shows why using Unstructured is preferable to building your own similar solution:
+This 60-second video shows why using Unstructured is preferable to building your own similar solution:
 
 <iframe
   width="560"
@@ -43,67 +45,55 @@ This one-minute video shows why using Unstructured is preferable to building you
   allowfullscreen
 ></iframe>
 
-Unstructured offers the Unstructured user interface (UI) and the Unstructured API. Read on to learn more.
+You can use Unstructured through a user interface (UI), an API, or both. Read on to learn more.
 
-## <Icon icon="computer" />    Unstructured user interface (UI) 
+---
 
-No-code UI. Production-ready. [Learn more](/ui/overview).
+## <Icon icon="desktop" />    Unstructured UI quickstart
 
-Here is a screenshot of the Unstructured UI **Start** page:
-
-![Partial view of the Unstructured UI](/img/ui/Start-Screen-Partial.png)
-
-This 90-second video provides a brief overview of the Unstructured UI:
+1. If you do not already have an Unstructured account, sign up for one at [https://unstructured.io/developers](https://unstructured.io/developers). 
+   After you sign up, you are automatically signed in to your new Unstructured **Starter** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. Watch the following 2-minute video:
 
 <iframe
-width="560"
-height="315"
-src="https://www.youtube.com/embed/IVKcQDZa9Zc"
-title="YouTube video player"
-frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-allowfullscreen
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/11Q2_5a-tZM"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
 ></iframe>
 
-<Tip>To start using the Unstructured UI right away, skip ahead to the [quickstart](#unstructured-ui-quickstart).</Tip>
-
-## <Icon icon="square-terminal" />    Unstructured API 
-
-Use scripts or code. Production-ready. [Learn more](/api-reference/overview).
-
-The Unstructured API consists of two parts:
-
-- The [Unstructured Workflow Endpoint](/api-reference/workflow/overview) enables a full range of partitioning, chunking, embedding, and 
-  enrichment options for your files and data. It is designed to batch-process files and data in remote locations; send processed results to 
-  various storage, databases, and vector stores; and use the latest and highest-performing models on the market today. It has built-in logic 
-  to deliver the highest quality results at the lowest cost. [Learn more](/api-reference/workflow/overview).
-- The [Unstructured Partition Endpoint](/api-reference/partition/overview) is intended for rapid prototyping of Unstructured's 
-  various partitioning strategies, with limited support for chunking. It is designed to work only with processing of local files, one file 
-  at a time. Use the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) for production-level scenarios, file processing in 
-  batches, files and data in remote locations, generating embeddings, applying post-transform enrichments, using the latest and 
-  highest-performing models, and for the highest quality results at the lowest cost. [Learn more](/api-reference/partition/overview).
-
-Here is a screenshot of some Python code that calls the Unstructured Workflow Endpoint:
-
-![Python code that calls the Unstructured Workflow Endpoint](/img/ui/Python-Workflow-Code-Partial.png)
-
-<Tip>To start using the Unstructured Workflow Endpoint right away, skip ahead to the [quickstart](#unstructured-workflow-endpoint-quickstart).</Tip>
+<Icon icon="person-chalkboard" />&nbsp;&nbsp;[Learn more](/ui/overview).
 
 ---
 
-## <Icon icon="files" />   Supported file types 
+## <Icon icon="rectangle-terminal" />    Unstructured API quickstart
 
-The Unstructured user interface (UI) and Unstructured API support processing of the following file types:
+1. If you do not already have an Unstructured account, sign up for one at [https://unstructured.io/developers](https://unstructured.io/developers). 
+   After you sign up, you are automatically signed in to your Unstructured **Starter** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+2. Watch the following 3-minute video:
 
-import SupportedFileTypes from '/snippets/general-shared-text/supported-file-types-platform.mdx';
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/0EogKNU_BPU"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
 
-<SupportedFileTypes />
+<Icon icon="code" />&nbsp;&nbsp;[Get the sample code for this video](/api-reference/partition/quickstart#sample-code).
+
+<Icon icon="gear" />&nbsp;&nbsp;[Get the full setup instructions for this video](/api-reference/partition/quickstart).
+
+<Icon icon="person-chalkboard" />&nbsp;&nbsp;[Learn more](/api-reference/overview).
 
 ---
 
-## Pricing
-
-To use the Unstructured UI or call the Unstructured API, you must have an Unstructured account.
+## <Icon icon="money-check-dollar" />    Pricing
 
 import Pricing from '/snippets/general-shared-text/pricing-platform.mdx';
 
@@ -111,32 +101,8 @@ import Pricing from '/snippets/general-shared-text/pricing-platform.mdx';
 
 ---
 
-## <Icon icon="computer" />   Unstructured UI quickstart
+## <Icon icon="question" />    Questions? Need help?
 
-import SharedSingleFileUI from '/snippets/quickstarts/single-file-ui.mdx';
-
-<SharedSingleFileUI />
-
-- [Learn more about the Unstructured UI](/ui/overview).
-- <Icon icon="blog" />&nbsp;&nbsp;Also, read [Skip the Setup. Get Straight to the Results with Our Redesigned Interactive Workflow Builder](https://unstructured.io/blog/skip-the-setup-get-straight-to-the-results-with-our-redesigned-interactive-workflow-builder).
-
----
-
-import LocalToLocalPythonIngestLibrary from '/snippets/ingestion/local-to-local.v2.py.mdx';
-import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
-
-## <Icon icon="square-terminal" />   Unstructured Workflow Endpoint quickstart
-
-import SharedPlatformAPI from '/snippets/quickstarts/platform-api.mdx';
-
-<SharedPlatformAPI />
-
-[Learn more about the Unstructured API](/api-reference/overview).
-
----
-
-## <Icon icon="question" />    Get in touch
-
-If you can't find the information you're looking for in the documentation, or if you need help,
-[contact us directly](https://unstructured.io/contact), 
-or [join our Slack](https://short.unstructured.io/pzw05l7) where our team and community can help you.
+- For general questions about Unstructured products and pricing, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+- For technical support for Unstructured accounts, email Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
+- For technical support for the Unstructured open source library, use our [Slack community](https://short.unstructured.io/pzw05l7).

@@ -299,39 +299,39 @@
         ]
       },
       {
-        "tab": "Self-hosted",
+        "tab": "Enterprise",
         "groups": [
           {
-            "group": "Self-hosting",
+            "group": "Enterprise",
             "pages": [
-              "self-hosted/overview"
+              "enterprise/overview"
             ]
           },
           {
             "group": "Security and compliance",
             "pages": [
-              "self-hosted/security-compliance/overview"
+              "enterprise/security-compliance/overview"
             ]
           },
           {
             "group": "AWS",
             "pages": [
-              "self-hosted/aws/overview",
-              "self-hosted/aws/onboard"
+              "enterprise/aws/overview",
+              "enterprise/aws/onboard"
             ]
           },
           {
             "group": "Azure",
             "pages": [
-              "self-hosted/azure/overview",
-              "self-hosted/azure/onboard"
+              "enterprise/azure/overview",
+              "enterprise/azure/onboard"
             ]
           },
           {
             "group": "GCP",
             "pages": [
-              "self-hosted/gcp/overview",
-              "self-hosted/gcp/onboard"
+              "enterprise/gcp/overview",
+              "enterprise/gcp/onboard"
             ]
           }
         ]
@@ -524,12 +524,12 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Contact Us",
-          "href": "https://unstructured.io/contact",
+          "anchor": "Account support (e-mail)",
+          "href": "mailto:support@unstructured.io",
           "icon": "person-circle-question"
         },
         {
-          "anchor": "Community",
+          "anchor": "Open source support (Slack)",
           "href": "https://short.unstructured.io/pzw05l7",
           "icon": "slack"
         },
@@ -544,12 +544,12 @@
           "icon": "newspaper"
         },
         {
-          "anchor": "Product",
+          "anchor": "Product info",
           "href": "https://unstructured.io/",
           "icon": "square-terminal"
         },
         {
-          "anchor": "Trust Portal",
+          "anchor": "Trust portal",
           "href": "https://trust.unstructured.io/",
           "icon": {
             "name": "file-certificate",
@@ -557,7 +557,12 @@
           }
         },
         {
-          "anchor": "Meta-Prompt (Titles)",
+          "anchor": "Contact Sales (e-mail)",
+          "href": "mailto:sales@unstructured.io",
+          "icon": "person"
+        },
+        {
+          "anchor": "Meta-prompt (titles)",
           "href": "https://docs.unstructured.io/llms.txt",
           "icon": {
             "name": "microchip-ai",
@@ -565,7 +570,7 @@
           }
         },
         {
-          "anchor": "Meta-Prompt (Full)",
+          "anchor": "Meta-prompt (full)",
           "href": "https://docs.unstructured.io/llms-full.txt",
           "icon": {
             "name": "microchip-ai",
@@ -748,6 +753,10 @@
     {
       "source": "/platform-api/partition-api/:slug*",
       "destination": "/api-reference/partition/:slug*"
+    },
+    {
+      "source": "/self-hosted/:slug*",
+      "destination": "/enterprise/:slug*"
     },
     {
       "source": "/ui/billing",
