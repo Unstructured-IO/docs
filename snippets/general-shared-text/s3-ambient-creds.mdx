@@ -1,0 +1,65 @@
+<Note>
+    The following information applies to [Unstructured Enterprise](/enterprise/overview) accounts only.
+</Note>
+
+Unstructured Enterprise accounts support the Federal Information Processing Standard (FIPS) for 
+Amazon S3. [Learn more about AWS support for FIPS](https://aws.amazon.com/compliance/fips/). Specifically, 
+when creating an S3 connector with the [Unstructured user interface (UI)](/ui/overview) or 
+[Unstructured Workflow Endpoint](/api-reference/workflow/overview), Unstructured Enterprise accounts 
+support the use of `fips`-based 
+[S3 endpoints](https://docs.aws.amazon.com/general/latest/gr/s3.html) and, for authenticated access to 
+S3 FIPS buckets, S3 ambient credentials. 
+
+To use the Unstructured (UI) to set up an S3 source or destination connector 
+to use an S3 FIPS bucket and S3 ambient credentials, do the following:
+
+1. Create an environment variable named `ALLOW_AMBIENT_CREDENTIALS_S3`, and set its value to `true`.
+2. When creating the connector, for the S3 connector's **Bucket URI** field, specify the path to the S3 FIPS bucket, formatted as 
+   `https://<bucket-name>.<endpoint>`, for example 
+   `https://my-bucket-name.s3-fips.us-gov-east-1.amazonaws.com`. 
+   If the target files are in a folder, specify the path to the target folder in the S3 FIPS bucket instead, 
+   formatted as `https://<bucket-name>.<endpoint>/path/to/folder` (for example, 
+   `https://my-bucket-name.s3-fips.us-gov-east-1.amazonaws.com/my-folder/`).
+3. For the **Authentication Method** field, select **Ambient Credentials**.
+4. Check the box labelled **Use Ambient Credentials**.
+5. Save and test the connector.
+
+To use the Unstructured Workflow Endpoint to set up an S3 source or 
+destination connector to use an S3 FIPS bucket and S3 ambient credentials, do the following:
+
+1. Create an environment variable named `ALLOW_AMBIENT_CREDENTIALS_S3`, and set its value to `true`.
+2. When creating the connector, 
+   for the `config` parameter's `remote_url` field, specify the path to the S3 FIPS bucket, formatted as 
+   `https://<bucket-name>.<endpoint>`, for example 
+   `https://my-bucket-name.s3-fips.us-gov-east-1.amazonaws.com`. 
+   If the target files are in a folder, specify the path to the target folder in the S3 FIPS bucket instead, 
+   formatted as `https://<bucket-name>.<endpoint>/path/to/folder` (for example, 
+   `https://my-bucket-name.s3-fips.us-gov-east-1.amazonaws.com/my-folder/`).
+3. For the `config` parameter, add an `ambient_credentials` field, and set its value to true. For example:
+
+   <CodeGroup>
+       ```python Python SDK
+       # ...
+       config={
+           "...": "...",
+           "remote_url": "https://my-bucket-name.s3-fips.us-gov-east-1.amazonaws.com/my-folder/",
+           "ambient_credentials": True
+       }
+       # ...
+       ```
+
+       ```bash curl
+       # ...
+       {
+           "...": "...", 
+           "config": {
+               "...": "...",
+               "remote_url": "https://my-bucket-name.s3-fips.us-gov-east-1.amazonaws.com/my-folder/",
+               "ambient_credentials": "true"
+           }
+       }
+       # ...
+       ```
+   </CodeGroup>
+
+4. Run your code to create the connector.
