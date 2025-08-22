@@ -4,7 +4,12 @@ Fill in the following fields:
 - **Account ID** (_required_): The target Snowflake account's identifier.
 - **Role** (_required_): The name of the Snowflake role that the user belongs to. This role must have the appropriate access to the target Snowflake warehouse, database, schema, and table.
 - **User** (_required_): The target Snowflake user's login name (not their username).
-- **Password** (_required_): The user's password.
+- **Password** (_required_): The user's programmatic access token (PAT).
+
+  <Note>
+      Specifying a password is no longer recommended, as passwords are being deprecated by Snowflake. Use a PAT instead.
+  </Note>
+
 - **Host** (_required_): The hostname of the target Snowflake warehouse.
 - **Port** (_required_): The warehouse's port number. The default is `443` if not otherwise specified.
 - **Database** (_required_): The name of the target Snowflake database.
