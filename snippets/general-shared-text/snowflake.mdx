@@ -22,6 +22,35 @@
   SELECT CURRENT_ORGANIZATION_NAME() || '-' || CURRENT_ACCOUNT_NAME() AS "Account Identifier"
   ```
 
+- A Snowflake user, which can be a service user (recommended) or a human user.
+
+  To create a service user (recommended):
+
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click **Projects > Worksheets**.
+  3. Click the **+** button to create a SQL worksheet.
+  4. In the worksheet, enter the following Snowflake query to create a service user, replacing the following placeholders:
+    
+     - Replace `<service-user-name>` with some name for the service user.
+     - Replace `<default-role-name>` with the name of any default role for the service user to use.
+
+     ```sql
+     CREATE USER <service-user-name>
+     DEFAULT_ROLE = "<default-role-name>"
+     TYPE = SERVICE
+     ```
+
+  5. Click the arrow icon to run the worksheet, which creates the service user.
+  
+  To create a human user:
+
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click **Admin > Users & roles**.
+  3. Click the **Users** tab.
+  4. Click **+ User**.
+  5. Follow the on-screen guidance to specify the user's settings.
+  6. Click **Create User**.
+
 - The Snowflake [user's login name (not username)](https://docs.snowflake.com/user-guide/admin-user-management#creating-users) in the account, and 
   a programmatic access token (PAT) for the Snowflake user.
 
@@ -100,7 +129,8 @@
   4. In the policy's side panel, click the ellipsis (three dots) icon, and then click **Activate On Account**.
   5. Click **Activate policy**.
 
-- (No longer recommended, as passwords are being deprecated by Snowflake&mdash;use PATs instead) The Snowflake [user's login name (not username) and the user's password](https://docs.snowflake.com/user-guide/admin-user-management#creating-users) in the account.
+- (No longer recommended, as passwords are being deprecated by Snowflake&mdash;use PATs instead) The Snowflake [user's login name (not username) and the user's password](https://docs.snowflake.com/user-guide/admin-user-management#creating-users) in the account. 
+  This user must be a human user. Passwords are not supported for service users.
 
   <iframe
   width="560"
