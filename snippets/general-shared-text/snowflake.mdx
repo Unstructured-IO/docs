@@ -22,7 +22,126 @@
   SELECT CURRENT_ORGANIZATION_NAME() || '-' || CURRENT_ACCOUNT_NAME() AS "Account Identifier"
   ```
 
-- The Snowflake [user's login name (not its username) and its password](https://docs.snowflake.com/user-guide/admin-user-management#creating-users) in the account.
+- A Snowflake user, which can be a service user (recommended) or a human user.
+
+  To create a service user (recommended):
+
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click **Projects > Worksheets**.
+  3. Click the **+** button to create a SQL worksheet.
+  4. In the worksheet, enter the following Snowflake query to create a service user, replacing the following placeholders:
+    
+     - Replace `<service-user-name>` with some name for the service user.
+     - Replace `<default-role-name>` with the name of any default role for the service user to use.
+
+     ```sql
+     CREATE USER <service-user-name>
+     DEFAULT_ROLE = "<default-role-name>"
+     TYPE = SERVICE
+     ```
+
+  5. Click the arrow icon to run the worksheet, which creates the service user.
+  
+  To create a human user:
+
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click **Admin > Users & roles**.
+  3. Click the **Users** tab.
+  4. Click **+ User**.
+  5. Follow the on-screen guidance to specify the user's settings.
+  6. Click **Create User**.
+
+- The Snowflake [user's login name (not username)](https://docs.snowflake.com/user-guide/admin-user-management#creating-users) in the account, and 
+  a programmatic access token (PAT) for the Snowflake user.
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/sFLPGVe4VBM"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
+
+  To view the login name for a user:
+
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click **Admin > Users & Roles**.
+  3. On the **Users** tab, in the list of available users, click the name of the target user.
+  4. In the **About** tile, note the **Login Name** for the user.
+
+  Alternatively, the following Snowflake query returns information about the user with the username of `<my-user>`, including their `login_name` value representing their login name:
+
+  ```text
+  SHOW USERS LIKE '<my-user>';
+  ```
+
+  To create a programmatic access token (PAT) for a user:
+
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click **Admin > Users & Roles**.
+  3. On the **Users** tab, in the list of available users, click the name of the target user.
+  4. In the **Programmatic access tokens** tile, click the **Generate new token** button.
+  5. Follow the on-screen guidance to specify the PAT's settings.
+
+     <Warning>
+         You must set an expiration date for the PAT. This expiration date can be as soon as one day after the PAT is created or up to one year or even later. 
+         Once this PAT expires, the connector will stop working. 
+         To make sure that your connector continues to work, before your current PAT expires, you must follow this procedure again to generate a new PAT and 
+         update your connector's settings with your new PAT's value.
+
+         Unstructured does not notify you when a PAT is about to expire or has already expired. 
+         You are responsible for tracking your PATs' expiration dates and taking corrective action before they expire.
+     </Warning>
+
+  6. Click **Generate**.
+  7. Copy the generated PAT's value to a secure location, as you will not be able to access it again. If you lose this PAT's value, 
+     you will need to repeat this procedure to generate a new, replacement one.
+
+  The PAT will not work unless the Snowflake account also has a valid 
+  [network rule](https://docs.snowflake.com/en/user-guide/network-rules) along with a valid 
+  [network policy](https://docs.snowflake.com/en/user-guide/network-policies) attached to that rule. 
+  The network rule must also be activated on the Snowflake account to begin taking effect.
+
+  To create a valid network rule:
+
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click **Admin > Security > Network Rules**.
+  3. Click **+ Network Rule**.
+  4. Enter some name for the network rule.
+  5. For **Type**, select **IPv4**.
+  6. For **Mode**, select **Ingress**.
+  7. For **Identifiers**, next to the magnifying glass icon, enter `0.0.0.0/0`, and then press **Enter**.
+
+     <Note>
+         The `0.0.0.0/0` value allows all IP addresses to access the Snowflake account. 
+         You can specify a more specific IP address range if you prefer. However, this more specific IP address range 
+         will apply to all users, including the user for which you created the PAT.
+     </Note>
+
+  8. Click **Create Network Rule**.
+
+  To create a valid network policy, attaching the preceding network rule to this policy at the same time:
+
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click **Admin > Security > Network Policies**.
+  3. Click **+ Network Policy**.
+  4. Enter some name for the network policy.
+  5. Make sure **Allowed** is selected.
+  5. In the **Select rule** drop-down list, select the precedingnetwork rule to attach to this network policy.
+  6. Click **Create Network Policy**.
+
+  To activate the network rule in the account:
+
+  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
+  2. In Snowsight, on the navigation menu, click **Admin > Security > Network Policies**.
+  3. Click the name of the precedingnetwork policy to activate.
+  4. In the policy's side panel, click the ellipsis (three dots) icon, and then click **Activate On Account**.
+  5. Click **Activate policy**.
+
+- (No longer recommended, as passwords are being deprecated by Snowflake&mdash;use PATs instead) The Snowflake [user's login name (not username) and the user's password](https://docs.snowflake.com/user-guide/admin-user-management#creating-users) in the account. 
+  This user must be a human user. Passwords are not supported for service users.
 
   <iframe
   width="560"

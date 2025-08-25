@@ -12,7 +12,12 @@ These environment variables:
 
 - `SNOWFLAKE_ACCOUNT` - The ID of the target Snowflake account, represented by `--account` (CLI) or `account` (Python).
 - `SNOWFLAKE_USER`  - The name of the target Snowflake user, represented by `--user` (CLI) or `user` (Python).
-- `SNOWFLAKE_PASSWORD`  - The user's password, represented by `--password` (CLI) or `password` (Python).
+- `SNOWFLAKE_PROGRAMMATIC_ACCESS_TOKEN` - The user's programmatic access token (PAT), represented by `--password` (CLI) or `password` (Python).
+
+  <Note>
+      Specifying a password is no longer recommended, as passwords are being deprecated by Snowflake. Use a PAT instead.
+  </Note>
+
 - `SNOWFLAKE_ROLE` - The target role for the user, represented by `--role` (CLI) or `role` (Python).
 - `SNOWFLAKE_HOST`  - The hostname for the target Snowflake warehouse, represented by `--host` (CLI) or `host` (Python).
 - `SNOWFLAKE_PORT`  - The warehouse's port number, represented by `--port` (CLI) or `port` (Python).  The default is `443` if not otherwise specified.
