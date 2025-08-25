@@ -84,6 +84,17 @@
   3. On the **Users** tab, in the list of available users, click the name of the target user.
   4. In the **Programmatic access tokens** tile, click the **Generate new token** button.
   5. Follow the on-screen guidance to specify the PAT's settings.
+
+     <Warning>
+         You must set an expiration date for the PAT. This expiration date can be as soon as one day after the PAT is created or up to one year or even later. 
+         Once this PAT expires, the connector will stop working. 
+         To make sure that your connector continues to work, before your current PAT expires, you must follow this procedure again to generate a new PAT and 
+         update your connector's settings with your new PAT's value.
+
+         Unstructured does not notify you when a PAT is about to expire or has already expired. 
+         You are responsible for tracking your PATs' expiration dates and taking corrective action before they expire.
+     </Warning>
+
   6. Click **Generate**.
   7. Copy the generated PAT's value to a secure location, as you will not be able to access it again. If you lose this PAT's value, 
      you will need to repeat this procedure to generate a new, replacement one.
