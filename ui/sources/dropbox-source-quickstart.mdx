@@ -8,8 +8,8 @@ This source connector enables your Unstructured workflowsto process your files t
 In this quickstart, you will:
 
 - Create a free Dropbox Basic account.
-- Create a Dropbox app in your Dropbox account.
-- Get specific information about your Dropbox app that Unstructured needs to connect to your Dropbox account.
+- Create a Dropbox app in your Dropbox account. This app will provide the connection between your Dropbox account and your Unstructured account.
+- Get specific information about your Dropbox app that Unstructured needs to connect to the app.
 - Create a Dropbox source connector in your Unstructured account.
 - Add the Dropbox source connector to a workflow in your Unstructured account.
 
@@ -17,7 +17,7 @@ If you are not able to complete the following steps, contact Unstructured Suppor
 
 ## Step 1: Create your Dropbox account
 
-In this step, you create a free Dropbox Basic account. This account is limited to a single user and 2 GB of storage.
+In this step, you create a [free Dropbox Basic account](https://www.dropbox.com/basic). This account is limited to a single user and 2 GB of storage.
 
 If you already have a Dropbox account and want to use it instead, then skip ahead to Step 2.
 
@@ -26,13 +26,12 @@ If you already have a Dropbox account and want to use it instead, then skip ahea
 3. Enter your name and then, for **Password**, enter some password for your new account. Be sure to save this password to some secure location, 
    as you will need it to access your Dropbox account later.
 4. Click **Agree and sign up**.
-5. Click the **Personal** tile.
-6. Optionally, you can install the Dropbox desktop app or mobile app by folowing the on-screen instructions. 
-   Otherwise, click **Skip step**.
-7. Click **Continue with 2 GB Dropbox Basic plan**.
+5. To create a Dropbox Basic account, click the **Personal** tile.
+6. When you are prompted to install the Dropbox desktop app or mobile app, click **Skip step**. (You can always install these apps later.)
+7. To create a Dropbox Basic account, click **Continue with 2 GB Dropbox Basic plan** at the bottom of the account type selectionpage.
 8. You are automatically signed in to your new Dropbox Basic account, and the Dropbox user interface (UI) appears.
 
-   .. Dropbox-UI.png
+   ![Dropbox user interface](/img/dropbox-quickstart/Dropbox-UI.png)
 
 ## Step 2: Create a Dropbox app
 
@@ -40,38 +39,39 @@ In this step, you create a Dropbox app in your Dropbox account. Unstructured wil
 
 1. From a new tab in your web browser, open the Dropbox Developers page, at [https://www.dropbox.com/developers](https://www.dropbox.com/developers).
 2. Click **Create apps**.
-3. If prompted by Dropbox, click **Send email for verification**, and complete the on-screen instructions to verify your email address with Dropbox.
 
-   a. In your email inbox, look for an email from Dropbox. Open the email and click the **Verify your mail** button.<br/>
-   b. Enter your email address, and then click **Continue**.<br/>
-   c. Enter your Dropbox account password, and then click **Log in**.<br/>
+   ![Begin creating a Dropbox app](/img/dropbox-quickstart/Create-Apps.png)
 
-4. For **Choose an API**, select the **Scoped access** radio button.
-5. For **Choose the type of access you need**, select the **App folder** radio button.
-6. For **Name your app**, enter some name for your Dropbox app.
-7. Check the box labelled **I agree to Dropbox API Terms and Conditions**.
-8. Click **Create app**.
+   <Tip>
+       If **Create apps** is not visible then, on the top navigation bar, click **App Console**, and then click **Create app**.
+   </Tip>
 
-   .. Create-App.png
+3. For **Choose an API**, select the **Scoped access** radio button.
+4. For **Choose the type of access you need**, select the **App folder** radio button.
+5. For **Name your app**, enter some name for your Dropbox app.
+6. Check the box labelled **I agree to Dropbox API Terms and Conditions**, if it appears.
+7. Click **Create app**.
 
-9. On the Dropbox app's **Permissions** tab, under **Files and folders**, check the box labelled **files.content.read**, and then click **Submit**.
+   ![Finish creating the Dropbox app](/img/dropbox-quickstart/Create-App.png)
 
-   .. Files-Content-Read.png
+8. On the Dropbox app's **Permissions** tab, under **Files and folders**, check the box labelled **files.content.read**, and then click **Submit**.
 
-10. On the app's **Settings** tab, note the value of the **App folder name** field. This is the name of the subfolder that Dropbox will create under the `Apps` top-level folder in your Dropbox account. Your new Dropbox app will use this subfolder for access. 
+   ![Setting files.content.read for the Dropbox app](/img/dropbox-quickstart/Files-Content-Read.png)
 
-    .. App-Folder-Name.png
+9. On the app's **Settings** tab, note the value of the **App folder name** field. This is the name of the subfolder that Dropbox will create under the `Apps` top-level folder in your Dropbox account. Your new Dropbox app will use this subfolder for access. 
 
-11. With the app's **Settings** tab still showing, scroll down to **App key**.
-12. Next to **App secret**, click **Show**.
-13. Note the values of **App key** and **App secret**, as you will need them for the next step.
+   ![Noting the app folder's name](/img/dropbox-quickstart/App-Folder-Name.png)
 
-    .. App-Key-App-Secret.png
+10. With the app's **Settings** tab still showing, scroll down to **App key**.
+11. Next to **App secret**, click **Show**.
+12. Note the values of **App key** and **App secret**, as you will need them later for Steps 3 and 5.
 
-## Step 3: Get information about the Dropbox app
+    ![Noting the app's key and secret](/img/dropbox-quickstart/App-Key-App-Secret.png)
 
-In this step, you get information that Unstructured needs about your Dropbox app. Unstructured needs this information 
-to be able to connect to your Dropbox account.
+## Step 3: Get a refresh token for your Dropbox app
+
+In this step, you get a refresh token for your Dropbox app. Unstructured needs this refresh token, along with the 
+**App key** and **App secret** from the previous step, to be able to use your Dropbox app to connect to your Dropbox account. 
 
 1. In a new tab in your web browser, enter the following address. In this address, 
    replace `<app-key>` with the **App key** you noted in Step 2:
@@ -88,23 +88,25 @@ to be able to connect to your Dropbox account.
 
 2. Click **Continue**.
 
-   .. Access-Code-Continue.png
+   ![Continuing to get the access code](/img/dropbox-quickstart/Access-Code-Continue.png)
 
 3. Click **Allow**.
 
-   .. Access-Code-Allow.png
+   ![Allowing the access code to be generated](/img/dropbox-quickstart/Access-Code-Allow.png)
 
 4. Note the value in the **Access Code Generated** box. 
 
-   .. Access-Code-Generated.png
+   ![Viewing the generated access code](/img/dropbox-quickstart/Access-Code-Generated.png)
 
-   This same value also appears in the **auth_code** parameter from the address bar. For example, if the address bar shows this:
+   <Tip>
+       This same access code value also appears in the **auth_code** parameter from the address bar. For example, if the address bar shows this:
 
-   ```bash
-   https://www.dropbox.com/oauth2/authorize_success?auth_code=ccc1ccc1ccc1-1cc-1cc&client_id=aaa1aaaaaa1aaaa&version=1
-   ```
+       ```bash
+       https://www.dropbox.com/oauth2/authorize_success?auth_code=ccc1ccc1ccc1-1cc-1cc&client_id=aaa1aaaaaa1aaaa&version=1
+       ```
 
-   Then the **auth_code** value is `ccc1ccc1ccc1-1cc-1cc`.
+       Then the **auth_code** value is `ccc1ccc1ccc1-1cc-1cc`.
+   </Tip>
 
 5. On your computer, open the Terminal if you're using macOS, a terminal window if you're using Linux, or the Command Prompt if you're using Windows.
 6. Check to see if the `curl` utility is alredy installed on your computer by running the following command:
@@ -114,15 +116,17 @@ to be able to connect to your Dropbox account.
    ```
 
 7. If the `curl` utility is already installed, then you will see the `curl` version number and some other information about `curl`.
-8. If some kind of error message appears, then install `curl` on your computer by following the instructions for your operating system.
-9. From your Terminal, terminal window, or Command Prompt, run the following `curl` command. In this command, 
+
+   If some kind of error message appears instead, then install `curl` on your computer by following [instructions for your operating system](https://ec.haxx.se/install/index.html).
+
+8. From your Terminal, terminal window, or Command Prompt, run the following `curl` command. In this command, 
    replace the following placeholders:
    
    - Replace `<app-key>` with the **App key** you noted in Step 2.
    - Replace `<app-secret>` with the **App secret** you noted in Step 2.
-   - Replace `<access-code>` with the **Access Code Generated** or `auth_code` value you noted earlier in this step.
+   - Replace `<access-code>` with the **Access Code Generated** (or `auth_code`, if you followed the Tip) that you noted earlier in this step.
 
-   For macOS or Linux, run this `curl` command:
+   <Icon icon="apple" />&nbsp;&nbsp;<Icon icon="linux" />&nbsp;&nbsp;For macOS or Linux, run this `curl` command:
 
    ```bash
    curl --location --request POST 'https://api.dropbox.com/oauth2/token' \
@@ -132,7 +136,7 @@ to be able to connect to your Dropbox account.
    --data-urlencode 'grant_type=authorization_code'
    ```
 
-   For example, if your **App key** is `aaa1aaaaaa1aaaa`, your **App secret** is `bbb1bbb1bbb1bbb1`, and your **Access Code Generated** or `auth_code` value is `ccc1ccc1ccc1-1cc-1cc`, then your command should look like this:
+   <Icon icon="apple" />&nbsp;&nbsp;<Icon icon="linux" />&nbsp;&nbsp;For example, if your **App key** is `aaa1aaaaaa1aaaa`, your **App secret** is `bbb1bbb1bbb1bbb1`, and your **Access Code Generated** or `auth_code` value is `ccc1ccc1ccc1-1cc-1cc`, then your command should look like this:
 
    ```bash
    curl --location --request POST 'https://api.dropbox.com/oauth2/token' \
@@ -142,7 +146,7 @@ to be able to connect to your Dropbox account.
    --data-urlencode 'grant_type=authorization_code'
    ```
 
-   For Windows, run this `curl` command:
+   <Icon icon="windows" />&nbsp;&nbsp;For Windows, run this `curl` command:
    
    ```bash
    curl --location --request POST "https://api.dropbox.com/oauth2/token" ^
@@ -152,7 +156,7 @@ to be able to connect to your Dropbox account.
    --data-urlencode "grant_type=authorization_code"
    ```
 
-   For example, if your **App key** is `aaa1aaaaaa1aaaa`, your **App secret** is `bbb1bbb1bbb1bbb1`, and your **Access Code Generated** or `auth_code` value is `ccc1ccc1ccc1-1cc-1cc`, then your command should look like this:
+   <Icon icon="windows" />&nbsp;&nbsp;For example, if your **App key** is `aaa1aaaaaa1aaaa`, your **App secret** is `bbb1bbb1bbb1bbb1`, and your **Access Code Generated** or `auth_code` value is `ccc1ccc1ccc1-1cc-1cc`, then your command should look like this:
 
    ```bash
    curl --location --request POST "https://api.dropbox.com/oauth2/token" ^
@@ -162,22 +166,22 @@ to be able to connect to your Dropbox account.
    --data-urlencode "grant_type=authorization_code"
    ```
 
-10. In the response, note the vaue of the `refresh_token` field. For example, if the response looks like this 
-    (line breaks are added here for readability&dash;the actual response will not have these line breaks):
+9. In the response, note the vaue of the `refresh_token` field, which you will need later for Step 5. For example, if the response looks like this 
+    (line breaks are added here for readability&mdash;the actual response will not have these line breaks):
 
-    ```bash
-    {
-        "access_token": "sl.u.AF-aaa1aaa1", 
-        "token_type": "bearer", 
-        "expires_in": 14400, 
-        "refresh_token": "ddd1ddd1ddd1ddd1", <-- Note this value.
-        "scope": "account_info.read files.content.read files.metadata.read", 
-        "uid": "1111111111", 
-        "account_id": "dbid:aaa1aaa1aaa1"
-    }
-    ```
+   ```bash
+   {
+       "access_token": "sl.u.AF-aaa1aaa1", 
+       "token_type": "bearer", 
+       "expires_in": 14400, 
+       "refresh_token": "ddd1ddd1ddd1ddd1", <-- Note this value.
+       "scope": "account_info.read files.content.read files.metadata.read", 
+       "uid": "1111111111", 
+       "account_id": "dbid:aaa1aaa1aaa1"
+   }
+   ```
 
-    Then the value of the `refresh_token` field is `ddd1ddd1ddd1ddd1`.
+   Then the value of the `refresh_token` field is `ddd1ddd1ddd1ddd1`.
 
 ## Step 4: Upload documents to your Dropbox app folder
 
@@ -185,20 +189,25 @@ In this step, you add your documents to your Dropbox app folder in your Dropbox 
 
 1. In the Dropbox UI from Step 1, expand `Apps`, and then click the folder that matches the **App folder name** field you noted in Step 2.
 
-   <Note>
+   ![Selecting the app folder](/img/dropbox-quickstart/Select-App-Folder.png)
+
+   <Tip>
        If the `Apps` folder is not clickable, or if Dropbox reports that the folder is not found, 
        then try refreshing the page and clicking the `Apps` folder again.
-   </Note>
+   </Tip>
 
 2. Click **Create folder**.
+
+   ![Begin creating the subfolder](/img/dropbox-quickstart/Create-Folder.png)
+
 3. Give the subfolder a name, and then click **Create**.
 
-   .. Create-Apps-Subfolder.png
+   ![Finish creating the subfolder](/img/dropbox-quickstart/Create-Apps-Subfolder.png)
 
-4. Click **Upload**, and then follow the on-screen instructions to upload some documents to this subfolder in your Dropbox app folder. 
+4. Click **Upload or drop** (or **Upload > Files** or **Upload > Folder**), and then follow the on-screen instructions to upload some documents to this subfolder in your Dropbox app folder. 
    For a Dropbox Basic account, the total size of all of the files you upload and store in your Dropbox account (not just this subfolder) cannot exceed 2 GB.
 
-   .. Upload-To-Apps-Subfolder.png
+   ![Upload files to subfolder](/img/dropbox-quickstart/Upload-To-Apps-Subfolder.png)
 
 ## Step 5: Create the Dropbox source connector
 
@@ -221,7 +230,7 @@ is used by Unstructured to connect to your Dropbox account and then process the 
 
 3. On the sidebar, click **Connectors**.
 
-   .. Sidebar-Connectors.png
+   ![Connectors sidebar icon](/img/dropbox-quickstart/Sidebar-Connectors.png)
 
 4. Click **+ New**.
 5. Enter some unique name for this connector, for example `dropbox-source-connector`.
@@ -229,27 +238,29 @@ is used by Unstructured to connect to your Dropbox account and then process the 
 7. For **Provider**, click **Dropbox**.
 8. Click **Continue**.
 
-   .. Select-Connector-Type.png
+   ![Selecting the connector type](/img/dropbox-quickstart/Select-Connector-Type.png)
 
 9. For **Data URL**, enter `dropbox://`, followed by the name of the subfolder you created in the previous step. For example, 
    if the name of the subfolder is `my-folder`, then the data URL would be `dropbox://my-folder`.
 
-   .. Apps-Subfolder-Name.png
+   ![Forming the data URL](/img/dropbox-quickstart/Apps-Subfolder-Name.png)
 
 10. For **App key**, enter the **App key** you noted in Step 2.
 11. For **App secret**, enter the **App secret** you noted in Step 2.
 12. For **Refresh token**, enter the **Refresh token** you noted in Step 3.
 13. Click **Save and Test**, and wait while Unstructured tests the connector.
 
-   .. Source-Connector-Settings.png
+   ![Entering connector settings](/img/dropbox-quickstart/Source-Connector-Settings.png)
 
 14. If a green **Successful** message appears, then you have successfully created the connector. 
 
-    .. Connector-Test-Success.png
+    ![Successful connector test](/img/dropbox-quickstart/Connector-Test-Success.png)
 
     If, however, a red error message appears, fix the issue, and try this step again.
 
     If you cannot fix the issue, contact Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
+
+Congratulations! You have successfully created a Dropbox source connector in your Unstructured account.
 
 If you are not able to complete these steps, contact Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
 
@@ -259,44 +270,52 @@ If you are not able to complete these steps, contact Unstructured Support at [su
   
   If you're not sure if you have a destination connector, click **Connectors** in your Unstructured account's sidebar, and then click **Destinations** to see if there are any listed.
 
-  .. Sidebar-Connectors.png
+  ![Connectors sidebar icon](/img/dropbox-quickstart/Sidebar-Connectors.png)
 
 - If you already have a destination connector, then you can add this Dropbox source connector as well as your destination connector to a workflow in your Unstructured account. To do this:
 
   1. Click **Workflows** in your Unstructured account's sidebar.
 
-     .. Sidebar-Workflows.png
+     ![Workflows sidebar icon](/img/dropbox-quickstart/Sidebar-Workflows.png)
 
   2. Click **New Workflow +**.
-  3. With **Build it Myself** already selected, click **Continue**.
-  4. Click the **Source** node.
 
-     .. Source-Node.png
+     ![Begin creating a workflow](/img/dropbox-quickstart/New-Workflow.png)
+
+  3. With **Build it Myself** already selected, click **Continue**.
+
+     ![Build it myself workflow type](/img/dropbox-quickstart/Build-It-Myself.png)
+
+  4. Click the **Source** node. (Do not click **Drop file to test**.)
+
+     ![Workflow source node](/img/dropbox-quickstart/Source-Node.png)
 
   5. On the **Details** tab, click **Connectors**, and then click the name of your Dropbox source connector. 
 
-     .. Select-Source-Connector.png
+     ![Selecting the source connector](/img/dropbox-quickstart/Select-Source-Connector.png)
 
   6. Click the **Destination** node.
 
-     .. Destination-Node.png
+     ![Workflow destination node](/img/dropbox-quickstart/Destination-Node.png)
 
   7. On the **Details** tab, click the name of your destination connector.
 
-     .. Select-Destination-Connector.png
+     ![Selecting the destination connector](/img/dropbox-quickstart/Select-Destination-Connector.png)
 
   8. Switch **Active** to on, and then click **Save**.
 
-     .. Make-Workflow-Active.png
+     ![Making the workflow active](/img/dropbox-quickstart/Make-Workflow-Active.png)
 
   9. Next to your workflow's name, click **Run**.
 
-     .. Run-Workflow.png
+     ![Running the workflow](/img/dropbox-quickstart/Run-Workflow.png)
 
   10. Click **Jobs** in your Unstructured account's sidebar.
 
-      .. Sidebar-Jobs.png
+      ![Jobs sidebar icon](/img/dropbox-quickstart/Sidebar-Jobs.png)
 
   11. After the job shows **Finished** with a green checkmark, go to your destination's location to see Unstructured's processed data output.
+
+     ![Finished job status](/img/dropbox-quickstart/Finished-Job.png)
 
 If you are not able to complete these steps, contact Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
