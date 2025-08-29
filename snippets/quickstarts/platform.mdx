@@ -3,8 +3,19 @@ The following quickstart shows you how to use the Unstructured UI to process rem
 The requirements are as follows.
 
 - A compatible source (input) location that contains your data for Unstructured to process. [See the list of supported source types](/ui/connectors#sources).
+
+  If your source (input) location is not in this list, or if you do not yet have any source locations for Unstructured to process, **stop here** and 
+  skip over to the [Dropbox source connector quickstart](/ui/sources/dropbox-source-quickstart) instead. This quickstart 
+  guides you through the process of creating a free Dropbox account, uploading your files to Dropbox, 
+  and creating a source connector to connect Unstructured to those files.
+
 - For document-based source locations, compatible files in that location. [See the list of supported file types](/ui/supported-file-types). If you do not have any files available, you can download some from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) folder in the Unstructured repo on GitHub.
 - A compatible destination (output) location for Unstructured to put the processed data. [See the list of supported destination types](/ui/connectors#destinations).
+
+  If your destination (output) location is not in this list, or if you do not yet have any destination locations for Unstructured to send its processed data, **stop here** and 
+  skip over to the [Pinecone destination connector quickstart](/ui/destinations/pinecone-destination-quickstart) instead. This quickstart 
+  guides you through the process of creating a free Pinecone account 
+  and creating a destination connector to connect Unstructured to a Pinecone dense serverless index within your Pinecone account.
 
 <iframe
 width="560"
@@ -26,7 +37,7 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
         ![Sources in the sidebar](/img/ui/Sources-Sidebar.png)
         1. From your Unstructured  dashboard, in the sidebar, click **Connectors**.
         2. Click **Sources**.
-        3. Cick **New** or **Create Connector**.
+        3. Click **New** or **Create Connector**.
         4. For **Name**, enter some unique name for this connector.
         5. In the **Provider** area, click the source location type that matches yours.
         6. Click **Continue**.
@@ -38,7 +49,7 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
         ![Destinations in the sidebar](/img/ui/Destinations-Sidebar.png)
         1. In the sidebar, click **Connectors**.
         2. Click **Destinations**.
-        3. Cick **New** or **Create Connector**.
+        3. Click **New** or **Create Connector**.
         4. For **Name**, enter some unique name for this connector.
         5. In the **Provider** area, click the destination location type that matches yours.
         6. Click **Continue**.
