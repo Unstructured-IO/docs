@@ -8,7 +8,7 @@ The following video shows how to fulfill the minimum set of requirements for Mil
   <iframe
   width="560"
   height="315"
-  src="https://www.youtube.com/embed/ASEmYryJpkU"
+  src="https://www.youtube.com/embed/vwWudGvBEKQ"
   title="YouTube video player"
   frameborder="0"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -18,20 +18,36 @@ The following video shows how to fulfill the minimum set of requirements for Mil
   - A [Zilliz Cloud account](https://cloud.zilliz.com/signup).
   - A [Zilliz Cloud cluster](https://docs.zilliz.com/docs/create-cluster).
   - The URI of the cluster, also known as the cluster's _public endpoint_, which takes a format such as 
-    `https://<cluster-id>.<cluster-type>.<cloud-provider>-<region>.cloud.zilliz.com`. 
-    [Get the cluster's public endpoint](https://docs.zilliz.com/docs/manage-cluster#connect-to-cluster).
-  - The token to access the cluster. [Get the cluster's token](https://docs.zilliz.com/docs/manage-cluster#connect-to-cluster).
+    `https://<cluster-id>.<cluster-type>.<cloud-provider>-<region>.cloud.zilliz.com`. To get this public endpoint value, do the following:
+
+    1. After you sign in to your Zilliz Cloud account, on the sidebar, in the list of available projects, select the project that contains the cluster.
+    2. On the sidebar, click **Clusters**.
+    3. Click the tile for the cluster.
+    4. On the **Cluster Details** tab, on the **Connect** subtab, copy the **Public Endpoint** value.
+
+  - The username and password to access the cluster, as follows:
+  
+    1. After you sign in to your Zilliz Cloud account, on the sidebar, in the list of available projects, select the project that contains the cluster.
+    2. On the sidebar, click **Clusters**.
+    3. Click the tile for the cluster.
+    4. On the **Users** tab, copy the name of the user.
+    5. Next to the user's name, under **Actions**, click the ellipsis (three dots) icon, and then click **Reset Password**.
+    6. Enter a new password for the user, and then click **Confirm**. Copy this new password.
+
   - The name of the [database](https://docs.zilliz.com/docs/database#create-database) in the instance.
   - The name of the [collection](https://docs.zilliz.com/docs/manage-collections-console#create-collection) in the database.
 
     The collection must have a a defined schema before Unstructured can write to the collection. The minimum viable 
     schema for Unstructured contains only the fields `element_id`, `embeddings`, and `record_id`, as follows:
 
-    | Field Name | Field Type | Max Length | Dimension | Index | Metric Type |
-    |---|---|---|---|---|--|
-    | `element_id` (primary key field) | **VARCHAR** | `200` | -- | -- | -- |
-    | `embeddings` (vector field) | **FLOAT_VECTOR** | -- | `3072` | Yes (Checked) | **Cosine** |
-    | `record_id` | **VARCHAR** | `200` | -- | -- | -- |
+    | Field Name | Field Type | Max Length | Dimension |
+    |---|---|---|---|
+    | `element_id` (primary key field) | **VARCHAR** | `200` | -- |
+    | `embeddings` (vector field) | **FLOAT_VECTOR** | -- | `3072` |
+    | `record_id` | **VARCHAR** | `200` | -- |
+
+    In the **Create Index** area for the collection, next to **Vector Fields**, click **Edit Index**. Make sure that for the 
+    `embeddings` field, the **Field Type** is set to **FLOAT_VECTOR** and the **Metric Type** is set to **Cosine**.
 
 - For Milvus on IBM watsonx.data, you will need:
 
@@ -122,7 +138,7 @@ collection = Collection(
 )
 
 index_params = {
-    "metric_type": "L2",
+    "metric_type": "COSINE",
     "index_type": "IVF_FLAT",
     "params": {"nlist": 1024}
 }

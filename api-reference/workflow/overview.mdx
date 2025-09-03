@@ -2,6 +2,11 @@
 title: Overview
 ---
 
+<Tip>
+    To start using the Unstructured Workflow Endpoint right away, skip ahead to the [quickstart](#quickstart), 
+    which uses the Unstructured Python SDK from a remote hosted Google Colab notebook.
+</Tip>
+
 The [Unstructured UI](/ui/overview) features a no-code user interface for transforming your unstructured data into data that is ready 
 for retrieval-augmented generation (RAG).
 
@@ -91,7 +96,7 @@ import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-s
 Calls made by the Unstructured Python SDK's `unstructured_client` functions for creating, listing, updating, 
 and deleting connectors, workflows, and jobs in the Unstructured UI all use the Unstructured Workflow Endpoint URL. 
 This URL was provided to you when your Unstructured account was created. 
-If you do not have this URL, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+If you do not have this URL, email Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
 
 <Note>
     The default URL for the Unstructured Worfklow Endpoint is `https://platform.unstructuredapp.io/api/v1`. 
@@ -131,7 +136,7 @@ utilities, tools, programming languages, packages, and libraries. The examples, 
     get this API key, see the [quickstart](#quickstart), earlier on this page.
 
     Note that you should always use the URL that was provided to you when your Unstructured account was created. 
-    If you do not have this URL, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+    If you do not have this URL, email Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
 </Tip>
 
 ### curl and Postman
@@ -144,7 +149,7 @@ export UNSTRUCTURED_API_KEY="<your-unstructured-api-key>"
 ```
 
 For the API URL, this URL was provided to you when your Unstructured account was created. 
-If you do not have this URL, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+If you do not have this URL, email Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
 
 <Note>
     The default URL for the Unstructured Worfklow Endpoint is `https://platform.unstructuredapp.io/api/v1`. 
@@ -1934,7 +1939,7 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
                     )
 
             with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
-                response = client.workflows.run_workflow(
+                response = client.workflows.run_workflow_async(
                     request={
                         "workflow_id": "<workflow-id>"
                         "body_run_workflow": {
@@ -2779,10 +2784,66 @@ response:
 - The ID for the file to download is in the `output_node_files` array's `file_id` field.
 - The ID for the workflow's output node is in the `output_node_files` array's `node_id` field.
 
-Currently, you cannot use the Unstructured user interface (UI) or the Unstructured Python SDK to download a file from a job that uses a 
+Currently, you cannot use the Unstructured user interface (UI) to download a file from a job that uses a 
 workflow with a local source and a local destination.
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+        import json
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import DownloadJobOutputRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.jobs.download_job_output(
+            request=DownloadJobOutputRequest(
+                job_id="<job-id>",
+                file_id="<file-id>",
+                node_id="<node-id>"
+            )
+        )
+
+        output_path = "</path/to/save/json/output/file>"
+
+        with open(output_path, "w") as f:
+            json.dump(response.any, f, indent=4)
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import json
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import DownloadJobOutputRequest
+
+        async def download_job_output():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = client.jobs.download_job_output_async(
+                request=DownloadJobOutputRequest(
+                    job_id="<job-id>",
+                    file_id="<file-id>",
+                    node_id="<node-id>"
+                )
+            )
+
+            output_path = "</path/to/save/json/output/file>"
+
+            with open(output_path, "w") as f:
+                json.dump(response.any, f, indent=4)
+
+        asyncio.run(download_job_output())
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'GET' --location \

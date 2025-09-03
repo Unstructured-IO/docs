@@ -41,7 +41,7 @@ if __name__ == "__main__":
         embedder_config=EmbedderConfig(embedding_provider="huggingface"),
         destination_connection_config=SnowflakeConnectionConfig(
             access_config=SnowflakeAccessConfig(
-                password=os.getenv("SNOWFLAKE_PASSWORD")
+                password=os.getenv("SNOWFLAKE_PROGRAMMATIC_ACCESS_TOKEN")
             ),
             account=os.getenv("SNOWFLAKE_ACCOUNT"),
             user=os.getenv("SNOWFLAKE_USER"),

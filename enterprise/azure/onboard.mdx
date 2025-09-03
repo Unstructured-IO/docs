@@ -1,0 +1,359 @@
+---
+title: Unstructured Enterprise in-VPC on Azure - onboarding checklist
+sidebarTitle: Onboarding
+---
+
+<Note>
+    The following information applies only to in-VPC deployments of [Unstructured Enterprise](/enterprise/overview). 
+
+    For dedicated instance deployments of Unstructured Enterprise, contact your Unstructured sales representative, 
+    or email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+</Note>
+
+After your organization has signed the Enterprise agreement with Unstructured, a member of the Unstructured technical enablement team will reach out to you to begin the 
+deployment onboarding process. To streamline this process, you are encouraged to begin setting up your target environment as soon as possible. Choose one of the following setup options:
+
+- [Do it all for me](#do-it-all-for-me): Have Unstructured set up the required infrastructure in your AWS account and then deploy the Unstructured UI and API into that newly created infrastructure.
+- [Bring my own infrastructure](#bring-my-own-infrastructure): Set up the required infrastructure yourself in your AWS account, and then have Unstructured deploy the Unstructured UI and API into your existing infrastructure.
+
+## Questions? Need help?
+
+If you have questions or need help as you go, contact your Unstructured sales representative or technical enablement contact. If you do not know who they are, 
+email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io), and a member of the Unstructured sales or technical enablement teams 
+will get back to you as soon as possible.
+
+## Do it all for me
+
+If you want Unstructured to set up the required infrastructure for you into your Azure account and then deploy the Unstructured UI and API into that newly created infrastrucrure, then provide your Unstructured sales representative or technical enablement contact with 
+the access credentials for a Microsoft Entra ID user or service principal in your Azure account that has the following required permissions.
+
+### Subscription and resource group
+
+- `Microsoft.Resources/subscriptions/resourceGroups/write` (to create the resource group)
+- `Microsoft.Resources/subscriptions/resourceGroups/read` (to read the resource group)
+
+### VNet and networking
+
+- `Microsoft.Network/virtualNetworks/write` (to create the VNet)
+- `Microsoft.Network/virtualNetworks/read` (to read the VNet)
+- `Microsoft.Network/publicIPAddresses/write` (to create the public IPs)
+- `Microsoft.Network/publicIPAddresses/read` (to read the public IPs)
+- `Microsoft.Network/natGateways/write` (to create the NAT Gateway)
+- `Microsoft.Network/natGateways/read` (to read the NAT Gateway)
+- `Microsoft.Network/routeTables/write` (to create the route tables)
+- `Microsoft.Network/routeTables/read` (to read the route tables)
+- `Microsoft.Network/networkSecurityGroups/write` (to create the NSGs)
+- `Microsoft.Network/networkSecurityGroups/read` (to read the NSGs)
+
+### AKS cluster
+
+- `Microsoft.ContainerService/managedClusters/write` (to create the AKS cluster)
+- `Microsoft.ContainerService/managedClusters/read` (to read the AKS cluster)
+- `Microsoft.ContainerService/agentPools/write` (to create the node pools)
+- `Microsoft.ContainerService/agentPools/read` (to read the node pools)
+
+### Managed identities and RBAC
+
+- `Microsoft.ManagedIdentity/userAssignedIdentities/write` (to create the managed identities)
+- `Microsoft.ManagedIdentity/userAssignedIdentities/read` (to read managed identities)
+- Assign built-in roles such as:
+
+  - **Contributor** or scoped **Network Contributor** for the AKS cluster identity
+  - **Monitoring Metrics Publisher**, **AcrPull**, and **Storage Blob Data Reader** for the node pool identity
+  - **Storage Blob Data Contributor** for workload identities
+
+### Kubernetes add-ons
+
+Permissions depend on the Helm/YAML installation, but Azure RBAC integration requires `Microsoft.ContainerService/managedClusters/accessProfiles/*/read` (to access kubeconfig)
+
+### Storage class
+
+- `Microsoft.Storage/storageAccounts/write` (to create the storage account for CSI driver provisioning)
+- `Microsoft.Storage/storageAccounts/read`
+
+### PostgreSQL database
+
+- `Microsoft.DBforPostgreSQL/flexibleServers/write` (to create the PostgreSQL server)
+- `Microsoft.DBforPostgreSQL/flexibleServers/read`
+- NSG permissions for database access: allow traffic from the VNet CIDR
+
+## Bring my own infrastructure
+
+If you want to set up the required infrastructure yourself, set things up as follows within your Azure account for Unstructured to deploy the Unstructured UI and API into.
+
+You must also provide your Unstructured sales representative or technical enablement contact with 
+the access credentials for an IAM user or service principal in your AWS account that has access to the target Azure Kubernetes Service (AKS) cluster to deploy the 
+Unstructured UI and API into.
+
+### **Azure subscription and resource group**
+
+- **Subscription**
+
+  - Ensure you have access to a valid Azure subscription
+  - You will need the `subscription_id` if deploying via CLI or Pulumi
+
+- **Resource Group**
+
+  - Name: `u10d-{env}-rg`
+  - Region: e.g., `eastus2`
+  - All resources (VNet, AKS, PostgreSQL, Storage, etc.) will be created inside this group
+
+### **VNet and networking**
+
+- **Virtual Network (VNet)**
+
+  - Address space: `10.0.0.0/16`
+  - DNS Hostnames: Enabled
+  - DNS Support: Enabled
+
+- **Internet Access**
+
+  - Handled via Azure's default gateway and public IPs
+
+- **Public Subnet**
+
+  - Address: `10.0.0.0/24`
+  - Assign Public IP: true
+  - Availability Zone: `${region}a`
+
+- **NAT Gateway + Public IP**
+
+  - NAT Gateway in the public subnet
+  - Public IP resource attached
+
+- **Private Subnets (x2)**
+
+  - Addresses: `10.0.1.0/24`, `10.0.2.0/24`
+  - AZs: `${region}a` and `${region}b`
+
+- **Route Tables**
+
+  - Public: route `0.0.0.0/0` via internet
+  - Private: route `0.0.0.0/0` via NAT Gateway
+
+### **Managed identities and RBAC**
+
+- **AKS Cluster Managed Identity**
+
+  - Assign roles:
+  
+    - `Contributor` or more scoped role
+    - `Network Contributor`
+
+- **Node Pool Managed Identity**
+
+  - Assign roles:
+
+    - `Monitoring Metrics Publisher`
+    - `AcrPull` (if using ACR)
+    - `Storage Blob Data Reader`
+
+- **Workload Identity Bindings (x3)**
+
+  - Namespaces: `recommender`, `etl-operator`, `data-broker`
+  - Use Azure AD Workload Identity Federation
+  - Assign `Storage Blob Data Contributor` to required containers
+
+### **AKS Cluster**
+
+- **Control Plane**
+
+  - Version: `1.31` or higher
+  - API authorized IPs: optional
+  - Private cluster networking recommended
+
+- **Node Pool**
+
+  - VM Size: `Standard_D16s_v5`
+  - Disk Size: 100 GB
+  - Desired Size: 2 (min: 2, max: 5)
+  - SSH: Enabled via key pair
+  - SSH key exported in PEM format
+
+- **NSGs (Network Security Groups)**
+
+  - Allow intra-cluster traffic (`10.0.0.0/16`)
+  - Allow all egress
+
+#### **Kubernetes Add-ons**
+
+Install via Helm or YAML:
+
+- **Workload Identity Webhook**
+- **Metrics Server** — `v0.7.2`
+- **Azure Disk CSI Driver**
+
+  - Provisioner: `disk.csi.azure.com`
+
+### **Storage class**
+
+```yaml
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: azure-disk-sc
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: disk.csi.azure.com
+parameters:
+  skuName: Premium_LRS
+  kind: Managed
+volumeBindingMode: WaitForFirstConsumer
+```
+
+### Secrets and ConfigMaps
+
+After your infrastructure is set up, but before Unstructured can deploy the Unstructured UI and API into your insfrastructure, 
+Unstructured will need to know the values of the following Secrets and ConfigMaps. These must be provided to Unstructured as a 
+set of YAML files in Kubernetes [Secret](https://kubernetes.io/docs/concepts/configuration/secret/) and 
+[ConfigMap](https://kubernetes.io/docs/concepts/configuration/configmap/) format.
+
+Capture these during setup
+
+- DB host, username, password
+- Container names
+- SSH private key
+- Auth secrets
+
+The Secrets are as follows.
+
+#### Blob storage credentials (Azure)
+
+- `BLOB_STORAGE_ADAPTER_ACCOUNT_NAME`
+- `BLOB_STORAGE_ADAPTER_ACCOUNT_KEY`
+- `BLOB_STORAGE_ADAPTER_CONTAINER_REGION` (optional)
+
+#### Database credentials
+
+- `DB_USERNAME`
+- `DB_PASSWORD`
+- `DB_HOST`
+- `DB_NAME`
+- `DB_DATABASE`
+
+#### Authentication
+
+- `JWT_SECRET_KEY`
+- `AUTH_STRATEGY`
+- `SESSION_SECRET`
+- `SHARED_SECRET`
+- `KEYCLOAK_CLIENT_SECRET`
+- `KEYCLOAK_ADMIN_SECRET`
+- `KEYCLOAK_ADMIN`
+- `KEYCLOAK_ADMIN_PASSWORD`
+- `API_BEARER_TOKEN`
+
+The ConfigMaps are as follows.
+
+#### Blob storage settings
+
+- `BLOB_STORAGE_ADAPTER_TYPE`: `azure`
+- `BLOB_STORAGE_ADAPTER_BUCKET`
+- `ETL_BLOB_CACHE_BUCKET_NAME`
+- `ETL_API_BLOB_STORAGE_ADAPTER_BUCKET`
+- `ETL_API_BLOB_STORAGE_ADAPTER_TYPE`: `azure`
+- `ETL_API_DB_REMOTE_BUCKET_NAME`
+- `ETL_API_JOB_STATUS_DEST_BUCKET_NAME`
+- `JOB_STATUS_BUCKET_NAME`
+- `JOB_DB_BUCKET_NAME`
+
+#### Environment
+
+- `ENV`, `ENVIRONMENT`
+- `JOB_ENV`, `JOB_ENVIRONMENT`
+
+#### Observability and OpenTelementry (OTel)
+
+- `JOB_OTEL_EXPORTER_OTLP_ENDPOINT`
+- `JOB_OTEL_METRICS_EXPORTER`
+- `JOB_OTEL_TRACES_EXPORTER`
+- `OTEL_EXPORTER_OTLP_ENDPOINT`
+- `OTEL_METRICS_EXPORTER`
+- `OTEL_TRACES_EXPORTER`
+
+#### Unstructured API and authentication
+
+- `UNSTRUCTURED_API_URL`
+- `JWKS_URL`
+- `JWT_ISSUER`
+- `JWT_AUDIENCE`
+- `SINGLE_PLANE_DEPLOYMENT`
+
+#### Front end and dashboard
+
+- `API_BASE_URL`
+- `API_CLIENT_BASE_URL`
+- `API_URL`
+- `APM_SERVICE_NAME`
+- `APM_SERVICE_NAME_CLIENT`
+- `AUTH_STRATEGY`
+- `FRONTEND_BASE_URL`
+- `KEYCLOAK_CALLBACK_URL`
+- `KEYCLOAK_CLIENT_ID`
+- `KEYCLOAK_DOMAIN`
+- `KEYCLOAK_REALM`
+- `KEYCLOAK_SSL_ENABLED`
+- `KEYCLOAK_TRUST_ISSUER`
+- `PUBLIC_BASE_URL`
+- `PUBLIC_RELEASE_CHANNEL`
+
+#### Redis
+
+- `REDIS_DSN`
+
+#### Other
+
+- `IMAGE_PULL_SECRETS`
+- `PRIVATE_KEY_SECRETS_ADAPTER_TYPE`: `azure`
+- `PRIVATE_KEY_SECRETS_ADAPTER_AZURE_REGION`
+- `SECRETS_ADAPTER_TYPE`: `azure`
+- `SECRETS_ADAPTER_AZURE_REGION`
+
+The preceding Secrets and ConfigMaps must be added to the following files:
+
+| File Name | Type | Resource name | Namespace | Data keys |
+| --- | --- | --- | --- | --- |
+| `data-broker-env-cm.yaml` | ConfigMap | `data-broker-env` | `api` | `JOB_STATUS_BUCKET_NAME`, `JOB_DB_BUCKET_NAME`, `BLOB_STORAGE_ADAPTER_TYPE` |
+| `data-broker-env-secret.yaml` | Secret | `data-broker-env` | `api` | `BLOB_STORAGE_ADAPTER_ACCOUNT_NAME`, `BLOB_STORAGE_ADAPTER_ACCOUNT_KEY`, `BLOB_STORAGE_ADAPTER_CONTAINER_REGION` |
+| `dataplane-api-env-cm.yaml` | Secret | `dataplane-api-env` | `api` | `DB_PASSWORD`, `DB_USERNAME`, `DB_HOST`, `DB_NAME` |
+| `etl-operator-env-cm.yaml` | ConfigMap | `etl-operator-env` | `etl-operator` | `BLOB_STORAGE_ADAPTER_BUCKET`, `JOB_STATUS_BUCKET_NAME`, `JOB_DB_BUCKET_NAME`, `BLOB_STORAGE_ADAPTER_TYPE`, `ENV`, `ENVIRONMENT`, `REDIS_DSN`, `ETL_API_BLOB_STORAGE_ADAPTER_BUCKET`, `ETL_API_BLOB_STORAGE_ADAPTER_TYPE`, `ETL_API_DB_REMOTE_BUCKET_NAME`, `ETL_API_JOB_STATUS_DEST_BUCKET_NAME` (x2), `ETL_BLOB_CACHE_BUCKET_NAME`, `IMAGE_PULL_SECRETS`, `JOB_ENV`, `JOB_ENVIRONMENT`, `JOB_OTEL_EXPORTER_OTLP_ENDPOINT`, `JOB_OTEL_METRICS_EXPORTER`, `JOB_OTEL_TRACES_EXPORTER`, `OTEL_EXPORTER_OTLP_ENDPOINT`, `OTEL_METRICS_EXPORTER`, `OTEL_TRACES_EXPORTER`, `UNSTRUCTURED_API_URL` |
+| `etl-operator-env-secret.yaml` | Secret | `etl-operator-env` | `etl-operator` | `BLOB_STORAGE_ADAPTER_ACCOUNT_NAME`, `BLOB_STORAGE_ADAPTER_ACCOUNT_KEY`, `BLOB_STORAGE_ADAPTER_CONTAINER_REGION` |
+| `frontend-env-cm.yaml` | ConfigMap | `frontend-env` | `www` | `API_BASE_URL`, `API_CLIENT_BASE_URL`, `API_URL`, `APM_SERVICE_NAME`, `APM_SERVICE_NAME_CLIENT`, `AUTH_STRATEGY`, `ENV`, `FRONTEND_BASE_URL`, `KEYCLOAK_CALLBACK_URL`, `KEYCLOAK_CLIENT_ID`, `KEYCLOAK_DOMAIN`, `KEYCLOAK_REALM`, `KEYCLOAK_SSL_ENABLED`, `KEYCLOAK_TRUST_ISSUER`, `PUBLIC_BASE_URL`, `PUBLIC_RELEASE_CHANNEL`, `SENTRY_DSN`, `SENTRY_SAMPLE_RATE`, `WORKFLOW_NODE_EDITOR_FF_REQUEST_FORM`, `CUSTOM_WORKFLOW_FF_REQUEST_FORM` |
+| `frontend-env-secret.yaml` | Secret | `frontend-env` | `www` | `API_BEARER_TOKEN`, `KEYCLOAK_ADMIN_SECRET`, `KEYCLOAK_CLIENT_SECRET`, `SESSION_SECRET`, `SHARED_SECRET` |
+| `keycloak-secret.yaml` | Secret | `phasetwo-keycloak-env` | `www` | `KEYCLOAK_ADMIN`, `KEYCLOAK_ADMIN_PASSWORD` |
+| `platform-api-env-cm.yaml` | ConfigMap | `platform-api-env` | `api` | `JWKS_URL`, `JWT_ISSUER`, `JWT_AUDIENCE`, `SINGLE_PLANE_DEPLOYMENT` |
+| `platform-api-env-secret.yaml` | Secret | `platform-api-env` | `api` | `DB_PASSWORD`, `DB_USERNAME`, `DB_HOST`, `DB_NAME`, `DB_DATABASE`, `JWT_SECRET_KEY`, `AUTH_STRATEGY` |
+| `recommender-env-cm.yaml` | ConfigMap | `recommender-env` | `recommender` | `BLOB_STORAGE_ADAPTER_TYPE`, `ETL_BLOB_CACHE_BUCKET_NAME` |
+| `recommender-env-secret.yaml` | Secret | `recommender-env` | `recommender` | `BLOB_STORAGE_ADAPTER_ACCOUNT_NAME`, `BLOB_STORAGE_ADAPTER_ACCOUNT_KEY`, `BLOB_STORAGE_ADAPTER_CONTAINER_REGION` |
+| `secret-provider-api-env-cm.yaml` | ConfigMap | `secrets-provider-api-env` | `secrets` | `ENV`, `ENVIRONMENT`, `OTEL_EXPORTER_OTLP_ENDPOINT`, `OTEL_METRICS_EXPORTER`, `OTEL_TRACES_EXPORTER`, `PRIVATE_KEY_SECRETS_ADAPTER_AZURE_REGION`, `PRIVATE_KEY_SECRETS_ADAPTER_TYPE`, `SECRETS_ADAPTER_AZURE_REGION`, `SECRETS_ADAPTER_TYPE` |
+| `secret-provider-api-env-secret.yaml` | Secret | `secrets-provider-api-env` | `secrets` | `BLOB_STORAGE_ADAPTER_ACCOUNT_NAME`, `BLOB_STORAGE_ADAPTER_ACCOUNT_KEY`, `BLOB_STORAGE_ADAPTER_CONTAINER_REGION` |
+| `usage-collector-env-secret.yaml` | Secret | `usage-collector-env` | `api` | `DB_PASSWORD`, `DB_USERNAME`, `DB_HOST`, `DB_NAME`, `BLOB_STORAGE_ADAPTER_TYPE` |
+
+For example, for the `data-broker-env-cm.yaml` ConfigMap file, the contents would look like this:
+
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: data-broker-env
+  namespace: api
+data:
+  JOB_STATUS_BUCKET_NAME: "<your-value>"
+  JOB_DB_BUCKET_NAME: "<your-value>"
+  BLOB_STORAGE_ADAPTER_TYPE: "<your-value>"
+```
+
+The `data-broker-env-secret.yaml` Secret file would look like this:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: data-broker-env
+  namespace: api
+type: Opaque
+stringData:
+  BLOB_STORAGE_ADAPTER_ACCOUNT_NAME: "<your-value>"
+  BLOB_STORAGE_ADAPTER_ACCOUNT_KEY: "<your-value>"
+  BLOB_STORAGE_ADAPTER_CONTAINER_REGION: "<your-value>"
+```

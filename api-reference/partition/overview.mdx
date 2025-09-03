@@ -2,6 +2,10 @@
 title: Overview
 ---
 
+<Tip>
+    To start using the Unstructured Partition Endpoint right away, skip ahead to the [quickstart](/api-reference/partition/quickstart) now!
+</Tip>
+
 The Unstructured Partition Endpoint, part of the [Unstructured API](/api-reference/overview), is intended for rapid prototyping of Unstructured's 
 various partitioning strategies, with limited support for chunking. It is designed to work only with processing of local files, one file 
 at a time. Use the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) for production-level scenarios, file processing in 
@@ -26,6 +30,11 @@ import Pricing from '/snippets/general-shared-text/pricing-platform.mdx';
 
 ## Quickstart
 
+<Tip>
+    To use the Unstructured Python SDK instead of `curl` for the following quickstart, 
+    [skip ahead](/api-reference/partition/quickstart) to the SDK version instead.
+</Tip>
+
 This example uses the [curl](https://curl.se/) utility on your local machine to call the Unstructured Partition Endpoint. It sends a source (input) file from your local machine to the Unstructured Partition Endpoint which then delivers the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
 
 If you do not have a source file readily available, you could use for example a sample PDF file containing the text of the United States Constitution, 
@@ -36,7 +45,7 @@ available for download from [https://constitutioncenter.org/media/files/constitu
         From your terminal or Command Prompt, set the following two environment variables. 
         
         - Replace `<your-unstructured-api-url>` with the Unstructured Partition Endpoint URL. This URL was provided to you when your Unstructured account was created. 
-          If you do not have this URL, contact Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+          If you do not have this URL, email Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
 
           <Note>
               The default URL for the Unstructured Partition Endpoint is `https://api.unstructuredapp.io/general/v0/general`. 
