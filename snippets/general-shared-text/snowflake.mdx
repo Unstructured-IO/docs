@@ -24,7 +24,17 @@
 
 - A Snowflake user, which can be a service user (recommended) or a human user.
 
-  To create a service user (recommended):
+  To create a service user entry and get their login name (not username):
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/n755MKunb0k"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
 
   1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
   2. In Snowsight, on the navigation menu, click **Projects > Worksheets**.
@@ -41,8 +51,21 @@
      ```
 
   5. Click the arrow icon to run the worksheet, which creates the service user.
+  6. To get their login name, on the navigation menu, click **Admin > Users & Roles**.
+  7. On the **Users** tab, in the list of available users, click the name of the target user.
+  8. In the **About** tile, note the **Login Name** for the user.
   
-  To create a human user:
+  To create a human user entry and get their login name (not username):
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/CECTR2QE__w"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
 
   1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
   2. In Snowsight, on the navigation menu, click **Admin > Users & roles**.
@@ -50,32 +73,21 @@
   4. Click **+ User**.
   5. Follow the on-screen guidance to specify the user's settings.
   6. Click **Create User**.
+  7. To get their login name, on the navigation menu, click **Admin > Users & Roles**.
+  8. On the **Users** tab, in the list of available users, click the name of the target user.
+  9. In the **About** tile, note the **Login Name** for the user.
 
-- The Snowflake [user's login name (not username)](https://docs.snowflake.com/user-guide/admin-user-management#creating-users) in the account, and 
-  a programmatic access token (PAT) for the Snowflake user.
+- A programmatic access token (PAT) for the Snowflake user.
 
   <iframe
   width="560"
   height="315"
-  src="https://www.youtube.com/embed/sFLPGVe4VBM"
+  src="https://www.youtube.com/embed/8u41UJ8lN3w"
   title="YouTube video player"
   frameborder="0"
   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowfullscreen
   ></iframe>
-
-  To view the login name for a user:
-
-  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
-  2. In Snowsight, on the navigation menu, click **Admin > Users & Roles**.
-  3. On the **Users** tab, in the list of available users, click the name of the target user.
-  4. In the **About** tile, note the **Login Name** for the user.
-
-  Alternatively, the following Snowflake query returns information about the user with the username of `<my-user>`, including their `login_name` value representing their login name:
-
-  ```text
-  SHOW USERS LIKE '<my-user>';
-  ```
 
   To create a programmatic access token (PAT) for a user:
 
@@ -142,30 +154,6 @@
 
 - (No longer recommended, as passwords are being deprecated by Snowflake&mdash;use PATs instead) The Snowflake [user's login name (not username) and the user's password](https://docs.snowflake.com/user-guide/admin-user-management#creating-users) in the account. 
   This user must be a human user. Passwords are not supported for service users.
-
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/sFLPGVe4VBM"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
-
-  To view the login name for a user:
-
-  1. Log in to [Snowsight](https://docs.snowflake.com/user-guide/ui-snowsight-homepage) with your Snowflake account.
-  2. In Snowsight, on the navigation menu, click **Admin > Users & Roles**.
-  3. On the **Users** tab, in the list of available users, click the name of the target user.
-  4. In the **About** tile, note the **Login Name** for the user.
-
-  Alternatively, the following Snowflake query returns information about the user with the username of `<my-user>`, including their `login_name` value representing their login name:
-
-  ```text
-  SHOW USERS LIKE '<my-user>';
-  ```
-
 - The name of the Snowflake [role](https://docs.snowflake.com/sql-reference/sql/create-role) that the user belongs to and that also has sufficient access to the Snowflake database, schema, table, and host.
 
   <iframe
