@@ -1,0 +1,74 @@
+
+## Requirements
+
+To use this example, you will need the following:
+
+- Within your IBM Cloud account, an IBM watsonx.data subscription that contains a Milvus service instance.
+
+  - Create an [IBM Cloud account](https://cloud.ibm.com/registration).
+  - Create an [IBM watsonx.data subscription](https://cloud.ibm.com/watsonxdata) in your IBM Cloud account.
+  - Create a [Milvus service instance](/ui/destinations/milvus) within your IBM watsonx.data subscription plan.
+
+- Within your Unstructured account, a workflow that contains a Milvus destination connector.
+
+  - Create an [Unstructured account](https://unstructured.io/signup).
+  - Create a [Milvus destination connector](/ui/destinations/milvus) in your Unstructured account.
+  - Create a [workflow]() that contains the Milvus destination connector in your Unstructured account.
+
+    The workflow must generate [embeddings](/ui/embedding). The workflow's **Embedder** node's selected embedding model provider must be "IBM". The 
+    node's selected embedding model must be one of the following models that are offered by IBM watsonx Orchestrate:
+
+    - `all-minilm6-v2`, with 384 dimensions. Per IBM, this model is good for tasks such as information retrieval, clustering, and for detecting sentence similarity.
+    - `granite-embedding-107m-multilingual`, with 384 dimensions. Per IBM, this model is good for tasks such as text similarity, retrieval, and search.
+    - `granite-embedding-278m-multilingual`, with 768 dimensions.
+    - `multilingual-e5-large`, with 1024 dimensions. Per IBM, this model is good for generating text embeddings for text in a language other than English.
+    - `slate-125m-english-retrvr`, with 768 dimensions. Per IBM, the `slate-125m-*` models are good for generating embeddings for various inputs such as queries, passages, or documents. Per IBM, the `slate-125m-*` models are two to three times slower but perform slightly better than the `slate-30m-*` models.
+    - `slate-125m-english-retrvr-v2`, with 768 dimensions.
+    - `slate-30m-english-retrvr`, with 384 dimensions. Per IBM, the `slate-30m-*` models are trained to maximize the cosine similarity between two text inputs so that embeddings can be evaluated based on similarity later. Per IBM, the `slate-30m-*` models are two to three times faster and have slightly lower performance scores than the `slate-125m-*` models.
+    - `slate-30m-english-retrvr-v2`, with 384 dimensions.
+
+    Be sure to [run the workflow](/ui/workflows#edit%2C-delete%2C-or-run-a-workflow) to have Unstructured generate the embeddings and store them&mdash;along with 
+    Unstructured's processed data representing your organization's source documents and semi-structured data&mdash;in the database 
+    that is accessed through the Milvus service instance within your IBM watsonx.data subscription.
+
+## Step 1: ...
+
+In this step, you add an IBM watsonx Orchestrate subscription to your IBM Cloud account.
+
+If you already have an IBM watsonx Orchestrate subscription, then skip ahead to **Step 2**.
+
+1. [Log in to your IBM Cloud account](https://cloud.ibm.com/login).
+2. On the sidebar, click the **Resource list** icon. If the sidebar is not visible, click the **Navigation Menu** icon to the far left of the 
+   top navigation bar.
+3. Click **Create resource**.
+4. With **IBM Cloud catalog** selected, search for and select **watsonx Orchestrate**.
+5. Complete the on-screen instructions to finish creating the IBM watsonx Orchestrate subscription.
+
+## Step 2: ...
+
+In this step, ...
+
+1. Open your IBM watsonx Orchestrate subscription, if it is not already open. To do this:
+
+   a. [Log in to your IBM Cloud account](https://cloud.ibm.com/login).<br/>
+   b. On the sidebar, click the **Resource list** icon. If the sidebar is not visible, click the **Navigation Menu** icon to the far left of the 
+      top navigation bar.<br/>
+   c. In the list of resources, expand **AI / Machine Learning**, and then click the target watsonx Orchestrate subscription.<br/>
+   d. Click **Launch watsonx Orchestrate**.<br/>
+
+2. If the **Chat** page is not already open, click the **Open the main menu** icon to the far left of the 
+   top navigation bar, and then click **Chat**.
+3. Toward the bottom of the sidebar, click **Create new agent**.
+4. On the **Create an agent** page, with **Create from scratch** already selected, enter some **Name** and **Description**for the agent, and then click **Create**.
+5. Under **Knowledge source**, in the **Start by adding knowledge** tile, click **Choose knowledge**.
+6. On the **Select source** page, click **Milvus**, and then click **Next**.
+7. On the **Connect Milvus** page, specify the following settings:
+
+   a. For **GRPC host**, enter the GRPC host value for the Milvus service instance within your IBM watsonx.data subscription.<br/>
+   b. For **GRPC port**, enter the GRPC port value for the Milvus service instance.<br/>
+   c. For **Choose an authentication type**, select **Basic authentication**.<br/>
+   d. For **Username**, enter `ibmlhapikey`.<br/>
+   e. For **Password**, enter the API key for your IBM Cloud account.<br/>
+   f. Click **Next**.<br/>
+
+8. ...
