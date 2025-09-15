@@ -6,16 +6,27 @@ To use this example, you will need the following:
 - Within your IBM Cloud account, an IBM watsonx.data subscription that contains a Milvus service instance.
 
   - Create an [IBM Cloud account](https://cloud.ibm.com/registration).
+
+    To complete this example, you will to [create an API key](https://www.ibm.com/docs/en/masv-and-l/cd?topic=cli-creating-your-cloud-api-key) for your IBM Cloud account.
+
   - Create an [IBM watsonx.data subscription](https://cloud.ibm.com/watsonxdata) in your IBM Cloud account.
   - Create a [Milvus service instance](/ui/destinations/milvus) within your IBM watsonx.data subscription plan.
+
+    To complete this example, you will need the following settings for the Milvus service instance:
+    
+    - The instance's GRPC host value.
+    - The instance's GRPC port value.
+    - The name of the target database on the instance.
+    - The name of the target collection in the database.
+    - The name of the target index in the collection.
 
 - Within your Unstructured account, a workflow that contains a Milvus destination connector.
 
   - Create an [Unstructured account](https://unstructured.io/signup).
   - Create a [Milvus destination connector](/ui/destinations/milvus) in your Unstructured account.
-  - Create a [workflow]() that contains the Milvus destination connector in your Unstructured account.
+  - Create a [custom workflow](/ui/workflows#create-a-custom-workflow) that contains the Milvus destination connector in your Unstructured account.
 
-    The workflow must generate [embeddings](/ui/embedding). The workflow's **Embedder** node's selected embedding model provider must be "IBM". The 
+    The workflow must generate [embeddings](/ui/embedding). The workflow's **Embedder** node's selected embedding model provider must be **IBM watson.ai**. The 
     node's selected embedding model must be one of the following models that are offered by IBM watsonx Orchestrate:
 
     - `all-minilm6-v2`, with 384 dimensions. Per IBM, this model is good for tasks such as information retrieval, clustering, and for detecting sentence similarity.
@@ -65,10 +76,36 @@ In this step, ...
 7. On the **Connect Milvus** page, specify the following settings:
 
    a. For **GRPC host**, enter the GRPC host value for the Milvus service instance within your IBM watsonx.data subscription.<br/>
-   b. For **GRPC port**, enter the GRPC port value for the Milvus service instance.<br/>
+   b. For **GRPC port**, enter the GRPC port value for the instance.<br/>
    c. For **Choose an authentication type**, select **Basic authentication**.<br/>
    d. For **Username**, enter `ibmlhapikey`.<br/>
    e. For **Password**, enter the API key for your IBM Cloud account.<br/>
    f. Click **Next**.<br/>
 
-8. ...
+8. On the **Select index** page, specify the following settings:
+
+   a. For **Database**, select the name of the target database on the Milvus service instance within your IBM watsonx.data subscription.<br/>
+   b. For **Use Collection or Alias**, select **Collection**.<br/>
+   c. For **Collection**, select the name of the target collection in the database.<br/>
+   d. For **Index**, select the name of the target index in the collection.<br/>
+   e. For **Embedding model**, select the name of the embedding model that matches the one that you specified in your Unstructured workflow.<br/>
+   f. for **Title**, select **element_id**.<br/>
+   g. For **Body**, select **text**.<br/>
+   h. Click **Next**.<br/>
+
+9. On the **Description** page, enter some description for the agent, and then click **Save**.
+10. In the list of pages, click **Behavior**.
+11. Switch on **Chat with documents**.
+10. Click **Deploy**. 
+11. On the **Pre-deployment summary** page, click **Deploy**.
+
+## Step 3: ...
+
+In this step, ...
+
+1. If the **Chat** page is not already open in IBM watsonxOrchestrate, click the **Open the main menu** icon to the far left of the 
+   top navigation bar, and then click **Chat**.
+2. In the sidebar, in the **Agents** list, select the name of the agent that you created in the previous step.
+3. In the **Type something** box, enter a question, and then press `Enter`. 
+4. The agent will provide an answer.
+5. Keep asking as many questions as you want to.
