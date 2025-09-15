@@ -84,8 +84,8 @@ The following video shows how to fulfill the minimum set of requirements for Mil
   - The [username and password, or token](https://milvus.io/docs/authenticate.md) to access the instance.
 
 All Milvus instances require the target collection to have a defined schema before Unstructured can write to the collection. The minimum viable 
-schema for Unstructured contains only the fields `element_id`, `embeddings`, and `record_id`, as follows. This example code demonstrates the use of the 
-[Python SDK for Milvus](https://pypi.org/project/pymilvus/) to create a collection with this minimum viable schema, 
+schema for Unstructured contains only the fields `element_id`, `embeddings`, and `record_id`, as follows. Adding a `text` field is optional but highly recommended.This example code demonstrates the use of the 
+[Python SDK for Milvus](https://pypi.org/project/pymilvus/) to create a collection with this schema, 
 targeting Milvus on IBM watsonx.data. For the `connections.connect` arguments to connect to other types of Milvus deployments, see your Milvus provider's documentation:
 
 ```python Python
@@ -126,8 +126,14 @@ record_id = FieldSchema(
     max_length=200
 )
 
+text = FieldSchema(
+    name="text",
+    dtype=DataType.VARCHAR,
+    max_length=65536
+)
+
 schema = CollectionSchema(
-    fields=[primary_key, vector, record_id],
+    fields=[primary_key, vector, record_id, text],
     enable_dynamic_field=True
 )
 
@@ -138,7 +144,7 @@ collection = Collection(
 )
 
 index_params = {
-    "metric_type": "COSINE",
+    "metric_type": "L2",
     "index_type": "IVF_FLAT",
     "params": {"nlist": 1024}
 }
