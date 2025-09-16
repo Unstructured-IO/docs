@@ -59,41 +59,9 @@ on Hugging Face:
 
 ## Generate embeddings
 
-To generate embeddings, choose one of the following embedding providers and models in the **Select Embedding Model** section of an **Embedder** node in a workflow:
+To generate embeddings, choose one of the available embedding providers and models in the **Select Embedding Model** section of an **Embedder** node in a workflow.
+
+When choosing an embedding model, be sure to pay attention to the number of dimensions listed next to each model. This number must match the number of dimensions in the 
+embeddings field of your destination connector's table, collection, or index.
 
 <Note>You can change a workflow's preconfigured provider only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.</Note>
-
-- **Azure OpenAI**: Use [Azure OpenAI](https://azure.microsoft.com/products/ai-services/openai-service) to generate embeddings with one of the following models:
-
-  - **text-embedding-3-small**, with 1536 dimensions.
-  - **text-embedding-3-large**, with 3072 dimensions.
-  - **Ada 002 (Text)** (`text-embedding-ada-002`), with 1536 dimensions.
-
-  [Learn more](https://learn.microsoft.com/azure/ai-services/openai/concepts/models#embeddings).
-
-- **Amazon Bedrock**: Use [Amazon Bedrock](https://aws.amazon.com/bedrock) to generate embeddings with one of the following models:
-
-  - **Titan Text Embeddings V2**, with 1024 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html).
-  - **Titan Embeddings G1 - Text**, with 1536 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html).
-  - **Titan Multimodal Embeddings G1**, with 1024 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-multiemb-models.html).
-  - **Cohere Embed English**, with 1024 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-embed.html).
-  - **Cohere Embed Multilingual**, with 1024 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-embed.html).
-
-- **TogetherAI**: Use [TogetherAI](https://www.together.ai/) to generate embeddings with one of the following models:
-
-  - **M2-BERT-80M-32K-Retrieval**, with 768 dimensions.
-  
-  [Learn more](https://docs.together.ai/docs/serverless-models#embedding-models).
-
-- **Voyage AI**: Use [Voyage AI](https://www.voyageai.com/) to generate embeddings with one of the following models:
-
-  - **voyage-code-2**, with 1536 dimensions.
-  - **voyage-3**, with 1024 dimensions.
-  - **voyage-3-large**, with 1024 dimensions.
-  - **voyage-3-lite**, with 512 dimensions.
-  - **voyage-code-3**, with 1024 dimensions.
-  - **voyage-finance-2**, with 1024 dimensions.
-  - **voyage-law-2**, with 1024 dimensions.
-  - **voyage-multimodal-3**, with 1024 dimensions.
-
-  [Learn more](https://docs.voyageai.com/docs/embeddings).

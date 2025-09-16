@@ -242,34 +242,12 @@ import PlatformPartitioningStrategies from '/snippets/general-shared-text/platfo
 
         <PlatformPartitioningStrategies />
 
-        For **VLM**, you must also choose a VLM provider and model. Available choices include:
+        For **VLM**, you must also choose a VLM provider and model from among the available choices that are shown.
 
-          - **Anthropic**: 
-      
-            - **Anthropic Claude 3.5 Sonnet**
-
-          - **OpenAI**: 
-      
-            - **OpenAI GPT-4o**
-
-          - **Amazon Bedrock**: 
-
-            - **Anthropic Claude 3.5 Sonnet**
-            - **Anthropic Claude 3 Opus**
-            - **Anthropic Claude 3 Haiku**
-            - **Anthropic Claude 3 Sonnet**
-            - **Amazon Nova Pro**
-            - **Amazon Nova Lite**
-            - **Meta Llama 3.2 90B Instruct**
-            - **Meta Llama 3.2 11B Instruct**
-
-          - **Vertex AI**:
-
-            - **Gemini 2.0 Flash**
-          <Note>
-              When you use the **VLM** strategy with embeddings for PDF files of 200 or more pages, you might notice some errors when 
-              these files are processed. These errors typically occur when these larger PDF files have lots of tables and high-resolution images.
-          </Note>
+        <Note>
+            When you use the **VLM** strategy with embeddings for PDF files of 200 or more pages, you might notice some errors when 
+            these files are processed. These errors typically occur when these larger PDF files have lots of tables and high-resolution images.
+        </Note>
 
         [Learn more](/ui/partitioning).
     </Accordion>
@@ -323,38 +301,25 @@ import PlatformPartitioningStrategies from '/snippets/general-shared-text/platfo
 
         <EnrichmentImagesTablesHiResOnly />
 
-        - **Image** to summarize images. Also select one of the following provider (and model) combinations to use:
-
-          - **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
-          - **Anthropic (Claude 3.5 Sonnet)**. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
-          - **Amazon Bedrock (Claude 3.5 Sonnet)**. [Learn more](https://aws.amazon.com/bedrock/claude/). 
+        - **Image** to summarize images. Also select one of the available provider (and model) combinations that are shown.
 
           [Learn more](/ui/enriching/image-descriptions).
         
-        - **Table** to summarize tables. Also select one of the following provider (and model) combinations to use:
-
-          - **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
-          - **Anthropic (Claude 3.5 Sonnet)**. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
-          - **Amazon Bedrock (Claude 3.5 Sonnet)**. [Learn more](https://aws.amazon.com/bedrock/claude/). 
+        - **Table** to summarize tables. Also select one of the available provider (and model) combinations that are shown.
 
           Make sure after you choose the provider and model, that **Table Description** is also displayed. If **Table Description** and **Table to HTML** are both 
           displayed, be sure to select **Table Description**.
 
           [Learn more](/ui/enriching/table-descriptions).
           
-        - **Table** to convert tables to HTML. Also select one of the following provider (and model) combinations to use:
-        
-          - **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
+        - **Table** to convert tables to HTML. Also select one of the available provider (and model) combinations that are shown.
 
           Make sure after you choose this provider and model, that **Table to HTML** is also selected.
 
           [Learn more](/ui/enriching/table-to-html).
 
         - **Text** to generate a list of recognized entities and their relationships by using a technique called _named entity recognition_ (NER). 
-          Also select one of the following provider (and model) combinations to use:
-          
-          - **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
-          - **Anthropic (Claude 3.5 Sonnet)**. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+          Also select one of the available provider (and model) combinations that are shown.
           
           You can also customize the prompt used to add or remove entities and relationships. In the **Details** tab, under **Prompt**, click **Edit**. Click **Run Prompt** in the 
           **Edit & Test Prompt** section to test the prompt.
@@ -363,42 +328,7 @@ import PlatformPartitioningStrategies from '/snippets/general-shared-text/platfo
   
     </Accordion>
     <Accordion title="Embedder node">
-        For **Select Embedding Model**, select one of the following:
-
-        - **Azure OpenAI**: Use Azure OpenAI to generate embeddings with one of the following models:
-
-          - **text-embedding-3-small**, with 1536 dimensions.
-          - **text-embedding-3-large**, with 3072 dimensions.
-          - **Ada 002 (Text)** (`text-embedding-ada-002`), with 1536 dimensions.
-
-          [Learn more](https://learn.microsoft.com/azure/ai-services/openai/concepts/models#embeddings).
-
-        - **Amazon Bedrock**: Use Amazon Bedrock to generate embeddings with one of the following models:
-
-          - **Titan Text Embeddings V2**, with 1024 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html).
-          - **Titan Embeddings G1 - Text**, with 1536 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html).
-          - **Titan Multimodal Embeddings G1**, with 1024 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-multiemb-models.html).
-          - **Cohere Embed English**, with 1024 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-embed.html).
-          - **Cohere Embed Multilingual**, with 1024 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-embed.html).
-
-        - **TogetherAI**: Use TogetherAI to generate embeddings with one of the following models:
-
-          - **M2-BERT-80M-32K-Retrieval**, with 768 dimensions.
-          
-          [Learn more](https://docs.together.ai/docs/serverless-models#embedding-models).
-
-        - **Voyage AI**: Use Voyage AI to generate embeddings with one of the following models:
-
-          - **voyage-code-2**, with 1536 dimensions.
-          - **voyage-3**, with 1024 dimensions.
-          - **voyage-3-large**, with 1024 dimensions.
-          - **voyage-3-lite**, with 512 dimensions.
-          - **voyage-code-3**, with 1024 dimensions.
-          - **voyage-finance-2**, with 1024 dimensions.
-          - **voyage-law-2**, with 1024 dimensions.
-          - **voyage-multimodal-3**, with 1024 dimensions.
-
-          [Learn more](https://docs.voyageai.com/docs/embeddings).
+        For **Select Embedding Model**, select one of the available models that are shown.
 
         Learn more:
         
