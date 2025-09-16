@@ -16,7 +16,7 @@
   3. On the sidebar, under **Manage identities**, click **API keys**.
   4. With the **View** list showing **My IBM Cloud API keys**, click **Create**. 
   5. Enter some **Name** and an optional **Description** for the API key. 
-  6. Leave **Leaked action** set to **Disable the leaked key** and **Session creation** set to **No**.
+  6. Leave **Leaked action** set to **Disable the leaked key** and **Session management** set to **No**.
   7. Click **Create**. 
   8. Click **Copy** or **Download** to copy or save the API key to a secure location. You won't be able to access this API key from this screen again.
 
@@ -112,21 +112,34 @@
   8. Under **Storage**, click **IBM Cloud Object Storage**, and then click **Next**.
   9. Complete the on-screen instructions to finish creating the Iceberg catalog. This includes providing the following settings:
   
+     If you select **Discover COS instance**, you must provide the following settings:
+
+     - The name of the target COS instance.
+     - The name of the target storage object (such as the target bucket) within the COS instance.
+     - Some display name for the component.
+     - After you provide this information, do the following:
+     
+       a. Check the box labelled **Associate Catalog**.<br/>
+       b. For **Catalog type**, select **Apache Iceberg**.<br/>
+       c. Enter some **Catalog name**.<br/>
+       b. Click **Associate**.<br/>
+
+     If you select **Register my own**, you must provide the following settings:
+
      - Some display name for the component.
      - The name of the target bucket within the target Cloud Object Storage (COS) instance that you noted earlier.
      - The region for the target bucket, which you noted earlier. 
      - The public endpoint for the target bucket, which you noted earlier. For this screen only, be sure to prefix the public endpoint with `https://`.
      - The HMAC access key ID for the target COS instance, which you noted earlier.
      - The HMAC secret access key for the target COS instance, which you noted earlier.
+     - After you provide this information, do the following:
+     
+       a. Check the box labelled **Associate Catalog**.<br/>
+       b. For **Catalog type**, select **Apache Iceberg**.<br/>
+       c. Enter some **Catalog name**.<br/>
+       b. Click **Associate**.<br/>
 
-  10. Next to **Connection status**, click **Test connection** to test the connection. Do not proceed until **Successful** is shown. If the connection is 
-      not successful, check the values you entered for the target bucket name, region, endpoint, access key, and secret access key, and try again.
-  11. Check the box labelled **Associate Catalog**.
-  12. Check the box labelled **Activate now**.
-  13. Under **Associated catalog**, for **Catalog type**, select **Apache Iceberg**.
-  14. Enter some **Catalog name**.
-  15. Click **Associate**.
-  16. On the sidebar, click **Infrastructure manager**. Make sure the catalog is associated with the appropriate engines. If it is not, rest your mouse 
+  10. On the sidebar, click **Infrastructure manager**. Make sure the catalog is associated with the appropriate engines. If it is not, rest your mouse 
       on an unassociated target engine, click the **Manage associations** icon, check the box next to the target catalog's name, and then 
       click **Save and restart engine**. 
       
