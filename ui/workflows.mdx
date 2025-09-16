@@ -26,7 +26,7 @@ import EnrichmentImagesTablesHiResOnly from '/snippets/general-shared-text/enric
 <Warning>
     You must first have an existing source connector and destination connector to add to the workflow.
 
-    You cannot create an automatic workflow that uses a local source connector.
+    You cannot create an automatic workflow that uses a local file as a source.
 
     If you do not have an existing remote connector for either your target source (input) or destination (output) location, [create the source connector](/ui/sources/overview), [create the destination connector](/ui/destinations/overview), and then return here.
 
@@ -123,15 +123,13 @@ If you did not previously set the workflow to run on a schedule, you can [run th
     1. On the sidebar, click **Workflows**.
     2. Click the name of the workflow that you want to change. 
     3. Skip ahead to Step 11 in the following procedure.
-
 </Tip>
 
 <Warning>
-    You must first have an existing source connector and destination connector to add to the workflow.
+    You can create and save a custom workflow that uses a local file as a source or does not have a source or destination connector added. However, you cannot activate the workflow or run the workflow 
+    either manually or on a schedule until a source and destination connector are added to the workflow.
 
-    You can create a custom workflow that uses a local source connector, but you cannot save the workflow.
-
-    If you do not have an existing connector for either your target source (input) or destination (output) location, [create the source connector](/ui/sources/overview), [create the destination connector](/ui/destinations/overview), and then return here.
+    If you do not have an existing connector for either your target source or destination location, [create the source connector](/ui/sources/overview), [create the destination connector](/ui/destinations/overview), and then return here.
 
     To see your existing connectors, on the sidebar, click **Connectors**, and then click **Sources** or **Destinations**.
 </Warning>
@@ -185,6 +183,11 @@ If you did not previously set the workflow to run on a schedule, you can [run th
        For workflows that use **Chunker** and **Enrichment** nodes together, the **Chunker** node should be placed after all **Enrichment** nodes. Placing the 
        **Chunker** node before any **Enrichment** nodes could cause incomplete or no enrichment results to be generated.
    </Note>
+
+   <Warning>
+       You can create and save a workflow that does not use a valid workflow layout. However, you cannot activate the workflow or run the workflow 
+       either manually or on a schedule until the workflow is changed to use a valid workflow layout.
+   </Warning>
 
 9. In the pipeline designer, click the **Source** node. In the **Source** pane, select the source location. Then click **Save**.
 
