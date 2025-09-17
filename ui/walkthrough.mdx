@@ -2,19 +2,17 @@
 title: Unstructured UI walkthrough
 ---
 
-This page provides a walkthrough of the [Unstructured user interface (UI)](/ui/overview). As you follow along, you will get detailed, hands-on experience with 
-Unstructured's [partitioning](/ui/partitioning), [enriching](/ui/enriching/overview), [chunking](/ui/chunking), and [embedding](/ui/embedding) features.
+This walkthrough provides you with deep, hands-on experience with the [Unstructured user interface (UI)](/ui/overview). As you follow along, you will learn how to use many of Unstructured's 
+features for [partitioning](/ui/partitioning), [enriching](/ui/enriching/overview), [chunking](/ui/chunking), and [embedding](/ui/embedding). These features are optimized for turning 
+your source documents and data into information that is well-tuned for retrieval-augmented generation (RAG), agentic AI, and model fine-tuning
 
-This walkthrough uses three sample files to demonstrate how Unstructured identifies and processes content such as image, graphs, complex tables, non-English characters, and English and non-English handwriting. 
+This walkthrough uses two sample files to demonstrate how Unstructured identifies and processes content such as image, graphs, complex tables, non-English characters, and handwriting. 
 These files, which are available for you to download to your local machine, include:
 
 - Wang, Z., Liu, X., & Zhang, M. (2022, November 23). 
   _Breaking the Representation Bottleneck of Chinese Characters: Neural Machine Translation with Stroke Sequence Modeling_. 
   arXiv.org. https://arxiv.org/pdf/2211.12781. This 12-page PDF file features English and non-English characters, images, graphs, and complex tables. 
   Throughout this walkthrough, this file's title is shortened to "Chinese Characters" for brevity.
-- Zohrevand, A., Sadri, J., & Imani, Z. (2025, September 3). _A comprehensive Persian offline handwritten database for investigating the effects of heritability and family relationships on handwriting_. 
-  arXiv.org. https://arxiv.org/pdf/2509.03510. This 36-page PDF file features English and non-English characters, non-English handwriting, images, graphs, and complex tables. 
-  Throughout this walkthrough, this file's title is shortened to "Persian database" for brevity.
 - United States Central Security Service. (2012, January 27). _National Cryptologic Museum Opens New Exhibit on Dr. John Nash_. 
   United States National Security Agency. https://courses.csail.mit.edu/6.857/2012/files/H03-Cryptosystem-proposed-by-Nash.pdf. 
   This PDF file features English handwriting and scanned images of documents. 
@@ -27,6 +25,10 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
 <GetStartedSimpleUIOnly />
 
 ## Step 2: Create a custom workflow
+
+In this step, you create a custom [workflow](/ui/workflows) in your Unstructured account. Workflows are 
+defined sequences of processes that automate the flow of data from your source documents and data into Unstructured for processing. 
+Unstructured then sends its processed data over into your destination file storage location, database, or vector store.
 
 1. After you are signed in to your Unstructured account, on the sidebar, click **Workflows**.
 
@@ -42,38 +44,226 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
 
 ## Step 3: Experiment with partitioning
 
+In this step, you use your new workflow to [partition](/ui/partitioning) the sample PDF files that you downloaded earlier. 
+Partitioning is the process where Unstructured identifies and extracts content from your source documents and then 
+presents this content as a series of contextually-rich [document elements and metadata](/ui/document-elements). This step 
+shows how well the **High Res** partitioning strategy identifies and extracts content, and how well **VLM** handles partitioning.
+
 1. With the workflow designer active from the previous step, at the bottom of the **Source** node, click **Drop file to test**.
 
    ... Add screenshot here ...
 
-2. Browse to and select the "Chinese Characters" PDF file that you downloaded earlier to your local machine.
+2. Browse to and select the "Chinese Characters" PDF file that you downloaded earlier.
 3. Click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **High Res**.
 
    ... Add screenshot here ...
-
-   <Note>
-       ... red exclamation mark icon ... However, you will not be able to activate this worklow or run it manually or 
-       on a schedule until you add a [source connector](/ui/sources/overview) and a [destination connector](/ui/destinations/overview) to the workflow.
-   </Note>
 
 4. Immediately above the **Source** node, click **Test**.
 
    ... Add screenshot here ...
 
-5. ...
+5. The PDF file appears on the left side of the screen, and Unstructured's output appears in a **Test output**on the right side of the screen.
+
+   ... Add screenshot here ...
+
+6. Some interesting portions of the output include the following, which you can get to be clicking **Search JSON** above the output:
+
+   - The Chinese characters on page 3. Search for the text `In StrokeNet, the corresponding`. Notice that the Chinese characters are not interpreted correctly.
+   - The formula on page 5. Search for the text `L= LL + Ln`. Notice that the formula's output diverges quite a bit from the original content.
+   - Table 2 on page 6. Search for the text `Model Parameters Performance (BLEU)`. Notice that the `text_as_html` output diverges slightly from the original content. 
+   - Figure 4 on page 8. Search for the text `50 45 40 35`. Notice that the output is not that informative about the original image's content. 
+
+   These issues will be addressed later in this step when you change the partitioning strategy to **VLM**.
+
+7. Now try changing the partitioning strategy to **VLM** and see how the output changes. To do this:
+
+   a. Click the close (**X**) button above the output on the right side of the screen.<br/>
+   b. In the workflow designer, click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **VLM**.<br/>
+   c. Under **Select VLM Model**, under **Anthropic**, select **Claude 3.5 Sonnet**.<br/>
+   d. Click **Test**.<br/>
+
+8. Notice how the output changes, now that you are using the **VLM** strategy:
+
+   - The Chinese characters on page 3. Search for the text `In StrokeNet, the corresponding`. Notice that the Chinese characters are intepreted correctly.
+   - The formula on page 5. Search for the text `match class`. Notice that the formula's output is closer to the original content.
+   - Table 2 on page 6. Search for the text `Model Parameters Performance (BLEU)`. Notice that the `text_as_html` output is closer to the original content.
+   - Figure 4 on page 8. Search for the text `Graph showing BLEU scores comparison`. Notice the informative description about the figure.
+
+9. Now try looking at the "Nash letters" PDF file's output. To do this:
+
+   a. Click the close (**X**) button above the output on the right side of the screen.<br/>
+   b. In the workflow designer, click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **High Res**.<br/>
+   c. At the bottom of the **Source** node, click the existing PDF's file name.<br/>
+   d. Browse to and select the "Nash letters" file that you downloaded earlier.<br/>
+   e. Click **Test**.<br/>
+
+10. Some interesting portions of the output include the following:
+
+    - The handwriting on page 3. Search for the text `Deo Majr`. Notice that the handwriting is not recognized correctly.
+    - The mimeograph on page 11. Search for the text `Technicans at this Agency` (note the typo `Technicans`). 
+      Notice that the mimoegraph contains `18 January 1955`, but the output contains only `January 1955`.
+    - The handwritten diagrams on page 13. Search for the text `"page_number": 13`. Notice that no output is generated for the diagrams.
+
+11. Now try changing the partitioning strategy to **VLM** and see how the output changes. To do this:
+
+   a. Click the close (**X**) button above the output on the right side of the screen.<br/>
+   b. In the workflow designer, click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **VLM**.<br/>
+   c. Under **Select VLM Model**, under **Anthropic**, select **Claude 3.5 Sonnet**.<br/>
+   d. Click **Test**.<br/>
+
+12. Notice how the output changes, now that you are using the **VLM** strategy:
+
+    - The handwriting on page 3. Search for the text `Dear Major Grosjean`. Notice how well the handwriting is recognized correctly.
+    - The mimeograph on page 11. Search for the text `Technicians at this Agency` (note the corrected typo `Technicians`).  
+      Notice that the mimoegraph contains `18 January 1955`, and the output now also contains `18 January 1955`.
+    - The handwritten diagrams on page 13. Search for the text `graph LR`. Notice that [Mermaid](https://docs.mermaidchart.com/mermaid-oss/intro/syntax-reference.html) representations of the 
+      handwritten diagrams are output.
+
+13. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
+    the workflow designer for the next step.
 
 ## Step 4: Experiment with enriching
 
-...
+In this step, you add several [enrichments](/ui/enriching/overview) to your workflow, such as generating summary descriptions of detected images and tables, 
+HTML representations of detected tables, and detected entities (such as people and organizations) and the inferred relationships among these entities. 
+
+1. With the workflow designer active from the previous step, change the **Partitioner** node to use **High Res**.
+2. Between the **Partitioner** and **Destination** nodes, click the add (**+**) icon, and then click **Enrich > Enrichment**.
+   
+   ... Add screenshot here ...
+
+3. In the node's settings pane's **Details** tab, select **Image** under **Input Type**, and then click **OpenAI (GPT-4o)** under **Model**.
+4. Repeat this process to add three more nodes between the **Partitioner** and **Destination** nodes. To do this, click 
+   the add (**+**) icon, and then click **Enrich > Enrichment**, as follows:
+
+   a. Add a **Table** (under **Input Type**)enrichment node with **OpenAI (GPT-4o)** (under **Model**) and **Table Description** (under **Task**)selected.
+   b. Add another **Table** (under **Input Type**) enrichment node with **OpenAI (GPT-4o)** (under **Model**) and **Table to HTML** (under **Task**) selected.
+   c. Add a **Text** (under **Input Type**) enrichment node with **OpenAI (GPT-4o)** (under **Model**) selected.
+
+   The workflow designer should now look like this:
+   
+   ... Add screenshot here ...
+
+5. Change the **Source** node to use the "Chinese Characters" PDF file, and then click **Test**.
+6. In the **Test output** pane, make sure that **Enrichment (5 of 5)** is showing. If not, click the right arrow (**>**) until **Enrichment (5 of 5)** appears, which will show the output from the last node in the workflow.
+
+   ... Add screenshot here ...
+
+7. Some interesting portions of the output include the following:
+
+   - The figures on pages 3, 7, and 8. Search for the seven instances of the text `"type": "Image"`. Notice the summary description for each image.
+   - The tables on pages 6, 7, 8, 9, and 12. Search for the seven instances of the text `"type": "Table"`. Notice the summary description for each of these tables. 
+     Also notice the `text_as_html` field for each of these tables.
+   - The identified entities and inferred relationships among them. Search for the text `Zhijun Wang`. Of the eight instances of this name, notice 
+     the author's identification as a `PERSON` three times, the author's `published` relationship twice, and the author's `affiliated_with` relationship twice.
+
+8. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
+   the workflow designer for the next step.
 
 ## Step 5: Experiment with chunking
 
-...
+In this step, you apply [chunking](/ui/chunking) to your workflow. Chunking is the process where Unstructured rearranges 
+the resulting document elements into manageable "chunks" to stay within the limits of an embedding model and to improve retrieval precision. For the 
+best chunking strategy to apply to your use case, see the documentation for your target embedding model and downstream application toolsets.
+
+1. With the workflow designer active from the previous step, just before the **Destination** node, click the add (**+**) icon, and then click **Enrich > Chunker**.
+
+   ... Add screenshot here ...
+
+2. In the node's settings pane's **Details** tab, select **Chunk by Character**.
+3. Under **Chunk by Character**, specify the following settings:
+
+   - Check the box labelled **Include Original Elements**.
+   - Set **Max Characters** to **500**.
+   - Set **New After N Characters** to **400**.
+   - Set **Overlap** to **50**.
+   - Leave **Contextual Chunking** turned off and **Overlap All** unchecked.
+
+4. With the "Chinese Characters" PDF file still selected in the **Source** node, click **Test**.
+5. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.
+
+   ... Add screenshot here ...
+
+6. To explore the chunker's results, search for the text `"type": "CompositeElement"`. 
+7. Try running this workflow again with the **Chunk by Title** strategy, as follows:
+
+   a. Click the close (**X**) button above the output on the right side of the screen.<br/>
+   b. In the workflow designer, click the **Chunker** node and then, in the node's settings pane's **Details** tab, select **Chunk by Title**.<br/>
+   c. Under **Chunk by Title**, specify the following settings:
+
+      - Check the box labelled **Include Original Elements**.
+      - Set **Max Characters** to **500**.
+      - Set **New After N Characters** to **400**.
+      - Set **Overlap** to **50**.
+      - Leave **Contextual Chunking** turned off, leave **Combine Text Under N Characters** blank, and leave **Multipage Sections** and **Overlap All** unchecked.
+
+   d. Click **Test**.<br/>
+   e. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.
+   f. To explore the chunker's results, search for the text `"type": "CompositeElement"`. Notice that the lengths of some of the chunks that immediately 
+      precede titles might be shortened due to the presence of the title impacting the chunk's size.
+
+8. Try running this workflow again with the **Chunk by Page** strategy, as follows:
+
+   a. Click the close (**X**) button above the output on the right side of the screen.<br/>
+   b. In the workflow designer, click the **Chunker** node and then, in the node's settings pane's **Details** tab, select **Chunk by Page**.<br/>
+   c. Under **Chunk by Page**, specify the following settings:
+
+      - Check the box labelled **Include Original Elements**.
+      - Set **Max Characters** to **500**.
+      - Set **New After N Characters** to **400**.
+      - Set **Overlap** to **50**.
+      - Leave **Contextual Chunking** turned off, and leave **Overlap All** unchecked.
+
+   d. Click **Test**.<br/>
+   e. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.
+   f. To explore the chunker's results, search for the text `"type": "CompositeElement"`. Notice that the lengths of some of the chunks that immediately 
+      precede page breaks might be shortened due to the presence of the page break impacting the chunk's size.
+
+9. Try running this workflow again with the **Chunk by Similarity** strategy, as follows:
+
+   a. Click the close (**X**) button above the output on the right side of the screen.<br/>
+   b. In the workflow designer, click the **Chunker** node and then, in the node's settings pane's **Details** tab, select **Chunk by Similarity**.<br/>
+   c. Under **Chunk by Similarity**, specify the following settings:
+
+      - Check the box labelled **Include Original Elements**.
+      - Set **Max Characters** to **500**.
+      - Set **Similarity Threshold** to **0.99**.
+      - Leave **Contextual Chunking** turned off.
+
+   d. Click **Test**.<br/>
+   e. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.
+   f. To explore the chunker's results, search for the text `"type": "CompositeElement"`. Notice that the lengths of many of the chunks fall well short of the **Max Characters** limit. This is because a similarity threshold 
+      of 0.99 means that only sentences or text segments with a near-perfect semantic match will be grouped together into the same chunk. This is an extremely high threshold, resulting in very short, highly specific chunks of text. 
+   g. If you change **Similarity Threshold** to **0.01** and run the workflow again, searching for the text `"type": "CompositeElement"`, many of the chunks will now come closer to the **Max Characters** limit. This is because a similarity threshold 
+      of 0.01 provides an extreme tolerance of differences between pieces of text, grouping almost anything together.
+
+10. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
+    the workflow designer for the next step.
 
 ## Step 6: Experiment with embedding
 
-...
+In this step, you generate [embeddings](/ui/embedding) for your workflow. Embeddings are vectors of numbers that represent various aspects of the text that is extracted by Unstructured. 
+These vectors are stored or "embedded" next to the text itself in a vector store or vector database. Chatbots, agents, and other AI solutions can use 
+these vector embeddings to more efficiently and effectively find, analyze, and use the associated text. These vector embeddings are generated by an 
+embedding model that is provided by an embedding provider. For the best embedding model to apply to your use case, see the documentation for your target downstream application toolsets.
+
+1. With the workflow designer active from the previous step, just before the **Destination** node, click the add (**+**) icon, and then click **Transform > Embedder**.
+
+   ... Add screenshot here ...
+
+2. In the node's settings pane's **Details** tab, select **Chunk by Character**.
+3. Under **Select Embedding Model**, under **Azure OpenAI**, select **Text Embedding 3 Small [dim 1536]**.
+4. With the "Chinese Characters" PDF file still selected in the **Source** node, click **Test**.
+5. In the **Test output** pane, make sure that **Embedder (7 of 7)** is showing. If not, click the right arrow (**>**) until **Embedder (7 of 7)** appears, which will show the output from the last node in the workflow.
+
+   ... Add screenshot here ...
+
+6. To explore the embeddings, search for the text `"embeddings"`.
+7. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
+    the workflow designer so that you can continue designing things later as you see fit.
 
 ## Next steps
 
-...
+Congratulations! You now have an Unstructured workflow that ...
+
+Right now, your workflow only takes one file at a time. ...
