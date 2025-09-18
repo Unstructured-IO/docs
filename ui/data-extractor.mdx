@@ -1,0 +1,336 @@
+---
+title: Document data extraction
+---
+
+The _document data extractor_ by Unstructured allows you to have Unstructured extract the data from your source documents 
+into a format that you define, in addition to having Unstructured extract the data in a format that uses Unstructured's default 
+[document elements and metadata](/ui/document-elements).
+
+To show how the document data extractor works, take a look at the following sample sales invoice PDF. This file is one of the 
+sample files that is available directly from the workflow designer in the Unstructured use interface (UI). The file's 
+content is as follows:
+
+![Sample sales invoice PDF](/img/ui/data-extractor/invoice.png)
+
+If you run a workflow that references this file, by default Unstructured extracts the invoice's data in a format similar to the following. 
+This format is based on Unstructured's default [document elements and metdata](/ui/document-elements). Note that the ellipses in this output 
+indicate omitted fields for brevity:
+
+```json
+[
+  {
+    "type": "Title",
+    "element_id": "f2f0f022-ea3c-48a9-baa9-53fdc4f0a327",
+    "text": "INVOICE",
+    "metadata": {
+      "filetype": "application/pdf",
+      "languages": [
+        "eng"
+      ],
+      "page_number": 1,
+      "filename": "invoice.pdf",
+      "data_source": {}
+    }
+  },
+  {
+    "type": "Table",
+    "element_id": "42725d08-2909-4397-8ae0-63e1ee76c89b",
+    "text": "INVOICE NO: INVOICE DATE: PAYMENT DUE: BILL TO: 658 12 MAY 2024 12 JUNE 2024 BRIGHTWAVE LLC, 284 MARKET STREET, SAN FRANCISCO, CA 94111",
+    "metadata": {
+      "text_as_html": "<table><thead><tr><th>INVOICE NO:</th><th>INVOICE DATE:</th><th>PAYMENT DUE:</th><th>BILL TO:</th></tr></thead><tbody><tr><td>658</td><td>12 MAY 2024</td><td>12 JUNE 2024</td><td>BRIGHTWAVE LLC, 284 MARKET STREET, SAN FRANCISCO, CA 94</td></tr></tbody></table>",
+      "filetype": "application/pdf",
+      "languages": [
+        "eng"
+      ],
+      "page_number": 1,
+      "...": "..."
+    }
+  },
+  {
+    "type": "Table",
+    "element_id": "3a40bded-a85a-4393-826e-9a679b85a8f7",
+    "text": "ITEM QUANTITY PRICE TOTAL Office Desk (Oak wood, 140x70 cm) 2 $249 $498 Ergonomic Chair (Adjustable height & lumbar support) 3 $189 $567 Whiteboard Set (Magnetic, 90x60 cm + 4 markers) 2 $59 $118 SUBTOTAL $1,183 VAT (19%) $224.77 TOTAL $1,407.77",
+    "metadata": {
+      "text_as_html": "<table><thead><tr><th>ITEM</th><th>QUANTITY</th><th>PRICE</th><th>TOTAL</th></tr></thead><tbody><tr><td>Office Desk (Oak wood, 140x70 cm)</td><td></td><td>$249</td><td>$498</td></tr><tr><td>Ergonomic Chair (Adjustable height &amp; lumbar support)</td><td></td><td>$189</td><td>$567</td></tr><tr><td rowspan=\"4\">Whiteboard Set (Magnetic, 90x60 cm + 4 markers)</td><td></td><td>$59</td><td>$118</td></tr><tr><td></td><td>SUBTOTAL</td><td>$1,183</td></tr><tr><td></td><td>VAT (19%)</td><td>$224.77</td></tr><tr><td></td><td>TOTAL</td><td>$1,407.77</td></tr></tbody></table>",
+      "filetype": "application/pdf",
+      "languages": [
+        "eng"
+      ],
+      "page_number": 1,
+      "...": "..."
+    }
+  }
+]
+```
+
+In the preceding output, the `text` field for the `Table` elements contain the raw text of the table, and the `text_as_html` field contains the HTML representation of the table. However, 
+you might also want the table's information output as an `invoice` field with, among other details, each of the invoice's line items having a `description`, `quantity`, `price`, and `total` field. 
+Neither the default Unstructured `text` nor `table_as_html` fields present the tables in this way by default.
+
+By using the document data extractor in your Unstructured workflows, you could have Unstructured extract the invoice's data in a format similar to the following (ellipses indicate omitted fields for brevity):
+
+```json
+[
+  {
+    "type": "DocumentData",
+    "element_id": "4321ede0-d6c8-4857-817b-bb53bd37b743",
+    "text": "",
+    "metadata": {
+      "...": "...",
+      "extracted_data": {
+        "invoice": {
+          "invoice_no": "658",
+          "invoice_date": "12 MAY 2024",
+          "payment_due": "12 JUNE 2024",
+          "bill_to": "BRIGHTWAVE LLC, 284 MARKET STREET, SAN FRANCISCO, CA 94",
+          "payment_information": {
+            "account_name": "OFFICEPRO SUPPLIES INC.",
+            "bank_name": "CHASE BANK",
+            "account_no": "123456789"
+          },
+          "terms_conditions": "Payment is due within 30 days of the invoice date. Late payments may incur a 1.5% monthly finance charge, and re- turned checks are subject to a $25 fee.",
+          "notes": "Thank you for choosing OfficePro Supplies! For any billing inquiries, please email billing@office- prosupplies.com or call +1 (212) 555-0834.",
+          "items": [
+            {
+              "description": "Office Desk (Oak wood, 140x70 cm)",
+              "quantity": 2,
+              "price": 249,
+              "total": 498
+            },
+            {
+              "description": "Ergonomic Chair (Adjustable height & lumbar support)",
+              "quantity": 3,
+              "price": 189,
+              "total": 567
+            },
+            {
+              "description": "Whiteboard Set (Magnetic, 90x60 cm + 4 markers)",
+              "quantity": 2,
+              "price": 59,
+              "total": 118
+            }
+          ],
+          "subtotal": 1183,
+          "vat": 224.77,
+          "total": 1407.77
+        }
+      }
+    }
+  },
+  {
+    "type": "Title",
+    "element_id": "f2f0f022-ea3c-48a9-baa9-53fdc4f0a327",
+    "text": "INVOICE",
+    "metadata": {
+      "filetype": "application/pdf",
+      "languages": [
+        "eng"
+      ],
+      "page_number": 1,
+      "filename": "invoice.pdf",
+      "data_source": {}
+    }
+  },
+  {
+    "...": "..."
+  }
+]
+```
+
+In the preceding output, the first document element, of type `DocumentData`, has an `extracted_data` field within `metadata` 
+that contains a representation of the document's data in the format that you specify. Beginning with the second document element, 
+Unstructured also outputs the document's data as a series of Unstructured's default document elements and metadata as it normally would.
+
+To use the document data extractor, in addition to your source documents you must provide an _extraction guidance prompt_ and an _extraction schema_.
+
+An extraction guidance prompt is like a prompt that you would give to a chatbot. This prompt guides Unstructured on how to extract the data from the source documents. For this invoice example, the 
+prompt might look like the following:
+
+```text
+Extract the invoice data into the provided JSON schema.
+Be precise and copy values exactly as written (e.g., dates, amounts, account numbers).
+For line items, include each product or service with its description, quantity, unit price, and total.
+Do not infer or omit fields—if a field is missing, leave it blank.
+Ensure numeric fields use numbers only (no currency symbols).
+```
+
+An extraction schema is a JSON-formatted schema that defines the structure of the data that Unstructured extracts. The schema must 
+conform to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
+which are a subset of the [JSON Schema](https://json-schema.org/docs) language.
+
+For this invoice example, the schema might look like the following:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "invoice": {
+      "type": "object",
+      "properties": {
+        "invoice_no": {
+          "type": "string",
+          "description": "Unique invoice number assigned to this bill"
+        },
+        "invoice_date": {
+          "type": "string",
+          "description": "Date the invoice was issued"
+        },
+        "payment_due": {
+          "type": "string",
+          "description": "Payment due date for the invoice"
+        },
+        "bill_to": {
+          "type": "string",
+          "description": "The name and address of the customer being billed"
+        },
+        "payment_information": {
+          "type": "object",
+          "properties": {
+            "account_name": {
+              "type": "string",
+              "description": "The account holder's name receiving payment"
+            },
+            "bank_name": {
+              "type": "string",
+              "description": "Bank where payment should be sent"
+            },
+            "account_no": {
+              "type": "string",
+              "description": "Recipient bank account number"
+            }
+          },
+          "required": ["account_name", "bank_name", "account_no"],
+          "additionalProperties": false
+        },
+        "terms_conditions": {
+          "type": "string",
+          "description": "Terms and conditions of the invoice, including penalties for late payment"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes provided by the issuer"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "Description of the item or service"
+              },
+              "quantity": {
+                "type": "integer",
+                "description": "Quantity of the item purchased"
+              },
+              "price": {
+                "type": "number",
+                "description": "Price per unit of the item"
+              },
+              "total": {
+                "type": "number",
+                "description": "Total cost for the line item (quantity * price)"
+              }
+            },
+            "required": ["description", "quantity", "price", "total"],
+            "additionalProperties": false
+          }
+        },
+        "subtotal": {
+          "type": "number",
+          "description": "Subtotal before taxes"
+        },
+        "vat": {
+          "type": "number",
+          "description": "Value-added tax amount"
+        },
+        "total": {
+          "type": "number",
+          "description": "Final total including taxes"
+        }
+      },
+      "required": [
+        "invoice_no",
+        "invoice_date",
+        "payment_due",
+        "bill_to",
+        "payment_information",
+        "items",
+        "subtotal",
+        "vat",
+        "total"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": ["invoice"],
+  "additionalProperties": false
+}
+```
+
+To generate a starter extraction guidance prompt and extraction schema, you could for example send a prompt such as the following, 
+along with a representative sample of your source documents, to a chatbot such as ChatGPT, Claude, Google Gemini, or Perplexity AI:
+
+```text
+Please create a schema I can use to leverage an LLM for structured data extraction from the file I have just given you. 
+It should adhere to OpenAI's JSON mode format. Here is an example of one I have used before for a different project:
+
+{
+  "type": "object",
+  "properties": {
+    "plants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the plant"
+          },
+          "sunlight": {
+            "type": "string",
+            "description": "The sunlight requirements for the plant (e.g., 'Direct', 'Bright Indirect - Some direct')"
+          },
+          "water": {
+            "type": "string",
+            "description": "The watering instructions for the plant (e.g., 'Let dry between thorough watering', 'Water when 50-60% dry')"
+          },
+          "humidity": {
+            "type": "string",
+            "description": "The humidity requirements for the plant (e.g., 'Low', 'Medium', 'High')"
+          }
+        },
+        "required": ["name", "sunlight", "water", "humidity"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["plants"],
+  "additionalProperties": false
+}
+
+In addition, please provide a guidance prompt that will help ensure the most accurate extraction possible.
+```
+
+## Using the document data extractor
+
+1. Add a **Document Data Extractor** node to your existing Unstructured workflow. This node must be added immediately after the **Partitioner** node 
+   in the workflow. To add this node, in the workflow designer, click the **+** (add node) button, click **Transform**, and then click **Document Data Extractor**.
+2. Click the newly added **Document Data Extractor** node to select it.
+3. In the node's settings pane, on the **Details** tab, specify the following:
+
+   a. For **Extraction Guidance Prompt**, enter the text of your extraction guidance prompt.<br />
+   b. Click **Edit Code**, enter the text of your extraction schema, and then click **Save Changes**. The text you entered 
+      will appear in the **Schema** box.<br />
+
+4. Continue building your workflow as desired.
+5. To see the results of the document data extractor, do one of the following:
+
+   - If you are using a local file as input to your workflow, click **Test** immediately above the **Source** node. The results will be displayed on-screen 
+     in the **Test output** pane.
+   - If you are using source and destination connectors for your workflow, [run the workflow](), [monitor the workflow's job](), 
+     and then examine the results in your destination location.
+
+## Additional examples
+
+... To follow here later ...
