@@ -1,10 +1,11 @@
 ---
 title: Unstructured UI walkthrough
+sidebarTitle: Walkthrough
 ---
 
 This walkthrough provides you with deep, hands-on experience with the [Unstructured user interface (UI)](/ui/overview). As you follow along, you will learn how to use many of Unstructured's 
 features for [partitioning](/ui/partitioning), [enriching](/ui/enriching/overview), [chunking](/ui/chunking), and [embedding](/ui/embedding). These features are optimized for turning 
-your source documents and data into information that is well-tuned for retrieval-augmented generation (RAG), agentic AI, and model fine-tuning
+your source documents and data into information that is well-tuned for retrieval-augmented generation (RAG), agentic AI, and model fine-tuning.
 
 This walkthrough uses two sample files to demonstrate how Unstructured identifies and processes content such as image, graphs, complex tables, non-English characters, and handwriting. 
 These files, which are available for you to download to your local machine, include:
@@ -18,6 +19,8 @@ These files, which are available for you to download to your local machine, incl
   This PDF file features English handwriting and scanned images of documents. 
   Throughout this walkthrough, this file's title is shortened to "Nash letters" for brevity.
 
+If you are not able to complete any of the following steps, contact Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
+
 ## Step 1: Sign up and sign in to Unstructured
 
 import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-simple-ui-only.mdx';
@@ -28,52 +31,59 @@ import GetStartedSimpleUIOnly from '/snippets/general-shared-text/get-started-si
 
 In this step, you create a custom [workflow](/ui/workflows) in your Unstructured account. Workflows are 
 defined sequences of processes that automate the flow of data from your source documents and data into Unstructured for processing. 
-Unstructured then sends its processed data over into your destination file storage location, database, or vector store.
+Unstructured then sends its processed data over into your destination file storage locations, databases, and vector stores.
 
 1. After you are signed in to your Unstructured account, on the sidebar, click **Workflows**.
 
-   ... Add screenshot here ...
+   ![Workflows button on the sidebar](/img/ui/walkthrough/WorkflowsSidebar.png)
 
 2. Click **New Workflow**.
 
-   ... Add screenshot here ...
+   ![New Workflow button](/img/ui/walkthrough/NewWorkflow.png)
 
-3. With **Build it Myself** already selected, click **Continue**. The workflow designer appears.
+3. With **Build it Myself** already selected, click **Continue**. 
 
-   ... Add screenshot here ...
+   ![Build it Myself workflow option](/img/ui/walkthrough/BuildItMyself.png)
+
+4. The workflow designer appears.
+
+   ![The workflow designer](/img/ui/walkthrough/WorkflowDesigner.png)
 
 ## Step 3: Experiment with partitioning
 
 In this step, you use your new workflow to [partition](/ui/partitioning) the sample PDF files that you downloaded earlier. 
 Partitioning is the process where Unstructured identifies and extracts content from your source documents and then 
 presents this content as a series of contextually-rich [document elements and metadata](/ui/document-elements). This step 
-shows how well the **High Res** partitioning strategy identifies and extracts content, and how well **VLM** handles partitioning.
+shows how well the **High Res** partitioning strategy identifies and extracts content, and how well **VLM** handles 
+more complex content such as complex tables, multilanguage characters, and handwriting.
 
 1. With the workflow designer active from the previous step, at the bottom of the **Source** node, click **Drop file to test**.
 
-   ... Add screenshot here ...
+   ![Drop file to test button](/img/ui/walkthrough/DropFileToTest.png)
 
 2. Browse to and select the "Chinese Characters" PDF file that you downloaded earlier.
 3. Click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **High Res**.
 
-   ... Add screenshot here ...
+   ![Selecting the High Res partitioning strategy](/img/ui/walkthrough/HighResPartitioner.png)
 
 4. Immediately above the **Source** node, click **Test**.
 
-   ... Add screenshot here ...
+   ![Begin testing the local file](/img/ui/walkthrough/TestLocalFile.png)
 
-5. The PDF file appears on the left side of the screen, and Unstructured's output appears in a **Test output**on the right side of the screen.
+5. The PDF file appears in a pane on the left side of the screen, and Unstructured's output appears in a **Test output** pane on the right side of the screen.
 
-   ... Add screenshot here ...
+   ![Showing the test output results](/img/ui/walkthrough/TestOutputResults.png)
 
 6. Some interesting portions of the output include the following, which you can get to be clicking **Search JSON** above the output:
+
+   ![Searching the JSON output](/img/ui/walkthrough/SearchJSON.png)
 
    - The Chinese characters on page 3. Search for the text `In StrokeNet, the corresponding`. Notice that the Chinese characters are not interpreted correctly.
    - The formula on page 5. Search for the text `L= LL + Ln`. Notice that the formula's output diverges quite a bit from the original content.
    - Table 2 on page 6. Search for the text `Model Parameters Performance (BLEU)`. Notice that the `text_as_html` output diverges slightly from the original content. 
    - Figure 4 on page 8. Search for the text `50 45 40 35`. Notice that the output is not that informative about the original image's content. 
 
-   These issues will be addressed later in this step when you change the partitioning strategy to **VLM**.
+   These issues will be addressed later in this step when you change the partitioning strategy to **VLM**, and later in **Step 4**when you add enrichments alongside **High Res** partitioning.
 
 7. Now try changing the partitioning strategy to **VLM** and see how the output changes. To do this:
 
@@ -106,15 +116,15 @@ shows how well the **High Res** partitioning strategy identifies and extracts co
 
 11. Now try changing the partitioning strategy to **VLM** and see how the output changes. To do this:
 
-   a. Click the close (**X**) button above the output on the right side of the screen.<br/>
-   b. In the workflow designer, click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **VLM**.<br/>
-   c. Under **Select VLM Model**, under **Anthropic**, select **Claude 3.5 Sonnet**.<br/>
-   d. Click **Test**.<br/>
+    a. Click the close (**X**) button above the output on the right side of the screen.<br/>
+    b. In the workflow designer, click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **VLM**.<br/>
+    c. Under **Select VLM Model**, under **Anthropic**, select **Claude 3.5 Sonnet**.<br/>
+    d. Click **Test**.<br/>
 
 12. Notice how the output changes, now that you are using the **VLM** strategy:
 
     - The handwriting on page 3. Search for the text `Dear Major Grosjean`. Notice how well the handwriting is recognized correctly.
-    - The mimeograph on page 11. Search for the text `Technicians at this Agency` (note the corrected typo `Technicians`).  
+    - The mimeograph on page 11. Search for the text `Technicians at this Agency` (note the corrected typo `Technicians`). 
       Notice that the mimoegraph contains `18 January 1955`, and the output now also contains `18 January 1955`.
     - The handwritten diagrams on page 13. Search for the text `graph LR`. Notice that [Mermaid](https://docs.mermaidchart.com/mermaid-oss/intro/syntax-reference.html) representations of the 
       handwritten diagrams are output.
@@ -130,24 +140,24 @@ HTML representations of detected tables, and detected entities (such as people a
 1. With the workflow designer active from the previous step, change the **Partitioner** node to use **High Res**.
 2. Between the **Partitioner** and **Destination** nodes, click the add (**+**) icon, and then click **Enrich > Enrichment**.
    
-   ... Add screenshot here ...
+   ![Adding an enrichment node](/img/ui/walkthrough/AddEnrichment.png)
 
 3. In the node's settings pane's **Details** tab, select **Image** under **Input Type**, and then click **OpenAI (GPT-4o)** under **Model**.
 4. Repeat this process to add three more nodes between the **Partitioner** and **Destination** nodes. To do this, click 
    the add (**+**) icon, and then click **Enrich > Enrichment**, as follows:
 
-   a. Add a **Table** (under **Input Type**)enrichment node with **OpenAI (GPT-4o)** (under **Model**) and **Table Description** (under **Task**)selected.
-   b. Add another **Table** (under **Input Type**) enrichment node with **OpenAI (GPT-4o)** (under **Model**) and **Table to HTML** (under **Task**) selected.
-   c. Add a **Text** (under **Input Type**) enrichment node with **OpenAI (GPT-4o)** (under **Model**) selected.
+   a. Add a **Table** (under **Input Type**) enrichment node with **OpenAI (GPT-4o)** (under **Model**) and **Table Description** (under **Task**) selected.<br/>
+   b. Add another **Table** (under **Input Type**) enrichment node with **OpenAI (GPT-4o)** (under **Model**) and **Table to HTML** (under **Task**) selected.<br/>
+   c. Add a **Text** (under **Input Type**) enrichment node with **OpenAI (GPT-4o)** (under **Model**) selected.<br/>
 
    The workflow designer should now look like this:
    
-   ... Add screenshot here ...
+   ![The workflow with enrichments added](/img/ui/walkthrough/EnrichedWorkflow.png)
 
 5. Change the **Source** node to use the "Chinese Characters" PDF file, and then click **Test**.
 6. In the **Test output** pane, make sure that **Enrichment (5 of 5)** is showing. If not, click the right arrow (**>**) until **Enrichment (5 of 5)** appears, which will show the output from the last node in the workflow.
 
-   ... Add screenshot here ...
+   ![The final Enrichment node's output](/img/ui/walkthrough/GoToEnrichmentNode.png)
 
 7. Some interesting portions of the output include the following:
 
@@ -168,7 +178,7 @@ best chunking strategy to apply to your use case, see the documentation for your
 
 1. With the workflow designer active from the previous step, just before the **Destination** node, click the add (**+**) icon, and then click **Enrich > Chunker**.
 
-   ... Add screenshot here ...
+   ![Adding a chunker node](/img/ui/walkthrough/AddChunker.png)
 
 2. In the node's settings pane's **Details** tab, select **Chunk by Character**.
 3. Under **Chunk by Character**, specify the following settings:
@@ -179,11 +189,10 @@ best chunking strategy to apply to your use case, see the documentation for your
    - Set **Overlap** to **50**.
    - Leave **Contextual Chunking** turned off and **Overlap All** unchecked.
 
+   ![Setting up the Chunk by Character strategy](/img/ui/walkthrough/ChunkByCharacter.png)
+
 4. With the "Chinese Characters" PDF file still selected in the **Source** node, click **Test**.
 5. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.
-
-   ... Add screenshot here ...
-
 6. To explore the chunker's results, search for the text `"type": "CompositeElement"`. 
 7. Try running this workflow again with the **Chunk by Title** strategy, as follows:
 
@@ -198,7 +207,7 @@ best chunking strategy to apply to your use case, see the documentation for your
       - Leave **Contextual Chunking** turned off, leave **Combine Text Under N Characters** blank, and leave **Multipage Sections** and **Overlap All** unchecked.
 
    d. Click **Test**.<br/>
-   e. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.
+   e. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.<br/>
    f. To explore the chunker's results, search for the text `"type": "CompositeElement"`. Notice that the lengths of some of the chunks that immediately 
       precede titles might be shortened due to the presence of the title impacting the chunk's size.
 
@@ -215,9 +224,9 @@ best chunking strategy to apply to your use case, see the documentation for your
       - Leave **Contextual Chunking** turned off, and leave **Overlap All** unchecked.
 
    d. Click **Test**.<br/>
-   e. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.
+   e. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.<br/>
    f. To explore the chunker's results, search for the text `"type": "CompositeElement"`. Notice that the lengths of some of the chunks that immediately 
-      precede page breaks might be shortened due to the presence of the page break impacting the chunk's size.
+      precede page breaks might be shortened due to the presence of the page break impacting the chunk's size.<br/>
 
 9. Try running this workflow again with the **Chunk by Similarity** strategy, as follows:
 
@@ -231,11 +240,11 @@ best chunking strategy to apply to your use case, see the documentation for your
       - Leave **Contextual Chunking** turned off.
 
    d. Click **Test**.<br/>
-   e. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.
+   e. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.<br/>
    f. To explore the chunker's results, search for the text `"type": "CompositeElement"`. Notice that the lengths of many of the chunks fall well short of the **Max Characters** limit. This is because a similarity threshold 
-      of 0.99 means that only sentences or text segments with a near-perfect semantic match will be grouped together into the same chunk. This is an extremely high threshold, resulting in very short, highly specific chunks of text. 
+      of 0.99 means that only sentences or text segments with a near-perfect semantic match will be grouped together into the same chunk. This is an extremely high threshold, resulting in very short, highly specific chunks of text. <br/>
    g. If you change **Similarity Threshold** to **0.01** and run the workflow again, searching for the text `"type": "CompositeElement"`, many of the chunks will now come closer to the **Max Characters** limit. This is because a similarity threshold 
-      of 0.01 provides an extreme tolerance of differences between pieces of text, grouping almost anything together.
+      of 0.01 provides an extreme tolerance of differences between pieces of text, grouping almost anything together.<br/>
 
 10. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
     the workflow designer for the next step.
@@ -249,21 +258,33 @@ embedding model that is provided by an embedding provider. For the best embeddin
 
 1. With the workflow designer active from the previous step, just before the **Destination** node, click the add (**+**) icon, and then click **Transform > Embedder**.
 
-   ... Add screenshot here ...
+   ![Adding an embedder node](/img/ui/walkthrough/AddEmbedder.png)
 
 2. In the node's settings pane's **Details** tab, select **Chunk by Character**.
 3. Under **Select Embedding Model**, under **Azure OpenAI**, select **Text Embedding 3 Small [dim 1536]**.
 4. With the "Chinese Characters" PDF file still selected in the **Source** node, click **Test**.
 5. In the **Test output** pane, make sure that **Embedder (7 of 7)** is showing. If not, click the right arrow (**>**) until **Embedder (7 of 7)** appears, which will show the output from the last node in the workflow.
-
-   ... Add screenshot here ...
-
 6. To explore the embeddings, search for the text `"embeddings"`.
 7. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
     the workflow designer so that you can continue designing things later as you see fit.
 
 ## Next steps
 
-Congratulations! You now have an Unstructured workflow that ...
+Congratulations! You now have an Unstructured workflow that partitions, enriches, chunks, and embeds your source documents, producing 
+context-rich data that is ready for retrieval-augmented generation (RAG), agentic AI, and model fine-tuning.
 
-Right now, your workflow only takes one file at a time. ...
+Right now, your workflow only accepts one local file at a time for input. Your worklow also only sends Unstructured's processed data to your screen. 
+You can modify your workflow to accept multiple files and data from&mdash;and send Unstructured's processed data to&mdash;one or more file storage 
+locations, databases, and vector stores. To learn how to do this, try one or more of the following quickstarts:
+
+- [Remote quickstart](/ui/quickstart#remote-quickstart)
+- [Dropbox source connector quickstart](/ui/sources/dropbox-source-quickstart)
+- [Pinecone destination connector quickstart](/ui/destinations/pinecone-destination-quickstart)
+
+Unstructured also offers an API and SDKs, which allows you to work with Unstructured programmatically. For details, see:
+
+- [Unstructured API quickstart](/api-reference/workflow/overview#quickstart)
+- [Unstructured Python SDK](/api-reference/workflow/overview#unstructured-python-sdk)
+- [Unstructured API overview](/api-reference/overview)
+
+If you are not able to complete any of the preceding quickstarts, contact Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
