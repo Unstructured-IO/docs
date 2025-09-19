@@ -2,7 +2,7 @@
 title: Document data extraction
 ---
 
-The _document data extractor_ by Unstructured allows you to have Unstructured extract the data from your source documents 
+The _document data extractor_ allows Unstructured to extract the data from your source documents 
 into a format that you define, in addition to having Unstructured extract the data in a format that uses Unstructured's default 
 [document elements and metadata](/ui/document-elements).
 
@@ -13,8 +13,8 @@ content is as follows:
 ![Sample sales invoice PDF](/img/ui/data-extractor/invoice.png)
 
 If you run a workflow that references this file, by default Unstructured extracts the invoice's data in a format similar to the following. 
-This format is based on Unstructured's default [document elements and metdata](/ui/document-elements). Note that the ellipses in this output 
-indicate omitted fields for brevity:
+This format is based on Unstructured's default [document elements and metdata](/ui/document-elements) (note that the ellipses in this output 
+indicate omitted fields for brevity):
 
 ```json
 [
@@ -63,9 +63,9 @@ indicate omitted fields for brevity:
 ]
 ```
 
-In the preceding output, the `text` field for the `Table` elements contain the raw text of the table, and the `text_as_html` field contains the HTML representation of the table. However, 
+In the preceding output, the `text` fields for the `Table` elements contain the raw text of the table, and the `text_as_html` field contains corresponding HTML representations of the table. However, 
 you might also want the table's information output as an `invoice` field with, among other details, each of the invoice's line items having a `description`, `quantity`, `price`, and `total` field. 
-Neither the default Unstructured `text` nor `table_as_html` fields present the tables in this way by default.
+However, neither the default Unstructured `text` nor `table_as_html` fields present the tables in this way by default.
 
 By using the document data extractor in your Unstructured workflows, you could have Unstructured extract the invoice's data in a format similar to the following (ellipses indicate omitted fields for brevity):
 
@@ -138,12 +138,12 @@ By using the document data extractor in your Unstructured workflows, you could h
 ```
 
 In the preceding output, the first document element, of type `DocumentData`, has an `extracted_data` field within `metadata` 
-that contains a representation of the document's data in the format that you specify. Beginning with the second document element, 
-Unstructured also outputs the document's data as a series of Unstructured's default document elements and metadata as it normally would.
+that contains a representation of the document's data in the format that you specify. Beginning with the second document element and continuing 
+until the end of the document, Unstructured also outputs the document's data as a series of Unstructured's default document elements and metadata as it normally would.
 
 To use the document data extractor, in addition to your source documents you must provide an _extraction guidance prompt_ and an _extraction schema_.
 
-An extraction guidance prompt is like a prompt that you would give to a chatbot. This prompt guides Unstructured on how to extract the data from the source documents. For this invoice example, the 
+An extraction guidance prompt is like a prompt that you would give to a RAG chatbot. This prompt guides Unstructured on how to extract the data from the source documents. For this invoice example, the 
 prompt might look like the following:
 
 ```text
@@ -158,7 +158,14 @@ An extraction schema is a JSON-formatted schema that defines the structure of th
 conform to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
 which are a subset of the [JSON Schema](https://json-schema.org/docs) language.
 
-For this invoice example, the schema might look like the following:
+For this invoice example, the schema might look like the following. Notice in this schema the following components:
+
+- The top-level `invoice` object contains nested strings, arrays, and objects such as 
+  `invoice_no`, `invoice_date`, `payment_due`, `bill_to`, `payment_information`, `terms_conditions`, `notes`, `items`, `subtotal`, `vat`, and `total`.
+- The nested `payment_information` object contains nested strings such as `account_name`, `bank_name`, and `account_no`.
+- The nested `items` array contains a series of strings, integers, and numbers such as `description`, `quantity`, `price`, and `total`.
+
+Here is the schema:
 
 ```json
 {
@@ -269,7 +276,7 @@ For this invoice example, the schema might look like the following:
 ```
 
 To generate a starter extraction guidance prompt and extraction schema, you could for example send a prompt such as the following, 
-along with a representative sample of your source documents, to a chatbot such as ChatGPT, Claude, Google Gemini, or Perplexity AI:
+along with a representative sample of your source documents, to a RAG chatbot such as ChatGPT, Claude, Google Gemini, or Perplexity AI:
 
 ```text
 Please create a schema I can use to leverage an LLM for structured data extraction from the file I have just given you. 
@@ -333,4 +340,395 @@ In addition, please provide a guidance prompt that will help ensure the most acc
 
 ## Additional examples
 
-... To follow here later ...
+In addition to the preceding invoice example, here are some more examples that you can adapt for your own use.
+
+### Caring for houseplants
+
+Using the following image file:
+
+![Caring for houseplants](/img/ui/data-extractor/house-plant-care.png)
+
+An extraction schema for this file might look like the following:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "plants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the plant"
+          },
+          "sunlight": {
+            "type": "string",
+            "description": "The sunlight requirements for the plant (e.g., 'Direct', 'Bright Indirect - Some direct')"
+          },
+          "water": {
+            "type": "string",
+            "description": "The watering instructions for the plant (e.g., 'Let dry between thorough watering', 'Water when 50-60% dry')"
+          },
+          "humidity": {
+            "type": "string",
+            "description": "The humidity requirements for the plant (e.g., 'Low', 'Medium', 'High')"
+          }
+        },
+        "required": ["name", "sunlight", "water", "humidity"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["plants"],
+  "additionalProperties": false
+}
+```
+
+An extraction guidance prompt for this file might look like the following:
+
+```text
+Extract the plant information for each of the plants in this document.
+```
+
+And Unstructured's output would look like the following:
+
+```json
+[
+  {
+    "type": "DocumentData",
+    "element_id": "3be179f1-e1e5-4dde-a66b-9c370b6d23e8",
+    "text": "",
+    "metadata": {
+      "...": "...",
+      "extracted_data": {
+        "plants": [
+          {
+            "name": "Krimson Queen",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Let dry between thorough watering",
+            "humidity": "Low"
+          },
+          {
+            "name": "Chinese Money Plant",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Let dry between thorough watering",
+            "humidity": "Low - Medium"
+          },
+          {
+            "name": "String of Hearts",
+            "sunlight": "Direct - Bright Indirect",
+            "water": "Let dry between thorough watering",
+            "humidity": "Low"
+          },
+          {
+            "name": "Marble Queen",
+            "sunlight": "Low- High Indirect",
+            "water": "Water when 50 - 80% dry",
+            "humidity": "Low - Medium"
+          },
+          {
+            "name": "Sansevieria Whitney",
+            "sunlight": "Direct - Low Direct",
+            "water": "Let dry between thorough watering",
+            "humidity": "Low"
+          },
+          {
+            "name": "Prayer Plant",
+            "sunlight": "Medium - Bright Indirect",
+            "water": "Keep soil moist",
+            "humidity": "Medium - High"
+          },
+          {
+            "name": "Aloe Vera",
+            "sunlight": "Direct - Bright Indirect",
+            "water": "Water when dry",
+            "humidity": "Low"
+          },
+          {
+            "name": "Philodendron Brasil",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Water when 80% dry",
+            "humidity": "Low - Medium"
+          },
+          {
+            "name": "Pink Princess",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Water when 50 - 80% dry",
+            "humidity": "Medium"
+          },
+          {
+            "name": "Stromanthe Triostar",
+            "sunlight": "Bright Indirect",
+            "water": "Keep soil moist",
+            "humidity": "Medium - High"
+          },
+          {
+            "name": "Rubber Plant",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Let dry between thorough watering",
+            "humidity": "Low - Medium"
+          },
+          {
+            "name": "Monstera Deliciosa",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Water when 80% dry",
+            "humidity": "Low - Medium"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "...": "..."
+  }
+]
+```
+
+### Medical invoicing
+
+Using the following PDF file:
+
+![Medical invoice](/img/ui/data-extractor/medical-invoice.png)
+
+An extraction schema for this file might look like the following:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "patient": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Full name of the patient"
+        },
+        "birth_date": {
+          "type": "string",
+          "description": "Patient's date of birth"
+        },
+        "sex": {
+          "type": "string",
+          "enum": ["M", "F", "Other"],
+          "description": "Patient's biological sex"
+        }
+      },
+      "required": ["name", "birth_date", "sex"],
+      "additionalProperties": false
+    },
+    "medical_summary": {
+      "type": "object",
+      "properties": {
+        "prior_procedures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "procedure": {
+                "type": "string",
+                "description": "Name or type of the medical procedure"
+              },
+              "date": {
+                "type": "string",
+                "description": "Date when the procedure was performed"
+              },
+              "levels": {
+                "type": "string",
+                "description": "Anatomical levels or location of the procedure"
+              }
+            },
+            "required": ["procedure", "date", "levels"],
+            "additionalProperties": false
+          },
+          "description": "List of prior medical procedures"
+        },
+        "diagnoses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of medical diagnoses"
+        },
+        "comorbidities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of comorbid conditions"
+        }
+      },
+      "required": ["prior_procedures", "diagnoses", "comorbidities"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["patient", "medical_summary"],
+  "additionalProperties": false
+}
+```
+
+An extraction guidance prompt for this file might look like the following:
+
+```text
+# Medical Record Data Extraction Instructions
+
+You are a medical data extraction specialist. Your task is to carefully extract patient information and medical history from documents and structure it according to the provided JSON schema.
+
+## Extraction Guidelines
+
+### 1. Patient Information
+
+- **Name**: Extract the full legal name as it appears in the document. Use proper capitalization (e.g., "Marissa K. Donovan")
+- **Birth Date**: Convert to format "DD MMM YYYY" (e.g., "14 Aug 1974")
+
+  - Accept variations: MM/DD/YYYY, MM-DD-YYYY, YYYY-MM-DD, Month DD, YYYY
+  - If only age is given, do not infer birth date - mark as null
+
+- **Sex**: Extract biological sex as single letter: "M" (Male), "F" (Female), or "Other"
+
+  - Map variations: Male/Man → "M", Female/Woman → "F"
+
+### 2. Medical Summary
+
+#### Prior Procedures
+
+Extract all surgical and major medical procedures, including:
+
+- **Procedure**: Use standard medical terminology when possible
+- **Date**: Format as "MM/DD/YYYY". If only year/month available, use "01" for missing day
+- **Levels**: Include anatomical locations, vertebral levels, or affected areas
+
+  - For spine procedures: Use format like "L4 to L5" or "L4-L5"
+  - Include laterality when specified (left, right, bilateral)
+
+#### Diagnoses
+
+Extract all current and historical diagnoses:
+
+- Include both primary and secondary diagnoses
+- Preserve medical terminology and ICD-10 descriptions if provided
+- Include location/region specifications (e.g., "Radiculopathy — lumbar region")
+- Do not include procedure names unless they represent a diagnostic condition
+
+#### Comorbidities
+
+Extract all coexisting medical conditions that may impact treatment:
+
+- Include chronic conditions (Diabetes, Hypertension, etc.)
+- Include relevant surgical history that affects current state (Failed Fusion, Multi-Level Fusion)
+- Include structural abnormalities (Spondylolisthesis, Stenosis)
+- Do not duplicate items already listed in primary diagnoses
+
+## Data Quality Rules
+
+1. **Completeness**: Only include fields where data is explicitly stated or clearly indicated
+2. **No Inference**: Do not infer or assume information not present in the source
+3. **Preserve Specificity**: Maintain medical terminology and specificity from source
+4. **Handle Missing Data**: Return empty arrays [] for sections with no data, never null
+5. **Date Validation**: Ensure all dates are realistic and properly formatted
+6. **Deduplication**: Avoid listing the same condition in multiple sections
+
+## Common Variations to Handle
+
+### Document Types
+
+- **Operative Reports**: Focus on procedure details, dates, and levels
+- **H&P (History & Physical)**: Rich source for all sections
+- **Progress Notes**: May contain updates to diagnoses and new procedures
+- **Discharge Summaries**: Comprehensive source for all data points
+- **Consultation Notes**: Often contain detailed comorbidity lists
+
+### Medical Terminology Standardization
+
+- Spinal levels: C1-C7 (Cervical), T1-T12 (Thoracic), L1-L5 (Lumbar), S1-S5 (Sacral)
+- Use "Fusion Surgery" not "Fusion" alone when referring to procedures
+- Preserve specificity: "Type 2 Diabetes" not just "Diabetes" when specified
+
+## Edge Cases
+
+1. **Multiple Procedures Same Date**: List as separate objects in the array
+2. **Revised Procedures**: Include both original and revision as separate entries
+3. **Bilateral Procedures**: Note as single procedure with "bilateral" in levels
+4. **Uncertain Dates**: If date is approximate (e.g., "Spring 2023"), use "01/04/2023" for Spring, "01/07/2023" for Summer, etc.
+5. **Name Variations**: Use the most complete version found in the document
+6. **Conflicting Information**: Use the most recent or most authoritative source
+
+## Output Validation
+
+Before returning the extraction:
+
+1. Verify all required fields are present
+2. Check date formats are consistent
+3. Ensure no duplicate entries within arrays
+4. Confirm sex field contains only "M", "F", or "Other"
+5. Validate that procedures have all three required fields
+6. Ensure diagnoses and comorbidities are non-overlapping
+
+## Example Extraction Patterns
+
+### From narrative text:
+
+"Mrs. Donovan is a 49-year-old female who underwent L4-L5 fusion on April 5, 2023..."
+→ Extract: name, age (calculate birth year), sex, procedure details
+
+### From problem list:
+
+"1. Lumbar radiculopathy  2. DM Type 2  3. Failed back surgery syndrome"
+
+→ Sort into appropriate categories (diagnosis vs comorbidity)
+
+### From surgical history:
+
+"Prior surgeries: 2023 - Lumbar fusion at L4-5 levels"
+
+→ Structure into prior_procedures with proper date formatting
+
+### From comorbidities checkboxes:
+
+- Multi-Level Fusion
+- Diabetes
+- Failed Fusion
+- Spondylolisthesis
+
+Return the extracted data in valid JSON format matching the provided schema exactly. If uncertain about any extraction, err on the side of precision and completeness rather than speculation.
+
+-- Note: Make sure you always extracted Failed Fusion comorbidity -- you often forget it :)
+```
+
+And Unstructured's output would look like the following:
+
+```json
+[
+  {
+    "type": "DocumentData",
+    "element_id": "e8f09cb1-1439-4e89-af18-b6285aef5d37",
+    "text": "",
+    "metadata": {
+      "...": "...",
+      "extracted_data": {
+        "patient": {
+          "name": "Ms. Daovan",
+          "birth_date": "01/01/1974",
+          "sex": "F"
+        },
+        "medical_summary": {
+          "prior_procedures": [],
+          "diagnoses": [
+            "Radiculopathy — lumbar region"
+          ],
+          "comorbidities": [
+            "Diabetes",
+            "Multi-Level Fusion",
+            "Failed Fusion",
+            "Spondylolisthesis"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "...": "..."
+  }
+]
+```
