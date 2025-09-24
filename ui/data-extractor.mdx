@@ -338,6 +338,90 @@ In addition, please provide a guidance prompt that will help ensure the most acc
    - If you are using source and destination connectors for your workflow, [run the workflow](), [monitor the workflow's job](), 
      and then examine the results in your destination location.
 
+## Saving the extracted data separately
+
+There might be cases where you want to save the contents of the `extracted_data` field separately from the rest of Unstructured's JSON output. 
+To do this, you could use a Python script such as the following. This script works with one or more Unstructured JSON output files that you already have stored 
+on the same machine as this script. Before you run this script, do the following:
+
+- To process all Unstructured JSON files within a directory, change `None` for `input_dir` to a string that contains the path to the directory. This can be a relative or absolute path.
+- To process specific Unstructured JSON files within a directory or across multiple directories, change `None` for `input_file` to a string that contains a comma-separated list of filepaths on your local machine, for example `"./input/2507.13305v1.pdf.json,./input2/table-multi-row-column-cells.pdf.json"`. These filepaths can be relative or absolute.
+
+  <Note>
+      If `input_dir` and `input_file` are both set to something other than `None`, then the `input_dir` setting takes precedence, and the `input_file` setting is ignored.
+  </Note>
+
+- For the `output_dir` parameter, specify a string that contains the path to the directory on your local machine that you want to send the `extracted_data` JSON. If the specified directory does not exist at that location, the code will create the missing directory for you. This path can be relative or absolute.
+
+```python
+import asyncio
+import os
+import json
+
+async def process_file_and_save_result(input_filename, output_dir):
+    with open(input_filename, "r") as f:
+        input_data = json.load(f)
+
+    if input_data[0].get("type") == "DocumentData":
+        if "extracted_data" in input_data[0]["metadata"]:
+            extracted_data = input_data[0]["metadata"]["extracted_data"]
+
+            results_name = f"{os.path.basename(input_filename)}"
+            output_filename = os.path.join(output_dir, results_name)
+
+            try:
+                with open(output_filename, "w") as f:
+                    json.dump(extracted_data, f)
+                print(f"Successfully wrote 'metadata.extracted_data' to '{output_filename}'.")
+            except Exception as e:
+                print(f"Error: Failed to write 'metadata.extracted_data' to '{output_filename}'.")
+        else:
+            print(f"Error: Cannot find 'metadata.extracted_data' field in '{input_filename}'.")
+    else: 
+        print(f"Error: The first element in '{input_filename}' does not have 'type' set to 'DocumentData'.")
+        
+
+def load_filenames_in_directory(input_dir):
+    filenames = []
+    for root, _, files in os.walk(input_dir):
+        for file in files:
+            if file.endswith('.json'):
+                filenames.append(os.path.join(root, file))
+                print(f"Found JSON file '{file}'.")
+            else:
+                print(f"Error: '{file}' is not a JSON file.")
+
+    return filenames
+
+async def process_files():
+    # Initialize with either a directory name, to process everything in the dir,
+    # or a comma-separated list of filepaths.
+    input_dir   = None # "path/to/input/directory"
+    input_files = None # "path/to/file,path/to/file,path/to/file"
+
+    # Set to the directory for output json files. This dir 
+    # will be created if needed.
+    output_dir = "./extracted_data/"
+
+    if input_dir:
+        filenames = load_filenames_in_directory(input_dir)
+    else:
+        filenames = input_files.split(",")
+
+    os.makedirs(output_dir, exist_ok=True)
+
+    tasks = []
+    for filename in filenames:
+        tasks.append(
+            process_file_and_save_result(filename, output_dir)
+        )
+
+    await asyncio.gather(*tasks)
+
+if __name__ == "__main__":
+    asyncio.run(process_files())
+```
+
 ## Additional examples
 
 In addition to the preceding invoice example, here are some more examples that you can adapt for your own use.
