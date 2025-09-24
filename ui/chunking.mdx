@@ -22,10 +22,6 @@ text element that was too big to fit in one chunk and required splitting.
 - `Table`: A table element is not combined with other elements, and if it fits within the max characters setting it will remain as is.
 - `TableChunk`: Large tables that exceed the max characters setting are split into special `TableChunk` elements.
 
-<Note>
-    During chunking, Unstructured removes all detected `Image` elements from the output.
-</Note>
-
 Here are a few examples:
 
 ```json
@@ -94,6 +90,17 @@ Here are a few examples:
     }
 }
 ```
+
+If the option to include original elements is specified, during chunking the `orig_elements` field is added to the `metadata` field of each chunked element. 
+The `orig_elements` field is a list of the original elements that were used to create the current chunked element. This list is output in 
+compressed Base64 gzipped format. To get back to the original content for this list, Base64-decode the list's bytes, decompress them, and then decode them using UTF-8. 
+[Learn how](/api-reference/partition/get-chunked-elements).
+
+After chunking, `Image` elements are not preserved in the output. However, 
+if High Res partitioning is used and the option to include original elements is also specified, the `orig_elements` field of each chunked element will contain 
+an `image_base64` field for each detected image and table associated with the original elements listed within `orig_elements`. To get back to the 
+original content for an `image_base64` field, Base64-decode the field's bytes. 
+[Learn how](/api-reference/partition/extract-image-block-types).
 
 The following sections provide information about the available chunking strategies and their settings.
 
