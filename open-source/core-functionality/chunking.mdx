@@ -181,10 +181,9 @@ for element in elements:
 #     ListItem: Violets are blue
 ```
 
-If High Res partitioning is used, the `orig_elements` field of each chunked element will contain 
-an `image_base64` field for each detected image and table associated with the original elements listed within `orig_elements`. To get back to the 
-original content for an `image_base64` field, Base64-decode the field's bytes. 
-[Learn how](/open-source/how-to/extract-image-block-types).
+If High Res partitioning is used, the `orig_elements` value of each chunked element will contain an `image_base64` value for each of the `Image` and `Table` elements. To access the original content for an `image_base64` field, 
+[decompress and then Base64-decode](/open-source/how-to/get-chunked-elements) the `orig_elements` value. Then 
+[Base64-decode](/open-source/how-to/extract-image-block-types) the resulting `image_base64` values.
 
 ## Learn more
 
