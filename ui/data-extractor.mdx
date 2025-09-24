@@ -1,0 +1,818 @@
+---
+title: Document data extraction
+---
+
+The _document data extractor_ allows Unstructured to extract the data from your source documents 
+into a format that you define, in addition to having Unstructured extract the data in a format that uses Unstructured's default 
+[document elements and metadata](/ui/document-elements).
+
+To show how the document data extractor works, take a look at the following sample sales invoice PDF. This file is one of the 
+sample files that is available directly from the workflow designer in the Unstructured use interface (UI). The file's 
+content is as follows:
+
+![Sample sales invoice PDF](/img/ui/data-extractor/invoice.png)
+
+If you run a workflow that references this file, by default Unstructured extracts the invoice's data in a format similar to the following. 
+This format is based on Unstructured's default [document elements and metdata](/ui/document-elements) (note that the ellipses in this output 
+indicate omitted fields for brevity):
+
+```json
+[
+  {
+    "type": "Title",
+    "element_id": "f2f0f022-ea3c-48a9-baa9-53fdc4f0a327",
+    "text": "INVOICE",
+    "metadata": {
+      "filetype": "application/pdf",
+      "languages": [
+        "eng"
+      ],
+      "page_number": 1,
+      "filename": "invoice.pdf",
+      "data_source": {}
+    }
+  },
+  {
+    "type": "Table",
+    "element_id": "42725d08-2909-4397-8ae0-63e1ee76c89b",
+    "text": "INVOICE NO: INVOICE DATE: PAYMENT DUE: BILL TO: 658 12 MAY 2024 12 JUNE 2024 BRIGHTWAVE LLC, 284 MARKET STREET, SAN FRANCISCO, CA 94111",
+    "metadata": {
+      "text_as_html": "<table><thead><tr><th>INVOICE NO:</th><th>INVOICE DATE:</th><th>PAYMENT DUE:</th><th>BILL TO:</th></tr></thead><tbody><tr><td>658</td><td>12 MAY 2024</td><td>12 JUNE 2024</td><td>BRIGHTWAVE LLC, 284 MARKET STREET, SAN FRANCISCO, CA 94</td></tr></tbody></table>",
+      "filetype": "application/pdf",
+      "languages": [
+        "eng"
+      ],
+      "page_number": 1,
+      "...": "..."
+    }
+  },
+  {
+    "type": "Table",
+    "element_id": "3a40bded-a85a-4393-826e-9a679b85a8f7",
+    "text": "ITEM QUANTITY PRICE TOTAL Office Desk (Oak wood, 140x70 cm) 2 $249 $498 Ergonomic Chair (Adjustable height & lumbar support) 3 $189 $567 Whiteboard Set (Magnetic, 90x60 cm + 4 markers) 2 $59 $118 SUBTOTAL $1,183 VAT (19%) $224.77 TOTAL $1,407.77",
+    "metadata": {
+      "text_as_html": "<table><thead><tr><th>ITEM</th><th>QUANTITY</th><th>PRICE</th><th>TOTAL</th></tr></thead><tbody><tr><td>Office Desk (Oak wood, 140x70 cm)</td><td></td><td>$249</td><td>$498</td></tr><tr><td>Ergonomic Chair (Adjustable height &amp; lumbar support)</td><td></td><td>$189</td><td>$567</td></tr><tr><td rowspan=\"4\">Whiteboard Set (Magnetic, 90x60 cm + 4 markers)</td><td></td><td>$59</td><td>$118</td></tr><tr><td></td><td>SUBTOTAL</td><td>$1,183</td></tr><tr><td></td><td>VAT (19%)</td><td>$224.77</td></tr><tr><td></td><td>TOTAL</td><td>$1,407.77</td></tr></tbody></table>",
+      "filetype": "application/pdf",
+      "languages": [
+        "eng"
+      ],
+      "page_number": 1,
+      "...": "..."
+    }
+  }
+]
+```
+
+In the preceding output, the `text` fields for the `Table` elements contain the raw text of the table, and the `text_as_html` field contains corresponding HTML representations of the table. However, 
+you might also want the table's information output as an `invoice` field with, among other details, each of the invoice's line items having a `description`, `quantity`, `price`, and `total` field. 
+However, neither the default Unstructured `text` nor `table_as_html` fields present the tables in this way by default.
+
+By using the document data extractor in your Unstructured workflows, you could have Unstructured extract the invoice's data in a format similar to the following (ellipses indicate omitted fields for brevity):
+
+```json
+[
+  {
+    "type": "DocumentData",
+    "element_id": "4321ede0-d6c8-4857-817b-bb53bd37b743",
+    "text": "",
+    "metadata": {
+      "...": "...",
+      "extracted_data": {
+        "invoice": {
+          "invoice_no": "658",
+          "invoice_date": "12 MAY 2024",
+          "payment_due": "12 JUNE 2024",
+          "bill_to": "BRIGHTWAVE LLC, 284 MARKET STREET, SAN FRANCISCO, CA 94",
+          "payment_information": {
+            "account_name": "OFFICEPRO SUPPLIES INC.",
+            "bank_name": "CHASE BANK",
+            "account_no": "123456789"
+          },
+          "terms_conditions": "Payment is due within 30 days of the invoice date. Late payments may incur a 1.5% monthly finance charge, and re- turned checks are subject to a $25 fee.",
+          "notes": "Thank you for choosing OfficePro Supplies! For any billing inquiries, please email billing@office- prosupplies.com or call +1 (212) 555-0834.",
+          "items": [
+            {
+              "description": "Office Desk (Oak wood, 140x70 cm)",
+              "quantity": 2,
+              "price": 249,
+              "total": 498
+            },
+            {
+              "description": "Ergonomic Chair (Adjustable height & lumbar support)",
+              "quantity": 3,
+              "price": 189,
+              "total": 567
+            },
+            {
+              "description": "Whiteboard Set (Magnetic, 90x60 cm + 4 markers)",
+              "quantity": 2,
+              "price": 59,
+              "total": 118
+            }
+          ],
+          "subtotal": 1183,
+          "vat": 224.77,
+          "total": 1407.77
+        }
+      }
+    }
+  },
+  {
+    "type": "Title",
+    "element_id": "f2f0f022-ea3c-48a9-baa9-53fdc4f0a327",
+    "text": "INVOICE",
+    "metadata": {
+      "filetype": "application/pdf",
+      "languages": [
+        "eng"
+      ],
+      "page_number": 1,
+      "filename": "invoice.pdf",
+      "data_source": {}
+    }
+  },
+  {
+    "...": "..."
+  }
+]
+```
+
+In the preceding output, the first document element, of type `DocumentData`, has an `extracted_data` field within `metadata` 
+that contains a representation of the document's data in the format that you specify. Beginning with the second document element and continuing 
+until the end of the document, Unstructured also outputs the document's data as a series of Unstructured's default document elements and metadata as it normally would.
+
+To use the document data extractor, in addition to your source documents you must provide an _extraction guidance prompt_ and an _extraction schema_.
+
+An extraction guidance prompt is like a prompt that you would give to a RAG chatbot. This prompt guides Unstructured on how to extract the data from the source documents. For this invoice example, the 
+prompt might look like the following:
+
+```text
+Extract the invoice data into the provided JSON schema.
+Be precise and copy values exactly as written (e.g., dates, amounts, account numbers).
+For line items, include each product or service with its description, quantity, unit price, and total.
+Do not infer or omit fields—if a field is missing, leave it blank.
+Ensure numeric fields use numbers only (no currency symbols).
+```
+
+An extraction schema is a JSON-formatted schema that defines the structure of the data that Unstructured extracts. The schema must 
+conform to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
+which are a subset of the [JSON Schema](https://json-schema.org/docs) language.
+
+For this invoice example, the schema might look like the following. Notice in this schema the following components:
+
+- The top-level `invoice` object contains nested strings, arrays, and objects such as 
+  `invoice_no`, `invoice_date`, `payment_due`, `bill_to`, `payment_information`, `terms_conditions`, `notes`, `items`, `subtotal`, `vat`, and `total`.
+- The nested `payment_information` object contains nested strings such as `account_name`, `bank_name`, and `account_no`.
+- The nested `items` array contains a series of strings, integers, and numbers such as `description`, `quantity`, `price`, and `total`.
+
+Here is the schema:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "invoice": {
+      "type": "object",
+      "properties": {
+        "invoice_no": {
+          "type": "string",
+          "description": "Unique invoice number assigned to this bill"
+        },
+        "invoice_date": {
+          "type": "string",
+          "description": "Date the invoice was issued"
+        },
+        "payment_due": {
+          "type": "string",
+          "description": "Payment due date for the invoice"
+        },
+        "bill_to": {
+          "type": "string",
+          "description": "The name and address of the customer being billed"
+        },
+        "payment_information": {
+          "type": "object",
+          "properties": {
+            "account_name": {
+              "type": "string",
+              "description": "The account holder's name receiving payment"
+            },
+            "bank_name": {
+              "type": "string",
+              "description": "Bank where payment should be sent"
+            },
+            "account_no": {
+              "type": "string",
+              "description": "Recipient bank account number"
+            }
+          },
+          "required": ["account_name", "bank_name", "account_no"],
+          "additionalProperties": false
+        },
+        "terms_conditions": {
+          "type": "string",
+          "description": "Terms and conditions of the invoice, including penalties for late payment"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes provided by the issuer"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "description": {
+                "type": "string",
+                "description": "Description of the item or service"
+              },
+              "quantity": {
+                "type": "integer",
+                "description": "Quantity of the item purchased"
+              },
+              "price": {
+                "type": "number",
+                "description": "Price per unit of the item"
+              },
+              "total": {
+                "type": "number",
+                "description": "Total cost for the line item (quantity * price)"
+              }
+            },
+            "required": ["description", "quantity", "price", "total"],
+            "additionalProperties": false
+          }
+        },
+        "subtotal": {
+          "type": "number",
+          "description": "Subtotal before taxes"
+        },
+        "vat": {
+          "type": "number",
+          "description": "Value-added tax amount"
+        },
+        "total": {
+          "type": "number",
+          "description": "Final total including taxes"
+        }
+      },
+      "required": [
+        "invoice_no",
+        "invoice_date",
+        "payment_due",
+        "bill_to",
+        "payment_information",
+        "items",
+        "subtotal",
+        "vat",
+        "total"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": ["invoice"],
+  "additionalProperties": false
+}
+```
+
+To generate a starter extraction guidance prompt and extraction schema, you could for example send a prompt such as the following, 
+along with a representative sample of your source documents, to a RAG chatbot such as ChatGPT, Claude, Google Gemini, or Perplexity AI:
+
+```text
+Please create a schema I can use to leverage an LLM for structured data extraction from the file I have just given you. 
+It should adhere to OpenAI's JSON mode format. Here is an example of one I have used before for a different project:
+
+{
+  "type": "object",
+  "properties": {
+    "plants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the plant"
+          },
+          "sunlight": {
+            "type": "string",
+            "description": "The sunlight requirements for the plant (e.g., 'Direct', 'Bright Indirect - Some direct')"
+          },
+          "water": {
+            "type": "string",
+            "description": "The watering instructions for the plant (e.g., 'Let dry between thorough watering', 'Water when 50-60% dry')"
+          },
+          "humidity": {
+            "type": "string",
+            "description": "The humidity requirements for the plant (e.g., 'Low', 'Medium', 'High')"
+          }
+        },
+        "required": ["name", "sunlight", "water", "humidity"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["plants"],
+  "additionalProperties": false
+}
+
+In addition, please provide a guidance prompt that will help ensure the most accurate extraction possible.
+```
+
+## Using the document data extractor
+
+1. Add a **Document Data Extractor** node to your existing Unstructured workflow. This node must be added immediately after the **Partitioner** node 
+   in the workflow. To add this node, in the workflow designer, click the **+** (add node) button, click **Transform**, and then click **Document Data Extractor**.
+2. Click the newly added **Document Data Extractor** node to select it.
+3. In the node's settings pane, on the **Details** tab, specify the following:
+
+   a. For **Extraction Guidance Prompt**, enter the text of your extraction guidance prompt.<br />
+   b. Click **Edit Code**, enter the text of your extraction schema, and then click **Save Changes**. The text you entered 
+      will appear in the **Schema** box.<br />
+
+4. Continue building your workflow as desired.
+5. To see the results of the document data extractor, do one of the following:
+
+   - If you are using a local file as input to your workflow, click **Test** immediately above the **Source** node. The results will be displayed on-screen 
+     in the **Test output** pane.
+   - If you are using source and destination connectors for your workflow, [run the workflow](), [monitor the workflow's job](), 
+     and then examine the results in your destination location.
+
+## Saving the extracted data separately
+
+There might be cases where you want to save the contents of the `extracted_data` field separately from the rest of Unstructured's JSON output. 
+To do this, you could use a Python script such as the following. This script works with one or more Unstructured JSON output files that you already have stored 
+on the same machine as this script. Before you run this script, do the following:
+
+- To process all Unstructured JSON files within a directory, change `None` for `input_dir` to a string that contains the path to the directory. This can be a relative or absolute path.
+- To process specific Unstructured JSON files within a directory or across multiple directories, change `None` for `input_file` to a string that contains a comma-separated list of filepaths on your local machine, for example `"./input/2507.13305v1.pdf.json,./input2/table-multi-row-column-cells.pdf.json"`. These filepaths can be relative or absolute.
+
+  <Note>
+      If `input_dir` and `input_file` are both set to something other than `None`, then the `input_dir` setting takes precedence, and the `input_file` setting is ignored.
+  </Note>
+
+- For the `output_dir` parameter, specify a string that contains the path to the directory on your local machine that you want to send the `extracted_data` JSON. If the specified directory does not exist at that location, the code will create the missing directory for you. This path can be relative or absolute.
+
+```python
+import asyncio
+import os
+import json
+
+async def process_file_and_save_result(input_filename, output_dir):
+    with open(input_filename, "r") as f:
+        input_data = json.load(f)
+
+    if input_data[0].get("type") == "DocumentData":
+        if "extracted_data" in input_data[0]["metadata"]:
+            extracted_data = input_data[0]["metadata"]["extracted_data"]
+
+            results_name = f"{os.path.basename(input_filename)}"
+            output_filename = os.path.join(output_dir, results_name)
+
+            try:
+                with open(output_filename, "w") as f:
+                    json.dump(extracted_data, f)
+                print(f"Successfully wrote 'metadata.extracted_data' to '{output_filename}'.")
+            except Exception as e:
+                print(f"Error: Failed to write 'metadata.extracted_data' to '{output_filename}'.")
+        else:
+            print(f"Error: Cannot find 'metadata.extracted_data' field in '{input_filename}'.")
+    else: 
+        print(f"Error: The first element in '{input_filename}' does not have 'type' set to 'DocumentData'.")
+        
+
+def load_filenames_in_directory(input_dir):
+    filenames = []
+    for root, _, files in os.walk(input_dir):
+        for file in files:
+            if file.endswith('.json'):
+                filenames.append(os.path.join(root, file))
+                print(f"Found JSON file '{file}'.")
+            else:
+                print(f"Error: '{file}' is not a JSON file.")
+
+    return filenames
+
+async def process_files():
+    # Initialize with either a directory name, to process everything in the dir,
+    # or a comma-separated list of filepaths.
+    input_dir   = None # "path/to/input/directory"
+    input_files = None # "path/to/file,path/to/file,path/to/file"
+
+    # Set to the directory for output json files. This dir 
+    # will be created if needed.
+    output_dir = "./extracted_data/"
+
+    if input_dir:
+        filenames = load_filenames_in_directory(input_dir)
+    else:
+        filenames = input_files.split(",")
+
+    os.makedirs(output_dir, exist_ok=True)
+
+    tasks = []
+    for filename in filenames:
+        tasks.append(
+            process_file_and_save_result(filename, output_dir)
+        )
+
+    await asyncio.gather(*tasks)
+
+if __name__ == "__main__":
+    asyncio.run(process_files())
+```
+
+## Additional examples
+
+In addition to the preceding invoice example, here are some more examples that you can adapt for your own use.
+
+### Caring for houseplants
+
+Using the following image file:
+
+![Caring for houseplants](/img/ui/data-extractor/house-plant-care.png)
+
+An extraction schema for this file might look like the following:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "plants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the plant"
+          },
+          "sunlight": {
+            "type": "string",
+            "description": "The sunlight requirements for the plant (e.g., 'Direct', 'Bright Indirect - Some direct')"
+          },
+          "water": {
+            "type": "string",
+            "description": "The watering instructions for the plant (e.g., 'Let dry between thorough watering', 'Water when 50-60% dry')"
+          },
+          "humidity": {
+            "type": "string",
+            "description": "The humidity requirements for the plant (e.g., 'Low', 'Medium', 'High')"
+          }
+        },
+        "required": ["name", "sunlight", "water", "humidity"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["plants"],
+  "additionalProperties": false
+}
+```
+
+An extraction guidance prompt for this file might look like the following:
+
+```text
+Extract the plant information for each of the plants in this document.
+```
+
+And Unstructured's output would look like the following:
+
+```json
+[
+  {
+    "type": "DocumentData",
+    "element_id": "3be179f1-e1e5-4dde-a66b-9c370b6d23e8",
+    "text": "",
+    "metadata": {
+      "...": "...",
+      "extracted_data": {
+        "plants": [
+          {
+            "name": "Krimson Queen",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Let dry between thorough watering",
+            "humidity": "Low"
+          },
+          {
+            "name": "Chinese Money Plant",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Let dry between thorough watering",
+            "humidity": "Low - Medium"
+          },
+          {
+            "name": "String of Hearts",
+            "sunlight": "Direct - Bright Indirect",
+            "water": "Let dry between thorough watering",
+            "humidity": "Low"
+          },
+          {
+            "name": "Marble Queen",
+            "sunlight": "Low- High Indirect",
+            "water": "Water when 50 - 80% dry",
+            "humidity": "Low - Medium"
+          },
+          {
+            "name": "Sansevieria Whitney",
+            "sunlight": "Direct - Low Direct",
+            "water": "Let dry between thorough watering",
+            "humidity": "Low"
+          },
+          {
+            "name": "Prayer Plant",
+            "sunlight": "Medium - Bright Indirect",
+            "water": "Keep soil moist",
+            "humidity": "Medium - High"
+          },
+          {
+            "name": "Aloe Vera",
+            "sunlight": "Direct - Bright Indirect",
+            "water": "Water when dry",
+            "humidity": "Low"
+          },
+          {
+            "name": "Philodendron Brasil",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Water when 80% dry",
+            "humidity": "Low - Medium"
+          },
+          {
+            "name": "Pink Princess",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Water when 50 - 80% dry",
+            "humidity": "Medium"
+          },
+          {
+            "name": "Stromanthe Triostar",
+            "sunlight": "Bright Indirect",
+            "water": "Keep soil moist",
+            "humidity": "Medium - High"
+          },
+          {
+            "name": "Rubber Plant",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Let dry between thorough watering",
+            "humidity": "Low - Medium"
+          },
+          {
+            "name": "Monstera Deliciosa",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Water when 80% dry",
+            "humidity": "Low - Medium"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "...": "..."
+  }
+]
+```
+
+### Medical invoicing
+
+Using the following PDF file:
+
+![Medical invoice](/img/ui/data-extractor/medical-invoice.png)
+
+An extraction schema for this file might look like the following:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "patient": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Full name of the patient"
+        },
+        "birth_date": {
+          "type": "string",
+          "description": "Patient's date of birth"
+        },
+        "sex": {
+          "type": "string",
+          "enum": ["M", "F", "Other"],
+          "description": "Patient's biological sex"
+        }
+      },
+      "required": ["name", "birth_date", "sex"],
+      "additionalProperties": false
+    },
+    "medical_summary": {
+      "type": "object",
+      "properties": {
+        "prior_procedures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "procedure": {
+                "type": "string",
+                "description": "Name or type of the medical procedure"
+              },
+              "date": {
+                "type": "string",
+                "description": "Date when the procedure was performed"
+              },
+              "levels": {
+                "type": "string",
+                "description": "Anatomical levels or location of the procedure"
+              }
+            },
+            "required": ["procedure", "date", "levels"],
+            "additionalProperties": false
+          },
+          "description": "List of prior medical procedures"
+        },
+        "diagnoses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of medical diagnoses"
+        },
+        "comorbidities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of comorbid conditions"
+        }
+      },
+      "required": ["prior_procedures", "diagnoses", "comorbidities"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["patient", "medical_summary"],
+  "additionalProperties": false
+}
+```
+
+An extraction guidance prompt for this file might look like the following:
+
+```text
+# Medical Record Data Extraction Instructions
+
+You are a medical data extraction specialist. Your task is to carefully extract patient information and medical history from documents and structure it according to the provided JSON schema.
+
+## Extraction Guidelines
+
+### 1. Patient Information
+
+- **Name**: Extract the full legal name as it appears in the document. Use proper capitalization (e.g., "Marissa K. Donovan")
+- **Birth Date**: Convert to format "DD MMM YYYY" (e.g., "14 Aug 1974")
+
+  - Accept variations: MM/DD/YYYY, MM-DD-YYYY, YYYY-MM-DD, Month DD, YYYY
+  - If only age is given, do not infer birth date - mark as null
+
+- **Sex**: Extract biological sex as single letter: "M" (Male), "F" (Female), or "Other"
+
+  - Map variations: Male/Man → "M", Female/Woman → "F"
+
+### 2. Medical Summary
+
+#### Prior Procedures
+
+Extract all surgical and major medical procedures, including:
+
+- **Procedure**: Use standard medical terminology when possible
+- **Date**: Format as "MM/DD/YYYY". If only year/month available, use "01" for missing day
+- **Levels**: Include anatomical locations, vertebral levels, or affected areas
+
+  - For spine procedures: Use format like "L4 to L5" or "L4-L5"
+  - Include laterality when specified (left, right, bilateral)
+
+#### Diagnoses
+
+Extract all current and historical diagnoses:
+
+- Include both primary and secondary diagnoses
+- Preserve medical terminology and ICD-10 descriptions if provided
+- Include location/region specifications (e.g., "Radiculopathy — lumbar region")
+- Do not include procedure names unless they represent a diagnostic condition
+
+#### Comorbidities
+
+Extract all coexisting medical conditions that may impact treatment:
+
+- Include chronic conditions (Diabetes, Hypertension, etc.)
+- Include relevant surgical history that affects current state (Failed Fusion, Multi-Level Fusion)
+- Include structural abnormalities (Spondylolisthesis, Stenosis)
+- Do not duplicate items already listed in primary diagnoses
+
+## Data Quality Rules
+
+1. **Completeness**: Only include fields where data is explicitly stated or clearly indicated
+2. **No Inference**: Do not infer or assume information not present in the source
+3. **Preserve Specificity**: Maintain medical terminology and specificity from source
+4. **Handle Missing Data**: Return empty arrays [] for sections with no data, never null
+5. **Date Validation**: Ensure all dates are realistic and properly formatted
+6. **Deduplication**: Avoid listing the same condition in multiple sections
+
+## Common Variations to Handle
+
+### Document Types
+
+- **Operative Reports**: Focus on procedure details, dates, and levels
+- **H&P (History & Physical)**: Rich source for all sections
+- **Progress Notes**: May contain updates to diagnoses and new procedures
+- **Discharge Summaries**: Comprehensive source for all data points
+- **Consultation Notes**: Often contain detailed comorbidity lists
+
+### Medical Terminology Standardization
+
+- Spinal levels: C1-C7 (Cervical), T1-T12 (Thoracic), L1-L5 (Lumbar), S1-S5 (Sacral)
+- Use "Fusion Surgery" not "Fusion" alone when referring to procedures
+- Preserve specificity: "Type 2 Diabetes" not just "Diabetes" when specified
+
+## Edge Cases
+
+1. **Multiple Procedures Same Date**: List as separate objects in the array
+2. **Revised Procedures**: Include both original and revision as separate entries
+3. **Bilateral Procedures**: Note as single procedure with "bilateral" in levels
+4. **Uncertain Dates**: If date is approximate (e.g., "Spring 2023"), use "01/04/2023" for Spring, "01/07/2023" for Summer, etc.
+5. **Name Variations**: Use the most complete version found in the document
+6. **Conflicting Information**: Use the most recent or most authoritative source
+
+## Output Validation
+
+Before returning the extraction:
+
+1. Verify all required fields are present
+2. Check date formats are consistent
+3. Ensure no duplicate entries within arrays
+4. Confirm sex field contains only "M", "F", or "Other"
+5. Validate that procedures have all three required fields
+6. Ensure diagnoses and comorbidities are non-overlapping
+
+## Example Extraction Patterns
+
+### From narrative text:
+
+"Mrs. Donovan is a 49-year-old female who underwent L4-L5 fusion on April 5, 2023..."
+→ Extract: name, age (calculate birth year), sex, procedure details
+
+### From problem list:
+
+"1. Lumbar radiculopathy  2. DM Type 2  3. Failed back surgery syndrome"
+
+→ Sort into appropriate categories (diagnosis vs comorbidity)
+
+### From surgical history:
+
+"Prior surgeries: 2023 - Lumbar fusion at L4-5 levels"
+
+→ Structure into prior_procedures with proper date formatting
+
+### From comorbidities checkboxes:
+
+- Multi-Level Fusion
+- Diabetes
+- Failed Fusion
+- Spondylolisthesis
+
+Return the extracted data in valid JSON format matching the provided schema exactly. If uncertain about any extraction, err on the side of precision and completeness rather than speculation.
+
+-- Note: Make sure you always extracted Failed Fusion comorbidity -- you often forget it :)
+```
+
+And Unstructured's output would look like the following:
+
+```json
+[
+  {
+    "type": "DocumentData",
+    "element_id": "e8f09cb1-1439-4e89-af18-b6285aef5d37",
+    "text": "",
+    "metadata": {
+      "...": "...",
+      "extracted_data": {
+        "patient": {
+          "name": "Ms. Daovan",
+          "birth_date": "01/01/1974",
+          "sex": "F"
+        },
+        "medical_summary": {
+          "prior_procedures": [],
+          "diagnoses": [
+            "Radiculopathy — lumbar region"
+          ],
+          "comorbidities": [
+            "Diabetes",
+            "Multi-Level Fusion",
+            "Failed Fusion",
+            "Spondylolisthesis"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "...": "..."
+  }
+]
+```
