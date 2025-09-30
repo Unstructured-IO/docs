@@ -338,6 +338,12 @@ In addition, please provide a guidance prompt that will help ensure the most acc
    - If you are using source and destination connectors for your workflow, [run the workflow](), [monitor the workflow's job](), 
      and then examine the results in your destination location.
 
+## Limitations
+
+The document data extractor does not work with the [Pinecone destination connector](/ui/destinations/pinecone). 
+This is because Pinecone has strict limit on the amount of metadata that it can manage. These limits are 
+below the threshold of what the document data extractor typically needs for the amount of metadata that it manages. 
+
 ## Saving the extracted data separately
 
 There might be cases where you want to save the contents of the `extracted_data` field separately from the rest of Unstructured's JSON output. 
