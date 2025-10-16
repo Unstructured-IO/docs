@@ -1,0 +1,31 @@
+If your workflow has an [Embedder](/ui/embedding) node, your workflow's [Chunker](/ui/chunking) node settings must stay within the selected embedding model's token limits. 
+Exceeding these limits can cause context loss, suboptimal embeddings, or even workflow failures.
+
+Set your **Chunker** node's **Max Characters** to a value at or below Unstructured's recommended maximum chunk size for your selected embedding model, 
+as listed in the following table's last column.
+
+| Embedding model | Dimensions | Tokens | Chunker Max Characters<sup>*</sup> |
+|---|---|---|---|
+| _Amazon Bedrock_ | | | |
+| Cohere Embed English | 1024 | 512 | 1792 |
+| Cohere Embed Multilingual | 1024 | 512 | 1792 |
+| Titan Embeddings G1 - Text | 1536 | 8192 | 28672 |
+| Titan Multimodal Embeddings G1 | 1024 | 256 | 896 |
+| Titan Text Embeddings V2 | 1024 | 8192 | 28672 |
+| _Azure OpenAI_ | | | | 
+| Text Embedding 3 Large | 3072 | 8192 | 28672 |
+| Text Embedding 3 Small | 1536 | 8192 | 28672 |
+| Text Embedding Ada 002 | 1536 | 8192 | 28672 |
+| _Together AI_ | | | |
+| M2-Bert 80M 32K Retrieval | 768 | 8192 | 28672 |
+| _Voyage AI_ | | | |
+| Voyage 3 | 1024 | 32000 | 112000 |
+| Voyage 3 Large | 1024 | 32000 | 112000 |
+| Voyage 3 Lite | 512 | 32000 | 112000 |
+| Voyage Code 2 | 1536 | 16000| 56000 |
+| Voyage Code 3 | 1024 | 32000 | 112000 |
+| Voyage Finance 2 | 1024 | 32000| 112000 |
+| Voyage Law 2 | 1024 | 16000 | 56000 |
+| Voyage Multimodal 3 | 1024 | 32000 | 112000 |
+
+<sup>*</sup> This is an approximate value, determined by multiplying the embedding model's token limit by 3.5.
