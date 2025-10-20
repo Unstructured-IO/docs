@@ -218,6 +218,11 @@ If you did not previously set the workflow to run on a schedule, you can [run th
 
     - Click **Transform** to add a **Partitioner** or **Embedder** node. [Learn more](#custom-workflow-node-types).
 
+      <Warning>
+        If you add an **Embedder** node, you must set the **Chunker** node's **Max Characters** setting to a value at or below Unstructured's recommended 
+        maximum chunk size for your selected embedding model. [Learn more](/ui/embedding#chunk-sizing-and-embedding-models).
+      </Warning>
+
     <Tip>
         Make sure to add nodes in the correct order. If you are unsure, see the usage hints in the blue note that appears 
         in the node's settings pane.
@@ -334,6 +339,11 @@ import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-
     </Accordion>
     <Accordion title="Embedder node">
         For **Select Embedding Model**, select one of the available models that are shown.
+
+        <Warning>
+          If you add an **Embedder** node, you must set the **Chunker** node's **Max Characters** setting to a value at or below Unstructured's recommended 
+          maximum chunk size for your selected embedding model. [Learn more](/ui/embedding#chunk-sizing-and-embedding-models).
+        </Warning>
 
         Learn more:
         
