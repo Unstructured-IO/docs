@@ -1,8 +1,8 @@
 <Warning>
-    Unstructured can potentially generate image summary descriptions, table summary descriptions, and table-to-HTML output only for workflows that are configured as follows:
+    Unstructured can potentially generate image summary descriptions, table summary descriptions, table-to-HTML output, and text fidelity optimization, only for workflows that are configured as follows:
     
-    - With a **Partitioner** node set to use the **Auto** or **High Res** partitioning strategy, and an image summary description node, table summary description node, or table-to-HTML output node is added.  
-    - With a **Partitioner** node set to use the **VLM** partitioning strategy. No image summary description node, table summary description node, or table-to-HTML output node is needed (or allowed).
+    - With a **Partitioner** node set to use the **Auto** or **High Res** partitioning strategy, and an image summary description node, table summary description node, table-to-HTML output node, or text fidelity optimization node is added.  
+    - With a **Partitioner** node set to use the **VLM** partitioning strategy. No image summary description node, table summary description node, table-to-HTML output node, or text fidelity optimization node is needed (or allowed).
     
     Even with these configurations, Unstructured actually generates image summary descriptions, table summary descriptions, and table-to-HTML output only for files that contain images or tables and are also eligible 
     for processing with the following partitioning strategies:
@@ -14,4 +14,6 @@
     
     - With a **Partitioner** node set to use the **Fast** partitioning strategy.
     - With a **Partitioner** node set to use the **Auto**, **High Res**, or **VLM** partitioning strategy, for all files that Unstructured encounters that do not contain images or tables.
+
+    Unstructured never generates text fidelity optimizations for workflows with a **Partitioner** node set to use the **Fast** partitioning strategy.
 </Warning>

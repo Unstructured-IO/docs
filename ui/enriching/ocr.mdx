@@ -1,0 +1,84 @@
+---
+title: Text fidelity optimization
+---
+
+After partitioning, you can have a vision language model (VLM) optimize the fidelity of text blocks that Unstructured 
+initially processed during its partitioning phase. 
+
+Here are a few examples of Unstructured's output of text blocks that were initially processed, and the more accurate 
+version of these text blocks that were optimized by using Claude Sonnet 4. Irrelevant lines of output have been omitted here for brevity. 
+
+Before (vertical watermarked text, represented incorrectly):
+
+```json
+{
+    "...", "...",
+    "text": "3 2 0 2 t c O 9 2 ] V C . s c [ 2 v 9 0 8 6 1 . 0 1 3 2 : v i X r",
+    "...", "..."
+}
+```
+
+After (vertical watermarked text, now represented correctly from the original content):
+
+```json
+{
+    "...", "...",
+    "text": "arXiv:2310.16809v2 [cs.CV] 29 Oct 2023",
+    "...", "..."
+}
+```
+
+Before (hyperlink, represented incorrectly):
+
+```json
+{
+    "...", "...",
+    "text": "con/Yuliang-Liu/MultinodalOCR|",
+    "...", "..."
+}
+```
+
+After (hyperlink, now represented correctly from the original content):
+
+```json
+{
+    "...", "...",
+    "text": "https://github.com/Yuliang-Liu/MultimodalOCR",
+    "...", "..."
+}
+```
+
+Before (Chinese characters, represented incorrectly):
+
+```json
+{
+    "...", "...",
+    "text": "GT SHE GPT4-V: EHES",
+    "...", "..."
+}
+```
+
+After (Chinese characters, now represented correctly from the original content, expressed as Unicode):
+
+```json
+{
+    "...", "...",
+    "text": "GT : \u91d1\u724c\u70e7\u814a GPT4-V: \u6587\u9759\u5019\u9e1f",
+    "...", "..."
+}
+```
+
+## Optimize text fidelity
+
+import EnrichmentOCRHiResOnly from '/snippets/general-shared-text/enrichment-ocr-high-res-only.mdx';
+
+To optimize text fidelity, in an **Enrichment** node in a workflow, select **OCR**, and then choose one of the available provider (and model) combinations that are shown.
+
+<Note>
+    You can change a workflow's image description settings only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.
+
+    For workflows that use [chunking](/ui/chunking), the **Chunker** node should be placed after all **Enrichment** nodes. Placing the 
+    **Chunker** node before an image descriptions **Enrichment** node could cause incomplete or no image descriptions to be generated.
+</Note>
+
+<EnrichmentOCRHiResOnly />

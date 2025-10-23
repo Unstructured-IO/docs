@@ -9,6 +9,10 @@ Do the following:
    - Click one of the sample files, such as **realestate.pdf**, to have Unstructured parse and transform that sample file.
    - Click **Browse files**, and then browse to and select one of your own files, to have Unstructured parse and transform it.
 
+     <Note>
+         If you choose to use your own file, the file must be 10 MB or less in size.
+     </Note>
+
    ![Welcome interface on the Start page](/img/ui/single-file/welcome.png)
 
 3. After Unstructured has finished parsing and transforming the file (a process known as 
@@ -24,9 +28,33 @@ Do the following:
 
    ![Switching to the JSON view of the results](/img/ui/single-file/json-view.png)
 
-5. To synchronize the scrolling of the **Preview** pane's selected contents with the **Result** pane's results, 
+5. Unstructured's initial results are based on its **High Res** [partitioning strategy](/ui/partitioning), which 
+   begins processing the file's contents and converting these contents into a series of Unstructured 
+   [document elements and metadata](/ui/document-elements). This partitioning strategy provides good results overall, depending on the complexity of the file's contents. 
+   This partioning strategy also generates a bounding box for each detected object in the file. A _bounding box_ is 
+   an imaginary rectangular box drawn around the object to show its location and extent within the file.
+
+   After the High Res partitioning results are shown, Unstructured begins improving these initial results by 
+   using vision language models (VLMs) to apply a series of generative refinements known as _enrichments_. These 
+   enrichments include:
+
+   - An [image description](ui/enriching/image-descriptions) enrichment, which uses a VLM to provide a text-based summary of the contents of the each detected image.
+   - A [text fidelity optimization](/ui/enriching/ocr) enrichment, which uses a VLM to improve the accuracy of each block of initially-processed text.
+   - A [table to HTML](/ui/enriching/table-to-html) enrichment, which uses a VLM to provide an HTML-structured representation of each detected table.
+
+   While these enrichments are being applied, a banner appears at the top of the **Result** pane.
+
+   ![Updating the initial results with enrichments](/img/ui/single-file/generative-refinement.png)
+
+   To see these enrichments applied to the initial results, click **Update results** in the banner as soon as this button appears, 
+   which might take up to a minute or more.
+
+   ![Seeing the initial results udpated with the enrichments](/img/ui/single-file/apply-generative-refinement.png)
+
+6. To synchronize the scrolling of the **Preview** pane's selected contents with the **Result** pane's **Formatted** results, 
    rest your mouse pointer anywhere inside the contents of the **Preview** pane until a bounding box appears. 
-   Then click the bounding box. Unstructured automatically scrolls the **Result** pane's results to match the selected bounding box.
+   Then click the bounding box. Unstructured automatically scrolls the **Result** pane's **Formatted** 
+   results to match the selected bounding box. (You cannot synchronize the scrolling of the **JSON** results.)
 
    ![Selecting a bounding box](/img/ui/single-file/bounding-box.png)
 
@@ -37,21 +65,22 @@ Do the following:
 
 You can also do the following:
 
-- To download the JSON view of the results as a local JSON file, click the download icon to the left of the **Formatted** and **JSON** buttons in the **Result** pane.
+- To download the JSON view of the results as a local JSON file, click the download icon to the left of the **Formatted** and **JSON** buttons in the **Result** pane. 
+  (You cannot download the formatted view of theresults.)
 
   ![Downloading the results as a local JSON file](/img/ui/single-file/download.png)
 
-- To have Unstructured partition a different file, click **Add new file** in the **Files** pane on the left, and then browse to and select the target file.
+- To have Unstructured partition a different file, click **Add new file** in the **Files** pane on the left, and then browse to and select the target file. 
 - To view the results for a file that was previously partitioned during this session, click the file's name in the **Recent files** list in the **Files** pane.
 - To return to the **Start** page, click the **X** (close) button at the left on the title bar, next to **Transform**.
-- To have Unstructured do more than just partitioning, such as 
-  [chunking](/ui/chunking), 
-  [enriching](/ui/enriching/overview), 
-  and [embedding](/ui/embedding), 
-  click **Edit in Workflow Editor** at the right on the title bar, or [skip over to the walkthrough](/ui/walkthrough).
+- To have Unstructured do more&mdash;such as 
+  [chunking](/ui/chunking), [embedding](/ui/embedding),
+  applying additional kinds of [enrichments](/ui/enriching/overview), and 
+  processing larger files and semi-structured data in batchesat scale&mdash;click 
+  **Edit in Workflow Editor** at the right on the title bar, or [skip over to the walkthrough](/ui/walkthrough).
 
   ![Switching to the workflow editor](/img/ui/single-file/workflow-editor.png)
 
-<Icon icon="arrow-up" />&nbsp;&nbsp;[Learn how to add chunking, enrichments, and embeddings after partitioning](/ui/walkthrough).
+<Icon icon="arrow-up" />&nbsp;&nbsp;[Learn how to add chunking, embeddings, and additional enrichments to your results](/ui/walkthrough).
 
 <Icon icon="person-chalkboard" />&nbsp;&nbsp;[Learn more about the Unstructured user interface](/ui/overview).

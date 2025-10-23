@@ -76,7 +76,7 @@ Let's get going!
    <Tip>
        _What do the other buttons on the sidebar do?_
 
-       - **Start** takes you to the UI home page.
+       - **Start** takes you to the UI home page. The home page features a simple way to process one local file at a time with limited default settings. [Learn how](/welcome#unstructured-ui-quickstart).
        - **Connectors** allows you to create and manage your [source](/ui/sources/overview) and 
          [destination](/ui/destinations/overview) connectors.
        - **Jobs** allows you to see the results of your workflows that are run manually (on-demand) and automatically (on a regular time schedule). [Learn more](/ui/jobs).
@@ -95,7 +95,7 @@ Let's get going!
    <Tip>
        _What does **Build it For Me** do?_
 
-       The **Build it For Me** option creates an [automatic workflow](/ui/workflows#create-an-automatic-workflow) with sensible default settings to enable you to get good-quality results faster. However, 
+       The **Build it For Me** option creates an [automatic workflow](/ui/workflows#create-an-automatic-workflow) with limited, sensible default settings to enable you to get good-quality results faster. However, 
        this option requires that you first have an existing remote source and destination connector to add to the workflow. To speed things up here and keep things simple, 
        this walkthrough only processes files from your local machine and skips the use of connectors. To learn how to use connectors later, 
        see the [next steps](#next-steps) at the end of this walkthrough.
@@ -497,18 +497,18 @@ embedding model that is provided by an embedding provider. For the best embeddin
 Congratulations! You now have an Unstructured workflow that partitions, enriches, chunks, and embeds your source documents, producing 
 context-rich data that is ready for retrieval-augmented generation (RAG), agentic AI, and model fine-tuning.
 
-Right now, your workflow only accepts one local file at a time for input. Your workflow also only sends Unstructured's processed data to your screen or to be save locally as a JSON file. 
+Right now, your workflow only accepts one local file at a time for input. Your workflow also only sends Unstructured's processed data to your screen or to be saved locally as a JSON file. 
 You can modify your workflow to accept multiple files and data from&mdash;and send Unstructured's processed data to&mdash;one or more file storage 
 locations, databases, and vector stores. To learn how to do this, try one or more of the following quickstarts:
 
-- [Remote quickstart](/ui/quickstart#remote-quickstart)
-- [Dropbox source connector quickstart](/ui/sources/dropbox-source-quickstart)
-- [Pinecone destination connector quickstart](/ui/destinations/pinecone-destination-quickstart)
+- [Remote quickstart](/ui/quickstart#remote-quickstart) - This quickstart show you how to begin processing files and semi-structured data from remote source locations at scale, instead of just one local file at a time.
+- [Dropbox source connector quickstart](/ui/sources/dropbox-source-quickstart) - If you don't have any remote source locations available for Unstructured to connect to, this quickstart shows you how to set up a Dropbox account to store your documents in, and then connect Unstructured to your Dropbox account.
+- [Pinecone destination connector quickstart](/ui/destinations/pinecone-destination-quickstart) - If you don't have any remote destination locations available for Unstructured to send its processed data to, this quickstart shows you how to set up a Pinecone account to have Unstructured store its processed data in, and then connect Unstructured to your Pinecone account.
 
 Unstructured also offers an API and SDKs, which allow you to use code to work with Unstructured programmatically instead of only with the UI. For details, see:
 
-- [Unstructured API quickstart](/api-reference/workflow/overview#quickstart)
-- [Unstructured Python SDK](/api-reference/workflow/overview#unstructured-python-sdk)
-- [Unstructured API overview](/api-reference/overview)
+- [Unstructured API quickstart](/api-reference/workflow/overview#quickstart) - This quickstart uses the Unstructured Workflow Endpoint to programmatically create a Dropbox source connector and a Pinecone destination connector in your Unstructured account. You then programmatically add these connectors to a workflow in your Unstructured account, run that workflow as a job, and then explore the job's results.
+- [Unstructured Python SDK](/api-reference/workflow/overview#unstructured-python-sdk) - This article provides an overview of the Unstructured Python SDK and how to use it.
+- [Unstructured API overview](/api-reference/overview) - This article provides an overview of the Unstructured API and how to use it.
 
 If you are not able to complete any of the preceding quickstarts, contact Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
