@@ -1,7 +1,61 @@
-- For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api-reference/overview), only Milvus cloud-based instances (such as Zilliz Cloud, and Milvus on IBM watsonx.data) are supported.
+- For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api-reference/overview), only Milvus cloud-based instances (such as Milvus on IBM watsonx.data, or Zilliz Cloud) are supported.
 - For [Unstructured Ingest](/open-source/ingestion/overview), Milvus local and cloud-based instances are supported.
 
-The following video shows how to fulfill the minimum set of requirements for Milvus cloud-based instances, demonstrating Milvus on IBM watsonx.data:
+- For Milvus on IBM watsonx.data, you will need:
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/hLCwoe2fCnc"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
+
+  - An [IBM Cloud account](https://cloud.ibm.com/registration).
+  - An IBM watsonx.data [Lite plan](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-tutorial_prov_lite_1) 
+    or [Enterprise plan](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started_1) within your IBM Cloud account.
+
+    - If you are provisoning a Lite plan, be sure to choose the **Generative AI** use case when prompted, as this is the only use case offered that includes Milvus.
+
+  - A [Milvus service instance in IBM watsonx.data](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-adding-milvus-service).
+
+    - If you are creating a Milvus service instance within a watsonx.data Lite plan, when you are prompted to choose a Milvus instance size, you can only select **Lite**. Because the Lite 
+      Milvus instance size is recommended only for 384 dimensions, you should also use an embedding model that uses 384 dimensions only.
+    - If you are creating a Milvus service instance within a watsonx.data Enterprise plan, you can choose any available Milvus instance size. However, all Milvus instance sizes other than 
+      **Custom** are recommended only for 384 dimensions, which means you should use an embedding model that uses 384 dimensions only. 
+      The **Custom** Milvus instance size is recommended for any number of dimensions.
+
+  - The URI of the instance, which takes the format of `https://`, followed by instance's **GRPC host**, followed by a colon and the **GRPC port**. 
+    This takes the format of `https://<host>:<port>`. To get this informatation, do the following:
+
+    a. Sign in to your IBM Cloud account.<br/>
+    b. On the sidebar, click the **Resource list** icon. If the sidebar is not visible, click the **Navigation Menu** icon to the far left of the title bar.<br/>
+    c. Expand **Databases**, and then click the name of the target **watsonx.data** plan.<br/>
+    d. Click **Open web console**.<br/>
+    e. On the sidebar, click **Infrastructure manager**. If the sidebar is not visible, click the **Global navigation** icon to the far left of the title bar.<br/>
+    f. Click the target Milvus service instance.<br/>
+    g. On the **Details** tab, under **Type**, click **View connect details**.<br/>
+    h. Under **Service details**, expand **GRPC**, and note the value of **GRPC host** and **GRPC port**.<br/>
+
+  - The name of the [database](https://milvus.io/docs/manage_databases.md) in the instance.
+  - The name of the [collection](https://milvus.io/docs/manage-collections.md) in the database. Note the collection requirements at the end of this section.
+  - The username and password to access the instance. 
+
+    - The username for Milvus on IBM watsonx.data is always `ibmlhapikey`. 
+    - The password for Milvus on IBM watsonx.data is in the form of an IBM Cloud user API key. To create an IBM Cloud user API key:
+
+      a. Sign in to your IBM Cloud account.<br/>
+      b. In the title bar, click **Manage** and then, under **Security and access**, click **Access (IAM)**.<br/>
+      c. On the sidebar, under **Manage identities**, click **API keys**. If the sidebar is not visible, click the **Navigation Menu** icon to the far left of the title bar.<br/>
+      d. Click **Create**.<br/>
+      e. Enter some **Name** for the API key.<br/>
+      f. Optionally, enter some **Description** for the API key.<br/>
+      g. For **Leaked action**, leave **Disable the leaked key** selected.<br/>
+      h. For **Session management**, leave **No** selected.<br/>
+      i. Click **Create**.<br/>
+      j. Click **Download** (or **Copy**), and then download the API key to a secure location (or paste the copied API key into a secure location). You won't be able to access this API key from this dialog again. If you lose this API key, you can create a new one (and you should then delete the old one).<br/>
 
 - For Zilliz Cloud, you will need:
 
@@ -54,31 +108,6 @@ The following video shows how to fulfill the minimum set of requirements for Mil
         The number of dimensions for the `embeddings` field must match the number of dimensions for the embedding model that you plan to use.
     </Warning>
 
-- For Milvus on IBM watsonx.data, you will need:
-
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/hLCwoe2fCnc"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
-
-  - An [IBM Cloud account](https://cloud.ibm.com/registration).
-  - The [IBM watsonx.data subscription plan](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started).
-  - A [Milvus service instance in IBM watsonx.data](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-adding-milvus-service).
-  - The URI of the instance, which takes the format of `https://`, followed by instance's **GRPC host**, followed by a colon and the **GRPC port**. 
-    This takes the format of `https://<host>:<port>`. 
-    [Get the instance's GRPC host and GRPC port](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-conn-to-milvus).
-  - The name of the [database](https://milvus.io/docs/manage_databases.md) in the instance.
-  - The name of the [collection](https://milvus.io/docs/manage-collections.md) in the database. Note the collection requirements at the end of this section.
-  - The username and password to access the instance. 
-    The username for Milvus on IBM watsonx.data is always `ibmlhapikey`. 
-    The password for Milvus on IBM watsonx.data is in the form of an IBM Cloud user API key. 
-    [Get the user API key](https://cloud.ibm.com/docs/account?topic=account-userapikey&interface=ui).
-
 - For Milvus local, you will need:
 
   - A [Milvus instance](https://milvus.io/docs/install-overview.md).
@@ -89,7 +118,9 @@ The following video shows how to fulfill the minimum set of requirements for Mil
   - The [username and password, or token](https://milvus.io/docs/authenticate.md) to access the instance.
 
 All Milvus instances require the target collection to have a defined schema before Unstructured can write to the collection. The minimum viable 
-schema for Unstructured contains only the fields `element_id`, `embeddings`, `record_id`, and `text`, as follows. This example code demonstrates the use of the 
+schema for Unstructured contains only the fields `element_id`, `embeddings`, `record_id`, and `text`, as follows. 
+
+This example code demonstrates the use of the 
 [Python SDK for Milvus](https://pypi.org/project/pymilvus/) to create a collection with this schema, 
 targeting Milvus on IBM watsonx.data. For the `MilvusClient` arguments to connect to other types of Milvus deployments, see your Milvus provider's documentation:
 
