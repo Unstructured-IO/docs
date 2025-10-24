@@ -267,33 +267,69 @@ HTML representations of detected tables, and detected entities (such as people a
    
    ![Adding an enrichment node](/img/ui/walkthrough/AddEnrichment.png)
 
-3. In the node's settings pane's **Details** tab, select **Image** under **Input Type**, and then click **OpenAI (GPT-4o)** under **Model**.
+3. In the node's settings pane's **Details** tab, click:
+
+   - **Image** under **Input Type**
+   - **OpenAI** under **Provider**
+   - **(GPT-4o)** under **Model**
 
    <Tip>
        The image description enrichment generates a summary description of each detected image. This can help you to more quickly and easily understand 
        what each image is all about without having to stop to manually visualize and interpret the image's content yourself. This also provides additional helpful context about the image for your RAG apps, agents, and models. [Learn more](/ui/enriching/image-descriptions).
    </Tip>
 
-4. Repeat this process to add three more nodes between the **Partitioner** and **Destination** nodes. To do this, click 
+4. Repeat this process to add four more nodes between the **Partitioner** and **Destination** nodes. To do this, click 
    the add (**+**) icon, and then click **Enrich > Enrichment**, as follows:
 
-   a. Add a **Table** (under **Input Type**) enrichment node with **OpenAI (GPT-4o)** (under **Model**) and **Table Description** (under **Task**) selected.<br/><br/>
-      
+   a. Add a table description enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > Enrichment).
+   
+      In the node's settings pane's **Details** tab, click:
+
+      - **Table** under **Input Type**.
+      - **Anthropic** under **Provider**.
+      - **Claude Sonnet 4** under **Model**.
+      - **Table Description** under **Task**.
+
       <Tip>
           The table description enrichment generates a summary description of each detected table. This can help you to more quickly and easily understand 
           what each table is all about without having to stop to manually read through the table's content yourself. This also provides additional helpful context about the table for your RAG apps, agents, and models. [Learn more](/ui/enriching/table-descriptions).
       </Tip>
 
-   b. Add another **Table** (under **Input Type**) enrichment node with **OpenAI (GPT-4o)** (under **Model**) and **Table to HTML** (under **Task**) selected.<br/><br/>
+   b. Add a table to HTML enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > Enrichment).
+   
+      In the node's settings pane's **Details** tab, click:
+
+      - **Table** under **Input Type**.
+      - **Anthropic** under **Provider**.
+      - **Claude Sonnet 4** under **Model**.
+      - **Table to HTML** under **Task**.
       
       <Tip>
           The table to HTML enrichment generates an HTML representation of each detected table. This can help you to more quickly and accurately recreate the table's content elsewhere later as needed. This also provides additional context about the table's structure for your RAG apps, agents, and models. [Learn more](/ui/enriching/table-to-html).
       </Tip>
 
-   c. Add a **Text** (under **Input Type**) enrichment node with **OpenAI (GPT-4o)** (under **Model**) selected.<br/><br/>
+   c. Add a named entity recognition enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > Enrichment).
+   
+      In the node's settings pane's **Details** tab, click:
+      
+      - **Text** under **Input Type**.
+      - **Anthropic** under **Provider**.
+      - **Claude Sonnet 4** under **Model**.
       
       <Tip>
           The named entity recognition (NER) enrichment generates a list of detected entities (such as people and organizations) and the inferred relationships among these entities. This provides additional context about these entities' types and their relationships for your graph databases, RAG apps, agents, and models. [Learn more](/ui/enriching/ner).
+      </Tip>
+
+   d. Add a text fidelity optimization enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > Enrichment).
+   
+      In the node's settings pane's **Details** tab, click:
+      
+      - **OCR** under **Input Type**.
+      - **Anthropic** under **Provider**.
+      - **Claude Sonnet 4** under **Model**.
+      
+      <Tip>
+          The text fidelity optimization enrichment improves the accuracy of text blocks that Unstructured initially processed during its partitioning phase. [Learn more](/ui/enriching/ocr).
       </Tip>
    
    The workflow designer should now look like this:
@@ -301,7 +337,7 @@ HTML representations of detected tables, and detected entities (such as people a
    ![The workflow with enrichments added](/img/ui/walkthrough/EnrichedWorkflow.png)
 
 5. Change the **Source** node to use the "Chinese Characters" PDF file, and then click **Test**.
-6. In the **Test output** pane, make sure that **Enrichment (5 of 5)** is showing. If not, click the right arrow (**>**) until **Enrichment (5 of 5)** appears, which will show the output from the last node in the workflow.
+6. In the **Test output** pane, make sure that **Enrichment (6 of 6)** is showing. If not, click the right arrow (**>**) until **Enrichment (6 of 6)** appears, which will show the output from the last node in the workflow.
 
    ![The final Enrichment node's output](/img/ui/walkthrough/GoToEnrichmentNode.png)
 
