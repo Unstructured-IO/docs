@@ -1,5 +1,5 @@
 ---
-title: Text fidelity optimization
+title: Generative OCR optimization
 ---
 
 After partitioning, you can have a vision language model (VLM) optimize the fidelity of text blocks that Unstructured 
@@ -7,6 +7,10 @@ initially processed during its partitioning phase.
 
 Here are a few examples of Unstructured's output of text blocks that were initially processed, and the more accurate 
 version of these text blocks that were optimized by using Claude Sonnet 4. Irrelevant lines of output have been omitted here for brevity. 
+
+Example 1: Vertical watermarked text
+
+![Vertical watermarked text example](/img/ui/enriching/generative-ocr-watermark.png)
 
 Before (vertical watermarked text, represented incorrectly):
 
@@ -28,6 +32,10 @@ After (vertical watermarked text, now represented correctly from the original co
 }
 ```
 
+Example 2: Hyperlink
+
+![Hyperlinked text example](/img/ui/enriching/generative-ocr-hyperlink.png)
+
 Before (hyperlink, represented incorrectly):
 
 ```json
@@ -47,6 +55,10 @@ After (hyperlink, now represented correctly from the original content):
     "...", "..."
 }
 ```
+
+Example 3: Chinese characters
+
+![Chinese characters example](/img/ui/enriching/generative-ocr-image.png)
 
 Before (Chinese characters, represented incorrectly):
 
@@ -68,11 +80,11 @@ After (Chinese characters, now represented correctly from the original content, 
 }
 ```
 
-## Optimize text fidelity
+## Improve text fidelity with generative OCR
 
 import EnrichmentOCRHiResOnly from '/snippets/general-shared-text/enrichment-ocr-high-res-only.mdx';
 
-To optimize text fidelity, in an **Enrichment** node in a workflow, select **OCR**, and then choose one of the available provider (and model) combinations that are shown.
+To produce generative OCR optimizations, in an **Enrichment** node in a workflow, select **Generative OCR**, and then choose one of the available provider (and model) combinations that are shown.
 
 <Note>
     You can change a workflow's image description settings only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.

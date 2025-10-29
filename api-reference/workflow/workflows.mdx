@@ -1598,7 +1598,7 @@ Allowed values for `<subtype>` include:
 - `openai_ner`
 - `anthropic_ner`
 
-#### Text Fidelity Optimization task
+#### Generative OCR task
 
 import EnrichmentOCRHiResOnly from '/snippets/general-shared-text/enrichment-ocr-high-res-only.mdx';
 
@@ -1607,7 +1607,7 @@ import EnrichmentOCRHiResOnly from '/snippets/general-shared-text/enrichment-ocr
 <AccordionGroup>
     <Accordion title="Python SDK">
         ```python
-        text_fidelity_optimization_enrichment_workflow_node = WorkflowNode(
+        generative_ocr_enrichment_workflow_node = WorkflowNode(
             name="Enrichment",
             subtype="<subtype>",
             type="prompter",
