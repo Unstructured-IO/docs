@@ -1865,7 +1865,12 @@ Fields for `settings` include:
 
 ### Embedder node
 
-An **Embedder** node has a `type` of `embed`. 
+An **Embedder** node has a `type` of `embed`.
+
+<Warning>
+    If you add an embedder node, you must set the workflow's chunker node's `max_characters` setting to a value at or below Unstructured's recommended 
+    maximum chunk size for your specified embedding model. [Learn more](/ui/embedding#chunk-sizing-and-embedding-models).
+</Warning>
 
 [Learn about the available embedding providers and models](/ui/embedding).
 
