@@ -2,6 +2,8 @@
 title: Overview
 ---
 
+import EnrichmentImagesTablesOCRHiResOnly from '/snippets/general-shared-text/enrichment-images-tables-ocr-hi-res-only.mdx';
+
 <iframe
   width="560"
   height="315"
@@ -20,6 +22,7 @@ _Enriching_ adds enhancments to the processed data that Unstructured produces. T
 - Providing a summarized description of the contents of a detected table. [Learn more](/ui/enriching/table-descriptions).
 - Providing a representation of a detected table in HTML markup format. [Learn more](/ui/enriching/table-to-html).
 - Providing a list of recognized entities and their types, through a process known as _named entity recognition_ (NER). [Learn more](/ui/enriching/ner).
+- Having a vision language model (VLM) use advanced optical character recognition (OCR) to improve the accuracy of initially-processed text blocks. [Learn more](/ui/enriching/ocr).
 
 To add an enrichment, in an **Enrichment** node in a workflow, select one of the following enrichment types:
 
@@ -27,12 +30,13 @@ To add an enrichment, in an **Enrichment** node in a workflow, select one of the
     You can change enrichment settings only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.
 </Note>
 
-<EnrichmentImagesTablesHiResOnly />
+<EnrichmentImagesTablesOCRHiResOnly />
 
 - **Image** to provide a summarized description of the contents of each detected image. [Learn more](/ui/enriching/image-descriptions).
 - **Table** to provide a summarized description of the contents of each detected table. [Learn more](/ui/enriching/table-descriptions).
 - **Table** can also provide a representation of each detected table in HTML markup format. [Learn more](/ui/enriching/table-to-html).
 - **Text** to provide a list of recognized entities and their types by using a technique called _named entity recognition_ (NER). [Learn more](/ui/enriching/ner).
+- **Generative OCR** to have a VLM use advanced OCR to improve the accuracy of initially-processed text blocks. [Learn more](/ui/enriching/generative-ocr).
 
 The **Text** enrichment type also supports custom prompts. In the **Details** tab, first select the input type **Text** and choose a provider (and model) combination. Then, under **Prompt**, click **Edit**.
 Then, you can test your custom prompt in the **Edit & Test Prompt** section by clicking **Run Prompt**.
