@@ -332,13 +332,22 @@ HTML representations of detected tables, and detected entities (such as people a
    
       In the node's settings pane's **Details** tab, click:
       
-      - **Generative OCR** under **Input Type**.
-      - **Anthropic** under **Provider**.
-      - **Claude Sonnet 4** under **Model**.
+      - **Image** under **Input Type**.
+      - One of the following providers and models:
+
+        - **Anthropic** under **Provider** and any choice under **Model**
+        - **OpenAI** under **Provider** and any choice under **Model**
+
+      - **Generative OCR** under **Task**.
       
       <Tip>
           The generative OCR enrichment improves the accuracy of text blocks that Unstructured initially processed during its partitioning phase. [Learn more](/ui/enriching/generative-ocr).
       </Tip>
+
+      <Note>
+          The **Generative OCR** enrichment appears under the **Input Type** of **Image**, even though this is not an image-related enrichment. 
+          This is a known issue and will be addressed in a future release. 
+      </Note>
    
    The workflow designer should now look like this:
    

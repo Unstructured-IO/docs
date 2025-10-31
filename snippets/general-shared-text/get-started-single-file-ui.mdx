@@ -62,6 +62,17 @@ Do the following:
 
    ![Seeing the initial results udpated with the enrichments](/img/ui/single-file/apply-generative-refinement.png)
 
+   <Warning>
+       Each page that Unstructured processes by using this approach is counted as two pages for usage and billing purposes.
+       
+       This is because Unstructured processes each page once with its **High Res** partitioning strategy and then reprocessess each 
+       page with a VLM to improve the quality, accuracy, and relevance of the initial partitioning results. 
+       The final results of these two processing passes for each page count as two pages for usage and billing purposes. 
+       This two-pass process happens regardless of whether you click **Update results** in the banner.
+
+       This two-page usage and billing behavior is a known issue and will be addressed in a future release.
+   </Warning>
+
 6. To synchronize the scrolling of the **Preview** pane's selected contents with the **Result** pane's **Formatted** results, 
    rest your mouse pointer anywhere inside the contents of the **Preview** pane until a bounding box appears. 
    Then click the bounding box. Unstructured automatically scrolls the **Result** pane's **Formatted** 

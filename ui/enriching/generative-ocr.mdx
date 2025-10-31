@@ -84,7 +84,21 @@ After (Chinese characters, now represented correctly from the original content, 
 
 import EnrichmentOCRHiResOnly from '/snippets/general-shared-text/enrichment-ocr-high-res-only.mdx';
 
-To produce generative OCR optimizations, in an **Enrichment** node in a workflow, select **Generative OCR**, and then choose one of the available provider (and model) combinations that are shown.
+To produce generative OCR optimizations, in an **Enrichment** node in a workflow, click the following 
+in the node's settings pane's **Details** tab:
+      
+- **Image** under **Input Type**.
+- One of the following providers and models:
+
+  - **Anthropic** under **Provider** and any choice under **Model**
+  - **OpenAI** under **Provider** and any choice under **Model**
+
+- **Generative OCR** under **Task**.
+
+<Note>
+    The **Generative OCR** enrichment appears under the **Input Type** of **Image**, even though this is not an image-related enrichment. 
+    This is a known issue and will be addressed in a future release. 
+</Note>
 
 <Note>
     You can change a workflow's image description settings only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.
