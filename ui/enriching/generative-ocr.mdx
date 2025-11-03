@@ -1,0 +1,110 @@
+---
+title: Generative OCR optimization
+---
+
+After partitioning, you can have a vision language model (VLM) optimize the fidelity of text blocks that Unstructured 
+initially processed during its partitioning phase. 
+
+Here are a few examples of Unstructured's output of text blocks that were initially processed, and the more accurate 
+version of these text blocks that were optimized by using Claude Sonnet 4. Irrelevant lines of output have been omitted here for brevity. 
+
+Example 1: Vertical watermarked text
+
+![Vertical watermarked text example](/img/ui/enriching/generative-ocr-watermark.png)
+
+Before (vertical watermarked text, represented incorrectly):
+
+```json
+{
+    "...", "...",
+    "text": "3 2 0 2 t c O 9 2 ] V C . s c [ 2 v 9 0 8 6 1 . 0 1 3 2 : v i X r",
+    "...", "..."
+}
+```
+
+After (vertical watermarked text, now represented correctly from the original content):
+
+```json
+{
+    "...", "...",
+    "text": "arXiv:2310.16809v2 [cs.CV] 29 Oct 2023",
+    "...", "..."
+}
+```
+
+Example 2: Hyperlink
+
+![Hyperlinked text example](/img/ui/enriching/generative-ocr-hyperlink.png)
+
+Before (hyperlink, represented incorrectly):
+
+```json
+{
+    "...", "...",
+    "text": "con/Yuliang-Liu/MultinodalOCR|",
+    "...", "..."
+}
+```
+
+After (hyperlink, now represented correctly from the original content):
+
+```json
+{
+    "...", "...",
+    "text": "https://github.com/Yuliang-Liu/MultimodalOCR",
+    "...", "..."
+}
+```
+
+Example 3: Chinese characters
+
+![Chinese characters example](/img/ui/enriching/generative-ocr-image.png)
+
+Before (Chinese characters, represented incorrectly):
+
+```json
+{
+    "...", "...",
+    "text": "GT SHE GPT4-V: EHES",
+    "...", "..."
+}
+```
+
+After (Chinese characters, now represented correctly from the original content, expressed as Unicode):
+
+```json
+{
+    "...", "...",
+    "text": "GT : \u91d1\u724c\u70e7\u814a GPT4-V: \u6587\u9759\u5019\u9e1f",
+    "...", "..."
+}
+```
+
+## Improve text fidelity with generative OCR
+
+import EnrichmentOCRHiResOnly from '/snippets/general-shared-text/enrichment-ocr-high-res-only.mdx';
+
+To produce generative OCR optimizations, in an **Enrichment** node in a workflow, click the following 
+in the node's settings pane's **Details** tab:
+      
+- **Image** under **Input Type**.
+- One of the following providers and models:
+
+  - **Anthropic** under **Provider** and any choice under **Model**
+  - **OpenAI** under **Provider** and any choice under **Model**
+
+- **Generative OCR** under **Task**.
+
+<Note>
+    The **Generative OCR** enrichment appears under the **Input Type** of **Image**, even though this is not an image-related enrichment. 
+    This is a known issue and will be addressed in a future release. 
+</Note>
+
+<Note>
+    You can change a workflow's image description settings only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.
+
+    For workflows that use [chunking](/ui/chunking), the **Chunker** node should be placed after all **Enrichment** nodes. Placing the 
+    **Chunker** node before an image descriptions **Enrichment** node could cause incomplete or no image descriptions to be generated.
+</Note>
+
+<EnrichmentOCRHiResOnly />

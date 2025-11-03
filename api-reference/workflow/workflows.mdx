@@ -977,7 +977,7 @@ In the request body, specify the settings for the workflow. For the specific set
 
 ## Custom workflow DAG nodes
 
-import EnrichmentImagesTablesHiResOnly from '/snippets/general-shared-text/enrichment-images-tables-hi-res-only.mdx';
+import EnrichmentImagesTablesOCRHiResOnly from '/snippets/general-shared-text/enrichment-images-tables-ocr-hi-res-only.mdx';
 
 If `WorkflowType` is set to `CUSTOM` (for the Python SDK), or if `workflow_type` is set to `custom` (for `curl` or Postman), you must also specify the settings for the workflow's 
 directed acyclic graph (DAG) nodes. These nodes' settings are specified in the `workflow_nodes` array.
@@ -989,7 +989,7 @@ directed acyclic graph (DAG) nodes. These nodes' settings are specified in the `
 - You can specify [Partitioner](#partitioner-node), [Enrichment](#enrichment-node), 
   [Chunker](#chunker-node), and [Embedder](#embedder-node) nodes.
 
-  <EnrichmentImagesTablesHiResOnly />
+  <EnrichmentImagesTablesOCRHiResOnly />
 
 - The order of the nodes in the `workflow_nodes` array will be the same order that these nodes appear in the DAG, 
   with the first node in the array added directly after the **Source** node. The **Destination** node 
@@ -1379,7 +1379,7 @@ An **Enrichment** node has a `type` of `prompter`.
 
 [Learn about the available enrichments](/ui/enriching/overview).
 
-<EnrichmentImagesTablesHiResOnly />
+<EnrichmentImagesTablesOCRHiResOnly />
 
 #### Image Description task
 
@@ -1597,6 +1597,41 @@ Allowed values for `<subtype>` include:
 
 - `openai_ner`
 - `anthropic_ner`
+
+#### Generative OCR task
+
+import EnrichmentOCRHiResOnly from '/snippets/general-shared-text/enrichment-ocr-high-res-only.mdx';
+
+<EnrichmentOCRHiResOnly />
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        generative_ocr_enrichment_workflow_node = WorkflowNode(
+            name="Enrichment",
+            subtype="<subtype>",
+            type="prompter",
+            settings={}
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Enrichment",
+            "type": "prompter",
+            "subtype": "<subtype>",
+            "settings": {}
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
+
+Allowed values for `<subtype>` include:
+
+- `anthropic_ocr`
+- `openai_ocr`
+- `vertexai_ocr`
 
 ### Chunker node
 
