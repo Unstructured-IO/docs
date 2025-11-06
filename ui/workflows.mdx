@@ -257,6 +257,20 @@ import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-
             these files are processed. These errors typically occur when these larger PDF files have lots of tables and high-resolution images.
         </Note>
 
+        If you choose the **Fast** strategy, you can also choose from among the following additional settings:
+
+        - **Include Page breaks**: Check this box to include distinct `PageBreak` document elements in the output, if the file type supports it.
+        - **Infer Table Structure**: Check this box to add, for each table in a PDF file, a metadata field named `text_as_html` to the output for that table's document element. This field will contain an HTML representation of the table.
+        - **Elements to Exclude**: Select the name of each available type of [document element](/ui/document-elements) to exclude from the output.
+
+        If you choose the **High Res** strategy, you can also choose from among the following additional settings:
+
+        - **Include Page breaks**: Check this box to include distinct `PageBreak` document elements in the output, if the file type supports it.
+        - **Infer Table Structure**: Check this box to add, for each table in a PDF file, a metadata field named `text_as_html` to the output for that table's document element. This field will contain an HTML representation of the table.
+        - **Include Coordinates**: Check this box to add, for each [document element](/ui/document-elements) in the output, a metadata field named `coordinates` to the output for that document element. This field will contain the bounding box coordinates of the document element's content on the page, as well as the bounding box's width and height in pixels.
+        - **Extract Image Block Types**: Select the name of each available type of document element to add a metadata field named `image_base64` to the output for that document element. This field will contain a Base64-encoded representation of the document element's content. A Base64-to-image decoding of this field's value will return an image representing the document element's original content.
+        - **Elements to Exclude**: Select the name of each available type of document element to exclude from the output.
+
         [Learn more](/ui/partitioning).
     </Accordion>
     <Accordion title="Chunker node">
