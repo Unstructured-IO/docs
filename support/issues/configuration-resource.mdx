@@ -4,10 +4,10 @@ title: Configuration and resource issues
 
 ## Issues
 
-When you try to connect Unstructured to a specifc source or destination, you get one of the following error types:
+When you try to connect Unstructured to a specific source or destination, you get one of the following error types:
 
 - `FileNotFoundError`: For example, for Amazon S3, a `path not found` error.
-- `ClientRequestException`: For example, for OneDrive an `itemNotFound` error.
+- `ClientRequestException`: For example, for OneDrive, an `itemNotFound` error.
 - `ValueError`: For example, for Google Drive, a `File not found` error. For Amazon S3, an `Invalid endpoint` error.
 - `UserError`: For example, for Azure Blob Storage, a `DeploymentNotFound` error.
 - `ParamValidationError`: For example, for Amazon S3, an `Invalid bucket name` error.
@@ -25,14 +25,14 @@ When you try to connect Unstructured to a specifc source or destination, you get
 - The specified resource has been deleted or moved.
 - An endpoint URL is incorrectly formatted, for example, is missing `https://` or contains invalid characters.
 - An Amazon S3 bucket name is not formatted correctly.
-- A required configuration is missing in the source or destination connector, for example, there no active Snowflake warehouse is specified.
+- A required configuration is missing in the source or destination connector, for example, there is no active Snowflake warehouse specified.
 - An Azure OpenAI deployment name is mismatched, failed, or does not exist.
 - An invalid URL is specified for an attachment or a link within a source document.
 - There is a specific configuration issue with a connector, for example, the specified SharePoint path does not lead to a valid drive.
 
 ## Possible solutions
 
-- **Verify names and paths**: Carefully check all configured names, IDs, and paths&mdash;such as for buckets, folders, files, site, deployments, and endpoint URLs&mdash;for accuracy. Ensure they exist in the source and destination system. Case sensitivity often matters.
+- **Verify names and paths**: Carefully check all configured names, IDs, and paths&mdash;such as for buckets, folders, files, sites, deployments, and endpoint URLs&mdash;for accuracy. Ensure they exist in the source and destination system. Case sensitivity often matters.
 - **Check formatting**: Ensure that URLs, bucket names, and other parameters adhere to the required format.
 - **Verify that the resource exists**: Confirm that the target file, folder, deployment, or other resource exists and has not been moved or deleted.
 - **Check configuration dependencies**: Ensure the necessary configurations are set in the source or destination, for example, select and start a Snowflake warehouse by running the `USE WAREHOUSE` command first.
