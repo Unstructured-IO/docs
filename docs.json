@@ -304,40 +304,40 @@
         ]
       },
       {
-        "tab": "Enterprise",
+        "tab": "Business",
         "groups": [
           {
-            "group": "Enterprise",
+            "group": "Business",
             "pages": [
-              "enterprise/overview"
+              "business/overview"
             ]
           },
           {
             "group": "Security and compliance",
             "pages": [
-              "enterprise/security-compliance/overview"
+              "business/security-compliance/overview"
             ]
           },
           {
             "group": "AWS",
             "pages": [
-              "enterprise/aws/overview",
-              "enterprise/aws/dedicated-instance-privatelink",
-              "enterprise/aws/onboard"
+              "business/aws/overview",
+              "business/aws/dedicated-instance-privatelink",
+              "business/aws/onboard"
             ]
           },
           {
             "group": "Azure",
             "pages": [
-              "enterprise/azure/overview",
-              "enterprise/azure/onboard"
+              "business/azure/overview",
+              "business/azure/onboard"
             ]
           },
           {
             "group": "GCP",
             "pages": [
-              "enterprise/gcp/overview",
-              "enterprise/gcp/onboard"
+              "business/gcp/overview",
+              "business/gcp/onboard"
             ]
           }
         ]
@@ -529,8 +529,7 @@
                 "pages": [
                   "support/how-to/overview",
                   "support/how-to/data-privacy",
-                  "support/how-to/invoice-issue",
-                  "support/how-to/cancel-renewal"
+                  "support/how-to/invoice-issue"
                 ]
               },
               {
@@ -751,6 +750,10 @@
       "destination": "/api-reference/overview"
     },
     {
+      "source": "/enterprise/:slug*",
+      "destination": "/business/:slug*"
+    },
+    {
       "source": "/glossary/glossary",
       "destination": "/welcome"
     },
@@ -804,7 +807,7 @@
     },
     {
       "source": "/self-hosted/:slug*",
-      "destination": "/enterprise/:slug*"
+      "destination": "/business/:slug*"
     },
     {
       "source": "/ui/billing",
