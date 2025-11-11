@@ -1,0 +1,42 @@
+---
+title: Authorization and permissions issues
+---
+
+## Issues
+
+When you try to connect Unstructured to a specifc source or destination, you get one of the following error types:
+
+- `PermissionError`: For example, for Amazon S3, an `Access Denied` error.
+- `ClientAuthenticationError`: For example, for Azure Blob Storage, an `AuthenticationFailed` or `Signature not valid` error.
+- `AuthError`: For example, for Dropbox, an `expired_access_token` error.
+- `ApiPermissionError`: For example, for Confluence, a `permission to view content` error.
+- `ClientRequestException`: For example, for OneDrive, an `AccessDenied` error.
+- `ValueError`: For example, for Outlook, an `invalid_grant` or `Conditional Access policies` error. For Google Drive, a `File not found related to auth` error.
+- `UserError`: For example, for Box, an `Access denied - insufficient permission` error.
+- `HttpResponseError`: For example, for Azure Blob Storage, an `AccountIsDisabled` error.
+
+## Possible causes
+
+Unstructured could not access the specified source or destination system due to invalid credentials, insufficient permissions, or restrictive policies. This error can still occur even though the related connector passed Unstructured's connection test.
+
+Possible causes include:
+
+- An incorrect API key, token, password, service account credential, tenant ID, or client ID was specified.
+- The specified credentials or access token has expired.
+- Insufficient permissions were granted; for example, read or list access is needed for indexing data, or write access is required for uploading data.
+- The source's or destination's associated account is disabled or inactive.
+- For Microsoft Entra ID, Conditional Access Policies are blocking the authentication flow.
+- The specified credentials might be valid, but an incorrect configuration points to a resource that is not authorized for those credentials.
+
+## Possible solutions
+
+- **Verify the credentials**: Double-check all authentication details&mdash;keys, secrets, tokens, usernames, passwords, and IDs&mdash;for typos and accuracy.
+- **Check the expiration**: Ensure that the specified token or key has not expired. Regenerate them if needed.
+- **Review permissions**: Confirm that the credentials have the required permissions for the operation&mdash;for example, `s3:ListBucket` and `s3:GetObject` for Amazon S3 indexing; `Files.Read.All` and `Sites.Read.All` for OneDrive or SharePoint; write permissions for upload destinations&mdash;and grant the necessary roles and permissions in the source and destination systems.
+- **Check the status of the account and resource**: Ensure that the user account or service principal is active, and the target resource&mdash;such as the Azure Storage Account&mdash;is enabled.
+- **Check the Conditional Access Policies (for Azure Blob Storage)**: Review the Microsoft Entra ID Conditional Access Policies. They might be blocking non-interactive sign-ins or require specific compliance. Adjust the policies or exclude the Unstructured service principal if appropriate and secure.
+- **Reconfigure the connector**: Delete and recreate the source or destination connector configuration in Unstructured with verified credentials.
+
+## Additional resources
+
+To ask questions or get additional help with this issue, see [requesting support](/support/request).
