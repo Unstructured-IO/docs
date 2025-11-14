@@ -207,9 +207,9 @@ print(embedding_encoder.is_unit_vector(), embedding_encoder.num_of_dimensions())
 
 ## `VoyageAIEmbeddingEncoder`
 
-The `VoyageAIEmbeddingEncoder` class connects to the VoyageAI to obtain embeddings for pieces of text.
+The `VoyageAIEmbeddingEncoder` class connects to the VoyageAI API to obtain embeddings for pieces of text using the VoyageAI Python client.
 
-`embed_documents` will receive a list of Elements, and return an updated list which includes the `embeddings` attribute for each Element.
+`embed_documents` will receive a list of Elements, and return an updated list which includes the `embeddings` attribute for each Element. The encoder automatically handles batching based on token limits for optimal performance.
 
 `embed_query` will receive a query as a string, and return a list of floats which is the embedding vector for the given query string.
 
@@ -219,9 +219,28 @@ The `VoyageAIEmbeddingEncoder` class connects to the VoyageAI to obtain embeddin
 
 The following code block shows an example of how to use `VoyageAIEmbeddingEncoder`. You will see the updated elements list (with the `embeddings` attribute included for each element), the embedding vector for the query string, and some metadata properties about the embedding model.
 
-To use Voyage AI you will need to pass Voyage AI API Key (obtained from [https://dash.voyageai.com/](https://dash.voyageai.com/)) as the `api_key` parameter.
+### Configuration Parameters
 
-The `model_name` parameter is mandatory, please check the available models at [https://docs.voyageai.com/docs/embeddings](https://docs.voyageai.com/docs/embeddings)
+To use Voyage AI you will need to pass the following parameters to `VoyageAIEmbeddingConfig`:
+
+- **`api_key`** (required): Voyage AI API Key obtained from [https://dash.voyageai.com/](https://dash.voyageai.com/)
+- **`model_name`** (required): The embedding model to use. Available models include:
+  - `voyage-3.5` - Latest general-purpose model with 1024 dimensions
+  - `voyage-3.5-lite` - Lightweight model with 512 dimensions and higher token limits
+  - `voyage-3-large` - Large model with enhanced performance
+  - `voyage-context-3` - Contextualized embedding model for document-level context
+  - `voyage-3`, `voyage-3-lite` - Previous generation models
+  - `voyage-2`, `voyage-02` - Legacy models
+  - Additional specialized models: `voyage-code-3`, `voyage-code-2`, `voyage-finance-2`, `voyage-law-2`, `voyage-multilingual-2`, `voyage-large-2`, `voyage-large-2-instruct`
+
+  For the complete list of available models, see [https://docs.voyageai.com/docs/embeddings](https://docs.voyageai.com/docs/embeddings)
+
+- **`show_progress_bar`** (optional, default: `False`): Display a progress bar during batch processing
+- **`batch_size`** (optional): Override the default batch size for embedding requests
+- **`truncation`** (optional): Enable automatic truncation of inputs that exceed token limits
+- **`output_dimension`** (optional): Specify a custom output dimension (model-dependent)
+
+### Basic Example
 
 ```python
 import os
@@ -229,21 +248,74 @@ import os
 from unstructured.documents.elements import Text
 from unstructured.embed.voyageai import VoyageAIEmbeddingConfig, VoyageAIEmbeddingEncoder
 
+# Basic configuration with required parameters
 embedding_encoder = VoyageAIEmbeddingEncoder(
     config=VoyageAIEmbeddingConfig(
         api_key=os.environ["VOYAGE_API_KEY"],
-        model_name="voyage-3"
+        model_name="voyage-3.5"
     )
 )
+
+# Embed documents
 elements = embedding_encoder.embed_documents(
     elements=[Text("This is sentence 1"), Text("This is sentence 2")],
 )
 
+# Embed a query
 query = "This is the query"
 query_embedding = embedding_encoder.embed_query(query=query)
 
+# Print results
 [print(e, e.embeddings) for e in elements]
 print(query, query_embedding)
 print(embedding_encoder.is_unit_vector, embedding_encoder.num_of_dimensions)
+```
 
+### Advanced Example with Custom Options
+
+```python
+import os
+
+from unstructured.documents.elements import Text
+from unstructured.embed.voyageai import VoyageAIEmbeddingConfig, VoyageAIEmbeddingEncoder
+
+# Advanced configuration with optional parameters
+embedding_encoder = VoyageAIEmbeddingEncoder(
+    config=VoyageAIEmbeddingConfig(
+        api_key=os.environ["VOYAGE_API_KEY"],
+        model_name="voyage-3.5",
+        show_progress_bar=True,  # Display progress during processing
+        truncation=True,         # Automatically truncate long texts
+        output_dimension=512     # Use reduced dimensions
+    )
+)
+
+# Process a larger batch of documents
+elements = embedding_encoder.embed_documents(
+    elements=[Text(f"Document {i}") for i in range(100)],
+)
+```
+
+### Using Contextual Embeddings
+
+The `voyage-context-3` model provides contextualized embeddings that consider document-level context:
+
+```python
+import os
+
+from unstructured.documents.elements import Text
+from unstructured.embed.voyageai import VoyageAIEmbeddingConfig, VoyageAIEmbeddingEncoder
+
+# Configure for contextual embeddings
+embedding_encoder = VoyageAIEmbeddingEncoder(
+    config=VoyageAIEmbeddingConfig(
+        api_key=os.environ["VOYAGE_API_KEY"],
+        model_name="voyage-context-3"
+    )
+)
+
+# Embed documents with contextual understanding
+elements = embedding_encoder.embed_documents(
+    elements=[Text("Context-aware sentence 1"), Text("Context-aware sentence 2")],
+)
 ```
