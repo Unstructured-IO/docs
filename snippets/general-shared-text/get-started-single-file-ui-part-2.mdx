@@ -180,8 +180,7 @@ In this step, you will test the **High Res** partitioning strategy on the "Chine
       - You can scroll through the original file on the left or, where supported for a given file type, click the up and down arrows to page through the file one page at a time.
       - You can scroll through Unstructured's JSON output on the right, and you can click **Search JSON** to search for specific text in the JSON output. You will do this next.
       - **Download Full JSON** allows you to download the full output to your local machine as a JSON file.
-      - **View JSON at this step** allows you to view the JSON output at each step in the workflow as it was further processed. There's only one step right now (the **Partitioner** step), 
-        but as you add more nodes to the workflow DAG, this can be a useful tool to see how the JSON output changes along the way.
+      - **View JSON at this step** allows you to view the JSON output at each step in the workflow as it is further processed.
       - The close (**X**) button returns you to the workflow designer.
    </Tip>
 
@@ -193,15 +192,12 @@ In this step, you will test the **High Res** partitioning strategy on the "Chine
 
    ![Searching the JSON output](/img/ui/walkthrough/SearchJSON.png)
 
-   - The Chinese characters on page 1. Search for the text `all have the meaning of acting`. Notice how the Chinese characters are captures correctly.
-   - The HTML representations of the seven tables on pages 6-9 and 12. Search for the text `"text_as_html":`.
-   - The descriptions of the four diagrams on page 3. Search for the text `\"diagram\",\n  \"description\"`.
-   - The descriptions of the three graphs on pages 7-8. Search for the text `\"graph\",\n  \"description\"`.
-   - The Base64-encoded, full-fidelity representations of the 14 tables, diagrams, and graphs on pages 3, 6-9, and 12. 
-     Search for the text `"image_base64":`. You can use a web-based tool such as [base64.guru](https://base64.guru/converter/decode/image) 
-     to experiment with decoding these representations back into their original visual representations.
+   - The Chinese characters on page 1. Search for the text `verbs. The characters`. Notice how the Chinese characters are captured correctly.
+   - The HTML representations of the seven tables on pages 6-9 and 12. Search for the text `text_as_html`.
+   - The descriptions of the four diagrams on page 3. Search for the text `"diagram` (including the opening quotation mark).
+   - The descriptions of the three graphs on pages 7-8. Search for the text `"graph` (including the opening quotation mark).
 
-8. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
+7. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
    the workflow designer for the next step.
 
 ## Step 4: Add more enrichments
@@ -209,7 +205,7 @@ In this step, you will test the **High Res** partitioning strategy on the "Chine
 Your existing workflow already has three **Enrichment** nodes. Recall that these nodes perform the following enrichments:
 
 - An [image description](ui/enriching/image-descriptions) enrichment, which uses a vision language model (VLM) to provide a text-based summary of the contents of the each detected image.
-- A [generative OCR](/ui/enriching/generative-ocr) enrichment, which uses a VLM to improve the accuracy of each block of initially-processed text.
+- A [generative OCR](/ui/enriching/generative-ocr) enrichment, which uses a VLM to improve the accuracy of each block of initially-processed text, as needed.
 - A [table to HTML](/ui/enriching/table-to-html) enrichment, which uses a VLM to provide an HTML-structured representation of each detected table.
 
 In this step, you add a few more [enrichments](/ui/enriching/overview) to your workflow, such as generating summary descriptions of detected tables, 
@@ -222,9 +218,9 @@ and generating detected entities (such as people and organizations) and the infe
 2. In the node's settings pane's **Details** tab, click:
 
    - **Table** under **Input Type**.
-   - **Anthropic** under **Provider**.
-   - **Claude Sonnet 4** under **Model**.
-   - **Table Description** under **Task**.
+   - Any available choice under **Provider**.
+   - Any available choice under **Model**.
+   - If not already selected, **Table Description** under **Task**.
 
    <Tip>
        The table description enrichment generates a summary description of each detected table. This can help you to more quickly and easily understand 
@@ -236,14 +232,14 @@ and generating detected entities (such as people and organizations) and the infe
    In the node's settings pane's **Details** tab, click:
       
    - **Text** under **Input Type**.
-   - **Anthropic** under **Provider**.
-   - **Claude Sonnet 4** under **Model**.
+   - Any available choice under **Provider**.
+   - Any available choice under **Model**.
       
    <Tip>
        The named entity recognition (NER) enrichment generates a list of detected entities (such as people and organizations) and the inferred relationships among these entities. This provides additional context about these entities' types and their relationships for your graph databases, RAG apps, agents, and models. [Learn more](/ui/enriching/ner).
    </Tip>
 
-   The workflow designer should now look like this:
+   The workflow designer should now look similar to this:
    
    ![The workflow with enrichments added](/img/ui/walkthrough/EnrichedWorkflow.png)
 
@@ -251,8 +247,8 @@ and generating detected entities (such as people and organizations) and the infe
 5. In the **Test output** pane, make sure that **Enrichment (6 of 6)** is showing. If not, click the right arrow (**>**) until **Enrichment (6 of 6)** appears, which will show the output from the last node in the workflow.
 6. Some interesting portions of the output include the following:
 
-   - The descriptions of the seven tables on pages 6-9 and 12. Search for the text `## Table Structure Analysis\n\n###`.
-   - The identified entities and inferred relationships among them. For example, search for the text `Zhijun Wang`. Of the eight instances of this name, notice 
+   - The descriptions of the seven tables on pages 6-9 and 12. Search for the text `"Table"` (including the quotation marks).
+   - The identified entities and inferred relationships among them. For example, search for the text `Zhijun Wang`. Of the nine instances of this name, notice 
      the author's identification as a `PERSON` three times, the author's `published` relationship twice, and the author's `affiliated_with` relationship twice.
 
 7. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
@@ -303,11 +299,11 @@ the resulting document elements' `text` content into manageable "chunks" to stay
        _What do each of these chunking settings do?_
 
        - **Contextual Chunking** prepends chunk-specific explanatory context to each chunk, which has been shown to yield significant improvements in downstream retrieval accuracy. [Learn more](/ui/chunking#contextual-chunking).
-       - **Include Original Elements** outputs into each chunk's `metadata` field's `orig_elements` value the elements that were used to form that particular chunk. [Learn more](/ui/chunking#include-original-elements-setting).
+       - **Include Original Elements** outputs into each chunk's `metadata` field's `orig_elements` value the elements that were used to form that particular chunk. These elements are output in gzip compressed, Base64 encoded format. To get back to the original content, Base64 decode and then gzip decompress the bytes as UTF-8. [Learn more](/ui/chunking#include-original-elements-setting).
        - **Max Characters** is the "hard" or maximum number of characters that any one chunk can contain. Unstructured cannot exceed this number when forming chunks. [Learn more](/ui/chunking#max-characters-setting).
        - **New After N Characters**: is the "soft" or approximate number of characters that any one chunk can contain. Unstructured can exceed this number if needed when forming chunks (but still cannot exceed the **Max Characters** setting). [Learn more](/ui/chunking#new-after-n-characters-setting).
        - **Overlap**, when applied (see **Overlap All**), prepends to the current chunk the specified number of characters from the previous chunk, which can help provide additional context about this chunk relative to the previous chunk. [Learn more](/ui/chunking#overlap-setting)
-       - **Overlap All** applies the **Overlap** setting (if greater than zero) to all chunks. Otherwise, unchecking this box means that the **Overlap** setting (if greater than zero)is applied only in edge cases where "normal" chunks cannot be formed by combining whole elements. Check this box with caution as it can introduce noise into otherwise clean semantic units. [Learn more](/ui/chunking#overlap-all-setting).
+       - **Overlap All** applies the **Overlap** setting (if greater than zero) to all chunks. Otherwise, unchecking this box means that the **Overlap** setting (if greater than zero) is applied only in edge cases where "normal" chunks cannot be formed by combining whole elements. Check this box with caution as it can introduce noise into otherwise clean semantic units. [Learn more](/ui/chunking#overlap-all-setting).
    </Tip>
 
 4. Immediately above the **Source** node, click **Test**.
@@ -409,7 +405,7 @@ embedding model that is provided by an embedding provider. For the best embeddin
 2. In the node's settings pane's **Details** tab, under **Select Embedding Model**, for **Azure OpenAI**, select **Text Embedding 3 Small [dim 1536]**.
 3. Immediately above the **Source** node, click **Test**.
 4. In the **Test output** pane, make sure that **Embedder (8 of 8)** is showing. If not, click the right arrow (**>**) until **Embedder (8 of 8)** appears, which will show the output from the last node in the workflow.
-5. To explore the embeddings, search for the text `"embeddings"`.
+5. To explore the embeddings, search for the text `"embeddings"` (including the quotation marks).
 
    <Tip>
       _What do all of these numbers mean?_

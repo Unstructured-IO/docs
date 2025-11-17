@@ -142,36 +142,43 @@ In this step, you use your new workflow to [partition](/ui/partitioning) the sam
 Partitioning is the process where Unstructured identifies and extracts content from your source documents and then 
 outputs this content as a series of contextually-rich [document elements and metadata](/ui/document-elements), which are 
 well-tuned for RAG, agentic AI, and model fine-tuning. This step 
-shows how well Unstructured's **High Res** partitioning strategy identifies and extracts content, and how well 
-Unstructured's **VLM** partitioning strategy handles 
-more complex content such as complex tables, multilanguage characters, and handwriting.
+shows how well Unstructured's **VLM** partitioning strategy handles challenging content such as complex tables, multilanguage characters, and handwriting.
 
 1. With the workflow designer active from the previous step, at the bottom of the **Source** node, click **Drop file to test**.
 
    ![Drop file to test button](/img/ui/walkthrough/DropFileToTest.png)
 
 2. Browse to and select the "Chinese Characters" PDF file that you downloaded earlier.
-3. Click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **High Res**.
-
-   ![Selecting the High Res partitioning strategy](/img/ui/walkthrough/HighResPartitioner.png)
+3. In the workflow designer, click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **VLM**.<br/>
 
    <Tip>
-       _When would I choose **Auto**, **Fast**, **High Res**, or **VLM**?_
+      _When would I choose **Auto**, **Fast**, **High Res**, or **VLM**?_
 
-       - **Auto** is recommended in most cases. It lets Unstructured figure out the best strategy to switch over to for each incoming file (and even for each page if the incoming file is a PDF), so you don't have to!
-       - **Fast** is only for when you know for certain that none of your files have tables, images, or multilanguage, scanned, or handwritten content in them. It's optimized for partitioning text-only content and is the fastest of all the strategies. It can recognize the text for only a few languages other than English.
-       - **High Res** is only for when you know for certain that at least one of your files has images or simple tables in them, and that none of your files also have scanned or handwritten content in them. It can recognize the text for more languages than **Fast** but not as many as **VLM**.
-       - **VLM** is great for any file, but it is best when you know for certain that some of your files have a combination of tables (especially complex ones), images, and multilanguage, scanned, or handwritten content. It's the highest quality but slowest of all the strategies.
-   
-       In this walkthrough, you switch between **High Res** and **VLM** strategies only to see how each of these strategies works with a combination of 
-       complex tables, images, and multilanguage, scanned, and handwritten content. In practice, for these kinds of files you would likely just want to choose **Auto**.
+      - **Auto** is recommended in most cases. It lets Unstructured figure out the best strategy to switch over to for each incoming file (and even for each page if the incoming file is a PDF), so you don't have to!
+      - **Fast** is only for when you know for certain that none of your files have tables, images, or multilanguage, scanned, or handwritten content in them. It's optimized for partitioning text-only content and is the fastest of all the strategies. It can recognize the text for only a few languages other than English.
+      - **High Res** is only for when you know for certain that at least one of your files has images or simple tables in them, and that none of your files also have scanned or handwritten content in them. It can recognize the text for more languages than **Fast** but not as many as **VLM**.
+      - **VLM** is great for any file, but it is best when you know for certain that some of your files have a combination of tables (especially complex ones), images, and multilanguage, scanned, or handwritten content. It's the highest quality but slowest of all the strategies.
    </Tip>
 
-4. Immediately above the **Source** node, click **Test**.
+4. Under **Select VLM Model**, under **Anthropic**, select **Claude Sonnet 4**.<br/>
+
+   ![Selecting the VLM for partitioning](/img/ui/walkthrough/VLMPartitioner.png)
+
+   <Tip>
+      _When I choose **VLM**, when would I choose one of these models over another?_
+
+      A _vision language model_ (VLM) is designed to use sophisticated AI techniques and logic to combine advanced image and text understanding, resulting in more accurate and 
+      contextually-rich output.
+      
+      As VLMs are constantly being released and improved, Unstructured is always adding to and updating its list of supported VLMs. 
+      If you aren't getting consistent results with one VLM for a particular set of files, switching over to another one might improve your results, depending on that VLM's capabilities and the sample data that is was trained on. 
+   </Tip>
+
+5. Click **Test**.<br/>
 
    ![Begin testing the local file](/img/ui/walkthrough/TestLocalFile.png)
 
-5. The PDF file appears in a pane on the left side of the screen, and Unstructured's output appears in a **Test output** pane on the right side of the screen.
+6. The PDF file appears in a pane on the left side of the screen, and Unstructured's output appears in a **Test output** pane on the right side of the screen.
 
    ![Showing the test output results](/img/ui/walkthrough/TestOutputResults.png)
 
@@ -197,72 +204,27 @@ more complex content such as complex tables, multilanguage characters, and handw
       - The close (**X**) button returns you to the workflow designer.
    </Tip>
 
-6. Some interesting portions of the output include the following, which you can get to be clicking **Search JSON** above the output:
+7. Notice the following in the JSON output, which you can get to by clicking **Search JSON** above the output:
 
    ![Searching the JSON output](/img/ui/walkthrough/SearchJSON.png)
 
-   - The Chinese characters on page 3. Search for the text `In StrokeNet, the corresponding`. Notice that the Chinese characters are not interpreted correctly.
-   - The formula on page 5. Search for the text `L= LL + Ln`. Notice that the formula's output diverges quite a bit from the original content.
-   - Table 2 on page 6. Search for the text `Model Parameters Performance (BLEU)`. Notice that the `text_as_html` output diverges slightly from the original content. 
-   - Figure 4 on page 8. Search for the text `50 45 40 35`. Notice that the output is not that informative about the original image's content. 
+   - The Chinese characters on page 1. Search for the text `verbs. The characters`. Notice that the Chinese characters are intepreted correctly.
+   - The tables on pages 1, 6, 7, 8, 9, and 12. Search for the text `"Table"` (including the quotation marks) to see how the VLM interprets the various tables. We'll see changes to these elements' `text` and `metadata.text_as_html` contents later in Step 4 in the enrichments portion of this walkthrough.
+   - The images on pages 3, 7, and 8. Search for the text `"Image"` (including the quotation marks) to see how the VLM interprets the various images. We'll see changes to these elements' `text` contents later in Step 4 in the enrichments portion of this walkthrough.
 
-   These quality issues will be addressed later in this step when you change the partitioning strategy to **VLM**, and later in **Step 4** when you add enrichments alongside **High Res** partitioning.
-
-7. Now try changing the partitioning strategy to **VLM** and see how the output changes. To do this:
+8. Now try looking at the "Nash letters" PDF file's output. To do this:
 
    a. Click the close (**X**) button above the output on the right side of the screen.<br/>
-   b. In the workflow designer, click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **VLM**.<br/>
-   c. Under **Select VLM Model**, under **Anthropic**, select **Claude Sonnet 4**.<br/>
+   b. At the bottom of the **Source** node, click the existing PDF's file name.<br/>
+   c. Browse to and select the "Nash letters" file that you downloaded earlier to your local machine.<br/>
    d. Click **Test**.<br/>
 
-   <Tip>
-       _When would I choose one of these models over another?_
+9. Notice the following in the JSON output:
 
-       A _vision language model_ (VLM) is designed to use sophisticated AI techniques and logic to combine advanced image and text understanding, resulting in more accurate and 
-       contextually-rich output.
-       
-       As VLMs are constantly being released and improved, Unstructured is always adding to and updating its list of supported VLMs. 
-       If you aren't getting consistent results with one VLM for a particular set of files, switching over to another one might improve your results, depending on that VLM's capabilities and the sample data that is was trained on. 
-   </Tip>
+   - The handwriting on page 3. Search for the text `I have written RAND`. Notice how well the handwriting is recognized.
+   - The mimeograph on page 11. Search for the text `Technicians at this Agency`. Notice how well the mimeographed content is recognized.
 
-8. Notice how the quality of the output changes, now that you are using the **VLM** strategy:
-       
-   - The Chinese characters on page 3. Search for the text `In StrokeNet, the corresponding`. Notice that the Chinese characters are intepreted correctly.
-   - The formula on page 5. Search for the text `match class`. Notice that the formula's output is closer to the original content.
-   - Table 2 on page 6. Search for the text `Model Parameters Performance (BLEU)`. Notice that the `text_as_html` output is closer to the original content.
-   - Figure 4 on page 8. Search for the text `Graph showing BLEU scores comparison`. Notice the informative description about the figure.
-
-9. Now try looking at the "Nash letters" PDF file's output. To do this:
-
-   a. Click the close (**X**) button above the output on the right side of the screen.<br/>
-   b. In the workflow designer, click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **High Res**.<br/>
-   c. At the bottom of the **Source** node, click the existing PDF's file name.<br/>
-   d. Browse to and select the "Nash letters" file that you downloaded earlier to your local machine.<br/>
-   e. Click **Test**.<br/>
-
-10. Some interesting portions of the **High Res** output against this handwritten and scanned content include the following:
-
-    - The handwriting on page 3. Search for the text `Deo Majr`. Notice that the handwriting is not recognized correctly.
-    - The mimeograph on page 11. Search for the text `Technicans at this Agency` (note the typo `Technicans`). 
-      Notice that the mimeograph contains `18 January 1955`, but the output contains only `January 1955`.
-    - The handwritten diagrams on page 13. Search for the text `"page_number": 13`. Notice that no output is generated for the diagrams.
-
-11. Now try changing the partitioning strategy to **VLM** and see how the quality of the output changes. To do this:
-
-    a. Click the close (**X**) button above the output on the right side of the screen.<br/>
-    b. In the workflow designer, click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **VLM**.<br/>
-    c. Under **Select VLM Model**, under **Anthropic**, select **Claude Sonnet 4**.<br/>
-    d. Click **Test**.<br/>
-
-12. Notice how the output changes, now that you are using the **VLM** strategy:
-
-    - The handwriting on page 3. Search for the text `Dear Major Grosjean`. Notice how well the handwriting is recognized correctly.
-    - The mimeograph on page 11. Search for the text `Technicians at this Agency` (note the corrected typo `Technicians`). 
-      Notice that the mimoegraph contains `18 January 1955`, and the output now also contains `18 January 1955`.
-    - The handwritten diagrams on page 13. Search for the text `graph LR`. Notice that [Mermaid](https://docs.mermaidchart.com/mermaid-oss/intro/syntax-reference.html) representations of the 
-      handwritten diagrams are output.
-
-13. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
+10. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
     the workflow designer for the next step.
 
 ## Step 4: Experiment with enriching
@@ -277,9 +239,10 @@ HTML representations of detected tables, and detected entities (such as people a
 
 3. In the node's settings pane's **Details** tab, click:
 
-   - **Image** under **Input Type**
-   - **OpenAI** under **Provider**
-   - **(GPT-4o)** under **Model**
+   - **Image** under **Input Type**.
+   - Any available choice for **Provider**.
+   - Any available choice for **Model**.
+   - If not already selected, **Image Description** under **Task**.
 
    <Tip>
        The image description enrichment generates a summary description of each detected image. This can help you to more quickly and easily understand 
@@ -294,9 +257,9 @@ HTML representations of detected tables, and detected entities (such as people a
       In the node's settings pane's **Details** tab, click:
 
       - **Table** under **Input Type**.
-      - **Anthropic** under **Provider**.
-      - **Claude Sonnet 4** under **Model**.
-      - **Table Description** under **Task**.
+      - Any available choice for **Provider**.
+      - Any available choice for **Model**.
+      - If not already selected, **Table Description** under **Task**.
 
       <Tip>
           The table description enrichment generates a summary description of each detected table. This can help you to more quickly and easily understand 
@@ -308,8 +271,8 @@ HTML representations of detected tables, and detected entities (such as people a
       In the node's settings pane's **Details** tab, click:
 
       - **Table** under **Input Type**.
-      - **Anthropic** under **Provider**.
-      - **Claude Sonnet 4** under **Model**.
+      - **OpenAI** under **Provider**.
+      - Any available choice under **Model**.
       - **Table to HTML** under **Task**.
       
       <Tip>
@@ -321,8 +284,8 @@ HTML representations of detected tables, and detected entities (such as people a
       In the node's settings pane's **Details** tab, click:
       
       - **Text** under **Input Type**.
-      - **Anthropic** under **Provider**.
-      - **Claude Sonnet 4** under **Model**.
+      - Any available choice under **Provider**.
+      - Any available choice under **Model**.
       
       <Tip>
           The named entity recognition (NER) enrichment generates a list of detected entities (such as people and organizations) and the inferred relationships among these entities. This provides additional context about these entities' types and their relationships for your graph databases, RAG apps, agents, and models. [Learn more](/ui/enriching/ner).
@@ -333,15 +296,12 @@ HTML representations of detected tables, and detected entities (such as people a
       In the node's settings pane's **Details** tab, click:
       
       - **Image** under **Input Type**.
-      - One of the following providers and models:
-
-        - **Anthropic** under **Provider** and any choice under **Model**
-        - **OpenAI** under **Provider** and any choice under **Model**
-
+      - **Anthropic** or **Amazon Bedrock** under **Provider**.
+      - Any available choice under **Model**.
       - **Generative OCR** under **Task**.
       
       <Tip>
-          The generative OCR enrichment improves the accuracy of text blocks that Unstructured initially processed during its partitioning phase. [Learn more](/ui/enriching/generative-ocr).
+          The generative OCR enrichment improves, as needed, the accuracy of text blocks that Unstructured initially processed during its partitioning phase. [Learn more](/ui/enriching/generative-ocr).
       </Tip>
 
       <Note>
@@ -349,7 +309,7 @@ HTML representations of detected tables, and detected entities (such as people a
           This is a known issue and will be addressed in a future release. 
       </Note>
    
-   The workflow designer should now look like this:
+   The workflow designer should now look similar to this:
    
    ![The workflow with enrichments added](/img/ui/walkthrough/EnrichedWorkflow.png)
 
@@ -360,8 +320,8 @@ HTML representations of detected tables, and detected entities (such as people a
 
 7. Some interesting portions of the output include the following:
 
-   - The figures on pages 3, 7, and 8. Search for the seven instances of the text `"type": "Image"`. Notice the summary description for each image.
-   - The tables on pages 6, 7, 8, 9, and 12. Search for the seven instances of the text `"type": "Table"`. Notice the summary description for each of these tables. 
+   - The images on pages 3, 7, and 8. Search for the text `"Image"` (including the quotation marks). Notice the summary description for each image.
+   - The tables on pages 1, 6, 7, 8, 9, and 12. Search for the text `"Table"` (including the quotation marks). Notice the summary description for each of these tables. 
      Also notice the `text_as_html` field for each of these tables.
    - The identified entities and inferred relationships among them. Search for the text `Zhijun Wang`. Of the eight instances of this name, notice 
      the author's identification as a `PERSON` three times, the author's `published` relationship twice, and the author's `affiliated_with` relationship twice.
@@ -422,8 +382,8 @@ the resulting document elements' `text` content into manageable "chunks" to stay
    </Tip>
 
 4. With the "Chinese Characters" PDF file still selected in the **Source** node, click **Test**.
-5. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.
-6. To explore the chunker's results, search for the text `"type": "CompositeElement"`.
+5. In the **Test output** pane, make sure that **Chunker (7 of 7)** is showing. If not, click the right arrow (**>**) until **Chunker (7 of 7)** appears, which will show the output from the last node in the workflow.
+6. To explore the chunker's results, search for the text `"CompositeElement"` (including the quotation marks).
 
    <Tip>
       _In the chunked output, where did all of the document elements I saw before, such as `Title`, `Image`, and `Table`, go?_
@@ -455,8 +415,8 @@ the resulting document elements' `text` content into manageable "chunks" to stay
       </Tip>
 
    d. Click **Test**.<br/>
-   e. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.<br/>
-   f. To explore the chunker's results, search for the text `"type": "CompositeElement"`. Notice that the lengths of some of the chunks that immediately 
+   e. In the **Test output** pane, make sure that **Chunker (7 of 7)** is showing. If not, click the right arrow (**>**) until **Chunker (7 of 7)** appears, which will show the output from the last node in the workflow.<br/>
+   f. To explore the chunker's results, search for the text `"CompositeElement"` (including the quotation marks). Notice that the lengths of some of the chunks that immediately 
       precede titles might be shortened due to the presence of the title impacting the chunk's size.
 
 8. Try running this workflow again with the **Chunk by Page** strategy, as follows:
@@ -472,8 +432,8 @@ the resulting document elements' `text` content into manageable "chunks" to stay
       - Leave **Contextual Chunking** turned off, and leave **Overlap All** unchecked.
 
    d. Click **Test**.<br/>
-   e. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.<br/>
-   f. To explore the chunker's results, search for the text `"type": "CompositeElement"`. Notice that the lengths of some of the chunks that immediately 
+   e. In the **Test output** pane, make sure that **Chunker (7 of 7)** is showing. If not, click the right arrow (**>**) until **Chunker (7 of 7)** appears, which will show the output from the last node in the workflow.<br/>
+   f. To explore the chunker's results, search for the text `"CompositeElement"` (including the quotation marks). Notice that the lengths of some of the chunks that immediately 
       precede page breaks might be shortened due to the presence of the page break impacting the chunk's size.<br/>
 
 9. Try running this workflow again with the **Chunk by Similarity** strategy, as follows:
@@ -497,10 +457,10 @@ the resulting document elements' `text` content into manageable "chunks" to stay
       </Tip>
 
    d. Click **Test**.<br/>
-   e. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.<br/>
-   f. To explore the chunker's results, search for the text `"type": "CompositeElement"`. Notice that the lengths of many of the chunks fall well short of the **Max Characters** limit. This is because a similarity threshold 
+   e. In the **Test output** pane, make sure that **Chunker (7 of 7)** is showing. If not, click the right arrow (**>**) until **Chunker (7 of 7)** appears, which will show the output from the last node in the workflow.<br/>
+   f. To explore the chunker's results, search for the text `"CompositeElement"` (including the quotation marks). Notice that the lengths of many of the chunks fall well short of the **Max Characters** limit. This is because a similarity threshold 
       of **0.99** means that only sentences or text segments with a near-perfect semantic match will be grouped together into the same chunk. This is an extremely high threshold, resulting in very short, highly specific chunks of text. <br/>
-   g. If you change **Similarity Threshold** to **0.01** and run the workflow again, searching for the text `"type": "CompositeElement"`, many of the chunks will now come closer to the **Max Characters** limit. This is because a similarity threshold 
+   g. If you change **Similarity Threshold** to **0.01** and run the workflow again, searching for the text `"CompositeElement"` (including the quotation marks), many of the chunks will now come closer to the **Max Characters** limit. This is because a similarity threshold 
       of **0.01** provides an extreme tolerance of differences between pieces of text, grouping almost anything together.<br/>
 
 10. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
@@ -519,8 +479,8 @@ embedding model that is provided by an embedding provider. For the best embeddin
 
 2. In the node's settings pane's **Details** tab, under **Select Embedding Model**, for **Azure OpenAI**, select **Text Embedding 3 Small [dim 1536]**.
 3. With the "Chinese Characters" PDF file still selected in the **Source** node, click **Test**.
-4. In the **Test output** pane, make sure that **Embedder (7 of 7)** is showing. If not, click the right arrow (**>**) until **Embedder (7 of 7)** appears, which will show the output from the last node in the workflow.
-5. To explore the embeddings, search for the text `"embeddings"`.
+4. In the **Test output** pane, make sure that **Embedder (8 of 8)** is showing. If not, click the right arrow (**>**) until **Embedder (8 of 8)** appears, which will show the output from the last node in the workflow.
+5. To explore the embeddings, search for the text `"embeddings"` (including the quotation marks).
 
    <Tip>
       _What do all of these numbers mean?_
