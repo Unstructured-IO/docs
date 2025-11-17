@@ -4,47 +4,49 @@ sidebarTitle: UI
 ---
 
 <Note>
-    The following information applies only to dedicated instance and in-VPC deployments of [Unstructured Enterprise](/enterprise/overview). 
+    The following information applies only to dedicated instance and in-VPC deployments of [Unstructured Business](/business/overview). 
 
-    IdP integration is not available for Unstructured **Starter** or **Team** accounts.
+    IdP integration is not available for **Business SaaS** accounts.
 </Note>
 
 The following information assumes that Unstructured has already connected your organization's IdP to your Unstructured account. 
-For more information, see [Getting started](/enterprise/idp/overview#getting-started).
+For more information, see [Getting started](/business/idp/overview#getting-started).
 
-## Add an IdP group to your Unstructured account
+## Add an IdP group to an organizational account
 
 1. If you are not already signed in, sign in to your Unstructured account.
 2. In the top navigation bar, in the organizational account selector, select the name of the organizational account that you want to add the IdP group to.
-3. TODO: Describe how to go to the account's **Identity Provider Groups** page.
-4. Click **New Group**.
-5. On the **Connect Group** page, for **Identity Provider Group**, type the name of the IdP group that you want to add, and then click **Continue**.
+3. In the sidebar, above your user icon, click the **Settings** (gear) icon, and then click **Manage Account**.
+4. In the top navigation bar, click **IdP Groups**.
+5. Click **+ New Group**.
+6. On the **Connect Group** page, for **Identity Provider Group**, type the name of the IdP group that you want to add, and then click **Continue**.
 
    <Note>
        You must type the name of the IdP group exactly as it appears in your IdP. Otherwise, Unstructured will not be able to 
        successfully complete the connection to that IdP group through your IdP.
    </Note>
 
-6. On the **Assign Role** page, for **Account Role**,select the name of the [organizational account role](/ui/account/roles#organizational-account-roles) that you want to assign to the IdP group for this 
+7. On the **Assign Account Role** page, for **Account Role**, select the name of the [organizational account role](/ui/account/roles#organizational-account-roles) that you want to assign to the IdP group for this 
    organizational account, and then click **Continue**.
-7. On the **Assign Workspaces** page, for **Workspaces and permissions**, select each workspace&mdash;and the 
+8. On the **Assign Workspaces** page, for **Workspaces and permissions**, select each workspace&mdash;and the 
    [workspace role](/ui/account/roles#workspace-roles) for that workspace&mdash;that you want to assign to the IdP group, and then click **Add**.
 
-   <Tip>
-       You can also create a new workspace here&mdash;and assign the IdP group to it with a workspace role at the same time&mdash;by clicking **Add Workspace**.
-   </Tip>
+   <Note>
+       The **Assign Workspaces** page does not apply if the IdP group is assigned the **Super Administrator** organizational account role. 
+       This is because an IdP group with the **Super Administrator** role automatically has full access to all of the organizational account's workspaces. 
+   </Note>
 
-8. Click **Save Group**.
+9. Click **Save Group**.
 
-The account and workspace roles' permissions are enabled for each of the IdP group's existing users the next time they sign in to your 
-Unstructured account. 
+The organizational account and workspaces' roles' permissions are enabled for each of the IdP group's existing users the first (or next) time they sign in to your Unstructured account and then choose 
+this organizational account.
 
 Whenever you add a user to the IdP group, they get the associated account and workspace roles' permissions the next time they 
-sign in to your Unstructured account. 
+sign in to your Unstructured account and then choose this organizational account. 
 
-If a user is already signed in to your Unstructured account but is not getting the permissions they expect, the user should try signing out of your Unstructured account and then signing back in again, to get those permissions. 
+If a user is already signed in to your Unstructured account and has chosen this organizational account, but they are not getting the permissions they expect, the user should try signing out of your Unstructured account and then signing back in and choosing this organizational account again, to get those permissions. 
 
-If you remove a user from the IdP group, the associated account and workspace roles' permissions are revoked for them the next time they sign in to your Unstructured account.
+If you remove a user from the IdP group, the associated account and workspace roles' permissions are revoked for them the next time they sign in to your Unstructured account and then choose this organizational account. An exception to this is if the user was otherwise [added as an individual user to the account](#add-individual-users-to-an-account).
 
 ## Add an IdP group to a workspace
 
@@ -53,7 +55,7 @@ This procedure assumes you have already added the IdP group to your Unstructured
 1. If you are not already signed in, sign in to your Unstructured account.
 2. In the top navigation bar, in the organizational account selector, select the name of the organizational account that contains the workspace.
 3. In the top navigation bar, in the workspace selector, select the name of the workspace.
-4. On the **Members** tab, click **Add New**, and then click **Add New IdP Group**.
+4. On the **Members** tab, click **Add New +**, and then click **+ Add Group**.
 5. Select the IdP group to add and its [workspace role](/ui/account/roles#workspace-roles) for this workspace, and then click **Save Changes**.
 
 ## Change a workspace role for an IdP group
@@ -65,7 +67,7 @@ This procedure assumes you have already added the IdP group to your Unstructured
 3. In the top navigation bar, in the workspace selector, select the name of the workspace.
 4. On the **Members** tab, click the ellipsis (three dots) next to the name of the IdP group.
 5. Click **Edit Permissions**.
-6. TODO: Describe how to finish changing the IdP group's workspace role.
+6. Select the IdP group's new workspace role, and then click **Continue**.
 
 ## Change an account role for an IdP group
 
@@ -73,42 +75,55 @@ This procedure assumes you have already added the IdP group to your Unstructured
 
 1. If you are not already signed in, sign in to your Unstructured account.
 2. In the top navigation bar, in the organizational account selector, select the name of the organizational account.
-3. TODO: Describe how to go to the account's **Identity Provider Groups** page.
-4. Select the name of the IdP group.
-5. Next to **Account Role**, click the edit (pencil) icon.
-6. Select the new [organizational account role](/ui/account/roles#organizational-account-roles) for the IdP group.
+3. In the sidebar, above your user icon, click the **Settings** (gear) icon, and then click **Manage Account**.
+4. In the top navigation bar, click **IdP Groups**.
+5. Click the name of the IdP group.
+6. Next to **Account Role**, click the edit (pencil) icon.
+7. Select the new [organizational account role](/ui/account/roles#organizational-account-roles) for the IdP group.
 
-## Add individual users to your Unstructured account
+## Add individual users to an account
 
-Unstructured recommends that you add IdP groups to your Unstructured account, instead of adding individual users. 
+Unstructured recommends that you add IdP groups to an organizational account, instead of adding individual users. 
 Managing IdP groups can be easier, faster, and less error-prone than managing individual users. 
-However, if you must add individual users to your Unstructured account, you can do so by following these steps.
+However, if you must add individual users to an organizational account (for example, if you want to give a user 
+access to an organizational account at a different level than the access that is granted to them through their IdP groups), 
+you can do so by following these steps.
 
 1. If you are not already signed in, sign in to your Unstructured account.
 2. In the top navigation bar, in the organizational account selector, select the name of the organizational account.
-3. On the **Members** tab, click **New Member**.
-4. On the **Add Member** page, for **Email**, type the email address of each individual user to add, and then click **Continue**.
-5. On the **Assign Role** page, for **Account Role**, select the [organizational account role](/ui/account/roles#organizational-account-roles) for the individual users, and then click **Continue**.
+3. In the sidebar, above your user icon, click the **Settings** (gear) icon, and then click **Manage Account**.
+3. On the **Members** tab, click **New Member +**.
+4. On the **Add New Member** page, for **Email**, type the email address of each individual user to add.
+5. For all of the email addresses that you typed, select the [organizational account role](/ui/account/roles#organizational-account-roles) for all of the individual users at once, and then click **Continue**.
 
    <Warning>
        An organizational account role that is assigned to an individual user always overrides any organizational account role that is assigned to any IdP group to which that user belongs. 
-       This override happens the next time they sign in to your Unstructured account.
+       This override happens the next time they sign in to your Unstructured account and then choose this organizational account.
    </Warning>
 
-6. On the **Assign Workspaces** page, for **Workspaces and permissions**, select each workspace&mdash;and the 
-   [workspace role](/ui/account/roles#workspace-roles) for that workspace&mdash;that you want to assign to the individual users 
-   for each workspace&mdash;and then click **Add**.
+6. Click **Continue**.
+
+## Add individual users to a workspace
+
+Unstructured recommends that you add IdP groups to your workspaces, instead of adding individual users. 
+Managing IdP groups can be easier, faster, and less error-prone than managing individual users. 
+However, if you must add individual users to workspaces (for example, if you want to give a user 
+access to workspaces at a different level than the access than is granted to them through their IdP groups), 
+you can do so by following these steps.
+
+1. If you are not already signed in, sign in to your Unstructured account.
+2. In the top navigation bar, in the organizational account selector, select the name of the organizational account that contains the workspace.
+3. In the top navigation bar, in the workspace selector, select the name of the workspace.
+4. On the **Members** tab, click **Add New+**, and then click **+ Add Member**.
+5. On the **Add New Member** page, for **Email**, type the email address of each individual user to add.
+6. For all of the email addresses that you typed, select the [workspace role](/ui/account/roles#workspace-roles) for all of the individual users at once, and then click **Continue**.
 
    <Warning>
        A workspace role that is assigned to an individual user always overrides any workspace role that is assigned to any IdP group to which that user belongs. 
-       This override happens the next time they sign in to your Unstructured account.
+       This override happens the next time they sign in to your Unstructured account and then choose this organizational account.
    </Warning>
 
-   <Tip>
-       You can also create a new workspace here&mdash;and assign individual users to it with a workspace role at the same time&mdash;by clicking **Add Workspace**.
-   </Tip>
-
-7. Click **Invite Members**.
+7. Click **Continue**.
 
 ## Change a workspace role for an individual user
 
@@ -133,12 +148,12 @@ This procedure assumes you have already added the individual user to your Unstru
 
 This procedure assumes you have already added the individual user to your Unstructured account and the workspace within that account. [Learn how](#add-individual-users-to-your-unstructured-account).
 
-<Note>
+<Warning>
     Removing an individual user from a workspace does not necessarily revoke all access to that workspace!
     
     After you remove an individual user from a workspace, any workspace role that is assigned to any IdP group to which that user belongs will then be applied. 
     This happens the next time they sign in to your Unstructured account.
-</Note>
+</Warning>
 
 This procedure assumes you have already added the user to your Unstructured account and the workspace within that account. [Learn how](#add-individual-users-to-your-unstructured-account).
 
@@ -151,12 +166,12 @@ This procedure assumes you have already added the user to your Unstructured acco
 
 This procedure assumes you have already added the individual user to your Unstructured account. [Learn how](#add-individual-users-to-your-unstructured-account).
 
-<Note>
+<Warning>
     Removing an individual user from an account does not necessarily revoke all access to that account!
 
     After you remove an indivdual user from an account, any account role that is assigned to any IdP group to which that user belongs will then be applied. 
     This happens the next time they sign in to your Unstructured account.
-</Note>
+</Warning>
 
 This procedure assumes you have already assigned the user to the account. [Learn how](#assign-an-account-role-to-an-individual-user).
 
@@ -182,13 +197,18 @@ This procedure assumes you have already added the IdP group to your Unstructured
 
 This procedure assumes you have already added the IdP group to your Unstructured account. [Learn how](#add-an-idp-group-to-your-unstructured-account).
 
-<Note>
-    After you remove an IdP group from an account, all users in that group will lose access to your Unstructured account. 
+<Warning>
+    After you remove an IdP group from an account, all users in that group will lose access to your Unstructured account the next time they sign in 
+    to your Unstructured account and then choose this organizational account.
+    unless 
+    they were otherwise [add as individual users to the account]() . 
+    
     This happens the next time they sign in to your Unstructured account.
-</Note>
+</Warning>
 
 1. If you are not already signed in, sign in to your Unstructured account.
 2. In the top navigation bar, in the organizational account selector, select the name of the organizational account.
-3. TODO: Describe how to go to the account's **Identity Provider Groups** page.
-4. Select the name of the IdP group.
-5. Click **Delete Group**.
+3. In the sidebar, above your user icon, click the **Settings** (gear) icon, and then click **Manage Account**.
+4. In the top navigation bar, click **IdP Groups**.
+5. Click the name of the IdP group.
+6. In the settings pane, click **Delete Group**.
