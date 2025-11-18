@@ -51,7 +51,7 @@ To create an automatic workflow:
 8. The **Reprocess All** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
 
    - Checking this box reprocesses all documents in the source location on every workflow run.
-   - Unchecking this box causes only new documents that are added to the source location, or existing documents that are updated in the source location, since the last workflow run to be processed on future runs. Previously processed documents are not processed again. However:
+   - Unchecking this box causes only new documents that are added to the source location, or existing documents that are updated in the source location (as determined by checking whether the file's version has changed), since the last workflow run to be processed on future runs. Previously processed documents are not processed again. However:
 
      - Even if this box is unchecked, a renamed file is always treated as a new file, regardless of whether the file's original contents have changed.
      - Even if this box is unchecked, a file that is removed but is added back later with the same file name is processed on future runs only if the file's contents have changed since the file was originally processed.
@@ -148,7 +148,7 @@ If you did not previously set the workflow to run on a schedule, you can [run th
    The **Reprocess All Files** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
 
    - Checking this box reprocesses all documents in the source location on every workflow run.
-   - Unchecking this box causes only new documents that are added to the source locations, or existing documents that are updated in the source location, since the last workflow run to be processed on future runs. Previously processed documents are not processed again. However:
+   - Unchecking this box causes only new documents that are added to the source locations, or existing documents that are updated in the source location (as determined by checking whether the file's version has changed), since the last workflow run to be processed on future runs. Previously processed documents are not processed again. However:
 
      - Even if this box is unchecked, a renamed file is always treated as a new file, regardless of whether the file's original contents have changed.
      - Even if this box is unchecked, a file that is removed but is added back later with the same file name is processed on future runs only if the file's contents have changed since the file was originally processed.
