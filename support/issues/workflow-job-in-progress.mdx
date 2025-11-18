@@ -1,0 +1,28 @@
+---
+title: Workflow already has a job scheduled or in progress
+---
+
+## Issue
+
+When you try to run a workflow, you get a warning message that contains text similar to the following:
+
+```text
+Failed to schedule job for workflow ... Workflow already has a job scheduled or in progress. Retrying in 60 seconds.
+```
+
+## Causes
+
+- Unstructured tried to start a new job run for the workflow, but the previous job run for that workflow is stuck or has otherwise not finished yet.
+- The workflow's schedule is too frequent for how long the job takes to run. For example, the workflow might be scheduled to 
+  run every 5 minutes, but each job run for that workflow typically takes 10 minutes or longer to complete.
+
+## Solutions
+
+- Unstructured will wait and try the new job run again in 60 seconds.
+- Check previous job runs for the workflow to see if any of them are stuck. If so, try to cancel them.
+- Check previous job runs for the workflow to see if any of them seem to be running much longer than usual. If so,
+  consider adjusting the workflow's schedule to run less frequently. Or, temporarily turn off the workflow's schedule and then run the workflow manually as needed.
+
+## Additional resources
+
+To ask questions or get additional help with this issue, see [requesting support](/support/request).

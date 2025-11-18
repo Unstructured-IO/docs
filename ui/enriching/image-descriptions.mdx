@@ -2,6 +2,16 @@
 title: Image descriptions
 ---
 
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/pMQm9ymM3N8"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
+
 After partitioning, you can have Unstructured generate text-based summaries of detected images.
 
 This summarization is done by using models offered through various model providers.
@@ -59,6 +69,7 @@ Any embeddings that are produced after these summaries are generated will be bas
 ## Generate image descriptions
 
 import EnrichmentImageSummaryHiResOnly from '/snippets/general-shared-text/enrichment-image-summary-hi-res-only.mdx';
+import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-ui.mdx';
 
 To generate image descriptions, in an **Enrichment** node in a workflow, select **Image**, and then choose one of the available provider (and model) combinations that are shown.
 
@@ -68,5 +79,7 @@ To generate image descriptions, in an **Enrichment** node in a workflow, select 
     For workflows that use [chunking](/ui/chunking), the **Chunker** node should be placed after all **Enrichment** nodes. Placing the 
     **Chunker** node before an image descriptions **Enrichment** node could cause incomplete or no image descriptions to be generated.
 </Note>
+
+<DeprecatedModelsUI />
 
 <EnrichmentImageSummaryHiResOnly />

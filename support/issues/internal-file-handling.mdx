@@ -1,0 +1,31 @@
+---
+title: Internal issues
+---
+
+## Issues
+
+Unstructured returns one of the following error types:
+
+- `NotFoundException`: For example, an error retrieving intermediate file data from internal storage, with a pattern such as `/f8c6.../element_dicts/...json`.
+- `FileNotFoundError`: For example, an error with internal system paths that use a pattern such as `/home/etl/node/staged/...` or `/home/etl/node/downloads/...`.
+- `ValueError`: For example, a `Failed to decrypt secret` error.
+- `AttributeError`: For example, a `'TimeoutError' object has no attribute 'status_code'` error.
+- `asyncio.exceptions.CancelledError`
+
+## Possible causes
+
+- There is an error in a previous workflow or ingestion pipeline stage within Unstructured's environment that is preventing intermediate files from being created correctly.
+- There are file system or storage issues within Unstructured's environment.
+- There are problems with Unstructured's internal management of secret keys or configurations.
+- There are issues with Unstructured's internal error handling or service lifecycle management.
+- There are some other general issues with Unstructured's internal workings, often related to managing temporary files or internal state.
+
+## Possible solutions
+
+- **Retry the job**: Retry the entire job, as the issue might have been temporary.
+- **Contact Unstructured Support**: These issues are generally fixable only by Unstructured. These issues typically indicate internal issues that customers cannot fix themselves. 
+  Be sure when you [contact Unstructured Support](/support/request) to include the full error message, timestamp, and job details.
+
+## Additional resources
+
+To ask questions or get additional help with this issue, see [requesting support](/support/request).

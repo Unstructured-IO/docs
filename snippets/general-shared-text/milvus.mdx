@@ -1,7 +1,61 @@
-- For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api-reference/overview), only Milvus cloud-based instances (such as Zilliz Cloud, and Milvus on IBM watsonx.data) are supported.
+- For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api-reference/overview), only Milvus cloud-based instances (such as Milvus on IBM watsonx.data, or Zilliz Cloud) are supported.
 - For [Unstructured Ingest](/open-source/ingestion/overview), Milvus local and cloud-based instances are supported.
 
-The following video shows how to fulfill the minimum set of requirements for Milvus cloud-based instances, demonstrating Milvus on IBM watsonx.data:
+- For Milvus on IBM watsonx.data, you will need:
+
+  <iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/hLCwoe2fCnc"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+  ></iframe>
+
+  - An [IBM Cloud account](https://cloud.ibm.com/registration).
+  - An IBM watsonx.data [Lite plan](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-tutorial_prov_lite_1) 
+    or [Enterprise plan](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started_1) within your IBM Cloud account.
+
+    - If you are provisoning a Lite plan, be sure to choose the **Generative AI** use case when prompted, as this is the only use case offered that includes Milvus.
+
+  - A [Milvus service instance in IBM watsonx.data](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-adding-milvus-service).
+
+    - If you are creating a Milvus service instance within a watsonx.data Lite plan, when you are prompted to choose a Milvus instance size, you can only select **Lite**. Because the Lite 
+      Milvus instance size is recommended only for 384 dimensions, you should also use an embedding model that uses 384 dimensions only.
+    - If you are creating a Milvus service instance within a watsonx.data Enterprise plan, you can choose any available Milvus instance size. However, all Milvus instance sizes other than 
+      **Custom** are recommended only for 384 dimensions, which means you should use an embedding model that uses 384 dimensions only. 
+      The **Custom** Milvus instance size is recommended for any number of dimensions.
+
+  - The URI of the instance, which takes the format of `https://`, followed by instance's **GRPC host**, followed by a colon and the **GRPC port**. 
+    This takes the format of `https://<host>:<port>`. To get this informatation, do the following:
+
+    a. Sign in to your IBM Cloud account.<br/>
+    b. On the sidebar, click the **Resource list** icon. If the sidebar is not visible, click the **Navigation Menu** icon to the far left of the title bar.<br/>
+    c. Expand **Databases**, and then click the name of the target **watsonx.data** plan.<br/>
+    d. Click **Open web console**.<br/>
+    e. On the sidebar, click **Infrastructure manager**. If the sidebar is not visible, click the **Global navigation** icon to the far left of the title bar.<br/>
+    f. Click the target Milvus service instance.<br/>
+    g. On the **Details** tab, under **Type**, click **View connect details**.<br/>
+    h. Under **Service details**, expand **GRPC**, and note the value of **GRPC host** and **GRPC port**.<br/>
+
+  - The name of the [database](https://milvus.io/docs/manage_databases.md) in the instance.
+  - The name of the [collection](https://milvus.io/docs/manage-collections.md) in the database. Note the collection requirements at the end of this section.
+  - The username and password to access the instance. 
+
+    - The username for Milvus on IBM watsonx.data is always `ibmlhapikey`. 
+    - The password for Milvus on IBM watsonx.data is in the form of an IBM Cloud user API key. To create an IBM Cloud user API key:
+
+      a. Sign in to your IBM Cloud account.<br/>
+      b. In the title bar, click **Manage** and then, under **Security and access**, click **Access (IAM)**.<br/>
+      c. On the sidebar, under **Manage identities**, click **API keys**. If the sidebar is not visible, click the **Navigation Menu** icon to the far left of the title bar.<br/>
+      d. Click **Create**.<br/>
+      e. Enter some **Name** for the API key.<br/>
+      f. Optionally, enter some **Description** for the API key.<br/>
+      g. For **Leaked action**, leave **Disable the leaked key** selected.<br/>
+      h. For **Session management**, leave **No** selected.<br/>
+      i. Click **Create**.<br/>
+      j. Click **Download** (or **Copy**), and then download the API key to a secure location (or paste the copied API key into a secure location). You won't be able to access this API key from this dialog again. If you lose this API key, you can create a new one (and you should then delete the old one).<br/>
 
 - For Zilliz Cloud, you will need:
 
@@ -37,42 +91,22 @@ The following video shows how to fulfill the minimum set of requirements for Mil
   - The name of the [database](https://docs.zilliz.com/docs/database#create-database) in the instance.
   - The name of the [collection](https://docs.zilliz.com/docs/manage-collections-console#create-collection) in the database.
 
-    The collection must have a a defined schema before Unstructured can write to the collection. The minimum viable 
-    schema for Unstructured contains only the fields `element_id`, `embeddings`, and `record_id`, as follows:
+    The collection must have a defined schema before Unstructured can write to the collection. The minimum viable 
+    schema for Unstructured contains only the fields `element_id`, `embeddings`, `record_id`, and `text`, as follows:
 
     | Field Name | Field Type | Max Length | Dimension |
     |---|---|---|---|
     | `element_id` (primary key field) | **VARCHAR** | `200` | -- |
-    | `embeddings` (vector field) | **FLOAT_VECTOR** | -- | `3072` |
+    | `embeddings` (vector field) | **FLOAT_VECTOR** | -- | `384` |
     | `record_id` | **VARCHAR** | `200` | -- |
+    | `text` | **VARCHAR** | `65536` | -- |
 
     In the **Create Index** area for the collection, next to **Vector Fields**, click **Edit Index**. Make sure that for the 
     `embeddings` field, the **Field Type** is set to **FLOAT_VECTOR** and the **Metric Type** is set to **Cosine**.
 
-- For Milvus on IBM watsonx.data, you will need:
-
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/hLCwoe2fCnc"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
-
-  - An [IBM Cloud account](https://cloud.ibm.com/registration).
-  - The [IBM watsonx.data subscription plan](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started).
-  - A [Milvus service instance in IBM watsonx.data](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-adding-milvus-service).
-  - The URI of the instance, which takes the format of `https://`, followed by instance's **GRPC host**, followed by a colon and the **GRPC port**. 
-    This takes the format of `https://<host>:<port>`. 
-    [Get the instance's GRPC host and GRPC port](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-conn-to-milvus).
-  - The name of the [database](https://milvus.io/docs/manage_databases.md) in the instance.
-  - The name of the [collection](https://milvus.io/docs/manage-collections.md) in the database. Note the collection requirements at the end of this section.
-  - The uername and password to access the instance. 
-    The username for Milvus on IBM watsonx.data is always `ibmlhapikey`. 
-    The password for Milvus on IBM watsonx.data is in the form of an IBM Cloud user API key. 
-    [Get the user API key](https://cloud.ibm.com/docs/account?topic=account-userapikey&interface=ui).
+    <Warning>
+        The number of dimensions for the `embeddings` field must match the number of dimensions for the embedding model that you plan to use.
+    </Warning>
 
 - For Milvus local, you will need:
 
@@ -84,74 +118,96 @@ The following video shows how to fulfill the minimum set of requirements for Mil
   - The [username and password, or token](https://milvus.io/docs/authenticate.md) to access the instance.
 
 All Milvus instances require the target collection to have a defined schema before Unstructured can write to the collection. The minimum viable 
-schema for Unstructured contains only the fields `element_id`, `embeddings`, and `record_id`, as follows. Adding a `text` field is optional but highly recommended.This example code demonstrates the use of the 
+schema for Unstructured contains only the fields `element_id`, `embeddings`, `record_id`, and `text`, as follows. 
+
+This example code demonstrates the use of the 
 [Python SDK for Milvus](https://pypi.org/project/pymilvus/) to create a collection with this schema, 
-targeting Milvus on IBM watsonx.data. For the `connections.connect` arguments to connect to other types of Milvus deployments, see your Milvus provider's documentation:
+targeting Milvus on IBM watsonx.data. For the `MilvusClient` arguments to connect to other types of Milvus deployments, see your Milvus provider's documentation:
 
 ```python Python
 import os
+
 from pymilvus import (
-    connections,
+    MilvusClient,
     FieldSchema,
     DataType,
-    CollectionSchema,
-    Collection,
+    CollectionSchema
 )
 
-connections.connect(
-    alias="default",
-    host=os.getenv("MILVUS_GRPC_HOST"),
-    port=os.getenv("MILVUS_GRPC_PORT"),
-    user=os.getenv("MILVUS_USER"),
-    password=os.getenv("MILVUS_PASSWORD"),
-    secure=True
+DATABASE_NAME   = "default"
+COLLECTION_NAME = "my_collection"
+
+client = MilvusClient(
+    uri="https://" +
+        os.getenv("MILVUS_USER") + 
+        ":" + 
+        os.getenv("MILVUS_PASSWORD") + 
+        "@" + 
+        os.getenv("MILVUS_GRPC_HOST") + 
+        ":" + 
+        os.getenv("MILVUS_GRPC_PORT"),
+    db_name=DATABASE_NAME
 )
 
-primary_key = FieldSchema(
+primary_key_field = FieldSchema(
     name="element_id",
     dtype=DataType.VARCHAR,
     is_primary=True,
     max_length=200
 )
 
-vector = FieldSchema(
+# IMPORTANT: The number of dimensions for the "embeddings" field
+# must match the number of dimensions for the embedding model 
+# that you plan to use.
+embeddings_field = FieldSchema(
     name="embeddings",
     dtype=DataType.FLOAT_VECTOR,
-    dim=3072
+    dim=384
 )
 
-record_id = FieldSchema(
+record_id_field = FieldSchema(
     name="record_id",
     dtype=DataType.VARCHAR,
     max_length=200
 )
 
-text = FieldSchema(
+text_field = FieldSchema(
     name="text",
     dtype=DataType.VARCHAR,
-    max_length=65536
+    max_length=65535
 )
 
 schema = CollectionSchema(
-    fields=[primary_key, vector, record_id, text],
-    enable_dynamic_field=True
+    fields=[
+        primary_key_field, 
+        embeddings_field,
+        record_id_field, 
+        text_field
+    ]
 )
 
-collection = Collection(
-    name="my_collection",
+client.create_collection(
+    collection_name=COLLECTION_NAME",
     schema=schema,
-    using="default"
+    using=DATABASE_NAME
 )
 
-index_params = {
-    "metric_type": "L2",
-    "index_type": "IVF_FLAT",
-    "params": {"nlist": 1024}
-}
+index_params = client.prepare_index_params()
 
-collection.create_index(
+index_params.add_index(
     field_name="embeddings",
+    metric_type="COSINE",
+    index_type="IVF_FLAT",
+    params={"nlist": 1024}
+)
+
+client.create_index(
+    collection_name=COLLECTION_NAME,
     index_params=index_params
+)
+
+client.load_collection(
+    collection_name=COLLECTION_NAME
 )
 ```
 

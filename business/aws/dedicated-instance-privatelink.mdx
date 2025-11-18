@@ -1,0 +1,56 @@
+---
+title: Unstructured Business dedicated instance on Amazon Web Services (AWS) with PrivateLink - onboarding
+sidebarTitle: Dedicated instance + PrivateLink onboarding
+---
+
+<Note>
+    The following information applies only to dedicated instance deployments with PrivateLink for [Unstructured Business](/business/overview) on AWS. 
+
+    For dedicated instance deployments of Unstructured Business to AWS _without_ PrivateLink, contact your Unstructured sales representative, 
+    or email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+
+    For in-VPC deployments of Unstructured Business to AWS instead, see the [AWS in-VPC onboarding](/business/aws/onboard) checklist.
+</Note>
+
+After your organization has signed the **Business** account agreement with Unstructured, a member of the Unstructured technical enablement team will reach out to you to begin the 
+deployment onboarding process. While you wait, you can get started by following the onboarding process:
+
+1. Provide your Unstructured sales representative or technical enablement contact with the AWS Region name 
+   where you want the dedicated instance deployment to be created. Unstructured will begin creating the dedicated instance deployment in that AWS Region.
+
+   <Note>
+       If you do not know who your Unstructured sales representative or technical enablement contact is, 
+       email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io), and a member of the Unstructured sales or technical enablement teams 
+       will get back to you as soon as possible.
+   </Note>
+
+   Unstructured supports only the following AWS Regions for dedicated instance deployments:
+
+   | Name | Code |
+   | --- | --- |
+   | `us-east-1` | US East (N. Virginia) |
+   | `us-east-2` | US East(Ohio) |
+   | `us-west-2` | US West(Oregon) |
+   | `eu-west-1` | Europoe (Ireland) |
+   | `eu-north-1` | Europe (Stockholm) |
+   | `eu-central-1` | Europe (Frankfurt) |
+   | `ap-southeast-2` | Asia Pacific (Sydney) |
+   | `ap-south-1` | Asia Pacific (Mumbai) |
+   | `ap-northeast-2` |Asia Pacific (Seoul) |
+
+2. In your AWS account, create an endpoint service powered by AWS PrivateLink. Be sure when creating the endpoint service to use the same AWS Region name that you provided to Unstructured. 
+   [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html). (In AWS terminology, this makes you the _service provider_ and 
+   Unstructured the _service consumer_.)
+3. As the service provider, you must provide your Unstructured sales representative or technical enablement contact (as the service consumer) with the name of your endpoint service 
+   (for example, `com.amazonaws.vpce.us-east-1.vpce-svc-0e123abc123198abc`) and the supported Availability Zones for that endpoint service, for the AWS Region 
+   name that you provided to Unstructured earlier. [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html#share-endpoint-service).
+4. As the service consumer, Unstructured will create a related endpoint service in its own AWS account in the same AWS Region as your AWS account. Unstructured will then send you an endpoint connection request to 
+   complete the connection between its endpoint service (as the service consumer) and your endpoint service (as the service provider). 
+   You must accept Unstructured's endpoint connection request as soon as possible, to avoid delays in the deployment process. 
+   [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html#accept-reject-connection-requests).
+
+## Questions? Need help?
+
+If you have questions or need help as you go, contact your Unstructured sales representative or technical enablement contact. If you do not know who they are, 
+email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io), and a member of the Unstructured sales or technical enablement teams 
+will get back to you as soon as possible.
