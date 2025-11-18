@@ -103,7 +103,7 @@ Here are a few examples:
 
 If the option to include original elements is specified, during chunking the `orig_elements` field is added to the `metadata` field of each chunked element. 
 The `orig_elements` field is a list of the original elements that were used to create the current chunked element. This list is output in 
-compressed Base64 gzipped format. To get back to the original content for this list, Base64-decode the list's bytes, decompress them, and then decode them using UTF-8. 
+gzip compressed, Base64-encoded format. To get back to the original content for this list, Base64-decode the list's bytes, and then gzip decompress them as UTF-8. 
 [Learn how](/api-reference/partition/get-chunked-elements).
 
 After chunking, `Image` elements are not preserved in the output. However, 

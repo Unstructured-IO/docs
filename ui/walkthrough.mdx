@@ -22,6 +22,14 @@ These files, which are available for you to download to your local machine, incl
   This PDF file features English handwriting and scanned images of documents. 
   Throughout this walkthrough, this file's title is shortened to "Nash letters" for brevity.
 
+<Note>
+    This walkthrough focuses on local files for ease-of-use demonstration purposes.
+    
+    This walkthrough does not cover how to use 
+    Unstructured to set up [connectors](/ui/connectors) to do large-scale batch processing of multiple files and semi-structured data that are stored in remote locations. 
+    To learn how to set up connectors and do large-scale batch processing later, see the [next steps](#next-steps) after you finish this walkthrough.
+</Note>
+
 If you are not able to complete any of the following steps, contact Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
 
 <Tip>
@@ -76,7 +84,7 @@ Let's get going!
    <Tip>
        _What do the other buttons on the sidebar do?_
 
-       - **Start** takes you to the UI home page.
+       - **Start** takes you to the UI home page. The home page features a simple way to process one local file at a time with limited default settings. [Learn how](/welcome#unstructured-ui-quickstart).
        - **Connectors** allows you to create and manage your [source](/ui/sources/overview) and 
          [destination](/ui/destinations/overview) connectors.
        - **Jobs** allows you to see the results of your workflows that are run manually (on-demand) and automatically (on a regular time schedule). [Learn more](/ui/jobs).
@@ -95,7 +103,7 @@ Let's get going!
    <Tip>
        _What does **Build it For Me** do?_
 
-       The **Build it For Me** option creates an [automatic workflow](/ui/workflows#create-an-automatic-workflow) with sensible default settings to enable you to get good-quality results faster. However, 
+       The **Build it For Me** option creates an [automatic workflow](/ui/workflows#create-an-automatic-workflow) with limited, sensible default settings to enable you to get good-quality results faster. However, 
        this option requires that you first have an existing remote source and destination connector to add to the workflow. To speed things up here and keep things simple, 
        this walkthrough only processes files from your local machine and skips the use of connectors. To learn how to use connectors later, 
        see the [next steps](#next-steps) at the end of this walkthrough.
@@ -134,36 +142,43 @@ In this step, you use your new workflow to [partition](/ui/partitioning) the sam
 Partitioning is the process where Unstructured identifies and extracts content from your source documents and then 
 outputs this content as a series of contextually-rich [document elements and metadata](/ui/document-elements), which are 
 well-tuned for RAG, agentic AI, and model fine-tuning. This step 
-shows how well Unstructured's **High Res** partitioning strategy identifies and extracts content, and how well 
-Unstructured's **VLM** partitioning strategy handles 
-more complex content such as complex tables, multilanguage characters, and handwriting.
+shows how well Unstructured's **VLM** partitioning strategy handles challenging content such as complex tables, multilanguage characters, and handwriting.
 
 1. With the workflow designer active from the previous step, at the bottom of the **Source** node, click **Drop file to test**.
 
    ![Drop file to test button](/img/ui/walkthrough/DropFileToTest.png)
 
 2. Browse to and select the "Chinese Characters" PDF file that you downloaded earlier.
-3. Click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **High Res**.
-
-   ![Selecting the High Res partitioning strategy](/img/ui/walkthrough/HighResPartitioner.png)
+3. In the workflow designer, click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **VLM**.<br/>
 
    <Tip>
-       _When would I choose **Auto**, **Fast**, **High Res**, or **VLM**?_
+      _When would I choose **Auto**, **Fast**, **High Res**, or **VLM**?_
 
-       - **Auto** is recommended in most cases. It lets Unstructured figure out the best strategy to switch over to for each incoming file (and even for each page if the incoming file is a PDF), so you don't have to!
-       - **Fast** is only for when you know for certain that none of your files have tables, images, or multilanguage, scanned, or handwritten content in them. It's optimized for partitioning text-only content and is the fastest of all the strategies. It can recognize the text for only a few languages other than English.
-       - **High Res** is only for when you know for certain that at least one of your files has images or simple tables in them, and that none of your files also have scanned or handwritten content in them. It can recognize the text for more languages than **Fast** but not as many as **VLM**.
-       - **VLM** is great for any file, but it is best when you know for certain that some of your files have a combination of tables (especially complex ones), images, and multilanguage, scanned, or handwritten content. It's the highest quality but slowest of all the strategies.
-   
-       In this walkthrough, you switch between **High Res** and **VLM** strategies only to see how each of these strategies works with a combination of 
-       complex tables, images, and multilanguage, scanned, and handwritten content. In practice, for these kinds of files you would likely just want to choose **Auto**.
+      - **Auto** is recommended in most cases. It lets Unstructured figure out the best strategy to switch over to for each incoming file (and even for each page if the incoming file is a PDF), so you don't have to!
+      - **Fast** is only for when you know for certain that none of your files have tables, images, or multilanguage, scanned, or handwritten content in them. It's optimized for partitioning text-only content and is the fastest of all the strategies. It can recognize the text for only a few languages other than English.
+      - **High Res** is only for when you know for certain that at least one of your files has images or simple tables in them, and that none of your files also have scanned or handwritten content in them. It can recognize the text for more languages than **Fast** but not as many as **VLM**.
+      - **VLM** is great for any file, but it is best when you know for certain that some of your files have a combination of tables (especially complex ones), images, and multilanguage, scanned, or handwritten content. It's the highest quality but slowest of all the strategies.
    </Tip>
 
-4. Immediately above the **Source** node, click **Test**.
+4. Under **Select VLM Model**, under **Anthropic**, select **Claude Sonnet 4**.<br/>
+
+   ![Selecting the VLM for partitioning](/img/ui/walkthrough/VLMPartitioner.png)
+
+   <Tip>
+      _When I choose **VLM**, when would I choose one of these models over another?_
+
+      A _vision language model_ (VLM) is designed to use sophisticated AI techniques and logic to combine advanced image and text understanding, resulting in more accurate and 
+      contextually-rich output.
+      
+      As VLMs are constantly being released and improved, Unstructured is always adding to and updating its list of supported VLMs. 
+      If you aren't getting consistent results with one VLM for a particular set of files, switching over to another one might improve your results, depending on that VLM's capabilities and the sample data that is was trained on. 
+   </Tip>
+
+5. Click **Test**.<br/>
 
    ![Begin testing the local file](/img/ui/walkthrough/TestLocalFile.png)
 
-5. The PDF file appears in a pane on the left side of the screen, and Unstructured's output appears in a **Test output** pane on the right side of the screen.
+6. The PDF file appears in a pane on the left side of the screen, and Unstructured's output appears in a **Test output** pane on the right side of the screen.
 
    ![Showing the test output results](/img/ui/walkthrough/TestOutputResults.png)
 
@@ -189,72 +204,27 @@ more complex content such as complex tables, multilanguage characters, and handw
       - The close (**X**) button returns you to the workflow designer.
    </Tip>
 
-6. Some interesting portions of the output include the following, which you can get to be clicking **Search JSON** above the output:
+7. Notice the following in the JSON output, which you can get to by clicking **Search JSON** above the output:
 
    ![Searching the JSON output](/img/ui/walkthrough/SearchJSON.png)
 
-   - The Chinese characters on page 3. Search for the text `In StrokeNet, the corresponding`. Notice that the Chinese characters are not interpreted correctly.
-   - The formula on page 5. Search for the text `L= LL + Ln`. Notice that the formula's output diverges quite a bit from the original content.
-   - Table 2 on page 6. Search for the text `Model Parameters Performance (BLEU)`. Notice that the `text_as_html` output diverges slightly from the original content. 
-   - Figure 4 on page 8. Search for the text `50 45 40 35`. Notice that the output is not that informative about the original image's content. 
+   - The Chinese characters on page 1. Search for the text `verbs. The characters`. Notice that the Chinese characters are intepreted correctly.
+   - The tables on pages 1, 6, 7, 8, 9, and 12. Search for the text `"Table"` (including the quotation marks) to see how the VLM interprets the various tables. We'll see changes to these elements' `text` and `metadata.text_as_html` contents later in Step 4 in the enrichments portion of this walkthrough.
+   - The images on pages 3, 7, and 8. Search for the text `"Image"` (including the quotation marks) to see how the VLM interprets the various images. We'll see changes to these elements' `text` contents later in Step 4 in the enrichments portion of this walkthrough.
 
-   These quality issues will be addressed later in this step when you change the partitioning strategy to **VLM**, and later in **Step 4** when you add enrichments alongside **High Res** partitioning.
-
-7. Now try changing the partitioning strategy to **VLM** and see how the output changes. To do this:
+8. Now try looking at the "Nash letters" PDF file's output. To do this:
 
    a. Click the close (**X**) button above the output on the right side of the screen.<br/>
-   b. In the workflow designer, click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **VLM**.<br/>
-   c. Under **Select VLM Model**, under **Anthropic**, select **Claude Sonnet 4**.<br/>
+   b. At the bottom of the **Source** node, click the existing PDF's file name.<br/>
+   c. Browse to and select the "Nash letters" file that you downloaded earlier to your local machine.<br/>
    d. Click **Test**.<br/>
 
-   <Tip>
-       _When would I choose one of these models over another?_
+9. Notice the following in the JSON output:
 
-       A _vision language model_ (VLM) is designed to use sophisticated AI techniques and logic to combine advanced image and text understanding, resulting in more accurate and 
-       contextually-rich output.
-       
-       As VLMs are constantly being released and improved, Unstructured is always adding to and updating its list of supported VLMs. 
-       If you aren't getting consistent results with one VLM for a particular set of files, switching over to another one might improve your results, depending on that VLM's capabilities and the sample data that is was trained on. 
-   </Tip>
+   - The handwriting on page 3. Search for the text `I have written RAND`. Notice how well the handwriting is recognized.
+   - The mimeograph on page 11. Search for the text `Technicians at this Agency`. Notice how well the mimeographed content is recognized.
 
-8. Notice how the quality of the output changes, now that you are using the **VLM** strategy:
-       
-   - The Chinese characters on page 3. Search for the text `In StrokeNet, the corresponding`. Notice that the Chinese characters are intepreted correctly.
-   - The formula on page 5. Search for the text `match class`. Notice that the formula's output is closer to the original content.
-   - Table 2 on page 6. Search for the text `Model Parameters Performance (BLEU)`. Notice that the `text_as_html` output is closer to the original content.
-   - Figure 4 on page 8. Search for the text `Graph showing BLEU scores comparison`. Notice the informative description about the figure.
-
-9. Now try looking at the "Nash letters" PDF file's output. To do this:
-
-   a. Click the close (**X**) button above the output on the right side of the screen.<br/>
-   b. In the workflow designer, click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **High Res**.<br/>
-   c. At the bottom of the **Source** node, click the existing PDF's file name.<br/>
-   d. Browse to and select the "Nash letters" file that you downloaded earlier to your local machine.<br/>
-   e. Click **Test**.<br/>
-
-10. Some interesting portions of the **High Res** output against this handwritten and scanned content include the following:
-
-    - The handwriting on page 3. Search for the text `Deo Majr`. Notice that the handwriting is not recognized correctly.
-    - The mimeograph on page 11. Search for the text `Technicans at this Agency` (note the typo `Technicans`). 
-      Notice that the mimeograph contains `18 January 1955`, but the output contains only `January 1955`.
-    - The handwritten diagrams on page 13. Search for the text `"page_number": 13`. Notice that no output is generated for the diagrams.
-
-11. Now try changing the partitioning strategy to **VLM** and see how the quality of the output changes. To do this:
-
-    a. Click the close (**X**) button above the output on the right side of the screen.<br/>
-    b. In the workflow designer, click the **Partitioner** node and then, in the node's settings pane's **Details** tab, select **VLM**.<br/>
-    c. Under **Select VLM Model**, under **Anthropic**, select **Claude Sonnet 4**.<br/>
-    d. Click **Test**.<br/>
-
-12. Notice how the output changes, now that you are using the **VLM** strategy:
-
-    - The handwriting on page 3. Search for the text `Dear Major Grosjean`. Notice how well the handwriting is recognized correctly.
-    - The mimeograph on page 11. Search for the text `Technicians at this Agency` (note the corrected typo `Technicians`). 
-      Notice that the mimoegraph contains `18 January 1955`, and the output now also contains `18 January 1955`.
-    - The handwritten diagrams on page 13. Search for the text `graph LR`. Notice that [Mermaid](https://docs.mermaidchart.com/mermaid-oss/intro/syntax-reference.html) representations of the 
-      handwritten diagrams are output.
-
-13. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
+10. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
     the workflow designer for the next step.
 
 ## Step 4: Experiment with enriching
@@ -267,48 +237,91 @@ HTML representations of detected tables, and detected entities (such as people a
    
    ![Adding an enrichment node](/img/ui/walkthrough/AddEnrichment.png)
 
-3. In the node's settings pane's **Details** tab, select **Image** under **Input Type**, and then click **OpenAI (GPT-4o)** under **Model**.
+3. In the node's settings pane's **Details** tab, click:
+
+   - **Image** under **Input Type**.
+   - Any available choice for **Provider**.
+   - Any available choice for **Model**.
+   - If not already selected, **Image Description** under **Task**.
 
    <Tip>
        The image description enrichment generates a summary description of each detected image. This can help you to more quickly and easily understand 
        what each image is all about without having to stop to manually visualize and interpret the image's content yourself. This also provides additional helpful context about the image for your RAG apps, agents, and models. [Learn more](/ui/enriching/image-descriptions).
    </Tip>
 
-4. Repeat this process to add three more nodes between the **Partitioner** and **Destination** nodes. To do this, click 
+4. Repeat this process to add four more nodes between the **Partitioner** and **Destination** nodes. To do this, click 
    the add (**+**) icon, and then click **Enrich > Enrichment**, as follows:
 
-   a. Add a **Table** (under **Input Type**) enrichment node with **OpenAI (GPT-4o)** (under **Model**) and **Table Description** (under **Task**) selected.<br/><br/>
-      
+   a. Add a table description enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > Enrichment).
+   
+      In the node's settings pane's **Details** tab, click:
+
+      - **Table** under **Input Type**.
+      - Any available choice for **Provider**.
+      - Any available choice for **Model**.
+      - If not already selected, **Table Description** under **Task**.
+
       <Tip>
           The table description enrichment generates a summary description of each detected table. This can help you to more quickly and easily understand 
           what each table is all about without having to stop to manually read through the table's content yourself. This also provides additional helpful context about the table for your RAG apps, agents, and models. [Learn more](/ui/enriching/table-descriptions).
       </Tip>
 
-   b. Add another **Table** (under **Input Type**) enrichment node with **OpenAI (GPT-4o)** (under **Model**) and **Table to HTML** (under **Task**) selected.<br/><br/>
+   b. Add a table to HTML enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > Enrichment).
+   
+      In the node's settings pane's **Details** tab, click:
+
+      - **Table** under **Input Type**.
+      - **OpenAI** under **Provider**.
+      - Any available choice under **Model**.
+      - **Table to HTML** under **Task**.
       
       <Tip>
           The table to HTML enrichment generates an HTML representation of each detected table. This can help you to more quickly and accurately recreate the table's content elsewhere later as needed. This also provides additional context about the table's structure for your RAG apps, agents, and models. [Learn more](/ui/enriching/table-to-html).
       </Tip>
 
-   c. Add a **Text** (under **Input Type**) enrichment node with **OpenAI (GPT-4o)** (under **Model**) selected.<br/><br/>
+   c. Add a named entity recognition enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > Enrichment).
+   
+      In the node's settings pane's **Details** tab, click:
+      
+      - **Text** under **Input Type**.
+      - Any available choice under **Provider**.
+      - Any available choice under **Model**.
       
       <Tip>
           The named entity recognition (NER) enrichment generates a list of detected entities (such as people and organizations) and the inferred relationships among these entities. This provides additional context about these entities' types and their relationships for your graph databases, RAG apps, agents, and models. [Learn more](/ui/enriching/ner).
       </Tip>
+
+   d. Add a generative OCR enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > Enrichment).
    
-   The workflow designer should now look like this:
+      In the node's settings pane's **Details** tab, click:
+      
+      - **Image** under **Input Type**.
+      - **Anthropic** or **Amazon Bedrock** under **Provider**.
+      - Any available choice under **Model**.
+      - **Generative OCR** under **Task**.
+      
+      <Tip>
+          The generative OCR enrichment improves, as needed, the accuracy of text blocks that Unstructured initially processed during its partitioning phase. [Learn more](/ui/enriching/generative-ocr).
+      </Tip>
+
+      <Note>
+          The **Generative OCR** enrichment appears under the **Input Type** of **Image**, even though this is not an image-related enrichment. 
+          This is a known issue and will be addressed in a future release. 
+      </Note>
+   
+   The workflow designer should now look similar to this:
    
    ![The workflow with enrichments added](/img/ui/walkthrough/EnrichedWorkflow.png)
 
 5. Change the **Source** node to use the "Chinese Characters" PDF file, and then click **Test**.
-6. In the **Test output** pane, make sure that **Enrichment (5 of 5)** is showing. If not, click the right arrow (**>**) until **Enrichment (5 of 5)** appears, which will show the output from the last node in the workflow.
+6. In the **Test output** pane, make sure that **Enrichment (6 of 6)** is showing. If not, click the right arrow (**>**) until **Enrichment (6 of 6)** appears, which will show the output from the last node in the workflow.
 
    ![The final Enrichment node's output](/img/ui/walkthrough/GoToEnrichmentNode.png)
 
 7. Some interesting portions of the output include the following:
 
-   - The figures on pages 3, 7, and 8. Search for the seven instances of the text `"type": "Image"`. Notice the summary description for each image.
-   - The tables on pages 6, 7, 8, 9, and 12. Search for the seven instances of the text `"type": "Table"`. Notice the summary description for each of these tables. 
+   - The images on pages 3, 7, and 8. Search for the text `"Image"` (including the quotation marks). Notice the summary description for each image.
+   - The tables on pages 1, 6, 7, 8, 9, and 12. Search for the text `"Table"` (including the quotation marks). Notice the summary description for each of these tables. 
      Also notice the `text_as_html` field for each of these tables.
    - The identified entities and inferred relationships among them. Search for the text `Zhijun Wang`. Of the eight instances of this name, notice 
      the author's identification as a `PERSON` three times, the author's `published` relationship twice, and the author's `affiliated_with` relationship twice.
@@ -369,8 +382,8 @@ the resulting document elements' `text` content into manageable "chunks" to stay
    </Tip>
 
 4. With the "Chinese Characters" PDF file still selected in the **Source** node, click **Test**.
-5. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.
-6. To explore the chunker's results, search for the text `"type": "CompositeElement"`.
+5. In the **Test output** pane, make sure that **Chunker (7 of 7)** is showing. If not, click the right arrow (**>**) until **Chunker (7 of 7)** appears, which will show the output from the last node in the workflow.
+6. To explore the chunker's results, search for the text `"CompositeElement"` (including the quotation marks).
 
    <Tip>
       _In the chunked output, where did all of the document elements I saw before, such as `Title`, `Image`, and `Table`, go?_
@@ -402,8 +415,8 @@ the resulting document elements' `text` content into manageable "chunks" to stay
       </Tip>
 
    d. Click **Test**.<br/>
-   e. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.<br/>
-   f. To explore the chunker's results, search for the text `"type": "CompositeElement"`. Notice that the lengths of some of the chunks that immediately 
+   e. In the **Test output** pane, make sure that **Chunker (7 of 7)** is showing. If not, click the right arrow (**>**) until **Chunker (7 of 7)** appears, which will show the output from the last node in the workflow.<br/>
+   f. To explore the chunker's results, search for the text `"CompositeElement"` (including the quotation marks). Notice that the lengths of some of the chunks that immediately 
       precede titles might be shortened due to the presence of the title impacting the chunk's size.
 
 8. Try running this workflow again with the **Chunk by Page** strategy, as follows:
@@ -419,8 +432,8 @@ the resulting document elements' `text` content into manageable "chunks" to stay
       - Leave **Contextual Chunking** turned off, and leave **Overlap All** unchecked.
 
    d. Click **Test**.<br/>
-   e. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.<br/>
-   f. To explore the chunker's results, search for the text `"type": "CompositeElement"`. Notice that the lengths of some of the chunks that immediately 
+   e. In the **Test output** pane, make sure that **Chunker (7 of 7)** is showing. If not, click the right arrow (**>**) until **Chunker (7 of 7)** appears, which will show the output from the last node in the workflow.<br/>
+   f. To explore the chunker's results, search for the text `"CompositeElement"` (including the quotation marks). Notice that the lengths of some of the chunks that immediately 
       precede page breaks might be shortened due to the presence of the page break impacting the chunk's size.<br/>
 
 9. Try running this workflow again with the **Chunk by Similarity** strategy, as follows:
@@ -444,10 +457,10 @@ the resulting document elements' `text` content into manageable "chunks" to stay
       </Tip>
 
    d. Click **Test**.<br/>
-   e. In the **Test output** pane, make sure that **Chunker (6 of 6)** is showing. If not, click the right arrow (**>**) until **Chunker (6 of 6)** appears, which will show the output from the last node in the workflow.<br/>
-   f. To explore the chunker's results, search for the text `"type": "CompositeElement"`. Notice that the lengths of many of the chunks fall well short of the **Max Characters** limit. This is because a similarity threshold 
+   e. In the **Test output** pane, make sure that **Chunker (7 of 7)** is showing. If not, click the right arrow (**>**) until **Chunker (7 of 7)** appears, which will show the output from the last node in the workflow.<br/>
+   f. To explore the chunker's results, search for the text `"CompositeElement"` (including the quotation marks). Notice that the lengths of many of the chunks fall well short of the **Max Characters** limit. This is because a similarity threshold 
       of **0.99** means that only sentences or text segments with a near-perfect semantic match will be grouped together into the same chunk. This is an extremely high threshold, resulting in very short, highly specific chunks of text. <br/>
-   g. If you change **Similarity Threshold** to **0.01** and run the workflow again, searching for the text `"type": "CompositeElement"`, many of the chunks will now come closer to the **Max Characters** limit. This is because a similarity threshold 
+   g. If you change **Similarity Threshold** to **0.01** and run the workflow again, searching for the text `"CompositeElement"` (including the quotation marks), many of the chunks will now come closer to the **Max Characters** limit. This is because a similarity threshold 
       of **0.01** provides an extreme tolerance of differences between pieces of text, grouping almost anything together.<br/>
 
 10. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
@@ -466,8 +479,8 @@ embedding model that is provided by an embedding provider. For the best embeddin
 
 2. In the node's settings pane's **Details** tab, under **Select Embedding Model**, for **Azure OpenAI**, select **Text Embedding 3 Small [dim 1536]**.
 3. With the "Chinese Characters" PDF file still selected in the **Source** node, click **Test**.
-4. In the **Test output** pane, make sure that **Embedder (7 of 7)** is showing. If not, click the right arrow (**>**) until **Embedder (7 of 7)** appears, which will show the output from the last node in the workflow.
-5. To explore the embeddings, search for the text `"embeddings"`.
+4. In the **Test output** pane, make sure that **Embedder (8 of 8)** is showing. If not, click the right arrow (**>**) until **Embedder (8 of 8)** appears, which will show the output from the last node in the workflow.
+5. To explore the embeddings, search for the text `"embeddings"` (including the quotation marks).
 
    <Tip>
       _What do all of these numbers mean?_
@@ -497,18 +510,18 @@ embedding model that is provided by an embedding provider. For the best embeddin
 Congratulations! You now have an Unstructured workflow that partitions, enriches, chunks, and embeds your source documents, producing 
 context-rich data that is ready for retrieval-augmented generation (RAG), agentic AI, and model fine-tuning.
 
-Right now, your workflow only accepts one local file at a time for input. Your workflow also only sends Unstructured's processed data to your screen or to be save locally as a JSON file. 
+Right now, your workflow only accepts one local file at a time for input. Your workflow also only sends Unstructured's processed data to your screen or to be saved locally as a JSON file. 
 You can modify your workflow to accept multiple files and data from&mdash;and send Unstructured's processed data to&mdash;one or more file storage 
 locations, databases, and vector stores. To learn how to do this, try one or more of the following quickstarts:
 
-- [Remote quickstart](/ui/quickstart#remote-quickstart)
-- [Dropbox source connector quickstart](/ui/sources/dropbox-source-quickstart)
-- [Pinecone destination connector quickstart](/ui/destinations/pinecone-destination-quickstart)
+- [Remote quickstart](/ui/quickstart#remote-quickstart) - This quickstart show you how to begin processing files and semi-structured data from remote source locations at scale, instead of just one local file at a time.
+- [Dropbox source connector quickstart](/ui/sources/dropbox-source-quickstart) - If you don't have any remote source locations available for Unstructured to connect to, this quickstart shows you how to set up a Dropbox account to store your documents in, and then connect Unstructured to your Dropbox account.
+- [Pinecone destination connector quickstart](/ui/destinations/pinecone-destination-quickstart) - If you don't have any remote destination locations available for Unstructured to send its processed data to, this quickstart shows you how to set up a Pinecone account to have Unstructured store its processed data in, and then connect Unstructured to your Pinecone account.
 
 Unstructured also offers an API and SDKs, which allow you to use code to work with Unstructured programmatically instead of only with the UI. For details, see:
 
-- [Unstructured API quickstart](/api-reference/workflow/overview#quickstart)
-- [Unstructured Python SDK](/api-reference/workflow/overview#unstructured-python-sdk)
-- [Unstructured API overview](/api-reference/overview)
+- [Unstructured API quickstart](/api-reference/workflow/overview#quickstart) - This quickstart uses the Unstructured Workflow Endpoint to programmatically create a Dropbox source connector and a Pinecone destination connector in your Unstructured account. You then programmatically add these connectors to a workflow in your Unstructured account, run that workflow as a job, and then explore the job's results.
+- [Unstructured Python SDK](/api-reference/workflow/overview#unstructured-python-sdk) - This article provides an overview of the Unstructured Python SDK and how to use it.
+- [Unstructured API overview](/api-reference/overview) - This article provides an overview of the Unstructured API and how to use it.
 
 If you are not able to complete any of the preceding quickstarts, contact Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).

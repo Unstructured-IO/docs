@@ -123,7 +123,8 @@
                   "ui/enriching/image-descriptions",
                   "ui/enriching/table-descriptions",
                   "ui/enriching/table-to-html",
-                  "ui/enriching/ner"
+                  "ui/enriching/ner",
+                  "ui/enriching/generative-ocr"
                 ]
               },
               "ui/embedding",
@@ -328,6 +329,7 @@
             "group": "AWS",
             "pages": [
               "business/aws/overview",
+              "business/aws/dedicated-instance-privatelink",
               "business/aws/onboard"
             ]
           },
@@ -527,7 +529,35 @@
             "group": "Support",
             "pages": [
               "support/request",
-              "support/shared-responsibility"
+              "support/shared-responsibility",
+              "support/status",
+              {
+                "group": "Self-service",
+                "pages": [
+                  "support/how-to/overview",
+                  "support/how-to/data-privacy",
+                  "support/how-to/invoice-issue"
+                ]
+              },
+              {
+                "group": "Issues",
+                "pages": [
+                  "support/issues/overview",
+                  "support/issues/authorization-permissions",
+                  "support/issues/configuration-resource",
+                  "support/issues/quota-billing-rate-limiting",
+                  "support/issues/network-connection-timeout",
+                  "support/issues/data-format-schema-validation",
+                  "support/issues/document-processing",
+                  "support/issues/internal-file-handling",
+                  "support/issues/api-connector-secrets",
+                  "support/issues/cannot-locate-credentials",
+                  "support/issues/get-authenticated-user-error",
+                  "support/issues/workflow-job-in-progress",
+                  "support/issues/no-fast-partitioning-for-images",
+                  "support/issues/google-drive-schema-validation"
+                ]
+              }
             ]
           }
         ]
@@ -555,6 +585,11 @@
           "anchor": "Open source support (Slack)",
           "href": "https://short.unstructured.io/pzw05l7",
           "icon": "slack"
+        },
+        {
+          "anchor": "Service status",
+          "href": "https://unstructuredio.trust.pagerduty.com/posts/dashboard",
+          "icon": "signal"
         },
         {
           "anchor": "Feedback",
@@ -734,6 +769,10 @@
       "destination": "/api-reference/overview"
     },
     {
+      "source": "/enterprise/:slug*",
+      "destination": "/business/:slug*"
+    },
+    {
       "source": "/glossary/glossary",
       "destination": "/welcome"
     },
@@ -787,7 +826,7 @@
     },
     {
       "source": "/self-hosted/:slug*",
-      "destination": "/enterprise/:slug*"
+      "destination": "/business/:slug*"
     },
     {
       "source": "/ui/billing",

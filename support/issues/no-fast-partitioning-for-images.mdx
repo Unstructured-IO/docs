@@ -1,0 +1,33 @@
+---
+title: The Fast strategy is not available for image files
+---
+
+## Issue
+
+When you try to run a workflow in Unstructured with the following settings:
+
+- The workflow contains a **Partitioner** node set to use the **Fast** partitioning strategy.
+- The workflow is configured to process an image file, such as a PNG or JPG file.
+
+You get an error that contains text similar to the following, and the workflow fails to run:
+
+```text
+422: Error in partition - {"detail":"The fast strategy is not available for image files"}
+```
+
+## Cause
+
+Unstructured is trying to process an image file&mdash;such as a PNG or JPG file&mdash;by using the **Fast** partitioning strategy, but 
+this strategy is designed for text-based documents only and cannot analyze the layout of images.
+
+## Solution
+
+1. Change the workflow's **Partitioner** node's **Partition Strategy** setting to **Auto**, **High Res**, or **VLM**.
+2. Re-run the workflow.
+
+## Additional resources
+
+- If your workflow is configured to process a mixture of file types, you should use the **Auto** partitioning strategy. Unstructured will then 
+  automatically choose the best partitioning strategy for each file.
+- Learn more about the various [partitioning](/ui/partitioning) strategies.
+- To ask questions or get additional help with this issue, see [requesting support](/support/request).

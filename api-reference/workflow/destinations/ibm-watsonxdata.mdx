@@ -2,6 +2,17 @@
 title: IBM watsonx.data
 ---
 
+<Tip>
+    The IBM watsonx.data destination connector relies on an Apache Iceberg-based catalog within the watsonx.data data store instance. 
+    Apache Iceberg is suitable for managed data storage and cataloging, but not for embedding storage or semantic similarity 
+    queries. For embedding storage and semantic similarity queries, Unstructured recommends that you use the following destination connectors 
+    instead:
+
+    - [Astra DB](/api-reference/workflow/destinations/astradb)
+    - [Milvus](/api-reference/workflow/destinations/milvus) on IBM watsonx.data
+
+</Tip>
+
 import FirstTimeAPIDestinationConnector from '/snippets/general-shared-text/first-time-api-destination-connector.mdx';
 
 <FirstTimeAPIDestinationConnector />
@@ -30,3 +41,6 @@ import IBMWatsonxdataAPIPlaceholders from '/snippets/general-shared-text/ibm-wat
 
 <IBMWatsonxdataAPIPlaceholders />
 
+## Learn more
+
+- <Icon icon="blog" />&nbsp;&nbsp;[Unstructured + IBM watsonx.data: A New OEM Partnership Powering the Future of Enterprise AI](https://unstructured.io/blog/unstructured-ibm-watsonx-data-a-new-oem-partnership-powering-the-future-of-enterprise-ai)

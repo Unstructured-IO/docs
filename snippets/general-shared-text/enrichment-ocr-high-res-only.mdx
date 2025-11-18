@@ -1,0 +1,8 @@
+<Warning>
+    Unstructured can produce generative OCR optimizations for workflows that are configured as follows:
+    
+    - With a **Partitioner** node set to use the **Auto** or **High Res** partitioning strategy, and a generative OCR optimizations node is added.  
+    - With a **Partitioner** node set to use the **VLM** partitioning strategy. No generative OCR optimization node is needed (or allowed).
+    
+    Unstructured never produces generative OCR optimizations for workflows with a **Partitioner** node set to use the **Fast** partitioning strategy.
+</Warning>
