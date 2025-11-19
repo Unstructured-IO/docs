@@ -160,7 +160,7 @@ shows how well Unstructured's **VLM** partitioning strategy handles challenging 
       - **VLM** is great for any file, but it is best when you know for certain that some of your files have a combination of tables (especially complex ones), images, and multilanguage, scanned, or handwritten content. It's the highest quality but slowest of all the strategies.
    </Tip>
 
-4. Under **Select VLM Model**, under **Anthropic**, select **Claude Sonnet 4**.<br/>
+4. Under **Select VLM Model**, under **Vertex AI**, select **Gemini 2.0 Flash**.<br/>
 
    ![Selecting the VLM for partitioning](/img/ui/walkthrough/VLMPartitioner.png)
 
@@ -208,7 +208,7 @@ shows how well Unstructured's **VLM** partitioning strategy handles challenging 
 
    ![Searching the JSON output](/img/ui/walkthrough/SearchJSON.png)
 
-   - The Chinese characters on page 1. Search for the text `verbs. The characters`. Notice that the Chinese characters are intepreted correctly.
+   - The Chinese characters on page 1. Search for the text `verbs. The characters`. Notice how the Chinese characters are output. We'll see accuracy improvements to this output later in Step 4 in the enrichments portion of this walkthrough. 
    - The tables on pages 1, 6, 7, 8, 9, and 12. Search for the text `"Table"` (including the quotation marks) to see how the VLM interprets the various tables. We'll see changes to these elements' `text` and `metadata.text_as_html` contents later in Step 4 in the enrichments portion of this walkthrough.
    - The images on pages 3, 7, and 8. Search for the text `"Image"` (including the quotation marks) to see how the VLM interprets the various images. We'll see changes to these elements' `text` contents later in Step 4 in the enrichments portion of this walkthrough.
 
@@ -222,7 +222,7 @@ shows how well Unstructured's **VLM** partitioning strategy handles challenging 
 9. Notice the following in the JSON output:
 
    - The handwriting on page 3. Search for the text `I have written RAND`. Notice how well the handwriting is recognized.
-   - The mimeograph on page 11. Search for the text `Technicians at this Agency`. Notice how well the mimeographed content is recognized.
+   - The mimeograph on page 18. Search for the text `The system which`. Notice how well the mimeographed content is recognized.
 
 10. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
     the workflow designer for the next step.
@@ -240,8 +240,8 @@ HTML representations of detected tables, and detected entities (such as people a
 3. In the node's settings pane's **Details** tab, click:
 
    - **Image** under **Input Type**.
-   - Any available choice for **Provider**.
-   - Any available choice for **Model**.
+   - Any available choice for **Provider** (for example, **Anthropic**).
+   - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
    - If not already selected, **Image Description** under **Task**.
 
    <Tip>
@@ -257,8 +257,8 @@ HTML representations of detected tables, and detected entities (such as people a
       In the node's settings pane's **Details** tab, click:
 
       - **Table** under **Input Type**.
-      - Any available choice for **Provider**.
-      - Any available choice for **Model**.
+      - Any available choice for **Provider** (for example, **Anthropic**).
+      - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
       - If not already selected, **Table Description** under **Task**.
 
       <Tip>
@@ -271,8 +271,8 @@ HTML representations of detected tables, and detected entities (such as people a
       In the node's settings pane's **Details** tab, click:
 
       - **Table** under **Input Type**.
-      - **OpenAI** under **Provider**.
-      - Any available choice under **Model**.
+      - Any available choice for **Provider** (for example, **Anthropic**).
+      - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
       - **Table to HTML** under **Task**.
       
       <Tip>
@@ -284,8 +284,8 @@ HTML representations of detected tables, and detected entities (such as people a
       In the node's settings pane's **Details** tab, click:
       
       - **Text** under **Input Type**.
-      - Any available choice under **Provider**.
-      - Any available choice under **Model**.
+      - Any available choice for **Provider** (for example, **Anthropic**).
+      - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
       
       <Tip>
           The named entity recognition (NER) enrichment generates a list of detected entities (such as people and organizations) and the inferred relationships among these entities. This provides additional context about these entities' types and their relationships for your graph databases, RAG apps, agents, and models. [Learn more](/ui/enriching/ner).
@@ -296,8 +296,8 @@ HTML representations of detected tables, and detected entities (such as people a
       In the node's settings pane's **Details** tab, click:
       
       - **Image** under **Input Type**.
-      - **Anthropic** or **Amazon Bedrock** under **Provider**.
-      - Any available choice under **Model**.
+      - Any available choice for **Provider** (for example, **Anthropic**).
+      - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
       - **Generative OCR** under **Task**.
       
       <Tip>
@@ -320,8 +320,9 @@ HTML representations of detected tables, and detected entities (such as people a
 
 7. Some interesting portions of the output include the following:
 
-   - The images on pages 3, 7, and 8. Search for the text `"Image"` (including the quotation marks). Notice the summary description for each image.
-   - The tables on pages 1, 6, 7, 8, 9, and 12. Search for the text `"Table"` (including the quotation marks). Notice the summary description for each of these tables. 
+   - The Chinese characters on page 1. Search again for the text `verbs. The characters`. Notice how the accuracy of the Chinese character output is improved.
+   - The images on pages 3, 7, and 8. Search again for the text `"Image"` (including the quotation marks). Notice the summary description for each image.
+   - The tables on pages 1, 6, 7, 8, 9, and 12. Search again for the text `"Table"` (including the quotation marks). Notice the summary description for each of these tables. 
      Also notice the `text_as_html` field for each of these tables.
    - The identified entities and inferred relationships among them. Search for the text `Zhijun Wang`. Of the eight instances of this name, notice 
      the author's identification as a `PERSON` three times, the author's `published` relationship twice, and the author's `affiliated_with` relationship twice.
@@ -395,7 +396,7 @@ the resulting document elements' `text` content into manageable "chunks" to stay
       these chunks were derived from by putting them into each chunk's `metadata`. To have Unstructured do this, use the **Include Original Elements** setting, as described in the preceding tip.
    </Tip>
 
-7. Try running this workflow again with the **Chunk by Title** strategy, as follows:
+7. Optionally, you can try running this workflow again with the **Chunk by Title** strategy, as follows:
 
    a. Click the close (**X**) button above the output on the right side of the screen.<br/>
    b. In the workflow designer, click the **Chunker** node and then, in the node's settings pane's **Details** tab, select **Chunk by Title**.<br/>
@@ -419,7 +420,7 @@ the resulting document elements' `text` content into manageable "chunks" to stay
    f. To explore the chunker's results, search for the text `"CompositeElement"` (including the quotation marks). Notice that the lengths of some of the chunks that immediately 
       precede titles might be shortened due to the presence of the title impacting the chunk's size.
 
-8. Try running this workflow again with the **Chunk by Page** strategy, as follows:
+8. Optionally, you can try running this workflow again with the **Chunk by Page** strategy, as follows:
 
    a. Click the close (**X**) button above the output on the right side of the screen.<br/>
    b. In the workflow designer, click the **Chunker** node and then, in the node's settings pane's **Details** tab, select **Chunk by Page**.<br/>
@@ -436,7 +437,7 @@ the resulting document elements' `text` content into manageable "chunks" to stay
    f. To explore the chunker's results, search for the text `"CompositeElement"` (including the quotation marks). Notice that the lengths of some of the chunks that immediately 
       precede page breaks might be shortened due to the presence of the page break impacting the chunk's size.<br/>
 
-9. Try running this workflow again with the **Chunk by Similarity** strategy, as follows:
+9. Optionally, you can try running this workflow again with the **Chunk by Similarity** strategy, as follows:
 
    a. Click the close (**X**) button above the output on the right side of the screen.<br/>
    b. In the workflow designer, click the **Chunker** node and then, in the node's settings pane's **Details** tab, select **Chunk by Similarity**.<br/>
@@ -466,7 +467,7 @@ the resulting document elements' `text` content into manageable "chunks" to stay
 10. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
     the workflow designer for the next step.
 
-## Step 6: Experiment with embedding
+## Step 6 (Optional): Experiment with embedding
 
 In this step, you generate [embeddings](/ui/embedding) for your workflow. Embeddings are vectors of numbers that represent various aspects of the text that is extracted by Unstructured. 
 These vectors are stored or "embedded" next to the text itself in a vector store or vector database. Chatbots, agents, and other AI solutions can use 

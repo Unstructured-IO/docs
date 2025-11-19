@@ -218,8 +218,8 @@ and generating detected entities (such as people and organizations) and the infe
 2. In the node's settings pane's **Details** tab, click:
 
    - **Table** under **Input Type**.
-   - Any available choice under **Provider**.
-   - Any available choice under **Model**.
+   - Any available choice under **Provider** (for example, **Anthropic**).
+   - Any available choice under **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
    - If not already selected, **Table Description** under **Task**.
 
    <Tip>
@@ -232,8 +232,8 @@ and generating detected entities (such as people and organizations) and the infe
    In the node's settings pane's **Details** tab, click:
       
    - **Text** under **Input Type**.
-   - Any available choice under **Provider**.
-   - Any available choice under **Model**.
+   - Any available choice under **Provider** (for example, **Anthropic**).
+   - Any available choice under **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
       
    <Tip>
        The named entity recognition (NER) enrichment generates a list of detected entities (such as people and organizations) and the inferred relationships among these entities. This provides additional context about these entities' types and their relationships for your graph databases, RAG apps, agents, and models. [Learn more](/ui/enriching/ner).
@@ -320,7 +320,7 @@ the resulting document elements' `text` content into manageable "chunks" to stay
       these chunks were derived from by putting them into each chunk's `metadata`. To have Unstructured do this, use the **Include Original Elements** setting, as described in the preceding tip.
    </Tip>
 
-7. Try running this workflow again with the **Chunk by Title** strategy, as follows:
+7. Optionally, you can try running this workflow again with the **Chunk by Title** strategy, as follows:
 
    a. Click the close (**X**) button above the output on the right side of the screen.<br/>
    b. In the workflow designer, click the **Chunker** node and then, in the node's settings pane's **Details** tab, select **Chunk by Title**.<br/>
@@ -344,7 +344,7 @@ the resulting document elements' `text` content into manageable "chunks" to stay
    f. To explore the chunker's results, search for the text `"type": "CompositeElement"`. Notice that the lengths of some of the chunks that immediately 
       precede titles might be shortened due to the presence of the title impacting the chunk's size.
 
-8. Try running this workflow again with the **Chunk by Page** strategy, as follows:
+8. Optionally, you can try running this workflow again with the **Chunk by Page** strategy, as follows:
 
    a. Click the close (**X**) button above the output on the right side of the screen.<br/>
    b. In the workflow designer, click the **Chunker** node and then, in the node's settings pane's **Details** tab, select **Chunk by Page**.<br/>
@@ -361,7 +361,7 @@ the resulting document elements' `text` content into manageable "chunks" to stay
    f. To explore the chunker's results, search for the text `"type": "CompositeElement"`. Notice that the lengths of some of the chunks that immediately 
       precede page breaks might be shortened due to the presence of the page break impacting the chunk's size.<br/>
 
-9. Try running this workflow again with the **Chunk by Similarity** strategy, as follows:
+9. Optionally, you can try running this workflow again with the **Chunk by Similarity** strategy, as follows:
 
    a. Click the close (**X**) button above the output on the right side of the screen.<br/>
    b. In the workflow designer, click the **Chunker** node and then, in the node's settings pane's **Details** tab, select **Chunk by Similarity**.<br/>
@@ -391,7 +391,7 @@ the resulting document elements' `text` content into manageable "chunks" to stay
 10. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
     the workflow designer for the next step.
 
-## Step 6: Experiment with embedding
+## Step 6 (Optional): Experiment with embedding
 
 In this step, you generate [embeddings](/ui/embedding) for your workflow. Embeddings are vectors of numbers that represent various aspects of the text that is extracted by Unstructured. 
 These vectors are stored or "embedded" next to the text itself in a vector store or vector database. Chatbots, agents, and other AI solutions can use 
