@@ -1,12 +1,12 @@
 ---
-title: Document data extraction
+title: Structured data extraction
 ---
 
-The _document data extractor_ allows Unstructured to extract the data from your source documents 
+The _structured data extractor_ allows Unstructured to extract the data from your source documents 
 into a format that you define, in addition to having Unstructured extract the data in a format that uses Unstructured's default 
 [document elements and metadata](/ui/document-elements).
 
-To show how the document data extractor works, take a look at the following sample sales invoice PDF. This file is one of the 
+To show how the structured data extractor works, take a look at the following sample sales invoice PDF. This file is one of the 
 sample files that is available directly from the workflow designer in the Unstructured use interface (UI). The file's 
 content is as follows:
 
@@ -67,7 +67,7 @@ In the preceding output, the `text` fields for the `Table` elements contain the 
 you might also want the table's information output as an `invoice` field with, among other details, each of the invoice's line items having a `description`, `quantity`, `price`, and `total` field. 
 However, neither the default Unstructured `text` nor `table_as_html` fields present the tables in this way by default.
 
-By using the document data extractor in your Unstructured workflows, you could have Unstructured extract the invoice's data in a format similar to the following (ellipses indicate omitted fields for brevity):
+By using the structured data extractor in your Unstructured workflows, you could have Unstructured extract the invoice's data in a custom-defined output format similar to the following (ellipses indicate omitted fields for brevity):
 
 ```json
 [
@@ -138,12 +138,12 @@ By using the document data extractor in your Unstructured workflows, you could h
 ```
 
 In the preceding output, the first document element, of type `DocumentData`, has an `extracted_data` field within `metadata` 
-that contains a representation of the document's data in the format that you specify. Beginning with the second document element and continuing 
+that contains a representation of the document's data in the custom output format that you specify. Beginning with the second document element and continuing 
 until the end of the document, Unstructured also outputs the document's data as a series of Unstructured's default document elements and metadata as it normally would.
 
-To use the document data extractor, in addition to your source documents you must provide an _extraction guidance prompt_ and an _extraction schema_.
+To use the structured data extractor, in addition to your source documents you must provide an _extraction guidance prompt_ and an _extraction schema_.
 
-An extraction guidance prompt is like a prompt that you would give to a RAG chatbot. This prompt guides Unstructured on how to extract the data from the source documents. For this invoice example, the 
+An extraction guidance prompt is like a prompt that you would give to a chatbot or AI agent. This prompt guides Unstructured on how to extract the data from the source documents. For this invoice example, the 
 prompt might look like the following:
 
 ```text
@@ -319,19 +319,55 @@ It should adhere to OpenAI's JSON mode format. Here is an example of one I have 
 In addition, please provide a guidance prompt that will help ensure the most accurate extraction possible.
 ```
 
-## Using the document data extractor
+## Using the structured data extractor
 
-1. Add a **Document Data Extractor** node to your existing Unstructured workflow. This node must be added immediately after the **Partitioner** node 
-   in the workflow. To add this node, in the workflow designer, click the **+** (add node) button, click **Transform**, and then click **Document Data Extractor**.
-2. Click the newly added **Document Data Extractor** node to select it.
-3. In the node's settings pane, on the **Details** tab, specify the following:
+There are two ways to use the structured data extractor in your Unstructured workflows:
+
+- From the **Welcome, get started right away!** tile on the **Start** page of your Unstructured account. This approach works 
+  only with a single file that is stored on your local machine. [Learn how](#use-the-structured-data-extractor-from-the-start-page).
+- From the Unstructured workflow editor. This approach works with a single file that is stored on your local machine, or with any 
+  number of files that are stored in remote locations. [Learn how](#use-the-structured-data-extractor-from-the-workflow-editor).
+
+### Use the structured data extractor from the Start page
+
+1. Sign in to your Unstructured account, if you are not already signed in.
+2. On the sidebar, click **Start**, if the **Start** page is not already showing.
+3. In the **Welcome, get started right away!** tile, do one of the following:
+
+   - Click **Browse files**, or drag and drop a file onto **Drop file to test**, to have Unstructured parse and transform your own file.
+     
+     <Note>
+         If you choose to use your own file, the file must be 10 MB or less in size.
+     </Note>
+
+   - Click one of the sample files, such as **realestate.pdf**, to have Unstructured parse and transform that sample file.
+
+4. ...
+
+### Use the structured data extractor from the workflow editor
+
+1. If you already have an Unstructured workflow that you want to use, open it to show the workflow editor. Otherwise, create a new 
+   workflow as follows:
+
+   a. Sign in to your Unstructured account, if you are not already signed in.<br/>
+   b. On the sidebar, click **Workflows**.<br/>
+   c. Click **New Workflow +**.<br/>
+   d. With **Build it Myself** already selected, click **Continue**. The workflow editor appears.<br/>
+
+2. Add a **Structured Data Extractor** node to your existing Unstructured workflow. This node must be added immediately after the **Partitioner** node 
+   in the workflow. To add this node, in the workflow designer, click the **+** (add node) button, click **Transform**, and then click **Structured Data Extractor**.
+3. Click the newly added **Structured Data Extractor** node to select it.
+
+4. ...
+
+5. In the node's settings pane, on the **Details** tab, specify the following:
 
    a. For **Extraction Guidance Prompt**, enter the text of your extraction guidance prompt.<br />
    b. Click **Edit Code**, enter the text of your extraction schema, and then click **Save Changes**. The text you entered 
       will appear in the **Schema** box.<br />
 
-4. Continue building your workflow as desired.
-5. To see the results of the document data extractor, do one of the following:
+6. Continue building your workflow as desired.
+7. To see the results of the structured data extractor, do one of the following:
 
    - If you are using a local file as input to your workflow, click **Test** immediately above the **Source** node. The results will be displayed on-screen 
      in the **Test output** pane.
@@ -340,9 +376,9 @@ In addition, please provide a guidance prompt that will help ensure the most acc
 
 ## Limitations
 
-The document data extractor does not work with the [Pinecone destination connector](/ui/destinations/pinecone). 
+The structured data extractor does not work with the [Pinecone destination connector](/ui/destinations/pinecone). 
 This is because Pinecone has strict limit on the amount of metadata that it can manage. These limits are 
-below the threshold of what the document data extractor typically needs for the amount of metadata that it manages. 
+below the threshold of what the structured data extractor typically needs for the amount of metadata that it manages. 
 
 ## Saving the extracted data separately
 
