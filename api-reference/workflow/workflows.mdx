@@ -1604,6 +1604,18 @@ import EnrichmentOCRHiResOnly from '/snippets/general-shared-text/enrichment-ocr
 
 <EnrichmentOCRHiResOnly />
 
+<Warning>
+    Generative OCR does not process any text blocks by default. You must also explicitly specify which document element 
+    types containing text that you want generative OCR to process. 
+
+    To do this, in a workflow's [High Res](#high-res-strategy) partitioner node, 
+    add each [document element type](/ui/document-elements#element-type) that you want generative OCR to process to the 
+    `extract_image_block_types` list within the partitioner node's `settings` field definition.
+
+    Generative OCR does not process the text of any `Image` or `Table` elements if they have already been processed by 
+    [image description](#image-description-task) or [table description](#table-description-task) enrichments, respectively.
+</Warning>
+
 <AccordionGroup>
     <Accordion title="Python SDK">
         ```python
