@@ -353,6 +353,21 @@ import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-
         - **Generative OCR** to optimize the fidelity of text blocks that Unstructured initially processed during its partitioning phase. 
           Also select one of the available provider (and model) combinations that are shown.
 
+          <Warning>
+              Generative OCR does not process any text blocks by default. You must also explicitly specify which document element 
+              types containing text that you want generative OCR to process. To do this, in the workflow editor for your workflow:
+              
+              1. Click the **Partitioner** node.
+              2. In the node's settings pane, scroll down to and then click a blank area inside of the **Extract Image Block Types** list.
+              3. Select each [document element types](/ui/document-elements#element-type) that you want generative OCR to process. For this 
+                walkthrough, select only **NarrativeText**.
+              
+              Generative OCR does not process the text of any `Image` or `Table` elements if they have already been processed by 
+              [image description](#image-description-task) or [table description](#table-description-task) enrichments, respectively. Do 
+              not remove the **Image** or **Table** document elements types from this **Extract Image Block Types** list, or else 
+              the image description and table description enrichments in your workflow might produce unexepcted results or might not work at all.
+          </Warning>
+
           [Learn more](/ui/enriching/generative-ocr).
   
     </Accordion>

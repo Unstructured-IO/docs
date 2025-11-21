@@ -304,6 +304,21 @@ HTML representations of detected tables, and detected entities (such as people a
           The generative OCR enrichment improves, as needed, the accuracy of text blocks that Unstructured initially processed during its partitioning phase. [Learn more](/ui/enriching/generative-ocr).
       </Tip>
 
+      <Warning>
+          Generative OCR does not process any text blocks by default. You must also explicitly specify which document element 
+          types containing text that you want generative OCR to process. To do this:
+          
+          1. Click the **Partitioner** node.
+          2. In the node's settings pane, scroll down to and then click a blank area inside of the **Extract Image Block Types** list.
+          3. Select each [document element types](/ui/document-elements#element-type) that you want generative OCR to process. For this 
+             walkthrough, select only **NarrativeText**.
+          
+          Generative OCR does not process the text of any `Image` or `Table` elements if they have already been processed by 
+          [image description](#image-description-task) or [table description](#table-description-task) enrichments, respectively. Do 
+          not remove the **Image** or **Table** document elements types from this **Extract Image Block Types** list, or else 
+          the image description and table description enrichments in your workflow might produce unexepcted results or might not work at all.
+      </Warning>
+
       <Note>
           The **Generative OCR** enrichment appears under the **Input Type** of **Image**, even though this is not an image-related enrichment. 
           This is a known issue and will be addressed in a future release. 
