@@ -57,7 +57,17 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
    - `openai` for [OpenAI](https://openai.com/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/openai/).
    - `togetherai` for [Together.ai](https://www.together.ai/). [Learn more](https://docs.together.ai/docs/embedding-models).
    - `vertexai` for [Google Vertex AI PaLM](https://cloud.google.com/vertex-ai/docs/generative-ai/learn/overview). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/google_vertex_ai_palm/).
-   - `voyageai` for [Voyage AI](https://www.voyageai.com/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/voyageai/).
+   - `voyageai` for [Voyage AI](https://www.voyageai.com/). [Learn more](https://docs.voyageai.com/docs/embeddings).
+
+   <Note>
+      Voyage AI offers multiple embedding models optimized for different use cases:
+      - **voyage-3.5** and **voyage-3.5-lite**: Latest models with high token limits (320k and 1M tokens respectively)
+      - **voyage-context-3**: Specialized model for contextualized embeddings that capture relationships between documents
+      - **voyage-code-3** and **voyage-code-2**: Optimized for code embeddings
+      - **voyage-finance-2**, **voyage-law-2**, **voyage-multilingual-2**: Domain-specific models
+      - **voyage-multimodal-3**: Supports multimodal embeddings
+      - Additional models available for various use cases
+   </Note>
    
 2. Run the following command to install the required Python package for the embedding provider:
 
@@ -86,7 +96,15 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
    - `openai`. [Choose a model](https://platform.openai.com/docs/guides/embeddings/embedding-models), or use the default model `text-embedding-ada-002`.
    - `togetherai`. [Choose a model](https://docs.together.ai/docs/embedding-models), or use the default model `togethercomputer/m2-bert-80M-32k-retrieval`.
    - `vertexai`. [Choose a model](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/text-embeddings-api), or use the default model `text-embedding-05`.
-   - `voyageai`.  [Choose a model](https://docs.voyageai.com/docs/embeddings). No default model is provided.
+   - `voyageai`.  [Choose a model](https://docs.voyageai.com/docs/embeddings). No default model is provided. Available models include:
+     - **voyage-3.5**: High-performance model with 320k token limit and 1024 dimensions
+     - **voyage-3.5-lite**: Lightweight model with 1M token limit and 512 dimensions
+     - **voyage-context-3**: Contextualized embedding model with 32k token limit
+     - **voyage-3**, **voyage-3-large**, **voyage-3-lite**: General-purpose models
+     - **voyage-2**, **voyage-02**: Previous generation models
+     - **voyage-code-3**, **voyage-code-2**: Code-specialized models
+     - **voyage-finance-2**, **voyage-law-2**, **voyage-multilingual-2**: Domain-specific models
+     - **voyage-multimodal-3**: Multimodal embedding support
 
 4. Note the special settings to connect to the provider:
 
@@ -157,3 +175,63 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
           - Set `embedding_aws_region` to the corresponding AWS Region identifier.
     </Accordion>
 </AccordionGroup>
+
+## VoyageAI Advanced Features
+
+VoyageAI embeddings offer several advanced capabilities beyond standard embedding generation:
+
+### Contextualized Embeddings
+
+The `voyage-context-3` model provides contextualized embeddings that capture relationships between documents in a batch. This is particularly useful for RAG applications where understanding document relationships improves retrieval accuracy.
+
+### Automatic Batching
+
+VoyageAI integration automatically handles batching based on:
+- Model-specific token limits (ranging from 32k to 1M tokens depending on the model)
+- Maximum batch size of 1000 documents per request
+- Efficient token counting to optimize API usage
+
+### Output Dimension Control
+
+You can specify a custom `output_dimension` parameter to reduce the dimensionality of embeddings, which can:
+- Reduce storage requirements
+- Speed up similarity search
+- Maintain embedding quality for many use cases
+
+### Progress Tracking
+
+Enable `show_progress_bar` to monitor embedding progress for large document collections. This requires installing `tqdm`: `pip install tqdm`.
+
+### Example: Using VoyageAI with Ingest CLI
+
+```bash
+unstructured-ingest \
+  local \
+  --input-path /path/to/documents \
+  --output-dir /path/to/output \
+  --embedding-provider voyageai \
+  --embedding-api-key $VOYAGE_API_KEY \
+  --embedding-model-name voyage-3.5 \
+  --num-processes 2
+```
+
+### Example: Using VoyageAI with Contextualized Embeddings
+
+```bash
+unstructured-ingest \
+  local \
+  --input-path /path/to/documents \
+  --output-dir /path/to/output \
+  --embedding-provider voyageai \
+  --embedding-api-key $VOYAGE_API_KEY \
+  --embedding-model-name voyage-context-3 \
+  --num-processes 2
+```
+
+### Choosing the Right VoyageAI Model
+
+- **voyage-3.5**: Best for general-purpose embeddings with high token limits
+- **voyage-3.5-lite**: Optimal for very large documents or when you need maximum token capacity
+- **voyage-context-3**: Use when document relationships matter for your retrieval task
+- **voyage-code-3**: Specifically optimized for code and technical documentation
+- **Domain-specific models**: Choose finance-2, law-2, or multilingual-2 for specialized domains
