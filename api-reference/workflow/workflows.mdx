@@ -16,6 +16,10 @@ To use the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to
   the `PUT` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman). [Learn more](#update-a-workflow).
 - To delete a workflow, use the `UnstructuredClient` object's `workflows.delete_workflow` function (for the Python SDK) or 
   the `DELETE` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman). [Learn more](/api-reference/workflow/overview#delete-a-workflow).
+- To get a list of available workflow templates, use the `GET` method to call the `/templates` endpoint (for `curl` or Postman). 
+  [Learn more](/api-reference/workflow/overview#list-workflow-templates).
+- To get information about a workflow template, use the `GET` method to call the `/templates/<template-id>` endpoint (for `curl` or Postman). 
+  [Learn more](/api-reference/workflow/overview#get-a-workflow-template).
 
 The following examples assume that you have already met the [requirements](/api-reference/workflow/overview#requirements) and 
 understand the [basics](/api-reference/workflow/overview#basics) of working with the Unstructured Workflow Endpoint.
@@ -72,7 +76,8 @@ specify the settings for the workflow, as follows:
             name="<name>",
             source_id="<source-connector-id>",
             destination_id="<destination-connector-id>",
-            workflow_type=WorkflowType.<TYPE>,
+            workflow_type=WorkflowType.<workflow-type>,
+            template_id="<workflow-template-id>",
             workflow_nodes=[
                 workflow_node,
                 another_workflow_node
@@ -317,7 +322,8 @@ specify the settings for the workflow, as follows:
                 name="<name>",
                 source_id="<source-connector-id>",
                 destination_id="<destination-connector-id>",
-                workflow_type=WorkflowType.<TYPE>,
+                workflow_type=WorkflowType.<workflow-type>,
+                template_id="<workflow-template-id>",
                 workflow_nodes=[
                     workflow_node,
                     another_workflow_node
@@ -540,7 +546,8 @@ specify the settings for the workflow, as follows:
             "name": "<name>",
             "source_id": "<source-connector-id>",
             "destination_id": "<destination-connector-id>",
-            "workflow_type": "<type>",
+            "workflow_type": "<workflow-type>",
+            "template_id": "<workflow-template-id>",
             "workflow_nodes": [
                 {
                     "name": "<node-name>",
@@ -653,7 +660,8 @@ specify the settings for the workflow, as follows:
                "name": "<name>",
                "source_id": "<source-connector-id>",
                "destination_id": "<destination-connector-id>",
-               "workflow_type": "<type>",
+               "workflow_type": "<workflow-type>",
+               "template_id": "<workflow-template-id>",
                "workflow_nodes": [
                    {
                        "name": "<node-name>",
@@ -781,10 +789,11 @@ Replace the preceding placeholders as follows:
 - `<destination-connector-id>` (_required_) - The ID of the target destination connector. To get the ID, 
   use the `UnstructuredClient` object's `destinations.list_destinations` function (for the Python SDK) or 
   the `GET` method to call the `/destinations` endpoint (for `curl` or Postman). [Learn more](/api-reference/workflow/overview#list-destination-connectors).
-- `<TYPE>` (for the Python SDK) or `<type>` (for `curl` or Postman) (_required_) - The workflow type. Available values include `CUSTOM` (for the Python SDK) and `custom` (for `curl` or Postman).
+- `<workflow-type>` (_required_) - The workflow type. Available values include:
 
-  If `<TYPE>` is set to `CUSTOM` (for the Python SDK), or if `<type>` is set to `custom` (for `curl` or Postman), you must add a `workflow_nodes` array. For instructions, see [Custom workflow DAG nodes](#custom-workflow-dag-nodes).
-
+  - `CUSTOM` (for the Python SDK) and `custom` (for `curl` or Postman) - This workflow's nodes are manually specified in the `workflow_nodes` array. For instructions, see [Custom workflow DAG nodes](#custom-workflow-dag-nodes).
+  - `TEMPLATE` (for the Python SDK) and `template` (for `curl` or Postman) - This workflow's nodes are specified by a workflow template. In this case, you would not add a `workflow_nodes` array. Instead, you must specify the workflowtemplate's unique ID in the `template_id` field. For instructionss, see [List workflow templates](#list-workflow-templates) and [Get a workflow template](#get-a-workflow-template).
+  
   <Note>
       The previously-available workflow optimization types `ADVANCED`, `BASIC`, and `PLATINUM` (for the Python SDK) and 
       `advanced`, `basic`, and `platinum` (for `curl` or Postman) are non-operational and planned to be fully removed in a future release. 
@@ -1943,3 +1952,65 @@ Allowed values for `subtype` and `model_name` include:
   - `"model_name": "voyage-law-2"`
   - `"model_name": "voyage-code-2"`
   - `"model_name": "voyage-multimodal-3"`
+
+## List workflow templates
+
+To list workflow templates, use the `GET` method to call the `/templates` endpoint for `curl` or Postman. 
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'POST' --location \
+        "$UNSTRUCTURED_API_URL/workflows" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header 'accept: application/json'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/templates
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Get a workflow template
+
+To get information about a workflow template, use the `GET` method to call the 
+`/templates/<template-id>` endpoint for `curl` or Postman, replacing `<template-id>` with the 
+workflow template's unique ID. To get this ID, see [List workflow templates](#list-workflow-templates).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'GET' --location \
+        "$UNSTRUCTURED_API_URL/templates/<template-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header 'accept: application/json'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/templates/<template-id>
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
