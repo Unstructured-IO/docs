@@ -1,0 +1,239 @@
+---
+title: Working with Unstructured JSON output
+sidebarTitle: Unstructured JSON tools
+---
+
+You can use tools such as the following to work with Unstructured JSON output.
+
+## Visual Studio Code
+
+<Note>
+    Visual Studio Code is not owned or supported by Unstructured. Unstructured makes no guarantees about the accuracy, 
+    reliability, or security of this tool or the extensions that you install into it. Use this tool and these 
+    extensions at your own risk.
+</Note>
+
+You can use [Visual Studio Code](https://code.visualstudio.com/) to work with Unstructured JSON output, as follows.
+
+### Format JSON for easier reading in Visual Studio Code
+
+To format an Unstructured JSON output file for easier reading, do the following after you download the Unstructured JSON output file locally and then open the downloaded file in Visual Studio Code:
+
+1. Click anywhere in the JSON file on-screen to make it the active file.
+2. Do one of the following:
+
+   - Press **Shift + Option + F** for macOS, or **Shift + Alt + F** for Windows or Linux.
+   - On the menu bar, click **View > Command Palette**. Then, in the **Command Palette**, type `>Format Document`, and press **Enter**.
+
+3. The JSON file's contents display in a format that is easier to read.
+
+### Visually render text_as_html field contents in Visual Studio Code
+
+To visually render the contents of a `text_as_html` field in Unstructured JSON output, do the following in Visual Studio Code:
+
+1. Install the [HTML Preview](https://marketplace.visualstudio.com/items?itemName=george-alisson.html-preview-vscode) 
+   extension into your installation of Visual Studio Code, as follows:
+
+   a. On the menu bar, click **View > Extensions**.<br/>
+   b. In the **Search Extensions in Marketplace** box, type `HTML Preview`, and then press **Enter**.<br/>
+   c. In the list of search results, for the **HTML Preview** extension, click **Install**.<br/>
+   d. If prompted, click **Trust Publisher & Install**.<br/>
+
+2. Select the contents of the `text_as_html` field that you want to render. Do not copy the 
+   field name `"text_as_html"` or the opening or closing quotation marks around the field's contents.
+3. Create a new file in Visual Studio Code, and paste the contents of the `text_as_html` that you copied, into the new file. 
+4. With the new file active on-screen, press the key combination `Control + Shift + V` or `Command + Shift + V` to visually render the new file's content.
+
+See also:
+
+- [Table-specific metadata](/ui/document-elements#table-specific-metadata)
+- [VLM generated HTML elements](/ui/document-elements#vlm-generated-html-elements)
+- [Extract tables as HTML](/api-reference/partition/text-as-html) (Unstructured API Reference)
+- [Extract tables as HTML](/open-source/how-to/text-as-html) (Unstructured Open Source Reference)
+
+### View image_base64 field contents as an image in Visual Studio Code
+
+The contents of `image_base64` fields in Unstructured JSON output are in Base64-encoded format. To view the contents of an `image_base64` field as a human-viewable image, 
+do the following in Visual Studio Code.
+
+1. Install the [Base64Viewer](https://marketplace.visualstudio.com/items?itemName=JasonMejane.base64viewer) 
+   extension into your installation of Visual Studio Code, as follows:
+
+   a. On the menu bar, click **View > Extensions**.<br/>
+   b. In the **Search Extensions in Marketplace** box, type `Base64Viewer`, and then press **Enter**.<br/>
+   c. In the list of search results, for the **Base64Viewer** extension, click **Install**.<br/>
+   d. If prompted, click **Trust Publisher & Install**.<br/>
+
+2. Copy to your system clipboard the contents of the `image_base64` field that you want to decode. Do not copy the 
+   field name `"image_base64"` or the opening or closing quotation marks around the field's contents.
+3. On the menu bar, click **View > Command Palette**. 
+4. In the **Command Palette**, type `>Base64Viewer: Decode From Base64`, and press **Enter**.
+5. When prompted, paste the contents of the `image_base64` field that you copied, and then press **Enter**. The 
+   human-viewable image appears in a separate editor tab.
+
+See also:
+
+- [Extract images and tables from documents](/api-reference/partition/extract-image-block-types) (Unstructured API Reference)
+- [Extract images and tables from documents](/open-source/how-to/extract-image-block-types) (Unstructured Open Source Reference)
+
+### View orig_elements field contents as original JSON in Visual Studio Code
+
+The contents of `orig_elements` fields in Unstructured JSON output are in gzipped Base64-encoded format. To view the contents of an `orig_elements` field in a human-readable format, 
+do the following in Visual Studio Code:
+
+1. Install the [Gzip / Unzip text](https://marketplace.visualstudio.com/items?itemName=xballoy.gzip-unzip-text) 
+   extension into your installation of Visual Studio Code, as follows:
+
+   a. On the menu bar, click **View > Extensions**.<br/>
+   b. In the **Search Extensions in Marketplace** box, type `Gzip / Unzip text`, and then press **Enter**.<br/>
+   c. In the list of search results, for the **Gzip / Unzip text** extension, click **Install**.<br/>
+   d. If prompted, click **Trust Publisher & Install**.<br/>
+
+2. Download the Unstructured JSON output file locally, and then open the downloaded file in Visual Studio Code.
+
+   <Note>
+       We do not recommend that you format the JSON file for easier reading after you open it in Visual Studio Code. 
+       This is because the formatting operation could introduce 
+       unnecessary whitespace and line breaks into the contents of the `orig_elements` 
+       fields. These additional characters could cause the extension to produce unexpected results or fail.
+   </Note>
+
+3. Select the contents of the `orig_elements` field that you want to decode and view. Do not select the 
+   field name `"orig_elements"` or the opening or closing quotation marks around the field's contents.
+4. Right-click the selected contents, and then click **Command Palette**. 
+5. In the **Command Palette**, type `>Unzip Base64 encoded text`, and then press **Enter**. The human-readable JSON 
+   appears in a separate editor tab.
+
+See also:
+
+- [Get chunked elements](/api-reference/partition/get-chunked-elements) (Unstructured API Reference)
+- [Get chunked elements](/open-source/how-to/get-chunked-elements) (Unstructured Open Source Reference)
+
+## Online web tools
+
+You can use online web tools such as the following to work with Unstructured JSON output.
+
+### Format JSON for easier reading online
+
+<Warning>
+    Do not enter any sensitive information into this publicly-available website.
+</Warning>
+
+<Note>
+    The following website is not owned or supported by Unstructured. Unstructured makes no guarantees about the accuracy, 
+    reliability, or security of this website. Use this website at your own risk.
+</Note>
+
+To format Unstructured JSON output for easier reading, do the following:
+
+1. Go to the [JSON Viewer Online](https://easyjsonviewer.com).
+2. Do one of the following:
+
+   - Click **Load**, and then select an Unstructured JSON output file that you have saved locally.
+   - Copy the Unstructured JSON output to your system clipboard, and then click **Paste**.
+
+3. Click **Format**. The JSON is formatted on-screen for easier reading.
+
+You should now be able to use your web browser's standard "find" function to search for specific text in 
+the formatted JSON, as needed.
+
+### Visually render text_as_html field contents online
+
+<Warning>
+    Do not enter any sensitive information into this publicly-available website.
+</Warning>
+
+<Note>
+    The following website is not owned or supported by Unstructured. Unstructured makes no guarantees about the accuracy, 
+    reliability, or security of this website. Use this website at your own risk.
+</Note>
+
+To visually render the contents of a `text_as_html` field in Unstructured JSON output, do the following:
+
+1. Go to the [HTML Online Viewer](https://html.onlineviewer.net/).
+2. Do one of the following:
+
+   - Copy the contents of the `text_as_html` field to your system clipboard, and then paste it into the **Put your HTML text here** box. 
+     This content must not contain the field name `"text_as_html"` or the opening or closing quotation marks around the field's contents.
+   - Click **Import**, and then select a file containing only the contents of the `text_as_html` field. This file 
+     must not contain the field name `"text_as_html"` or the opening or closing quotation marks around the field's contents.
+
+<Tip>
+    To add a one-pixel, black border to each cell in the rendered HTML for easier reading, 
+    add the following CSS directive before the opening `<table>` tag:
+
+    ```text
+    <style>table { border-collapse: collapse; } th, td { border: 1px solid black; }</style> 
+    ```
+
+    To add a bit of visual padding to each cell, add the following CSS directive before the 
+    opening `<table>` tag instead:
+
+    ```text
+    <style>th, td { border: 1px solid black; padding: 5px; }</style> 
+    ```
+</Tip>
+
+After you paste or import the `text_as_html` field contents, the HTML is rendered on-screen.
+
+See also:
+
+- [Table-specific metadata](/ui/document-elements#table-specific-metadata)
+- [VLM generated HTML elements](/ui/document-elements#vlm-generated-html-elements)
+- [Extract tables as HTML](/api-reference/partition/text-as-html) (Unstructured API Reference)
+- [Extract tables as HTML](/open-source/how-to/text-as-html) (Unstructured Open Source Reference)
+
+### View image_base64 field contents as an image online
+
+<Warning>
+    Do not enter any sensitive information into this publicly-available website.
+</Warning>
+
+<Note>
+    The following website is not owned or supported by Unstructured. Unstructured makes no guarantees about the accuracy, 
+    reliability, or security of this website. Use this website at your own risk.
+</Note>
+
+The contents of `image_base64` fields in Unstructured JSON output are in Base64-encoded format. To view the contents of an `image_base64` field as a human-viewable image, 
+do the following:
+
+1. Copy to your system clipboard the contents of the `image_base64` field that you want to view. Do not copy the 
+   field name `"image_base64"` or the opening or closing quotation marks around the field's contents.
+2. Go to the [Base64 to Image](https://base64.guru/converter/decode/image) page on the Base64.Guru website.
+3. In the **Base64** box, paste the contents of the `image_base64` field that you copied.
+4. Click **Decode Base64 to Image**. The human-viewable image appears on-screen.
+
+See also:
+
+- [Extract images and tables from documents](/api-reference/partition/extract-image-block-types) (Unstructured API Reference)
+- [Extract images and tables from documents](/open-source/how-to/extract-image-block-types) (Unstructured Open Source Reference)
+
+### View orig_elements field contents as original JSON online
+
+<Warning>
+    Do not enter any sensitive information into this publicly-available website.
+</Warning>
+
+<Note>
+    The following website is not owned or supported by Unstructured. Unstructured makes no guarantees about the accuracy, 
+    reliability, or security of this website. Use this website at your own risk.
+</Note>
+
+The contents of `orig_elements` fields in Unstructured JSON output are in gzipped Base64-encoded format. To view the contents of an `orig_elements` field in a human-readable format, 
+do the following:
+
+1. Go to the [Gzip Decompress Online](https://codebeautify.org/gzip-decompress-online) page on the Code Beautify website.
+2. Do one of the following:
+
+   - Copy the contents of the `orig_elements` field to your system clipboard, and then paste it into the **Enter your Gzip Compress Text** box. 
+     This content must not contain the field name `"orig_elements"` or the opening or closing quotation marks around the field's contents.<br/>
+   - Click **File**, and then select a file containing only the contents of the `orig_elements` field. This file 
+     must not contain the field name `"orig_elements"` or the opening or closing quotation marks around the field's contents.<br/>
+
+3. If the **Auto** box is not checked, click **Gzip Decompress**. 
+4. The human-readable JSON appears on-screen.
+
+See also:
+
+- [Get chunked elements](/api-reference/partition/get-chunked-elements) (Unstructured API Reference)
+- [Get chunked elements](/open-source/how-to/get-chunked-elements) (Unstructured Open Source Reference)
