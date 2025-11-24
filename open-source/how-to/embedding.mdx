@@ -59,16 +59,6 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
    - `vertexai` for [Google Vertex AI PaLM](https://cloud.google.com/vertex-ai/docs/generative-ai/learn/overview). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/google_vertex_ai_palm/).
    - `voyageai` for [Voyage AI](https://www.voyageai.com/). [Learn more](https://docs.voyageai.com/docs/embeddings).
 
-   <Note>
-      Voyage AI offers multiple embedding models optimized for different use cases:
-      - **voyage-3.5** and **voyage-3.5-lite**: Latest models with high token limits (320k and 1M tokens respectively)
-      - **voyage-context-3**: Specialized model for contextualized embeddings that capture relationships between documents
-      - **voyage-code-3** and **voyage-code-2**: Optimized for code embeddings
-      - **voyage-finance-2**, **voyage-law-2**, **voyage-multilingual-2**: Domain-specific models
-      - **voyage-multimodal-3**: Supports multimodal embeddings
-      - Additional models available for various use cases
-   </Note>
-   
 2. Run the following command to install the required Python package for the embedding provider:
 
    - For `bedrock`, run `pip install "unstructured-ingest[bedrock]"`.
