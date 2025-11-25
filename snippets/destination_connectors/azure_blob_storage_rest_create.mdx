@@ -1,0 +1,26 @@
+```bash curl
+curl --request 'POST' --location \
+"$UNSTRUCTURED_API_URL/destinations" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header 'content-type: application/json' \
+--data \
+'{
+    "name": "<name>",
+    "type": "azure",
+    "config": {
+        "remote_url": "az://<container-name>/<path/to/file/or/folder>",
+        
+        # For SAS token authentication:
+        "account_name": "<account-name>",
+        "sas_token": "<sas-token>"
+
+        # For account key authentication:
+        "account_name": "<account-name>",
+        "account_key": "<account-key>"
+
+        # For connection string authentication:
+        "connection_string": "<connection-string>"
+    }
+}'
+```
