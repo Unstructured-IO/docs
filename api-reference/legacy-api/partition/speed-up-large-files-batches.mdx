@@ -2,15 +2,19 @@
 title: Speed up processing of large files and batches
 ---
 
+import PartitionEndpointLegacy from '/snippets/general-shared-text/partition-endpoint-legacy.mdx';
+
+<PartitionEndpointLegacy />
+
 When you use Unstructured, here are some techniques that you can try to help speed up the processing of large files and large batches of files.
 
-Choose your partitioning strategy wisely. For example, if you have simple PDFs that don't have images and tables, you might be able to use the `fast` strategy. Try the `fast` strategy on a few of your documents before you try using the `hi_res` strategy. [Learn more](/api-reference/partition/partitioning).
+Choose your partitioning strategy wisely. For example, if you have simple PDFs that don't have images and tables, you might be able to use the `fast` strategy. Try the `fast` strategy on a few of your documents before you try using the `hi_res` strategy. [Learn more](/api-reference/partition/legacy-api/partitioning).
 
-To speed up PDF file processing, the [Unstructured SDK for Python](/api-reference/partition/sdk-python) and the [Unstructured SDK for JavaScript/TypeScript](/api-reference/partition/sdk-jsts) provide the following parameters to help speed up processing a large PDF file:
+To speed up PDF file processing, the [Unstructured SDK for Python](/api-reference/partition/legacy-api/sdk-python) and the [Unstructured SDK for JavaScript/TypeScript](/api-reference/partition/legacy-api/sdk-jsts) provide the following parameters to help speed up processing a large PDF file:
 
 - `split_pdf_page` (Python) or `splitPdfPage` (JavaScript/TypeScript), when set to true (the default), splits the PDF file on the client side before sending it as batches to Unstructured for processing. The number of pages in each batch is determined internally. Batches can contain between 2 and 20 pages.
 - `split_pdf_concurrency_level` (Python) or `splitPdfConcurrencyLevel` (JavaScript/TypeScript) is an integer that specifies the number of parallel requests. The default is 5. The maximum is 15. This behavior is ignored unless `split_pdf_page` (Python) or `splitPdfPage` (JavaScript/TypeScript) is also set to true.
 - `split_pdf_allow_failed` (Python) or splitPdfAllowFailed` (JavaScript/TypeScript), when set to true, allows partitioning to continue even if some pages fail.
 - `split_pdf_page_range` (Python only) is a list of two integers that specify the beginning and ending page numbers of the PDF file to be sent. A `ValueError` is raised if the specified range is not valid. This behavior is ignored unless `split_pdf_page` is also set to true.
 
-[Learn more](/api-reference/partition/sdk-python#page-splitting).
+[Learn more](/api-reference/partition/legacy-api/sdk-python#page-splitting).

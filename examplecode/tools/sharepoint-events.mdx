@@ -6,7 +6,7 @@ You can use SharePoint events, such as adding new files to&mdash;or updating exi
 that rely on those document libraries as sources. This enables a no-touch approach to having Unstructured automatically process new and updated files in SharePoint document libraries as they are added or updated.
 
 This example shows how to automate this process by adding a custom [Power Automate](https://www.microsoft.com/power-platform/products/power-automate) flow to your Microsoft 365 or Office 365 account. This flow runs 
-whenever a new or updated file is detected in the specified SharePoint document library. This flow then calls the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to automatically run the 
+whenever a new or updated file is detected in the specified SharePoint document library. This flow then calls the [Unstructured API workflow operations](/api-reference/workflow/overview) to automatically run the 
 specified corresponding Unstructured ETL+ workflow within your Unstructured account.
 
 <Note>
@@ -32,10 +32,10 @@ To use this example, you will need the following:
 
   <GetStartedSimpleApiOnly />
 
-- The Unstructured Workflow Endpoint URL for your account, as follows:
+- The Unstructured API workflow operations URL for your account, as follows:
 
   1. In the Unstructured UI, click **API Keys** on the sidebar.<br/>
-  2. Note the value of the **Unstructured Workflow Endpoint** field.
+  2. Note the value of the **Unstructured API workflow operations** field.
 
 - A SharePoint source connector in your Unstructured account. [Learn how](/ui/sources/sharepoint). 
 - Some available [destination connector](/ui/destinations/overview) in your Unstructured account.
@@ -130,7 +130,7 @@ In this step, you store your Unstructured API key in an Azure key vault for your
 
     - For **URI**, enter `<unstructured-api-url>/workflows/<workflow-id>/run`, and replace the following placeholders:
 
-      - Replace `<unstructured-api-url>` with your Unstructured Workflow Endpoint value.
+      - Replace `<unstructured-api-url>` with your Unstructured API workflow operations value.
       - Replace `<workflow-id>` with the ID of your Unstructured workflow.
 
       The **URI** should now look similar to the following:

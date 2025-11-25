@@ -2,13 +2,17 @@
 title: Overview
 ---
 
+import PartitionEndpointLegacy from '/snippets/general-shared-text/partition-endpoint-legacy.mdx';
+
+<PartitionEndpointLegacy />
+
 <Tip>
-    To start using the Unstructured Partition Endpoint right away, skip ahead to the [quickstart](/api-reference/partition/quickstart) now!
+    To start using the Unstructured Partition Endpoint right away, skip ahead to the [quickstart](/api-reference/partition/legacy-api/quickstart) now!
 </Tip>
 
 The Unstructured Partition Endpoint, part of the [Unstructured API](/api-reference/overview), is intended for rapid prototyping of Unstructured's 
 various partitioning strategies, with limited support for chunking. It is designed to work only with processing of local files, one file 
-at a time. Use the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) for production-level scenarios, file processing in 
+at a time. Use the [Unstructured API workflow operations](/api-reference/workflow/overview) for production-level scenarios, file processing in 
 batches, files and data in remote locations, generating embeddings, applying post-transform enrichments, using the latest and 
 highest-performing models, and for the highest quality results at the lowest cost.
 
@@ -32,7 +36,7 @@ import Pricing from '/snippets/general-shared-text/pricing-platform.mdx';
 
 <Tip>
     To use the Unstructured Python SDK instead of `curl` for the following quickstart, 
-    [skip ahead](/api-reference/partition/quickstart) to the SDK version instead.
+    [skip ahead](/api-reference/partition/legacy-api/quickstart) to the SDK version instead.
 </Tip>
 
 This example uses the [curl](https://curl.se/) utility on your local machine to call the Unstructured Partition Endpoint. It sends a source (input) file from your local machine to the Unstructured Partition Endpoint which then delivers the processed data to a destination (output) location, also on your local machine. Data is processed on Unstructured-hosted compute resources.
@@ -88,4 +92,4 @@ available for download from [https://constitutioncenter.org/media/files/constitu
     </Step>
 </Steps>
 
-You can also call the Unstructured Partition Endpoint by using the [Unstructured Python SDK](/api-reference/partition/sdk-python) or the [Unstructured JavaScript/TypeScript SDK](/api-reference/partition/sdk-jsts).
+You can also call the Unstructured Partition Endpoint by using the [Unstructured Python SDK](/api-reference/partition/legacy-api/sdk-python) or the [Unstructured JavaScript/TypeScript SDK](/api-reference/partition/legacy-api/sdk-jsts).
