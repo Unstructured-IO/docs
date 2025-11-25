@@ -586,6 +586,7 @@ specify the settings for the workflow, as follows:
         '{
             "name": "<name>",
             "workflow_type": "custom",
+            "template_id": "<workflow-template-id>",
             "workflow_nodes": [
                 {
                     "name": "<node-name>",
@@ -624,6 +625,7 @@ specify the settings for the workflow, as follows:
             "name": "<name>",
             "destination_id": "<destination-connector-id>",
             "workflow_type": "custom",
+            "template_id": "<workflow-template-id>",
             "workflow_nodes": [
                 {
                     "name": "<node-name>",
@@ -711,6 +713,7 @@ specify the settings for the workflow, as follows:
            {
                "name": "<name>",
                "workflow_type": "custom",
+               "template_id": "<workflow-template-id>",
                "workflow_nodes": [
                    {
                        "name": "<node-name>",
@@ -759,6 +762,7 @@ specify the settings for the workflow, as follows:
            {
                "name": "<name>",
                "workflow_type": "custom",
+               "template_id": "<workflow-template-id>",
                "workflow_nodes": [
                    {
                        "name": "<node-name>",
@@ -792,7 +796,7 @@ Replace the preceding placeholders as follows:
 - `<workflow-type>` (_required_) - The workflow type. Available values include:
 
   - `CUSTOM` (for the Python SDK) and `custom` (for `curl` or Postman) - This workflow's nodes are manually specified in the `workflow_nodes` array. For instructions, see [Custom workflow DAG nodes](#custom-workflow-dag-nodes).
-  - `TEMPLATE` (for the Python SDK) and `template` (for `curl` or Postman) - This workflow's nodes are specified by a workflow template. In this case, you would not add a `workflow_nodes` array. Instead, you must specify the workflowtemplate's unique ID in the `template_id` field. For instructionss, see [List workflow templates](#list-workflow-templates) and [Get a workflow template](#get-a-workflow-template).
+  - `TEMPLATE` (for the Python SDK) and `template` (for `curl` or Postman) - This workflow's nodes are specified by a workflow template. In this case, you would not add a `workflow_nodes` array. Instead, you must specify the workflowtemplate's unique ID in the `template_id` field. For instructions, see [List workflow templates](#list-workflow-templates) and [Get a workflow template](#get-a-workflow-template).
   
   <Note>
       The previously-available workflow optimization types `ADVANCED`, `BASIC`, and `PLATINUM` (for the Python SDK) and 
@@ -1961,7 +1965,7 @@ To list workflow templates, use the `GET` method to call the `/templates` endpoi
     <Accordion title="curl">
         ```bash
         curl --request 'POST' --location \
-        "$UNSTRUCTURED_API_URL/workflows" \
+        "$UNSTRUCTURED_API_URL/templates" \
         --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
         --header 'accept: application/json'
         ```

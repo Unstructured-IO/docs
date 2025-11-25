@@ -201,8 +201,17 @@ Unstructured offers a [Postman collection](https://learning.postman.com/docs/col
 
 4. In the **Paste cURL, Raw text or URL** box, enter the following URL, and then press `Enter`:
 
-   ```
+   For all workflow operations:
+
+   ```text
    https://raw.githubusercontent.com/Unstructured-IO/docs/main/examplecode/codesamples/api/Unstructured-REST-API-Workflow-Endpoint.postman_collection.json
+   ```
+
+   For [on-demand job](#run-an-on-demand-job) related operations only:
+
+   ```text
+   https://raw.githubusercontent.com/Unstructured-IO/docs/main/examplecode/codesamples/api/Unstructured-REST-API-On-Demand-Jobs.postman_collection.json
+   ```
 
 5. On the sidebar, click **Collections**.
 6. Expand **Unstructured REST API - Workflow Endpoint**.
@@ -2284,7 +2293,7 @@ For general information, see [Jobs](/ui/jobs).
 ### Run an on-demand job
 
 To run a job whose workflow takes one or more local files only as input, and the job's temporary workflow exists only for the duration of 
-that job's run (known as an _on-demand job_), use the `POST` method to call the `/jobs` endpoint for `curl` or Postman.
+that job's run (known as an _on-demand job_), use the `POST` method to call the `/jobs/` endpoint for `curl` or Postman.
 
 <Note>
     To run a workflow that was already created at some point in the past and still exists, see [Run a workflow](#run-a-workflow).
@@ -2297,21 +2306,15 @@ that job's run (known as an _on-demand job_), use the `POST` method to call the 
         - `</full/path/to/local/filename.extension>` with the full path to the local file to upload.
         - `<filename.extension>` with the filename of the local file to upload.
         - `<local-file-media-type>` with the local file's media type. For a list of available media types, such as `application/pdf`, see [Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml).
-
-        To upload multiple files, add additional `--form` entries, one per file.
+        - To upload multiple files, add additional `--form` entries, one per file.
+        - For additional replacements, see the end of this section.
 
         ```bash
         curl --request 'POST' --location \
-        "$UNSTRUCTURED_API_URL/jobs" \
+        "$UNSTRUCTURED_API_URL/jobs/" \
         --header 'accept: application/json' \
         --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
-        --form "request_data={
-          \"job_type\": \"<job-type>\",
-          \"template_id\": \"<workflow-template-id>\",
-          \"job_nodes\": [
-            <job-node-settings>
-          ]
-        }" \
+        --form "request_data={\"job_type\":\"<job-type>\",\"template_id\":\"<workflow-template-id>\",\"job_nodes\":[<job-node-settings>]}" \
         --form "input_files=@</full/path/to/local/filename.extension>;filename=<filename.extension>;type=<local-file-media-type>" \
         --form "input_files=@</full/path/to/local/filename.extension>;filename=<filename.extension>;type=<local-file-media-type>" # For each additional file to be uploaded.
 
@@ -2324,7 +2327,7 @@ that job's run (known as an _on-demand job_), use the `POST` method to call the 
         2. In the address box, enter the following URL:
 
             ```text
-            {{UNSTRUCTURED_API_URL}}/jobs
+            {{UNSTRUCTURED_API_URL}}/jobs/
             ```
 
         3. On the **Headers** tab, enter the following headers:
@@ -2340,8 +2343,8 @@ that job's run (known as an _on-demand job_), use the `POST` method to call the 
 
             - **Key**: `request_data`, **Text**, **Value**: Specify the settings for the on-demand job, as follows:
 
-              ```text
-              {"job_type":"<job-type>","template_id":"<workflow-template-id>","job_nodes": <job-node-settings>]}
+              ```json
+              {"job_type":"<job-type>","template_id":"<workflow-template-id>","job_nodes":[<job-node-settings>]}
               ```
         5. Click **Send**.
 

@@ -13,7 +13,7 @@ To use the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to
 - To get the list of any failed files for a job and why those files failed, use the `UnstructuredClient` object's `jobs.get_failed_files` function (for the Python SDK) or 
   the `GET` method to call the `/jobs/<job-id>/failed-files` endpoint (for `curl` or Postman). [Learn more](/api-reference/workflow/overview#get-failed-file-details-for-a-job).
 - To run a workflow that takes one or more local files only as input, and the workflow exists only for the duration of 
-  that job's run (known as an _on-demand job_), use the `POST` method to call the `/jobs` endpoint for `curl` or Postman. [Learn more](/api-reference/workflow/overview#run-an-on-demand-job).
+  that job's run (known as an _on-demand job_), use the `POST` method to call the `/jobs/` endpoint for `curl` or Postman. [Learn more](/api-reference/workflow/overview#run-an-on-demand-job).
 - A job is created automatically whenever a workflow runs on a schedule; see [Create a workflow](/api-reference/workflow/workflows#create-a-workflow).
   A job is also created automatically whenever you run a workflow manually; see [Run a workflow](/api-reference/workflow/overview#run-a-workflow).
 - To cancel a running job, use the `UnstructuredClient` object's `jobs.cancel_job` function (for the Python SDK) or 
