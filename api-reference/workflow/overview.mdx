@@ -3,29 +3,29 @@ title: Overview
 ---
 
 <Tip>
-    To start using the Unstructured API workflow operations right away, skip ahead to the [quickstart](#quickstart) or 
+    To start using the Unstructured API's workflow operations right away, skip ahead to the [quickstart](#quickstart) or 
     [walkthrough](#walkthrough), 
-    which uses the Unstructured Python SDK from a remote hosted Google Colab notebook.
+    which uses the Unstructured Python SDK from remotely hosted Google Colab notebooks. These notebooks require no local setup. 
 </Tip>
 
 The [Unstructured UI](/ui/overview) features a no-code user interface for transforming your unstructured data into data that is ready 
 for retrieval-augmented generation (RAG).
 
-The Unstructured API workflow operations, part of the [Unstructured API](/api-reference/overview), enables a full range of partitioning, chunking, embedding, and 
-enrichment options for your files and data. It is designed to batch-process files and data in remote locations; send processed results to 
-various storage, databases, and vector stores; and use the latest and highest-performing models on the market today. It has built-in logic 
+The workflow operations in the [Unstructured API](/api-reference/overview) enable a full range of partitioning, chunking, embedding, and 
+enrichment options for your files and data. They are designed to batch-process files and data in remote locations; send processed results to 
+various storage, databases, and vector stores; and use the latest and highest-performing models. These workflow operations have built-in logic 
 to deliver the highest quality results at the lowest cost. 
 
-This page provides an overview of the Unstructured API workflow operations. This endpoint enables Unstructured UI automation usage 
+This page provides an overview of the Unstructured API's workflow operations. These operations enable Unstructured UI automation usage 
 scenarios as well as for documentation, reporting, and recovery needs.
 
 ## Getting started
 
-Choose one of the following options to get started with the Unstructured API workflow operations:
+Choose one of the following options to get started with the Unstructured API's workflow operations:
 
-- Follow the [quickstart](#quickstart) or [walkthrough](#walkthrough), which uses the Unstructured Python SDK from a remote hosted Google Colab notebook.
-- Start using the [Unstructred Python SDK](#unstructured-python-sdk).
-- Start using a [REST](#rest-endpoints) client, such as `curl` or Postman.
+- Follow the [quickstart](#quickstart) or [walkthrough](#walkthrough), which use the Unstructured Python SDK from remotely hosted Google Colab notebooks. These notebooks require no local setup. 
+- Start using the [Unstructred Python SDK](#unstructured-python-sdk). This option requires you to set up a local Python virtual environment.
+- Start using a local [REST](#rest-endpoints) client, such as `curl` or Postman.
 
 ## Quickstart
 
@@ -41,7 +41,7 @@ import WorkflowAPIWalkthrough from '/snippets/quickstarts/walkthrough-api.mdx';
 
 ## Unstructured Python SDK
 
-Watch the following 4-minute video to learn how to use the Python SDK to call the Unstructured API workflow operations to 
+Watch the following 4-minute video to learn how to use the Python SDK to call the Unstructured API's workflow operations to 
 create [connectors](#connectors) in the Unstructured UI.
 
 <iframe
@@ -54,7 +54,7 @@ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; pic
 allowfullscreen
 ></iframe>
 
-Watch the following 4-minute video to learn how to use the Python SDK to call the Unstructured API workflow operations to 
+Watch the following 4-minute video to learn how to use the Python SDK to call the Unstructured API's workflow operations to 
 create [workflows](#workflows) and [jobs](#jobs) in the Unstructured UI.
 
 <iframe
@@ -71,7 +71,7 @@ Open a related [notebook](https://colab.research.google.com/github/Unstructured-
 the concepts that are shown in the preceding videos.
 
 The [Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client), beginning with version 0.30.6, 
-allows you to call the Unstructured API workflow operations through standard Python code.
+allows you to call the Unstructured API's workflow operations through standard Python code.
 
 To install the Unstructured Python SDK, run the following command from within your Python virtual environment:
 
@@ -101,18 +101,18 @@ import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-s
 <GetStartedSimpleAPIOnly/>
 
 Calls made by the Unstructured Python SDK's `unstructured_client` functions for creating, listing, updating, 
-and deleting connectors, workflows, and jobs in the Unstructured UI all use the Unstructured API workflow operations URL. 
+and deleting connectors, workflows, and jobs in the Unstructured UI all use the Unstructured API's workflow operations URL. 
 This URL was provided to you when your Unstructured account was created. 
 If you do not have this URL, email Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
 
 <Note>
-    The default URL for the Unstructured API workflow operations is `https://platform.unstructuredapp.io/api/v1`. 
+    The default URL for the Unstructured API's workflow operations is `https://platform.unstructuredapp.io/api/v1`. 
     However, you should always use the URL that was provided to you when your Unstructured account was created.
 </Note>
 
 To specify an API URL in your code, set the `server_url` parameter in the `UnstructuredClient` constructor to the target API URL.
 
-The Unstructured API workflow operations enables you to work with [connectors](#connectors),
+The Unstructured API's workflow operations enable you to work with [connectors](#connectors),
 [workflows](#workflows), and [jobs](#jobs) in the Unstructured UI.
 
 - A _source connector_ ingests files or data into Unstructured from a source location.
@@ -132,14 +132,14 @@ Skip ahead to start learning about how to use the Unstructured Python SDK to wor
 
 ## REST endpoints
 
-The Unstructured API workflow operations are callable from a set of Representational State Transfer (REST) endpoints, which you can call through standard REST-enabled 
-utilities, tools, programming languages, packages, and libraries. The examples, shown later on this page and on related pages, describe how to call the Unstructured API workflow operations with 
+The Unstructured API's workflow operations are callable from a set of Representational State Transfer (REST) endpoints, which you can call through standard REST-enabled 
+utilities, tools, programming languages, packages, and libraries. The examples, shown later on this page and on related pages, describe how to call the Unstructured API's workflow operations with 
 `curl` and Postman. You can adapt this information as needed for your preferred programming languages and libraries, for example by using the 
 `requests` library with Python.
 
 <Tip>
-    You can also use the [Unstructured API workflow operations - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
-    that are available through the default Unstructured API workflow operations URL: `https://platform.unstructuredapp.io`. To use the Swagger UI, you must provide your Unstructured API key with each call. To 
+    You can also use the [Unstructured API's workflow operations - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
+    that are available through the default Unstructured API's workflow operations URL: `https://platform.unstructuredapp.io`. To use the Swagger UI, you must provide your Unstructured API key with each call. To 
     get this API key, see the [quickstart](#quickstart), earlier on this page.
 
     Note that you should always use the URL that was provided to you when your Unstructured account was created. 
@@ -159,7 +159,7 @@ For the API URL, this URL was provided to you when your Unstructured account was
 If you do not have this URL, email Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
 
 <Note>
-    The default URL for the Unstructured API workflow operations is `https://platform.unstructuredapp.io/api/v1`. 
+    The default URL for the Unstructured API's workflow operations is `https://platform.unstructuredapp.io/api/v1`. 
     However, you should always use the URL that was provided to you when your Unstructured account was created.
 </Note>
 
@@ -178,8 +178,8 @@ The following Postman examples use variables, which you can set as follows:
 
    - **Variable**: `UNSTRUCTURED_API_URL`
    - **Type**: `default`
-   - **Initial value**: The Unstructured API workflow operations URL that was provided to you when your Unstructured account was created.
-   - **Current value**: The Unstructured API workflow operations URL that was provided to you when your Unstructured account was created.
+   - **Initial value**: The Unstructured API's workflow operations URL that was provided to you when your Unstructured account was created.
+   - **Current value**: The Unstructured API's workflow operations URL that was provided to you when your Unstructured account was created.
    <br/>
    - **Variable**: `UNSTRUCTURED_API_KEY`
    - **Type**: `secret`
@@ -191,7 +191,7 @@ The following Postman examples use variables, which you can set as follows:
 These variables enable you to more easily run the following examples in Postman and help prevent you from storing 
 Postman collections that contain sensitive URLs and API keys in public source code repositories.
 
-Unstructured offers a [Postman collection](https://learning.postman.com/docs/collections/collections-overview/) that you can import into Postman to make Unstructured API workflow operations requests through a graphical user interface.
+Unstructured offers a [Postman collection](https://learning.postman.com/docs/collections/collections-overview/) that you can import into Postman to make Unstructured API's workflow operations requests through a graphical user interface.
 
 1. [Install Postman](https://learning.postman.com/docs/getting-started/installation/installation-and-updates/).
 2. [Sign in to Postman](https://learning.postman.com/docs/getting-started/installation/postman-account/#signing-in-to-postman).
@@ -219,7 +219,7 @@ To get your Unstructured API key, do the following:
 
 <GetStartedSimpleAPIOnly/>
 
-The Unstructured API workflow operations enables you to work with [connectors](#connectors),
+The Unstructured API's workflow operations enable you to work with [connectors](#connectors),
 [workflows](#workflows), and [jobs](#jobs) in the Unstructured UI.
 
 - A _source connector_ ingests files or data into Unstructured from a source location.
@@ -239,7 +239,7 @@ Skip ahead to start learning about how to use the REST endpoints to work with
 
 ## Restrictions
 
-The following Unstructured SDKs, tools, and libraries do _not_ work with the Unstructured API workflow operations:
+The following Unstructured SDKs, tools, and libraries do _not_ work with the Unstructured API's workflow operations:
 
 - The [Unstructured JavaScript/TypeScript SDK](/api-reference/partition/legacy-api/sdk-jsts)
 - [Local single-file POST requests](/api-reference/partition/legacy-api/sdk-jsts) to the Unstructured Partition Endpoint

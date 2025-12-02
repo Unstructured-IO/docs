@@ -6,7 +6,7 @@ You can use Amazon S3 events, such as adding new files to&mdash;or updating exis
 that rely on those buckets as sources. This enables a no-touch approach to having Unstructured automatically process new and updated files in S3 buckets as they are added or updated.
 
 This example shows how to automate this process by adding an [AWS Lambda function](https://docs.aws.amazon.com/lambda/latest/dg/concepts-basics.html#gettingstarted-concepts-function) to your AWS account. This function runs 
-whenever a new file is added to&mdash;or an existing file is updated within&mdash;the specified S3 bucket. This function then calls the [Unstructured API workflow operations](/api-reference/workflow/overview) to automatically run the 
+whenever a new file is added to&mdash;or an existing file is updated within&mdash;the specified S3 bucket. This function then calls the [Unstructured API's workflow operations](/api-reference/workflow/overview) to automatically run the 
 specified corresponding Unstructured ETL+ workflow in your Unstructured account.
 
 <Note>
@@ -26,10 +26,10 @@ To use this example, you will need the following:
 
   <GetStartedSimpleApiOnly />
 
-- The Unstructured API workflow operations URL for your account, as follows:
+- The Unstructured API's workflow operations URL for your account, as follows:
 
   1. In the Unstructured UI, click **API Keys** on the sidebar.<br/>
-  2. Note the value of the **Unstructured API workflow operations** field.
+  2. Note the value of the **Unstructured API's workflow operations** field.
 
 - An S3 source connector in your Unstructured account. [Learn how](/ui/sources/s3). 
 - Some available [destination connector](/ui/destinations/overview) in your Unstructured account.
@@ -119,7 +119,7 @@ To use this example, you will need the following:
 9. For **Key**, enter `UNSTRUCTURED_API_URL`.
 10. For **Value**, enter `<unstructured-api-url>/workflows/<workflow-id>/run`. Replace the following placeholders:
 
-    - Replace `<unstructured-api-url>` with your Unstructured API workflow operations value.
+    - Replace `<unstructured-api-url>` with your Unstructured API's workflow operations value.
     - Replace `<workflow-id>` with the ID of your Unstructured workflow.
 
     The **Value** should now look similar to the following:
