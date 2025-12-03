@@ -1,0 +1,128 @@
+---
+title: Unstructured API Quickstart - On-Demand Jobs
+sidebarTitle: Quickstart
+---
+
+This quickstart shows how to use the [Unstructured Python SDK](/api-reference/workflow/overview#unstructured-python-sdk) 
+to have Unstructured process local files by using its _on-demand jobs_ functionality, which is part of the 
+Unstructured API's collection of [workflow operations](https://docs.unstructured.io/api-reference/workflow/overview).
+
+On-demand jobs take one or more local files as input and ouput the files' contents in Unstructured's 
+[document elements and metadata]() format. This format is ideal for retrieval-augmented generation (RAG), agentic AI, and model fine-tuning.
+
+<Note>
+    The on-demand jobs functionality is designed to work *only by processing local files*.
+
+    To process files (and data) in remote file and blob storage, databases, and vector stores, you must use other 
+    workflow operations in the Unstructured API. To learn how, see for example the notebook 
+    [Dropbox-To-Pinecone Connector API Quickstart for Unstructured](https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/Dropbox_To_Pinecone_Connector_Quickstart.ipynb).  
+</Note>
+
+## Requirements
+
+To run this notebook, you will need:
+
+- An Unstructured account. To sign up for an account, go to https://unstructured.io/?modal=try-for-free. 
+  After you sign up, you are immediately signed in to your new **Let's Go**account, at https://platform.unstructured.io.
+- An Unstructured API key, as follows:
+
+  1. After you are signed in to your account, on the sidebar click **API Keys**.
+  2. Click **Generate New Key**.
+  3. Enter some meaningful display name for the key, and then click **Continue**.
+  4. Next to the new key's name, click the **Copy** icon. The key's value is copied to your system's clipboard. 
+     If you lose this key, simply return to the list and click **Copy** again.
+
+- Python 3.9 or higher installed on your local machine.
+- A Python virtual environment is recommended for isolating and versioning Python project code dependencies, 
+  but this is not required. This quickstart uses the popular Python package and project manager [uv](https://docs.astral.sh/uv/) 
+  for managing virtual environments. Installation and use of `uv` are described in the following steps.
+- One or more local files for Unstructured to process. The following code example assumes that the local files 
+  you want to process are in a folder named `input`, which is in the same project directory as the code. The files' types must be 
+  in the list of [supported file types](/api-reference/supported-file-types).
+- A destination folder for Unstructured to send its processed results to. The following code example assumes that the 
+  destination folder a folder named `output`, which is in the same project directory as the code.
+
+## Step 1: Create a Python virtual environment
+
+In this step, you use `uv` to create a new Python project, and a virtual environment within this project, for this quickstart.
+
+1. [Install uv](https://docs.astral.sh/uv/getting-started/installation) on your local machine, if it is not already installed.
+2. Create a new, blank folder on your local machine for this quickstart, and then switch to this new folder. 
+   This example creates a folder named `unstructured_api_quickstart` within your current working directory 
+   and then switches to this new folder:
+
+    ```bash
+    mkdir unstructured_api_quickstart
+    cd unstructured_api_quickstart
+    ```
+
+3. Create a new `uv` project for this quickstart by running the following command from within the new folder:
+
+    ```bash
+    uv init
+    ```
+
+4. Create a new virtual environment within this project by running the following command:
+
+   ```bash
+   uv venv
+   ```
+
+5. Activate the virtual environment by running the following command:
+
+   ```bash
+   source .venv/bin/activate
+   ```
+
+6. Install the Unstructured Python SDK into the virtual environment, by running the following commands:
+
+   ```bash
+   uv add unstructured-client
+   ```
+
+## Step 2: Add the example code
+
+1. In the same directory as the project's `main.py` code file, add two folders named `input` and `output`. 
+   Your project directory should now look like this:
+
+   ```text
+   unstructured_api_quickstart/
+     ├── .venv/
+     ├── input/  <- Upload your input files here.
+     ├── output/ <- Unstructured will download its output files here.
+     ├── .gitignore
+     ├── .python-version
+     ├── main.py
+     ├── pyproject.toml
+     ├── README.md
+     └── uv.lock
+   ```
+
+2. Upload the files you want Unstructured to process into the new `input` folder.
+3. Overwrite the contents of the `main.py` file with the following code. In this code, replace `<unstructured-api-key>` 
+   with the value of your Unstructured API key.
+
+   ```python
+   # ...
+   ```
+
+## Step 3: Run the code and view the results
+
+1. Run the code in the `main.py` file, by running the following command:
+
+   ```bash
+   uv run main.py
+   ```
+
+2. After the code finishes running, look in the `output` folder to see Unstructured's results.
+
+## Next steps
+
+This quickstart showed you how to use the Unstructured Python SDK to process local files by using Unstructured's _on-demand jobs_ functionality.
+
+To learn more about how to use Unstructured to process local files, see the notebook 
+[], running remotly in Google Colab. This notebook requires no local setup.
+
+To learn how to process files (and data) in remote file and blob storage, databases, and vector stores, see for example the notebook 
+[Dropbox-To-Pinecone Connector API Quickstart for Unstructured](https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/Dropbox_To_Pinecone_Connector_Quickstart.ipynb), 
+also running remotly in Google Colab. This notebook also requires no local setup.
