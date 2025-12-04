@@ -1,0 +1,198 @@
+```python
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import DownloadJobOutputRequest
+from unstructured_client.models.shared import JobInformation
+import httpx
+import json, os, time
+from typing import Optional
+
+def run_on_demand_job(
+        api_url: str, 
+        api_headers: dict[str, str], 
+        input_dir: str,
+        job_type: str,
+        job_template_id: Optional[str] = None, 
+        job_nodes: Optional[list[dict[str, object]]] = None
+) -> tuple[str, list[dict[str, str]]]:
+    """Runs an Unstructured on-demand job.
+
+    Arguments:
+    - api_url {str}: The Unstructured API URL to call.
+    - api_headers {dict[str, str]}: The headers to use when calling the API.
+    - input_dir {str}: The directory that contains the input files.
+    - job_type {str}: The type of job to run. Available options are "template" and "ephemeral".
+    - job_template_id: {Optional[str]}: If job_type is "template", the ID of the workflow template to use.
+    - job_nodes {Optional[list[dict[str, object]]]}: If job_type is "ephemeral", the list of workflow nodes to use.
+
+    Raises:
+    - ValueError: If the job type is invalid.
+        
+    Returns:
+    - job_id {str}: The ID of the on-demand job.
+    - job_output_node_files {list[dict[str, str]]}: The output node files of the on-demand job.
+    """
+    files = []
+
+    for filename in os.listdir(input_dir):
+        full_path = os.path.join(input_dir, filename)
+
+        # Skip non-files (for example, directories).
+        if not os.path.isfile(full_path):
+            continue
+
+        files.append(
+            (
+                "input_files",
+                (
+                    filename,
+                    open(full_path, "rb"),
+                    "application/pdf",
+                ),
+            )
+        )
+
+    if job_type == "template":
+        request_data = {"job_type": job_type, "template_id": job_template_id}
+    elif job_type == "ephemeral":
+        request_data = {"job_type": job_type, "job_nodes": job_nodes}
+    else:
+        raise ValueError(f"Invalid job type: '{job_type}'. Must be 'template' or 'ephemeral'.")
+        exit(1)
+
+    with httpx.Client() as client:
+        response = client.post(
+            url=api_url,
+            headers=api_headers,
+            data={"request_data": json.dumps(request_data)},
+            files=files
+        )
+
+        data = response.json()
+        return data["id"], data["output_node_files"]
+
+def poll_for_job_status(client: UnstructuredClient, job_id: str) -> JobInformation:
+    """Keeps checking a job's status until the job is completed.
+
+    Arguments:
+    - client {UnstructuredClient}: The initialized Unstructured API client to use.
+    - job_id {str}: The job ID to check the status of.
+
+    Returns:
+    - job {JobInformation}: Information about the Unstructured job.
+    """
+    while True:
+        response = client.jobs.get_job(
+            request={
+                "job_id": job_id
+            }
+        )
+
+        job = response.job_information
+
+        if job.status == "SCHEDULED":
+            print("Job is scheduled, polling again in 10 seconds...")
+            time.sleep(10)
+        elif job.status == "IN_PROGRESS":
+            print("Job is in progress, polling again in 10 seconds...")
+            time.sleep(10)
+        else:
+            print("Job is completed.")
+            break
+
+    return job
+
+
+def download_job_output(
+        output_dir: str,
+        client: UnstructuredClient,
+        job_id: str,
+        output_node_files: list[dict[str, str]]
+) -> None:
+    """Downloads the output of an Unstructured job.
+
+    Arguments:
+    - output_dir {str}: The directory to download the output into.
+    - client {UnstructuredClient}: The initialized Unstructured API client to use.
+    - job_id {str}: The job ID to download the output from.
+    - output_node_files {list[dict[str, str]]}: The file IDs and node IDs of the job's output nodes to download from.
+    """
+    for item in output_node_files:
+        file_id = item["file_id"]
+        node_id = item["node_id"]
+
+        print(f"Attempting to get processed results from node_id '{node_id}' for file_id '{file_id}'...")
+
+        response =client.jobs.download_job_output(
+            request=DownloadJobOutputRequest(
+                job_id=job_id,
+                file_id=file_id,
+                node_id=node_id
+            )
+        )
+
+        output_path = os.path.join(output_dir, f"{file_id}.json")
+
+        with open(output_path, "w") as f:
+            json.dump(response.any, f, indent=4)
+
+        print(f"Saved output from '{node_id}' for file_id '{file_id}' to '{output_path}'.")
+
+
+def main():
+    # API key and source/destination folder paths.
+    UNSTRUCTURED_API_KEY = # "<your-unstructured-api-key>"
+    INPUT_FOLDER_PATH = "./input"
+    OUTPUT_FOLDER_PATH = "./output"
+
+    # On-demand jobs API settings.
+    BASE_API_URL = "https://platform.unstructuredapp.io/api/v1"
+    JOBS_ENDPOINT = "/jobs/"
+    ON_DEMAND_JOBS_API_URL = f"{BASE_API_URL}{JOBS_ENDPOINT}"
+    ON_DEMAND_JOBS_HEADERS = {
+        "accept": "application/json",
+        "unstructured-api-key": UNSTRUCTURED_API_KEY
+    }
+
+    # On-demand job settings.
+    job_type = "template"
+    job_template_id = "vlm_enrich_ocr"
+    job_nodes = [] # Applies only if job_type is "ephemeral".
+    job_id = ""
+    job_output_node_files = []
+
+    with UnstructuredClient(api_key_auth=UNSTRUCTURED_API_KEY) as client:
+        print("-" * 80)
+        print(f"Attempting to run the on-demand job, ingesting the input files from '{INPUT_FOLDER_PATH}'...")
+        job_id, job_output_node_files = run_on_demand_job(
+            api_url=ON_DEMAND_JOBS_API_URL,
+            api_headers=ON_DEMAND_JOBS_HEADERS,
+            input_dir=INPUT_FOLDER_PATH,
+            job_type=job_type,
+            job_template_id=job_template_id
+        )
+        
+        print(f"Job ID: {job_id}")
+        print(f"Job output node files: {json.dumps(job_output_node_files, indent=4)}")
+
+        print("-" * 80)
+        print("Polling for job status...")
+        job = poll_for_job_status(client, job_id)
+    
+        print(f"Job details:\n---\n{job.model_dump_json(indent=4)}")
+
+        if job.status != "COMPLETED":
+            print("Job did not complete successfully. Stopping this script without downloading any output.")
+            exit(1)
+
+        print("-" * 80)
+        print("Attempting to download the job output...")
+        download_job_output(OUTPUT_FOLDER_PATH, client, job_id, job_output_node_files)
+        
+        print("-" * 80)
+        print(f"Script completed. Check the output folder '{OUTPUT_FOLDER_PATH}' for the results.")
+        exit(0)
+
+
+if __name__ == "__main__":
+    main()
+```

@@ -60,37 +60,29 @@ import GetStartedSingleFileUI from '/snippets/general-shared-text/get-started-si
 ## <Icon icon="rectangle-terminal" />    Unstructured API quickstart
 
 This quickstart shows how you can use the Unstructured API to quickly and easily see Unstructured's 
-transformation results for a single file that is stored locally.
+transformation results for files that are stored locally.
 
-<Tip>
-    This quickstart uses the Unstructured API's [Partition Endpoint](/api-reference/partition/overview) and focuses on a single, local file for ease-of-use demonstration purposes. This quickstart also 
-    focuses only on a limited set of Unstructured's full capabilities. 
-    
-    To unlock Unstructured's full feature set, as well as use Unstructured to do 
-    large-scale batch processing of multiple files and semi-structured data that are stored in remote locations, 
-    [skip over](/api-reference/workflow/overview#quickstart) to an expanded, advanced version of this quickstart that uses the 
-    Unstructured API's [Workflow Endpoint](/api-reference/workflow/overview) instead.
-</Tip>
+<Note>
+    This quickstart is designed to work *only by processing local files*.
+
+    To process files (and data) in remote file and blob storage, databases, and vector stores, you must use 
+    workflow operations in the Unstructured API other than the ones that are used in this quickstart. To learn how, see for example the notebook 
+    [Dropbox-To-Pinecone Connector API Quickstart for Unstructured](https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/Dropbox_To_Pinecone_Connector_Quickstart.ipynb).  
+</Note>
 
 1. If you do not already have an Unstructured account, [sign up for free](https://unstructured.io/?modal=try-for-free). 
    After you sign up, you are automatically signed in to your Unstructured **Let's Go** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
-2. Watch the following 3-minute video:
+2. Get your Unstructured API key:
 
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/0EogKNU_BPU"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-></iframe>
+   a. After you sign in to your Unstructured **Let's Go** account, click **API Keys** on the sidebar.<br/>
+   b. Click **Generate API Key**.<br/>
+   c. Follow the on-screen instructions to finish generating the key.<br/>
+   d. Click the **Copy** icon next to your new key to add the key to your system's clipboard. If you lose this key, simply return and click the **Copy** icon again.<br/>
 
-<Icon icon="note-sticky" />&nbsp;&nbsp;[Run this quickstart as a notebook on Google Colab instead](https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/Unstructured_Partition_Endpoint_Quickstart.ipynb).
+2. Now that you have your Unstructured API key, choose one of the following options to continue:
 
-<Icon icon="code" />&nbsp;&nbsp;[Get the sample code for this video](/api-reference/partition/quickstart#sample-code).
-
-<Icon icon="gear" />&nbsp;&nbsp;[Get the full setup instructions for this video](/api-reference/partition/quickstart).
+   - [Use a remote notebook](https://github.com/Unstructured-IO/notebooks) - This option uses a remotely hosted Google Colab notebook. There are no additional setup steps required.
+   - [Use your local machine](/api-reference/quickstart) - This option requires you to install the Unstructured Python SDK on your local machine.
 
 <Icon icon="person-chalkboard" />&nbsp;&nbsp;[Learn more](/api-reference/overview).
 

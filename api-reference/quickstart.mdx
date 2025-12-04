@@ -3,12 +3,19 @@ title: Unstructured API Quickstart - On-Demand Jobs
 sidebarTitle: Quickstart
 ---
 
-This quickstart shows how to use the [Unstructured Python SDK](/api-reference/workflow/overview#unstructured-python-sdk) 
-to have Unstructured process local files by using its _on-demand jobs_ functionality, which is part of the 
-Unstructured API's collection of [workflow operations](https://docs.unstructured.io/api-reference/workflow/overview).
+<Tip>
+    This quickstart requires you to install the Unstructured Python SDK on your local machine. If you cannot or do not want to install 
+    or run anything on your local machine, you can skip over to the notebook [Unstructured API Quickstart](https://github.com/Unstructured-IO/notebooks) instead. 
+    The notebook is remotely hosted on Google Colab and requires no local machine setup steps.
+</Tip>
 
-On-demand jobs take one or more local files as input and ouput the files' contents in Unstructured's 
-[document elements and metadata]() format. This format is ideal for retrieval-augmented generation (RAG), agentic AI, and model fine-tuning.
+This quickstart shows how to use the [Unstructured Python SDK](/api-reference/workflow/overview#unstructured-python-sdk) 
+to have Unstructured process local files by using the Unstructured API's _on-demand jobs_ functionality. This functionality 
+is part of the Unstructured API's collection of [workflow operations](https://docs.unstructured.io/api-reference/workflow/overview).
+
+On-demand jobs take one or more local files as input. Unstructured outputs the local files' contents as a series of Unstructured 
+[document elements and metadata](/ui/document-elements). This format is ideal for retrieval-augmented generation (RAG), 
+agentic AI, and model fine-tuning.
 
 <Note>
     The on-demand jobs functionality is designed to work *only by processing local files*.
@@ -20,10 +27,10 @@ On-demand jobs take one or more local files as input and ouput the files' conten
 
 ## Requirements
 
-To run this notebook, you will need:
+To run this quickstart, you will need:
 
 - An Unstructured account. To sign up for an account, go to https://unstructured.io/?modal=try-for-free. 
-  After you sign up, you are immediately signed in to your new **Let's Go**account, at https://platform.unstructured.io.
+  After you sign up, you are immediately signed in to your new **Let's Go** account, at https://platform.unstructured.io.
 - An Unstructured API key, as follows:
 
   1. After you are signed in to your account, on the sidebar click **API Keys**.
@@ -33,18 +40,32 @@ To run this notebook, you will need:
      If you lose this key, simply return to the list and click **Copy** again.
 
 - Python 3.9 or higher installed on your local machine.
-- A Python virtual environment is recommended for isolating and versioning Python project code dependencies, 
+- A Python virtual environment is recommended for isolating and versioning Python project code dependencies on your local machine, 
   but this is not required. This quickstart uses the popular Python package and project manager [uv](https://docs.astral.sh/uv/) 
   for managing virtual environments. Installation and use of `uv` are described in the following steps.
 - One or more local files for Unstructured to process. The following code example assumes that the local files 
-  you want to process are in a folder named `input`, which is in the same project directory as the code. The files' types must be 
-  in the list of [supported file types](/api-reference/supported-file-types).
+  you want to process are in a folder named `input`, which is in the same project directory as your Python code. Creation of this 
+  folder is described in the following steps. The files' types must be 
+  in the list of [supported file types](/api-reference/supported-file-types). 
 - A destination folder for Unstructured to send its processed results to. The following code example assumes that the 
-  destination folder a folder named `output`, which is in the same project directory as the code.
+  destination folder is named `output` and is in the same project directory as your Python code. Creation of this 
+  folder is described in the following steps.
 
 ## Step 1: Create a Python virtual environment
 
 In this step, you use `uv` to create a new Python project, and a virtual environment within this project, for this quickstart.
+
+<Note>
+    If you do not want to use `uv` or create a Python project, you can do the following instead:
+    
+    1. Install the Unstructured Python SDK globally on your local machine by running the following command:
+    
+       ```bash
+       pip install unstructured-client
+       ```
+       
+    2. Skip ahead to [Step 2](#step-2%3A-add-the-example-code).
+</Note>
 
 1. [Install uv](https://docs.astral.sh/uv/getting-started/installation) on your local machine, if it is not already installed.
 2. Create a new, blank folder on your local machine for this quickstart, and then switch to this new folder. 
@@ -82,6 +103,8 @@ In this step, you use `uv` to create a new Python project, and a virtual environ
 
 ## Step 2: Add the example code
 
+import OnDemandJobsPythonCodeExample from '/snippets/how-to-api/on_demand_jobs_python_code_example.py.mdx';
+
 1. In the same directory as the project's `main.py` code file, add two folders named `input` and `output`. 
    Your project directory should now look like this:
 
@@ -92,19 +115,29 @@ In this step, you use `uv` to create a new Python project, and a virtual environ
      ├── output/ <- Unstructured will download its output files here.
      ├── .gitignore
      ├── .python-version
-     ├── main.py
+     ├── main.py <- Your Python code will go here.
      ├── pyproject.toml
      ├── README.md
      └── uv.lock
    ```
 
+   <Note>
+       If you do not want to use `uv` or create a Python project, just create a blank file named `main.py` and two folders 
+       named `input` and `output` that are all in the same local directory instead, for example:
+
+       ```text
+       <parent-directory>/
+         ├── input/  <- Upload your input files here.
+         ├── output/ <- Unstructured will download its output files here.
+         └── main.py <- Your Python code will go here.
+       ```
+   </Note>
+   
 2. Upload the files you want Unstructured to process into the new `input` folder.
 3. Overwrite the contents of the `main.py` file with the following code. In this code, replace `<unstructured-api-key>` 
-   with the value of your Unstructured API key.
+   (in the `main()` function, near the end of the following code) with the value of your Unstructured API key. Then save this file.
 
-   ```python
-   # ...
-   ```
+   <OnDemandJobsPythonCodeExample />
 
 ## Step 3: Run the code and view the results
 
@@ -114,15 +147,23 @@ In this step, you use `uv` to create a new Python project, and a virtual environ
    uv run main.py
    ```
 
+   <Note>
+       If you do not want to use `uv` or create a Python project, you can run the code by running the following command instead:
+
+       ```bash
+       python main.py
+       ```
+   </Note>
+
 2. After the code finishes running, look in the `output` folder to see Unstructured's results.
 
 ## Next steps
 
 This quickstart showed you how to use the Unstructured Python SDK to process local files by using Unstructured's _on-demand jobs_ functionality.
 
-To learn more about how to use Unstructured to process local files, see the notebook 
-[], running remotly in Google Colab. This notebook requires no local setup.
+To learn more about how to use Unstructured to process local files, see the example notebook 
+[Unstructured API On-Demand Jobs Walkthrough](https://github.com/Unstructured-IO/notebooks), running remotely in Google Colab. This notebook requires no local setup.
 
 To learn how to process files (and data) in remote file and blob storage, databases, and vector stores, see for example the notebook 
 [Dropbox-To-Pinecone Connector API Quickstart for Unstructured](https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/Dropbox_To_Pinecone_Connector_Quickstart.ipynb), 
-also running remotly in Google Colab. This notebook also requires no local setup.
+also running remotely in Google Colab. This notebook requires no local setup.
