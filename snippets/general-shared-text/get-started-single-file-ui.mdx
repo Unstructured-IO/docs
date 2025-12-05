@@ -44,7 +44,7 @@ Do the following:
 5. Unstructured's initial results are based on its **High Res** [partitioning strategy](/ui/partitioning), which 
    begins processing the file's contents and converting these contents into a series of Unstructured 
    [document elements and metadata](/ui/document-elements). This partitioning strategy provides good results overall, depending on the complexity of the file's contents. 
-   This partioning strategy also generates a bounding box for each detected object in the file. A _bounding box_ is 
+   This partitioning strategy also generates a bounding box for each detected object in the file. A _bounding box_ is 
    an imaginary rectangular box drawn around the object to show its location and extent within the file.
 
    After the High Res partitioning results are shown, Unstructured begins improving these initial results by 
@@ -67,7 +67,7 @@ Do the following:
    <Warning>
        Each page that Unstructured processes by using this approach is counted as two pages for usage and billing purposes.
        
-       This is because Unstructured processes each page once with its **High Res** partitioning strategy and then reprocessess each 
+       This is because Unstructured processes each page once with its **High Res** partitioning strategy and then reprocesses each 
        page with a VLM to improve the quality, accuracy, and relevance of the initial partitioning results. 
        The final results of these two processing passes for each page count as two pages for usage and billing purposes. 
        This two-pass process happens regardless of whether you click **Update results** in the banner.
@@ -105,6 +105,8 @@ You can also do the following:
 
   ![Switching to the workflow editor](/img/ui/single-file/workflow-editor.png)
 
-<Icon icon="arrow-up" />&nbsp;&nbsp;[Learn how to add chunking, embeddings, and additional enrichments to your results](/ui/walkthrough-2).
+What's next?
 
-<Icon icon="person-chalkboard" />&nbsp;&nbsp;[Learn more about the Unstructured user interface](/ui/overview).
+- <Icon icon="plus" />&nbsp;&nbsp;[Learn how to add chunking, embeddings, and additional enrichments to your local file results](/ui/walkthrough-2).
+- <Icon icon="database" />&nbsp;&nbsp;[Learn how to do large-scale batch processing of multiple files and semi-structured data that are stored in remote locations instead](/ui/quickstart#remote-quickstart).
+- <Icon icon="desktop" />&nbsp;&nbsp;[Learn more about the Unstructured user interface](/ui/overview).

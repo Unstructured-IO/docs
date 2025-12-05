@@ -8,7 +8,7 @@ that rely on those Databricks Volumes as sources. This enables a no-touch approa
 This example shows how to automate this process by adding a custom job in Lakeflow Jobs for your Databricks workspace in 
 [AWS](https://docs.databricks.com/aws/jobs/), [Azure](https://learn.microsoft.com/azure/databricks/jobs/), or 
 [GCP](https://docs.databricks.com/gcp/jobs). This job runs 
-whenever a file upload event is detected in the specified Databricks Volume. This job uses a custom Databricks notebook to call the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to automatically run the 
+whenever a file upload event is detected in the specified Databricks Volume. This job uses a custom Databricks notebook to call the [Unstructured API's workflow operations](/api-reference/workflow/overview) to automatically run the 
 specified corresponding Unstructured ETL+ workflow within your Unstructured account.
 
 <Note>
@@ -28,10 +28,10 @@ To use this example, you will need the following:
 
   <GetStartedSimpleApiOnly />
 
-- The Unstructured Workflow Endpoint URL for your account, as follows:
+- The Unstructured API's workflow operations URL for your account, as follows:
 
   1. In the Unstructured UI, click **API Keys** on the sidebar.<br/>
-  2. Note the value of the **Unstructured Workflow Endpoint** field.
+  2. Note the value of the **Unstructured API's workflow operations** field.
 
 - A Databricks Volumes source connector in your Unstructured account. [Learn how](/ui/sources/databricks-volumes). 
 - Some available [destination connector](/ui/destinations/overview) in your Unstructured account.
@@ -83,7 +83,7 @@ To use this example, you will need the following:
 
 7. Replace the placeholders in this second cell as follows:
 
-   - Replace `<unstructured-api-url>` with the value of the **Unstructured Workflow Endpoint** field earlier from the requirements.
+   - Replace `<unstructured-api-url>` with the value of the **Unstructured API's workflow operations** field earlier from the requirements.
    - Replace `<workflow-id>` with the ID of the workflow that you want to run.
    - For your Unstructured API key, do one of the following:
 

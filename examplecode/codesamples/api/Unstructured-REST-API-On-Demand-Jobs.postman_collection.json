@@ -1,0 +1,108 @@
+{
+	"info": {
+		"_postman_id": "600b293c-57b2-4d84-8bcf-e6353f0e7a12",
+		"name": "Unstructured REST API - On-Demand Jobs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38317384"
+	},
+	"item": [
+		{
+			"name": "1. Run an On-Demand Job",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "unstructured-api-key",
+						"value": "{{UNSTRUCTURED_API_KEY}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "input_files",
+							"type": "file",
+							"src": []
+						},
+						{
+							"key": "request_data",
+							"value": "{\"job_type\":\"<job-type>\",\"template_id\":\"<workflow-template-id>\",\"job_nodes\":[<job-node-settings>]}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{UNSTRUCTURED_API_URL}}/jobs/",
+					"host": [
+						"{{UNSTRUCTURED_API_URL}}"
+					],
+					"path": [
+						"jobs",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Get On-Demand Job Status",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "unstructured-api-key",
+						"value": "{{UNSTRUCTURED_API_KEY}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{UNSTRUCTURED_API_URL}}/jobs/<job-id>",
+					"host": [
+						"{{UNSTRUCTURED_API_URL}}"
+					],
+					"path": [
+						"jobs",
+						"<job-id>"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Download a Processed Local File",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "unstructured-api-key",
+						"value": "{{UNSTRUCTURED_API_KEY}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{UNSTRUCTURED_API_URL}}/jobs/<job-id>/download?file_id=<file-id>&node_id=<node-id>",
+					"host": [
+						"{{UNSTRUCTURED_API_URL}}"
+					],
+					"path": [
+						"jobs",
+						"<job-id>",
+						"download"
+					],
+					"query": [
+						{
+							"key": "file_id",
+							"value": "<file-id>"
+						},
+						{
+							"key": "node_id",
+							"value": "<node-id>"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
