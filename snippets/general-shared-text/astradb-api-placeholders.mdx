@@ -5,3 +5,4 @@
 - `<keyspace>` - The name of the keyspace in the collection. The default is `default_keyspace` if not otherwise specified.
 - `<batch-size>` - The maximum number of records to send per batch. The default is `20` if not otherwise specified.
 - `flatten_metadata` - Set to `true` to flatten the metadata into each record. Specifically, when flattened, the metadata key values are brought to the top level of the element, and the `metadata` key itself is removed. By default, the metadata is not flattened (`false`).
+- `binary_encode_vectors` - Set to `false` to upload vectors as as a list of numbers. By default, vectors are binary encoded before sending (`true`). This is more efficient, but it makes it harder to view and work with vectors in the UI.
