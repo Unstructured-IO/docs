@@ -53,7 +53,8 @@ if __name__ == "__main__":
             collection_name=os.getenv("ASTRA_DB_COLLECTION"),
             keyspace=os.getenv("ASTRA_DB_KEYSPACE"),
             batch_size=20,
-            record_id_key="record_id"
+            record_id_key="record_id",
+            binary_encode_vectors=False
         )
     ).run()
 ```
