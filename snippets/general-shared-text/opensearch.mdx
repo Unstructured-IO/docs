@@ -1,19 +1,69 @@
 - For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api-reference/overview), local OpenSearch instances are not supported.
 - For [Unstructured Ingest](/open-source/ingestion/overview), local and non-local OpenSearch instances are supported.
 
-  For example, the following video shows how to set up an [AWS OpenSearch](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/setting-up.html) instance:
+  For example, to set up an [AWS OpenSearch Service](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/createupdatedomains.html) instance, complete steps similar to the following:
+  
+  1. Sign in to your AWS account, and then open your AWS Management Console.
+  2. Open your Amazon OpenSearch Service console.
+  3. On the sidebar, expand **Managed clusters**, and then click **Dashboard**.
+  4. Click **Create domain**. 
+  5. In the **Name** tile, for **Domain name**, enter some unique domain name for your OpenSearch instance.
+  6. In the **Domain creation method** tile, select a method for creating the domain. For faster setup with sensible 
+     default settings, this example selects **Easy create**. 
+     [Learn more about the Standard create method](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/createupdatedomains.html).
+  7. In the **Engine options** tile, for **Version**, AWS recommends that you select the latest version.
+  8. In the **Network** tile, for **Network**, select a network access method. AWS recommends **VPC access**, which 
+     involves creating and setting up a Virtual Private Cloud (VPC) and then selecting it here. 
+     [Learn more about setting up VPC access](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/vpc.html#prerequisites-vpc-endpoints). 
+     For faster (however, less secure) setup, this example uses **Public access** instead. 
+  9. **For IP address type**, select **Dual-stack mode**.
+  10. In the **Fine-grained access control** tile, select **Create master user**.
+  11. Specify some username and password for this 
+      master user by filling in the **Master username**, **Master password**, and **Confirm master password** fields. Make 
+      sure to save the master user's password in a secure location.
+  12. Click **Create**.
+  13. After the domain is created, you must allow Unstructured to access the domain, as follows:
 
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/BNOYTbRbaFQ"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
+      a. On the sidebar, expand **Managed clusters**, and then click **Domains**.<br/>
+      b. In the list of available domains, click the name of the newly created domain.<br/>
+      c. On the **Security configuration** tab, click **Edit**.<br/>
+      d. In the **Access policy** tile, for **Domain access policy**, select **Configure domain level access policy**.<br/>
+      e. On the **JSON** tab, for **Access policy**, enter the following access policy, replacing the following values:<br/>
+      
+         - Replace `<region>` with your domain's AWS Region, for example `us-east-1`.
+         - Replace `<account-id>` with your AWS account ID.
+         - Replace `<domain>` with the name of your domain.
+         - Replace the `aws:SourceIp` addresses with all of Unstructured's IP address ranges, which you can find at [https://assets.p6m.u10d.net/publicitems/ip-prefixes.json](https://assets.p6m.u10d.net/publicitems/ip-prefixes.json).
+      
+         ```json
+         {
+           "Version": "2012-10-17",
+           "Statement": [
+             {
+               "Effect": "Allow",
+               "Principal": {
+                 "AWS": "*"
+               },
+               "Action": "es:*",
+               "Resource": "arn:aws:es:<region>:<account-id>:domain/<domain>/*",
+               "Condition": {
+                 "IpAddress": {
+                    "aws:SourceIp": [
+                      "104.42.153.20/30",
+                      "104.45.176.240/30",
+                      "20.23.19.236/30",
+                      "20.88.104.236/30"
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+          ```
 
-  While the following video shows how to set up a [local OpenSearch](https://opensearch.org/downloads.html) instance.
+      f. Click **Save changes**.
+
+  The following video shows how to set up a [local OpenSearch](https://opensearch.org/downloads.html) instance.
 
   <iframe
   width="560"
@@ -25,14 +75,34 @@
   allowfullscreen
   ></iframe>
 
-  In all cases, the [OpenSearch version](https://github.com/opensearch-project/opensearch-py/blob/main/COMPATIBILITY.md) must be compatible with the client version of the [opensearch-py](https://github.com/opensearch-project/opensearch-py/blob/main/COMPATIBILITY.md) package on PyPI. 
+- The instance's host identifier (and port number, if you're using a local OpenSearch instance), as follows:
 
-- The instance's hostname and port number. To learn how, see:
+  - For an AWS OpenSearch Service instance, do the following:
 
-  - [Creating and managing Amazon OpenSearch Service domains](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/createupdatedomains.html) for AWS OpenSearch instances.
-  - [Communicate with OpenSearch](https://opensearch.org/docs/latest/getting-started/communicate/) for local OpenSearch instances.
+    1. Sign in to your AWS account, and then open your AWS Management Console.
+    2. Open your Amazon OpenSearch Service console.
+    3. On the sidebar, expand **Managed clusters**, and then click **Dashboard**.
+    4. In the list of available domains, click the name of your domain.
+    5. In the **General information** tile, copy the value of **Domain endpoint v2 (dual stack)**.
 
-- The name of the search index on the instance. [Create an index](https://opensearch.org/docs/latest/api-reference/index-apis/create-index/).
+  - For a local OpenSearch instance, see [Communicate with OpenSearch](https://opensearch.org/docs/latest/getting-started/communicate/).
+
+- The name of the search index on the instance. For example, the following `curl` command creates an index. Replace the following placeholders:
+
+  - Replace `<host>` with the instance's host identifier.
+  - If you're using a local OpenSearch instance, replace `<port>` with the instance's port number.
+  - Replace `<master-username>` with the master user's name, and replace `<master-password>` with the master user's password.
+  - Replace `<index-name>` with the name of the new search index on the instance.
+  - Replace `<index-schema>` with the schema for the new search index on the instance.
+  
+  If the instance is set to allow access only to specified IP addresses, be sure to add your local machine's IP address to the instance before you run the following command.
+
+  ```bash
+  curl --request PUT "<host>[:<port>]/<index-name>" \
+  --user "<master-username>:<master-password>" \
+  --header "Content-Type: application/json" \
+  --data '<index-schema>'
+  ```
 
   The OpenSearch index that you use must have a schema that is compatible with the schema of the documents 
   that Unstructured produces for you. Unstructured cannot provide a schema that is guaranteed to work in all 
@@ -91,6 +161,7 @@
 
   See also: 
 
+  - [Create an index](https://opensearch.org/docs/latest/api-reference/index-apis/create-index/)
   - [Mappings and field types](https://opensearch.org/docs/latest/field-types/)
   - [Explicit mapping](https://opensearch.org/docs/latest/field-types/#explicit-mapping)
   - [Dynamic mapping](https://opensearch.org/docs/latest/field-types/#dynamic-mapping)
