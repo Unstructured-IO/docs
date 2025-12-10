@@ -104,13 +104,13 @@ Here are a few examples:
 If the option to include original elements is specified, during chunking the `orig_elements` field is added to the `metadata` field of each chunked element. 
 The `orig_elements` field is a list of the original elements that were used to create the current chunked element. This list is output in 
 gzip compressed, Base64-encoded format. To get back to the original content for this list, Base64-decode the list's bytes, and then gzip decompress them as UTF-8. 
-[Learn how](/api-reference/partition/legacy-api/get-chunked-elements).
+[Learn how](/api-reference/legacy-api/partition/get-chunked-elements).
 
 After chunking, `Image` elements are not preserved in the output. However, 
 if High Res partitioning is used and the option to include original elements is also specified, the `orig_elements` field of each chunked element will contain 
 an `image_base64` field for each detected image and table associated with the original elements listed within `orig_elements`. To get back to the 
 original content for an `image_base64` field, Base64-decode the field's bytes. 
-[Learn how](/api-reference/partition/legacy-api/extract-image-block-types).
+[Learn how](/api-reference/legacy-api/partition/extract-image-block-types).
 
 The following sections provide information about the available chunking strategies and their settings.
 
