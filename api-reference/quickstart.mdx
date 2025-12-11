@@ -46,7 +46,12 @@ To run this quickstart, you will need:
 - One or more local files for Unstructured to process. The following code example assumes that the local files 
   you want to process are in a folder named `input`, which is in the same project directory as your Python code. Creation of this 
   folder is described in the following steps. The files' types must be 
-  in the list of [supported file types](/api-reference/supported-file-types). 
+  in the list of [supported file types](/api-reference/supported-file-types).
+
+  <Note>
+      Each on-demand job is limited to 10 files, and each file is limited to 10 MB in size.
+  </Note>
+
 - A destination folder for Unstructured to send its processed results to. The following code example assumes that the 
   destination folder is named `output` and is in the same project directory as your Python code. Creation of this 
   folder is described in the following steps.
@@ -140,6 +145,10 @@ import OnDemandJobsPythonCodeExample from '/snippets/how-to-api/on_demand_jobs_p
    <OnDemandJobsPythonCodeExample />
 
 ## Step 3: Run the code and view the results
+
+<Note>
+    Each on-demand job is limited to 10 files, and each file is limited to 10 MB in size.
+</Note>
 
 1. Run the code in the `main.py` file, by running the following command:
 

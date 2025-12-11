@@ -236,6 +236,10 @@ Unstructured offers a [Postman collection](https://learning.postman.com/docs/col
    https://raw.githubusercontent.com/Unstructured-IO/docs/main/examplecode/codesamples/api/Unstructured-REST-API-On-Demand-Jobs.postman_collection.json
    ```
 
+   <Note>
+       Each on-demand job is limited to 10 files, and each file is limited to 10 MB in size.
+   </Note>
+
 5. On the sidebar, click **Collections**.
 6. Expand **Unstructured REST API - Workflow Endpoint**.
 7. Select the request that you want to use.
@@ -2304,7 +2308,7 @@ the `DELETE` method to call the `/workflows/<workflow-id>` endpoint (for `curl` 
 
 ## Jobs
 
-You can [run on demand](#run-an-on-demand-job), [list](#list-jobs), 
+You can [run on-demand](#run-an-on-demand-job), [list](#list-jobs), 
 [get](#get-a-job), 
 and [cancel](#cancel-a-job) jobs.
 
@@ -2327,9 +2331,19 @@ that job's run (known as an _on-demand job_), use the `UnstructuredClient` objec
         In the following command, replace:
 
         - `</full/path/to/local/filename.extension>` with the full path to the local file to upload.
+
+          <Note>
+              Each file is limited to 10 MB in size.
+          </Note>
+
         - `<filename.extension>` with the filename of the local file to upload.
         - `<local-file-media-type>` with the local file's media type. For a list of available media types, such as `application/pdf`, see [Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml).
         - To upload multiple files, add additional `InputFile` objects, one per file.
+
+          <Note>
+              Each on-demand job is limited to 10 files.
+          </Note>
+
         - For additional replacements, see the end of this section.
 
         ```python
@@ -2372,9 +2386,19 @@ that job's run (known as an _on-demand job_), use the `UnstructuredClient` objec
         In the following command, replace:
 
         - `</full/path/to/local/filename.extension>` with the full path to the local file to upload.
+
+          <Note>
+              Each file is limited to 10 MB in size.
+          </Note>
+
         - `<filename.extension>` with the filename of the local file to upload.
         - `<local-file-media-type>` with the local file's media type. For a list of available media types, such as `application/pdf`, see [Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml).
         - To upload multiple files, add additional `InputFiles` objects, one per file.
+
+          <Note>
+              Each on-demand job is limited to 10 files.
+          </Note>
+
         - For additional replacements, see the end of this section.
 
         ```python
@@ -2421,9 +2445,19 @@ that job's run (known as an _on-demand job_), use the `UnstructuredClient` objec
         In the following command, replace:
 
         - `</full/path/to/local/filename.extension>` with the full path to the local file to upload.
+
+          <Note>
+              Each file is limited to 10 MB in size.
+          </Note>
+
         - `<filename.extension>` with the filename of the local file to upload.
         - `<local-file-media-type>` with the local file's media type. For a list of available media types, such as `application/pdf`, see [Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml).
         - To upload multiple files, add additional `--form` entries, one per file.
+
+          <Note>
+              Each on-demand job is limited to 10 files.
+          </Note>
+
         - For additional replacements, see the end of this section.
 
         ```bash
@@ -2456,7 +2490,15 @@ that job's run (known as an _on-demand job_), use the `UnstructuredClient` objec
             
             - **Key**: `input_files`, **File**, **Value**: Click the **Value** box, then click **New file from local machine**, and select the file to upload.
 
+              <Note>
+                  Each file is limited to 10 MB in size.
+              </Note>
+
               To upload multiple files, add additional `input_files` entries after this one, one entry per additional file to upload.
+              
+              <Note>
+                  Each on-demand job is limited to 10 files.
+              </Note>
 
             - **Key**: `request_data`, **Text**, **Value**: Specify the settings for the on-demand job, as follows:
 
