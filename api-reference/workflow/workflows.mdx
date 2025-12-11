@@ -17,9 +17,9 @@ To use the [Unstructured API's workflow operations](/api-reference/workflow/over
 - To delete a workflow, use the `UnstructuredClient` object's `workflows.delete_workflow` function (for the Python SDK) or 
   the `DELETE` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman). [Learn more](/api-reference/workflow/overview#delete-a-workflow).
 - To get a list of available workflow templates, use the `GET` method to call the `/templates` endpoint (for `curl` or Postman). 
-  [Learn more](/api-reference/workflow/overview#list-workflow-templates).
+  [Learn more](#list-templates).
 - To get information about a workflow template, use the `GET` method to call the `/templates/<template-id>` endpoint (for `curl` or Postman). 
-  [Learn more](/api-reference/workflow/overview#get-a-workflow-template).
+  [Learn more](#get-a-template).
 
 The following examples assume that you have already met the [requirements](/api-reference/workflow/overview#requirements) and 
 understand the [basics](/api-reference/workflow/overview#basics) of working with the Unstructured API's workflow operations.
@@ -796,7 +796,7 @@ Replace the preceding placeholders as follows:
 - `<workflow-type>` (_required_) - The workflow type. Available values include:
 
   - `CUSTOM` (for the Python SDK) and `custom` (for `curl` or Postman) - This workflow's nodes are manually specified in the `workflow_nodes` array. For instructions, see [Custom workflow DAG nodes](#custom-workflow-dag-nodes).
-  - `TEMPLATE` (for the Python SDK) and `template` (for `curl` or Postman) - This workflow's nodes are specified by a workflow template. In this case, you would not add a `workflow_nodes` array. Instead, you must specify the workflowtemplate's unique ID in the `template_id` field. For instructions, see [List workflow templates](#list-workflow-templates) and [Get a workflow template](#get-a-workflow-template).
+  - `TEMPLATE` (for the Python SDK) and `template` (for `curl` or Postman) - This workflow's nodes are specified by a workflow template. In this case, you would not add a `workflow_nodes` array. Instead, you must specify the workflowtemplate's unique ID in the `template_id` field. For instructions, see [List workflow templates](#get-a-template).
   
   <Note>
       The previously-available workflow optimization types `ADVANCED`, `BASIC`, and `PLATINUM` (for the Python SDK) and 
@@ -1957,11 +1957,53 @@ Allowed values for `subtype` and `model_name` include:
   - `"model_name": "voyage-code-2"`
   - `"model_name": "voyage-multimodal-3"`
 
-## List workflow templates
+## List templates
 
-To list workflow templates, use the `GET` method to call the `/templates` endpoint for `curl` or Postman. 
+To list templates, use the `UnstructuredClient` object's `templates.list_templates` function (for the Python SDK) or the `GET` method to call the `/templates` endpoint (for `curl` or Postman). 
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+        import json
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import ListTemplatesRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.templates.list_templates(
+            request=ListTemplatesRequest()
+        )
+
+        print(json.dumps(response.response_list_templates, indent=4))
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import json
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import ListTemplatesRequest
+
+        async def list_templates():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = client.templates.list_templates(
+                request=ListTemplatesRequest()
+            )
+
+            print(json.dumps(response.response_list_templates, indent=4))
+
+        asyncio.run(list_templates())
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'POST' --location \
@@ -1987,13 +2029,59 @@ To list workflow templates, use the `GET` method to call the `/templates` endpoi
     </Accordion>
 </AccordionGroup>
 
-## Get a workflow template
+## Get a template
 
-To get information about a workflow template, use the `GET` method to call the 
-`/templates/<template-id>` endpoint for `curl` or Postman, replacing `<template-id>` with the 
-workflow template's unique ID. To get this ID, see [List workflow templates](#list-workflow-templates).
+To get information about a template, use the `UnstructuredClient` object's `templates.get_template` function (for the Python SDK) or the `GET` method to call the 
+`/templates/<template-id>` endpoint (for `curl` or Postman), replacing `<template-id>` with the 
+template's unique ID. To get this ID, see [List templates](#list-templates).
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+        import json
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import GetTemplateRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.templates.get_template(
+            request=GetTemplateRequest(
+                template_id="<template-id>"
+            )
+        )
+
+        print(json.dumps(response.response_get_template, indent=4))
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import json
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import GetTemplateRequest
+
+        async def get_template():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = client.templates.get_template(
+                request=GetTemplateRequest(
+                    template_id="<template-id>"
+                )
+            )
+
+            print(json.dumps(response.response_get_template, indent=4))
+
+        asyncio.run(get_template())
+        ```
+    </Accordion>
     <Accordion title="curl">
         ```bash
         curl --request 'GET' --location \

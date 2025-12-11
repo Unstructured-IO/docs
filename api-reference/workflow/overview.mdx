@@ -2316,13 +2316,107 @@ For general information, see [Jobs](/ui/jobs).
 ### Run an on-demand job
 
 To run a job whose workflow takes one or more local files only as input, and the job's temporary workflow exists only for the duration of 
-that job's run (known as an _on-demand job_), use the `POST` method to call the `/jobs/` endpoint for `curl` or Postman.
+that job's run (known as an _on-demand job_), use the `UnstructuredClient` object's `jobs.create_job` function (for the Python SDK) or the `POST` method to call the `/jobs/` endpoint (for `curl` or Postman).
 
 <Note>
     To run a workflow that was already created at some point in the past and still exists, see [Run a workflow](#run-a-workflow).
 </Note>
 
 <AccordionGroup>
+    <Accordion title="Python SDK">
+        In the following command, replace:
+
+        - `</full/path/to/local/filename.extension>` with the full path to the local file to upload.
+        - `<filename.extension>` with the filename of the local file to upload.
+        - `<local-file-media-type>` with the local file's media type. For a list of available media types, such as `application/pdf`, see [Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml).
+        - To upload multiple files, add additional `InputFile` objects, one per file.
+        - For additional replacements, see the end of this section.
+
+        ```python
+        import os
+        import json
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import CreateJobRequest
+        from unstructured_client.models.shared import BodyCreateJob, InputFiles
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.jobs.create_job(
+            request=CreateJobRequest(
+                body_create_job=BodyCreateJob(
+                    request_data=json.dumps({
+                        "job_type": "<job-type>",
+                        "template_id": "<workflow-template-id>",
+                        "job_nodes": [<job-node-settings>]
+                    }),
+                    input_files=[
+                        InputFiles(
+                            content=open("<full/path/to/local/filename.extension>", "rb"),
+                            file_name="<filename.extension>",
+                            content_type="<local-file-media-type>"
+                        )
+                    ]
+                )
+            )
+        )
+
+        print(response.raw_response)
+        ```
+
+        To access the processed files' data, use each of the values in the response's `input_file_ids` list or `output_node_files` array to [download a processed local file](#download-a-processed-local-file-from-a-job) from the job's run.
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        In the following command, replace:
+
+        - `</full/path/to/local/filename.extension>` with the full path to the local file to upload.
+        - `<filename.extension>` with the filename of the local file to upload.
+        - `<local-file-media-type>` with the local file's media type. For a list of available media types, such as `application/pdf`, see [Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml).
+        - To upload multiple files, add additional `InputFiles` objects, one per file.
+        - For additional replacements, see the end of this section.
+
+        ```python
+        import os
+        import json
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import CreateJobRequest
+        from unstructured_client.models.shared import BodyCreateJob, InputFiles
+
+        async def run_on_demand_job():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = client.jobs.create_job(
+                request=CreateJobRequest(
+                    body_create_job=BodyCreateJob(
+                        request_data=json.dumps({
+                            "job_type": "<job-type>",
+                            "template_id": "<workflow-template-id>",
+                            "job_nodes": [<job-node-settings>]
+                        }),
+                        input_files=[
+                            InputFiles(
+                                content=open("<full/path/to/local/filename.extension>", "rb"),
+                                file_name="<filename.extension>",
+                                content_type="<local-file-media-type>"
+                            )
+                        ]
+                    )
+                )
+            )
+
+            print(response.raw_response)
+
+        asyncio.run(run_on_demand_job())
+        ```
+
+        To access the processed files' data, use each of the values in the response's `input_file_ids` list or `output_node_files` array to [download a processed local file](#download-a-processed-local-file-from-a-job) from the job's run.
+    </Accordion>
     <Accordion title="curl">
         In the following command, replace:
 
@@ -2343,7 +2437,7 @@ that job's run (known as an _on-demand job_), use the `POST` method to call the 
 
         ```
 
-        To access the processed files' data, [download a processed local file](#download-a-processed-local-file-from-a-job) from the job's run.
+        To access the processed files' data, use each of the values in the response's `input_file_ids` list or `output_node_files` array to [download a processed local file](#download-a-processed-local-file-from-a-job) from the job's run.
     </Accordion>
     <Accordion title="Postman">
         1. In the method drop-down list, select **POST**.
@@ -2371,7 +2465,7 @@ that job's run (known as an _on-demand job_), use the `POST` method to call the 
               ```
         5. Click **Send**.
 
-        To access the processed files' data, [download a processed local file](#download-a-processed-local-file-from-a-job) from the job's run.
+        To access the processed files' data, use each of the values in the response's `input_file_ids` list or `output_node_files` array to [download a processed local file](#download-a-processed-local-file-from-a-job) from the job's run.
     </Accordion>
 </AccordionGroup>
 
@@ -2382,7 +2476,7 @@ Replace the preceding placeholders as follows:
   - `template` - This job's workflow nodes are specified by a workflow template. 
   - `ephemeral` - This job's workflow nodes are manually specified.  
 
-- `<workflow-template-id>` - If `<job-type>` is set to `template`, the unique ID of the workflow template to use for this job's workflow nodes. For instructions, see [List workflow templates](#list-workflow-templates) and [Get a workflow template](#get-a-workflow-template).
+- `<workflow-template-id>` - If `<job-type>` is set to `template`, the unique ID of the workflow template to use for this job's workflow nodes. For instructions, see [List templates](/api-reference/workflow/workflows#list-templates) and [Get a template](/api-reference/workflow/workflows#get-a-template).
 - `<job-node-settings>` - If `<job-type>` is set to `ephemeral`, the settings for the job's workflow nodes. For instructions, see [Custom workflow DAG nodes](/api-reference/workflow/workflows#custom-workflow-dag-nodes).
 
 ### List jobs
@@ -2890,12 +2984,18 @@ This applies only to jobs that use a workflow with a local source and a local de
 To download a processed local file from a completed job, use `GET` to call the `/jobs/<job-id>/download` endpoint, replacing 
 `<job-id>` with the job's unique ID. To get this ID, see [List jobs](#list-jobs).
 
-You must also provide Unstructured's IDs for the file to download and the workflow's output node. To get these IDs, see [Get a job](#get-a-job). In the 
+You must also provide Unstructured's IDs for the file to download, and optionally a specific workflow node. To get these IDs, see [Get a job](#get-a-job). In the 
 response: 
 
-- Unstructured's IDs for the file to download and the workflow's output node are in the `output_node_files` array. 
-- The ID for the file to download is in the `output_node_files` array's `file_id` field.
-- The ID for the workflow's output node is in the `output_node_files` array's `node_id` field.
+Option 1: To download a file's output from the last workflow node in a job run, you need the following from the response:
+
+- Unstructured's ID for the file to download, which is in the `input_file_ids` array.
+- Do not specify a `node_id` argument. The last workflow node will be used by default.
+
+Option 2: To download a file's output from a specific workflow node in a job run, you need the following from the response:
+
+- Unstructured's ID for the file to download, which is in the `output_node_files` array's `file_id` field.
+- Unstructured's ID for the specific workflow node, which is in the `output_node_files` array's `node_id` field.
 
 Currently, you cannot use the Unstructured user interface (UI) to download a file from a job that uses a 
 workflow with a local source and a local destination.
