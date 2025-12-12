@@ -10,7 +10,6 @@ from typing import Optional
 def run_on_demand_job(
         client: UnstructuredClient,
         input_dir: str,
-        job_type: str,
         job_template_id: Optional[str] = None, 
         job_nodes: Optional[list[dict[str, object]]] = None
 ) -> tuple[str, list[dict[str, str]]]:
@@ -19,12 +18,11 @@ def run_on_demand_job(
     Arguments:
     - client {UnstructuredClient}: The initialized Unstructured API client to use.
     - input_dir {str}: The directory that contains the input files.
-    - job_type {str}: The type of job to run. Available options are "template" and "ephemeral".
-    - job_template_id: {Optional[str]}: If job_type is "template", the ID of the workflow template to use.
-    - job_nodes {Optional[list[dict[str, object]]]}: If job_type is "ephemeral", the list of workflow nodes to use.
+    - job_template_id: {Optional[str]}: If this job is to use a workflow template, the ID of the workflow template to use.
+    - job_nodes {Optional[list[dict[str, object]]]}: If this job is to use a custom workflow definition, the list of custom workflow nodes to use.
 
     Raises:
-    - ValueError: If the job type is invalid.
+    - ValueError: If neither the job template ID nor job nodes (and not both) are specified.
         
     Returns:
     - job_id {str}: The ID of the on-demand job.
@@ -51,12 +49,12 @@ def run_on_demand_job(
             )
         )
 
-    if job_type == "template":
-        request_data = json.dumps({"job_type": job_type, "template_id": job_template_id})
-    elif job_type == "ephemeral":
-        request_data = json.dumps({"job_type": job_type, "job_nodes": job_nodes})
+    if job_template_id != None:
+        request_data = json.dumps({"template_id": job_template_id})
+    elif job_nodes != None:
+        request_data = json.dumps({"job_nodes": job_nodes})
     else:
-        raise ValueError(f"Invalid job type: '{job_type}'. Must be 'template' or 'ephemeral'.")
+        raise ValueError(f"Must specify a job template ID or job nodes (but not both).")
         exit(1)
 
     response = client.jobs.create_job(
@@ -146,9 +144,8 @@ def main():
     OUTPUT_FOLDER_PATH = "./output"
 
     # On-demand job settings.
-    job_type = "template"
     job_template_id = "hi_res_and_enrichment"
-    job_nodes = [] # Applies only if job_type is "ephemeral".
+    job_nodes = [] # Applies only if the job is to use a custom workflow definition.
 
     # Internal tracking variables.
     job_id = ""
@@ -161,7 +158,6 @@ def main():
         job_id, job_input_file_ids, job_output_node_files = run_on_demand_job(
             client = client,
             input_dir = INPUT_FOLDER_PATH,
-            job_type  = "template",
             job_template_id = job_template_id
         )
 

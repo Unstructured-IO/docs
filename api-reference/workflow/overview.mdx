@@ -2362,7 +2362,6 @@ that job's run (known as an _on-demand job_), use the `UnstructuredClient` objec
             request=CreateJobRequest(
                 body_create_job=BodyCreateJob(
                     request_data=json.dumps({
-                        "job_type": "<job-type>",
                         "template_id": "<workflow-template-id>",
                         "job_nodes": [<job-node-settings>]
                     }),
@@ -2419,7 +2418,6 @@ that job's run (known as an _on-demand job_), use the `UnstructuredClient` objec
                 request=CreateJobRequest(
                     body_create_job=BodyCreateJob(
                         request_data=json.dumps({
-                            "job_type": "<job-type>",
                             "template_id": "<workflow-template-id>",
                             "job_nodes": [<job-node-settings>]
                         }),
@@ -2465,7 +2463,7 @@ that job's run (known as an _on-demand job_), use the `UnstructuredClient` objec
         "$UNSTRUCTURED_API_URL/jobs/" \
         --header 'accept: application/json' \
         --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
-        --form "request_data={\"job_type\":\"<job-type>\",\"template_id\":\"<workflow-template-id>\",\"job_nodes\":[<job-node-settings>]}" \
+        --form "request_data={\"template_id\":\"<workflow-template-id>\",\"job_nodes\":[<job-node-settings>]}" \
         --form "input_files=@</full/path/to/local/filename.extension>;filename=<filename.extension>;type=<local-file-media-type>" \
         --form "input_files=@</full/path/to/local/filename.extension>;filename=<filename.extension>;type=<local-file-media-type>" # For each additional file to be uploaded.
 
@@ -2503,7 +2501,7 @@ that job's run (known as an _on-demand job_), use the `UnstructuredClient` objec
             - **Key**: `request_data`, **Text**, **Value**: Specify the settings for the on-demand job, as follows:
 
               ```json
-              {"job_type":"<job-type>","template_id":"<workflow-template-id>","job_nodes":[<job-node-settings>]}
+              {"template_id":"<workflow-template-id>","job_nodes":[<job-node-settings>]}
               ```
         5. Click **Send**.
 
@@ -2513,13 +2511,8 @@ that job's run (known as an _on-demand job_), use the `UnstructuredClient` objec
 
 Replace the preceding placeholders as follows:
 
-- `<job-type>` - The type of job to run. Available values include:
-
-  - `template` - This job's workflow nodes are specified by a workflow template. 
-  - `ephemeral` - This job's workflow nodes are manually specified.  
-
-- `<workflow-template-id>` - If `<job-type>` is set to `template`, the unique ID of the workflow template to use for this job's workflow nodes. For instructions, see [List templates](/api-reference/workflow/workflows#list-templates) and [Get a template](/api-reference/workflow/workflows#get-a-template).
-- `<job-node-settings>` - If `<job-type>` is set to `ephemeral`, the settings for the job's workflow nodes. For instructions, see [Custom workflow DAG nodes](/api-reference/workflow/workflows#custom-workflow-dag-nodes).
+- `<workflow-template-id>` - If the job is to use a workflow template, the unique ID of the workflow template to use for this job's workflow nodes. For instructions, see [List templates](/api-reference/workflow/workflows#list-templates) and [Get a template](/api-reference/workflow/workflows#get-a-template).
+- `<job-node-settings>` - If the job is to use a custom workflow definition, the settings for the job's workflow nodes. For instructions, see [Custom workflow DAG nodes](/api-reference/workflow/workflows#custom-workflow-dag-nodes).
 
 ### List jobs
 
