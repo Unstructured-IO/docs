@@ -1416,7 +1416,10 @@ import EnrichmentImageSummaryHiResOnly from '/snippets/general-shared-text/enric
             name="Enrichment",
             subtype="<subtype>",
             type="prompter",
-            settings={}
+            settings={
+                "provider_type": "<provider-type>",
+                "model": "<model>"
+            }
         )
         ```
     </Accordion>
@@ -1426,17 +1429,43 @@ import EnrichmentImageSummaryHiResOnly from '/snippets/general-shared-text/enric
             "name": "Enrichment",
             "type": "prompter",
             "subtype": "<subtype>",
-            "settings": {}
+            "settings": {
+                "provider_type": "<provider-type>",
+                "model": "<model>"
+            }
         }
         ```
     </Accordion>
 </AccordionGroup>
 
-Allowed values for `<subtype>` include:
+Allowed values for `<subtype>`, `<provider-type>`, and `<model>` include, respectively:
 
-- `openai_image_description`
-- `anthropic_image_description`
-- `bedrock_image_description`
+- `anthropic_image_description`, `anthropic`, and:
+
+  - `claude-3-7-sonnet-20250219`
+  - `claude-sonnet-4-20250514`
+  - `claude-sonnet-4-5-20250929`
+
+- `bedrock_image_description`, `bedrock`, and:
+
+  - `us.amazon.nova-lite-v1:0`
+  - `us.amazon.nova-pro-v1:0`
+  - `us.anthropic.claude-3-haiku-20240307-v1:0`
+  - `us.anthropic.claude-3-opus-20240229-v1:0`
+  - `us.anthropic.claude-3-sonnet-20240229-v1:0`
+  - `us.anthropic.claude-3-7-sonnet-20250219-v1:0`
+  - `us.anthropic.claude-sonnet-4-20250514-v1:0`
+  - `us.anthropic.claude-sonnet-4-5-20250929-v1:0`
+
+- `openai_image_description`, `openai`, and:
+
+  - `gpt-4o`
+  - `gpt-4o-mini`
+  - `gpt-5-mini`
+
+- `vertexai_image_description`, `vertexai`, and:
+
+  - `gemini-2.0-flash-001`
 
 #### Table Description task
 
@@ -1451,7 +1480,10 @@ import EnrichmentTableSummaryHiResOnly from '/snippets/general-shared-text/enric
             name="Enrichment",
             subtype="<subtype>",
             type="prompter",
-            settings={}
+            settings={
+                "provider_type": "<provider-type>",
+                "model": "<model>"
+            }
         )
         ```
     </Accordion>
@@ -1461,17 +1493,43 @@ import EnrichmentTableSummaryHiResOnly from '/snippets/general-shared-text/enric
             "name": "Enrichment",
             "type": "prompter",
             "subtype": "<subtype>",
-            "settings": {}
+            "settings": {
+                "provider_type": "<provider-type>",
+                "model": "<model>"
+            }
         }
         ```
     </Accordion>
 </AccordionGroup>
 
-Allowed values for `<subtype>` include:
+Allowed values for `<subtype>`, `<provider-type>`, and `<model>` include, respectively:
 
-- `openai_table_description`
-- `anthropic_table_description`
-- `bedrock_table_description`
+- `anthropic_table_description`, `anthropic`, and:
+
+  - `claude-3-7-sonnet-20250219`
+  - `claude-sonnet-4-20250514`
+  - `claude-sonnet-4-5-20250929`
+
+- `bedrock_table_description`, `bedrock`, and:
+
+  - `us.amazon.nova-lite-v1:0`
+  - `us.amazon.nova-pro-v1:0`
+  - `us.anthropic.claude-3-haiku-20240307-v1:0`
+  - `us.anthropic.claude-3-opus-20240229-v1:0`
+  - `us.anthropic.claude-3-sonnet-20240229-v1:0`
+  - `us.anthropic.claude-3-7-sonnet-20250219-v1:0`
+  - `us.anthropic.claude-sonnet-4-20250514-v1:0`
+  - `us.anthropic.claude-sonnet-4-5-20250929-v1:0`
+
+- `openai_table_description`, `openai`, and:
+
+  - `gpt-4o`
+  - `gpt-4o-mini`
+  - `gpt-5-mini`
+
+- `vertexai_table_description`, `vertexai`, and:
+
+  - `gemini-2.0-flash-001`
 
 #### Table to HTML task
 
@@ -1484,9 +1542,12 @@ import EnrichmentTableToHTMLHiResOnly from '/snippets/general-shared-text/enrich
         ```python
         table_to_html_enrichment_workflow_node = WorkflowNode(
             name="Enrichment",
-            subtype="openai_table2html",
+            subtype="<subtype>",
             type="prompter",
-            settings={}
+            settings={
+                "provider_type": "<provider-type>",
+                "model": "<model>"
+            }
         )
         ```
     </Accordion>
@@ -1495,12 +1556,30 @@ import EnrichmentTableToHTMLHiResOnly from '/snippets/general-shared-text/enrich
         {
             "name": "Enrichment",
             "type": "prompter",
-            "subtype": "openai_table2html",
-            "settings": {}
+            "subtype": "<subtype>",
+            "settings": {
+                "provider_type": "<provider-type>",
+                "model": "<model>"
+            }
         }
         ```
     </Accordion>
 </AccordionGroup>
+
+Allowed values for `<subtype>`, `<provider-type>`, and `<model>` include, respectively:
+
+- `twopass_table2html` for agentic AI table-to-HTML output. Do not specify a `<provider-type>` or `<model>` for this subtype.
+- `anthropic_table2html` for VLM table-to-HTML output by using Anthropic, `anthropic`, and:
+
+  - `claude-3-7-sonnet-20250219`
+  - `claude-sonnet-4-20250514`
+  - `claude-sonnet-4-5-20250929`
+
+- `openai_table2html` for VLM table-to-HTML output by using OpenAI, `openai`, and:
+
+  - `gpt-4o`
+  - `gpt-4o-mini`
+  - `gpt-5-mini`
 
 #### Named Entity Recognition (NER) task
 
@@ -1512,6 +1591,8 @@ import EnrichmentTableToHTMLHiResOnly from '/snippets/general-shared-text/enrich
             subtype="<subtype>",
             type="prompter",
             settings={
+                "provider_type": "<provider-type>",
+                "model": "<model>",
                 "prompt_interface_overrides": {
                     "prompt": {
                         "user": "<user-prompt-override>"
@@ -1528,6 +1609,8 @@ import EnrichmentTableToHTMLHiResOnly from '/snippets/general-shared-text/enrich
             "type": "prompter",
             "subtype": "<subtype>",
             "settings": {
+                "provider_type": "<provider-type>",
+                "model": "<model>",
                 "prompt_interface_overrides": {
                     "prompt": {
                         "user": "<user-prompt-override>"
@@ -1540,6 +1623,20 @@ import EnrichmentTableToHTMLHiResOnly from '/snippets/general-shared-text/enrich
 </AccordionGroup>
 
 Fields for settings include:
+
+- Allowed values for `<subtype>`, `<provider-type>`, and `<model>` include, respectively:
+
+  - `anthropic_ner`, `anthropic`, and:
+
+    - `claude-3-7-sonnet-20250219`
+    - `claude-sonnet-4-20250514`
+    - `claude-sonnet-4-5-20250929`
+
+  - `openai_ner`, `openai`, and:
+
+    - `gpt-4o`
+    - `gpt-4o-mini`
+    - `gpt-5-mini`
 
 - `prompt_interface_overrides.prompt.user`: _Optional_. Any alternative prompt to use with the underlying NER model. The default is none, which means to rely on using Unstructured's internal default prompt when calling the NER model. 
   The internal default prompt is as follows, which you can override by providing an alternative prompt:
@@ -1615,11 +1712,6 @@ Fields for settings include:
 
   - Changing any other portions of the internal default prompt could produce unexpected results.
 
-Allowed values for `<subtype>` include:
-
-- `openai_ner`
-- `anthropic_ner`
-
 #### Generative OCR task
 
 import EnrichmentOCRHiResOnly from '/snippets/general-shared-text/enrichment-ocr-high-res-only.mdx';
@@ -1645,7 +1737,10 @@ import EnrichmentOCRHiResOnly from '/snippets/general-shared-text/enrichment-ocr
             name="Enrichment",
             subtype="<subtype>",
             type="prompter",
-            settings={}
+            settings={
+                "provider_type": "<provider-type>",
+                "model": "<model>"
+            }
         )
         ```
     </Accordion>
@@ -1655,17 +1750,39 @@ import EnrichmentOCRHiResOnly from '/snippets/general-shared-text/enrichment-ocr
             "name": "Enrichment",
             "type": "prompter",
             "subtype": "<subtype>",
-            "settings": {}
+            "settings": {
+                "provider_type": "<provider-type>",
+                "model": "<model>"
+            }
         }
         ```
     </Accordion>
 </AccordionGroup>
 
-Allowed values for `<subtype>` include:
+Allowed values for `<subtype>`, `<provider-type>`, and `<model>` include, respectively:
 
-- `anthropic_ocr`
-- `openai_ocr`
-- `vertexai_ocr`
+- `anthropic_ocr`, `anthropic`, and:
+
+  - `claude-3-7-sonnet-20250219`
+  - `claude-sonnet-4-20250514`
+  - `claude-sonnet-4-5-20250929`
+
+- `bedrock_ocr`, `bedrock`, and:
+
+  - `us.amazon.nova-lite-v1:0`
+  - `us.amazon.nova-pro-v1:0`
+  - `us.anthropic.claude-3-haiku-20240307-v1:0`
+  - `us.anthropic.claude-3-opus-20240229-v1:0`
+  - `us.anthropic.claude-3-sonnet-20240229-v1:0`
+  - `us.anthropic.claude-3-7-sonnet-20250219-v1:0`
+  - `us.anthropic.claude-sonnet-4-20250514-v1:0`
+  - `us.anthropic.claude-sonnet-4-5-20250929-v1:0`
+
+- `openai_ocr`, `openai`, and:
+
+  - `gpt-4o`
+  - `gpt-4o-mini`
+  - `gpt-5-mini`
 
 ### Chunker node
 
