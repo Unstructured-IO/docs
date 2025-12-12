@@ -49,9 +49,9 @@ def run_on_demand_job(
             )
         )
 
-    if job_template_id != None:
+    if job_template_id is not None:
         request_data = json.dumps({"template_id": job_template_id})
-    elif job_nodes != None:
+    elif job_nodes is not None:
         request_data = json.dumps({"job_nodes": job_nodes})
     else:
         raise ValueError(f"Must specify a job template ID or job nodes (but not both).")
