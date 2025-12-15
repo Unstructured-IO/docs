@@ -16,10 +16,13 @@
      For faster setup, this example uses the **Public access** method. 
      [Learn more about the VPC access method](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/vpc.html#prerequisites-vpc-endpoints). 
   9. **For IP address type**, select **Dual-stack mode**.
-  10. In the **Fine-grained access control** tile, select **Create master user**.
-  11. Specify some username and password for this 
-      master user by filling in the **Master username**, **Master password**, and **Confirm master password** fields. Make 
-      sure to save the master user's password in a secure location.
+  10. In the **Fine-grained access control** tile, do one of the following:
+  
+      - If you want to use an existing AWS IAM user in the AWS account as the domain's master user, then for **Master user**, select **Set IAM ARN as master user**. Then enter the IAM ARN for the master user in the **IAM ARN** box.
+      - If you want to create a master user and password as the domain's master user instead, then for **Master user**, select **Create master user**. Then specify some username and password for this 
+        new master user by filling in the **Master username**, **Master password**, and **Confirm master password** fields. Make 
+        sure to save the master user's password in a secure location.
+
   12. Click **Create**.
   13. After the domain is created, you must allow Unstructured to access the domain, as follows:
 
@@ -57,7 +60,7 @@
 
 - The name of the search index on the instance. 
 
-  For the destination connector, if you need to create an index, you can use for example the following `curl` command. Replace the following placeholders:
+  For the destination connector, if you need to create an index and you're using a master user and password as the domain's master user, you can use for example the following `curl` command. Replace the following placeholders:
 
   - Replace `<host>` with the instance's host identifier.
   - If you're using a local OpenSearch instance, replace `<port>` with the instance's port number.
@@ -72,6 +75,8 @@
   [--header "Content-Type: application/json" \
   --data '<index-schema>']
   ```
+
+  If you're using an existing AWS IAM user as the domain's master user instead, you should use the AWS Command Line Interface (CLI) to create the index instead of using the preceding`curl` command. To learn how, see [create-index](https://docs.aws.amazon.com/cli/latest/reference/opensearch/create-index.html) in the AWS CLI Command Reference.
 
   For the destination connector, the index does not need to contain a schema beforehand. If Unstructured encounters an index without a schema, 
   Unstructured will automatically create a compatible schema for you before inserting items into the index. Nonetheless, 
