@@ -2,19 +2,30 @@
 title: Structured data extraction
 ---
 
-The _structured data extractor_ allows Unstructured to extract the data from your source documents 
-into a format that you define, in addition to having Unstructured extract the data in a format that uses Unstructured's default 
-[document elements and metadata](/ui/document-elements).
+When Unstructured [partitions](/ui/partitioning) your source documents, the result is a list of Unstructured 
+[document elements](/ui/document-elements). These document elements are expressed in Unstructured's format, which includes elements such as 
+`Title`, `NarrativeText`, `UncategorizedText`, `Table`, `Image`, `List`, and so on. For example, you could have 
+Unstructured ingest a stack of customer order forms in PDF format, where the PDF files' layout is identical, but the 
+content differs per individual PDF by customer order number. For each PDF, Unstructured might output elements such as 
+a `List` element that contains details about the customer who placed the order, a `Table` element 
+that contains the customer's order details, `NarrativeText` or `UncategorizedText` elements that contains special 
+instructions for the order, and so on. You might then use custom logic that you write yourself to parse those elements further in an attempt to 
+extract information that you're particularly interested in, such as customer IDs, item quantities, order totals, and so on.
+
+Unstructured's _structured data extractor_ simplifies this kind of scenario by allowing Unstructured to automatically extract the data from your source documents 
+into a format that you define up front. For example, you could have Unstructured ingest that same stack of customer order form PDFs and 
+then output a series of customer records, one record per order form. Each record could include data, with associated field labels, such as the customer's ID; a series of order line items with descriptions, quantities, and prices; 
+the order's total amount; and any other available details that matter to you. 
+This information is extracted in a consistent JSON format that is already fine-tuned for you to use in your own applications.
 
 To show how the structured data extractor works, take a look at the following sample sales invoice PDF. This file is one of the 
-sample files that is available directly from the workflow designer in the Unstructured use interface (UI). The file's 
+sample files that is available directly from the **Start** page and the workflow editor in the Unstructured use interface (UI). The file's 
 content is as follows:
 
 ![Sample sales invoice PDF](/img/ui/data-extractor/invoice.png)
 
-If you run a workflow that references this file, by default Unstructured extracts the invoice's data in a format similar to the following. 
-This format is based on Unstructured's default [document elements and metdata](/ui/document-elements) (note that the ellipses in this output 
-indicate omitted fields for brevity):
+Without the structured data extractor, if you run a workflow that references this file, Unstructured extracts the invoice's data in a format similar to the following 
+(note that the ellipses in this output indicate omitted fields for brevity):
 
 ```json
 [
@@ -139,15 +150,16 @@ By using the structured data extractor in your Unstructured workflows, you could
 
 In the preceding output, the first document element, of type `DocumentData`, has an `extracted_data` field within `metadata` 
 that contains a representation of the document's data in the custom output format that you specify. Beginning with the second document element and continuing 
-until the end of the document, Unstructured also outputs the document's data as a series of Unstructured's default document elements and metadata as it normally would.
+until the end of the document, Unstructured also outputs the document's data as a series of Unstructured's document elements and metadata as it normally would.
 
-To use the structured data extractor, in addition to your source documents you must provide an _extraction guidance prompt_ and an _extraction schema_.
+To use the structured data extractor, you must provide Unstructured with an _extraction schema_, which defines the structure of the data for Unstructured to extract. 
+You can provide this schema by specifying an _extraction prompt_, by providing a JSON object, or by using a visual schema builder.
 
-An extraction guidance prompt is like a prompt that you would give to a chatbot or AI agent. This prompt guides Unstructured on how to extract the data from the source documents. For this invoice example, the 
+An extraction prompt is like a prompt that you would give to a chatbot or AI agent. This prompt guides Unstructured on how to extract the data from the source documents. For this invoice example, the 
 prompt might look like the following:
 
 ```text
-Extract the invoice data into the provided JSON schema.
+Extract the invoice data.
 Be precise and copy values exactly as written (e.g., dates, amounts, account numbers).
 For line items, include each product or service with its description, quantity, unit price, and total.
 Do not infer or omit fields—if a field is missing, leave it blank.
@@ -275,49 +287,9 @@ Here is the schema:
 }
 ```
 
-To generate a starter extraction guidance prompt and extraction schema, you could for example send a prompt such as the following, 
-along with a representative sample of your source documents, to a RAG chatbot such as ChatGPT, Claude, Google Gemini, or Perplexity AI:
+You can also use a visual schema builder to define the schema, like this:
 
-```text
-Please create a schema I can use to leverage an LLM for structured data extraction from the file I have just given you. 
-It should adhere to OpenAI's JSON mode format. Here is an example of one I have used before for a different project:
-
-{
-  "type": "object",
-  "properties": {
-    "plants": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "The name of the plant"
-          },
-          "sunlight": {
-            "type": "string",
-            "description": "The sunlight requirements for the plant (e.g., 'Direct', 'Bright Indirect - Some direct')"
-          },
-          "water": {
-            "type": "string",
-            "description": "The watering instructions for the plant (e.g., 'Let dry between thorough watering', 'Water when 50-60% dry')"
-          },
-          "humidity": {
-            "type": "string",
-            "description": "The humidity requirements for the plant (e.g., 'Low', 'Medium', 'High')"
-          }
-        },
-        "required": ["name", "sunlight", "water", "humidity"],
-        "additionalProperties": false
-      }
-    }
-  },
-  "required": ["plants"],
-  "additionalProperties": false
-}
-
-In addition, please provide a guidance prompt that will help ensure the most accurate extraction possible.
-```
+![Visual schema builder](/img/ui/data-extractor/schema-builder.png)
 
 ## Using the structured data extractor
 
@@ -334,15 +306,34 @@ There are two ways to use the structured data extractor in your Unstructured wor
 2. On the sidebar, click **Start**, if the **Start** page is not already showing.
 3. In the **Welcome, get started right away!** tile, do one of the following:
 
-   - Click **Browse files**, or drag and drop a file onto **Drop file to test**, to have Unstructured parse and transform your own file.
+   - To use a file on your local machine, click **Browse files** and then select the file, or drag and drop the file onto **Drop file to test**.
      
      <Note>
-         If you choose to use your own file, the file must be 10 MB or less in size.
+         If you use a local file, the file must be 10 MB or less in size.
      </Note>
 
-   - Click one of the sample files, such as **realestate.pdf**, to have Unstructured parse and transform that sample file.
+   - To use a sample file provided by Unstructured, click one of the the sample files that are shown, such as **realestate.pdf**.
 
-4. ...
+4. After Unstructured partitions the selected file into Unstructured's document element format, click **Update results** to 
+   have Unstructured apply generative enrichments, such as [image descriptions](/ui/enriching/image-descriptions) and 
+   [generative OCR](/ui/enriching/generative-ocr), to those document elements.
+5. In the title bar, next to **Transform**, click **Extract**.
+6. If the **Define Schema** pane, do one of the following to extract the data from the selected file by using a custom-defined format:
+
+   - To use the schema based on one that Unstructured suggests after analyzing the selected files, click the **JSON** tab, make any changes to the suggestedschema as needed, and then click **Run Schema**.
+   - To use a custom schema that conforms to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
+     click the **JSON** tab, enter your own custom schema, and then click **Run Schema**.
+   - To use a visual editor to define the schema, click the **List** tab, enter your own custom schema objects and their properties, 
+     and then click **Run Schema**.
+   - To use a plain language prompt to guide Unstructured on how to extract the data, click **Prompt**, enter your propmpt in the 
+     dialog, and then click **Generate schema**. Unstructured will then suggest a schema on the **JSON** tab. Make any changes to the suggested schema as needed, and then click **Run Schema**.
+
+7. The extracted data appears in the **Extract results** pane. You can do one of the following:
+
+   - To view a human-viewable representation of the extracted data, click **Formatted**.
+   - To view the JSON representation of the extracted data, click **JSON**.
+   - To download the JSON representation of the extracted data as a local JSON file, click the download icon next to **Formatted** and **JSON**.
+   - To change the schema and then re-run the extraction, click the back arrow next to **Extract results**, and then skip back to step 6 in this procedure.
 
 ### Use the structured data extractor from the workflow editor
 
