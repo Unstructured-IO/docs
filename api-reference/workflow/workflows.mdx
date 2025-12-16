@@ -1293,7 +1293,29 @@ Fields for `settings` include:
 - `xml_keep_tags`: _Optional_. True to retain any XML tags in the output. False (the default) to just extract the text from any XML tags instead.
 - `encoding`: _Optional_. The encoding method used to decode the text input. The default is `utf-8`.
 - `ocr_languages`: _Optional_. A list of languages present in the input, for use in partitioning, OCR, or both. Multiple languages indicate that the text could be in any of the specified languages. The default is `[ 'eng' ]`. [See the language codes list](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/common/lang.py).
-- `extract_image_block_types`: _Optional_. A list of the Unstructured element types for use in extracting image blocks as Base64 encoded data stored in `metadata` fields. Available values include `Image` and `Table`. The default is `[ 'Image', 'Table' ]`.
+- `extract_image_block_types`: _Optional_. A list of the Unstructured element types for use in extracting image blocks as Base64 encoded data stored in `metadata` fields. Available values include:
+
+  - `Abstract`
+  - `BulletedText`
+  - `Caption`
+  - `CodeSnippet`
+  - `CompositeElement`
+  - `Figure`
+  - `FigureCaption`
+  - `Form`
+  - `Formula`
+  - `Image`
+  - `List`
+  - `List-item`
+  - `ListItem`
+  - `NarrativeText`
+  - `Paragraph`
+  - `Picture`
+  - `Table`
+  - `Text`
+  - `Threading`
+  - `UncategorizedText`
+ 
 - `infer_table_structure`: _Optional_. True to have any table elements extracted from a PDF to include an additional `metadata` field named `text_as_html`, containing an HTML `<table>` transformation. The default is false.
 
 #### Fast strategy
