@@ -9,6 +9,6 @@ Fill in the following fields:
   brought to the top level of the element, and the `metadata` key itself is removed. By default, the metadata is not flattened.
 - **Binary Encode Vectors**: Uncheck this box to upload vectors as a list of numbers. By default, vectors are uploaded as binary. This is more efficient, but it makes it harder to view and work with vectors in the UI.
 - **Enable Lexical Search**: Check this box to enable lexical and hybrid search. See [Lexical search](#lexical-search).
-- **Astra DB Generated Embeddings**: Check this box to use an Astra vectorize integration for embeddings. When enabled, document text will be inserted into the `$vectorize` field, and Astra DB will automatically populate the `$vector` field with embeddings. **Important**: Your workflow must not include an embedder node, and you must have an embedding provider configured for your collection. When disabled (the default), Unstructured will insert embeddings directly into the `$vector` field, and your workflow must include an embedder node. See the [Astra DB documentation](https://docs.datastax.com/en/astra-db-serverless/databases/embedding-generation.html) for more information. By default, Astra-generated embeddings are disabled.
+- **Astra DB Generated Embeddings**: Check this box to use an Astra vectorize integration for embeddings. See [Astra DB Generated Embeddings](#astra-db-generated-embeddings).
 - **API Endpoint** (_required_): The database's associated API endpoint.
 - **Token** (_required_): The application token for the database.
