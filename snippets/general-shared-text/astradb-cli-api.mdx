@@ -18,7 +18,8 @@ These environment variables:
 Additional settings include:
 
 - For the source connector only, `--fields` (CLI) or `fields` (Python): Optionally, a comma-separated list (CLI) or an array of strings (Python) of fields 
-  to include in the output. The default is ti include all fields, if not otherwise specified.
+  to include in the output. The default is to include all fields, if not otherwise specified.
 - For the destination connector only, `--flatten-metadata` (CLI) or `flatten_metadata=True` (Python): Optionally, whether to "flatten" the metadata. Specifically, the metadata key values are 
   brought to the top level of the element, and the `metadata` key itself is removed. To not flatten the metadata (the default), specify `--no-flatten_metadata` (CLI) or 
   `flatten_metadata=False` (Python). The default is is to not flatten the metadata if not otherwise specified.
+- For the destination connector only, `--binary-encode-vectors` (CLI) or `binary_encode_vectors=True` (Python): Optionally, control when to upload vectors in a binary format. By default, vectors are binary encoded (`true`), which is more efficient. To upload vectors as a human-readable list of floats instead, specify `--no-binary-encode-vectors` (CLI) or `binary_encode_vectors=False` (Python). **WARNING**: Disabling this option may make the upload slower!

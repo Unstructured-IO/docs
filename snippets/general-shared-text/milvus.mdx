@@ -17,7 +17,7 @@
   - An IBM watsonx.data [Lite plan](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-tutorial_prov_lite_1) 
     or [Enterprise plan](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-getting-started_1) within your IBM Cloud account.
 
-    - If you are provisoning a Lite plan, be sure to choose the **Generative AI** use case when prompted, as this is the only use case offered that includes Milvus.
+    - If you are provisioning a Lite plan, be sure to choose the **Generative AI** use case when prompted, as this is the only use case offered that includes Milvus.
 
   - A [Milvus service instance in IBM watsonx.data](https://cloud.ibm.com/docs/watsonxdata?topic=watsonxdata-adding-milvus-service).
 
@@ -27,8 +27,8 @@
       **Custom** are recommended only for 384 dimensions, which means you should use an embedding model that uses 384 dimensions only. 
       The **Custom** Milvus instance size is recommended for any number of dimensions.
 
-  - The URI of the instance, which takes the format of `https://`, followed by instance's **GRPC host**, followed by a colon and the **GRPC port**. 
-    This takes the format of `https://<host>:<port>`. To get this informatation, do the following:
+  - The URI of the instance, which takes the format of `https://`, followed by the instance's **GRPC host**, followed by a colon and the **GRPC port**. 
+    This takes the format of `https://<host>:<port>`. To get this information, do the following:
 
     a. Sign in to your IBM Cloud account.<br/>
     b. On the sidebar, click the **Resource list** icon. If the sidebar is not visible, click the **Navigation Menu** icon to the far left of the title bar.<br/>
@@ -43,7 +43,20 @@
   - The name of the [collection](https://milvus.io/docs/manage-collections.md) in the database. Note the collection requirements at the end of this section.
   - The username and password to access the instance. 
 
-    - The username for Milvus on IBM watsonx.data is always `ibmlhapikey`. 
+    - The username for Milvus on IBM watsonx.data is typically `ibmlhapikey`.
+
+      <Note>
+          More recent versions of Milvus on IBM watsonx.data require `ibmlhapikey_<your-IBMid>` instead, where `<your-IBMid>` is 
+          your IBMid, for example `me@example.com`. To get your IBMid, do the following:
+
+          1. Sign in to your IBM Cloud account.
+          2. In the title bar, click **Manage** and then, under **Security and access**, click **Access (IAM)**.
+          3. In the sidebar, expand **Manage identities**, and then click **Users**.
+          4. In the list of users, click your user name.
+          5. On the **User details** tab, in the **Details** tile, note the value of **IBMid**.
+
+      </Note>
+ 
     - The password for Milvus on IBM watsonx.data is in the form of an IBM Cloud user API key. To create an IBM Cloud user API key:
 
       a. Sign in to your IBM Cloud account.<br/>
@@ -187,7 +200,7 @@ schema = CollectionSchema(
 )
 
 client.create_collection(
-    collection_name=COLLECTION_NAME",
+    collection_name=COLLECTION_NAME,
     schema=schema,
     using=DATABASE_NAME
 )
