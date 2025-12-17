@@ -23,3 +23,5 @@ Additional settings include:
   brought to the top level of the element, and the `metadata` key itself is removed. To not flatten the metadata (the default), specify `--no-flatten_metadata` (CLI) or 
   `flatten_metadata=False` (Python). The default is is to not flatten the metadata if not otherwise specified.
 - For the destination connector only, `--binary-encode-vectors` (CLI) or `binary_encode_vectors=True` (Python): Optionally, control when to upload vectors in a binary format. By default, vectors are binary encoded (`true`), which is more efficient. To upload vectors as a human-readable list of floats instead, specify `--no-binary-encode-vectors` (CLI) or `binary_encode_vectors=False` (Python). **WARNING**: Disabling this option may make the upload slower!
+- For the destination connector only, `--enable-lexical-search` (CLI) or `enable_lexical_search=True` (Python): Optionally, enable lexical and hybrid search.
+- For the destination connector only, `--astra-generated-embeddings` (CLI) or `astra_generated_embeddings=True` (Python): Optionally, use an Astra vectorize integration for embeddings.

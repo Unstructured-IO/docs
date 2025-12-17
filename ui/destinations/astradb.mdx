@@ -28,3 +28,45 @@ To create the destination connector:
 import AstraDBFields from '/snippets/general-shared-text/astradb-platform.mdx';
 
 <AstraDBFields />
+
+## Troubleshooting
+
+### Common error messages
+
+The following error messages may appear when using the **Enable Lexical Search** or **Astra DB Generated Embeddings** options:
+
+#### Lexical search not enabled for collection
+
+**Error**: `500: Error in uploader - [CollectionInsertManyException] CollectionInsertManyException(Lexical content can only be added and filtering and sort only be used on Collections for which Lexical feature is enabled. The Collection <keyspace>.<collection> does not have Lexical feature enabled. (LEXICAL_NOT_ENABLED_FOR_COLLECTION) [with 0 inserted ids])`
+
+**Cause**: You enabled **Enable Lexical Search**, but your collection is not configured for lexical search.
+
+**Solution**: Either disable **Enable Lexical Search** in your connector settings, or configure your collection for lexical search. Your database must also be in one of the supported AWS regions. See the [Astra DB documentation](https://docs.datastax.com/en/astra-db-serverless/databases/lexical-search.html) for more information.
+
+#### Embedding service not configured
+
+**Error**: `500: Error in uploader - [CollectionInsertManyException] CollectionInsertManyException(Unable to vectorize data, embedding service not configured for the collection : Unable to vectorize data, embedding service not configured for the collection : <collection> (EMBEDDING_SERVICE_NOT_CONFIGURED) [with 0 inserted ids])`
+
+**Cause**: You enabled **Astra DB Generated Embeddings**, but your collection does not have an embedding provider configured.
+
+**Solution**: Either disable **Astra DB Generated Embeddings** in your connector settings, or configure an embedding provider for your collection in Astra DB. See the [Astra DB documentation](https://docs.datastax.com/en/astra-db-serverless/databases/embedding-generation.html) for more information.
+
+#### Cannot use both embedding methods
+
+**Error**: `500: Error in stager - [ValueError] Cannot use Unstructured embeddings and Astra-generated embeddings simultaneously. Please disable Astra generated embeddings or remove the Unstructured embedder.`
+
+**Cause**: You enabled **Astra DB Generated Embeddings** and also included an embedder node in your workflow.
+
+**Solution**: Choose one embedding method:
+- **Option 1**: Disable **Astra DB Generated Embeddings** and keep the embedder node in your workflow. Unstructured will generate embeddings and insert them directly into the `$vector` field.
+- **Option 2**: Enable **Astra DB Generated Embeddings** and remove the embedder node from your workflow. Astra DB will generate embeddings automatically.
+
+#### No vectors provided
+
+**Error**: `500: Error in stager - [ValueError] No vectors provided. Please enable an Unstructured embedding provider or configure Astra to generate embeddings.`
+
+**Cause**: You disabled **Astra DB Generated Embeddings** and your workflow does not include an embedder node.
+
+**Solution**: Choose one embedding method:
+- **Option 1**: Add an embedder node to your workflow and keep **Astra DB Generated Embeddings** disabled. Unstructured will generate embeddings and insert them directly into the `$vector` field.
+- **Option 2**: Enable **Astra DB Generated Embeddings** and ensure your collection has an embedding provider configured. Astra DB will generate embeddings automatically.
