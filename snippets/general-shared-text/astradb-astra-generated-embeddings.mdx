@@ -1,6 +1,4 @@
 ## Astra DB Generated Embeddings
-See the [Astra DB documentation](https://docs.datastax.com/en/astra-db-serverless/databases/embedding-generation.html) for more information.
-
 When **Astra DB Generated Embeddings** is enabled:
 - Your document text will be inserted into the `$vectorize` field.
 - Astra DB will automatically populate the `$vector` field with embeddings.
@@ -10,6 +8,8 @@ When **Astra DB Generated Embeddings** is enabled:
 When **Astra DB Generated Embeddings** is disabled (the default):
  - Unstructured will insert embeddings directly into the `$vector` field
  - Your workflow **must** include an embedder node.
+
+See the [Astra DB documentation](https://docs.datastax.com/en/astra-db-serverless/databases/embedding-generation.html) for more information.
 
 ### Troubleshooting
 You may encounter the following errors when running a job:
