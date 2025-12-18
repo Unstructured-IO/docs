@@ -25,6 +25,8 @@ agentic AI, and model fine-tuning.
     [Dropbox-To-Pinecone Connector API Quickstart for Unstructured](https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/Dropbox_To_Pinecone_Connector_Quickstart.ipynb).  
 </Note>
 
+import OnDemandJobsLimits from '/snippets/general-shared-text/on-demand-jobs-limits.mdx';
+
 ## Requirements
 
 To run this quickstart, you will need:
@@ -48,9 +50,7 @@ To run this quickstart, you will need:
   folder is described in the following steps. The files' types must be 
   in the list of [supported file types](/api-reference/supported-file-types).
 
-  <Note>
-      Each on-demand job is limited to 10 files, and each file is limited to 10 MB in size.
-  </Note>
+  <OnDemandJobsLimits />
 
 - A destination folder for Unstructured to send its processed results to. The following code example assumes that the 
   destination folder is named `output` and is in the same project directory as your Python code. Creation of this 
@@ -142,13 +142,9 @@ import OnDemandJobsPythonCodeExample from '/snippets/how-to-api/on_demand_jobs_p
 3. Overwrite the contents of the `main.py` file with the following code. In this code, replace `<your-unstructured-api-key>` 
    (in the `main()` function, near the end of the following code) with the value of your Unstructured API key. Then save this file.
 
-   <OnDemandJobsPythonCodeExample />
-
 ## Step 3: Run the code and view the results
 
-<Note>
-    Each on-demand job is limited to 10 files, and each file is limited to 10 MB in size.
-</Note>
+<OnDemandJobsLimits />
 
 1. Run the code in the `main.py` file, by running the following command:
 
