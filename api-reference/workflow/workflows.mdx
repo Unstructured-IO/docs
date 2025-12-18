@@ -77,6 +77,7 @@ specify the settings for the workflow, as follows:
             source_id="<source-connector-id>",
             destination_id="<destination-connector-id>",
             workflow_type=WorkflowType.<workflow-type>,
+            reprocess_all=True|False,
             template_id="<workflow-template-id>",
             workflow_nodes=[
                 workflow_node,
@@ -323,6 +324,7 @@ specify the settings for the workflow, as follows:
                 source_id="<source-connector-id>",
                 destination_id="<destination-connector-id>",
                 workflow_type=WorkflowType.<workflow-type>,
+                reprocess_all=True|False,
                 template_id="<workflow-template-id>",
                 workflow_nodes=[
                     workflow_node,
@@ -547,6 +549,7 @@ specify the settings for the workflow, as follows:
             "source_id": "<source-connector-id>",
             "destination_id": "<destination-connector-id>",
             "workflow_type": "<workflow-type>",
+            "reprocess_all": "true"|"false",
             "template_id": "<workflow-template-id>",
             "workflow_nodes": [
                 {
@@ -663,6 +666,7 @@ specify the settings for the workflow, as follows:
                "source_id": "<source-connector-id>",
                "destination_id": "<destination-connector-id>",
                "workflow_type": "<workflow-type>",
+               "reprocess_all": "true"|"false",
                "template_id": "<workflow-template-id>",
                "workflow_nodes": [
                    {
@@ -805,6 +809,10 @@ Replace the preceding placeholders as follows:
       The ability to create an [automatic workflow](/ui/workflows#create-an-automatic-workflow) type is currently not available but is planned to be added in a future release.
   </Note>
 
+- `reprocess_all`: _Optional_. If set to true (the default), the workflow will reprocess all documents in the source location on every workflow run. 
+  If set to `false`, the workflow will only process new documents that are added to the source location, or existing documents that are updated in the 
+  source location (as determined by checking whether the file's version has changed), since the last workflow run. This setting applies only to blob storage 
+  connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage source connectors.
 - `<schedule-timeframe>` - The repeating automatic run schedule, specified as a predefined phrase. The available predefined phrases are:
 
   - `every 15 minutes` (for `curl` or Postman): Every 15 minutes (cron expression: `*/15 * * * *`).
