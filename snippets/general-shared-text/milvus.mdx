@@ -232,3 +232,90 @@ Unstructured cannot provide a schema that is guaranteed to work in all
 circumstances. This is because these schemas will vary based on your source files' types; how you 
 want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors.
 
+For objects in the `metadata` field that Unstructured produces and that you want to store in Milvus, you must create fields in your Milvus collection schema that 
+follows Unstructured's `metadata` field naming convention. For example, if Unstructured produces a `metadata` field with the following 
+child objects:
+
+```json
+"metadata": {
+  "is_extracted": "true",
+  "coordinates": {
+    "points": [
+      [
+        134.20055555555555,
+        241.36027777777795
+      ],
+      [
+        134.20055555555555,
+        420.0269444444447
+      ],
+      [
+        529.7005555555555,
+        420.0269444444447
+      ],
+      [
+        529.7005555555555,
+        241.36027777777795
+      ]
+    ],
+    "system": "PixelSpace",
+    "layout_width": 1654,
+    "layout_height": 2339
+  },
+  "filetype": "application/pdf",
+  "languages": [
+    "eng"
+  ],
+  "page_number": 1,
+  "image_base64": "aaa...bbb...111",
+  "image_mime_type": "image/jpeg",
+  "filename": "realestate.pdf",
+  "data_source": {
+    "url": "file:///home/etl/node/downloads/00000000-0000-0000-0000-000000000001/7458635f-realestate.pdf",
+    "record_locator": {
+      "protocol": "file",
+      "remote_file_path": "file:///home/etl/node/downloads/00000000-0000-0000-0000-000000000001/7458635f-realestate.pdf"
+    }
+  },
+  "entities": {
+    "items": [
+      {
+        "entity": "HOME FOR FUTURE",
+        "type": "ORGANIZATION"
+      },
+      {
+        "entity": "221 Queen Street, Melbourne VIC 3000",
+        "type": "LOCATION"
+      }
+    ],
+    "relationships": [
+      {
+        "from": "HOME FOR FUTURE",
+        "relationship": "based_in",
+        "to": "221 Queen Street, Melbourne VIC 3000"
+      }
+    ]
+  }
+}
+```
+
+You could create corresponding fields in your Milvus collection schema with the following field names and data types:
+
+| **Field name** | **Python SDK for Milvus data type** |
+| -- | -- |
+| `is_extracted` | `DataType.VARCHAR` |
+| `coordinates_points` | `DataType.ARRAY `(of `DataType.FLOAT`) |
+| `coordinates_system` | `DataType.VARCHAR` |
+| `coordinates_layout_width` | `DataType.INT32` |
+| `coordinates_layout_height` | `DataType.INT32` |
+| `filetype` | `DataType.VARCHAR` |
+| `languages` | `DataType.ARRAY `(of `DataType.VARCHAR`) |
+| `page_number` | `DataType.INT32` |
+| `image_base64` | `DataType.VARCHAR` |
+| `image_mime_type` | `DataType.VARCHAR` |
+| `filename` | `DataType.VARCHAR` |
+| `data_source_url` | `DataType.VARCHAR` |
+| `data_source_record_locator_protocol` | `DataType.VARCHAR` |
+| `data_source_record_locator_remote_file_path` | `DataType.VARCHAR` |
+| `entities_items` | `DataType.JSON` |
+| `entities_relationships` | `DataType.JSON` |
