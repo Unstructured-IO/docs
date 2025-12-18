@@ -2,6 +2,8 @@
 
 When **Enable Lexical Search** is selected, document text will be inserted into the `$lexical` field for lexical and hybrid search capabilities.
 
-**Important**: Your collection must be configured for lexical search, and your database must be in one of the supported AWS regions. See the [Astra DB documentation](https://docs.datastax.com/en/astra-db-serverless/databases/lexical-search.html) for more information. Otherwise, you will encounter the following error when running a job:
+<Note>
+    Your collection must be configured for lexical search, and your database must be in one of the supported AWS regions. For more information, see [Find data with lexicographical matching](https://docs.datastax.com/en/astra-db-serverless/databases/lexical-search.html) in the Astra DB documentation. Otherwise, you will encounter the following error when running a job:
 
-` The Collection <keyspace>.<collection> does not have Lexical feature enabled. (LEXICAL_NOT_ENABLED_FOR_COLLECTION) [with 0 inserted ids])`
+    ` The Collection <keyspace>.<collection> does not have Lexical feature enabled. (LEXICAL_NOT_ENABLED_FOR_COLLECTION) [with 0 inserted ids])`
+</Note>
