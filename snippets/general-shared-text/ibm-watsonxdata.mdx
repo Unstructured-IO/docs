@@ -175,33 +175,16 @@
   10. On the sidebar, click **Query workspace**.
   11. In the SQL editor, enter and run a table creation statement such as the following one that uses 
       [Presto SQL](https://prestodb.io/docs/current/connector/iceberg.html) syntax, replacing `<catalog-name>` with the name of the target 
-      catalog and `<schema-name>` with the name of the target schema:
+      catalog and `<schema-name>` with the name of the target schema, with at minimum the fields `id`, `type`, `text`, `element_id`, and `record_id`:
 
       ```sql      
       CREATE TABLE <catalog-name>.<schema-name>.elements (
-         "type" varchar,
-         "element_id" varchar,
-         "text" varchar,
-         "file_directory" varchar,
-         "filename" varchar,
-         "languages" array(varchar),
-         "last_modified" double,
-         "page_number" varchar,
-         "filetype" varchar,
-         "url" varchar,
-         "version" varchar,
-         "record_locator" varchar,
-         "date_created" double,
-         "date_modified" double,
-         "date_processed" double,
-         "filesize_bytes" bigint,
-         "points" varchar,
-         "system" varchar,
-         "layout_width" double,
-         "layout_height" double,
-         "id" varchar,
-         "record_id" varchar,
-         "parent_id" varchar
+         id varchar,
+         type varchar,
+         text varchar,
+         element_id varchar,
+         record_id varchar,
+         <additional-fields-as-needed>
       )
       WITH (
          delete_mode = 'copy-on-write',
@@ -209,6 +192,92 @@
          format_version = '2'
       )
       ```
+
+      For objects in the `metadata` field that Unstructured produces and that you want to store in an Apache Iceberg table in IBM watsonx.data, 
+      you must create fields in your table schema that follows Unstructured's `metadata` field naming convention. For example, if Unstructured 
+      produces a `metadata` field with the following child objects:
+
+      ```json
+      "metadata": {
+        "is_extracted": "true",
+        "coordinates": {
+          "points": [
+            [
+              134.20055555555555,
+              241.36027777777795
+            ],
+            [
+              134.20055555555555,
+              420.0269444444447
+            ],
+            [
+              529.7005555555555,
+              420.0269444444447
+            ],
+            [
+              529.7005555555555,
+              241.36027777777795
+            ]
+          ],
+          "system": "PixelSpace",
+          "layout_width": 1654,
+          "layout_height": 2339
+        },
+        "filetype": "application/pdf",
+        "languages": [
+          "eng"
+        ],
+        "page_number": 1,
+        "image_base64": "aaa...bbb...111",
+        "image_mime_type": "image/jpeg",
+        "filename": "realestate.pdf",
+        "data_source": {
+          "url": "file:///home/etl/node/downloads/00000000-0000-0000-0000-000000000001/7458635f-realestate.pdf",
+          "record_locator": {
+            "protocol": "file",
+            "remote_file_path": "file:///home/etl/node/downloads/00000000-0000-0000-0000-000000000001/7458635f-realestate.pdf"
+          }
+        },
+        "entities": {
+          "items": [
+            {
+              "entity": "HOME FOR FUTURE",
+              "type": "ORGANIZATION"
+            },
+            {
+              "entity": "221 Queen Street, Melbourne VIC 3000",
+              "type": "LOCATION"
+            }
+          ],
+          "relationships": [
+            {
+              "from": "HOME FOR FUTURE",
+              "relationship": "based_in",
+              "to": "221 Queen Street, Melbourne VIC 3000"
+            }
+          ]
+        }
+      }
+      ```
+
+      You could create corresponding fields in your table schema with the following field names and data types:
+
+      | **Field name** | **Apache Iceberg data type** |
+      | -- | -- |
+      | `is_extracted` | `varchar` |
+      | `points` | `varchar` |
+      | `system` | `varchar` |
+      | `layout_width` | `bigint` |
+      | `layout_height` | `bigint` |
+      | `filetype` | `varchar` |
+      | `languages` | `array(varchar)` |
+      | `page_number` | `varchar` |
+      | `image_base64` | `varchar` |
+      | `image_mime_type` | `varchar` |
+      | `filename` | `varchar` |
+      | `url` | `varchar` |
+      | `record_locator` | `varchar` |
+      | `entities` | `row(items array(row(entity varchar, type varchar)), relationships array(row("from" varchar, relationship varchar, "to" varchar)))` |
 
       Incoming elements that do not have matching column 
       names will be dropped upon record insertion. For example, if the incoming data has an element named `sent_from` and there is no 
