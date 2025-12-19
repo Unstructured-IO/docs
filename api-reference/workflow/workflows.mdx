@@ -1276,19 +1276,19 @@ Fields for `settings` include:
 - `pdf_infer_table_structure`: _Optional_. True for any `Table` elements extracted from a PDF to include an additional metadata field, `text_as_html`, where the value (string) is a just a transformation of the data into an HTML table. The default is false.
 - `exclude_elements`: _Optional_. A list of any Unstructured element types to exclude from the output. The default is none. Available values include:
 
-   - `FigureCaption`
-   - `NarrativeText`
-   - `ListItem`
-   - `Title`
    - `Address`
-   - `Table`
-   - `PageBreak`
-   - `Header`
-   - `Footer`
-   - `UncategorizedText`
-   - `Image`
-   - `Formula`
    - `EmailAddress`
+   - `FigureCaption`
+   - `Footer`
+   - `Formula`
+   - `Header`
+   - `Image`
+   - `ListItem`
+   - `NarrativeText`
+   - `PageBreak`
+   - `Table`
+   - `Title`
+   - `UncategorizedText`
 
 - `xml_keep_tags`: _Optional_. True to retain any XML tags in the output. False (the default) to just extract the text from any XML tags instead.
 - `encoding`: _Optional_. The encoding method used to decode the text input. The default is `utf-8`.
@@ -1303,7 +1303,9 @@ Fields for `settings` include:
   - `Figure`
   - `FigureCaption`
   - `Form`
+  - `FormKeysValues`
   - `Formula`
+  - `Header`
   - `Image`
   - `List`
   - `List-item`
@@ -1314,6 +1316,7 @@ Fields for `settings` include:
   - `Table`
   - `Text`
   - `Threading`
+  - `Title`
   - `UncategorizedText`
  
 - `infer_table_structure`: _Optional_. True to have any table elements extracted from a PDF to include an additional `metadata` field named `text_as_html`, containing an HTML `<table>` transformation. The default is false.
