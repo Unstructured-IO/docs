@@ -62,6 +62,27 @@ To run this code, you will need the following:
 
   - For the `output_dir` parameter, specify a string that contains the path to the directory on your local machine that you want Unstructured to send its JSON output files. If the specified directory does not exist at that location, the code will create the missing directory for you. This path can be relative or absolute.
     
+  <Note>
+      If you choose to run this code in a notebook (such as a Google Colab notebook), you must do the following first to avoid 
+      nested event loop errors:
+      
+      1. Install the `nest_asyncio` Python package, by running the following command from a notebook cell: 
+        
+         ```python
+         !pip install nest_asyncio
+         ```
+      
+      2. Import the `nest_asyncio` package and then enable nested event loops, by running the following code from a notebook cell:
+        
+         ```python
+         import nest_asyncio
+        
+         nest_asyncio.apply()
+         ```
+
+     After completing these two steps, you can then run the following code as normal.
+  </Note>
+
 ## Sample code
 
 ```python Python SDK
