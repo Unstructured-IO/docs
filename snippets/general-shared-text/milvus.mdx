@@ -105,7 +105,9 @@
   - The name of the [collection](https://docs.zilliz.com/docs/manage-collections-console#create-collection) in the database.
 
     The collection must have a defined schema before Unstructured can write to the collection. The minimum viable 
-    schema for Unstructured contains only the fields `element_id`, `embeddings`, `record_id`, and `text`, as follows:
+    schema for Unstructured contains only the fields `element_id`, `embeddings`, `record_id`, and `text`, as follows. 
+    `type` is an optional field, but highly recommended. For settings for additional Unstructured-produced fields, 
+    such as the ones within `metadata`, see the usage notes toward the end of this section and adapt them to your specific needs.
 
     | Field Name | Field Type | Max Length | Dimension |
     |---|---|---|---|
@@ -113,6 +115,7 @@
     | `embeddings` (vector field) | **FLOAT_VECTOR** | -- | `384` |
     | `record_id` | **VARCHAR** | `200` | -- |
     | `text` | **VARCHAR** | `65536` | -- |
+    | `type` | **VARCHAR** | `200` | -- |
 
     In the **Create Index** area for the collection, next to **Vector Fields**, click **Edit Index**. Make sure that for the 
     `embeddings` field, the **Field Type** is set to **FLOAT_VECTOR** and the **Metric Type** is set to **Cosine**.
@@ -120,6 +123,12 @@
     <Warning>
         The number of dimensions for the `embeddings` field must match the number of dimensions for the embedding model that you plan to use.
     </Warning>
+
+    <Note>
+        Fields with a **VARCHAR** data type are limited to a maximum length of 65,535 characters. Attempting to exceed this character count 
+        will cause Unstructured to throw errors when attempting to write to a Milvus collection, and the associated Unstructured job could fail. 
+        For example, `metadata` fields that typically exceed these character counts include `image_base64` and `orig_elements`.
+    </Note>
 
 - For Milvus local, you will need:
 
@@ -132,6 +141,7 @@
 
 All Milvus instances require the target collection to have a defined schema before Unstructured can write to the collection. The minimum viable 
 schema for Unstructured contains only the fields `element_id`, `embeddings`, `record_id`, and `text`, as follows. 
+`type` is an optional field, but highly recommended.
 
 This example code demonstrates the use of the 
 [Python SDK for Milvus](https://pypi.org/project/pymilvus/) to create a collection with this schema, 
@@ -162,42 +172,18 @@ client = MilvusClient(
     db_name=DATABASE_NAME
 )
 
-primary_key_field = FieldSchema(
-    name="element_id",
-    dtype=DataType.VARCHAR,
-    is_primary=True,
-    max_length=200
-)
-
-# IMPORTANT: The number of dimensions for the "embeddings" field
-# must match the number of dimensions for the embedding model 
+# IMPORTANT: The number of dimensions for the "embeddings" field that
+# follows must match the number of dimensions for the embedding model 
 # that you plan to use.
-embeddings_field = FieldSchema(
-    name="embeddings",
-    dtype=DataType.FLOAT_VECTOR,
-    dim=384
-)
+fields = [
+    FieldSchema(name="element_id", dtype=DataType.VARCHAR, is_primary=True, max_length=200),
+    FieldSchema(name="embeddings", dtype=DataType.FLOAT_VECTOR, dim=384),
+    FieldSchema(name="record_id", dtype=DataType.VARCHAR, max_length=200),
+    FieldSchema(name="text", dtype=DataType.VARCHAR, max_length=65535),
+    FieldSchema(name="type", dtype=DataType.VARCHAR,max_length=200, nullable=True) # Optional, but highly recommended.
+]
 
-record_id_field = FieldSchema(
-    name="record_id",
-    dtype=DataType.VARCHAR,
-    max_length=200
-)
-
-text_field = FieldSchema(
-    name="text",
-    dtype=DataType.VARCHAR,
-    max_length=65535
-)
-
-schema = CollectionSchema(
-    fields=[
-        primary_key_field, 
-        embeddings_field,
-        record_id_field, 
-        text_field
-    ]
-)
+schema = CollectionSchema(fields=fields)
 
 client.create_collection(
     collection_name=COLLECTION_NAME,
@@ -219,18 +205,8 @@ client.create_index(
     index_params=index_params
 )
 
-client.load_collection(
-    collection_name=COLLECTION_NAME
-)
+client.load_collection(collection_name=COLLECTION_NAME)
 ```
-
-Other approaches, such as [creating collections instantly](https://milvus.io/docs/create-collection-instantly.md) or 
-[setting nullable and default fields](https://milvus.io/docs/nullable-and-default.md), have not 
-been fully evaluated by Unstructured and might produce unexpected results.
-
-Unstructured cannot provide a schema that is guaranteed to work in all 
-circumstances. This is because these schemas will vary based on your source files' types; how you 
-want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors.
 
 For objects in the `metadata` field that Unstructured produces and that you want to store in Milvus, you must create fields in your Milvus collection schema that 
 follows Unstructured's `metadata` field naming convention. For example, if Unstructured produces a `metadata` field with the following 
@@ -267,7 +243,6 @@ child objects:
     "eng"
   ],
   "page_number": 1,
-  "image_base64": "aaa...bbb...111",
   "image_mime_type": "image/jpeg",
   "filename": "realestate.pdf",
   "data_source": {
@@ -299,23 +274,41 @@ child objects:
 }
 ```
 
-You could create corresponding fields in your Milvus collection schema with the following field names and data types:
+You could create corresponding fields in your Milvus collection schema by using the following field names, data types, and related settings for the 
+Python SDK for Milvus:
 
-| **Field name** | **Python SDK for Milvus data type** |
-| -- | -- |
-| `is_extracted` | `DataType.VARCHAR` |
-| `coordinates_points` | `DataType.ARRAY `(of `DataType.FLOAT`) |
-| `coordinates_system` | `DataType.VARCHAR` |
-| `coordinates_layout_width` | `DataType.INT32` |
-| `coordinates_layout_height` | `DataType.INT32` |
-| `filetype` | `DataType.VARCHAR` |
-| `languages` | `DataType.ARRAY `(of `DataType.VARCHAR`) |
-| `page_number` | `DataType.INT32` |
-| `image_base64` | `DataType.VARCHAR` |
-| `image_mime_type` | `DataType.VARCHAR` |
-| `filename` | `DataType.VARCHAR` |
-| `data_source_url` | `DataType.VARCHAR` |
-| `data_source_record_locator_protocol` | `DataType.VARCHAR` |
-| `data_source_record_locator_remote_file_path` | `DataType.VARCHAR` |
-| `entities_items` | `DataType.JSON` |
-| `entities_relationships` | `DataType.JSON` |
+```python
+# ...
+fields = [
+    # Define minimum viable required fields: "element_id", "embeddings", "record_id", and "text".
+    # "type" is an optional field, but highly recommended.
+    FieldSchema(name="element_id", dtype=DataType.VARCHAR, is_primary=True, max_length=200),
+    FieldSchema(name="embeddings", dtype=DataType.FLOAT_VECTOR, dim=1536),
+    FieldSchema(name="record_id", dtype=DataType.VARCHAR, max_length=200),
+    FieldSchema(name="text", dtype=DataType.VARCHAR, max_length=65535),
+    FieldSchema(name="type",dtype=DataType.VARCHAR,max_length=200, nullable=True),
+    # Define optional fields, such as these ones related to the "metadata" field.
+    FieldSchema(name="is_extracted", dtype=DataType.VARCHAR, max_length=5, nullable=True),
+    FieldSchema(name="coordinates_points", dtype=DataType.JSON, nullable=True),
+    FieldSchema(name="coordinates_system", dtype=DataType.VARCHAR, max_length=64, nullable=True),
+    FieldSchema(name="coordinates_layout_width", dtype=DataType.INT32, nullable=True),
+    FieldSchema(name="coordinates_layout_height", dtype=DataType.INT32, nullable=True),
+    FieldSchema(name="filetype", dtype=DataType.VARCHAR, max_length=64, nullable=True),
+    FieldSchema(name="languages", dtype=DataType.ARRAY, element_type=DataType.VARCHAR, max_length=64, max_capacity=10, nullable=True),
+    FieldSchema(name="page_number", dtype=DataType.INT32, nullable=True),
+    FieldSchema(name="image_mime_type", dtype=DataType.VARCHAR, max_length=64, nullable=True),
+    FieldSchema(name="filename", dtype=DataType.VARCHAR, max_length=256, nullable=True),
+    FieldSchema(name="data_source_url", dtype=DataType.VARCHAR, max_length=1024, nullable=True),
+    FieldSchema(name="data_source_record_locator_protocol", dtype=DataType.VARCHAR, max_length=64, nullable=True),
+    FieldSchema(name="data_source_record_locator_remote_file_path", dtype=DataType.VARCHAR, max_length=1024, nullable=True),
+    FieldSchema(name="entities_items", dtype=DataType.JSON, nullable=True),
+    FieldSchema(name="entities_relationships", dtype=DataType.JSON, nullable=True)
+]
+# ...
+```
+
+<Note>
+    Fields with a `DataType.VARCHAR` data type are limited to a maximum length of 65,535 characters. Attempting to exceed this character count 
+    will cause Unstructured to throw errors when attempting to write to a Milvus collection, and the associated Unstructured job could fail. 
+    For example, `metadata` fields that typically exceed these character counts include `image_base64` and `orig_elements`.
+</Note>
