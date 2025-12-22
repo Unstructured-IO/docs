@@ -1,16 +1,40 @@
-- An OpenSearch instance, such as an [AWS OpenSearch](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/setting-up.html) instance...
+- For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api-reference/overview), local OpenSearch instances are not supported.
+- For [Unstructured Ingest](/open-source/ingestion/overview), local and non-local OpenSearch instances are supported.
 
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/BNOYTbRbaFQ"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
+  For example, to set up an [AWS OpenSearch Service](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/createupdatedomains.html) instance, complete steps similar to the following:
+  
+  1. Sign in to your AWS account, and then open your AWS Management Console.
+  2. Open your Amazon OpenSearch Service console.
+  3. On the sidebar, expand **Managed clusters**, and then click **Dashboard**.
+  4. Click **Create domain**. 
+  5. In the **Name** tile, for **Domain name**, enter some unique domain name for your new OpenSearch instance.
+  6. In the **Domain creation method** tile, select a method for creating the domain. For faster setup with sensible 
+     default settings, this example uses the **Easy create** method. 
+     [Learn more about the Standard create method](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/createupdatedomains.html).
+  7. In the **Engine options** tile, for **Version**, AWS recommends that you select the latest version.
+  8. In the **Network** tile, for **Network**, select a network access method. 
+     For faster setup, this example uses the **Public access** method. 
+     [Learn more about the VPC access method](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/vpc.html#prerequisites-vpc-endpoints). 
+  9. **For IP address type**, select **Dual-stack mode**.
+  10. In the **Fine-grained access control** tile, do one of the following:
+  
+      - If you want to use an existing AWS IAM user in the AWS account as the domain's master user, then for **Master user**, select **Set IAM ARN as master user**. Then enter the IAM ARN for the master user in the **IAM ARN** box.
+      - If you want to create a master user and password as the domain's master user instead, then for **Master user**, select **Create master user**. Then specify some username and password for this 
+        new master user by filling in the **Master username**, **Master password**, and **Confirm master password** fields. Make 
+        sure to save the master user's password in a secure location.
 
-  ...or a [local](https://opensearch.org/downloads.html) instance.
+  12. Click **Create**.
+  13. After the domain is created, you must allow Unstructured to access the domain, as follows:
+
+      a. If the new domain's settings page is not already showing, open it as follows: 
+         in your Amazon Open Search Service console, on the sidebar, expand **Managed clusters**, and then click **Domains**. Then, 
+         in the list of available domains, click the name of the newly created domain.<br/>
+      b. On the **Security configuration** tab, click **Edit**.<br/>
+      c. In the **Access policy** tile, for **Domain access policy**, select **Only use fine-grained access control**.<br/>
+      d. Click **Clear policy**.<br/>
+      e. Click **Save changes**.
+
+  The following video shows how to set up a [local OpenSearch](https://opensearch.org/downloads.html) instance.
 
   <iframe
   width="560"
@@ -22,17 +46,42 @@
   allowfullscreen
   ></iframe>
 
-  In all cases, the [OpenSearch version](https://github.com/opensearch-project/opensearch-py/blob/main/COMPATIBILITY.md) must be compatible with the client version of the [opensearch-py](https://github.com/opensearch-project/opensearch-py/blob/main/COMPATIBILITY.md) package on PyPI. 
+- The instance's host identifier (and port number, if you're using a local OpenSearch instance), as follows:
 
-- The instance's hostname and port number. To learn how, see:
+  - For an AWS OpenSearch Service instance, do the following:
 
-  - [Creating and managing Amazon OpenSearch Service domains](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/createupdatedomains.html) for AWS OpenSearch instances.
-  - [Communicate with OpenSearch](https://opensearch.org/docs/latest/getting-started/communicate/) for local OpenSearch instances.
+    1. Sign in to your AWS account, and then open your AWS Management Console.
+    2. Open your Amazon OpenSearch Service console.
+    3. On the sidebar, expand **Managed clusters**, and then click **Dashboard**.
+    4. In the list of available domains, click the name of your domain.
+    5. In the **General information** tile, copy the value of **Domain endpoint v2 (dual stack)**.
 
-- The name of the search index on the instance. [Create an index](https://opensearch.org/docs/latest/api-reference/index-apis/create-index/).
+  - For a local OpenSearch instance, see [Communicate with OpenSearch](https://opensearch.org/docs/latest/getting-started/communicate/).
 
-  The OpenSearch index that you use must have a schema that is compatible with the schema of the documents 
-  that Unstructured produces for you. Unstructured cannot provide a schema that is guaranteed to work in all 
+- The name of the search index on the instance. 
+
+  For the destination connector, if you need to create an index and you're using a master user and password as the domain's master user, you can use for example the following `curl` command. Replace the following placeholders:
+
+  - Replace `<host>` with the instance's host identifier.
+  - If you're using a local OpenSearch instance, replace `<port>` with the instance's port number.
+  - Replace `<master-username>` with the master user's name, and replace `<master-password>` with the master user's password.
+  - Replace `<index-name>` with the name of the new search index on the instance.
+  - Replace `<index-schema>` with the schema for the new search index on the instance. A schema is optional; see the explanation 
+    following this `curl` command for more information.
+  
+  ```bash
+  curl --request PUT "<host>[:<port>]/<index-name>" \
+  --user "<master-username>:<master-password>" \
+  [--header "Content-Type: application/json" \
+  --data '<index-schema>']
+  ```
+
+  If you're using an existing AWS IAM user as the domain's master user instead, you should use the AWS Command Line Interface (CLI) to create the index instead of using the preceding`curl` command. To learn how, see [create-index](https://docs.aws.amazon.com/cli/latest/reference/opensearch/create-index.html) in the AWS CLI Command Reference.
+
+  For the destination connector, the index does not need to contain a schema beforehand. If Unstructured encounters an index without a schema, 
+  Unstructured will automatically create a compatible schema for you before inserting items into the index. Nonetheless, 
+  to reduce possible schema compatibility issues, Unstructured recommends that you create a schema that is compatible with Unstructured's schema. 
+  Unstructured cannot provide a schema that is guaranteed to work in all 
   circumstances. This is because these schemas will vary based on your source files' types; how you 
   want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors. 
 
@@ -88,22 +137,20 @@
 
   See also: 
 
+  - [Create an index](https://opensearch.org/docs/latest/api-reference/index-apis/create-index/)
   - [Mappings and field types](https://opensearch.org/docs/latest/field-types/)
   - [Explicit mapping](https://opensearch.org/docs/latest/field-types/#explicit-mapping)
   - [Dynamic mapping](https://opensearch.org/docs/latest/field-types/#dynamic-mapping)
   - [Unstructured document elements and metadata](/api-reference/partition/document-elements)
- 
-- If you're using basic authentication to the instance, the user's name and password.
-- If you're using certificates for authentication instead:
+
+- For non-local OpenSearch instances, or if you're using basic authentication to a local OpenSearch instance, the master user's name and password.
+- For local OpenSearch instances, if you're using certificates for authentication instead of basic authentication:
 
   - The path to the Certificate Authority (CA) bundle, if you use intermediate CAs with your root CA.
   - The path to the combined private key and certificate file, or
   - The paths to the separate private key and certificate file. 
 
-  To learn more, see:
-
-  - For AWS OpenSearch instances, see [Tutorial: Configure a domain with the internal user database and HTTP basic authentication](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/fgac-http-auth.html) and [Creating a custom endpoint for Amazon OpenSearch Service](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/customendpoint.html).
-  - For local OpenSearch instances, see [Authentication backends](https://opensearch.org/docs/latest/security/authentication-backends/authc-index/), [HTTP basic authentication](https://opensearch.org/docs/latest/security/authentication-backends/basic-authc/), and [Client certificate authentication](https://opensearch.org/docs/latest/security/authentication-backends/client-auth/).
+  To learn more, see [Authentication backends](https://opensearch.org/docs/latest/security/authentication-backends/authc-index/), [HTTP basic authentication](https://opensearch.org/docs/latest/security/authentication-backends/basic-authc/), and [Client certificate authentication](https://opensearch.org/docs/latest/security/authentication-backends/client-auth/).
 
 
 

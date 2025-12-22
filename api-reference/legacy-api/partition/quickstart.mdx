@@ -3,6 +3,10 @@ title: Unstructured API Quickstart
 sidebarTitle: Quickstart
 ---
 
+import PartitionEndpointLegacy from '/snippets/general-shared-text/partition-endpoint-legacy.mdx';
+
+<PartitionEndpointLegacy />
+
 <Tip>
     Do you want to run this quickstart without modifying your local machine? 
     [Skip ahead](https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/Unstructured_Partition_Endpoint_Quickstart.ipynb) to run this quickstart as a notebook on Google Colab now!
@@ -13,7 +17,7 @@ sidebarTitle: Quickstart
     focuses only on a limited set of Unstructured's full capabilities. To unlock the full feature set, as well as use Unstructured to do 
     large-scale batch processing of multiple files and semi-structured data that are stored in remote locations, 
     [skip over](/api-reference/workflow/overview#quickstart) to an expanded, advanced version of this quickstart that uses the 
-    Unstructured Workflow Endpoint instead.
+    Unstructured API's workflow operations instead.
 </Tip>
 
 <iframe
@@ -26,13 +30,13 @@ sidebarTitle: Quickstart
   allowfullscreen
 ></iframe>
 
-The following code shows how to use the [Unstructured Python SDK](/api-reference/partition/sdk-python) 
+The following code shows how to use the [Unstructured Python SDK](/api-reference/legacy-api/partition/sdk-python) 
 to have Unstructured process one or more local files by using 
-the [Unstructured Partition Endpoint](/api-reference/partition/overview). 
+the [Unstructured Partition Endpoint](/api-reference/legacy-api/partition/overview). 
 
 To run this code, you will need the following:
 
-- An Unstructured account and an Unstructured API key for your account. [Learn how](/api-reference/partition/overview#get-started).
+- An Unstructured account and an Unstructured API key for your account. [Learn how](/api-reference/legacy-api/partition/overview#get-started).
 - Python 3.9 or higher installed on your local machine.
 - A Python virtual environment is recommended for isolating and versioning Python project code dependencies, but this is not required. 
   To create and activate a virtual environment, you can use a framework such as 
@@ -58,6 +62,27 @@ To run this code, you will need the following:
 
   - For the `output_dir` parameter, specify a string that contains the path to the directory on your local machine that you want Unstructured to send its JSON output files. If the specified directory does not exist at that location, the code will create the missing directory for you. This path can be relative or absolute.
     
+  <Note>
+      If you choose to run this code in a notebook (such as a Google Colab notebook), you must do the following first to avoid 
+      nested event loop errors:
+      
+      1. Install the `nest_asyncio` Python package, by running the following command from a notebook cell: 
+        
+         ```python
+         !pip install nest_asyncio
+         ```
+      
+      2. Import the `nest_asyncio` package and then enable nested event loops, by running the following code from a notebook cell:
+        
+         ```python
+         import nest_asyncio
+        
+         nest_asyncio.apply()
+         ```
+
+     After completing these two steps, you can then run the following code as normal.
+  </Note>
+
 ## Sample code
 
 ```python Python SDK
@@ -146,10 +171,10 @@ if __name__ == "__main__":
 ## Next steps
 
 This quickstart shows how to use the Unstructured Partition Endpoint, which is intended for rapid prototyping of 
-some of Unstructured's [partitioning](/api-reference/partition/partitioning) strategies, with limited support for [chunking](/api-reference/partition/chunking). 
+some of Unstructured's [partitioning](/api-reference/legacy-api/partition/partitioning) strategies, with limited support for [chunking](/api-reference/legacy-api/partition/chunking). 
 It is designed to work only with processing of local files.
 
-Take your code to the next level by switching over to the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) 
+Take your code to the next level by switching over to the [Unstructured API's workflow operations](/api-reference/workflow/overview) 
 for production-level scenarios, file processing in batches, files and data in remote locations, full support for [chunking](/ui/chunking), 
 generating [embeddings](/ui/embedding), applying post-transform [enrichments](/ui/enriching/overview), 
 using the latest and highest-performing models, and much more. 

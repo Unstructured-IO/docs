@@ -2,8 +2,12 @@
 title: Endpoint errors
 ---
 
-For the [Unstructured Python SDK](/api-reference/partition/sdk-python), 
-the [Unstructured Partition Endpoint](/api-reference/partition/overview) returns errors primarily through 
+import PartitionEndpointLegacy from '/snippets/general-shared-text/partition-endpoint-legacy.mdx';
+
+<PartitionEndpointLegacy />
+
+For the [Unstructured Python SDK](/api-reference/legacy-api/partition/sdk-python), 
+the [Unstructured Partition Endpoint](/api-reference/legacy-api/partition/overview) returns errors primarily through 
 the `UnstructuredClientError` class (the base class for all errors raised by the Unstructured Python SDK) and 
 the `HTTPValidationError` class (inherited from `UnstructuredClientError`). Less common errors are returned through the following classes:
 

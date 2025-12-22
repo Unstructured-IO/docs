@@ -19,5 +19,8 @@ unstructured-ingest \
     --token $ASTRA_DB_APPLICATION_TOKEN \
     --collection-name $ASTRA_DB_COLLECTION \
     --keyspace $ASTRA_DB_KEYSPACE \
-    --flatten-metadata
+    --flatten-metadata \
+    --no-binary-encode-vectors \
+    --no-enable-lexical-search \
+    --no-astra-generated-embeddings
     

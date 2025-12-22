@@ -6,6 +6,19 @@ Fill in the following fields for Milvus on IBM watsonx.data:
 - **DB Name**: The name of the database in the instance. The default is `default` if not otherwise specified.
 - **Collection Name** (_required_): The name of the collection in the database. 
 - **Username**: The username to access the Milvus instance. The default is `ibmlhapikey` if not otherwise specified.
+
+  <Note>
+      More recent versions of Milvus on IBM watsonx.data require `ibmlhapikey_<your-IBMid>` instead, where `<your-IBMid>` is 
+      your IBMid, for example `me@example.com`. To get your IBMid, do the following:
+
+      1. Sign in to your IBM Cloud account.
+      2. In the title bar, click **Manage** and then, under **Security and access**, click **Access (IAM)**.
+      3. In the sidebar, expand **Manage identities**, and then click **Users**.
+      4. In the list of users, click your user name.
+      5. On the **User details** tab, in the **Details** tile, note the value of **IBMid**.
+
+  </Note>
+
 - **API Key** (_required_): The IBM Cloud user API key.
 
 Fill in the following fields for Milvus on Zilliz Cloud:

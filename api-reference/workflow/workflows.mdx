@@ -2,7 +2,7 @@
 title: Workflows
 ---
 
-To use the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to manage workflows, do the following:
+To use the [Unstructured API's workflow operations](/api-reference/workflow/overview) to manage workflows, do the following:
 
 - To get a list of available workflows, use the `UnstructuredClient` object's `workflows.list_workflows` function (for the Python SDK) or 
   the `GET` method to call the `/workflows` endpoint (for `curl` or Postman). [Learn more](/api-reference/workflow/overview#list-workflows).
@@ -16,9 +16,13 @@ To use the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to
   the `PUT` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman). [Learn more](#update-a-workflow).
 - To delete a workflow, use the `UnstructuredClient` object's `workflows.delete_workflow` function (for the Python SDK) or 
   the `DELETE` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman). [Learn more](/api-reference/workflow/overview#delete-a-workflow).
+- To get a list of available workflow templates, use the `GET` method to call the `/templates` endpoint (for `curl` or Postman). 
+  [Learn more](#list-templates).
+- To get information about a workflow template, use the `GET` method to call the `/templates/<template-id>` endpoint (for `curl` or Postman). 
+  [Learn more](#get-a-template).
 
 The following examples assume that you have already met the [requirements](/api-reference/workflow/overview#requirements) and 
-understand the [basics](/api-reference/workflow/overview#basics) of working with the Unstructured Workflow Endpoint.
+understand the [basics](/api-reference/workflow/overview#basics) of working with the Unstructured API's workflow operations.
 
 ## Create a workflow
 
@@ -72,7 +76,9 @@ specify the settings for the workflow, as follows:
             name="<name>",
             source_id="<source-connector-id>",
             destination_id="<destination-connector-id>",
-            workflow_type=WorkflowType.<TYPE>,
+            workflow_type=WorkflowType.<workflow-type>,
+            reprocess_all=True|False,
+            template_id="<workflow-template-id>",
             workflow_nodes=[
                 workflow_node,
                 another_workflow_node
@@ -317,7 +323,9 @@ specify the settings for the workflow, as follows:
                 name="<name>",
                 source_id="<source-connector-id>",
                 destination_id="<destination-connector-id>",
-                workflow_type=WorkflowType.<TYPE>,
+                workflow_type=WorkflowType.<workflow-type>,
+                reprocess_all=True|False,
+                template_id="<workflow-template-id>",
                 workflow_nodes=[
                     workflow_node,
                     another_workflow_node
@@ -540,7 +548,9 @@ specify the settings for the workflow, as follows:
             "name": "<name>",
             "source_id": "<source-connector-id>",
             "destination_id": "<destination-connector-id>",
-            "workflow_type": "<type>",
+            "workflow_type": "<workflow-type>",
+            "reprocess_all": "true"|"false",
+            "template_id": "<workflow-template-id>",
             "workflow_nodes": [
                 {
                     "name": "<node-name>",
@@ -579,6 +589,7 @@ specify the settings for the workflow, as follows:
         '{
             "name": "<name>",
             "workflow_type": "custom",
+            "template_id": "<workflow-template-id>",
             "workflow_nodes": [
                 {
                     "name": "<node-name>",
@@ -617,6 +628,7 @@ specify the settings for the workflow, as follows:
             "name": "<name>",
             "destination_id": "<destination-connector-id>",
             "workflow_type": "custom",
+            "template_id": "<workflow-template-id>",
             "workflow_nodes": [
                 {
                     "name": "<node-name>",
@@ -653,7 +665,9 @@ specify the settings for the workflow, as follows:
                "name": "<name>",
                "source_id": "<source-connector-id>",
                "destination_id": "<destination-connector-id>",
-               "workflow_type": "<type>",
+               "workflow_type": "<workflow-type>",
+               "reprocess_all": "true"|"false",
+               "template_id": "<workflow-template-id>",
                "workflow_nodes": [
                    {
                        "name": "<node-name>",
@@ -703,6 +717,7 @@ specify the settings for the workflow, as follows:
            {
                "name": "<name>",
                "workflow_type": "custom",
+               "template_id": "<workflow-template-id>",
                "workflow_nodes": [
                    {
                        "name": "<node-name>",
@@ -751,6 +766,7 @@ specify the settings for the workflow, as follows:
            {
                "name": "<name>",
                "workflow_type": "custom",
+               "template_id": "<workflow-template-id>",
                "workflow_nodes": [
                    {
                        "name": "<node-name>",
@@ -781,10 +797,11 @@ Replace the preceding placeholders as follows:
 - `<destination-connector-id>` (_required_) - The ID of the target destination connector. To get the ID, 
   use the `UnstructuredClient` object's `destinations.list_destinations` function (for the Python SDK) or 
   the `GET` method to call the `/destinations` endpoint (for `curl` or Postman). [Learn more](/api-reference/workflow/overview#list-destination-connectors).
-- `<TYPE>` (for the Python SDK) or `<type>` (for `curl` or Postman) (_required_) - The workflow type. Available values include `CUSTOM` (for the Python SDK) and `custom` (for `curl` or Postman).
+- `<workflow-type>` (_required_) - The workflow type. Available values include:
 
-  If `<TYPE>` is set to `CUSTOM` (for the Python SDK), or if `<type>` is set to `custom` (for `curl` or Postman), you must add a `workflow_nodes` array. For instructions, see [Custom workflow DAG nodes](#custom-workflow-dag-nodes).
-
+  - `CUSTOM` (for the Python SDK) and `custom` (for `curl` or Postman) - This workflow's nodes are manually specified in the `workflow_nodes` array. For instructions, see [Custom workflow DAG nodes](#custom-workflow-dag-nodes).
+  - `TEMPLATE` (for the Python SDK) and `template` (for `curl` or Postman) - This workflow's nodes are specified by a workflow template. In this case, you would not add a `workflow_nodes` array. Instead, you must specify the workflow template's unique ID in the `template_id` field. For instructions, see [List workflow templates](#get-a-template).
+  
   <Note>
       The previously-available workflow optimization types `ADVANCED`, `BASIC`, and `PLATINUM` (for the Python SDK) and 
       `advanced`, `basic`, and `platinum` (for `curl` or Postman) are non-operational and planned to be fully removed in a future release. 
@@ -792,6 +809,10 @@ Replace the preceding placeholders as follows:
       The ability to create an [automatic workflow](/ui/workflows#create-an-automatic-workflow) type is currently not available but is planned to be added in a future release.
   </Note>
 
+- `reprocess_all`: _Optional_. If set to true (the default), the workflow will reprocess all documents in the source location on every workflow run. 
+  If set to `false`, the workflow will only process new documents that are added to the source location, or existing documents that are updated in the 
+  source location (as determined by checking whether the file's version has changed), since the last workflow run. This setting applies only to blob storage 
+  connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage source connectors.
 - `<schedule-timeframe>` - The repeating automatic run schedule, specified as a predefined phrase. The available predefined phrases are:
 
   - `every 15 minutes` (for `curl` or Postman): Every 15 minutes (cron expression: `*/15 * * * *`).
@@ -1263,24 +1284,49 @@ Fields for `settings` include:
 - `pdf_infer_table_structure`: _Optional_. True for any `Table` elements extracted from a PDF to include an additional metadata field, `text_as_html`, where the value (string) is a just a transformation of the data into an HTML table. The default is false.
 - `exclude_elements`: _Optional_. A list of any Unstructured element types to exclude from the output. The default is none. Available values include:
 
-   - `FigureCaption`
-   - `NarrativeText`
-   - `ListItem`
-   - `Title`
    - `Address`
-   - `Table`
-   - `PageBreak`
-   - `Header`
-   - `Footer`
-   - `UncategorizedText`
-   - `Image`
-   - `Formula`
    - `EmailAddress`
+   - `FigureCaption`
+   - `Footer`
+   - `Formula`
+   - `Header`
+   - `Image`
+   - `ListItem`
+   - `NarrativeText`
+   - `PageBreak`
+   - `Table`
+   - `Title`
+   - `UncategorizedText`
 
 - `xml_keep_tags`: _Optional_. True to retain any XML tags in the output. False (the default) to just extract the text from any XML tags instead.
 - `encoding`: _Optional_. The encoding method used to decode the text input. The default is `utf-8`.
 - `ocr_languages`: _Optional_. A list of languages present in the input, for use in partitioning, OCR, or both. Multiple languages indicate that the text could be in any of the specified languages. The default is `[ 'eng' ]`. [See the language codes list](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/partition/common/lang.py).
-- `extract_image_block_types`: _Optional_. A list of the Unstructured element types for use in extracting image blocks as Base64 encoded data stored in `metadata` fields. Available values include `Image` and `Table`. The default is `[ 'Image', 'Table' ]`.
+- `extract_image_block_types`: _Optional_. A list of the Unstructured element types for use in extracting image blocks as Base64 encoded data stored in `metadata` fields. Available values include:
+
+  - `Abstract`
+  - `BulletedText`
+  - `Caption`
+  - `CodeSnippet`
+  - `CompositeElement`
+  - `Figure`
+  - `FigureCaption`
+  - `Form`
+  - `FormKeysValues`
+  - `Formula`
+  - `Header`
+  - `Image`
+  - `List`
+  - `List-item`
+  - `ListItem`
+  - `NarrativeText`
+  - `Paragraph`
+  - `Picture`
+  - `Table`
+  - `Text`
+  - `Threading`
+  - `Title`
+  - `UncategorizedText`
+ 
 - `infer_table_structure`: _Optional_. True to have any table elements extracted from a PDF to include an additional `metadata` field named `text_as_html`, containing an HTML `<table>` transformation. The default is false.
 
 #### Fast strategy
@@ -1603,6 +1649,18 @@ Allowed values for `<subtype>` include:
 import EnrichmentOCRHiResOnly from '/snippets/general-shared-text/enrichment-ocr-high-res-only.mdx';
 
 <EnrichmentOCRHiResOnly />
+
+<Warning>
+    Generative OCR does not process any text blocks by default. You must also explicitly specify which document element 
+    types containing text that you want generative OCR to process. 
+
+    To do this, in a workflow's [High Res](#high-res-strategy) partitioner node, 
+    add each [document element type](/ui/document-elements#element-type) that you want generative OCR to process to the 
+    `extract_image_block_types` list within the partitioner node's `settings` field definition.
+
+    Generative OCR does not process the text of any `Image` or `Table` elements if they have already been processed by 
+    [image description](#image-description-task) or [table description](#table-description-task) enrichments, respectively.
+</Warning>
 
 <AccordionGroup>
     <Accordion title="Python SDK">
@@ -1940,3 +1998,154 @@ Allowed values for `subtype` and `model_name` include:
   - `"model_name": "voyage-law-2"`
   - `"model_name": "voyage-multilingual-2"`
   - `"model_name": "voyage-multimodal-3"`
+  - `"model_name": "voyage-multimodal-3.5"`
+
+## List templates
+
+To list templates, use the `UnstructuredClient` object's `templates.list_templates` function (for the Python SDK) or the `GET` method to call the `/templates` endpoint (for `curl` or Postman). 
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+        import json
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import ListTemplatesRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.templates.list_templates(
+            request=ListTemplatesRequest()
+        )
+
+        print(json.dumps(response.response_list_templates, indent=4))
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import json
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import ListTemplatesRequest
+
+        async def list_templates():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = client.templates.list_templates(
+                request=ListTemplatesRequest()
+            )
+
+            print(json.dumps(response.response_list_templates, indent=4))
+
+        asyncio.run(list_templates())
+        ```
+    </Accordion>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'POST' --location \
+        "$UNSTRUCTURED_API_URL/templates" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header 'accept: application/json'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/templates
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Get a template
+
+To get information about a template, use the `UnstructuredClient` object's `templates.get_template` function (for the Python SDK) or the `GET` method to call the 
+`/templates/<template-id>` endpoint (for `curl` or Postman), replacing `<template-id>` with the 
+template's unique ID. To get this ID, see [List templates](#list-templates).
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+        import os
+        import json
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import GetTemplateRequest
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.templates.get_template(
+            request=GetTemplateRequest(
+                template_id="<template-id>"
+            )
+        )
+
+        print(json.dumps(response.response_get_template, indent=4))
+        ```
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        ```python
+        import os
+        import json
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import GetTemplateRequest
+
+        async def get_template():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = client.templates.get_template(
+                request=GetTemplateRequest(
+                    template_id="<template-id>"
+                )
+            )
+
+            print(json.dumps(response.response_get_template, indent=4))
+
+        asyncio.run(get_template())
+        ```
+    </Accordion>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'GET' --location \
+        "$UNSTRUCTURED_API_URL/templates/<template-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header 'accept: application/json'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/templates/<template-id>
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>

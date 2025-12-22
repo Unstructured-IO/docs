@@ -24,12 +24,31 @@
   allowfullscreen
   ></iframe>
 
-- You will need the name of the index on the instance. See [Create index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html) and [Get index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-index.html).
+- You will need the name of the index on the instance. 
 
-  The Elasticsearch index that you use must have a schema that is compatible with the schema of the documents 
-  that Unstructured produces for you. Unstructured cannot provide a schema that is guaranteed to work in all 
+  For the destination connector, if you need to create an index, you can use for example the following `curl` command. Replace the following placeholders:
+
+  - Replace `<host>:<port>` with the instance's host identifier and port number.
+  - Replace `<username>` with your Elasticsearch user name, and replace `<password>` with your password.
+  - Replace `<index-name>` with the name of the new index on the instance.
+  - Replace `<index-schema>` with the schema for the index. A schema is optional; see the explanation 
+    following this `curl` command for more information.
+  
+  ```bash
+  curl --request PUT "<host>:<port>/<index-name>" \
+  --user "<username>:<password>" \
+  [--header "Content-Type: application/json" \
+  --data '<index-schema>']
+  ```
+
+  To learn more, see [Create index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html) and [Get index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-index.html).
+
+  For the destination connector, the index does not need to contain a schema beforehand. If Unstructured encounters an index without a schema, 
+  Unstructured will automatically create a compatible schema for you before inserting items into the index. Nonetheless, 
+  to reduce possible schema compatibility issues, Unstructured recommends that you create a schema that is compatible with Unstructured's schema. 
+  Unstructured cannot provide a schema that is guaranteed to work in all 
   circumstances. This is because these schemas will vary based on your source files' types; how you 
-  want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors. 
+  want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors.
 
   You can adapt the following index schema example for your own needs:
 
@@ -88,7 +107,7 @@
   - [An Introduction to Elasticsearch Mapping](https://www.elastic.co/blog/found-elasticsearch-mapping-introduction)
   - [Explicit mapping](https://www.elastic.co/guide/en/elasticsearch/reference/current/explicit-mapping.html)
   - [Dynamic field mapping](https://www.elastic.co/guide/en/elasticsearch/reference/current/dynamic-field-mapping.html)
-  - [Unstructured document elements and metadata](/api-reference/partition/document-elements)
+  - [Unstructured document elements and metadata](/api-reference/legacy-api/partition/document-elements)
 
   <iframe
   width="560"

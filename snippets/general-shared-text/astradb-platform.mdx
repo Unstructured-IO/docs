@@ -7,5 +7,8 @@ Fill in the following fields:
 - **Flatten Metadata**: Check this box to flatten the metadata into each record. 
   Specifically, when flattened, the metadata key values are 
   brought to the top level of the element, and the `metadata` key itself is removed. By default, the metadata is not flattened.
+- **Binary Encode Vectors**: Uncheck this box to upload vectors as a list of numbers. By default, vectors are uploaded as binary. This is more efficient, but it makes it harder to view and work with vectors in the UI.
+- **Enable Lexical Search**: Check this box to enable lexical and hybrid search. See [Lexical search](#lexical-search).
+- **Astra DB Generated Embeddings**: Check this box to use an Astra vectorize integration for embeddings. See [Astra DB generated embeddings](#astra-db-generated-embeddings).
 - **API Endpoint** (_required_): The database's associated API endpoint.
 - **Token** (_required_): The application token for the database.
