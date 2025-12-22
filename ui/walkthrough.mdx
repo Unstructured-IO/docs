@@ -164,6 +164,15 @@ shows how well Unstructured's **VLM** partitioning strategy handles challenging 
 
    ![Selecting the VLM for partitioning](/img/ui/walkthrough/VLMPartitioner.png)
 
+   <Note>
+       The list of available models shown is constantly being updated. Your list might also differ from the preceding screenshot, depending on your Unstructured 
+       account type. If **Gemini 2.0 Flash** is not available, choose another available model from the list.
+
+       If you have an Unstructured **Business** account and want to add more models to this list, contact your 
+       Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+   </Note>
+
    <Tip>
       _When I choose **VLM**, when would I choose one of these models over another?_
 
@@ -249,7 +258,16 @@ HTML representations of detected tables, and detected entities (such as people a
    - Any available choice for **Provider** (for example, **Anthropic**).
    - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
    - If not already selected, **Image Description** under **Task**.
+   
+   <Note>
+       The lists of available models for these enrichments are constantly being updated. Your lists might also differ from these instructions, depending on your Unstructured 
+       account type. If the suggested model for an enrichment is not available, choose another available model from the list.
 
+       If you have an Unstructured **Business** account and want to add more models to these lists, contact your 
+       Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+   </Note>
+   
    <Tip>
        The image description enrichment generates a summary description of each detected image. This can help you to more quickly and easily understand 
        what each image is all about without having to stop to manually visualize and interpret the image's content yourself. This also provides additional helpful context about the image for your RAG apps, agents, and models. [Learn more](/ui/enriching/image-descriptions).
@@ -500,6 +518,16 @@ embedding model that is provided by an embedding provider. For the best embeddin
    ![Adding an embedder node](/img/ui/walkthrough/AddEmbedder.png)
 
 2. In the node's settings pane's **Details** tab, under **Select Embedding Model**, for **Azure OpenAI**, select **Text Embedding 3 Small [dim 1536]**.
+
+   <Note>
+       The list of available embedding models is constantly being updated. Your list might also be different, depending on your Unstructured 
+       account type. If **Azure OpenAI** and **Text Embedding 3 Small [dim 1536]** is not available, choose another available model from the list.
+
+       If you have an Unstructured **Business** account and want to add more models to this list, contact your 
+       Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+    </Note>
+
 3. With the "Chinese Characters" PDF file still selected in the **Source** node, click **Test**.
 4. In the **Test output** pane, make sure that **Embedder (8 of 8)** is showing. If not, click the right arrow (**>**) until **Embedder (8 of 8)** appears, which will show the output from the last node in the workflow.
 5. To explore the embeddings, search for the text `"embeddings"` (including the quotation marks).
