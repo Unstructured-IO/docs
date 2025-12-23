@@ -277,9 +277,11 @@ HTML representations of detected tables, and detected entities (such as people a
       In the node's settings pane's **Details** tab, click:
 
       - **Table** under **Input Type**.
-      - Any available choice for **Provider** (for example, **Anthropic**).
-      - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
-      - **Table to HTML** under **Task**.
+      - Any available choice for **Provider** (for example, **Agentic Table Parsing** to use agentic AI, or **Anthropic** to use a VLM).
+      - If you did not choose **Agentic Table Parsing** for **Provider**, click the following:
+      
+        - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
+        - **Table to HTML** under **Task**.
       
       <Tip>
           The table to HTML enrichment generates an HTML representation of each detected table. This can help you to more quickly and accurately recreate the table's content elsewhere later as needed. This also provides additional context about the table's structure for your RAG apps, agents, and models. [Learn more](/ui/enriching/table-to-html).
