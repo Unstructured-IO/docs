@@ -49,6 +49,16 @@ If the workflow editor is not yet visible, do the following to show it:
 
 1. If you do not already have an Unstructured account, [sign up for free](https://unstructured.io/?modal=try-for-free). 
    After you sign up, you are automatically signed in to your new Unstructured **Let's Go** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+
+   <Note>
+       If you already have an Unstructured **Pay-As-You-Go** or **Business SaaS** account, you are already signed up for Unstructured. 
+       Sign in to your existing Unstructured **Pay-As-You-Go** or **Business SaaS** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+
+       If you already have an Unstructured **dedicated instance** or **in-VPC** deployment, your sign-in link will be unique to your deployment. 
+       If you're not sure what your unique sign-in link is, see your Unstructured account administrator, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+   </Note>
+
 2. After you are signed in, the **Start** page appears.
 3. In the **Welcome** area, do one of the following:
 
@@ -227,6 +237,15 @@ and generating detected entities (such as people and organizations) and the infe
    - Any available choice under **Provider** (for example, **Anthropic**).
    - Any available choice under **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
    - If not already selected, **Table Description** under **Task**.
+
+   <Note>
+       The lists of available models for these enrichments are constantly being updated. Your lists might also differ from these instructions, depending on your Unstructured 
+       account type. If the suggested model for an enrichment is not available, choose another available model from the list.
+
+       If you have an Unstructured **Business** account and want to add more models to these lists, contact your 
+       Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+   </Note>
 
    <Tip>
        The table description enrichment generates a summary description of each detected table. This can help you to more quickly and easily understand 
@@ -409,6 +428,16 @@ embedding model that is provided by an embedding provider. For the best embeddin
    ![Adding an embedder node](/img/ui/walkthrough/AddEmbedder.png)
 
 2. In the node's settings pane's **Details** tab, under **Select Embedding Model**, for **Azure OpenAI**, select **Text Embedding 3 Small [dim 1536]**.
+
+   <Note>
+       The list of available embedding models is constantly being updated. Your list might also be different, depending on your Unstructured 
+       account type. If **Azure OpenAI** and **Text Embedding 3 Small [dim 1536]** is not available, choose another available model from the list.
+
+       If you have an Unstructured **Business** account and want to add more models to this list, contact your 
+       Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+    </Note>
+
 3. Immediately above the **Source** node, click **Test**.
 4. In the **Test output** pane, make sure that **Embedder (8 of 8)** is showing. If not, click the right arrow (**>**) until **Embedder (8 of 8)** appears, which will show the output from the last node in the workflow.
 5. To explore the embeddings, search for the text `"embeddings"` (including the quotation marks).

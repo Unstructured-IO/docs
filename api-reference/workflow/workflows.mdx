@@ -28,6 +28,12 @@ understand the [basics](/api-reference/workflow/overview#basics) of working with
 
 To create a workflow, use the `UnstructuredClient` object's `workflows.create_workflow` function (for the Python SDK) or 
 the `POST` method to call the `/workflows` endpoint (for `curl` or Postman). 
+
+<Note>
+    The following instructions create a workflow that exists until it is explicitly deleted (also known as a _long-lived workflow_). 
+    To create a workflow that exists only for the duration of 
+    that workflow's associated job run, and that job run's temporary workflow takes one or more local files only as input, see [Run an on-demand job](/api-reference/workflow/overview#run-an-on-demand-job).
+</Note>
   
 In the `CreateWorkflow` object (for the Python SDK) or 
 the request body (for `curl` or Postman), 
@@ -837,6 +843,12 @@ To update information about a workflow, use the `UnstructuredClient` object's `w
 the `PUT` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman), replacing 
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
 
+<Note>
+    The following instructions can be used only to update a long-lived workflow (a workflow that exists until it is explicitly deleted). 
+    A workflow that exists only for the duration of a running [on-demand job](/api-reference/workflow/overview#run-an-on-demand-job) 
+    cannot be updated.
+</Note>
+
 In the request body, specify the settings for the workflow. For the specific settings to include, see 
 [Create a workflow](/api-reference/workflow/workflows#create-a-workflow).
 
@@ -1103,6 +1115,14 @@ Fields for `settings` include:
 
   <DeprecatedModelsAPI />
 
+  <Note>
+      The following list applies only to Unstructured **Let's Go** and **Pay-As-You-Go** accounts.
+
+      For Unstructured **Business** accounts, to get your current list of available models, contact your 
+      Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+      [support@unstructured.io](mailto:support@unstructured.io).
+  </Note>
+
   - For `anthropic`, available values for `model` are:
   
     - `claude-3-7-sonnet-20250219`
@@ -1184,6 +1204,14 @@ Fields for `settings` include:
 - `model`: _Optional_. If the Auto partitioning strategy needs to use the VLM partitioning strategy, then use the specified VLM. The default value is `claude-sonnet-4-20250514`.
 
   <DeprecatedModelsAPI />
+
+  <Note>
+      The following list applies only to Unstructured **Let's Go** and **Pay-As-You-Go** accounts.
+
+      For Unstructured **Business** accounts, to get your current list of available models, contact your 
+      Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+      [support@unstructured.io](mailto:support@unstructured.io).
+  </Note>
 
   - For `anthropic`, available values for `model` are:
   
@@ -1487,6 +1515,14 @@ Allowed values for `<subtype>` include:
 - `anthropic_image_description`
 - `bedrock_image_description`
 
+<Note>
+    The preceding list applies only to Unstructured **Let's Go** and **Pay-As-You-Go** accounts.
+
+    For Unstructured **Business** accounts, to get your current list of available `<subtype>` values, contact your 
+    Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+    [support@unstructured.io](mailto:support@unstructured.io).
+</Note>
+
 #### Table Description task
 
 import EnrichmentTableSummaryHiResOnly from '/snippets/general-shared-text/enrichment-table-summary-hi-res-only.mdx';
@@ -1522,6 +1558,14 @@ Allowed values for `<subtype>` include:
 - `anthropic_table_description`
 - `bedrock_table_description`
 
+<Note>
+    The preceding list applies only to Unstructured **Let's Go** and **Pay-As-You-Go** accounts.
+
+    For Unstructured **Business** accounts, to get your current list of available `<subtype>` values, contact your 
+    Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+    [support@unstructured.io](mailto:support@unstructured.io).
+</Note>
+
 #### Table to HTML task
 
 import EnrichmentTableToHTMLHiResOnly from '/snippets/general-shared-text/enrichment-table-to-html-hi-res-only.mdx';
@@ -1550,6 +1594,14 @@ import EnrichmentTableToHTMLHiResOnly from '/snippets/general-shared-text/enrich
         ```
     </Accordion>
 </AccordionGroup>
+
+<Note>
+    The preceding `subtype` value applies only to Unstructured **Let's Go** and **Pay-As-You-Go** accounts.
+
+    For Unstructured **Business** accounts, to get your current list of available `subtype` values, contact your 
+    Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+    [support@unstructured.io](mailto:support@unstructured.io).
+</Note>
 
 #### Named Entity Recognition (NER) task
 
@@ -1669,6 +1721,14 @@ Allowed values for `<subtype>` include:
 - `openai_ner`
 - `anthropic_ner`
 
+<Note>
+    The preceding list applies only to Unstructured **Let's Go** and **Pay-As-You-Go** accounts.
+
+    For Unstructured **Business** accounts, to get your current list of available `<subtype>` values, contact your 
+    Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+    [support@unstructured.io](mailto:support@unstructured.io).
+</Note>
+
 #### Generative OCR task
 
 import EnrichmentOCRHiResOnly from '/snippets/general-shared-text/enrichment-ocr-high-res-only.mdx';
@@ -1715,6 +1775,14 @@ Allowed values for `<subtype>` include:
 - `anthropic_ocr`
 - `openai_ocr`
 - `vertexai_ocr`
+
+<Note>
+    The preceding list applies only to Unstructured **Let's Go** and **Pay-As-You-Go** accounts.
+
+    For Unstructured **Business** accounts, to get your current list of available `<subtype>` values, contact your 
+    Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+    [support@unstructured.io](mailto:support@unstructured.io).
+</Note>
 
 ### Chunker node
 
@@ -1984,7 +2052,15 @@ An **Embedder** node has a `type` of `embed`.
     </Accordion>
 </AccordionGroup>
 
-Allowed values for `subtype` and `model_name` include:
+Allowed values for `subtype` and `model_name` include the following:
+
+<Note>
+    The following list applies only to Unstructured **Let's Go** and **Pay-As-You-Go** accounts.
+
+    For Unstructured **Business** accounts, to get your current list of available models, contact your 
+    Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+    [support@unstructured.io](mailto:support@unstructured.io).
+</Note>
 
 - `"subtype": "azure_openai"`
 
