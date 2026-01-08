@@ -1,5 +1,21 @@
+<iframe
+width="560"
+height="315"
+src="https://www.youtube.com/embed/0F1MXMgk3kY"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
+
 - A Slack app. Create a Slack app by following [Step 1: Creating an app](https://api.slack.com/quickstart#creating).
-- The app must have the `channels:history` OAuth scope. Give the app this scope by following [Step 2: Requesting scopes](https://api.slack.com/quickstart#scopes).
+- The app must have the following OAuth scopes:
+
+  - To read messages from public channels, add the scopes `channels:join` and `channels:history`.
+  - To read messages from private channels, add the scope `groups:history`.
+  
+  Add these scopes to the app by following [Step 2: Requesting scopes](https://api.slack.com/quickstart#scopes).
+
 - The app must be installed and authorized for the target Slack workspace. Install and authorize the app by following [Step 3: Installing and authorizing the app](https://api.slack.com/quickstart#installing).
 - The app's access token. Get this token by following [Step 3: Installing and authorizing the app](https://api.slack.com/quickstart#installing).
 - Add the app to the target channels in the Slack workspace. To do this from the channel, open the channel's details page, click the **Integrations** tab, click **Add apps**, and follow the on-screen directions to install the app.
@@ -11,3 +27,8 @@
   - `YYYY-MM-DDTHH:MM:SSZ`
   - `YYYY-MM-DD+HH:MM:SS`
   - `YYYY-MM-DD-HH:MM:SS`
+
+<Info>
+    Slack has established API rate limits that could restrict the number and frequency of messages that can be read. To 
+    explore possible workarounds for these cases, see your Slack representative.
+</Info>

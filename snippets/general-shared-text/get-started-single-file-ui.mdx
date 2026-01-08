@@ -1,0 +1,121 @@
+import SupportedFileTypesSMBPlayground from '/snippets/general-shared-text/supported-files-types-smb-playground.mdx';
+
+This quickstart shows how, in just a few minutes, you can use the Unstructured user interface (UI) to quickly and easily see Unstructured's 
+best-in-class transformation results for a single file that is stored on your local computer.
+
+<Tip>
+    This quickstart focuses on a single, local file for ease-of-use demonstration purposes.
+    
+    To use Unstructured later to do 
+    large-scale batch processing of multiple files and semi-structured data that are stored in remote locations, 
+    [skip over](/ui/quickstart#remote-quickstart) to the remote quickstart after you finish this one.
+</Tip>
+
+If you do not already have an Unstructured account, [sign up for free](https://unstructured.io/?modal=try-for-free).
+After you sign up, you are automatically signed in to your new Unstructured **Let's Go** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+
+<Note>
+    If you already have an Unstructured **Pay-As-You-Go** or **Business SaaS** account, you are already signed up for Unstructured. 
+    Sign in to your existing Unstructured **Pay-As-You-Go** or **Business SaaS** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+
+    If you already have an Unstructured **dedicated instance** or **in-VPC** deployment, your sign-in link will be unique to your deployment. 
+    If you're not sure what your unique sign-in link is, see your Unstructured account administrator, or email Unstructured Support at 
+    [support@unstructured.io](mailto:support@unstructured.io).
+</Note>
+
+Do the following:
+
+1. After you are signed in, the **Start** page appears.
+2. In the **Welcome** area, do one of the following:
+
+   - Click one of the sample files, such as **realestate.pdf**, to have Unstructured parse and transform that sample file.
+   - Click **Browse files**, or drag and drop a file onto **Drop file to test**, to have Unstructured parse and transform your own file.
+
+     If you choose to use your own file, the file must be 10 MB or less in size. Also, the file must be one of the following supported file types:
+
+     <SupportedFileTypesSMBPlayground />
+     
+   ![Welcome interface on the Start page](/img/ui/single-file/welcome.png)
+
+3. After Unstructured has finished parsing and transforming the file (a process known as 
+   [partitioning](/ui/partitioning)), you will see the file's contents in the 
+   **Preview** pane in the center and Unstructured's results in the **Result** pane on the right. 
+
+   ![Unstructured's parse and transform results](/img/ui/single-file/results.png)
+
+4. The **Result** pane shows a formatted view of Unstructured's results by default. This formatted view is designed for human 
+   readability. To see the underlying JSON view of the results, which is designed for RAG and agentic AI, 
+   click **JSON** at the top of the **Result** pane. 
+   [Learn about what's in the JSON view](/ui/document-elements).
+
+   ![Switching to the JSON view of the results](/img/ui/single-file/json-view.png)
+
+5. Unstructured's initial results are based on its **High Res** [partitioning strategy](/ui/partitioning), which 
+   begins processing the file's contents and converting these contents into a series of Unstructured 
+   [document elements and metadata](/ui/document-elements). This partitioning strategy provides good results overall, depending on the complexity of the file's contents. 
+   This partitioning strategy also generates a bounding box for each detected object in the file. A _bounding box_ is 
+   an imaginary rectangular box drawn around the object to show its location and extent within the file.
+
+   After the High Res partitioning results are shown, Unstructured begins improving these initial results by 
+   using vision language models (VLMs) to apply a series of generative refinements known as _enrichments_. These 
+   enrichments include:
+
+   - An [image description](ui/enriching/image-descriptions) enrichment, which uses a VLM to provide a text-based summary of the contents of each detected image.
+   - A [generative OCR](/ui/enriching/generative-ocr) enrichment, which uses a VLM to improve the accuracy of each block of initially-processed text.
+   - A [table to HTML](/ui/enriching/table-to-html) enrichment, which uses a VLM to provide an HTML-structured representation of each detected table.
+
+   While these enrichments are being applied, a banner appears at the top of the **Result** pane.
+
+   ![Updating the initial results with enrichments](/img/ui/single-file/generative-refinement.png)
+
+   To see these enrichments applied to the initial results, click **Update results** in the banner as soon as this button appears, 
+   which might take up to a minute or more.
+
+   ![Seeing the initial results updated with the enrichments](/img/ui/single-file/apply-generative-refinement.png)
+
+   <Warning>
+       Each page that Unstructured processes by using this approach is counted as two pages for usage and billing purposes.
+       
+       This is because Unstructured processes each page once with its **High Res** partitioning strategy and then reprocesses each 
+       page with a VLM to improve the quality, accuracy, and relevance of the initial partitioning results. 
+       The final results of these two processing passes for each page count as two pages for usage and billing purposes. 
+       This two-pass process happens regardless of whether you click **Update results** in the banner.
+
+       This two-page usage and billing behavior is a known issue and will be addressed in a future release.
+   </Warning>
+
+6. To synchronize the scrolling of the **Preview** pane's selected contents with the **Result** pane's **Formatted** results, 
+   rest your mouse pointer anywhere inside the contents of the **Preview** pane until a bounding box appears. 
+   Then click the bounding box. Unstructured automatically scrolls the **Result** pane's **Formatted** 
+   results to match the selected bounding box. (You cannot synchronize the scrolling of the **JSON** results.)
+
+   ![Selecting a bounding box](/img/ui/single-file/bounding-box.png)
+
+   To show all of the bounding boxes in the **Preview** pane at once, turn on the **Show all bounding boxes** toggle at the top of the **Preview** pane. 
+   You can now click any of the bounding boxes without first needing to rest your mouse pointer on them to show them.
+
+   ![Showing all bounding boxes](/img/ui/single-file/show-all-bounding-boxes.png)
+
+You can also do the following:
+
+- To download the JSON view of the results as a local JSON file, click the download icon to the left of the **Formatted** and **JSON** buttons in the **Result** pane. 
+  (You cannot download the formatted view of the results.)
+
+  ![Downloading the results as a local JSON file](/img/ui/single-file/download.png)
+
+- To have Unstructured partition a different file, click **Add new file** in the **Files** pane on the left, and then browse to and select the target file. 
+- To view the results for a file that was previously partitioned during this session, click the file's name in the **Recent files** list in the **Files** pane.
+- To return to the **Start** page, click the **X** (close) button at the left on the title bar, next to **Transform**.
+- To have Unstructured do more&mdash;such as 
+  [chunking](/ui/chunking), [embedding](/ui/embedding),
+  applying additional kinds of [enrichments](/ui/enriching/overview), and 
+  processing larger files and semi-structured data in batches at scale&mdash;click 
+  **Edit in Workflow Editor** at the right on the title bar, and then [skip over to the walkthrough](/ui/walkthrough-2).
+
+  ![Switching to the workflow editor](/img/ui/single-file/workflow-editor.png)
+
+What's next?
+
+- <Icon icon="plus" />&nbsp;&nbsp;[Learn how to add chunking, embeddings, and additional enrichments to your local file results](/ui/walkthrough-2).
+- <Icon icon="database" />&nbsp;&nbsp;[Learn how to do large-scale batch processing of multiple files and semi-structured data that are stored in remote locations instead](/ui/quickstart#remote-quickstart).
+- <Icon icon="desktop" />&nbsp;&nbsp;[Learn more about the Unstructured user interface](/ui/overview).

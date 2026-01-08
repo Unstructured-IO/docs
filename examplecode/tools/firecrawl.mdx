@@ -1,0 +1,505 @@
+---
+title: Firecrawl
+---
+
+[Firecrawl](https://firecrawl.dev/) is a tool that allows you to crawl websites and extract data from them.
+
+You can use Unstructured to process the data that Firecrawl extracts from these websites. Unstructured turns this extracted 
+website data into a single set of standard [Unstructured document elements and metadata](/ui/document-elements), 
+improving the accuracy, relevance, and performance of your RAG applications, agentic AI workflows, model fine tuning, and more. 
+
+This example provides a hands-on walkthrough of how to use Firecrawl with Unstructured. In this example, you use Python code to have Firecrawl 
+extract data from a ficticious website and then add the extracted data to an Amazon S3 bucket within your AWS account. From there, you use the Unstructured user interface (UI) to set up an 
+ETL+ workflow that takes the extracted data from the S3 bucket, converts it into Unstructured document elements and metadata, adds 
+vector embeddings, and then sends the results over into a serverless index within a Pinecone vector store. 
+
+## Requirements
+
+To complete this walkthrough, you must first have:
+
+- An Unstructured account.
+- A Firecrawl account and a Firecrawl API key for that account.
+- An AWS account and a properly configured Amazon S3 bucket with bucket access credentials within that account.
+- A Pinecone account and a Pinecone API key for that account.
+- Python and the necessary development toolchain installed on your local development machine. 
+
+The following sections describe how to get these requirements.
+
+### Unstructured account
+
+Before you begin, you must have an Unstructured account and an Unstructured API key, as follows:
+
+import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-simple-api-only.mdx';
+
+<GetStartedSimpleAPIOnly/>
+
+### Firecrawl account and API key
+
+Before you begin, you must have a Firecrawl account and a Firecrawl API key, as follows:
+
+1. [Sign up or sign in to your Firecrawl account](https://www.firecrawl.dev/signin/signup).
+2. After you sign in, [get your Firecrawl API key](https://www.firecrawl.dev/app/api-keys).
+
+### Amazon S3 bucket with access permissions and credentials
+
+This walkthrough uses an Amazon S3 bucket as the Unstructured ETL+ workflow's source. So, before you begin, you must have an AWS account, and within that account, a properly configured Amazon S3 bucket with bucket access credentials 
+consisting of an AWS access key ID and secret access key for the AWS IAM user that has access to the bucket. 
+Follow the S3 connector instructions to 
+[create and configure the bucket and get the bucket access credentials](/ui/sources/s3) if you do not already have this all set up. (In these 
+instructions, do not follow the directions to use the Unstructured UI to create the S3 source connector. You will do this later when you create the Unstructured ETL+ workflow.)
+
+### Pinecone account and API key
+
+Before you begin, you must have a Pinecone account and a Pinecone API key, as follows:
+
+1. [Sign up](https://app.pinecone.io/?sessionType=signup) or [log in](https://app.pinecone.io/?sessionType=login) to your Pinecone account.
+2. After you log in, [get your Pinecone API key](https://docs.pinecone.io/guides/projects/manage-api-keys#create-an-api-key).
+
+### Python and development toolchain installation
+
+Before you can start coding on your local machine, you must install Python, and you should also install a Python package and project manager to manage your project's Firecrawl, AWS, Pinecone, and other code dependencies. 
+This walkthrough uses the popular Python package and project manager [uv](https://docs.astral.sh/uv/) (although `uv` is not required to use Firecrawl, AWS, or Pinecone with Python). 
+
+<Steps>
+    <Step title="Install uv">
+        To install `uv`, run one of the following commands, depending on your operating system:
+
+        <Tabs>
+            <Tab title="macOS, Linux">
+                To use `curl` with `sh`:
+
+                ```bash
+                curl -fsSL https://get.uv.dev | bash
+                ```
+
+                To use `wget` with `sh` instead:
+
+                ```bash
+                wget -qO- https://astral.sh/uv/install.sh | sh
+                ```
+            </Tab>
+            <Tab title="Windows">
+                To use PowerShell with `irm` to download the script and run it with `iex`:
+
+                ```powershell
+                powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+                ```
+            </Tab>
+        </Tabs>
+
+        If you need to install `uv` by using other approaches such as PyPI, Homebrew, or WinGet, 
+        see [Installing uv](https://docs.astral.sh/uv/getting-started/installation/).
+    </Step>
+    <Step title="Install Python">
+        <Note>This walkthrough should work with Python 3.9 or later and has been tested with Python 3.12.</Note>
+
+        `uv` will detect and use Python if you already have it installed. 
+        To view a list of installed Python versions, run the following command:
+
+        ```bash
+        uv python list
+        ```
+
+        If, however, you do not already have Python installed, you can install a version of Python for use with `uv` 
+        by running the following command. For example, this command installs Python 3.12 for use with `uv`:
+
+        ```bash
+        uv python install 3.12
+        ```        
+    </Step>
+    <Step title="Create the project directory">
+        Switch to the directory on your local development machine where you want to create the project directory for this walkthrough. 
+        This example creates a project directory named `firecrawl_unstructured_demo` within your current working directory and then 
+        switches to this new project directory:
+
+        ```bash
+        mkdir firecrawl_unstructured_demo
+        cd firecrawl_unstructured_demo
+        ```
+    </Step>
+    <Step title="Intiialize the project">
+        From within the new project directory, use `uv` to initialize the project by running the following command:
+
+        ```bash
+        uv init
+        ```
+    </Step>
+    <Step title="Create a venv virtual environment">
+        To isolate and manage your project's code dependencies, you should create a virtual environment. This walkthrough uses 
+        the popular Python virtual environment manager [venv](https://docs.python.org/3/library/venv.html) (although `venv` is not required to use CrewAI or the Unstructured API's workflow operations MCP Server). 
+        From the root of your project directory, use `uv` to create a virtual environment with `venv` by running the following command:
+
+        ```bash
+        # Create the virtual environment by using the current Python version:
+        uv venv
+
+        # Or, if you want to use a specific Python version:
+        uv venv --python 3.12
+        ```
+    </Step>
+    <Step title="Activate the virtual environment">
+        To activate the `venv` virtual environment, run one of the following commands from the root of your project directory:
+
+        <Tabs>
+            <Tab title="macOS, Linux">
+                - For `bash` or `zsh`, run `source .venv/bin/activate`
+                - For `fish`, run `source .venv/bin/activate.fish`
+                - For `csh` or `tcsh`, run `source .venv/bin/activate.csh`
+                - For `pwsh`, run `.venv/bin/Activate.ps1`
+            </Tab>
+            <Tab title="Windows">
+                - For `cmd.exe`, run `.venv\Scripts\activate.bat`
+                - For `PowerShell`, run `.venv\Scripts\Activate.ps1`
+            </Tab>
+        </Tabs>
+
+        If you need to deactivate the virtual environment at any time, run the following command:
+
+        ```bash
+        deactivate
+        ```
+    </Step>
+    <Step title="Install the Firecrawl Python SDK">
+        You will use the Firecrawl Python SDK later to extract data from a website.
+
+        Use `uv` to install the Firecrawl Python SDK package, by running the following command:
+
+        ```bash
+        uv add firecrawl-py
+        ```
+    </Step>
+    <Step title="Install the AWS SDK for Python">
+        You will use the AWS SDK for Python later to have Firecrawl add the extracted data to your Amazon S3 bucket.
+
+        1. Use `uv` to install the AWS SDK for Python package, by running the following command:
+
+           ```bash
+           uv add boto3
+           ```
+
+        2. To enable the AWS SDK for Python to authenticate with your AWS account, create a file named `credentials` in the `~/.aws/` directory for macOS or Linux, or the `<drive>:\Users\<username>\.aws\` directory for Windows. Then add the 
+           AWS access key ID and secret access key of the AWS IAM user that has access to your Amazon S3 bucket, and the [short code for the AWS Region](https://docs.aws.amazon.com/global-infrastructure/latest/regions/aws-regions.html) of the bucket (for example, `us-east-1`), to the `credentials` file.
+
+           In the following `credentials` file example, replace the following placeholders:
+           
+           - Replace `<your-access-key-id>` with the AWS access key ID of the AWS IAM user that has access to the bucket.
+           - Replace `<your-secret-access-key>` with the secret access key for the related access key ID.
+           - Replace `<the-aws-short-region-code-for-your-bucket>` with the short code for the AWS Region of the bucket.
+
+           ```text
+           [default]
+           aws_access_key_id = <your-access-key-id>
+           aws_secret_access_key = <your-secret-access-key>
+           region = <the-aws-short-region-code-for-your-bucket>
+           ```
+
+    </Step>
+    <Step title="Install the Pinecone Python SDK">
+        You will use the Pinecone Python SDK later to create the Pinecone serverless index and, in an optional step, to help enable RAG chat on the data that will be storedin the index.
+
+        Use `uv` to install the Pinecone Python SDK package, along with the `grpc` extra to enable the programmatic creation of a Pinecone serverless index later, by running the following command:
+
+        ```bash
+        uv add "pinecone[grpc]"
+        ```
+    </Step>
+</Steps>
+
+## Step 1: Extract the website data and add the data to the bucket
+
+In this step, you use Firecrawl to extract data from a website and then add the extracted data to the Amazon S3 bucket.
+
+<Steps>
+    <Step title="Add your Firecrawl API key to your project">
+        1. Set your Firecrawl API key in your project as an environment variable for your code to use. To do this:
+        
+           a. In the root of your code project, create a file named `.env`.<br/>
+           b. Add the following environment variable to this `.env` file, and replace 
+              `<your-firecrawl-api-key>` with your Firecrawl API key:<br/>
+           
+              ```text
+              FIRECRAWL_API_KEY=<your-firecrawl-api-key>
+              ```
+              
+        2. To enable your Firecrawl code to access the environment variable, use `uv` to install the `dotenv` package by running the following command:
+        
+           ```bash
+           uv add dotenv
+           ```
+           
+        3. In the `.gitignore` file in the root of your project, add the following line, to help prevent 
+           accidentally checking in your Firecrawl API key (or anything else in the `.env` file) into any shared code repositories later:
+           
+           ```text
+           .env
+           ````
+    </Step>
+    <Step title="Create the Python script to extract the website data">
+        1. In the `.env` file, add the following line, which defines an environment variable representing the base URL 
+           of the website to crawl. This walkthrough uses a website named [Books to Scrape](https://books.toscrape.com/) that contains ficticious data (although you can use any accessible website you want):
+           
+           ```text
+           FIRECRAWL_BASE_URL=https://books.toscrape.com/
+           ```
+           
+        2. Also in the `.env` file, add the following line, which defines an environment variable representing the name of the target Amazon S3 bucket to 
+           have Firecrawlstore the website crawl results in. Replace `<the-name-of-your-bucket>` with the name of the bucket: 
+
+           ```text
+           FIRECRAWL_S3_BUCKET_NAME=<the-name-of-your-bucket>
+           ```
+
+           <Note>Enter only the name of the bucket. Do not prefix the bucket's name with `s3://`. Do not include any trailing slash (`/`) after the bucket name.</Note>
+           
+        3. Create a file named `firecrawl_extract.py` in the root of your project directory, and add the following code to it:
+
+           ```python
+           from firecrawl import FirecrawlApp, ScrapeOptions
+           from dotenv import load_dotenv
+           import os, boto3, json
+           from datetime import datetime
+
+           load_dotenv()
+
+           def save_to_s3(crawl_result, bucket_name, prefix):
+               s3 = boto3.client("s3")
+               timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+               # Save the full crawl results to the bucket as a single JSON file.
+               full_results_key = f"{prefix}/{timestamp}/full_results.json"
+               s3.put_object(
+                   Bucket=bucket_name,
+                   Key=full_results_key,
+                   Body=json.dumps(crawl_result.model_dump(), indent=2, default=str),
+               )
+
+               # Save individually crawled pages to the bucket as HTML files.
+               for idx, page in enumerate(crawl_result.data):
+                   if page.html is not None:
+                       page_key = f"{prefix}/{timestamp}/pages/{idx}.html"
+                       s3.put_object(Bucket=bucket_name, Key=page_key, Body=page.html)
+                       print(f"Successfully saved {idx}.html to {bucket_name}/{page_key}")
+               print(f"Successfully saved {len(crawl_result.data)} pages to {bucket_name}/{full_results_key}")
+
+           def main():
+               app = FirecrawlApp(api_key=os.getenv("FIRECRAWL_API_KEY"))
+
+               result = app.crawl_url(
+                   url=os.getenv("FIRECRAWL_BASE_URL"),
+                   limit=5, # Maximum number of pages to crawl.
+                   scrape_options=ScrapeOptions(
+                       formats=["html"], # Save the crawled pages as HTML files.
+                       waitFor=1000, # Wait for one second before crawling the currentpage.
+                       timeout=10000 # Move on to the next page if no response within 10 seconds.
+                   )
+               )
+               
+               save_to_s3(
+                   crawl_result=result,
+                   bucket_name=os.getenv("FIRECRAWL_S3_BUCKET_NAME"),
+                   prefix="crawls"
+               )
+
+           if __name__ == "__main__":
+               main()
+           ```
+
+           The preceding code does the following:
+
+           - Loads from your `.env` file your Firecrawl API key, the base URL for Firecrawl to use for website crawling, and the S3 bucket name for Firecrawl to send the website crawl results to.
+           - Calls a function named `main` that uses Firecrawl to crawl the website.
+           - The `main` function then calls the `save_to_s3` function, which adds the website crawl results to the S3 bucket.
+
+           You can change the where the website crawl results are saved in your S3 bucket by changing the `full_results_key` and `page_key` variables. For example, you might want to save the 
+           website crawl results in a single folder and then keep overwriting those results with new results as they come in, instead of adding new results to separate subfolders.
+
+           You can also change the number of crawled pages by changing the `limit` argument, outputting the results as Markdown instead of HTML, and so on. For more 
+           information, see the [Firecrawl Python SDK documentation](https://docs.firecrawl.dev/sdks/python).
+    </Step>
+    <Step title="Run the script to extract the data">
+        From the root of your project, use `uv` to run the script to extract the data from the website by running the following command:
+
+        ```bash
+        uv run firecrawl_extract.py
+        ```
+
+        After the script runs, you should see the following output, where `<your-bucket-name>` is the name of your bucket, and `<timestamp>` is the timestamp generated by the script:
+
+        ```bash
+        Successfully saved 0.html to <your-bucket-name>/crawls/<timestamp>/pages/0.html
+        Successfully saved 1.html to <your-bucket-name>/crawls/<timestamp>/pages/1.html
+        Successfully saved 2.html to <your-bucket-name>/crawls/<timestamp>/pages/2.html
+        Successfully saved 3.html to <your-bucket-name>/crawls/<timestamp>/pages/3.html
+        Successfully saved 4.html to <your-bucket-name>/crawls/<timestamp>/pages/4.html
+        Successfully saved 5 pages to <your-bucket-name>/crawls/<timestamp>/full_results.json
+        ```
+
+        To verify that the data was successfully added, open your AmazonS3 console 
+        and look in the `crawls` folder within your bucket.
+    </Step>
+</Steps>
+
+## Step 2: Create a Pinecone serverless index
+
+In this step, you create a Pinecone serverless index that Unstructured will use to store its results based on the 
+extracted website data that Firecrawl sends to your Amazon S3 bucket.
+
+<Steps>
+    <Step title="Add your Pinecone API key to your project">
+        Set your Pinecone API key as an environment variable for your code to use. To do this, add the following environment variable to your `.env` file, and replace 
+        `<your-pinecone-api-key>` with your Pinecone API key:
+           
+        ```text
+        PINECONE_API_KEY=<your-pinecone-api-key>
+        ```
+    </Step>
+    <Step title="Add the Pinecone index name to your project">
+        Add the following line to your `.env` file, and replace `<the-name-of-your-index>` with the name of the serverlessindex you want to create:
+
+        ```text
+        PINECONE_INDEX_NAME=<the-name-of-your-index>
+        ```
+    </Step>
+    <Step title="Create the Python script to create the Pinecone serverless index">
+        Create a file named `pinecone_create_index.py` in the root of your project directory and add the following code to it:
+
+        ```python
+        from pinecone.grpc import PineconeGRPC as Pinecone
+        from pinecone import ServerlessSpec
+        import os
+        from dotenv import load_dotenv
+
+        load_dotenv()
+
+        pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
+
+        pc.create_index(
+            name=os.getenv("PINECONE_INDEX_NAME"),
+            vector_type="dense",
+            dimension=3072,
+            metric="cosine",
+            spec=ServerlessSpec(
+                cloud="aws",
+                region="us-east-1"
+            )
+        )
+        ```
+
+        The preceding code creates in your Pinecone account a serverless index with the specified name for the specified cloud provider and within the specified region for that provider. 
+        The index is configured to accept vectors with 3072 dimensions with a cosine metric and a dense vector type.
+    
+    </Step>
+    <Step title="Run the script to create the index">
+        From the root of your project, use `uv` to run the script to create the Pinecone serverless index by running the following command:
+
+        ```bash
+        uv run pinecone_create_index.py
+        ```
+
+        After the script runs, to verify that the index was successfully added, log in to your Pinecone account. Then open your default project, 
+        and click **Indexes** under **Database** in the sidebar to view the new index that was added.
+    </Step>
+</Steps>
+
+## Step 3: Set up and run the Unstructured ETL+ workflow
+
+In this step, you set up and run the Unstructured ETL+ workflow that will take the extracted website data from your Amazon S3 bucket, process it to turn it into 
+Unstructured elements and metadata, add vector embeddings to the elements, and then add all of this information to your Pinecone serverless index.
+
+<Steps>
+    <Step title="Create the source connector">
+        1. If you are not already signed in, sign in to your Unstructured account.
+        2. On the sidebar, click **Connectors**.
+        3. With **Sources** selected, **New**.
+        4. Enter some name for the source connector, such as `s3-firecrawl-source`.
+        5. For **Provider**, click **Amazon S3**.
+        6. Click **Continue**.
+        7. For **Bucket URI**, enter `s3://<your-bucket-name>/crawls/<timestamp>/pages/`, replacing `<your-bucket-name>` with the name of your bucket, and `<timestamp>` with the timestamp generated by the script in the previous step..
+        8. For **Authentication Method**, select **Secret**.
+        9. Enter your AWS access key ID and secret access key.
+        10. Click **Continue**.
+        11. Click **Save and Test**.
+    </Step>
+    <Step title="Create the destination connector">
+        1. On the sidebar, click **Connectors**.
+        2. With **Destinations** selected, **New**.
+        3. Enter some name for the destination connector, such as `pinecone-firecrawl-destination`.
+        4. For **Provider**, click **Pinecone**.
+        5. Click **Continue**.
+        6. For **Index Name**, enter the name of the Pinecone index you created earlier, such as `firecrawl-dense-index`.
+        7. Leave **Namespace** blank. Unstructured will automatically use the default namespace in the index.
+        8. Leave **Batch Size** set to the default value of `50`.
+        9. For **API Key**, enter your Pinecone API key.
+        10. Click **Save and Test**.
+    </Step>
+    <Step title="Create the workflow">
+        1. On the sidebar, click **Workflows**.
+        2. Click **New Workflow**.
+        3. With **Build it Myself** selected, click **Continue**.
+        4. In the workflow designer, click the **Source** workflow node.
+        5. In the node settings pane, on the **Connectors** tab, select the name of the source connector you created earlier, such as `s3-firecrawl-source`.
+        6. Click the **Destination** workflow node.
+        7. In the node settings pane, on the **Connectors** tab, select the name of the destination connector you created earlier, such as `pinecone-firecrawl-destination`.
+        8. Between the **Partitioner** and **Destination** nodes, click the **+** (add node) button.
+        9. Click **Transform > Embedder**.
+        10. Click the **Embedder** workflow node.
+        11. In the **Settings** pane, under **Azure OpenAI**, select **text-embedding-3-large**.
+        12. Click any blank space in the workflow designer.
+        13. In the workflow settings pane, click **Details**.
+        14. For **Name**, click the pencil (edit) icon and then enter some name for the workflow, such as `firecrawl-s3-to-pinecone-workflow`. 
+            Then click the checkmark (save) icon.
+        15. Switch **Active** to on.
+        16. Click **Save**.
+    </Step>
+    <Step title="Run the workflow as a job">
+        1. On the sidebar, click **Workflows**.
+        2. Next to the name of the workflow you created earlier, click **Run**.
+    </Step>
+    <Step title="Monitor the job">
+        1. On the sidebar, click **Jobs**.
+        2. Click the name of the workflow you created earlier.
+        3. Monitor the job's progress in the job details pane until the status changes to **Finished**.
+    </Step>
+    <Step title="View the results">
+        1. One way to view the results is to create a file named `pinecone_fetch_from_index.py` in the root of your project directory and add the following code to it:
+        
+           ```python
+           from pinecone import Pinecone
+           import os
+           from dotenv import load_dotenv
+
+           load_dotenv()
+
+           pc = Pinecone(api_key=os.getenv("PINECONE_API_KEY"))
+           index = pc.Index(os.getenv("PINECONE_INDEX_NAME"))
+           ids = []
+
+           # The list_paginated() method returns a dict with 'vectors' key
+           paginated_results = index.list_paginated(namespace="default")
+           for page in paginated_results['_data_store']['vectors']:
+               ids.append(page['id'])
+
+           response = index.fetch(
+               ids=ids,
+               namespace="default"
+           )
+
+           for vector_id, vector_data in response["vectors"].items():
+               print(f"ID: {vector_id}\nMetadata: {vector_data.get('metadata')}\n\n")
+           ```
+
+        2. From the root of your project, use `uv` to run the script as follows:
+
+           ```bash
+           uv run pinecone_fetch_from_index.py
+           ```
+
+           The output will show each record's ID and metadata. For brevity and performance, 
+           the records' vector embeddings are not included in the output.
+       
+    </Step>
+</Steps>
+
+## Additional resources
+
+- [Mastering Firecrawl's Crawl Endpoint: A Complete Web Scraping Guide](https://www.firecrawl.dev/blog/mastering-the-crawl-endpoint-in-firecrawl)

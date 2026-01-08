@@ -3,27 +3,23 @@ import os
 
 from unstructured_client import UnstructuredClient
 from unstructured_client.models.operations import CreateSourceRequest
-from unstructured_client.models.shared import (
-    CreateSourceConnector,
-    SourceConnectorType,
-    OutlookSourceConnectorConfigInput
-)
+from unstructured_client.models.shared import CreateSourceConnector
 
 with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
     response = client.sources.create_source(
         request=CreateSourceRequest(
             create_source_connector=CreateSourceConnector(
                 name="<name>",
-                type=SourceConnectorType.OUTLOOK,
-                config=OutlookSourceConnectorConfigInput(
-                    client_id="<client-id>",
-                    authority_url="<authority-url>",
-                    tenant="<tenant>",
-                    client_cred="<client-cred>",
-                    user_email="<user-email>",
-                    outlook_folders=["<folder-name>","<folder-name>"],
-                    recursive=<True|False>
-                )
+                type="outlook",
+                config={
+                    "client_id": "<client-id>",
+                    "authority_url": "<authority-url>",
+                    "tenant": "<tenant>",
+                    "client_cred": "<client-cred>",
+                    "user_email": "<user-email>",
+                    "outlook_folders": ["<folder-name>", "<folder-name>"],
+                    "recursive": <True|False>
+                }
             )
         )
     )

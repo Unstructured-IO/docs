@@ -3,28 +3,35 @@ title: Role-based access control (RBAC)
 sidebarTitle: Roles
 ---
 
+<Note>
+    The following information applies only to Unstructured [organizational accounts](/ui/account/organizations), which are 
+    available only for Unstructured **Business** accounts. To upgrade from an Unstructured **Let's Go** or **Pay-As-You-Go** account 
+    to a **Business** account, contact your Unstructured sales representative, or 
+    email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+</Note>
+
 _Roles_ in Unstructured are part of the _role-based access control_ (RBAC) system that manages permissions for members of 
 organizational accounts and their workspaces. (Roles are not used in personal accounts.)
 
-Any member with the **Super Admin** role in an organizational account can manage the roles of that organizational account's members and the roles of the 
+Any member with the **Super Administrator** role in an organizational account can manage the roles of that organizational account's members and the roles of the 
 members of the organizational account's workspaces. 
 
-Any member with the **Super Admin** role in an organizational account or the **Workspace Admin** role in a workspace within an 
+Any member with the **Super Administrator** role in an organizational account or the **Workspace Admin** role in a workspace within an 
 organizational account can mange the roles of that workspace's members.
 
-A **Super Admin** member assigns an organizational account member's initial role when they are [added to the organizational account](/ui/account/organizations#add-a-member-to-an-organizational-account). This member's 
+A **Super Administrator** member assigns an organizational account member's initial role when they are [added to the organizational account](/ui/account/organizations#add-a-member-to-an-organizational-account). This member's 
 initial role can be [changed](/ui/account/organizations#change-an-organizational-account-role-for-a-member) later.
 
-A **Super Admin** or **Workspace Admin** member assigns a workspace member's initial role when they are [added to the workspace](/ui/account/workspaces#add-a-member-to-a-workspace). This 
+A **Super Administrator** or **Workspace Admin** member assigns a workspace member's initial role when they are [added to the workspace](/ui/account/workspaces#add-a-member-to-a-workspace). This 
 member's initial role can be [changed](/ui/account/workspaces#change-a-workspace-role-for-a-member) later.
 
 ## Organizational account roles 
 
 Organizational account roles include:
 
-- Super Administrator
-- Account Member
-- Billing Administrator
+- **Super Administrator**: Has access to all permissions, and has access to all resources created in an organization.
+- **Account Member**: Able to be added to workspaces with a workspace role.
+- **Billing Administrator**: Only able to view billing information and usage.
 
 These roles include the following permissions:
 
@@ -39,8 +46,6 @@ These roles include the following permissions:
 | Billing | | | |
 | Can view usage and costs | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
 | Can edit payment information | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
-| Can add budget | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
-| Can distribute budget across workspaces | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
 | Workspaces | | | |
 | Can create workspaces | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
 | Can add members to a workspace | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="no-label">No</span> |
@@ -52,32 +57,33 @@ These roles include the following permissions:
 
 Workspace roles include:
 
-- Viewer
-- Developer
-- Operator
-- Workspace administrators
+- **Viewer**: Ability to view all connectors and workflows that exist in the workspace in a read-only capacity.
+- **Operator**: Ability to create, run, schedule, and delete any workflows that exist in the workspace. 
+  Can view connectors but cannot create or edit them.
+- **Developer**: Ability to create and edit all connectors and workflows that exist in the workspace.
+- **Workspace Administrator**: Ability to manage users on the workspace (invite, remove or change roles) as well as edit the workspace.
 
 These roles include the following permissions:
 
-| Resource | Action | Viewer | Developer | Operator | Workspace Administrator |
+| Resource | Action | Viewer | Operator | Developer | Workspace Administrator |
 |---|---|---|---|---|---|
 | Workflows | Read | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
-| | Create | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
-| | Edit | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
-| | Delete | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | 
+| | Create | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
+| | Edit | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
+| | Delete | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | 
 | | Run | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | 
 | | Schedule | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | 
+| | Save | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
+| | Duplicate | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
+| | Activate and deactivate | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
 | Connectors | Read | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
-| | Create | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
-| | Edit | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
-| | Delete | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
+| | Create | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
+| | Edit | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
+| | Delete | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
 | Workspace members | Add members to the workspace | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
 | | View the workspace's members | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
 | | Remove members from the workspace | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
 | | Change the workspace members' roles | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
-| Budget limits | Add budget | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
-| | Edit budget | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="no-label">No</span> | <span class="yes-label">Yes</span> |
-| | View budget | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> | <span class="yes-label">Yes</span> |
 
 Super Administrators in an organizational account have complete access to all of the organizational account's workspaces, regardless of whether they 
 are a member of those workspaces.

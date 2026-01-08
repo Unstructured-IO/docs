@@ -8,7 +8,7 @@ Vector databases often require data to be in smaller, consistent chunks for effi
 
 ## Data ingestion
 
-Unstructured `Source Connectors` make data ingestion easy. They ensure that your data is accessible, up to date, and usable for any downstream task. If you’d like to read more on our source connectors, you can find details [here](/ingestion/source-connectors/overview).
+Unstructured `Source Connectors` make data ingestion easy. They ensure that your data is accessible, up to date, and usable for any downstream task. If you’d like to read more on our source connectors, you can find details [here](/open-source/ingestion/source-connectors/overview).
 
 ## Data preprocessing
 
@@ -36,17 +36,17 @@ High-level overview of available strategies and models in `Unstructured` library
 
 LLMs, like GPT, are trained on vast amounts of data and can comprehend and generate human-like text. They have achieved state-of-the-art results across many NLP tasks and can be fine-tuned to cater to specific domains or requirements.
 
-## Retrieval augmented generation (RAG)
+## Retrieval-augmented generation (RAG)
 
 Large language models (LLMs) like OpenAI’s ChatGPT and Anthropic’s Claude have revolutionized the AI landscape with their prowess. However, they inherently suffer from significant drawbacks. One major issue is their static nature, which means they’re “frozen in time.” Despite this, LLMs might often respond to newer queries with unwarranted confidence, a phenomenon known as “hallucination.” Such errors can be highly detrimental, mainly when these models serve critical real-world applications.
 
-Retrieval augmented generation (RAG) is a groundbreaking technique designed to counteract the limitations of foundational LLMs. By pairing an LLM with an RAG pipeline, we can enable users to access the underlying data sources that the model uses. This transparent approach ensures that an LLM’s claims can be verified for accuracy and builds a trust factor among users.
+Retrieval-augmented generation (RAG) is a groundbreaking technique designed to counteract the limitations of foundational LLMs. By pairing an LLM with an RAG pipeline, we can enable users to access the underlying data sources that the model uses. This transparent approach ensures that an LLM’s claims can be verified for accuracy and builds a trust factor among users.
 
 Moreover, RAG offers a cost-effective solution. Instead of bearing the extensive computational and financial burdens of training custom models or fine-tuning existing ones, RAG can, in many situations, serve as a sufficient alternative. This reduction in resource consumption is particularly beneficial for organizations that need more means to develop and deploy foundational models from scratch.
 
 A RAG workflow can be broken down into the following steps:
 
-1.  **Data ingestion**: The first step is acquiring data from your relevant sources. We make this easy with our [source connectors](/ingestion/source-connectors/overview).
+1.  **Data ingestion**: The first step is acquiring data from your relevant sources. We make this easy with our [source connectors](/open-source/ingestion/source-connectors/overview).
 
 2.  **Data preprocessing and cleaning**: Once you’ve identified and collected your data sources, removing any unnecessary artifacts within the dataset is a good practice. At Unstructured, we have various tools for data processing in our [core functionalities](/open-source/core-functionality/overview).
 
@@ -54,7 +54,7 @@ A RAG workflow can be broken down into the following steps:
 
 4.  **Embedding**: After chunking, you must convert the text into a numerical representation (vector embedding) that an LLM can understand. To use the various embedding models using Unstructured tools, please refer to [this page](/open-source/core-functionality/embedding).
 
-5.  **Vector Database**: The next step is to choose a location for storing your chunked embeddings. There are many options for your vector database (Astra DB, ChromaDB, Clarifai, Pinecone, Qdrant, Weaviate, and more). For complete list of Unstructured `Destination Connectors`, please visit [this page](/ingestion/destination-connectors/overview).
+5.  **Vector Database**: The next step is to choose a location for storing your chunked embeddings. There are many options for your vector database (Astra DB, ChromaDB, Clarifai, Pinecone, Qdrant, Weaviate, and more). For complete list of Unstructured `Destination Connectors`, please visit [this page](/open-source/ingestion/destination-connectors/overview).
 
 6.  **User Prompt**: Take the user prompt and grab the most relevant chunks of information in the vector database via similarity search.
 

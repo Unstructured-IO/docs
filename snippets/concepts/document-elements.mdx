@@ -93,10 +93,13 @@ All document types return the following metadata fields when the information is 
 | `coordinates`              | XY Bounding Box Coordinates. See notes below for further details about the bounding box.                                                                                                                                                                                                                                                                                                                                                                                           |
 | `parent_id`                | Element Hierarchy. `parent_id` may be used to infer where an element resides within the overall hierarchy of a document. For instance, a NarrativeText element may have a Title element as a parent (a “sub-title”), which in turn may have another Title element as its parent (a "title").                                                                                                                                                                                       |
 | `category_depth`           | Element depth relative to other elements of the same category.  Category depth is the depth of an element relative to other elements of the same category. It’s set by a document partitioner and enables the hierarchy post-processor to compute more accurate hierarchies. Category depth may be set using native document hierarchies, e.g. reflecting \<H1>, \<H2>, or \<H3> tags within an HTML document or the indentation level of a bulleted list item in a Word document. |
+| `image_base64`             | A Base64 representation of the detected image or table. Only applicable to image and table elements when High Res partitioning is used. After chunking, `image_base64` is not preserved in the output.                                                                                                                                                                                                                                                                             |
+| `image_mime_type`          | MIME type of the image. Only applicable to image elements.                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | `text_as_html`             | HTML representation of extracted tables. Only applicable to table elements.                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `languages`                | Document Languages.  At document level or element level. List is ordered by probability of being the primary language of the text.                                                                                                                                                                                                                                                                                                                                                 |
 | `emphasized_text_contents` | Emphasized text (bold or italic) in the original document.                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | `emphasized_text_tags`     | Tags on text that is emphasized in the original document.                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `orig_elements`            | For chunked elements, a list of the original elements that were used to create the current chunked element.                                                                                                                                                                                                                                                                                                                                                                        |
 | `is_continuation`          | True if element is a continuation of a previous element.  Only relevant for chunking, if an element was divided into two due to max_characters.                                                                                                                                                                                                                                                                                                                                    |
 | `detection_class_prob`     | Detection model class probabilities.  From unstructured-inference, hi-res strategy.                                                                                                                                                                                                                                                                                                                                                                                                |
 
@@ -142,28 +145,45 @@ print(element.metadata.coordinates.system.height)
 
 ```
 
-
 ### Additional metadata fields by document type
 
-| Field Name             | Applicable Doc Types | Description                                                                   |
-|------------------------|----------------------|-------------------------------------------------------------------------------|
-| `page_number`          | DOCX, PDF, PPT, XLSX | Page number                                                                   |
-| `page_name`            | XLSX                 | Sheet name in an Excel document                                               |
-| `sent_from`            | EML                  | Email sender                                                                  |
-| `sent_to`              | EML                  | Email recipient                                                               |
-| `subject`              | EML                  | Email subject                                                                 |
-| `attached_to_filename` | MSG                  | filename that attachment file is attached to                                  |
-| `header_footer_type`   | Word Doc             | Pages a header or footer applies to: "primary", "even_only", and "first_page" |
-| `link_urls`            | HTML                 | The url associated with a link in a document.                                 |
-| `link_texts`           | HTML                 | The text associated with a link in a document.                                |
-| `section`              | EPUB                 | Book section title corresponding to table of contents                         |
+| Field name             | Applicable file types | Description                                                                                                                                                          |
+|------------------------|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `attached_to_filename` | MSG                   | The name of the file that the attached file is attached to.                                                                                                          |
+| `bcc_recipient`        | EML                   | The related [email](#email) BCC recipient.                                                                                                                           |
+| `cc_recipient`         | EML                   | The related [email](#email) CC recipient.                                                                                                                            |
+| `email_message_id`     | EML                   | The related [email](#email) message ID.                                                                                                                              |
+| `header_footer_type`   | Word Doc              | The pages that a header or footer applies to in a [Word document](#microsoft-word-files): `primary`, `even_only`, and `first_page`.                                  |
+| `image_path`           | PDF                   | The path to the image. This is useful when you want to extract the image and save it in a specified path instead of serializing the image within the processed data. |
+| `image_mime_type`      | PDF                   | The MIME type of the image.                                                                                                                                          |
+| `image_url`            | HTML                  | The URL to the image.                                                                                                                                                |
+| `link_start_indexes`   | HTML, PDF             | A list of the index locations within the extracted content where the `links` can be found.                                                                           |
+| `link_texts`           | HTML                  | A list of text strings that are associated with the `link_urls`.                                                                                                     |
+| `link_urls`            | HTML                  | A list of URLs within the extracted content.                                                                                                                         |
+| `links`                | PDF                   | A list of links within the extracted content.                                                                                                                        |
+| `page_name`            | XLSX                  | The related sheet's name in an [Excel file](#microsoft-excel-files).                                                                                                 |
+| `page_number`          | DOCX, PDF, PPT, XLSX  | The related file's page number.                                                                                                                                      |
+| `section`              | EPUB                  | The book section title corresponding to a table of contents.                                                                                                         |
+| `sent_from`            | EML                   | The related [email](#email) sender.                                                                                                                                  |
+| `sent_to`              | EML                   | The related [email](#email) recipient.                                                                                                                               |
+| `signature`            | EML                   | The related [email](#email) signature.                                                                                                                               |
+| `subject`              | EML                   | The related [email](#email) subject.                                                                                                                                 |
 
 Notes on additional metadata by document type:
 
 #### Email
 
-Emails will include `sent_from`, `sent_to`, and `subject` metadata. `sent_from` is a list of strings because
-the [RFC 822](https://www.rfc-editor.org/rfc/rfc822) spec for emails allows for multiple sent from email addresses.
+For emails, metadata will contain the following fields, where available:
+
+- `bcc_recipient`
+- `cc_recipient`
+- `email_message_id`
+- `sent_from`
+- `sent_to`
+- `signature`
+- `subject` 
+
+`sent_from` is a list of strings because the [RFC 822](https://www.rfc-editor.org/rfc/rfc822) spec for emails allows for multiple sent from email addresses.
 
 #### Microsoft Excel documents
 

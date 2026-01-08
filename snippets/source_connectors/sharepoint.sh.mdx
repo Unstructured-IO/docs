@@ -3,15 +3,17 @@
 
 unstructured-ingest \
   sharepoint \
-    --client-cred $ENTRA_ID_APP_CLIENT_SECRET \
-    --client-id $ENTRA_ID_APP_CLIENT_ID \
-    --user-pname $ENTRA_ID_USER_PRINCIPAL_NAME \
-    --tenant $ENTRA_ID_APP_TENANT_ID \
-    --authority-url $ENTRA_ID_TOKEN_AUTHORITY_URL \
     --site $SHAREPOINT_SITE_URL \
+    --library $SHAREPOINT_LIBRARY_NAME \
     --path $SHAREPOINT_SITE_PATH \
     --recursive \
-    --download-dir $LOCAL_FILE_DOWNLOAD_DIR\
+    --client-id $ENTRA_ID_APP_CLIENT_ID \
+    --tenant $ENTRA_ID_APP_TENANT_ID \
+    --authority-url $ENTRA_ID_TOKEN_AUTHORITY_URL \
+    --client-cred $ENTRA_ID_APP_CLIENT_SECRET \
+    --user-pname $ENTRA_ID_USER_PRINCIPAL_NAME \
+    --password $ENTRA_ID_USER_PASSWORD \
+    --download-dir $LOCAL_FILE_DOWNLOAD_DIR \
     --partition-by-api \
     --api-key $UNSTRUCTURED_API_KEY \
     --partition-endpoint $UNSTRUCTURED_API_URL \

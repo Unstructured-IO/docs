@@ -10,8 +10,12 @@ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; pic
 allowfullscreen
 ></iframe>
 
+import S3OperationLatency from '/snippets/general-shared-text/s3-operation-latency.mdx';
+
+<S3OperationLatency />
+
 The preceding video does not show how to create an AWS account; enable anonymous access to the bucket (which is supported but 
-not recommended); or generate an AWS STS session token for temporary access, if required by your organization's security 
+not recommended); or generate AWS STS temporary access credentials if required by your organization's security 
 requirements. For more information about requirements, see the following:
 
 - An AWS account. [Create an AWS account](https://aws.amazon.com/free).
@@ -26,8 +30,8 @@ requirements. For more information about requirements, see the following:
   allowfullscreen
   ></iframe>
 
-- An S3 bucket. [Create an S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html). 
-  Additional approaches are in the following video and in the how-to sections at the end of this page.
+- An S3 bucket. You can create an S3 bucket by using the S3 console, following the steps [in the S3 documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html) or in the following video. 
+  Additional approaches that use AWS CloudFormation or the AWS CLI are in the how-to sections later on this page.
 
   <iframe
   width="560"
@@ -39,33 +43,59 @@ requirements. For more information about requirements, see the following:
   allowfullscreen
   ></iframe>
 
-- Anonymous (supported but not recommended) or authenticated access to the bucket. 
+- Anonymous access to the bucket is supported but not recommended. (Use authenticated bucket read or write access or both instead.) To enable anonymous access, follow the steps 
+  [in the S3 documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html#example-bucket-policies-anonymous-user) or in the following animation. 
 
-  - [Enable anonymous bucket access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html#example-bucket-policies-anonymous-user). 
+  ![Enable anonymous bucket access](/img/connectors/s3-anon-access.gif)
 
-    ![Enable anonymous bucket access](/img/connectors/s3-anon-access.gif)
+- For authenticated bucket read or write access or both, which is recommended over anonymous access, you should first 
+  [block all public access to the bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/configuring-block-public-access-bucket.html).
 
-  - [Enable authenticated bucket access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/walkthrough1.html).
+  After blocking all public access to the bucket, for read access, the authenticated AWS IAM user must have at minimum the permissions of `s3:ListBucket` and `s3:GetObject` for that bucket. 
+  For write access, the authenticated AWS IAM user must have at minimum the permission of `s3:PutObject` for that bucket. Permissions 
+  can be granted in one of the following ways:
+  
+  - Attach the appropriate bucket policy to the bucket. See the policy examples later on this page, and [learn about bucket policies for S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html). These permissions remain in effect until the bucket policy is removed from the bucket. 
+    To apply a bucket policy by using the S3 console, follow the steps [in the S3 documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/add-bucket-policy.html) or in the following video. 
+    Additional approaches that use AWS CloudFormation or the AWS CLI are in the how-to sections later on this page.
+  
+    <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/y4SfQoJpipo"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+    ></iframe>
 
-    ![Enable authenticated bucket access](/img/connectors/s3-auth-access.gif)
+  - Have the IAM user temporarily assume an IAM role that contains the appropriate user policy. See the policy examples later on this page, and [learn about user policies for S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html). These permission remain in effect until the assumed role's time period expires. 
+    Learn how to use the IAM console to [create a policy](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_create-console.html), 
+    [create a role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user.html) that references this policy, and then 
+    [have the user temporarily assume the role by using the AWS CLI or an AWS SDK](https://docs.aws.amazon.com/code-library/latest/ug/sts_example_sts_AssumeRole_section.html), which produces 
+    a temporary AWS access key (`AccessKeyId`), AWS secret access key (`SecretAccessKey`), and AWS STS session token (`SessionToken`).
 
-- For authenticated bucket read access, the authenticated AWS IAM user must have at minimum the permissions of `s3:ListBucket` and `s3:GetObject` for that bucket. [Learn how](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-policies-s3.html).
+    <Warning>
+      AWS STS credentials (consisting of an AWS access key, AWS secret access key, and AWS STS session token) can be valid for as little as 15 minutes or as long as 36 hours, depending on how the credentials were initially 
+      generated. After the expiry time, the credentials are no longer valid and will no longer work with the corresponding S3 connector. 
+      You must get a new set of credentials to replace the expired ones by [having the user temporarily assume the role again by using the AWS CLI or an AWS SDK](https://docs.aws.amazon.com/code-library/latest/ug/sts_example_sts_AssumeRole_section.html), which produces 
+      a new, refreshed temporary AWS access key, AWS secret access key, and AWS STS session token. 
 
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/y4SfQoJpipo"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
+      To overwrite the expired credentials with the new set:
+    
+      - For the Unstructured user interface (UI), manually update the AWS Key, AWS Secret Key, and STS Token fields in the Unstructured UI 
+        for the corresponding S3 [source](/ui/sources/s3) or [destination](/ui/destinations/s3) connector.
+      - For the Unstructured API, use the Unstructured API's workflow operations to call the 
+        [update source](/api-reference/workflow/overview#update-a-source-connector) or 
+        [update destination](/api-reference/workflow/overview#update-a-destination-connector) connector operation 
+        for the corresponding S3 [source](/api-reference/workflow/sources/s3) or 
+        [destination](/api-reference/workflow/destinations/s3) connector.
+      - For Unstructured Ingest, change the values of `--key`, `--secret`, and `--token` (CLI) or `key`, `secret`, and `token` (Python) in your command or code for the 
+        corresponding S3 [source](/open-source/ingestion/source-connectors/s3) or [destination](/open-source/ingestion/destination-connectors/s3) connector.
+    </Warning>
 
-- For bucket write access, authenticated access to the bucket must be enabled (anonymous access must not be enabled), and the authenticated AWS IAM user must have at 
-  minimum the permission of `s3:PutObject` for that bucket. [Learn how](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-policies-s3.html).
-
-- For authenticated access, an AWS access key and secret access key for the authenticated AWS IAM user in the account. 
-  [Create an AWS access key and secret access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
+- If you used a bucket policy intead of having the IAM user temporarily assume an IAM role for authenticated bucket access, you must provide a long-term AWS access key and secret access key for the authenticated AWS IAM user in the account. 
+  Create an AWS access key and secret access key by following the steps [in the IAM documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey) or in the following video.
 
   <iframe
   width="560"
@@ -77,19 +107,7 @@ requirements. For more information about requirements, see the following:
   allowfullscreen
   ></iframe>
 
-- For authenticated access in untrusted environments or enhanced security scenarios, an AWS STS session token for temporary access, in addition to an AWS access key and secret access key. [Create a session token](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.html#api_getsessiontoken). 
-
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/4_csSXc_GNU"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
-  
-- If the target files are in the root of the bucket, the path to the bucket, formatted as `protocol://bucket/` (for example, `s3://my-bucket/`). 
+- If the target files are in the root of the bucket, you will need the path to the bucket, formatted as `protocol://bucket/` (for example, `s3://my-bucket/`). 
   If the target files are in a folder, the path to the target folder in the S3 bucket, formatted as `protocol://bucket/path/to/folder/` (for example, `s3://my-bucket/my-folder/`). 
 - If the target files are in a folder, and authenticated bucket access is enabled, make sure the authenticated AWS IAM user has 
-  authenticated access to the folder as well. [Enable authenticated folder access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html#example-bucket-policies-folders).
+  authenticated access to the folder as well. [See examples of authenticated folder access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html#example-bucket-policies-folders).

@@ -1,9 +1,34 @@
 Fill in the following fields:
 
 - **Name** (_required_): A unique name for this connector.
-- **Hosts** (_required_): The OpenSearch instances' hostname and port number combinations (for example **myinstance:9200**), separated by commas.
+- **Host** (_required_): The OpenSearch instance's host.
 - **Index Name** (_required_): The name of the search index on the instance.
-- **Username**: If you're using basic authentication to the instance, the user's name.
-- **Password**: The password associated with the user's name.
-- **Fields** (_source connectors only_): Any specific fields to be accessed in the index, separated by commas.
-- **Use SSL for the connection**: Check this box if the OpenSearch instance requires an SSL connection.
+
+If you're using a master user and password as the domain's master user, fill in the following fields:
+
+- Set **Authentication Method** to **Basic Auth**.
+- Set **Username** to the master user's name.
+- Set **Password** to the master user's password.
+
+If you're using an existing AWS IAM user as the domain's master user, fill in the following fields:
+
+- Set **Authentication Method** to **IAM Credentials**.
+- Set **AWS Access Key ID** to the AWS access key ID for the AWS IAM user.
+- Set **AWS Secret Access Key** to the AWS secret access key for the corresponding AWS access key ID.
+
+If you're using an existing AWS IAM user as the domain's master user and are also using AWS STS for authentication, fill in the following fields:
+
+- Set **Authentication Method** to **IAM + Session Token**.
+- Set **AWS Access Key ID** to the temporary AWS access key ID for the AWS IAM user.
+- Set **AWS Secret Access Key** to the temporary AWS secret access key for the corresponding AWS access key ID.
+- Set **AWS STS Token** to the temporary AWS STS token for temporary access.
+
+<Warning>
+    AWS STS credentials (consisting of a temporary AWS access key, temporary AWS secret access key, and temporary AWS STS session token) can be valid for as little as 15 minutes or as long as 36 hours, depending on how the credentials were initially 
+    generated. After the expiry time, the credentials are no longer valid and will no longer work with the corresponding OpenSearch connector. 
+    You must get a new set of AWS STS credentials to replace the expired ones by, which produces 
+    a new, refreshed temporary AWS access key, temporary AWS secret access key, and temporary AWS STS session token. For more information, see 
+    [Request temporary security credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.html). 
+
+    After you generate refreshed temporary AWS STS credentials, you must update the OpenSearch connector's settings with the new, refreshed AWS STS credentials. 
+</Warning>

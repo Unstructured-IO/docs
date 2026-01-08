@@ -3,28 +3,26 @@ import os
 
 from unstructured_client import UnstructuredClient
 from unstructured_client.models.operations import CreateSourceRequest
-from unstructured_client.models.shared import (
-    CreateSourceConnector,
-    SourceConnectorType,
-    SharePointSourceConnectorConfigInput
-)
+from unstructured_client.models.shared import CreateSourceConnector
 
 with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
     response = client.sources.create_source(
         request=CreateSourceRequest(
             create_source_connector=CreateSourceConnector(
                 name="<name>",
-                type=SourceConnectorType.SHAREPOINT,
-                config=SharePointSourceConnectorConfigInput(
-                    client_id="<client_id>",
-                    site="<site>",
-                    tenant="<tenant>",
-                    authority_url="<authority_url>",
-                    user_pname="<user_pname>",
-                    client_cred="<client_cred>",
-                    path="<path>",
-                    recursive=<True|False>
-                )
+                type="sharepoint",
+                config={
+                    "site": "<site>",
+                    "library": "<library>",
+                    "path": "<path>",
+                    "recursive": <True|False>,
+                    "client_id": "<client_id>",
+                    "tenant": "<tenant>",
+                    "authority_url": "<authority_url>",
+                    "client_cred": "<client_cred>",
+                    "user_pname": "<user_pname>", # For username and password authentication.
+                    "password": "<password>" # For username and password authentication.
+                }
             )
         )
     )

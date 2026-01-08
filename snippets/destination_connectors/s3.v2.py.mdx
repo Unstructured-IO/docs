@@ -41,7 +41,8 @@ if __name__ == "__main__":
         destination_connection_config=S3ConnectionConfig(
             access_config=S3AccessConfig(
                 key=os.getenv("AWS_ACCESS_KEY_ID"),
-                secret=os.getenv("AWS_SECRET_ACCESS_KEY")
+                secret=os.getenv("AWS_SECRET_ACCESS_KEY"),
+                token=os.getenv("AWS_STS_TOKEN", None), # If using AWS STS token.
             )
         ),
         uploader_config=S3UploaderConfig(remote_url=os.getenv("AWS_S3_URL"))

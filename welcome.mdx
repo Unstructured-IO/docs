@@ -1,11 +1,15 @@
 ---
-title: Unstructured
-sidebarTitle: Overview
+title: Welcome to Unstructured!
+sidebarTitle: Welcome!
 ---
 
-Unstructured provides a platform and tools to ingest and process unstructured documents for Retrieval Augmented Generation (RAG) and model fine-tuning.
+<Tip>To start using Unstructured right away, skip ahead to the <Icon icon="desktop" /> [UI quickstart](#unstructured-ui-quickstart) or <Icon icon="rectangle-terminal" /> [API quickstart](#unstructured-api-quickstart) now!</Tip>
 
-This 60-second video describes more about what Unstructured does and its benefits:
+## What is Unstructured?
+
+Unstructured provides a platform and tools to ingest and process unstructured documents for [retrieval-augmented generation (RAG)](https://unstructured.io/blog/rag-whitepaper) and [agentic AI](https://unstructured.io/problems-we-solve#powering-agentic-ai).
+
+This 60-second video describes more about what Unstructured does and its benefits (no sound):
 
 <iframe
   width="560"
@@ -17,7 +21,7 @@ This 60-second video describes more about what Unstructured does and its benefit
   allowfullscreen
 ></iframe>
 
-This 40-second video demonstrates a simple use case that Unstructured helps solve:
+This 40-second video demonstrates a simple use case that Unstructured helps solve (no sound):
 
 <iframe
   width="560"
@@ -29,87 +33,87 @@ This 40-second video demonstrates a simple use case that Unstructured helps solv
   allowfullscreen
 ></iframe>
 
-Unstructured offers the Unstructured user interface (UI) and the Unstructured API. Read on to learn more.
-
-## <Icon icon="computer" />    Unstructured user interface (UI) 
-
-No-code UI. Production-ready. Pay as you go. [Learn more](/ui/overview).
-
-Here is a screenshot of the Unstructured UI **Start** page:
-
-![Partial view of the Unstructured UI](/img/ui/Start-Screen-Partial.png)
-
-This 90-second video provides a brief overview of the Unstructured UI:
+This 60-second video shows why using Unstructured is preferable to building your own similar solution:
 
 <iframe
-width="560"
-height="315"
-src="https://www.youtube.com/embed/IVKcQDZa9Zc"
-title="YouTube video player"
-frameborder="0"
-allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-allowfullscreen
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/P9HzldV72ho"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
 ></iframe>
 
-<Tip>To start using the Unstructured UI right away, skip ahead to the [quickstart](#unstructured-ui-quickstart).</Tip>
-
-## <Icon icon="square-terminal" />    Unstructured API 
-
-Use scripts or code. Production-ready. Pay as you go. [Learn more](/api-reference/overview).
-
-The Unstructured API consists of two parts:
-
-- The [Unstructured Workflow Endpoint](/api-reference/workflow/overview) enables a full range of partitioning, chunking, embedding, and 
-  enrichment options for your files and data. It is designed to batch-process files and data in remote locations; send processed results to 
-  various storage, databases, and vector stores; and use the latest and highest-performing models on the market today. It has built-in logic 
-  to deliver the highest quality results at the lowest cost. [Learn more](/api-reference/workflow/overview).
-- The [Unstructured Partition Endpoint](/api-reference/partition/overview) is intended for rapid prototyping of Unstructured's 
-  various partitioning strategies, with limited support for chunking. It is designed to work only with processing of local files, one file 
-  at a time. Use the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) for production-level scenarios, file processing in 
-  batches, files and data in remote locations, generating embeddings, applying post-transform enrichments, using the latest and 
-  highest-performing models, and for the highest quality results at the lowest cost. [Learn more](/api-reference/partition/overview).
-
-Here is a screenshot of some Python code that calls the Unstructured Workflow Endpoint:
-
-![Python code that calls the Unstructured Workflow Endpoint](/img/ui/Python-Workflow-Code-Partial.png)
-
-<Tip>To start using the Unstructured Workflow Endpoint right away, skip ahead to the [quickstart](#unstructured-workflow-endpoint-quickstart).</Tip>
+You can use Unstructured through a user interface (UI), an API, or both. Read on to learn more.
 
 ---
 
-## <Icon icon="files" />   Supported file types 
+## <Icon icon="desktop" />    Unstructured UI quickstart
 
-import SupportedFileTypes from '/snippets/general-shared-text/supported-file-types.mdx';
+import GetStartedSingleFileUI from '/snippets/general-shared-text/get-started-single-file-ui.mdx';
 
-<SupportedFileTypes />
-
----
-
-## <Icon icon="computer" />   Unstructured UI quickstart
-
-import SharedSingleFileUI from '/snippets/quickstarts/single-file-ui.mdx';
-
-<SharedSingleFileUI />
-
-[Learn more about the Unstructured UI](/ui/overview).
+<GetStartedSingleFileUI />
 
 ---
 
-import LocalToLocalPythonIngestLibrary from '/snippets/ingestion/local-to-local.v2.py.mdx';
-import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+## <Icon icon="rectangle-terminal" />    Unstructured API quickstart
 
-## <Icon icon="square-terminal" />   Unstructured Workflow Endpoint quickstart
+This quickstart shows how you can use the Unstructured API to quickly and easily see Unstructured's 
+transformation results for files that are stored locally.
 
-import SharedPlatformAPI from '/snippets/quickstarts/platform-api.mdx';
+<Note>
+    This quickstart is designed to work *only by processing local files*.
 
-<SharedPlatformAPI />
+    To process files (and data) in remote file and blob storage, databases, and vector stores, you must use 
+    workflow operations in the Unstructured API other than the ones that are used in this quickstart. To learn how, see for example the notebook 
+    [Dropbox-To-Pinecone Connector API Quickstart for Unstructured](https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/Dropbox_To_Pinecone_Connector_Quickstart.ipynb).  
+</Note>
 
-[Learn more about the Unstructured API](/api-reference/overview).
+1. If you do not already have an Unstructured account, [sign up for free](https://unstructured.io/?modal=try-for-free). 
+   After you sign up, you are automatically signed in to your Unstructured **Let's Go** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+
+   <Note>
+       If you already have an Unstructured **Pay-As-You-Go** or **Business SaaS** account, you are already signed up for Unstructured. 
+       Sign in to your existing Unstructured **Pay-As-You-Go** or **Business SaaS** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+   
+       If you already have an Unstructured **dedicated instance** or **in-VPC** deployment, your sign-in link will be unique to your deployment. 
+       If you're not sure what your unique sign-in link is, see your Unstructured account administrator, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+   </Note>
+
+2. Get your Unstructured API key:
+
+   a. After you sign in to your Unstructured account, click **API Keys** on the sidebar.<br/>
+
+      <Note>
+          For a **Business** account, before you click **API Keys**, make sure you have selected the organizational workspace you want to create an API key 
+          for. Each API key works with one and only one organizational workspace. [Learn more](/ui/account/workspaces#create-an-api-key-for-a-workspace).
+      </Note>
+
+   b. Click **Generate API Key**.<br/>
+   c. Follow the on-screen instructions to finish generating the key.<br/>
+   d. Click the **Copy** icon next to your new key to add the key to your system's clipboard. If you lose this key, simply return and click the **Copy** icon again.<br/>
+
+3. Now that you have your Unstructured API key, choose one of the following options to continue:
+
+   - [Use a remote notebook](https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/Unstructured_API_On_Demand_Jobs_Quickstart.ipynb) - This option uses a remotely hosted Google Colab notebook. There are no additional setup steps required.
+   - [Use your local machine](/api-reference/quickstart) - This option requires you to install the Unstructured Python SDK on your local machine.
+
+<Icon icon="person-chalkboard" />&nbsp;&nbsp;[Learn more](/api-reference/overview).
 
 ---
 
-## <Icon icon="question" />    Get in touch
+## <Icon icon="money-check-dollar" />    Pricing
 
-If you can't find the information you're looking for in the documentation, or if you need help,
-[contact us directly](https://unstructured.io/contact), 
-or [join our Slack](https://short.unstructured.io/pzw05l7) where our team and community can help you.
+import Pricing from '/snippets/general-shared-text/pricing-platform.mdx';
+
+<Pricing />
+
+---
+
+## <Icon icon="question" />    Questions? Need help?
+
+- For general questions about Unstructured products and pricing, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+- For technical support for Unstructured accounts, email Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
+- For technical support for the Unstructured open source library, use our [Slack community](https://short.unstructured.io/pzw05l7).

@@ -1,5 +1,21 @@
 A common embedding configuration is a critical component that allows for dynamic selection of embedders and their associated parameters to create vectors from data. This configuration provides the flexibility to choose from various embedding models and fine-tune parameters to optimize the quality and characteristics of the resulting vectors. It enables users to tailor the embedding process to the specific needs of their data and downstream applications, ensuring that the generated vectors effectively capture semantic relationships and contextual information within the dataset.
 
+The core [Unstructured](https://github.com/Unstructured-IO/unstructured) open source library does not enable the generation of embeddings by default. (However you can generate embeddings as a separate step manually. 
+[Learn how](/open-source/core-functionality/embedding).)
+
+You can configure the Unstructured CLI and Unstructured Ingest Python library to generate embeddings by specifying the 
+`embedding_provider`, `embedding_api_key`, and `embedding_model_name` options (and, for Amazon Bedrock, additional options), as follows. 
+You must provide your own API key for the specified embedding provider. To get this API key, you must first create an account with that 
+provider and set up billing directly with them. You are responsible for all costs associated with using that provider.
+
+Calls to the Unstructured CLI or Unstructured Ingest Python library that are routed to Unstructured's software-as-a-service (SaaS) 
+for processing (for example, by specifying an Unstructured API key and an Unstructured SaaS URL) require an Unstructured account for billing purposes. Unstructured's costs for generating 
+embeddings are already included in its account pricing plans. To 
+generate embeddings, you must specify the `embedding_provider` and `embedding_model_name` configuration options as follows. Unstructured uses its own internal API key 
+when using the specified provider to generate the embeddings. These 
+`embedding_provider` and `embedding_model_name` options are limited only to the provider and model names that are supported by the Unstructured API. 
+[See the list of supported provider and model names](/api-reference/workflow/workflows#embedder-node). [Learn how to specify these options](/open-source/how-to/embedding).
+
 ## Configs
 
 *   `embedding_provider`: The embedding provider to use while doing embedding. Available values include `bedrock`, `azure-openai`, `huggingface`, `mixedbread-ai`, `octoai`, `openai`, `togetherai`, `vertexai`, and `voyageai`.
@@ -28,8 +44,8 @@ The default `embedding_model_name` values unless otherwise specified are:
 
 * `openai`: `text-embedding-ada-002`, with 1536 dimensions
 
-* `togetherai`: `togethercomputer/m2-bert-80M-8k-retrieval`, with 768 dimensions
+* `togetherai`: `togethercomputer/m2-bert-80M-32k-retrieval`, with 768 dimensions
 
-* `vertexai`: `textembedding-gecko@001`, with 768 dimensions
+* `vertexai`: `text-embedding-05`, with 768 dimensions
 
 * `voyageai`: None

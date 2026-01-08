@@ -2,6 +2,16 @@
 title: Partitioning
 ---
 
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/0HAWt9Xog-Y"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
+
 _Partitioning_ extracts content from raw unstructured files and outputs that content as structured [document elements](/ui/document-elements).
 
 For specific file types, such as image files and PDF files, Unstructured offers special strategies to partition them. Each of these 
@@ -23,6 +33,71 @@ import PlatformPartitioningStrategies from '/snippets/general-shared-text/platfo
 
 <PlatformPartitioningStrategies />
 
+## Images and tables in PDF files
+
+The differences between the various partitioning strategies can be more clearly demonstrated by the ways each of these strategies handle images and tables within PDF files.
+
+For example, the **Fast** partitioning strategy skips processing images altogether in PDF files:
+
+![The Fast strategy skips processing images in PDF files](/img/partitioning/Fast-Image-Example.png)
+
+For tables, the **Fast** strategy interprets table cells in PDF files as a mixture of title, list, and uncategorized text elements:
+
+![The Fast strategy interprets table cells in PDF files as text](/img/partitioning/Fast-Table-Example.png)
+
+The **High Res** strategy, by itself, processes images in PDF files sometimes with limited output:
+
+![The High Res strategy processes images in PDF files with limited results](/img/partitioning/Hi-Res-Image-Example.png)
+
+However, when combined with the [image description](/ui/enriching/image-descriptions) enrichment, the **High Res** strategy can process images in PDF files with better result output:
+
+![The High Res strategy with image description produces better results](/img/partitioning/Hi-Res-Image-Enriched-Example.png)
+
+For tables, the **High Res** strategy processes tables in PDF files with the table's text and an HTML representation of the table as output:
+
+![The High Res strategy processes tables in PDF files with the table's text and HTML as output](/img/partitioning/Hi-Res-Table-Example.png)
+
+When combined with the [table description](/ui/enriching/table-descriptions) and [tables to HTML](/ui/enriching/table-to-html) enrichments, the **High Res** strategy can process tables in PDF files with even richer result output:
+
+![The High Res strategy with table summarization and table-to-HTML enrichments produces better results](/img/partitioning/Hi-Res-Table-Enriched-Example.png)
+
+The **VLM** strategy processes images in PDF files with image summaries and text as HTML elements as output. The following example shows GPT-4o by OpenAI being used. If 
+the **Auto** strategy is selected in this example, Unstructured will route to the **VLM** strategy for processing:
+
+![The VLM strategy processes images in PDF files with image summaries and text as HTML](/img/partitioning/VLM-Auto-Image-GPT-4o-Example.png)
+
+For tables, the **VLM** strategy processes tables in PDF files with the table's text and an HTML representation of the table as output, similar to the **High Res** strategy. 
+The following example shows GPT-4o by OpenAI being used. If the **Auto** strategy is selected in this example, Unstructured will route to the **VLM** strategy for processing:
+
+![The VLM strategy processes tables in PDF files with table summaries and text as HTML](/img/partitioning/VLM-Auto-Table-GPT-4o-Example.png)
+
+## Handwriting and multilanguage characters in PDF files
+
+The differences between the various partitioning strategies can be more clearly demonstrated by the ways each of these strategies handle handwriting and multilanguage characters within PDF files.
+
+For example, the **Fast** partitioning strategy skips processing handwriting altogether in PDF files. 
+
+The **Fast** strategy processes multilanguage characters in PDF files with limited output, depending on the language. In the following 
+example, Japanese hiragana characters are processed as text, but the output can be very difficult to work with:
+
+![The Fast strategy produces cryptic CID codes for hiragana characters](/img/partitioning/Hiragana-Fast.png)
+
+For handwriting, the **High Res** strategy typically produces unusable results, for example:
+
+![The High Res strategy typically produces unusable results for handwriting](/img/partitioning/Handwriting-Hi-Res.png)
+
+For multilanguage characters, the **High Res** strategy also typically produces unusable results, for example failing to recognize Japanese hiragana characters:
+
+![The High Res strategy typically produces unusable results for multilanguage characters](/img/partitioning/Hiragana-Hi-Res.png)
+
+The **VLM** strategy can produce great results for handwriting, such as this example that uses GPT-4o by OpenAI:
+
+![The VLM strategy can process handwriting well](/img/partitioning/Handwriting-VLM-GPT-4o.png)
+
+The **VLM** strategy also has great support for recognizing multilanguage characters, such as this example that uses GPT-4o by OpenAI to recognize Japanese hiragana characters:
+
+![The VLM strategy can process Japanese hiragana well](/img/partitioning/Hiragana-VLM.png)
+
 ## Supported languages
 
 **Fast** partitioning accepts any text inputs, though automatic language detection of those inputs is restricted to [langdetect](https://pypi.org/project/langdetect/).
@@ -33,25 +108,25 @@ import PlatformPartitioningStrategies from '/snippets/general-shared-text/platfo
 Language support for **VLM** depends on the model used. The list of supported languages for a particular model is maintained by 
 that model's provider. For the list of languages that each model supports, see the following, where provided:
 
-- Anthropic
+- Anthropic: 
 
-  - Claude 3.5 Sonnet: Arabic, Bengali, Chinese (Simplified), English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, 
-    Portuguese (Brazil), Spanish, Swahili, and Yoruba are mentioned. ([Source](https://docs.anthropic.com/en/docs/build-with-claude/multilingual-support))
+  - [Claude](https://docs.anthropic.com/en/docs/build-with-claude/multilingual-support)
 
 - OpenAI
 
-  - GPT-4o: Arabic, Chinese, English, French, German, Gujarati, Hindi, Italian, Japanese, Korean, Marathi, Persian, 
-    Portuguese, Russian, Spanish, Tamil, Telugu, Turkish, Urdu, and Vietnamese are mentioned. ([Source](https://openai.com/index/hello-gpt-4o/))
+  - [GPT](https://help.openai.com/en/articles/8357869-how-to-change-your-language-setting-in-chatgpt#h_513834920e)
 
 - Amazon Bedrock
 
-  - Claude 3.5 Sonnet: "English, Spanish, Japanese, and multiple other languages" ([Source](https://aws.amazon.com/bedrock/claude/))
-  - Claude 3 Opus: "English, Spanish, Japanese, and multiple other languages" ([Source](https://aws.amazon.com/bedrock/claude/))
-  - Claude 3 Haiku: "English, Spanish, Japanese, and multiple other languages" ([Source](https://aws.amazon.com/bedrock/claude/))
-  - Claude 3 Sonnet: "English, Spanish, Japanese, and multiple other languages" ([Source](https://aws.amazon.com/bedrock/claude/))
-  - Amazon Nova Pro: "200+ languages" ([Source](https://aws.amazon.com/ai/generative-ai/nova/))
-  - Amazon Nova Lite: "200+ languages" ([Source](https://aws.amazon.com/ai/generative-ai/nova/))
-  - Meta Llama 3.2 90B Instruct: "English, German, French, Italian, Portuguese, Hindi, Spanish, and Thai" ([Source](https://aws.amazon.com/bedrock/llama/))
-  - Meta Llama 3.2 11B Instruct: "English, German, French, Italian, Portuguese, Hindi, Spanish, and Thai" ([Source](https://aws.amazon.com/bedrock/llama/))
+  - [Claude](https://aws.amazon.com/bedrock/claude/)
+  - [Nova](https://aws.amazon.com/ai/generative-ai/nova/)
+  - [Llama](https://aws.amazon.com/bedrock/llama/)
 
+- Vertex AI
 
+  - [Gemini](https://cloud.google.com/vertex-ai/generative-ai/docs/models#expandable-1)
+
+## Learn more
+
+- <Icon icon="blog" />&nbsp;&nbsp;[The Case for HTML as the Canonical Representation in Document AI](https://unstructured.io/blog/the-case-for-html-as-the-canonical-representation-in-document-ai)
+- <Icon icon="video" />&nbsp;&nbsp;[How to Extract Data from Complex Tables](https://unstructured.io/events/how-to-extract-data-from-complex-tables) 

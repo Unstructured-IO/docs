@@ -28,7 +28,7 @@ if __name__ == "__main__":
         downloader_config=SnowflakeDownloaderConfig(download_dir=os.getenv("LOCAL_FILE_DOWNLOAD_DIR")),
         source_connection_config=SnowflakeConnectionConfig(
             access_config=SnowflakeAccessConfig(
-                password=os.getenv("SNOWFLAKE_PASSWORD")
+                password=os.getenv("SNOWFLAKE_PROGRAMMATIC_ACCESS_TOKEN")
             ),
             account=os.getenv("SNOWFLAKE_ACCOUNT"),
             user=os.getenv("SNOWFLAKE_USER"),

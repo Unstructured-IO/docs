@@ -3,43 +3,36 @@ import os
 
 from unstructured_client import UnstructuredClient
 from unstructured_client.models.operations import CreateSourceRequest
-from unstructured_client.models.shared import (
-    CreateSourceConnector,
-    SourceConnectorType,
-    ConfuenceSourceConnectorConfigInput
-)
+from unstructured_client.models.shared import CreateSourceConnector
 
 with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
     response = client.sources.create_source(
         request=CreateSourceRequest(
             create_source_connector=CreateSourceConnector(
                 name="<name>",
-                type=SourceConnectorType.CONFLUENCE,
-                config=ConfluenceSourceConnectorConfigInput(
-                    url="<url>",
-                    max_num_of_spaces=<max-num-of-spaces>,
-                    max_num_of_docs_from_each_space=<max-num-of-docs-from-each-space>,
-                    spaces=["<space-name>", "<space-name>"],
-                    extract_images=<True|False>,
-                    extract_files=<True|False>,
+                type="confluence",
+                config={
+                    "url": "<url>",
+                    "max_num_of_spaces": <max-num-of-spaces>,
+                    "max_num_of_docs_from_each_space": <max-num-of-docs-from-each-space>,
+                    "spaces": ["<space-key>", "<space-key>"],
+                    "extract_images": <True|False>,
+                    "extract_files": <True|False>,
 
                     # For API token authentication:
-
-                    username="<username>",
-                    token="<api-token>",
-                    cloud=<True|False>
+                    # "username": "<username>",
+                    # "token": "<api-token>",
+                    # "cloud": <True|False>,
 
                     # For personal access token (PAT) authentication:
-
-                    token="<personal-access-token>",
-                    cloud=False
+                    # "token": "<personal-access-token>",
+                    # "cloud": False,
 
                     # For password authentication:
-
-                    username="<username>",
-                    password="<password>",
-                    cloud=<True|False>     
-                )
+                    # "username": "<username>",
+                    # "password": "<password>",
+                    # "cloud": <True|False>
+                }
             )
         )
     )

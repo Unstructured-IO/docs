@@ -1,0 +1,41 @@
+---
+title: Retries
+---
+
+For the [Unstructured Python SDK](/api-reference/workflow/overview#unstructured-python-sdk), 
+the [Unstructured API's workflow operations](/api-reference/workflow/overview) allows for retries with the 
+`RetryConfig` class when initializing the client, through the client's `retry_config` parameter. 
+If a request to the Unstructured API's workflow operations fails, the client will retry the 
+request with an exponential backoff strategy up to a maximum interval of one minute. The
+function keeps retrying until the total elapsed time exceeds `max_elapsed_time`[*](#parameter-names),
+which defaults to one hour. However, you can override these defaults, for example as follows:
+
+```python Python SDK
+# ...
+from unstructured_client.utils import RetryConfig, BackoffStrategy
+
+client = UnstructuredClient(
+    api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+    retry_config=RetryConfig(
+        strategy="backoff",
+        retry_connection_errors=True,
+        backoff=BackoffStrategy(
+            initial_interval=500,     # 0.5 seconds: 500 milliseconds
+            max_interval=60000,       # 1 minute: 60 seconds * 1000 milliseconds
+            exponent=1.5,
+            max_elapsed_time=900000,  # 15 minutes: 15 * 60 seconds * 1000 milliseconds
+        ),
+    )
+)
+```
+
+Available `RetryConfig` settings include:
+
+| Setting | Description |
+|---------|-------------|
+| `strategy` | The strategy to use for retries. The only supported value is `backoff`. |
+| `retry_connection_errors` | True to retry on connection errors. |
+| `BackoffStrategy.initial_interval` | After the first error, wait the specified number of milliseconds before retrying. |
+| `BackoffStrategy.max_interval` | The maximum wait time, specified in milliseconds between retries. |
+| `BackoffStrategy.exponent` | After each retry, increase the wait time exponentially by the specified factor. |
+| `BackoffStrategy.max_elapsed_time` | Stop retrying after the specified number of milliseconds. |

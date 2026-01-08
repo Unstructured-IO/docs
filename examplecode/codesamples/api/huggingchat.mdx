@@ -2,16 +2,16 @@
 title: Query processed PDF with HuggingChat
 ---
 
-This example uses the [Unstructured Ingest Python library](/ingestion/python-ingest) or the 
-[Unstructured JavaScript/TypeScript SDK](/api-reference/partition/sdk-jsts) to send a PDF file to 
-the [Unstructured Partition Endpoint](/api-reference/partition/overview) for processing. Unstructured processes the PDF and extracts the PDF's content. 
+This example uses the [Unstructured Ingest Python library](/open-source/ingestion/python-ingest) or the 
+[Unstructured JavaScript/TypeScript SDK](/api-reference/legacy-api/partition/sdk-jsts) to send a PDF file to 
+the [Unstructured Partition Endpoint](/api-reference/legacy-api/partition/overview) for processing. Unstructured processes the PDF and extracts the PDF's content. 
 This example then sends some of the content to [HuggingChat](https://huggingface.co/chat/), Hugging Face's open-source AI chatbot, 
 along with some queries about this content.
 
 To run this example, you'll need:
 
 - The [hugchat](https://pypi.org/project/hugchat/) package for Python, or the [huggingface-chat](https://www.npmjs.com/package/huggingface-chat) package for JavaScript/TypeScript.
-- Your Unstructured API key and API URL. [Get an API key and API URL](/api-reference/partition/overview). 
+- Your Unstructured API key and API URL. [Get an API key and API URL](/api-reference/legacy-api/partition/overview). 
 - Your Hugging Face account's email address and account password. [Get an account](https://huggingface.co/join).
 - A PDF file for Unstructured to process. This example uses a sample PDF file containing the text of the United States Constitution, 
 available for download from [https://constitutioncenter.org/media/files/constitution.pdf](https://constitutioncenter.org/media/files/constitution.pdf).
@@ -37,7 +37,7 @@ import HuggingChatTSExampleCode from '/snippets/examples/huggingchat.ts.mdx';
     </Accordion>
     <Accordion title="JavaScript/TypeScript SDK">
         <Warning>
-            Unstructured recommends that you use the [Unstructured Ingest Python library](/ingestion/python-ingest) instead. 
+            Unstructured recommends that you use the [Unstructured Ingest Python library](/open-source/ingestion/python-ingest) instead. 
     
             The Ingest Python library provides faster processing of larger individual files, and faster and easier processing of multiple files at a time in batches.
         </Warning>

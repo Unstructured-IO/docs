@@ -1,23 +1,33 @@
-The MongoDB requirements for a MongoDB Atlas deployment include:
-
 <iframe
 width="560"
 height="315"
-src="https://www.youtube.com/embed/g6qDfbg808M"
+src="https://www.youtube.com/embed/8YBVHt5spIQ"
 title="YouTube video player"
 frameborder="0"
 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
 allowfullscreen
 ></iframe>
 
+The MongoDB requirements for a MongoDB Atlas deployment include:
+
 import AllowIPAddressRanges from '/snippets/general-shared-text/ip-address-ranges.mdx';
 import MongoDBRecordID from '/snippets/general-shared-text/mongodb-record-id.mdx';
 
+<Warning>
+    For MongoDB Atlas, SCRAM-SHA-1 is not supported for authentication. This means that cluster types that only 
+    include SCRAM-SHA-1, such as **Free**, **M0**, **Flex**, and **Serverless**, are **not** supported. 
+    Unstructured only supports SCRAM-SHA-256 for MongoDB Atlas, which is cryptographically stronger than SCRAM-SHA-1. 
+
+    If you try to test or use a connector that refers to a cluster type that only includes SCRAM-SHA-1, the 
+    operation will fail, and you will get an error message similar to the following: 
+    `[digital envelope routines] unsupported`.
+</Warning>
 
 - A MongoDB Atlas account. [Create an account](https://www.mongodb.com/cloud/atlas/register).
-- A MongoDB Atlas cluster. [Create a cluster](https://www.mongodb.com/docs/atlas/tutorial/deploy-free-tier-cluster).
-- The cluster must be reachable from your application environment. [Learn how](https://www.mongodb.com/docs/atlas/setup-cluster-security/#network-and-firewall-requirements). 
-- The cluster must be configured to allow IP address. [Learn how](https://www.mongodb.com/docs/atlas/setup-cluster-security/#ip-access-list).
+- A MongoDB Atlas cluster. [Create a cluster](https://www.mongodb.com/docs/atlas/tutorial/create-new-cluster/). Be sure to **not** 
+  select a cluster type that only includes SCRAM-SHA-1, such as **Free**, **M0**, **Flex**, or **Serverless**.
+- The cluster must be reachable from your application environment, for example by adding IP addresses to your IP access list. [Learn more](https://www.mongodb.com/docs/atlas/setup-cluster-security/#network-and-firewall-requirements). 
+- The cluster must be configured to allow IP address. [Learn how](https://www.mongodb.com/docs/atlas/security/ip-access-list/#add-ip-access-list-entries).
 
   <AllowIPAddressRanges />
 
@@ -38,7 +48,7 @@ import MongoDBRecordID from '/snippets/general-shared-text/mongodb-record-id.mdx
   1. Log in to your MongoDB Atlas console.
   2. In the sidebar, under **Databases**, click **Clusters**.
   3. Click on the cluster you want to connect to.
-  4. Click **Connect**, or click the **Cmd Line Tools** tab and then click **Connect Instructions**.
+  4. Click **Connect**.
   5. Click **Drivers**.
   6. Under **Add your connection string into your application code**, copy the connection string. 
      You can then close the **Connect** dialog in MongoDB Atlas.

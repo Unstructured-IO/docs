@@ -56,7 +56,8 @@ if __name__ == "__main__":
         uploader_config=IbmWatsonxUploaderConfig(
             namespace=os.getenv("IBM_ICEBERG_SCHEMA"),
             table=os.getenv("IBM_ICEBERG_TABLE"),
-            max_retries=5,
+            max_retries=50,
+            max_retries_connection=10,
             record_id_key=os.getenv("IBM_ICEBERG_TABLE_UNIQUE_RECORD_COLUMN")
         )
     ).run()

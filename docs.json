@@ -30,7 +30,8 @@
           {
             "group": "Getting started with the UI",
             "pages": [
-              "ui/quickstart"
+              "ui/quickstart",
+              "ui/walkthrough"
             ]
           },
           {
@@ -40,6 +41,7 @@
                 "group": "Sources",
                 "pages": [
                   "ui/sources/overview",
+                  "ui/sources/dropbox-source-quickstart",
                   "ui/sources/azure-blob-storage",
                   "ui/sources/box",
                   "ui/sources/confluence",
@@ -53,11 +55,13 @@
                   "ui/sources/kafka",
                   "ui/sources/mongodb",
                   "ui/sources/onedrive",
+                  "ui/sources/opensearch",
                   "ui/sources/outlook",
                   "ui/sources/postgresql",
                   "ui/sources/s3",
                   "ui/sources/salesforce",
                   "ui/sources/sharepoint",
+                  "ui/sources/slack",
                   "ui/sources/snowflake",
                   "ui/sources/zendesk"
                 ]
@@ -66,8 +70,10 @@
                 "group": "Destinations",
                 "pages": [
                   "ui/destinations/overview",
+                  "ui/destinations/pinecone-destination-quickstart",
                   "ui/destinations/astradb",
                   "ui/destinations/azure-ai-search",
+                  "ui/destinations/azure-blob-storage",
                   "ui/destinations/couchbase",
                   "ui/destinations/databricks-volumes",
                   "ui/destinations/delta-table",
@@ -81,6 +87,7 @@
                   "ui/destinations/motherduck",
                   "ui/destinations/neo4j",
                   "ui/destinations/onedrive",
+                  "ui/destinations/opensearch",
                   "ui/destinations/pinecone",
                   "ui/destinations/postgresql",
                   "ui/destinations/qdrant",
@@ -119,10 +126,12 @@
                   "ui/enriching/image-descriptions",
                   "ui/enriching/table-descriptions",
                   "ui/enriching/table-to-html",
-                  "ui/enriching/ner"
+                  "ui/enriching/ner",
+                  "ui/enriching/generative-ocr"
                 ]
               },
-              "ui/embedding"
+              "ui/embedding",
+              "ui/examples"
             ]
           }
         ]
@@ -134,11 +143,12 @@
             "group": "Unstructured API",
             "pages": [
               "api-reference/overview",
-              "api-reference/supported-file-types"
+              "api-reference/supported-file-types",
+              "api-reference/quickstart"
             ]
           },
           {
-            "group": "Workflow Endpoint",
+            "group": "Workflow Operations",
             "pages": [
               "api-reference/workflow/overview",
               {
@@ -159,11 +169,13 @@
                   "api-reference/workflow/sources/local",
                   "api-reference/workflow/sources/mongodb",
                   "api-reference/workflow/sources/onedrive",
+                  "api-reference/workflow/sources/opensearch",
                   "api-reference/workflow/sources/outlook",
                   "api-reference/workflow/sources/postgresql",
                   "api-reference/workflow/sources/s3",
                   "api-reference/workflow/sources/salesforce",
                   "api-reference/workflow/sources/sharepoint",
+                  "api-reference/workflow/sources/slack",
                   "api-reference/workflow/sources/snowflake",
                   "api-reference/workflow/sources/zendesk"
                 ]
@@ -174,6 +186,7 @@
                   "api-reference/workflow/destinations/overview",
                   "api-reference/workflow/destinations/astradb",
                   "api-reference/workflow/destinations/azure-ai-search",
+                  "api-reference/workflow/destinations/azure-blob-storage",
                   "api-reference/workflow/destinations/couchbase",
                   "api-reference/workflow/destinations/databricks-volumes",
                   "api-reference/workflow/destinations/delta-table",
@@ -188,6 +201,7 @@
                   "api-reference/workflow/destinations/motherduck",
                   "api-reference/workflow/destinations/neo4j",
                   "api-reference/workflow/destinations/onedrive",
+                  "api-reference/workflow/destinations/opensearch",
                   "api-reference/workflow/destinations/pinecone",
                   "api-reference/workflow/destinations/postgresql",
                   "api-reference/workflow/destinations/qdrant",
@@ -198,30 +212,14 @@
                 ]
               },
               "api-reference/workflow/workflows",
-              "api-reference/workflow/jobs"
-            ]
-          },
-          {
-            "group": "Partition Endpoint",
-            "pages": [
-              "api-reference/partition/overview",
-              "api-reference/partition/post-requests",
-              "api-reference/partition/sdk-python",
-              "api-reference/partition/sdk-jsts",
-              "api-reference/partition/api-parameters",
-              "api-reference/partition/api-validation-errors",
-              "api-reference/partition/examples",
-              "api-reference/partition/document-elements",
-              "api-reference/partition/partitioning",
-              "api-reference/partition/chunking",
-              "api-reference/partition/speed-up-large-files-batches",
-              "api-reference/partition/get-elements",
-              "api-reference/partition/text-as-html",
-              "api-reference/partition/extract-image-block-types",
-              "api-reference/partition/get-chunked-elements",
-              "api-reference/partition/transform-schemas",
-              "api-reference/partition/generate-schema",
-              "api-reference/partition/pipeline-1"
+              "api-reference/workflow/jobs",
+              "api-reference/workflow/retries",
+              "api-reference/workflow/errors",
+              "api-reference/workflow/migration",
+              {
+                "group": "Endpoint Playground",
+                "openapi": "https://platform.unstructuredapp.io/openapi.json"
+              }
             ]
           },
           {
@@ -229,7 +227,34 @@
             "pages": [
               "api-reference/legacy-api/overview",
               "api-reference/legacy-api/aws",
-              "api-reference/legacy-api/azure"
+              "api-reference/legacy-api/azure",
+              {
+                "group": "Partition Endpoint",
+                "pages": [
+                  "api-reference/legacy-api/partition/overview",
+                  "api-reference/legacy-api/partition/quickstart",
+                  "api-reference/legacy-api/partition/post-requests",
+                  "api-reference/legacy-api/partition/sdk-python",
+                  "api-reference/legacy-api/partition/sdk-jsts",
+                  "api-reference/legacy-api/partition/api-parameters",
+                  "api-reference/legacy-api/partition/api-validation-errors",
+                  "api-reference/legacy-api/partition/examples",
+                  "api-reference/legacy-api/partition/document-elements",
+                  "api-reference/legacy-api/partition/partitioning",
+                  "api-reference/legacy-api/partition/chunking",
+                  "api-reference/legacy-api/partition/speed-up-large-files-batches",
+                  "api-reference/legacy-api/partition/get-elements",
+                  "api-reference/legacy-api/partition/text-as-html",
+                  "api-reference/legacy-api/partition/extract-image-block-types",
+                  "api-reference/legacy-api/partition/get-chunked-elements",
+                  "api-reference/legacy-api/partition/transform-schemas",
+                  "api-reference/legacy-api/partition/generate-schema",
+                  {
+                    "group": "Endpoint Playground",
+                    "openapi": "https://api.unstructuredapp.io/general/openapi.json"
+                  }
+                ]
+              }
             ]
           },
           {
@@ -256,133 +281,71 @@
               "examplecode/codesamples/oss/table-source-connector",
               "examplecode/codesamples/oss/multi-files-api-processing",
               "examplecode/codesamples/apioss/table-extraction-from-pdf",
-              "examplecode/codesamples/api/huggingchat"
+              "examplecode/codesamples/api/huggingchat",
+              "examplecode/codesamples/api/mlk-research"
             ]
           },
           {
             "group": "Tool demos",
             "pages": [
+              "examplecode/tools/json-tools",
+              "examplecode/tools/s3-events",
+              "examplecode/tools/azure-storage-events",
+              "examplecode/tools/databricks-volumes-events",
+              "examplecode/tools/gcs-events",
+              "examplecode/tools/google-drive-events",
+              "examplecode/tools/onedrive-events",
+              "examplecode/tools/sharepoint-events",
+              "examplecode/tools/s3-vectors",
+              "examplecode/tools/pii",
+              "examplecode/tools/jq",
+              "examplecode/tools/firecrawl",
               "examplecode/tools/langflow",
               "examplecode/tools/vectorshift",
               "examplecode/tools/mcp",
-              "examplecode/tools/mcp-partition"
+              "examplecode/tools/mcp-partition",
+              "examplecode/tools/snowflake-streamlit",
+              "examplecode/tools/crewai",
+              "examplecode/tools/neo4j-chatbot"
             ]
           }
         ]
       },
       {
-        "tab": "Ingest",
+        "tab": "Business",
         "groups": [
           {
-            "group": "Ingestion",
+            "group": "Business",
             "pages": [
-              "ingestion/overview",
-              "ingestion/ingest-cli",
-              "ingestion/python-ingest",
-              "ingestion/ingest-dependencies",
-              {
-                "group": "Ingest configuration",
-                "pages": [
-                  "ingestion/ingest-configuration/overview",
-                  "ingestion/ingest-configuration/processor-configuration",
-                  "ingestion/ingest-configuration/partition-configuration",
-                  "ingestion/ingest-configuration/chunking-configuration",
-                  "ingestion/ingest-configuration/embedding-configuration"
-                ]
-              },
-              {
-                "group": "Source connectors",
-                "pages": [
-                  "ingestion/source-connectors/overview",
-                  "ingestion/source-connectors/airtable",
-                  "ingestion/source-connectors/astradb",
-                  "ingestion/source-connectors/azure",
-                  "ingestion/source-connectors/box",
-                  "ingestion/source-connectors/confluence",
-                  "ingestion/source-connectors/couchbase",
-                  "ingestion/source-connectors/databricks-volumes",
-                  "ingestion/source-connectors/delta-table",
-                  "ingestion/source-connectors/discord",
-                  "ingestion/source-connectors/dropbox",
-                  "ingestion/source-connectors/elastic-search",
-                  "ingestion/source-connectors/github",
-                  "ingestion/source-connectors/gitlab",
-                  "ingestion/source-connectors/google-cloud-storage",
-                  "ingestion/source-connectors/google-drive",
-                  "ingestion/source-connectors/jira",
-                  "ingestion/source-connectors/kafka",
-                  "ingestion/source-connectors/local",
-                  "ingestion/source-connectors/mongodb",
-                  "ingestion/source-connectors/notion",
-                  "ingestion/source-connectors/one-drive",
-                  "ingestion/source-connectors/opensearch",
-                  "ingestion/source-connectors/outlook",
-                  "ingestion/source-connectors/postgresql",
-                  "ingestion/source-connectors/s3",
-                  "ingestion/source-connectors/salesforce",
-                  "ingestion/source-connectors/sftp",
-                  "ingestion/source-connectors/sharepoint",
-                  "ingestion/source-connectors/singlestore",
-                  "ingestion/source-connectors/slack",
-                  "ingestion/source-connectors/snowflake",
-                  "ingestion/source-connectors/sqlite",
-                  "ingestion/source-connectors/zendesk"
-                ]
-              },
-              {
-                "group": "Destination connectors",
-                "pages": [
-                  "ingestion/destination-connectors/overview",
-                  "ingestion/destination-connectors/astradb",
-                  "ingestion/destination-connectors/azure",
-                  "ingestion/destination-connectors/azure-ai-search",
-                  "ingestion/destination-connectors/box",
-                  "ingestion/destination-connectors/chroma",
-                  "ingestion/destination-connectors/couchbase",
-                  "ingestion/destination-connectors/databricks-volumes",
-                  "ingestion/destination-connectors/delta-table",
-                  "ingestion/destination-connectors/databricks-delta-table",
-                  "ingestion/destination-connectors/dropbox",
-                  "ingestion/destination-connectors/duckdb",
-                  "ingestion/destination-connectors/elasticsearch",
-                  "ingestion/destination-connectors/google-cloud-service",
-                  "ingestion/destination-connectors/ibm-watsonxdata",
-                  "ingestion/destination-connectors/kafka",
-                  "ingestion/destination-connectors/kdbai",
-                  "ingestion/destination-connectors/lancedb",
-                  "ingestion/destination-connectors/local",
-                  "ingestion/destination-connectors/milvus",
-                  "ingestion/destination-connectors/mongodb",
-                  "ingestion/destination-connectors/motherduck",
-                  "ingestion/destination-connectors/neo4j",
-                  "ingestion/destination-connectors/onedrive",
-                  "ingestion/destination-connectors/opensearch",
-                  "ingestion/destination-connectors/pinecone",
-                  "ingestion/destination-connectors/postgresql",
-                  "ingestion/destination-connectors/qdrant",
-                  "ingestion/destination-connectors/redis",
-                  "ingestion/destination-connectors/s3",
-                  "ingestion/destination-connectors/sftp",
-                  "ingestion/destination-connectors/singlestore",
-                  "ingestion/destination-connectors/snowflake",
-                  "ingestion/destination-connectors/sqlite",
-                  "ingestion/destination-connectors/vectara",
-                  "ingestion/destination-connectors/weaviate"
-                ]
-              },
-              {
-                "group": "How-to",
-                "pages": [
-                  "ingestion/how-to/examples",
-                  "ingestion/how-to/speed-up-large-files-batches",
-                  "ingestion/how-to/get-elements",
-                  "ingestion/how-to/filter-files",
-                  "ingestion/how-to/embedding",
-                  "ingestion/how-to/text-as-html",
-                  "ingestion/how-to/extract-image-block-types",
-                  "ingestion/how-to/get-chunked-elements"
-                ]
-              }
+              "business/overview"
+            ]
+          },
+          {
+            "group": "Security and compliance",
+            "pages": [
+              "business/security-compliance/overview"
+            ]
+          },
+          {
+            "group": "AWS",
+            "pages": [
+              "business/aws/overview",
+              "business/aws/dedicated-instance-privatelink",
+              "business/aws/onboard"
+            ]
+          },
+          {
+            "group": "Azure",
+            "pages": [
+              "business/azure/overview",
+              "business/azure/onboard"
+            ]
+          },
+          {
+            "group": "GCP",
+            "pages": [
+              "business/gcp/overview",
+              "business/gcp/onboard"
             ]
           }
         ]
@@ -424,8 +387,116 @@
             ]
           },
           {
+            "group": "Ingestion",
+            "pages": [
+              "open-source/ingestion/overview",
+              "open-source/ingestion/supported-file-types",
+              "open-source/ingestion/ingest-cli",
+              "open-source/ingestion/python-ingest",
+              "open-source/ingestion/ingest-dependencies",
+              {
+                "group": "Ingest configuration",
+                "pages": [
+                  "open-source/ingestion/ingest-configuration/overview",
+                  "open-source/ingestion/ingest-configuration/processor-configuration",
+                  "open-source/ingestion/ingest-configuration/partition-configuration",
+                  "open-source/ingestion/ingest-configuration/chunking-configuration",
+                  "open-source/ingestion/ingest-configuration/embedding-configuration"
+                ]
+              },
+              {
+                "group": "Source connectors",
+                "pages": [
+                  "open-source/ingestion/source-connectors/overview",
+                  "open-source/ingestion/source-connectors/airtable",
+                  "open-source/ingestion/source-connectors/astradb",
+                  "open-source/ingestion/source-connectors/azure",
+                  "open-source/ingestion/source-connectors/box",
+                  "open-source/ingestion/source-connectors/confluence",
+                  "open-source/ingestion/source-connectors/couchbase",
+                  "open-source/ingestion/source-connectors/databricks-volumes",
+                  "open-source/ingestion/source-connectors/delta-table",
+                  "open-source/ingestion/source-connectors/discord",
+                  "open-source/ingestion/source-connectors/dropbox",
+                  "open-source/ingestion/source-connectors/elastic-search",
+                  "open-source/ingestion/source-connectors/github",
+                  "open-source/ingestion/source-connectors/gitlab",
+                  "open-source/ingestion/source-connectors/google-cloud-storage",
+                  "open-source/ingestion/source-connectors/google-drive",
+                  "open-source/ingestion/source-connectors/jira",
+                  "open-source/ingestion/source-connectors/kafka",
+                  "open-source/ingestion/source-connectors/local",
+                  "open-source/ingestion/source-connectors/mongodb",
+                  "open-source/ingestion/source-connectors/notion",
+                  "open-source/ingestion/source-connectors/one-drive",
+                  "open-source/ingestion/source-connectors/opensearch",
+                  "open-source/ingestion/source-connectors/outlook",
+                  "open-source/ingestion/source-connectors/postgresql",
+                  "open-source/ingestion/source-connectors/s3",
+                  "open-source/ingestion/source-connectors/salesforce",
+                  "open-source/ingestion/source-connectors/sftp",
+                  "open-source/ingestion/source-connectors/sharepoint",
+                  "open-source/ingestion/source-connectors/singlestore",
+                  "open-source/ingestion/source-connectors/slack",
+                  "open-source/ingestion/source-connectors/snowflake",
+                  "open-source/ingestion/source-connectors/sqlite",
+                  "open-source/ingestion/source-connectors/zendesk"
+                ]
+              },
+              {
+                "group": "Destination connectors",
+                "pages": [
+                  "open-source/ingestion/destination-connectors/overview",
+                  "open-source/ingestion/destination-connectors/astradb",
+                  "open-source/ingestion/destination-connectors/azure",
+                  "open-source/ingestion/destination-connectors/azure-ai-search",
+                  "open-source/ingestion/destination-connectors/box",
+                  "open-source/ingestion/destination-connectors/chroma",
+                  "open-source/ingestion/destination-connectors/couchbase",
+                  "open-source/ingestion/destination-connectors/databricks-volumes",
+                  "open-source/ingestion/destination-connectors/delta-table",
+                  "open-source/ingestion/destination-connectors/databricks-delta-table",
+                  "open-source/ingestion/destination-connectors/dropbox",
+                  "open-source/ingestion/destination-connectors/duckdb",
+                  "open-source/ingestion/destination-connectors/elasticsearch",
+                  "open-source/ingestion/destination-connectors/google-cloud-service",
+                  "open-source/ingestion/destination-connectors/ibm-watsonxdata",
+                  "open-source/ingestion/destination-connectors/kafka",
+                  "open-source/ingestion/destination-connectors/kdbai",
+                  "open-source/ingestion/destination-connectors/lancedb",
+                  "open-source/ingestion/destination-connectors/local",
+                  "open-source/ingestion/destination-connectors/milvus",
+                  "open-source/ingestion/destination-connectors/mongodb",
+                  "open-source/ingestion/destination-connectors/motherduck",
+                  "open-source/ingestion/destination-connectors/neo4j",
+                  "open-source/ingestion/destination-connectors/onedrive",
+                  "open-source/ingestion/destination-connectors/opensearch",
+                  "open-source/ingestion/destination-connectors/pinecone",
+                  "open-source/ingestion/destination-connectors/postgresql",
+                  "open-source/ingestion/destination-connectors/qdrant",
+                  "open-source/ingestion/destination-connectors/redis",
+                  "open-source/ingestion/destination-connectors/s3",
+                  "open-source/ingestion/destination-connectors/sftp",
+                  "open-source/ingestion/destination-connectors/singlestore",
+                  "open-source/ingestion/destination-connectors/snowflake",
+                  "open-source/ingestion/destination-connectors/sqlite",
+                  "open-source/ingestion/destination-connectors/vectara",
+                  "open-source/ingestion/destination-connectors/weaviate"
+                ]
+              }
+            ]
+          },
+          {
             "group": "How to",
             "pages": [
+              "open-source/how-to/examples",
+              "open-source/how-to/speed-up-large-files-batches",
+              "open-source/how-to/get-elements",
+              "open-source/how-to/filter-files",
+              "open-source/how-to/embedding",
+              "open-source/how-to/text-as-html",
+              "open-source/how-to/extract-image-block-types",
+              "open-source/how-to/get-chunked-elements",
               "open-source/how-to/set-ocr-agent"
             ]
           },
@@ -453,39 +524,41 @@
         ]
       },
       {
-        "tab": "Self-hosted",
+        "tab": "Support",
         "groups": [
           {
-            "group": "Self-hosting",
+            "group": "Support",
             "pages": [
-              "self-hosted/overview"
-            ]
-          },
-          {
-            "group": "Security and compliance",
-            "pages": [
-              "self-hosted/security-compliance/overview"
-            ]
-          },
-          {
-            "group": "AWS",
-            "pages": [
-              "self-hosted/aws/overview",
-              "self-hosted/aws/onboard"
-            ]
-          },
-          {
-            "group": "Azure",
-            "pages": [
-              "self-hosted/azure/overview",
-              "self-hosted/azure/onboard"
-            ]
-          },
-          {
-            "group": "GCP",
-            "pages": [
-              "self-hosted/gcp/overview",
-              "self-hosted/gcp/onboard"
+              "support/request",
+              "support/shared-responsibility",
+              "support/status",
+              {
+                "group": "Self-service",
+                "pages": [
+                  "support/how-to/overview",
+                  "support/how-to/data-privacy",
+                  "support/how-to/invoice-issue"
+                ]
+              },
+              {
+                "group": "Issues",
+                "pages": [
+                  "support/issues/overview",
+                  "support/issues/authorization-permissions",
+                  "support/issues/configuration-resource",
+                  "support/issues/quota-billing-rate-limiting",
+                  "support/issues/network-connection-timeout",
+                  "support/issues/data-format-schema-validation",
+                  "support/issues/document-processing",
+                  "support/issues/internal-file-handling",
+                  "support/issues/api-connector-secrets",
+                  "support/issues/cannot-locate-credentials",
+                  "support/issues/get-authenticated-user-error",
+                  "support/issues/workflow-job-in-progress",
+                  "support/issues/no-fast-partitioning-for-images",
+                  "support/issues/google-drive-schema-validation"
+                ]
+              }
             ]
           }
         ]
@@ -505,18 +578,23 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Contact Us",
-          "href": "https://unstructured.io/contact",
+          "anchor": "Account support (e-mail)",
+          "href": "mailto:support@unstructured.io",
           "icon": "person-circle-question"
         },
         {
-          "anchor": "Community",
+          "anchor": "Open source support (Slack)",
           "href": "https://short.unstructured.io/pzw05l7",
           "icon": "slack"
         },
         {
+          "anchor": "Service status",
+          "href": "https://unstructuredio.trust.pagerduty.com/posts/dashboard",
+          "icon": "signal"
+        },
+        {
           "anchor": "Feedback",
-          "href": "https://smart-forms.saasjet.com/external?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGllbnRLZXkiOiIzZGQ5OTEzYy04Mzg1LTNkNDAtYWQ1MS03NmM0Nzg5YjAxOGUiLCJpYXQiOjE3MTQ0MzI1ODU5MjF9.m5gHGCOHt_UgOs-JCdTdEHRcQUNftvLGWeKzK2o2pQ4",
+          "href": "https://docs.google.com/forms/d/e/1FAIpQLSciKwrJD4m_9ObcTveWMb9yK63FWd7gLxIknovc3kLw_0qUrg/viewform?usp=sf_link",
           "icon": "pencil"
         },
         {
@@ -525,20 +603,25 @@
           "icon": "newspaper"
         },
         {
-          "anchor": "Product",
+          "anchor": "Product info",
           "href": "https://unstructured.io/",
           "icon": "square-terminal"
         },
         {
-          "anchor": "Trust Portal",
-          "href": "https://app.drata.com/trust/52570362-75fa-4897-80ce-d348e236d395",
+          "anchor": "Trust portal",
+          "href": "https://trust.unstructured.io/",
           "icon": {
             "name": "file-certificate",
             "style": "thin"
           }
         },
         {
-          "anchor": "Meta-Prompt (Titles)",
+          "anchor": "Contact Sales (e-mail)",
+          "href": "mailto:sales@unstructured.io",
+          "icon": "person"
+        },
+        {
+          "anchor": "Meta-prompt (titles)",
           "href": "https://docs.unstructured.io/llms.txt",
           "icon": {
             "name": "microchip-ai",
@@ -546,7 +629,7 @@
           }
         },
         {
-          "anchor": "Meta-Prompt (Full)",
+          "anchor": "Meta-prompt (full)",
           "href": "https://docs.unstructured.io/llms-full.txt",
           "icon": {
             "name": "microchip-ai",
@@ -563,16 +646,30 @@
   "appearance": {
     "default": "dark"
   },
+  "contextual": {
+    "options": [
+      "chatgpt",
+      "claude"
+    ]
+  },
   "navbar": {
     "primary": {
-      "type": "github",
-      "href": "https://github.com/Unstructured-IO/unstructured"
+      "type": "button",
+      "label": "Try Unstructured for free",
+      "href": "https://unstructured.io/?modal=try-for-free"
     }
   },
   "footer": {
     "socials": {
-      "twitter": "https://twitter.com/UnstructuredIO?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor",
-      "linkedin": "https://www.linkedin.com/company/unstructuredio/"
+      "website": "https://unstructured.io/",
+      "youtube": "https://www.youtube.com/@UnstructuredIO",
+      "slack": "https://short.unstructured.io/pzw05l7",
+      "x": "https://x.com/UnstructuredIO",
+      "twitter": "https://twitter.com/UnstructuredIO",
+      "linkedin": "https://www.linkedin.com/company/unstructuredio/",
+      "reddit": "https://www.reddit.com/r/UnstructuredIO/",
+      "github": "https://github.com/Unstructured-IO/",
+      "instagram": "https://www.instagram.com/unstructuredio/"
     }
   },
   "integrations": {
@@ -666,19 +763,35 @@
     },
     {
       "source": "/api-reference/ingest/:slug*",
-      "destination": "/ingestion/:slug*"
+      "destination": "/open-source/ingestion/:slug*"
     },
     {
       "source": "/api-reference/legacy/free-api",
       "destination": "/api-reference/overview"
     },
     {
+      "source": "/api-reference/partition/:slug*",
+      "destination": "/api-reference/legacy-api/partition/:slug*"
+    },
+    {
+      "source": "/enterprise/:slug*",
+      "destination": "/business/:slug*"
+    },
+    {
       "source": "/glossary/glossary",
       "destination": "/welcome"
     },
     {
+      "source": "/ingestion/:slug*",
+      "destination": "/open-source/ingestion/:slug*"
+    },
+    {
       "source": "/open-source/ingest/:slug*",
-      "destination": "/ingestion/:slug*"
+      "destination": "/open-source/ingestion/:slug*"
+    },
+    {
+      "source": "/open-source/ingestion/how-to/:slug*",
+      "destination": "/open-source/how-to/:slug*"
     },
     {
       "source": "/platform/:slug*",
@@ -710,11 +823,15 @@
     },
     {
       "source": "/platform-api/partition-api/filter-files",
-      "destination": "/ingestion/how-to/filter-files"
+      "destination": "/open-source/ingestion/how-to/filter-files"
     },
     {
       "source": "/platform-api/partition-api/:slug*",
       "destination": "/api-reference/partition/:slug*"
+    },
+    {
+      "source": "/self-hosted/:slug*",
+      "destination": "/business/:slug*"
     },
     {
       "source": "/ui/billing",

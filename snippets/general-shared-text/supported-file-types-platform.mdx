@@ -1,5 +1,3 @@
-Unstructured supports processing of the following file types:
-
 By file extension:
 
 | File extension |
@@ -7,14 +5,12 @@ By file extension:
 | `.3gp` |
 | `.aac` |
 | `.abw` |
-| `.avi` |
 | `.bmp` |
 | `.csv` |
 | `.cwk` |
 | `.dbf` |
-| `.dif` |
+| `.dif`* |
 | `.doc` |
-| `.docm` |
 | `.docx` |
 | `.dot` |
 | `.dotm` |
@@ -25,9 +21,8 @@ By file extension:
 | `.flac` |
 | `.flv` |
 | `.fods` |
-| `.gif` |
 | `.heic` |
-| `.htm` | 
+| `.htm` |
 | `.html` |
 | `.hwp` |
 | `.jpeg` |
@@ -36,26 +31,22 @@ By file extension:
 | `.md` |
 | `.mcw` |
 | `.mov` |
-| `.mp2` |
 | `.mp3` |
 | `.mp4` |
 | `.mpeg` |
-| `.mpegs` |
 | `.mpg` |
-| `.mpgs` |
+| `.msg` |
 | `.mw` |
 | `.odt` |
 | `.ogg` |
 | `.opus` |
 | `.org` |
 | `.p7s` |
-| `.pages` |
 | `.pbd` |
 | `.pcm` |
 | `.pdf` |
 | `.png` |
 | `.pot` |
-| `.potm` |
 | `.ppt` |
 | `.pptm` |
 | `.pptx` |
@@ -63,26 +54,15 @@ By file extension:
 | `.rst` |
 | `.rtf` |
 | `.sdp` |
-| `.sgl` |
-| `.svg` |
 | `.sxg` |
 | `.tiff` |
 | `.txt` |
 | `.tsv` |
-| `.uof` |
-| `.uos1` |
-| `.uos2` |
 | `.wav` |
-| `.web` |
 | `.webm` |
-| `.webp` |
-| `.wk2` |
 | `.wmv` |
 | `.xls` |
-| `.xlsb` |
-| `.xlsm` |
 | `.xlsx` |
-| `.xlw` |
 | `.xml` |
 | `.zabw` |
 
@@ -90,27 +70,30 @@ By file type:
 
 | Category | File types |
 | --- | --- |
-| Apple | `.cwk`, `.mcw`, `.pages`
-| Audio | `.aac`, `.flac`, `.m4a`, `.mp2`, `.mp3`, `.mp4`, `.ogg`, `.opus`, `.pcm`, `.wav`, `.webm` |
+| Audio | `.aac`, `.flac`, `.m4a`, `.mp3`, `.mp4`, `.ogg`, `.opus`, `.pcm`, `.wav`, `.webm` |
+| Apple | `.cwk`, `.mcw`
 | CSV | `.csv` |
-| Data interchange | `.dif` |
+| Data Interchange | `.dif`* |
 | dBase | `.dbf` |
-| E-mail | `.eml`, `.p7s` |
+| E-mail | `.eml`, `.msg`, `.p7s` |
 | EPUB | `.epub` |
 | HTML | `.htm`, `.html` |
-| Image | `.bmp`, `.gif`, `.heic`, `.jpeg`, `.jpg`, `.png`, `.prn`, `.svg`, `.tiff`, `.webp` |
+| Image | `.bmp`, `.heic`, `.jpeg`, `.jpg`, `.png`, `.prn`, `.tiff` |
 | Markdown | `.md` |
+| OpenOffice | `.odt` |
 | Org Mode | `.org` |
-| Open Office | `.odt`, `.sgl` |
-| Other | `.eth`, `.mw`, `.pbd`, `.sdp`, `.uof`, `.web` |
+| Other | `.eth`, `.pbd`, `.sdp` |
 | PDF | `.pdf` |
 | Plain text | `.txt` |
-| PowerPoint | `.pot`, `.potm`, `.ppt`, `.pptm`, `.pptx` |
+| PowerPoint | `.pot`, `.ppt`, `.pptm`, `.pptx` |
 | reStructured Text | `.rst` |
 | Rich Text | `.rtf` |
-| Spreadsheet | `.et`, `.fods`, `.uos1`, `.uos2`, `.wk2`, `.xls`, `.xlsb`, `.xlsm`, `.xlsx`, `.xlw` |
+| Spreadsheet | `.et`, `.fods`, `.mw`, `.xls`, `.xlsx` |
 | StarOffice | `.sxg` |
 | TSV | `.tsv` |
-| Video | `.3gp`, `.avi`, `.flv`, `.mov`, `.mp4`, `.mpeg`, `.mpegs`, `.mpg`, `.mpgs`, `.webm`, `.wmv` |
-| Word processing | `.abw`, `.doc`, `.docm`, `.docx`, `.dot`, `.dotm`, `.hwp`, `.zabw` |
+| Video | `.3gp`, `.flv`, `.mov`, `.mp4`, `.mpeg`, `.mpg`, `.webm`, `.wmv` |
+| Word processing | `.abw`, `.doc`, `.docx`, `.dot`, `.dotm`, `.hwp`, `.zabw` |
 | XML | `.xml` |
+
+`*` For `.dif`, `\n` characters in `.dif` files are supported, but `\r\n` characters will raise the error 
+`UnsupportedFileFormatError: Partitioning is not supported for the FileType.UNK file type`.

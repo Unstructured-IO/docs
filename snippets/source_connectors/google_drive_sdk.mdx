@@ -3,27 +3,23 @@ import os
 
 from unstructured_client import UnstructuredClient
 from unstructured_client.models.operations import CreateSourceRequest
-from unstructured_client.models.shared import (
-    CreateSourceConnector,
-    SourceConnectorType,
-    GoogleDriveSourceConnectorConfigInput
-)
+from unstructured_client.models.shared import CreateSourceConnector
 
 with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
     response = client.sources.create_source(
         request=CreateSourceRequest(
             create_source_connector=CreateSourceConnector(
                 name="<name>",
-                type=SourceConnectorType.GOOGLE_DRIVE,
-                config=GoogleDriveSourceConnectorConfigInput(
-                    drive_id="<drive-id>",
-                    service_account_key="<service-account-key>",
-                    extensions=[
+                type="google_drive",
+                config={
+                    "drive_id": "<drive-id>",
+                    "service_account_key": "<service-account-key>",
+                    "extensions": [
                         "<extension>",
                         "<extension>"
                     ],
-                    recursive=<True|False>
-                )
+                    "recursive": <True|False>
+                }
             )
         )
     )

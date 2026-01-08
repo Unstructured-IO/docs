@@ -1,24 +1,25 @@
 ---
-title: Unstructured Open Source 
-sidebarTitle: Overview
+title: Overview
 ---
 
-<Note>The `unstructured` open source library is designed as a starting point for quick prototyping and has [limits](#limits). For production scenarios, see the [Unstructured API](/api-reference/overview) instead.</Note>
+<Note>The Unstructured open source library is designed as a starting point for quick prototyping and has [limits](#limits). For production scenarios, use the [Unstructured user interface (UI)](/ui/overview) or the [Unstructured API](/api-reference/overview) instead.</Note>
 
-The `unstructured` [library](https://github.com/Unstructured-IO/unstructured) offers an open-source toolkit
+<Tip>To start using the Unstructured open source library right away, skip ahead to the [quickstart](/open-source/introduction/quick-start).</Tip>
+
+The Unstructured open source library ([GitHub](https://github.com/Unstructured-IO/unstructured), [PyPI](https://pypi.org/project/unstructured/)) offers an open-source toolkit
 designed to simplify the ingestion and pre-processing of diverse data formats, including images and text-based documents
 such as PDFs, HTML files, Word documents, and more. With a focus on optimizing data workflows for Large Language Models (LLMs),
-`unstructured` provides modular functions and connectors that work seamlessly together. This cohesive system ensures
+the Unstructured open source library provides modular functions and connectors that work seamlessly together. This cohesive system ensures
 efficient transformation of unstructured data into structured formats, while also offering adaptability to various platforms
 and use cases.
 
 ## Key functionality
 
-*   **Precise Document Extraction**: Unstructured offers advanced capabilities in extracting elements and metadata from documents. This includes a variety of document element types and metadata. Learn more about [Document elements and metadata](../concepts/document-elements).
+*   **Precise document extraction**: Unstructured offers advanced capabilities in extracting elements and metadata from documents. This includes a variety of document element types and metadata. Learn more about [Document elements and metadata](../concepts/document-elements).
     
-*   **Extensive File Support**: The platform supports a wide array of file types, ensuring versatility in handling different document formats from PDF, Images, HTML, and many more. Detailed information on supported file types can be found [here](/open-source/introduction/supported-file-types).
+*   **Robust file support**: The platform supports a wide array of file types, ensuring versatility in handling different document formats from PDF, Images, HTML, and many more. Detailed information on supported file types can be found [here](/open-source/introduction/supported-file-types).
     
-*   **Robust Core Functionality**: Unstructured provides a suite of core functionalities critical for efficient data processing. This includes:
+*   **Robust core functionality**: Unstructured provides a suite of core functionalities critical for efficient data processing. This includes:
     
     *   [Partitioning](/open-source/core-functionality/partitioning): The partitioning functions in Unstructured enable the extraction of structured content from raw, unstructured documents. This feature is crucial for transforming unorganized data into usable formats, aiding in efficient data processing and analysis.
         
@@ -26,44 +27,79 @@ and use cases.
         
     *   [Extracting](/open-source/core-functionality/extracting): This functionality allows for the extraction of specific entities within documents. It is designed to identify and isolate relevant pieces of information, making it easier for users to focus on the most pertinent data in their documents.
         
-    *   [Staging](/open-source/core-functionality/staging): Staging functions help prepare your data for ingestion into downstream systems. Please note that this functionality is being deprecated in favor of `Destination Connectors`.
-        
-    *   [Chunking](/open-source/core-functionality/chunking): The chunking process in Unstructured is distinct from conventional methods. Instead of relying solely on text-based features to form chunks, Unstructured uses a deep understanding of document formats to partition documents into semantic units (document elements).
-                
-*   **High-performant Connectors**: The platform includes optimized connectors for efficient data ingestion and output. These comprise [Source Connectors](/ingestion/source-connectors/overview) for data input and [Destination Connectors](/ingestion/destination-connectors/overview) for data export.
+    *   [Staging](/open-source/core-functionality/staging): Staging functions help prepare your data for ingestion into downstream systems. Please note that this functionality is being deprecated in favor of [destination connectors](/open-source/ingestion/destination-connectors/overview) in the [Unstructured Ingest CLI and Unstructured Ingest Python library](/open-source/ingestion/overview).        
     
-
+    *   [Chunking](/open-source/core-functionality/chunking): The chunking process in Unstructured is distinct from conventional methods. Instead of relying solely on text-based features to form chunks, Unstructured uses a deep understanding of document formats to partition documents into semantic units (document elements).
+    
 ## Common use cases
 
 *   Pretraining models
 *   Fine-tuning models
-*   Retrieval Augmented Generation (RAG)
+*   Retrieval-augmented generation (RAG)
 *   Traditional ETL
 
-<Note>We do not support GPU usage with the open source library.</Note>
+<Note>GPU usage is not supported for the Unstructured open source library.</Note>
 
 ## Limits
 
-The open source library has the following limits as compared to the [Unstructured UI](/ui/overview) and the [Unstructured API](/api-reference/overview): 
+The Unstructured open source library has the following limits as compared to the [Unstructured UI](/ui/overview) and the [Unstructured API](/api-reference/overview): 
 
 * Not designed for production scenarios.
 * Significantly decreased performance on document and table extraction.
-* Access only to older and less sophisticated vision transformer models.
+* No access to Unstructured's latest vision language model (VLM) offerings.
 * No access to Unstructured's fine-tuned OCR models.
 * No access to Unstructured's by-page and by-similarity chunking strategies.
-* Lack of security and SOC2 and HIPAA compliance.
-* No authentication or identity management.
+* No support for generating embeddings in the core [Unstructured](https://github.com/Unstructured-IO/unstructured) open source offering. (However, you can 
+  generate embeddings as a separate step manually. [Learn how](/open-source/core-functionality/embedding). Also, there is built-in support for generating embeddings by using the open source's 
+  [Unstructured Ingest CLI](/open-source/ingestion/ingest-cli) and [Unstructured Ingest Python library](/open-source/ingestion/python-ingest) offerings. 
+  [Learn more](/open-source/how-to/embedding).)
+* No support for Unstructured's enrichment types such as image descriptions, table descriptions, and named entity recognition (NER).
+* Lack of support for SOC 2 Type 1, SOC 2 Type 2, HIPAA, GDPR, ISO 27001, FedRAMP, and CMMC 2.0 Level 2 compliance.
+* No authentication or identity management in the core open source offering for local document processing.
 * No incremental data loading.
 * No ETL job scheduling or monitoring.
 * No image extraction from documents.
 * Less sophisticated document hierarchy detection.
 * You must manage many of your own code dependencies, for instance for libraries such as Poppler and Tesseract.
-* You must manage your own infrastructure, including parallelization and other performance optimizations.
+* For local document processing, you must manage your own infrastructure.
 
-## Telemetry
+import OpenSourceVsPlatform from '/snippets/general-shared-text/open-source-vs-platform.mdx';
 
-The open source library allows you to make calls to the Unstructured Partition Endpoint. If you do plan to make such calls, please note:
+<OpenSourceVsPlatform />
 
-import SharedTelemetry from '/snippets/general-shared-text/telemetry.mdx';
+For additional considerations, see [When Open Source Isn't Good Enough](https://unstructured.io/blog/when-open-source-isnt-good-enough).
 
-<SharedTelemetry />
+See also the following 26-minute video:
+
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/x5npgYJU20c"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
+
+## Pricing
+
+Calls to the Unstructured open source library that are routed to Unstructured's software-as-a-service (SaaS) 
+for processing (for example, by calling the 
+[partition_via_api](/open-source/core-functionality/partitioning#partition-via-api) or 
+[partition_multiple_via_api](/open-source/core-functionality/partitioning#partition-multiple-via-api) functions with an 
+Unstructured API key and an Unstructured SaaS URL) require an Unstructured account for billing purposes. 
+
+import Pricing from '/snippets/general-shared-text/pricing-platform.mdx';
+
+<Pricing />
+
+## <Icon icon="question" />    Questions? Need help?
+
+- For questions and technical support for the Unstructured open source library, use our [Slack community](https://short.unstructured.io/pzw05l7).
+- If you need help with your Unstructured account, email Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
+
+
+
+
+
+

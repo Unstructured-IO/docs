@@ -2,6 +2,16 @@
 title: Document elements and metadata
 ---
 
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/qWu9HPRkkPg"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
+
 When Unstructured [partitions](/ui/partitioning) a file, the result is a list of _document elements_, sometimes referred to simply as _elements_. These elements represent different components of the source file. 
 
 ## Element example
@@ -71,6 +81,11 @@ If you apply chunking, you will also see the `CompositeElement` type.
 A composite element might be formed by combining one or more sequential elements produced by partitioning. For example, 
 several individual list items might be combined into a single chunk.
 
+For the most up-to-date list of available element types, see the `TYPE_TO_TEXT_ELEMENT_MAP` type-annotated mapping definition and the 
+`ElementType` class definition in the [elements.py](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/documents/elements.py) 
+file, located in the [Unstructured-IO/unstructured](https://github.com/Unstructured-IO/unstructured) 
+repository in GitHub.
+
 ## Element ID
 
 By default, the element ID is a SHA-256 hash of the element's text, its position on the page, the page number it's on, 
@@ -84,6 +99,11 @@ Element metadata enables you to do things such as:
 
 * Filter file elements based on an element's metadata value. For instance, you might want to limit your scope to elements from a certain page, or you might want to use only elements that have an email matching a regular expression in their metadata.
 * Map an element to the page where it occurred so that the original page can be retrieved when that element matches search criteria.
+
+For the most up-to-date list of all available metadata fields, see the 
+`ElementMetadata` class definition in the [elements.py](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/documents/elements.py) 
+file, located in the [Unstructured-IO/unstructured](https://github.com/Unstructured-IO/unstructured) 
+repository in GitHub.
 
 ### Common metadata fields
 
@@ -99,9 +119,11 @@ All file types return the following `metadata` fields when the information is av
 | `file_directory`           | The related file's directory.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `filename`                 | The related file's filename.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `filetype`                 | The related file's type.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `image_base64`             | A Base64 representation of the detected image or table. Only applicable to image and table elements when High Res partitioning is used.                                                                                                                                                                                                                                                                                                                                                                                    |
 | `is_continuation`          | True if the element is a continuation of a previous element. Only relevant for chunking, if an element was divided into two due to **Max Characters**.                                                                                                                                                                                                                                                                                                                                                                     |
 | `languages`                | Document languages at the file or element level. The list is ordered by probability of being the primary language of the text.                                                                                                                                                                                                                                                                                                                                                                                             |
 | `last_modified`            | The related file's last modified date.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `orig_elements`            | For [chunked](/ui/chunking) elements, a list of the original elements that were used to create the current chunked element.                                                                                                                                                                                                                                                                                                                                                                                                |
 | `parent_id`                | The ID of the element's parent element. `parent_id` might be used to infer where an element resides within the overall [document hierarchy](#document-hierarchy). For instance, a `NarrativeText` element might have a `Title` element as a parent (a “subtitle”), which in turn might have another `Title` element as its parent (a "title").                                                                                                                                                                             |
 | `text_as_html`             | The HTML representation of the related extracted table. Only applicable to [table elements](#table-specific-metadata).                                                                                                                                                                                                                                                                                                                                                                                                     |
 
@@ -122,28 +144,44 @@ The `coordinates` metadata field contains:
 - `points` : These specify the corners of the bounding box starting from the top left corner and proceeding counter-clockwise. The points represent pixels, the origin is in the top left and the `y` coordinate increases in the downward direction.
 - `system`: The points have an associated coordinate system. A typical example of a coordinate system is `PixelSpace`, which is used for representing the coordinates of images. The coordinate system has a name, orientation, layout width, and layout height.
 
-
 ### Additional metadata fields by file type
 
 | Field name             | Applicable file types | Description                                                                                                                         |
 |------------------------|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------|
-| `page_number`          | DOCX, PDF, PPT, XLSX  | The related file's page number.                                                                                                     |
+| `attached_to_filename` | MSG                   | The name of the file that the attached file is attached to.                                                                         |
+| `bcc_recipient`        | EML                   | The related [email](#email) BCC recipient.                                                                                          |
+| `cc_recipient`         | EML                   | The related [email](#email) CC recipient.                                                                                           |
+| `email_message_id`     | EML                   | The related [email](#email) message ID.                                                                                             |
+| `header_footer_type`   | Word Doc              | The pages that a header or footer applies to in a [Word document](#microsoft-word-files): `primary`, `even_only`, and `first_page`. |
+| `image_mime_type`      | HTML, image, PDF      | The MIME type of the image.                                                                                                         |
+| `image_url`            | HTML                  | The URL to the image.                                                                                                               |
+| `link_start_indexes`   | HTML, PDF             | A list of the index locations within the extracted content where the `links` can be found.                                          |
+| `link_texts`           | HTML                  | A list of text strings that are associated with the `link_urls`.                                                                    |
+| `link_urls`            | HTML                  | A list of URLs within the extracted content.                                                                                        |
+| `links`                | PDF                   | A list of links within the extracted content.                                                                                       |
 | `page_name`            | XLSX                  | The related sheet's name in an [Excel file](#microsoft-excel-files).                                                                |
+| `page_number`          | DOCX, PDF, PPT, XLSX  | The related file's page number.                                                                                                     |
+| `section`              | EPUB                  | The book section title corresponding to a table of contents.                                                                        |
 | `sent_from`            | EML                   | The related [email](#email) sender.                                                                                                 |
 | `sent_to`              | EML                   | The related [email](#email) recipient.                                                                                              |
+| `signature`            | EML                   | The related [email](#email) signature.                                                                                              |
 | `subject`              | EML                   | The related [email](#email) subject.                                                                                                |
-| `attached_to_filename` | MSG                   | The name of the file that the attached file is attached to.                                                                         |
-| `header_footer_type`   | Word Doc              | The pages that a header or footer applies to in a [Word document](#microsoft-word-files): `primary`, `even_only`, and `first_page`. |
-| `link_urls`            | HTML                  | The URL that is associated with a link in a document.                                                                               |
-| `link_texts`           | HTML                  | The text that is associated with a link in a document.                                                                              |
-| `section`              | EPUB                  | The book section title corresponding to a table of contents.                                                                        |
 
 Here are some notes on additional metadata fields by file type:
 
 #### Email
 
-Emails will include `sent_from`, `sent_to`, and `subject` metadata. `sent_from` is a list of strings because
-the [RFC 822](https://www.rfc-editor.org/rfc/rfc822) spec for emails allows for multiple sent from email addresses.
+For emails, metadata will contain the following fields, where available:
+
+- `bcc_recipient`
+- `cc_recipient`
+- `email_message_id`
+- `sent_from`
+- `sent_to`
+- `signature`
+- `subject` 
+
+`sent_from` is a list of strings because the [RFC 822](https://www.rfc-editor.org/rfc/rfc822) spec for emails allows for multiple sent from email addresses.
 
 #### Microsoft Excel files
 
@@ -182,16 +220,52 @@ For `Table` elements, the raw text of the table will be stored in the `text` att
 of the table will be available in the element metadata under `text_as_html`. 
 Unstructured will automatically extract all tables for all doc types if you check the **Infer Table Structure** in the **ConnectorSettings** area of the **Transform** section of a workflow.
 
-Here's an example of a table element. The `text` of the element will look like this:
+Here's an example of a table element. The `text` of the element will look like this (line breaks are added here for readability):
 
 ```text
-Dataset Base Model1 Large Model Notes PubLayNet [38] F / M M Layouts of modern scientific documents PRImA [3] M - Layouts of scanned modern magazines and scientific reports Newspaper [17] F - Layouts of scanned US newspapers from the 20th century TableBank [18] F F Table region on modern scientific and business document HJDataset [31] F / M - Layouts of history Japanese documents
+Dataset Base Model1 Large Model Notes 
+PubLayNet [38] F / M M Layouts of modern scientific documents 
+PRImA [3] M - Layouts of scanned modern magazines and scientific reports 
+Newspaper [17] F - Layouts of scanned US newspapers from the 20th century 
+TableBank [18] F F Table region on modern scientific and business document 
+HJDataset [31] F / M - Layouts of history Japanese documents
 ```
 
-And the `text_as_html` metadata for the same element will look like this:
+And the `text_as_html` metadata for the same element will look like this (line breaks are added here for readability):
 
 ```html
-<table><thead><th>Dataset</th><th>| Base Model’</th><th>| Notes</th></thead><tr><td>PubLayNet</td><td>[38] F/M</td><td>Layouts of modern scientific documents</td></tr><tr><td>PRImA [3]</td><td>M</td><td>Layouts of scanned modern magazines and scientific reports</td></tr><tr><td>Newspaper</td><td>F</td><td>Layouts of scanned US newspapers from the 20th century</td></tr><tr><td>TableBank</td><td>F</td><td>Table region on modern scientific and business document</td></tr><tr><td>HJDataset [31]</td><td>F/M</td><td>Layouts of history Japanese documents</td></tr></table>
+<table>
+    <thead>
+        <th>Dataset</th>
+        <th>| Base Model’</th>
+        <th>| Notes</th>
+    </thead>
+    <tr>
+        <td>PubLayNet</td>
+        <td>[38] F/M</td>
+        <td>Layouts of modern scientific documents</td>
+    </tr>
+    <tr>
+        <td>PRImA [3]</td>
+        <td>M</td>
+        <td>Layouts of scanned modern magazines and scientific reports</td>
+    </tr>
+    <tr>
+        <td>Newspaper</td>
+        <td>F</td>
+        <td>Layouts of scanned US newspapers from the 20th century</td>
+    </tr>
+    <tr>
+        <td>TableBank</td>
+        <td>F</td>
+        <td>Table region on modern scientific and business document</td>
+    </tr>
+    <tr>
+        <td>HJDataset [31]</td>
+        <td>F/M</td>
+        <td>Layouts of history Japanese documents</td>
+    </tr>
+</table>
 ```
 
 ### Data connector metadata fields
@@ -210,11 +284,107 @@ Documents can include additional file metadata, based on the specified source co
 
 #### Additional metadata fields by connector type (within record_locator)
 
-| Source connector | Additional metadata                  |
-|------------------|--------------------------------------|
-| Azure            | `protocol`, `remote_file_path`       |
-| Elasticsearch    | `document_id`, `index_name`, `url`   |
-| Google Drive     | `drive_id`, `file_id`                |
-| OneDrive         | `server_relative_path`, `user_pname` |
-| S3               | `protocol`, `remote_file_path`       |
-| SharePoint       | `server_path`, `site_url`            |
+| Source connector | Additional metadata                                  |
+|------------------|------------------------------------------------------|
+| Astra DB         | `document_id`                                        | 
+| Confluence       | `document_id`, `space_id`                            |
+| Discord          | `channel_id`                                         |
+| Dropbox          | `file_id`, `protocol`, `remote_file_path`            |
+| Elasticsearch    | `hosts`                                              | 
+| Google Drive     | `file_id`                                            | 
+| Jira             | `id`, `key`                                          | 
+| MongoDB          | `collection`, `database`, `document_id`              |
+| Notion           | `database_id` (for databases), `page_id` (for pages) |
+| OpenSearch       | `hosts`                                              |
+| S3               | `protocol`, `remote_file_path`                       | 
+| SharePoint       | `server_relative_path`, `user_pname`                 |
+
+### VLM generated HTML elements
+
+The vision language model (VLM) [partitioner](/ui/partitioning) also generates an HTML representation of the Unstructured elements that are produced. 
+Unstructured has developed an element ontology that assigns incoming Unstructured elements to these various defined element ontology types. 
+These element ontology types are used to generate standard HTML elements with the element ontology type as class attributes on 
+those HTML elements. The generated HTML elements 
+are output as `text_as_html` along with their `parent_id` in `metadata`, to allow for easier HTML reconstruction of the entire document as needed.
+
+For example, given the following table element produced with the VLM partitioner, the `text_as_html` field is an HTML representation of the 
+derived table, and `parent_id` is the `element_id` of the Unstructured element for the page that contains this table. (Line breaks are added here to the 
+`text` and `text_as_html` fields for readability.)
+
+```json
+{
+    "type": "Table",
+    "element_id": "c60aea37616e3db75660918c6d657c38",
+    "text": "ITEM QUANTITY PRICE TOTAL 
+        Office Desk (Oak wood, 140x70 cm) 2 $249 $498 
+        Ergonomic Chair (Adjustable height & lumbar support) 3 $189 $567 
+        Whiteboard Set (Magnetic, 90x60 cm + 4 markers) 2 $59 $118 
+        SUBTOTAL $1,183 
+        VAT (19%) $224.77 
+        TOTAL $1,407.77",
+    "metadata": {
+        "category_depth": 1,
+        "page_number": 1,
+        "parent_id": "8cc3b39afcd948d49d85084eaae80ff8",
+        "text_as_html": 
+            "<table class=\"Table\" id=\"958308a90ccd4fcb825cb12eed20d103\">
+                <thead>
+                    <tr>
+                        <th>ITEM</th>
+                        <th>QUANTITY</th>
+                        <th>PRICE</th>
+                        <th>TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Office Desk (Oak wood, 140x70 cm)</td>
+                        <td>2</td>
+                        <td>$249</td>
+                        <td>$498</td>
+                    </tr>
+                    <tr>
+                        <td>Ergonomic Chair (Adjustable height &amp; lumbar support)</td>
+                        <td>3</td>
+                        <td>$189</td>
+                        <td>$567</td>
+                    </tr>
+                    <tr>
+                        <td>Whiteboard Set (Magnetic, 90x60 cm + 4 markers)</td>
+                        <td>2</td>
+                        <td>$59</td>
+                        <td>$118</td>
+                    </tr>
+                    <tr>
+                        <td colspan=\"3\">SUBTOTAL</td>
+                        <td>$1,183</td>
+                    </tr>
+                    <tr>
+                        <td colspan=\"3\">VAT (19%)</td>
+                        <td>$224.77</td>
+                    </tr>
+                    <tr>
+                        <td colspan=\"3\">TOTAL</td>
+                        <td>$1,407.77</td>
+                    </tr>
+                </tbody>
+            </table>",
+        "languages": [
+          "eng"
+        ],
+        "filetype": "application/pdf",
+        "partitioner_type": "vlm_partition",
+        "filename": "invoice.pdf"
+    }
+}
+```
+
+For the most up-to-date list of available element ontology types, see the 
+[ontology.py](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/documents/ontology.py) 
+file, located in the [Unstructured-IO/unstructured](https://github.com/Unstructured-IO/unstructured) repository in GitHub.
+
+For the most up-to-date list of mappings between element ontology types and Unstructured element types, see the 
+[mappings.py](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/documents/mappings.py) 
+file, located in the [Unstructured-IO/unstructured](https://github.com/Unstructured-IO/unstructured) repository in GitHub.
+
+To learn more, see [The Case for HTML as the Canonical Representation in Document AI](https://unstructured.io/blog/the-case-for-html-as-the-canonical-representation-in-document-ai).

@@ -10,7 +10,11 @@ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; pic
 allowfullscreen
 ></iframe>
 
-The preceding video does not show how to create an AWS account or an S3 bucket. 
+import S3OperationLatency from '/snippets/general-shared-text/s3-operation-latency.mdx';
+
+<S3OperationLatency />
+
+The preceding video does not show how to create an AWS account. 
 
 For more information about requirements, see the following:
 
@@ -26,8 +30,8 @@ For more information about requirements, see the following:
   allowfullscreen
   ></iframe>
 
-- An S3 bucket. [Create an S3 bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html). 
-  Additional approaches are in the following video and in the how-to sections at the end of this page.
+- An S3 bucket. You can create an S3 bucket by using the S3 console, following the steps [in the S3 documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/creating-bucket.html) or in the following video. 
+  Additional approaches that use AWS CloudFormation or the AWS CLI are in the how-to sections later on this page.
 
   <iframe
   width="560"
@@ -39,8 +43,15 @@ For more information about requirements, see the following:
   allowfullscreen
   ></iframe>
 
-- For authenticated bucket read access, the authenticated AWS IAM user must have at minimum the permissions of `s3:ListBucket` and `s3:GetObject` for that bucket. [Learn how](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-policies-s3.html).
+- For authenticated bucket write access or both, you should first 
+  [block all public access to the bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/configuring-block-public-access-bucket.html).
 
+  After blocking all public access to the bucket, for read access, the authenticated AWS IAM user must have at minimum the permissions of `s3:ListBucket` and `s3:GetObject` for that bucket. 
+  For write access, the authenticated AWS IAM user must have at minimum the permission of `s3:PutObject` for that bucket. To grant permissions, 
+  attach the appropriate bucket policy to the bucket. See the policy examples later on this page, and [learn about bucket policies for S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html). These permissions remain in effect until the bucket policy is removed from the bucket. 
+  To apply a bucket policy by using the S3 console, follow the steps [in the S3 documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/add-bucket-policy.html) or in the following video. 
+  Additional approaches that use AWS CloudFormation or the AWS CLI are in the how-to sections later on this page.
+  
   <iframe
   width="560"
   height="315"
@@ -51,11 +62,8 @@ For more information about requirements, see the following:
   allowfullscreen
   ></iframe>
 
-- For bucket write access, authenticated access to the bucket must be enabled (anonymous access must not be enabled), and the authenticated AWS IAM user must have at 
-  minimum the permission of `s3:PutObject` for that bucket. [Learn how](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-policies-s3.html).
-
-- For authenticated access, an AWS access key and secret access key for the authenticated AWS IAM user in the account. 
-  [Create an AWS access key and secret access key](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey).
+- Provide an AWS access key and secret access key for the authenticated AWS IAM user in the account. 
+  Create an AWS access key and secret access key by following the steps [in the IAM documentation](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey) or in the following video.
 
   <iframe
   width="560"
@@ -67,10 +75,10 @@ For more information about requirements, see the following:
   allowfullscreen
   ></iframe>
   
-- If the target files are in the root of the bucket, the path to the bucket, formatted as `protocol://bucket/` (for example, `s3://my-bucket/`). 
+- If the target files are in the root of the bucket, provide the path to the bucket, formatted as `protocol://bucket/` (for example, `s3://my-bucket/`). 
   If the target files are in a folder, the path to the target folder in the S3 bucket, formatted as `protocol://bucket/path/to/folder/` (for example, `s3://my-bucket/my-folder/`). 
 - If the target files are in a folder, make sure the authenticated AWS IAM user has 
-  authenticated access to the folder as well. [Enable authenticated folder access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html#example-bucket-policies-folders).
+  authenticated access to the folder as well. [See examples of authenticated folder access](https://docs.aws.amazon.com/AmazonS3/latest/userguide/example-bucket-policies.html#example-bucket-policies-folders).
 
 ## Add an access policy to an existing bucket
 
@@ -89,3 +97,26 @@ import S3BucketCloudFormation from '/snippets/general-shared-text/s3-cf-setup.md
 import S3BucketCLI from '/snippets/general-shared-text/s3-cli-setup.mdx';
 
 <S3BucketCLI />
+
+## Delta table output format
+
+A Delta table consists of Parquet files that contain data and a transaction log that stores metadata about the transactions. 
+[Learn more](https://delta-io.github.io/delta-rs/how-delta-lake-works/architecture-of-delta-table/).
+
+The Delta Tables in Amazon S3 destination connector generates the following output within the specified path to the S3 bucket (or the specified folder within the bucket):
+
+- Initially, one Parquet (`.parquet`) file per file in the source location. For example, for a file in the source location named `my-file.pdf`, an associated 
+  file with the extension `.parquet` is generated. Various kinds of file transactions can result in additional Parquet files being generated. These Parquet filenames are automatically generated by the Delta Lake engine and are not meant to be manually modified.
+- A folder named `_delta_log` that contains metadata and change history about the `.parquet` files. As Parquet files are added to, changed, or removed from 
+  the specified bucket or folder path, the `_delta_log` folder is updated with any related metadata and change history details. 
+
+Together, this set of Parquet files and their associated `_delta_log` folder (and its contents) describe a single, versioned Delta table. Because of this, Unstructured recommends the following usage best practices:
+
+- In the source location, each set of source files that is to be considered as a unit for change management purposes should be controlled by a unique, dedicated 
+  Delta Tables in S3 destination connector. This connector should reference a unique, dedicated output folder within the bucket. Having 
+  multiple workflows refer to different sets of source files, yet all share the same Delta table, could results in data loss or table corruption.
+- Avoid directly modifying, adding, or deleting Parquet data files or the `_delta_log` folder within a Delta table's directory. This can lead to data loss or table corruption.
+- If you need to copy or move a Delta table to a different location, 
+  you must move or copy its entire set of Parquet files and its associated `_delta_log` folder (and its contents) together as a unit. 
+  Note that the copied or moved Delta table will 
+  no longer be controlled by the original Delta Tables in S3 destination connector.

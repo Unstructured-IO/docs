@@ -10,10 +10,12 @@ import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-d
 
 The following environment variables:
 
-- `ENTRA_ID_USER_PRINCIPAL_NAME` - The User Principal Name (UPN) for the target OneDrive account in the Microsoft Entra ID tenant.
 - `SHAREPOINT_SITE_URL` - The SharePoint site URL, represented by `--site` (CLI) or `site` (Python).
-- `SHAREPOINT_SITE_PATH` - The path in the SharePoint site from which to start parsing files, represented by `--path` (CLI) or `path` (Python).
+- `SHAREPOINT_LIBRARY_NAME` - The display name of the SharePoint library to use, represented by `--library` (CLI) or `library` (Python). The default is `Documents`.
+- `SHAREPOINT_SITE_PATH` - The path to use within the library, represented by `--path` (CLI) or `path` (Python). The default is the root of the target library. To use a different path, specify the correct path format as described previously in this article.
 - `ENTRA_ID_APP_CLIENT_ID` - The **Application (client) ID** value for the Microsoft Entra ID app registration, represented by `--client-id` (CLI) or `client_id` (Python).
 - `ENTRA_ID_APP_TENANT_ID` - The **Directory (tenant) ID** value for the Entra ID app registration, represented by `--client-id` (CLI) or `client_id` (Python).
+- `ENTRA_ID_TOKEN_AUTHORITY_URL` - The token authority URL for the Entra ID app registration, represented by `--authority-url` (CLI) or `authority_url` (Python). The default is `https://login.microsoftonline.com`.
 - `ENTRA_ID_APP_CLIENT_SECRET` - The **Client secret** value for the Entra ID app registration, represented by `--client-cred` (CLI) or `client_cred` (Python).
-- `ENTRA_ID_TOKEN_AUTHORITY_URL` - The token authority URL for the Entra ID app registration (which is typically `https://login.microsoftonline.com`), represented by `--authority-url` (CLI) or `authority_url` (Python).
+- `ENTRA_ID_USER_PRINCIPAL_NAME` - For username and password authentication, the User Principal Name (UPN) for the target OneDrive account in the Microsoft Entra ID tenant.
+- `ENTRA_ID_USER_PASSWORD` - For username and password authentication, the password for the target UPN.

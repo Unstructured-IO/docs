@@ -9,14 +9,16 @@ curl --request 'POST' --location \
     "name": "<name>",
     "type": "sharepoint",
     "config": {
-        "client_id": "<client-id>",
         "site": "<site>",
+        "library": "<library>",
+        "path": "<path>",
+        "recursive": <true|false>,
+        "client_id": "<client-id>",
         "tenant": "<tenant>",
         "authority_url": "<authority-url>",
-        "user_pname": "<user-pname>",
         "client_cred": "<client-cred>",
-        "path": "<path>",
-        "recursive": <true|false>
+        "user_pname": "<user-pname>", # For username and password authentication.
+        "password": "<password>" # For username and password authentication.
     }
 }'
 ```

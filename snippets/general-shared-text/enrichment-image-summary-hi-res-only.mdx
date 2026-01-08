@@ -1,0 +1,17 @@
+<Warning>
+    Unstructured can potentially generate image summary descriptions only for workflows that are configured as follows:
+    
+    - With a **Partitioner** node set to use the **Auto** or **High Res** partitioning strategy, and an image summary description node is added.  
+    - With a **Partitioner** node set to use the **VLM** partitioning strategy. No image summary description node is needed (or allowed).
+    
+    Even with these configurations, Unstructured actually generates image summary descriptions only for files that contain images and are also eligible 
+    for processing with the following partitioning strategies:
+    
+    - **High Res**, when the workflow's **Partitioner** node is set to use **Auto** or **High Res**.
+    - **VLM** or **High Res**, when the workflow's **Partitioner** node is set to use **VLM**.
+
+    Unstructured never generates image summary descriptions for workflows that are configured as follows:
+    
+    - With a **Partitioner** node set to use the **Fast** partitioning strategy.
+    - With a **Partitioner** node set to use the **Auto**, **High Res**, or **VLM** partitioning strategy, for all files that Unstructured encounters that do not contain images.
+</Warning>

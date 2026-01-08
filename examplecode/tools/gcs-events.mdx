@@ -1,0 +1,256 @@
+---
+title: Google Cloud Storage event triggers
+---
+
+You can use Google Cloud Storage events, such as adding new files to&mdash;or updating existing files within&mdash;Google Cloud Storage buckets, to automatically run Unstructured ETL+ workflows 
+that rely on those buckets as sources. This enables a no-touch approach to having Unstructured automatically process new and updated files in Google Cloud Storage as they are added or updated.
+
+This example shows how to automate this process by adding a custom [Google Apps Script](https://developers.google.com/apps-script) project in your Google account. This project runs 
+a script on a regular time interval. This script automatically checks for new or updated files within the specified Google Cloud Storage bucket. If the script 
+detects at least one new or updated file, it then calls the [Unstructured API's workflow operations](/api-reference/workflow/overview) to automatically run the 
+specified corresponding Unstructured ETL+ workflow in your Unstructured account.
+
+<Note>
+    This example uses a custom Google Apps Script that you create and maintain. 
+    Any issues with file detection, timing, or script execution could be related to your custom script, 
+    rather than with Unstructured. If you are getting unexpected or no results, be sure to check your custom 
+    script's execution logs first for any informational and error messages.
+</Note>
+
+## Requirements
+
+import GetStartedSimpleApiOnly from '/snippets/general-shared-text/get-started-simple-api-only.mdx'
+
+To use this example, you will need the following:
+
+- An Unstructured account, and an Unstructured API key for your account, as follows:
+
+  <GetStartedSimpleApiOnly />
+
+- The Unstructured API's workflow operations URL for your account, as follows:
+
+  1. In the Unstructured UI, click **API Keys** on the sidebar.<br/>
+  2. Note the value of the **Unstructured API's workflow operations** field.
+
+- A Google Cloud Storage source connector in your Unstructured account. [Learn how](/ui/sources/google-cloud). 
+- Some available [destination connector](/ui/destinations/overview) in your Unstructured account.
+- A workflow that uses the preceding source and destination connectors. [Learn how](/ui/workflows).
+- An OAuth 2.0 client ID and client secret to call the Google API, as follows:
+
+  1. Sign in to your [Google Cloud account](https://cloud.google.com).
+  2. Go to the [Google Cloud APIs dashboard](https://console.cloud.google.com/apis/dashboard).
+  3. Click **+ Enable APIs and services**.
+  4. In the **Search for APIs & Services** box, enter `Cloud Storage API`. 
+  5. In the list of search results, click **Cloud Storage API**.
+  6. Make sure that **API Enabled** is shown. If not, click **Enable**.
+  7. Go to your [Google Cloud console welcome page](https://console.cloud.google.com/welcome).
+  8. In the **Search (/) for resources, docs, products, and more** box, enter `Credentials`.
+  9. Click **Credentials (APIs & Services)**.
+  10. Click **+ Create credentials > OAuth client ID**.
+  11. For **Application type**, select **Web application**.
+  12. (Optional) Enter some non-default **Name** for this OAuth 2.0 client to be shown in the list of created clients in your Google Cloud Console.
+  13. Click **Create**.
+  14. After the OAuth client is created, click **Download JSON** to save the client ID and client secret values to a JSON file on your local 
+      machine. Store this JSON file in a secure location.
+
+## Step 1: Create the Google Apps Script project
+
+1. Go to [http://script.google.com/](http://script.google.com/).
+2. Click **+ New project**.
+3. Click the new project's default name (such as **Untitled project**), and change it to something more descriptive, such as **Unstructured Scripts for GCS**.
+
+## Step 2: Add the script
+
+1. With the project still open, on the sidebar, click the **< >** (**Editor**) icon.
+2. In the **Files** tab, click **Code.gs**.
+3. Replace the contents of the `Code.gs` file with the following code instead:
+
+   ```javascript
+   // Configure the OAuth2 service.
+   function getOAuthService() {
+     return OAuth2.createService('GCS')
+       .setAuthorizationBaseUrl('https://accounts.google.com/o/oauth2/auth')
+       .setTokenUrl('https://oauth2.googleapis.com/token')
+       .setClientId(CLIENT_ID)
+       .setClientSecret(CLIENT_SECRET)
+       .setCallbackFunction('authCallback')
+       .setPropertyStore(PropertiesService.getUserProperties())
+       .setScope(OAUTH_SCOPE);
+   }
+
+   // OAuth2 callback function.
+   function authCallback(request) {
+     const service = getOAuthService();
+     const isAuthorized = service.handleCallback(request);
+     return HtmlService.createHtmlOutput(isAuthorized ? 'Success!' : 'Denied');
+   }
+
+   // Get a valid access token (refreshes automatically if expired).
+   function getAccessToken() {
+     const service = getOAuthService();
+     if (!service.hasAccess()) {
+       const authorizationUrl = service.getAuthorizationUrl();
+       Logger.log('Open the following URL and re-run the script: %s', authorizationUrl);
+       throw new Error('Authorization required. Open the URL in the log.');
+     }
+     return service.getAccessToken();
+   }
+
+   // Main function: checks for new or updated files in the bucket.
+   function checkForNewOrUpdatedGCSFiles() {
+     const thresholdMillis = 5 * 60 * 1000; // 5 minutes.
+     const now = new Date();
+
+     // Get (and refresh if needed) the access token.
+     const accessToken = getAccessToken();
+
+     // List objects in the bucket.
+     const apiUrl = `https://storage.googleapis.com/storage/v1/b/${BUCKET_PATH}/o`;
+     const response = UrlFetchApp.fetch(apiUrl, {
+       method: 'get',
+       headers: {
+         'Authorization': 'Bearer ' + accessToken,
+         'Accept': 'application/json'
+       }
+     });
+     const data = JSON.parse(response.getContentText());
+     const files = data.items || [];
+
+     for (let i = 0; i < files.length; i++) {
+       const file = files[i];
+       const fileName = file.name;
+       const created = new Date(file.timeCreated);
+       const updated = new Date(file.updated);
+
+       const millisSinceCreated = now - created;
+       const createdWithinThreshold = millisSinceCreated < thresholdMillis;
+       const millisSinceUpdated = now - updated;
+       const updatedWithinThreshold = millisSinceUpdated < thresholdMillis;
+
+       console.log('File Name:                       ' + fileName);
+       console.log('Created:                         ' + created);
+       console.log('Last updated:                    ' + updated);
+       console.log('Milliseconds since created:      ' + millisSinceCreated);
+       console.log('Milliseconds since last updated: ' + millisSinceUpdated);
+       console.log('Created within threshold of ' + thresholdMillis + ' milliseconds? ' + createdWithinThreshold);
+       console.log('Updated within threshold of ' + thresholdMillis + ' milliseconds? ' + updatedWithinThreshold);
+       console.log('-----');
+
+       if (createdWithinThreshold || updatedWithinThreshold) {
+         // Trigger your workflow.
+         UrlFetchApp.fetch(UNSTRUCTURED_API_URL, {
+           method: 'post',
+           headers: {
+             'accept': 'application/json',
+             'unstructured-api-key': UNSTRUCTURED_API_KEY
+           }
+         });
+         console.log('At least one file created or updated within threshold of ' + thresholdMillis + ' milliseconds.');
+         console.log('Unstructured workflow request sent to ' + UNSTRUCTURED_API_URL);
+         return;
+       }
+     }
+     console.log('No files created or updated within threshold of ' + thresholdMillis + ' milliseconds. No Unstructured workflow request sent.');
+   }
+
+   ```
+
+4. Click the **Save project to Drive** button. 
+
+## Step 3: Customize the script for your workflow
+
+1. With the project still open, on the **Files** tab, click the **Add a file** button, and then click **Script**.
+2. Name the new file `Constants`. The `.gs` extension is added automatically.
+3. Replace the contents of the `Constants.gs` file with the following code instead:
+
+   ```javascript
+   const BUCKET_PATH = '<bucket-path>';
+   const UNSTRUCTURED_API_URL = '<unstructured-api-url>' + '/workflows/<workflow-id>/run';
+   const UNSTRUCTURED_API_KEY = '<unstructured-api-key>';
+   const CLIENT_ID = '<client-id>';
+   const CLIENT_SECRET = '<client-secret>';
+   const OAUTH_SCOPE = 'https://www.googleapis.com/auth/devstorage.read_only'; // Or .read_write or .full_control
+   ```
+
+   Replace the following placeholders:
+   
+   - Replace `<bucket-path>` with the path to your Google Cloud Storage bucket. This is the same path that you specified 
+     when you created your Google Cloud Storage source connector in your Unstructured account. Do not include the `gs://` prefix here.
+   - Replace `<unstructured-api-url>` with your Unstructured API URL value.
+   - Replace `<workflow-id>` with the ID of your Unstructured workflow.
+   - Replace `<unstructured-api-key>` with your Unstructured API key value.
+   - Replace `<client-id>` with your OAuth 2.0 client ID value.
+   - Replace `<client-secret>` with your OAuth 2.0 client secret value.
+
+4. Click the disk (**Save project to Drive**) icon. 
+
+## Step 4: Generate an initial OAuth 2.0 access token
+
+1. On the sidebar, click the gear (**Project Settings**) icon.
+2. In the **IDs** area, next to **Script ID**, click **Copy** to copy the script's ID value to your system's clipboard.
+3. In a separate tab in your web browser, open your [Google Cloud Console welcome page](https://console.cloud.google.com/welcome).
+4. In the **Search (/) for resources, docs, products, and more** box, enter `Credentials`.
+5. Click **Credentials (APIs & Services)**.
+6. In the **OAuth 2.0 client IDs** list, click the link for the client ID that you created earlier in the requirements.
+7. Under **Authorized redirect URIs**, click **Add URI**.
+8. In the **URIs 1** box, enter `https://script.google.com/macros/d/<script-id>/usercallback`, replacing `<script-id>` with the script's ID value that you copied earlier.
+9. Click **Save**.
+10. On the original tab in your web browser, with the Google Apps Script project still open to the **Constants.gs** file, on the sidebar, next to **Libraries**, click the **+** (**Add a library**) icon.
+11. For **Script ID**, enter `1B7FSrk5Zi6L1rSxxTDgDEUsPzlukDsi4KGuTMorsTQHhGBzBkMun4iDF`, and then click **Look up**. 
+12. For **Version**, make sure the largest number is selected.
+13. Click **Add**.
+14. In the sidebar, click the **Code.gs** file to open it.
+15. In the file's top navigation bar, select **getAccessToken**.
+16. Click the **Run** icon.
+17. In the **Execution log** area, next to the message `Open the following URL and re-run the script`, copy the entire URL into 
+   a separate tab in your web browser and then browse to that URL.
+18. When prompted, click **Review permissions**, and follow the on-screen instructions to grant the necessary permissions.
+
+## Step 5: Create the script trigger
+
+1. On the original tab in your web browser, with the Google Apps Script project still open, on the sidebar, click the alarm clock (**Triggers**) icon.
+2. Click the **+ Add Trigger** button.
+3. Set the following values:
+
+   - For **Choose which function to run**, select `checkForNewOrUpdatedGCSFiles`.
+   - For **Choose which deployment should run**, select **Head**.
+   - For **Select event source**, select **Time-driven**.
+   - For **Select type of time based trigger**, select **Minutes timer**.
+   - For **Select minute interval**, select **Every 5 minutes**.
+
+     <Note>
+         If you change **Minutes timer** or **Every 5 minutes** to a different interval, you should also go back and change the number `5` in the following 
+         line of code in the `checkForNewOrUpdatedFiles` function. Change the number `5` to the number of minutes that correspond to the alternate interval you 
+         selected:
+
+         ```javascript
+         const thresholdMillis = 5 * 60 * 1000;
+         ```
+     </Note>
+
+   - For **Failure notification settings**, select an interval such as immediately, hourly, or daily.
+
+4. Click **Save**.
+
+## Step 6: View trigger results
+
+1. With the Google Apps Script project still open, on the sidebar, click the three lines (**Executions**) icon.
+2. As soon as the first script execution completes, you should see a corresponding message appear in the **Executions** list. If the **Status** column shows 
+   **Completed**, then keep going with this procedure. 
+   
+   If the **Status** column shows **Failed**, expand the message to 
+   get any details about the failure. Fix the failure, and then wait for the next script execution to complete.
+
+3. When the **Status** column shows **Completed** then, in your Unstructured account's user interface, click **Jobs** on the sidebar to see if a new job 
+   is running for that worklow.
+   
+   If no new job is running for that workflow, then add at least one new file to&mdash;or update at least one existing file within&mdash;the Google Cloud Storage bucket, 
+   within 5 minutes of the next script execution. After the next script execution, check the **Jobs** list again.
+
+## Step 7 (Optional): Delete the trigger
+
+1. To stop the script from automatically executing on a regular basis, with the Google Apps Script project still open, on the sidebar, click the alarm clock (**Triggers**) icon.
+2. Rest your mouse pointer on the trigger you created in Step 5.
+3. Click the ellipsis (three dots) icon, and then click **Delete trigger**.
+
+

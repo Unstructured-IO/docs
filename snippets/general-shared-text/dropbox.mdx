@@ -66,6 +66,16 @@ Dropbox app access tokens are valid for **only four hours**. After this time, yo
 
 To have Unstructured automatically replace expired access tokens on your behalf, do the following:
 
+<iframe
+width="560"
+height="315"
+src="https://www.youtube.com/embed/PZyRgpPNEUs"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
+
 1. Get the app key and app secret values for your Dropbox app. To do this:
 
    a) Sign in to the [Dropbox Developers](https://www.dropbox.com/developers) portal with the same credentials as your Dropbox account.<br/>
@@ -86,15 +96,16 @@ To have Unstructured automatically replace expired access tokens on your behalf,
 6. Use the [curl](https://curl.se/) utility in your Terminal or Command Prompt, or use a REST API client such as 
    [Postman](https://www.postman.com/product/api-client/), to make the following REST API call, replacing the following placeholders:
 
-   - Replace `<access-code>` with the access code that you just copied.
    - Replace `<app-key>` with the app key for your Dropbox app.
    - Replace `<app-secret>` with the app secret for your Dropbox app.
+   - Replace `<access-code>` with the access code that you just copied.
 
    ```text
-   curl https://api.dropbox.com/oauth2/token \
-   --data code=<access-code> \
-   --data grant_type=authorization_code \
-   --user <app-key>:<app-secret>
+   curl --location --request POST 'https://api.dropbox.com/oauth2/token' \
+   --user '<app-key>:<app-secret>' \
+   --header 'Content-Type: application/x-www-form-urlencoded' \
+   --data-urlencode 'code=<access-code>' \
+   --data-urlencode 'grant_type=authorization_code'
    ```
 
 7. In the response, copy the following two values:
@@ -110,7 +121,7 @@ To have Unstructured automatically replace expired access tokens on your behalf,
    - Add the `<app-key>` value to the connector settings **App key** field.
    - Add the `<app-secret>` value to the connector settings **App secret** field.
 
-   For the [Unstructured API](/api-reference/overview) and [Unstructured Ingest](/ingestion/overview), if you want Unstructured to use this refresh token to automatically replace the expired access token instead of replacing it yourself, then 
+   For the [Unstructured API](/api-reference/overview) and [Unstructured Ingest](/open-source/ingestion/overview), if you want Unstructured to use this refresh token to automatically replace the expired access token instead of replacing it yourself, then 
    add the following values to your connector settings, and then stop here:
 
    - Add the `refresh_token` value to the `refresh_token` parameter.

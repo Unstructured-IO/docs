@@ -11,6 +11,10 @@ including reduction in transformation quality.
 - **Fast**: For text-only documents.
 - **Multimedia**: For video and audio files.
 
-<Note>
-    Video and audio file partitioning is available only for [self-hosted](/self-hosted/overview) deployments of Unstructured.
-</Note>
+The **Auto** partitioning strategy routes each file as a complete unit to the appropriate partitioning strategy (**VLM**, **High Res**, **Fast**, or **Multimedia**) 
+based on the preceding file types. Additionally, for `.pdf` files, the **Auto** partitioning strategy routes these files' pages 
+on a page-by-page basis, as follows:
+
+- A page is routed to **Fast** when it contains only embedded text and no images or tables are detected.
+- All other kinds of pages are routed to **VLM** or **High Res**, depending on the complexity of a page's 
+  content. Unstructured constantly optimizes its proprietary algorithm for routing to **VLM** or **High Res** in these cases.

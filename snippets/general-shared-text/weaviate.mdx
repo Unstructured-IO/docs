@@ -1,5 +1,5 @@
 - For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api-reference/overview): only [Weaviate Cloud](https://weaviate.io/developers/wcs) clusters are supported.
-- For [Unstructured Ingest](/ingestion/overview): Weaviate Cloud clusters, 
+- For [Unstructured Ingest](/open-source/ingestion/overview): Weaviate Cloud clusters, 
   [Weaviate installed locally](https://weaviate.io/developers/weaviate/quickstart/local), 
   and [Embedded Weaviate](https://weaviate.io/developers/weaviate/installation/embedded) are supported.
 - For Weaviate installed locally, you will need the name of the target collection on the local instance.
@@ -32,7 +32,7 @@
       the new collection's name will be `U<short-workflow-id>_<short-embedding-model-name>_<number-of-dimensions>`. 
       If Unstructured does not generate embeddings, the new collection's name will be `U<short-workflow-id`.
 
-    For [Unstructured Ingest](/ingestion/overview):
+    For [Unstructured Ingest](/open-source/ingestion/overview):
 
     - If an existing collection name is specified, and Unstructured generates embeddings, 
       but the number of dimensions that are generated does not match the existing collection's embedding settings, the run will fail. 
@@ -136,4 +136,4 @@ You can adapt the following collection schema example for your own specific sche
 See also :
 
 - [Collection schema](https://weaviate.io/developers/weaviate/config-refs/schema)
-- [Unstructured document elements and metadata](/api-reference/partition/document-elements)
+- [Unstructured document elements and metadata](/api-reference/legacy-api/partition/document-elements)

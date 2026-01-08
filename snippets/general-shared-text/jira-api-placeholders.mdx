@@ -1,8 +1,12 @@
 - `<name>` (_required_): A unique name for this connector.
 - `<url>` (_required_): The URL of the Jira instance.
-- `<username>` (_required_ for password or API token authentication, or personal access token authentication): The username of the Jira user.
-- `<password>` (_required_ for password or API token authentication): The password or API token of the Jira user.
+- `<username>` (_required_ for password or API token authentication): The username of the Jira user.
+- `<password>` (_required_ for password or API token authentication): For password authentication, the password of the Jira user. 
+  For API token authentication, the API token of the Jira user.
 - `<token>` (_required_ for personal access token authentication): The personal access token of the Jira user.
 - `<project-id>`: The ID of a target project in Jira to access.
 - `<board-id>`: The ID of a target board in Jira to access.
 - `<issue-id>`: The ID of a target issue in Jira to access.
+- `<status>`: The name of a status to filter Jira issues by.
+- Set `download_attachments` to `true` to download attachments from Jira issues. The default is `false`.
+- Set `cloud` to `true` to specify using Jira Cloud or `false` to specify using Jira Data Center. The default is to use Jira Data Center.

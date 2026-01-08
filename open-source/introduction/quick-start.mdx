@@ -1,93 +1,232 @@
 ---
 title: Quickstart
-description: Using Unstructured Open Source.
 ---
-## Installation
 
-1.  **Installing the open source library**: You can install the core SDK using pip:
+<Note>This quickstart uses the Unstructured open source library, which is designed as a starting point for quick prototyping and has [limits](#limits). For production scenarios, use the [Unstructured user interface (UI)](/ui/overview) or the [Unstructured API](/api-reference/overview) instead.</Note>
 
-    `pip install unstructured`
-    
-    Plain text files, HTML, XML, JSON, and Emails are immediately supported without any additional dependencies.
-    
-    If you need to process other document types, you can install the extras required by following the [Full Installation](/open-source/installation/full-installation)
-    
-2.  **System Dependencies**: Ensure the subsequent system dependencies are installed. Your requirements might vary based on the document types you’re handling:
-    
-    *   _libmagic-dev_ : Essential for filetype detection.
+In this quickstart, you use the [Unstructured open source library](/open-source/introduction/overview) 
+([GitHub](https://github.com/Unstructured-IO/unstructured), 
+[PyPI](https://pypi.org/project/unstructured/)) along with Python on your local development machine to partition a PDF file into a standard set of 
+[Unstructured document elements and metadata](/open-source/concepts/document-elements). You can use these elements and 
+metadata as input into your RAG applications, AI agents, model fine-tuning tasks, and more.
+
+<Steps>
+    <Step title="Prerequisites">
+        To complete this quickstart, you need:
+
+        - A Python virtual environment manager is recommended to manage your Python code dependencies. 
+          This quickstart uses [uv](https://docs.astral.sh/uv/) for managing virtual environments and 
+          [venv](https://docs.python.org/3/library/venv.html) as the virtual environment type. Installation and 
+          use of `uv` and `venv` are described in the following steps. 
+          However, `uv` and `venv` are not required to use the Unstructured open source library.
+        - Python 3.9 or higher. You can use `uv` to install Python if needed, as described in the following steps.
+        - A PDF file on your local machine. If you do not have a PDF file available, this quickstart provides a sample PDF file named 
+          `layout-parser-paper.pdf` that you can download in a later step. (The Unstructured open source library provides 
+          [support for additional file types](/open-source/introduction/supported-file-types) as well.)
+    </Step>
+    <Step title="Install uv">
+        <Tabs>
+            <Tab title="macOS, Linux">
+                To use `curl` with `sh`:
+
+                ```bash
+                curl -fsSL https://get.uv.dev | bash
+                ```
+
+                To use `wget` with `sh` instead:
+
+                ```bash
+                wget -qO- https://astral.sh/uv/install.sh | sh
+                ```
+            </Tab>
+            <Tab title="Windows">
+                To use PowerShell with `irm` to download the script and run it with `iex`:
+
+                ```powershell
+                powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+                ```
+            </Tab>
+        </Tabs>
+
+        To install `uv` by using other approaches such as PyPI, Homebrew, or WinGet, 
+        see [Installing uv](https://docs.astral.sh/uv/getting-started/installation/).
+    </Step>
+    <Step title="Install Python">
+        `uv` will detect and use Python if you already have it installed. 
+        To view a list of installed Python versions, run the following command:
+
+        ```bash
+        uv python list
+        ```
         
-    *   _poppler-utils_ : Needed for images and PDFs.
-        
-    *   _tesseract-ocr_ : Essential for images and PDFs.
-        
-    *   _libreoffice_ : For MS Office documents.
-        
-    *   _pandoc_ : For EPUBs, RTFs, and Open Office documents. Please note that to handle RTF files, you need version 2.14.2 or newer. Running [this script](https://github.com/Unstructured-IO/unstructured/blob/main/scripts/install-pandoc.sh) will install the correct version for you.
-        
-
-## Validating Installation
-
-After installation, confirm the setup by executing the below Python code:
-
-```python
-from unstructured.partition.auto import partition
-elements = partition(filename="example-docs/eml/fake-email.eml")
-```
-
-
-If you’ve opted for the “local-inference” installation, you should also be able to execute:
-
-```python
-from unstructured.partition.auto import partition
-elements = partition("example-docs/pdf/layout-parser-paper.pdf")
-
-```
-
-
-If these code snippets run without errors, congratulations! Your `unstructured` installation is successful and ready for use.
-
-The following section will cover basic concepts and usage patterns in `unstructured`. After reading this section, you should be able to:
-
-*   Partitioning a document with the `partition` function.
+        If, however, you do not already have Python installed, you can install a version of Python for use with `uv` 
+        by running the following command. For example, this command installs Python 3.12 for use with `uv`:
     
-*   Understand how documents are structured in `unstructured`.
+        ```bash
+        uv python install 3.12
+        ```        
+    </Step>
+    <Step title="Create a uv project">
+        Use `uv` to create a project by switching to the directory on your development machine where you want to 
+        create the project and then running the following command:
+
+        ```bash
+        uv init
+        ```
+    </Step>
+    <Step title="Create a venv virtual environment">
+        To isolate and manage your project's code dependencies, from your project directory, use `uv` to create a virtual environment with `venv` by running the following command:
+
+        ```bash
+        # Create the virtual environment by using the current Python version:
+        uv venv
+
+        # Or, if you want to use a specific Python version:
+        uv venv --python 3.12
+        ```
+    </Step>
+    <Step title="Activate the virtual environment">
+        To activate the `venv` virtual environment, run one of the following commands:
+        
+        <Tabs>
+            <Tab title="macOS, Linux">
+                - For `bash` or `zsh`, run `source .venv/bin/activate`
+                - For `fish`, run `source .venv/bin/activate.fish`
+                - For `csh` or `tcsh`, run `source .venv/bin/activate.csh`
+                - For `pwsh`, run `.venv/bin/Activate.ps1`
+            </Tab>
+            <Tab title="Windows">
+                - For `cmd.exe`, run `.venv\Scripts\activate.bat`
+                - For `PowerShell`, run `.venv\Scripts\Activate.ps1`
+            </Tab>
+        </Tabs>
+        
+        To deactivate the virtual environment at any time, run `deactivate`.
+    </Step>
+    <Step title="Install the Unstructured open source library">
+        With the virtual environment activated to enable code dependency isolation and management, use `uv` to install the Unstructured open source library by running the following command:
+
+        ```bash
+        uv add unstructured
+        ```
+
+        The preceding command supports plain text files (`.txt`), HTML files (`.html`), XML files (`.xml`), and emails (`.eml`, `.msg`, and `.p7s`) without any additional dependencies.
+
+        To work with other file types, you must also install these dependencies, as follows, replacing `<extra>` with the appropriate extra for the target file type:
+
+        ```bash
+        uv add "unstructured[<extra>]"
+        ```
+
+        The following file type extras are available:
+
+        - `all-docs` (for all supported file types in this list)
+        - `csv` (for `.csv` files only)
+        - `docx` (for `.doc` and `.docx` files only)
+        - `epub` (for `.epub` files only)
+        - `image` (for all supported image file types: `.bmp`, `.heic`, `.jpeg`, `.png`, and `.tiff`)
+        - `md` (for `.md` files only)
+        - `odt` (for `.odt` files only)
+        - `org` (for `.org` files only)
+        - `pdf` (for `.pdf` files only)
+        - `pptx` (for `.ppt` and `.pptx` files only)
+        - `rst` (for `.rst` files only)
+        - `rtf` (for `.rtf` files only)
+        - `tsv` (for `.tsv` files only)
+        - `xlsx` (for `.xls` and `.xlsx` files only)
+
+        As this quickstart uses a sample PDF file, run the following command:
+        
+        ```bash
+        uv add "unstructured[pdf]"
+        ```
+
+        Note that you can install multiple extras at the same time by separating them with commas, for example:
+
+        ```bash
+        uv add "unstructured[pdf,docx]"
+        ```
+    </Step>
+    <Step title="Install system dependencies">
+        You maximum compatibility, you should also install the following system dependencies:
+
+        - [libmagic-dev](https://man7.org/linux/man-pages/man3/libmagic.3.html) (for filetype detection)
+        - [poppler-utils](https://poppler.freedesktop.org/) and [tesseract-ocr](https://github.com/tesseract-ocr/tesseract) (for images and PDFs), and `tesseract-lang` (for additional language support)
+        - [libreoffice](https://www.libreoffice.org/discover/libreoffice/) (for Microsoft Office documents)
+        - [pandoc](https://pandoc.org/) (for `.epub`, `.odt`, and `.rtf` files. For `.rtf` files, you must have version 2.14.2 or newer. Running [this script](https://github.com/Unstructured-IO/unstructured/blob/main/scripts/install-pandoc.sh) will install the correct version for you.)
+
+        Installation instructured for these system dependencies vary by operating system type. For details, follow the preceding links or see your 
+        operating system's documentation.
+    </Step>
+    <Step title="Download the sample PDF file">
+        Download the sample PDF file named `layout-parser-paper.pdf` from the following location to your local development machine:
+
+        [https://github.com/Unstructured-IO/unstructured/tree/main/example-docs/pdf](https://github.com/Unstructured-IO/unstructured/tree/main/example-docs/pdf)    
     
-*   Convert a document to a dictionary and/or save it as a JSON.
-    
+        (You can also use any other PDF file that you want to work with instead of this sample file, if you prefer.)
+    </Step>
+    <Step title="Add the Python code">
+        In the project's `main.py` file, add the following Python code, replacing `<path/to>` with the 
+        path to the `layout-parser-paper.pdf` file that you downloaded to your local development machine.
 
-The example documents in this section come from the [example-docs](https://github.com/Unstructured-IO/unstructured-ingest/tree/main/example-docs) directory in the `unstructured` repo.
+        (If you want to use a different PDF file, replace `layout-parser-paper` with the name of that PDF file instead.)
+        
+        ```python
+        from unstructured.partition.pdf import partition_pdf
+        from unstructured.staging.base import elements_to_json
 
-Before running the code in this make sure you’ve installed the `unstructured` library and all dependencies using the instructions in the [quickstart](../installation/overview#quick-start) section.
+        file_path = "<path/to>"
+        base_file_name = "layout-parser-paper"
 
-## Partitioning a document
+        def main():
+            elements = partition_pdf(filename=f"{file_path}/{base_file_name}.pdf")
+            elements_to_json(elements=elements, filename=f"{file_path}/{base_file_name}-output.json")
 
-In this section, we’ll cut right to the chase and get to the most important part of the library: partitioning a document. The goal of document partitioning is to read in a source document, split the document into sections, categorize those sections, and extract the text associated with those sections. Depending on the document type, unstructured uses different methods for partitioning a document. We’ll cover those in a later section. For now, we’ll use the simplest API in the library, the `partition` function. The `partition` function will detect the filetype of the source document and route it to the appropriate partitioning function. You can try out the partition function by running the cell below.
+        if __name__ == "__main__":
+            main()
+        ```
+    </Step>
+    <Step title="Run the Python code">
+        Use `uv` to run the preceding Python code by running the following command:
 
-```python
-from unstructured.partition.auto import partition
+        ```bash
+        uv run main.py
+        ```
 
-elements = partition(filename="example-10k.html")
+        It might take a few minutes for the command to finish.
+    </Step>
+    <Step title="View the output">
+        After the command finishes running successfully, view the Unstructured elements and metadata that were generated by opening the `layout-parser-paper-output.json` file in your editor. This file will be in 
+        the location as the original `layout-parser-paper.pdf` file.
 
-```
+        (If you used a different PDF file, the output file will be named `<your-file-name>-output.json` instead.)
+    </Step>
+</Steps>
 
-
-You can also pass in a file as a file-like object using the following workflow:
-
-```python
-with open("example-10k.html", "rb") as f:
-    elements = partition(file=f)
-
-```
-
-
-The `partition` function uses [libmagic](https://formulae.brew.sh/formula/libmagic) for filetype detection. If `libmagic` is not present and the user passes a filename, `partition` falls back to detecting the filetype using the file extension. `libmagic` is required if you’d like to pass a file-like object to `partition`. We highly recommend installing `libmagic` and you may observe different file detection behaviors if `libmagic` is not installed\`.
+## Next steps
 
 import SharedOSSSingleFile from '/snippets/general-shared-text/multi-file-oss-use-connectors.mdx';
 
-<SharedOSSSingleFile />
+- Learn more about the [available partition functions](/open-source/core-functionality/partitioning) in addition to `partition_pdf` for converting other types of files into standard [Unstructured document elements and metadata](/open-source/concepts/document-elements).
+- By default, the preceding example uses the `auto` partitioning strategy. Learn about other [available partitioning strategies](/open-source/concepts/partitioning-strategies) for fine-tuned approaches to converting different types of files into Unstructured document elements.
+- Learn about [available chunking functions](/open-source/core-functionality/chunking) for splitting up the text in your document elements into manageable chunks as needed to fit into your models' limited context windows.
+- Learn about [available cleaning functions](/open-source/core-functionality/cleaning) for cleaning up your document elements' data as needed.
+- Learn about [available extraction functions](/open-source/core-functionality/extracting) for getting precise information out of your document elements as needed.
+- Learn about how to [generate vector embeddings](/open-source/core-functionality/embedding) for the text in your document elements for use in RAG applications, AI agents, model fine-tuning tasks, and more.
+- For an additional code example, see the [Unstructured Quick Tour](https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/Unstructured_Quick_Tour.ipynb) Google Colab notebook. 
+- The Unstructured open source library is also available as a [Docker container](/open-source/installation/docker-installation).
+- The [Unstructured Ingest CLI and Unstructured Ingest Python library](/open-source/ingestion/overview) build upon the Unstructured open source library by providing additional functionality such as batch file processing, 
+  ingesting files from remote source locations and sending the processed files' data to remote destination locations, creating programmatic ETL pipelines, optionally processing files on Unstructured-hosted compute resource instead of locally for improved performance and quality on a pay-as-you-go basis, and more.
+- The [Unstructured user interface (UI)](/ui/overview) and [Unstructured API](/api-reference/overview) are superior to the Unstructured open source library, the 
+  Unstructured Ingest CLI, and the Unstructured Ingest Python library. The Unstructured UI and API are designed for production scenarios, with significantly increased performance and quality, 
+  the latest OCR and vision language models, advanced chunking strategies, security compliance, multi-user account management, job scheduling and monitoring, self-hosted deployment options, and more on a pay-as-you-go or subscription basis.
 
-## Quickstart Tutorial
+## Need help?
 
-If you’re eager to dive in, head over [Getting Started](https://colab.research.google.com/drive/1U8VCjY2-x8c6y5TYMbSFtQGlQVFHCVIW#scrollTo=jZp37lfueaeZ) on Google Colab to get a hands-on introduction to the `unstructured` library. In a few minutes, you’ll have a basic workflow set up and running!
+- Join the [Unstructured Slack community](https://short.unstructured.io/pzw05l7) and post your 
+  questions in the **# ask-for-help-open-source-library** channel.
+- Post your bug reports and feature requests in the [Unstructured open source library GitHub repository](https://github.com/Unstructured-IO/unstructured/issues). These bug reports and feature requests are evaluated and addressed  
+  based on the interest and availability of the open source community.
 
-For more detailed information about specific components or advanced features, explore the rest of the documentation.
+
+

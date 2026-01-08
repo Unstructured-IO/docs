@@ -1,6 +1,6 @@
 ---
 title: Chunking
-description: Chunking functions in `unstructured` use metadata and document elements detected with `partition` functions to post-process elements into more useful "chunks" for uses cases such as Retrieval Augmented Generation (RAG).
+description: Chunking functions in `unstructured` use metadata and document elements detected with `partition` functions to post-process elements into more useful "chunks" for uses cases such as retrieval-augmented generation (RAG).
 ---
 
 ## Chunking Basics
@@ -180,6 +180,10 @@ for element in elements:
 #     ListItem: Roses are red
 #     ListItem: Violets are blue
 ```
+
+If High Res partitioning is used, the `orig_elements` value of each chunked element will contain an `image_base64` value for each of the `Image` and `Table` elements. To access the original content for an `image_base64` field, 
+[decompress and then Base64-decode](/open-source/how-to/get-chunked-elements) the `orig_elements` value. Then 
+[Base64-decode](/open-source/how-to/extract-image-block-types) the resulting `image_base64` values.
 
 ## Learn more
 

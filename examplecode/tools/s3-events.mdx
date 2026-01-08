@@ -1,0 +1,176 @@
+---
+title: Amazon S3 event triggers
+---
+
+You can use Amazon S3 events, such as adding new files to&mdash;or updating existing files within&mdash;S3 buckets, to automatically run Unstructured ETL+ workflows 
+that rely on those buckets as sources. This enables a no-touch approach to having Unstructured automatically process new and updated files in S3 buckets as they are added or updated.
+
+This example shows how to automate this process by adding an [AWS Lambda function](https://docs.aws.amazon.com/lambda/latest/dg/concepts-basics.html#gettingstarted-concepts-function) to your AWS account. This function runs 
+whenever a new file is added to&mdash;or an existing file is updated within&mdash;the specified S3 bucket. This function then calls the [Unstructured API's workflow operations](/api-reference/workflow/overview) to automatically run the 
+specified corresponding Unstructured ETL+ workflow in your Unstructured account.
+
+<Note>
+    This example uses a custom AWS Lambda function that you create and maintain. 
+    Any issues with file detection, timing, or function invocation could be related to your custom function, 
+    rather than with Unstructured. If you are getting unexpected or no results, be sure to check your custom 
+    function's Amazon CloudWatch logs first for any informational and error messages.
+</Note>
+
+## Requirements
+
+import GetStartedSimpleApiOnly from '/snippets/general-shared-text/get-started-simple-api-only.mdx'
+
+To use this example, you will need the following:
+
+- An Unstructured account, and an Unstructured API key for your account, as follows:
+
+  <GetStartedSimpleApiOnly />
+
+- The Unstructured API's workflow operations URL for your account, as follows:
+
+  1. In the Unstructured UI, click **API Keys** on the sidebar.<br/>
+  2. Note the value of the **Unstructured API's workflow operations** field.
+
+- An S3 source connector in your Unstructured account. [Learn how](/ui/sources/s3). 
+- Some available [destination connector](/ui/destinations/overview) in your Unstructured account.
+- A workflow that uses the preceding source and destination connectors. [Learn how](/ui/workflows).
+
+## Step 1: Create the Lambda function
+
+1. Sign in to the AWS Management Console for your account.
+2. Browse to and open the **Lambda** console.
+3. On the sidebar, click **Functions**.
+4. Click **Create function**.
+5. Select **Author from scratch**.
+6. For **Function name**, enter a name for your function, such as `RunUnstructuredWorkflow`.
+7. For **Runtime**, select **Node.js 22.x**.
+8. For **Architecture**, select **x86_64**.
+9. Under **Permissions**, expand **Change default execution role**, and make sure **Create a new role with basic Lambda permissions** is selected.
+10. Click **Create function**. After the function is created, the function's code and configuration settings page appears.
+
+## Step 2: Add code to the function
+
+1. With the function's code and configuration settings page open from the previous step, click the **Code** tab.
+2. In the **Code source** tile, replace the contents of the `index.mjs` file with the following code instead.
+
+   If the `index.mjs` file is not visible, do the following:
+   
+   1. Show the **Explorer**: on the sidebar, click **Explorer**.
+   2. In the **Explorer** pane, expand the function name.
+   3. Click to open the **index.mjs** file.
+
+   Here is the code for the `index.mjs` file:
+
+   ```javascript
+   import https from 'https';
+
+   export const handler = async (event) => {
+     const apiUrl = process.env.UNSTRUCTURED_API_URL;
+     const apiKey = process.env.UNSTRUCTURED_API_KEY;
+
+     if (!apiUrl || !apiKey) {
+       throw new Error('Missing UNSTRUCTURED_API_URL or UNSTRUCTURED_API_KEY environment variable or both.');
+     }
+
+     const url = new URL(apiUrl);
+
+     const options = {
+       hostname: url.hostname,
+       path: url.pathname,
+       method: 'POST',
+       headers: {
+         'accept': 'application/json',
+         'unstructured-api-key': apiKey
+       }
+     };
+
+     const postRequest = () => new Promise((resolve, reject) => {
+       const req = https.request(options, (res) => {
+         let responseBody = '';
+         res.on('data', (chunk) => { responseBody += chunk; });
+         res.on('end', () => {
+           resolve({ statusCode: res.statusCode, body: responseBody });
+         });
+       });
+       req.on('error', reject);
+       req.end();
+     });
+
+     try {
+       const response = await postRequest();
+       console.log(`POST status: ${response.statusCode}, body: ${response.body}`);
+     } catch (error) {
+       console.error('Error posting to endpoint:', error);
+     }
+
+     return {
+       statusCode: 200,
+       body: JSON.stringify('Lambda executed successfully')
+     };
+   };
+   ```
+
+3. In **Explorer**, expand **Deploy (Undeployed Changes)**.
+4. Click **Deploy**.
+5. Click the **Configuration** tab.
+6. On the sidebar, click **Environment variables**.
+7. Click **Edit**.
+8. Click **Add environment variable**.
+9. For **Key**, enter `UNSTRUCTURED_API_URL`.
+10. For **Value**, enter `<unstructured-api-url>/workflows/<workflow-id>/run`. Replace the following placeholders:
+
+    - Replace `<unstructured-api-url>` with your Unstructured API's workflow operations value.
+    - Replace `<workflow-id>` with the ID of your Unstructured workflow.
+
+    The **Value** should now look similar to the following:
+
+    ```text
+    https://platform.unstructuredapp.io/api/v1/workflows/11111111-1111-1111-1111-111111111111/run
+    ```
+
+11. Click **Add environment variable** again.
+12. For **Key**, enter `UNSTRUCTURED_API_KEY`.
+13. For **Value**, enter your Unstructure API key value.
+14. Click **Save**.
+
+## Step 3: Create the function trigger
+
+1. Browse to and open the S3 console.
+2. Browse to and open the S3 bucket that corresponds to your S3 source connector. The bucket's settings page appears.
+3. Click the **Properties** tab.
+4. In the **Event notifications** tile, click **Create event notification**.
+5. In the **General configuration** tile, enter a name for your event notification, such as `UnstructuredWorkflowNotification`.
+6. (Optional) For **Prefix**, enter any prefix to limit the Lambda function's scope to only the specified prefix. For example, to limit the scope to only 
+   the `input/` folder within the S3 bucket, enter `input/`.
+
+   <Warning>
+      AWS does not recommend reading from and writing to the same S3 bucket because of the possibility of accidentally running Lambda functions in loops. 
+      However, if you must read from and write to the same S3 bucket, AWS strongly recommends specifying a **Prefix** value. [Learn more](https://docs.aws.amazon.com/lambda/latest/dg/with-s3.html).
+   </Warning>
+
+7. (Optional) For **Suffix**, enter any file extensions to limit the Lambda function's scope to only the specified file extensions. For example, to limit the scope to only 
+   files with the `.pdf` extension, enter `.pdf`.
+8. In the **Event types** tile, check the box titled **All object create events (s3:ObjectCreated:\*)**.
+9. In the **Destination** tile, select **Lambda function** and **Choose from your Lambda functions**.
+10. In the **Lambda function** tile, select the Lambda function that you created earlier in Step 1.
+11. Click **Save changes**.
+
+## Step 4: Trigger the function
+
+1. With the S3 bucket's settings page open from the previous step, click the **Objects** tab.
+2. If you specified a **Prefix** value earlier in Step 3, then click to open the folder that corresponds to your **Prefix** value.
+3. Click **Upload**, and then follow the on-screen instructions to upload a file to the bucket's root. If, however, you clicked to open the folder that corresponds to your **Prefix** value instead, then follow the on-screen instructions to upload a file to that folder instead.
+
+## Step 5: View the trigger results
+
+1. In the Unstructured user interface for your account, click **Jobs** on the sidebar.
+2. In the list of jobs, click the newly running job for your workflow.
+3. After the job status shows **Finished**, go to your destination location to see the results.
+
+## Step 6 (Optional): Delete the trigger
+
+1. To stop the function from automatically being triggered whenever you add new files to&mdash;or update existing files within&mdash;the S3 bucket, browse to and open the S3 console.
+2. Browse to and open the bucket that corresponds to your S3 source connector. The bucket's settings page appears.
+3. Click the **Properties** tab.
+4. In the **Event notifications** tile, check the box next to the name of the event notification that you added earlier in Step 3.
+5. Click **Delete**, and then click **Confirm**.

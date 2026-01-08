@@ -8,5 +8,6 @@
 - `<catalog>` (_required_): The name of the target Apache Iceberg-based catalog within the IBM watsonx.data data store instance.
 - `<namespace>` (_required_): The name of the target namespace (also known as a schema) within the catalog.
 - `<table>` (_required_): The name of the target table within the namespace (schema).
-- `<max-retries>`: The maximum number of retries for the upload process. The default is `5`.
+- `<max-retries>`: The maximum number of retries for the upload process. Typically, an optimal setting is `150`. The default is `50`. If specified, it must be a number between `2` and `500`, inclusive.
+- `<max-retries-connection>`: The maximum number of retries when connecting to the catalog. Typically, an optimal setting is `15`. The default is `10`. If specified, it must be a number between `2` and `100`, inclusive.
 - `<record-id-key>`: The name of the column that uniquely identifies each record in the target table. The default is `record_id`.

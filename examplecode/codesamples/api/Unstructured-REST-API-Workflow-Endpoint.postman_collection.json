@@ -1,0 +1,1035 @@
+{
+	"info": {
+		"_postman_id": "24b56b98-87f0-4a94-a3c7-eb03ea243777",
+		"name": "Unstructured REST API - Workflow Endpoint",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38317384"
+	},
+	"item": [
+		{
+			"name": "Source Connectors",
+			"item": [
+				{
+					"name": "List Source Connectors",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/sources",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"sources"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Source Connectors By Type",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/sources?source_type=<type>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"sources"
+							],
+							"query": [
+								{
+									"key": "source_type",
+									"value": "<type>"
+								}
+							]
+						},
+						"description": "For a list of available strings for `source_type`, such as `s3` for Amazon S3, see [https://docs.unstructured.io/api-reference/workflow/sources/overview](https://docs.unstructured.io/api-reference/workflow/sources/overview)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Source Connector",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/sources/<connector-id>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"sources",
+								"<connector-id>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Source Connector",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    // Specify the settings for the source connector here.\n    // See https://docs.unstructured.io/api-reference/workflow/sources/overview\n    // For example:\n    \"name\": \"<name>\",\n    \"type\": \"<type>\",\n    \"config\": {\n        \"<key>\": \"<value>\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/sources",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"sources"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Source Connector",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    // Specify the updated settings for the source connector here.\n    // Note that the \"name\" and \"type\" settings cannot be updated after the source connector is intially created.\n    // See https://docs.unstructured.io/api-reference/workflow/sources/overview\n    // For example:\n    \"config\": {\n        \"<key>\": \"<value>\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/sources/<connector-id>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"sources",
+								"<connector-id>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Source Connector",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/sources/<connector-id>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"sources",
+								"<connector-id>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test a Source Connector",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/sources/<connector-id>/connection-check",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"sources",
+								"<connector-id>",
+								"connection-check"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Destination Connectors",
+			"item": [
+				{
+					"name": "List Destination Connectors",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/destinations",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"destinations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Destination Connectors By Type",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/destinations?destination_type=<type>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"destinations"
+							],
+							"query": [
+								{
+									"key": "destination_type",
+									"value": "<type>",
+									"description": "\n"
+								}
+							]
+						},
+						"description": "For a list of available strings for `destination_type`, such as `s3` for Amazon S3, see [https://docs.unstructured.io/api-reference/workflow/destinations/overview](https://docs.unstructured.io/api-reference/workflow/destinations/overview)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Destination Connector",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/destinations/<connector-id>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"destinations",
+								"<connector-id>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Destination Connector",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    // Specify the settings for the destination connector here.\n    // See https://docs.unstructured.io/api-reference/workflow/destinations/overview\n    // For example:\n    \"name\": \"<name>\",\n    \"type\": \"<type>\",\n    \"config\": {\n        \"<key>\": \"<value>\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/destinations",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"destinations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Destination Connector",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    // Specify the updated settings for the destination connector here.\n    // Note that the \"name\" and \"type\" settings cannot be updated after the destination connector is intially created.\n    // See https://docs.unstructured.io/api-reference/workflow/destinations/overview\n    // For example:\n    \"config\": {\n        \"<key>\": \"<value>\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/destinations/<connector-id>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"destinations",
+								"<connector-id>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Destination Connector",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/destinations/<connector-id>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"destinations",
+								"<connector-id>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Test a Destination Connector",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/destinations/<connector-id>/connection-check",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"destinations",
+								"<connector-id>",
+								"connection-check"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Workflows",
+			"item": [
+				{
+					"name": "List Workflows",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"workflows"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Workflows for a Source Connector",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows?source_id=<connector-id>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"workflows"
+							],
+							"query": [
+								{
+									"key": "source_id",
+									"value": "<connector-id>"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Workflows for a Destination Connector",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows?destination_id=<connector-id>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"workflows"
+							],
+							"query": [
+								{
+									"key": "destination_id",
+									"value": "<connector-id>"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Workflows for a Workflow Status",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows?status=<status>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"workflows"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "<status>"
+								}
+							]
+						},
+						"description": "For a list of available strings for `status`, such as `active` and `inactive`, see [https://docs.unstructured.io/api-reference/workflow/overview#list-workflows](https://docs.unstructured.io/api-reference/workflow/overview#list-workflowsFor)"
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Workflow",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"workflows",
+								"<workflow-id>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create a Workflow",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    // Specify the settings for the workflow here.\n    // See https://docs.unstructured.io/api-reference/workflow/workflows#create-a-workflow\n    // For example:\n    \"name\": \"<name>\",\n    \"source_id\": \"<source-connector-id>\", // To use a local source, omit \"source_id\".\n    \"destination_id\": \"<destination-connector-id>\", // To use a local destination, omit \"destination_id\".\n    \"workflow_type\": \"<type>\", // To use a workflow template: \"template\". To specify nodes manually: \"custom\".\n    \"template_id\": \"<workflow-template-id>\", // To specify nodes manually, omit \"template_id\". To use a workflow template, omit \"workflow_nodes\".\n    \"workflow_nodes\": [\n        {\n            \"name\": \"<node-name>\",\n            \"type\": \"<node-type>\",\n            \"subtype\": \"<node-subtype>\",\n            \"settings\": {\n                \"<key>\": \"<value>\"\n            }\n        },\n        {\n            \"name\": \"<node-name>\",\n            \"type\": \"<node-type>\",\n            \"subtype\": \"<node-subtype>\",\n            \"settings\": {\n                \"<key>\": \"<value>\"\n            }\n        }\n        // And so on for additional workflow DAG nodes.\n    ],\n    \"schedule\": \"<schedule-timeframe>\"\n}\n\n\n\n\n\n\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"workflows"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Workflow",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    // Specify the updated settings for the workflow here.\n    // See https://docs.unstructured.io/api-reference/workflow/workflows#create-a-workflow\n    // For example:\n    \"name\": \"<name>\",\n    \"source_id\": \"<source-connector-id>\", // To use a local source, omit \"source_id\".\n    \"destination_id\": \"<destination-connector-id>\", // To use a local destination, omit \"destination_id\".\n    \"workflow_type\": \"<type>\",\n    \"workflow_nodes\": [\n        {\n            \"name\": \"<node-name>\",\n            \"type\": \"<node-type>\",\n            \"subtype\": \"<node-subtype>\",\n            \"settings\": {\n                \"<key>\": \"<value>\"\n            }\n        },\n        {\n            \"name\": \"<node-name>\",\n            \"type\": \"<node-type>\",\n            \"subtype\": \"<node-subtype>\",\n            \"settings\": {\n                \"<key>\": \"<value>\"\n            }\n        }\n        // And so on for additional workflow DAG nodes.\n    ],\n    \"schedule\": \"<schedule-timeframe>\"\n}\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"workflows",
+								"<workflow-id>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Workflow",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"workflows",
+								"<workflow-id>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Run a Workflow - Remote Source and Remote Destination",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>/run",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"workflows",
+								"<workflow-id>",
+								"run"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Run a Workflow - Local Source and Local or Remote Destination",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "input_files",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "filename",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>/run",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"workflows",
+								"<workflow-id>",
+								"run"
+							]
+						},
+						"description": "To run the worfklow for multiple files, add an additional `input_files`, `filename`, and `type` entry for each additional file.\n\nSee also [https://docs.unstructured.io/api-reference/workflow/overview#run-a-workflow](https://docs.unstructured.io/api-reference/workflow/overview#run-a-workflow)"
+					},
+					"response": []
+				},
+				{
+					"name": "List Workflow Templates",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/templates",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"templates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Workflow Template",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/templates/<template-id>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"templates",
+								"<template-id>"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Jobs",
+			"item": [
+				{
+					"name": "List Jobs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/jobs",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"jobs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Job",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/jobs/<job-id>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"jobs",
+								"<job-id>"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cancel a Job",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/jobs/<job-id>/cancel",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"jobs",
+								"<job-id>",
+								"cancel"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Download a Processed Local File from a Job",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							},
+							{
+								"key": "accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/jobs/><job-id>/download?file_id=<file-id>&node_id=<node-id>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"jobs",
+								"><job-id>",
+								"download"
+							],
+							"query": [
+								{
+									"key": "file_id",
+									"value": "<file-id>"
+								},
+								{
+									"key": "node_id",
+									"value": "<node-id>"
+								}
+							]
+						},
+						"description": "To get the values for `file_id` and `node_id`, run the \"GET Get a Job\" request.\n\nSee also [https://docs.unstructured.io/api-reference/workflow/overview#download-a-processed-local-file-from-a-job](https://docs.unstructured.io/api-reference/workflow/overview#download-a-processed-local-file-from-a-job)"
+					},
+					"response": []
+				},
+				{
+					"name": "Run an On-Demand Job - Local Source and Local Destination",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							},
+							{
+								"key": "accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "input_files",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "request_data",
+									"value": "{\"template_id\":\"<workflow-template-id>\",\"job_nodes\":[<job-node-settings>]}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/jobs/",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"jobs",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "REST API Healthcheck",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.unstructuredapp.io/healthcheck",
+					"protocol": "https",
+					"host": [
+						"api",
+						"unstructuredapp",
+						"io"
+					],
+					"path": [
+						"healthcheck"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
