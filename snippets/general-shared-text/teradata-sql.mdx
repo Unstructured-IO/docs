@@ -1,0 +1,81 @@
+- A Teradata ClearScape Analytics account, which includes:
+
+  - An environment in the account.
+  - A Teradata Vantage database in the environment.
+  - A user name and password for the database.
+
+  [Learn how](https://developers.teradata.com/quickstarts/get-access-to-vantage/clearscape-analytics-experience/getting-started-with-csae/).
+
+- The database's corresponding server host name or IP address, as follows:
+
+  1. Sign in to your Teradata ClearScape Analytics account.<br/>
+  2. On the sidebar, under **Environments**, click the name of the database's corresponding environment.<br/>
+  3. Under **Connection detals for Vantage database**, use the **Host** value.<br/>
+
+- The name of the user who has the appropriate access to the database, as follows:
+
+  1. Sign in to your Teradata ClearScape Analytics account.<br/>
+  2. On the sidebar, under **Environments**, click the name of the database's corresponding environment.<br/>
+  3. Under **Connection detals for Vantage database**, use the **Username** value.<br/>
+
+  - The Teradata SQL command to get a list of available users is as follows:
+
+    ```sql
+    SELECT UserName 
+    FROM DBC.UsersV 
+    ORDER BY UserName;
+    ```
+
+- The password for the user, which you set up when you created the user. If you forget the password, [learn how to reset it](https://docs.teradata.com/r/Enterprise_IntelliFlex_VMware/Security-Administration/Managing-Database-Passwords/Managing-Common-Password-Problems/Resetting-Forgotten-Passwords).
+- The name of the target database in the environment. To get a list of available databases in the environment, you can run a query such as the following:
+
+  ```sql
+  SELECT DatabaseName 
+  FROM DBC.DatabasesV 
+  ORDER BY DatabaseName;
+  ```
+
+- The name of the target table in the database. To get a list of available tables in a database, you can run a query such as the following, replacing `<database-name>` with the name of the target database:
+
+  ```sql
+  SELECT TableName
+  FROM DBC.TablesV
+  WHERE DatabaseName = '<database-name>' AND TableKind = 'T'
+  ORDER BY TableName;
+  ```
+
+  To create a table that is compatible with Unstructured, you can adapt the following table schema example for your own needs, replacing `<database-name>` with the name of the target database:
+
+  ```sql
+  CREATE SET TABLE "<database-name>".elements (
+     "id" VARCHAR(64) NOT NULL,
+     PRIMARY KEY ("id"),
+     "record_id" VARCHAR(64),
+     "element_id" VARCHAR(64),
+     "text" VARCHAR(32000) CHARACTER SET UNICODE,
+     "type" VARCHAR(50),
+     "embeddings" VARCHAR(64000),
+     "last_modified" VARCHAR(50),
+     "languages" VARCHAR(200),
+     "file_directory" VARCHAR(500),
+     "filename" VARCHAR(255),
+     "filetype" VARCHAR(50),
+     "record_locator" VARCHAR(1000),
+     "date_created" VARCHAR(50),
+     "date_modified" VARCHAR(50),
+     "date_processed" VARCHAR(50),
+     "permissions_data" VARCHAR(1000),
+     "filesize_bytes" INTEGER,
+     "parent_id" VARCHAR(64)
+  )
+  ```
+
+  Unstructured cannot provide a schema that is guaranteed to work for everyone in all circumstances. 
+  This is because these schemas will vary based on 
+  your source files' types; how you want Unstructured to partition, chunk, and generate embeddings; 
+  any custom post-processing code that you run; and other factors.
+
+- For the source connector, the name of the primary key column in the table (for example, a column named `id`, typically defined as `"id" VARCHAR(64) NOT NULL, PRIMARY KEY ("id")`).
+- For the source connector, the names of any specific columns to fetch from the table. By default, all columns are fetched unless otherwise specified.
+- For the destination connector, the name of the column in the table that uniquely identifies each record for Unstructured to perform any necessary record updates. By default convention, Unstructured expects this field to be named `record_id`.
+

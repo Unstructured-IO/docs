@@ -1,0 +1,12 @@
+Fill in the following fields:
+
+- **Name** (_required_): A unique name for this connector.
+- **Host** (_required_): The hostname or IP address associated with the target Teradata Vantage database.
+- **Database**: The name of the target database. By default, the default database name is used if not otherwise specified.
+- **Table Name** (_required_): The name of the target table in the database.
+- **Batch Size**: The maximum number of rows per batch. The default is `100` if not otherwise specified.
+- **ID Column** (_required_, source connector only): The name of the primary key column that Teradata uses to uniquely identify each record in the table.
+- **Record ID Key** (destination connector only): The name of the column that Unstructured uses to uniquely identify each record in the table for record update purposes. The default is `record_id` if not otherwise specified.
+- **Columns** (source connector only): The names of the columns to fetch from the table, seperated by commas. By default, all columns are fetched unless otherwise specified.
+- **Username** (_required_): The name of the user who has the appropriate access to the database.
+- **Password** (_required_): The password for the user.
