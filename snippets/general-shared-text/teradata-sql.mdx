@@ -44,7 +44,21 @@
   ORDER BY TableName;
   ```
 
-  To create a table that is compatible with Unstructured, you can adapt the following table schema example for your own needs, replacing `<database-name>` with the name of the target database:
+  When Unstructured writes rows to a table, the table's columns must have a schema that is compatible with Unstructured. 
+  Unstructured cannot provide a schema that is guaranteed to work for everyone in all circumstances. 
+  This is because these schemas will vary based on 
+  your source files' types; how you want Unstructured to partition, chunk, and generate embeddings; 
+  any custom post-processing code that you run; and other factors.
+
+  In any case, note the following about table schemas:
+
+  - The following columns are always required by Unstructured: `record_id` and `element_id`.
+  - The following columns are optional for Unstructured, but highly recommended: `text` and `type`.
+  - If Unstructured is generating vector embeddings, the `embeddings` column is also required.
+  - The rest of the columns are optional and typically will be output by Unstructured as part of the `metadata` field.
+
+  Here is an example table schema that is compatible with Unstructured. It includes all of the required and recommended columns, as 
+  well as a few additional columns that are typically output by Unstructured as part of the `metadata` field.
 
   ```sql
   CREATE SET TABLE "<database-name>".elements (
@@ -69,11 +83,6 @@
      "parent_id" VARCHAR(64)
   )
   ```
-
-  Unstructured cannot provide a schema that is guaranteed to work for everyone in all circumstances. 
-  This is because these schemas will vary based on 
-  your source files' types; how you want Unstructured to partition, chunk, and generate embeddings; 
-  any custom post-processing code that you run; and other factors.
 
 - For the source connector, the name of the primary key column in the table (for example, a column named `id`, typically defined as `"id" VARCHAR(64) NOT NULL, PRIMARY KEY ("id")`).
 - For the source connector, the names of any specific columns to fetch from the table. By default, all columns are fetched unless otherwise specified.
