@@ -1108,7 +1108,6 @@ import DeprecatedModelsAPI from '/snippets/general-shared-text/deprecated-models
 
 Fields for `settings` include:
 
-- `strategy`: _Required_. The partitioning strategy to use. This field must be set to `auto`.
 - `provider`: _Optional_. If the Auto partitioning strategy needs to use the VLM partitioning strategy, then use the specified VLM provider. Allowed values include `anthropic`, `auto`, `bedrock`, `openai`, and `vertexai`. The default value is `anthropic`.
 - `provider_api_key`: _Optional_. If specified, use a non-default API key for calls to the specified VLM provider as needed. The default is none, which means to rely on using Unstructured's internal default API key for the VLM provider.
 - `model`: _Optional_. If the Auto partitioning strategy needs to use the VLM partitioning strategy, then use the specified VLM. The default value is `claude-sonnet-4-20250514`.
@@ -1272,6 +1271,7 @@ Fields for `settings` include:
                     "table"
                 ],
                 "infer_table_structure": <True|False>,
+                "coordinates": <True|False>
             }
         )
         ```
@@ -1301,6 +1301,7 @@ Fields for `settings` include:
                     "table"
                 ],
                 "infer_table_structure": <true|false>,
+                "coordinates": <true|false>
             }
         }
         ```
@@ -1356,6 +1357,7 @@ Fields for `settings` include:
   - `UncategorizedText`
  
 - `infer_table_structure`: _Optional_. True to have any table elements extracted from a PDF to include an additional `metadata` field named `text_as_html`, containing an HTML `<table>` transformation. The default is false.
+- `coordinates`: _Optional_. True to have each element extracted from a PDF to include information about that element's position relative to its corresponding page. The default is false.
 
 #### Fast strategy
 
@@ -1384,7 +1386,8 @@ Fields for `settings` include:
                     "image",
                     "table"
                 ],
-                "infer_table_structure": <True|False>
+                "infer_table_structure": <True|False>,
+                "coordinates": <True|False>
             }
         )
         ```
@@ -1413,7 +1416,8 @@ Fields for `settings` include:
                     "image",
                     "table"
                 ],
-                "infer_table_structure": <true|false>
+                "infer_table_structure": <true|false>,
+                "coordinates": <true|false>
             }
         }
         ```   
@@ -1471,6 +1475,7 @@ Fields for `settings` include:
   - `UncategorizedText`
 
 - `infer_table_structure`: _Optional_. True to have any table elements extracted from a PDF to include an additional `metadata` field named `text_as_html`, containing an HTML `<table>` transformation. The default is false.
+- `coordinates`: _Optional_. True to have each element extracted from a PDF to include information about that element's position relative to its corresponding page. The default is false.
 
 ### Enrichment node
 
