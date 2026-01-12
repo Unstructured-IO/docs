@@ -17,20 +17,24 @@ After partitioning, you can have Unstructured generate text-based summaries of d
 This summarization is done by using models offered through various model providers.
 
 Here is an example of the output of a detected image using GPT-4o. Note specifically the `text` field that is added. 
+In this `text` field, `type` indicates the kind of image that was detected (in this case, a graph), and `description` is a summary of the image. 
 Line breaks have been inserted here for readability. The output will not contain these line breaks. 
 
 ```json
 {
     "type": "Image",
     "element_id": "3303aa13098f5a26b9845bd18ee8c881",
-    "text": "{\n  \"type\": \"graph\",\n  \"description\": \"The graph shows 
+    "text": "{\n  
+      \"type\": \"graph\",\n  
+      \"description\": \"The graph shows 
         the relationship between Potential (V) and Current Density (A/cm2). 
         The x-axis is labeled 'Current Density (A/cm2)' and ranges from 
         0.0000001 to 0.1. The y-axis is labeled 'Potential (V)' and ranges 
         from -2.5 to 1.5. There are six different data series represented 
         by different colors: blue (10g), red (4g), green (6g), purple (2g), 
         orange (Control), and light blue (8g). The data points for each series 
-        show how the potential changes with varying current density.\"\n}",
+        show how the potential changes with varying current density.\"\n
+    }",
     "metadata": {
         "filetype": "application/pdf",
         "languages": [
@@ -42,6 +46,91 @@ Line breaks have been inserted here for readability. The output will not contain
         "filename": "7f239e1d4ef3556cc867a4bd321bbc41.pdf",
         "data_source": {}
     }
+}
+```
+
+For technical drawings, the `text` field will contain a `type` of `technical drawing`; `description` with `texts` containing text strings found in the drawing, 
+`tables` containing HTML representations of tables found in the drawing, and a `description` containing a summary of the drawing. 
+Here is an example. Line breaks have been inserted here for readability. The output will not contain these line breaks. 
+
+```json
+{
+  "type": "Image",
+  "element_id": "7877acdd762f2afc65b193fa89d8ef46",
+  "text": "{\n  
+    \"type\": \"technical drawing\",\n  
+    \"description\": {\n    
+      \"texts\": [\n
+        \"RTD 1\",\n      
+        \"RTD 2\",\n      
+        \"01\",\n      
+        \"18.50\\\" Cable Length\",\n      
+        \"02\",\n      
+        \"1/4\\\" Heat Shrink\",\n      
+        \"6X Strip wires 0.100\\\" - 0.115\\\" before crimping\",\n      
+        \"2X 1.50\",\n      
+        \"22.25\\\" Cable Length\"\n    
+      ],\n    
+      \"tables\": "<table>
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Part Number</th>
+            <th>Description</th>
+            <th>Supplier</th>
+            <th>Supplier PN</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>6</td>
+            <td>002622</td>
+            <td>Conn Socket 20-24AWG Gold</td>
+            <td>Digikey</td>
+            <td>WM7082CT-ND</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>1</td>
+            <td>002647</td>
+            <td>Conn Recept 16pos 3mm Dual Row</td>
+            <td>Digikey</td>
+            <td>WM2490-ND</td>
+          </tr>
+          <tr>
+              <td>3</td>
+              <td>2</td>
+              <td>102961-01</td>
+              <td>M12 Q/D Cable, Elbow, 4-Pole, 5m</td>
+              <td>Automation Direct</td>
+              <td>EVT222</td>
+          </tr>
+        </tbody>
+      </table>",\n    
+      \"description\": \"The technical drawing depicts a wiring setup involving two 
+          RTDs (Resistance Temperature Detectors) labeled RTD 1 and RTD 2. Each RTD 
+          is connected via cables with specified lengths: RTD 1 has an 18.50-inch 
+          cable length, and RTD 2 has a 22.25-inch cable length. The drawing 
+          includes annotations for stripping wires, indicating that six wires should 
+          be stripped to a length between 0.100 inches and 0.115 inches before 
+          crimping. There is a section labeled '1/4\\\" Heat Shrink' and a dimension 
+          marked '2X 1.50'. The drawing uses numbered circles to reference specific 
+          parts or steps in the process.\"\n  
+      }\n
+  }",
+  "metadata": {
+    "filetype": "application/pdf",
+    "languages": [
+      "eng"
+    ],
+    "page_number": 1,
+    "image_base64": "/9j...<full results omitted for brevity>...Q==",
+    "image_mime_type": "image/jpeg",
+    "filename": "Material-Callouts-c4655c0c.pDF",
+    "data_source": {}
+  }
 }
 ```
 
