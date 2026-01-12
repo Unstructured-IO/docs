@@ -1,0 +1,21 @@
+- `<name>` (_required_) - A unique name for this connector.
+- `<host-name>:<port-number>` (_required_) - The OpenSearch instance's host (and `:` followed by the port number, if you're using a local OpenSearch instance).
+- `<index-name>` (_required_) - The name of the search index on the instance.
+- `<username>` - If you're using basic authentication to the instance, the domain's master user's name.
+- `<password>` - If you're using basic authentication to the instance, the domain's master user's password.
+- `<aws-access-key-id>` - If you're using an existing AWS IAM user as the domain's master user, the AWS access key ID for the AWS IAM user. If you're also using AWS STS for authentication, this will be a temporary AWS access key ID.
+- `<aws-secret-access-key>` - If you're using an existing AWS IAM user as the domain's master user, the AWS secret access key for the AWS IAM user. If you're also using AWS STS for authentication, this will be a temporary AWS secret access key.
+- `<aws-session-token>` - If you're using AWS STS for authentication, the temporary AWS STS session token.
+
+  <Warning>
+      AWS STS credentials (consisting of a temporary AWS access key, temporary AWS secret access key, and temporary AWS STS session token) can be valid for as little as 15 minutes or as long as 36 hours, depending on how the credentials were initially 
+      generated. After the expiry time, the credentials are no longer valid and will no longer work with the corresponding OpenSearch connector. 
+      You must get a new set of AWS STS credentials to replace the expired ones by, which produces 
+      a new, refreshed temporary AWS access key, temporary AWS secret access key, and temporary AWS STS session token. For more information, see 
+      [Request temporary security credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp_request.html). 
+
+      After you generate refreshed temporary AWS STS credentials, you must update the OpenSearch connector's settings with the new, refreshed AWS STS credentials. 
+  </Warning>
+
+- `<field-name>` (_source connectors only_) - Any specific fields to be accessed in the index.
+- `<use-ssl>` (_required_) - True if the OpenSearch instance requires an SSL connection; otherwise, false.

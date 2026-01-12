@@ -16,7 +16,7 @@
   3. On the sidebar, under **Manage identities**, click **API keys**.
   4. With the **View** list showing **My IBM Cloud API keys**, click **Create**. 
   5. Enter some **Name** and an optional **Description** for the API key. 
-  6. Leave **Leaked action** set to **Disable the leaked key** and **Session creation** set to **No**.
+  6. Leave **Leaked action** set to **Disable the leaked key** and **Session management** set to **No**.
   7. Click **Create**. 
   8. Click **Copy** or **Download** to copy or save the API key to a secure location. You won't be able to access this API key from this screen again.
 
@@ -112,21 +112,34 @@
   8. Under **Storage**, click **IBM Cloud Object Storage**, and then click **Next**.
   9. Complete the on-screen instructions to finish creating the Iceberg catalog. This includes providing the following settings:
   
+     If you select **Discover COS instance**, you must provide the following settings:
+
+     - The name of the target COS instance.
+     - The name of the target storage object (such as the target bucket) within the COS instance.
+     - Some display name for the component.
+     - After you provide this information, do the following:
+     
+       a. Check the box labelled **Associate Catalog**.<br/>
+       b. For **Catalog type**, select **Apache Iceberg**.<br/>
+       c. Enter some **Catalog name**.<br/>
+       d. Click **Associate**.<br/>
+
+     If you select **Register my own**, you must provide the following settings:
+
      - Some display name for the component.
      - The name of the target bucket within the target Cloud Object Storage (COS) instance that you noted earlier.
      - The region for the target bucket, which you noted earlier. 
      - The public endpoint for the target bucket, which you noted earlier. For this screen only, be sure to prefix the public endpoint with `https://`.
      - The HMAC access key ID for the target COS instance, which you noted earlier.
      - The HMAC secret access key for the target COS instance, which you noted earlier.
+     - After you provide this information, do the following:
+     
+       a. Check the box labelled **Associate Catalog**.<br/>
+       b. For **Catalog type**, select **Apache Iceberg**.<br/>
+       c. Enter some **Catalog name**.<br/>
+       d. Click **Associate**.<br/>
 
-  10. Next to **Connection status**, click **Test connection** to test the connection. Do not proceed until **Successful** is shown. If the connection is 
-      not successful, check the values you entered for the target bucket name, region, endpoint, access key, and secret access key, and try again.
-  11. Check the box labelled **Associate Catalog**.
-  12. Check the box labelled **Activate now**.
-  13. Under **Associated catalog**, for **Catalog type**, select **Apache Iceberg**.
-  14. Enter some **Catalog name**.
-  15. Click **Associate**.
-  16. On the sidebar, click **Infrastructure manager**. Make sure the catalog is associated with the appropriate engines. If it is not, rest your mouse 
+  10. On the sidebar, click **Infrastructure manager**. Make sure the catalog is associated with the appropriate engines. If it is not, rest your mouse 
       on an unassociated target engine, click the **Manage associations** icon, check the box next to the target catalog's name, and then 
       click **Save and restart engine**. 
       
@@ -162,33 +175,16 @@
   10. On the sidebar, click **Query workspace**.
   11. In the SQL editor, enter and run a table creation statement such as the following one that uses 
       [Presto SQL](https://prestodb.io/docs/current/connector/iceberg.html) syntax, replacing `<catalog-name>` with the name of the target 
-      catalog and `<schema-name>` with the name of the target schema:
+      catalog and `<schema-name>` with the name of the target schema, with at minimum the fields `id`, `type`, `text`, `element_id`, and `record_id`:
 
       ```sql      
       CREATE TABLE <catalog-name>.<schema-name>.elements (
-         "type" varchar,
-         "element_id" varchar,
-         "text" varchar,
-         "file_directory" varchar,
-         "filename" varchar,
-         "languages" array(varchar),
-         "last_modified" double,
-         "page_number" varchar,
-         "filetype" varchar,
-         "url" varchar,
-         "version" varchar,
-         "record_locator" varchar,
-         "date_created" double,
-         "date_modified" double,
-         "date_processed" double,
-         "filesize_bytes" bigint,
-         "points" varchar,
-         "system" varchar,
-         "layout_width" double,
-         "layout_height" double,
-         "id" varchar,
-         "record_id" varchar,
-         "parent_id" varchar
+         id varchar,
+         type varchar,
+         text varchar,
+         element_id varchar,
+         record_id varchar,
+         <additional-fields-as-needed>
       )
       WITH (
          delete_mode = 'copy-on-write',
@@ -196,6 +192,92 @@
          format_version = '2'
       )
       ```
+
+      For objects in the `metadata` field that Unstructured produces and that you want to store in an Apache Iceberg table in IBM watsonx.data, 
+      you must create fields in your table schema that follows Unstructured's `metadata` field naming convention. For example, if Unstructured 
+      produces a `metadata` field with the following child objects:
+
+      ```json
+      "metadata": {
+        "is_extracted": "true",
+        "coordinates": {
+          "points": [
+            [
+              134.20055555555555,
+              241.36027777777795
+            ],
+            [
+              134.20055555555555,
+              420.0269444444447
+            ],
+            [
+              529.7005555555555,
+              420.0269444444447
+            ],
+            [
+              529.7005555555555,
+              241.36027777777795
+            ]
+          ],
+          "system": "PixelSpace",
+          "layout_width": 1654,
+          "layout_height": 2339
+        },
+        "filetype": "application/pdf",
+        "languages": [
+          "eng"
+        ],
+        "page_number": 1,
+        "image_base64": "aaa...bbb...111",
+        "image_mime_type": "image/jpeg",
+        "filename": "realestate.pdf",
+        "data_source": {
+          "url": "file:///home/etl/node/downloads/00000000-0000-0000-0000-000000000001/7458635f-realestate.pdf",
+          "record_locator": {
+            "protocol": "file",
+            "remote_file_path": "file:///home/etl/node/downloads/00000000-0000-0000-0000-000000000001/7458635f-realestate.pdf"
+          }
+        },
+        "entities": {
+          "items": [
+            {
+              "entity": "HOME FOR FUTURE",
+              "type": "ORGANIZATION"
+            },
+            {
+              "entity": "221 Queen Street, Melbourne VIC 3000",
+              "type": "LOCATION"
+            }
+          ],
+          "relationships": [
+            {
+              "from": "HOME FOR FUTURE",
+              "relationship": "based_in",
+              "to": "221 Queen Street, Melbourne VIC 3000"
+            }
+          ]
+        }
+      }
+      ```
+
+      You could create corresponding fields in your table schema with the following field names and data types:
+
+      | **Field name** | **Apache Iceberg data type** |
+      | -- | -- |
+      | `is_extracted` | `varchar` |
+      | `points` | `varchar` |
+      | `system` | `varchar` |
+      | `layout_width` | `bigint` |
+      | `layout_height` | `bigint` |
+      | `filetype` | `varchar` |
+      | `languages` | `array(varchar)` |
+      | `page_number` | `varchar` |
+      | `image_base64` | `varchar` |
+      | `image_mime_type` | `varchar` |
+      | `filename` | `varchar` |
+      | `url` | `varchar` |
+      | `record_locator` | `varchar` |
+      | `entities` | `row(items array(row(entity varchar, type varchar)), relationships array(row("from" varchar, relationship varchar, "to" varchar)))` |
 
       Incoming elements that do not have matching column 
       names will be dropped upon record insertion. For example, if the incoming data has an element named `sent_from` and there is no 

@@ -1,0 +1,44 @@
+---
+title: Quota, billing, and rate limiting issues
+---
+
+## Issues
+
+When you try to use Unstructured, you get one of the following error types:
+
+- `ClientResponseError`: For example, an `HTTP 402 Payment Required` error.
+- `SDKError`: For example, an `Insufficient API quota` error.
+- `PineconeApiException`: For example, an `HTTP 429 Too Many Requests` or `write unit limit reached` error.
+- `DestinationConnectionError`: For example, an error that wraps an `HTTP 429 Too Many Requests` error.
+- `HTTPError`: For example, an `HTTP 429 Too Many Requests` error.
+- `Error`: For example, a `RESOURCE_EXHAUSTED` or a `reduce request rate` error.
+
+## Possible causes
+
+- Unstructured or the source's or destination's system imposes usage limits such as the number of API calls or data processed or stored over a specified time period or a specified rate of requests. These limits have been reached, or payment is required to continue.
+- A daily or monthly API quota for Unstructured, the source's or destination's API, or a specified model, has been reached.
+- An API rate limit of requests per second or minute has been reached on the source's or destination's system.
+- A subscription issue or required payment blocker has been encountered by Unstructured or for a related service.
+
+## Possible solutions
+
+Some Unstructured **Business** account plans for dedicated instances or in-VPC deployments require the customer to set up or pay for related 
+services, features, and models outside of Unstructured, in order to achieve volume discounts and to better manage overall usage costs. 
+If you are on one of these account plans, check the following:
+
+- **Check your usage and quotas**: Review your current usage against your budget limits in your Unstructured account dashboard and any relevant third-party services&mdash;such as Pinecone, Azure OpenAI, or Databricks.
+- **Verify your billing and subscription details**: Ensure any billing agreements and subscriptions are active and their payments are up-to-date.
+
+Other possible solutions include the following:
+
+- **Reduce the rate of requests if you can**.
+- **Run processing jobs less frequently if possible**.
+- **Process data in smaller batches if you can**.
+- **If configurable, reduce the concurrency settings in your Unstructured ingestion pipelines**.
+- **Try processing jobs again later**. Some rate limits are often time-based; waiting and retrying later might work.
+- **Upgrade your plan**. If you are consistently hitting limits, consider upgrading your plan for Unstructured or the third-party service.
+- **Contact Unstructured Support**. If you are consistently hitting limits, consider [contacting Unstructured Support](/support/request) to discuss your options.
+
+## Additional resources
+
+To ask questions or get additional help with this issue, see [requesting support](/support/request).

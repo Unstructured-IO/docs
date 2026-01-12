@@ -272,62 +272,107 @@
   SHOW TABLES IN SCHEMA <database_name>.<schema_name>;
   ```
 
-  Snowflake requires the target table to have a defined schema before Unstructured can write to the table. The recommended table 
-  schema for Unstructured is as follows. In the following `CREATE TABLE` statement, replace the following placeholders with the appropriate values:
+  Snowflake requires the target table to have a defined schema before Unstructured can write to the table. The minimum viable 
+  schema for Unstructured contains only the columns `ID`, `ELEMENT_ID`, and `RECORD_ID`. The columns `TEXT` and `TYPE` are optional, but highly recommended. 
+  If you are generating embeddings, then you must also include the column `EMBEDDINGS`.
+
+  In the following `CREATE TABLE` statement, replace the following placeholders with the appropriate values:
 
   - `<database_name>`: The name of the target database in the Snowflake account.
   - `<schema_name>`: The name of the target schema in the database.
-  - `<number-of-dimensions>`: The number of dimensions for any embeddings that you plan to use. This value must match the number of dimensions for any embeddings that are  
+  - `<number-of-dimensions>`: The number of dimensions for any embeddings that you plan to use. This value must match the number of dimensions for any embeddings that are 
     specified in your related Unstructured workflows or pipelines. If you plan to use Snowflake vector embedding generation or Snowflake vector search, 
     this value must match the number of dimensions that you plan to have Snowflake generate or search against.
 
   ```sql SQL
   CREATE TABLE <database_name>.<schema_name>.ELEMENTS (
-    ID VARCHAR(36) PRIMARY KEY NOT NULL DEFAULT UUID_STRING(),
-    RECORD_ID VARCHAR,
-    ELEMENT_ID VARCHAR,
-    TEXT VARCHAR,
-    EMBEDDINGS VECTOR(FLOAT, <number-of-dimensions>),
-    TYPE VARCHAR,
-    SYSTEM VARCHAR,
-    LAYOUT_WIDTH DECIMAL,
-    LAYOUT_HEIGHT DECIMAL,
-    POINTS VARCHAR,
-    URL VARCHAR,
-    VERSION VARCHAR,
-    DATE_CREATED TIMESTAMP_TZ,
-    DATE_MODIFIED TIMESTAMP_TZ,
-    DATE_PROCESSED TIMESTAMP_TZ,
-    PERMISSIONS_DATA VARCHAR,
-    RECORD_LOCATOR VARCHAR,
-    CATEGORY_DEPTH INTEGER,
-    PARENT_ID VARCHAR,
-    ATTACHED_FILENAME VARCHAR,
-    FILETYPE VARCHAR,
-    LAST_MODIFIED TIMESTAMP_TZ,
-    FILE_DIRECTORY VARCHAR,
-    FILENAME VARCHAR,
-    LANGUAGES ARRAY,
-    PAGE_NUMBER VARCHAR,
-    LINKS VARCHAR,
-    PAGE_NAME VARCHAR,
-    LINK_URLS ARRAY,
-    LINK_TEXTS ARRAY,
-    SENT_FROM ARRAY,
-    SENT_TO ARRAY,
-    SUBJECT VARCHAR,
-    SECTION VARCHAR,
-    HEADER_FOOTER_TYPE VARCHAR,
-    EMPHASIZED_TEXT_CONTENTS ARRAY,
-    EMPHASIZED_TEXT_TAGS ARRAY,
-    TEXT_AS_HTML VARCHAR,
-    REGEX_METADATA VARCHAR,
-    DETECTION_CLASS_PROB DECIMAL,
-    IMAGE_BASE64 VARCHAR,
-    IMAGE_MIME_TYPE VARCHAR,
-    ORIG_ELEMENTS VARCHAR,
-    IS_CONTINUATION BOOLEAN
+      ID VARCHAR(36) PRIMARY KEY NOT NULL DEFAULT UUID_STRING(),
+      ELEMENT_ID VARCHAR,
+      RECORD_ID VARCHAR,
+      TEXT VARCHAR,
+      TYPE VARCHAR,
+      EMBEDDINGS VECTOR(FLOAT, <number-of-dimensions>)
   );
   ```
+
+  For objects in the `metadata` field that Unstructured produces and that you want to store in a Snowflake table, you must create columns in your table's schema that 
+  follow Unstructured's `metadata` field naming convention. For example, if Unstructured produces a `metadata` field with the following 
+  child objects:
+
+  ```json
+  "metadata": {
+    "is_extracted": "true",
+    "coordinates": {
+      "points": [
+        [
+          134.20055555555555,
+          241.36027777777795
+        ],
+        [
+          134.20055555555555,
+          420.0269444444447
+        ],
+        [
+          529.7005555555555,
+          420.0269444444447
+        ],
+        [
+          529.7005555555555,
+          241.36027777777795
+        ]
+      ],
+      "system": "PixelSpace",
+      "layout_width": 1654,
+      "layout_height": 2339
+    },
+    "filetype": "application/pdf",
+    "languages": [
+      "eng"
+    ],
+    "page_number": 1,
+    "image_mime_type": "image/jpeg",
+    "filename": "realestate.pdf",
+    "data_source": {
+      "url": "file:///home/etl/node/downloads/00000000-0000-0000-0000-000000000001/7458635f-realestate.pdf",
+      "record_locator": {
+        "protocol": "file",
+        "remote_file_path": "file:///home/etl/node/downloads/00000000-0000-0000-0000-000000000001/7458635f-realestate.pdf"
+      }
+    }
+  }
+  ```
+
+  You could create corresponding fields in your table's schema by using the following field names and data types:
+
+  ```sql
+  -- The ID, RECORD_ID, and ELEMENT_ID columns are required.
+  -- TEXT and TYPE are not required but highly recommended.
+  -- EMBEDDINGS is required if embeddings are being generated.
+  -- All other "metadata" columns are optional.
+  CREATE TABLE <database_name>.<schema_name>.ELEMENTS (
+      ID VARCHAR(36) PRIMARY KEY NOT NULL DEFAULT UUID_STRING(),
+      RECORD_ID VARCHAR,
+      ELEMENT_ID VARCHAR,
+      TEXT VARCHAR,
+      TYPE VARCHAR,
+      EMBEDDINGS VECTOR(FLOAT, <number-of-dimensions>),
+      IS_EXTRACTED VARCHAR,
+      POINTS VARCHAR,
+      SYSTEM VARCHAR,
+      LAYOUT_WIDTH INTEGER,
+      LAYOUT_HEIGHT INTEGER,
+      FILETYPE VARCHAR,
+      LANGUAGES ARRAY,
+      PAGE_NUMBER VARCHAR,
+      IMAGE_MIME_TYPE VARCHAR,
+      FILENAME VARCHAR,
+      URL VARCHAR,
+      RECORD_LOCATOR VARCHAR
+  );
+  ```
+
+  Unstructured cannot provide a schema that is guaranteed to work in all 
+  circumstances. This is because these schemas will vary based on your source files' types; how you 
+  want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors. 
 
 - The name of the column in the table that uniquely identifies each record (for example, `RECORD_ID`).

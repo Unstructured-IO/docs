@@ -1,6 +1,6 @@
 ---
-title: Model Context Protocol (MCP) Hands-On Walkthrough for the Unstructured Workflow Endpoint
-sidebarTitle: MCP for Worfklow Endpoint
+title: Model Context Protocol (MCP) Hands-On Walkthrough for the Unstructured API's workflow operations
+sidebarTitle: MCP for Workflow Operations
 ---
 
 [Model Context Protocol](https://modelcontextprotocol.io/introduction) (MCP) is an open protocol that standardizes 
@@ -13,12 +13,12 @@ that integrates the [Unstructured API](/api-reference/overview) with the
 [Python SDK for Model Context Protocol](https://github.com/modelcontextprotocol/python-sdk). Specifically, 
 this walkthrough demonstrates how to write and run Python code to create an MCP _server_ 
 (a lightweight program that exposes specific capabilities through MCP); this MCP server uses the 
-[Unstructured Workflow Endpoint](/api-reference/workflow/overview) to list all of your available 
+[Unstructured API's workflow operations](/api-reference/workflow/overview) to list all of your available 
 [source connectors](/api-reference/workflow/sources/overview) and to get information about a specific source connector. The 
-Workflow Endpoint offers a full range of partitioning, chunking, embedding, and enrichment options for your files and data.
+Unstructured API's workflow operations offer a full range of partitioning, chunking, embedding, and enrichment options for your files and data.
 
 <Note>
-    For a hands-on walkthrough of the [Unstructured Partition Endpoint](/api-reference/partition/overview) instead, 
+    For a hands-on walkthrough of the [Unstructured Partition Endpoint](/api-reference/legacy-api/partition/overview) instead, 
     see the [MCP Hands-On Walkthrough for the Unstructured Partition Endpoint](/examplecode/tools/mcp-partition), which 
     is intended for rapid prototyping of Unstructured's various partitioning strategies, with limited support for chunking, 
     processing local files one file at a time.
@@ -28,7 +28,7 @@ You call this MCP server from an MCP _client_ (an application that maintains a o
 MCP server), which in this walkthrough is [Claude for Desktop](https://claude.ai/download), a chat-based interface, by asking it plain language questions. 
 Other MCP clients are also available. [Learn more](https://modelcontextprotocol.io/clients).
 
-At the end of this walkthrough, you can extend this example by using the Workflow Endpoint to perform other tasks, such as creating, listing, changing, and 
+At the end of this walkthrough, you can extend this example by using the Unstructured API's workflow operations to perform other tasks, such as creating, listing, changing, and 
 deleting various connectors, workflows, and jobs in your Unstructured account.
 
 ## Requirements
@@ -344,7 +344,7 @@ You are now ready to start coding.
     </Step>
     <Step>
         Ask the following question in the chat window, replacing `S3` with the type of source connector that you want to list. 
-        For a list of available source connector types, see the [Workflow Endpoint Sources overview](/api-reference/workflow/sources/overview).
+        For a list of available source connector types, see the [Unstructured API's workflow operations' sources overview](/api-reference/workflow/sources/overview).
 
         ```text
         List all available source connectors of type S3.
@@ -497,9 +497,9 @@ To use Unstructured's initial experimental MCP server implementation, do the fol
     <Step>
         Here are some questions that you can ask in the chat window to test the MCP server. Replace the placeholders with the appropriate values.
 
-        For a list of available source connector types, see the [Workflow Endpoint Sources overview](/api-reference/workflow/sources/overview).
+        For a list of available source connector types, see the [Unstructured API's workflow operations sources overview](/api-reference/workflow/sources/overview).
 
-        For a list of available destination connector types, see the [Workflow Endpoint Destinations overview](/api-reference/workflow/destinations/overview).
+        For a list of available destination connector types, see the [Unstructured API's workflow operations destinations overview](/api-reference/workflow/destinations/overview).
 
         - `List all available source connectors of type <source-connector-type>.`
         - `Provide information about the source connector with ID <source-connector-id>.`

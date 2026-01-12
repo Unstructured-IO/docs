@@ -2,7 +2,7 @@
 title: Jobs
 ---
 
-To use the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to manage jobs, do the following:
+To use the [Unstructured API's workflow operations](/api-reference/workflow/overview) to manage jobs, do the following:
 
 - To get a list of available jobs, use the `UnstructuredClient` object's `jobs.list_jobs` function (for the Python SDK) or 
   the `GET` method to call the `/jobs` endpoint (for `curl` or Postman). [Learn more](/api-reference/workflow/overview#list-jobs).
@@ -12,7 +12,9 @@ To use the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) to
   the `GET` method to call the `/jobs/<job-id>/details` endpoint (for `curl` or Postman). [Learn more](/api-reference/workflow/overview#get-processing-details-for-a-job).
 - To get the list of any failed files for a job and why those files failed, use the `UnstructuredClient` object's `jobs.get_failed_files` function (for the Python SDK) or 
   the `GET` method to call the `/jobs/<job-id>/failed-files` endpoint (for `curl` or Postman). [Learn more](/api-reference/workflow/overview#get-failed-file-details-for-a-job).
+- To run a workflow that takes one or more local files only as input, and the workflow exists only for the duration of 
+  that job's run (known as an _on-demand job_), use the `POST` method to call the `/jobs/` endpoint for `curl` or Postman. [Learn more](/api-reference/workflow/overview#run-an-on-demand-job).
 - A job is created automatically whenever a workflow runs on a schedule; see [Create a workflow](/api-reference/workflow/workflows#create-a-workflow).
-  A job is also created whenever you run a workflow manually; see [Run a workflow](/api-reference/workflow/overview#run-a-workflow).
+  A job is also created automatically whenever you run a workflow manually; see [Run a workflow](/api-reference/workflow/overview#run-a-workflow).
 - To cancel a running job, use the `UnstructuredClient` object's `jobs.cancel_job` function (for the Python SDK) or 
   the `POST` method to call the `/jobs/<job-id>/cancel` endpoint (for `curl` or Postman). [Learn more](/api-reference/workflow/overview#cancel-a-job).

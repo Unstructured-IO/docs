@@ -1,0 +1,30 @@
+---
+title: Document processing issues
+---
+
+## Issues
+
+When Unstructured tries to partition or chunk a document, you get one of the following error types:
+
+- `TooManyPageFailuresException`
+- `ControllerException`: For example, an error wrapping partitioning or chunking errors such as code `512`.
+
+## Possible causes
+
+- There are issues with the document's underlying content or structure.
+- Unstructured encountered too many errors while processing individual pages or elements within a specific document, exceeding some internal failure threshold.
+- The document is corrupted or malformed. This is especially the case for some complex PDFs.
+- The document has a highly unusual underlying structure or has highly unusual content, which the specified partitioning model cannot handle.
+- The document is encrypted or password-protected.
+- Some underlying issues are causing page-level failures. This could sometimes be related to quotas if a per-page VLM is used.
+
+## Possible solutions
+
+- **Inspect the document**: Examine the specific document. Make sure it opens correctly, does not seem to look unusual, and does not appear to be corrupted or encrypted.
+- **Test a simpler document**: Try processing a known-good, simple document of the same type, to see if the error is document-specific.
+- **Check quotas (if VLM related)**: If the underlying errors mention quotas, see [Quota, billing, and rate limiting issues](/support/issues/quota-billing-rate-limiting).
+- **Report the problematic document to Unstructured Support**: If the issue seems specific to an otherwise seemingly valid document, [report it to Unstructured Support](/support/request). If possible, provide the document for Unstructured to further investigate.
+
+## Additional resources
+
+To ask questions or get additional help with this issue, see [requesting support](/support/request).

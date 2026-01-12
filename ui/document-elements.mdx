@@ -2,6 +2,16 @@
 title: Document elements and metadata
 ---
 
+<iframe
+  width="560"
+  height="315"
+  src="https://www.youtube.com/embed/qWu9HPRkkPg"
+  title="YouTube video player"
+  frameborder="0"
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+  allowfullscreen
+></iframe>
+
 When Unstructured [partitions](/ui/partitioning) a file, the result is a list of _document elements_, sometimes referred to simply as _elements_. These elements represent different components of the source file. 
 
 ## Element example
@@ -103,9 +113,11 @@ All file types return the following `metadata` fields when the information is av
 | `file_directory`           | The related file's directory.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | `filename`                 | The related file's filename.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `filetype`                 | The related file's type.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `image_base64`             | A Base64 representation of the detected image or table. Only applicable to image and table elements when High Res partitioning is used.                                                                                                                                                                                                                                                                                                                                                                                    |
 | `is_continuation`          | True if the element is a continuation of a previous element. Only relevant for chunking, if an element was divided into two due to **Max Characters**.                                                                                                                                                                                                                                                                                                                                                                     |
 | `languages`                | Document languages at the file or element level. The list is ordered by probability of being the primary language of the text.                                                                                                                                                                                                                                                                                                                                                                                             |
 | `last_modified`            | The related file's last modified date.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `orig_elements`            | For [chunked](/ui/chunking) elements, a list of the original elements that were used to create the current chunked element.                                                                                                                                                                                                                                                                                                                                                                                                |
 | `parent_id`                | The ID of the element's parent element. `parent_id` might be used to infer where an element resides within the overall [document hierarchy](#document-hierarchy). For instance, a `NarrativeText` element might have a `Title` element as a parent (a “subtitle”), which in turn might have another `Title` element as its parent (a "title").                                                                                                                                                                             |
 | `text_as_html`             | The HTML representation of the related extracted table. Only applicable to [table elements](#table-specific-metadata).                                                                                                                                                                                                                                                                                                                                                                                                     |
 
@@ -347,3 +359,5 @@ file, located in the [Unstructured-IO/unstructured](https://github.com/Unstructu
 For the most up-to-date list of mappings between element ontology types and Unstructured element types, see the 
 [mappings.py](https://github.com/Unstructured-IO/unstructured/blob/main/unstructured/documents/mappings.py) 
 file, located in the [Unstructured-IO/unstructured](https://github.com/Unstructured-IO/unstructured) repository in GitHub.
+
+To learn more, see [The Case for HTML as the Canonical Representation in Document AI](https://unstructured.io/blog/the-case-for-html-as-the-canonical-representation-in-document-ai).

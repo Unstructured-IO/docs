@@ -1,0 +1,40 @@
+---
+title: Network, connection, and timeout issues
+---
+
+## Issues
+
+When you try to establish or maintain a network connection between Unstructured and an external system, you get one of the following error types:
+
+- `ReadTimeout`
+- `TimeoutError`
+- `ServerDisconnectedError`
+- `ClientConnectorError`: For example, a `cannot connect to localhost` error.
+- `ConnectionError`: For example, a `Failed to resolve 'model-registry-api...` error.
+- `ServiceResponseError`: For example, for Azure, a `Timeout on reading data from socket` error.
+- `ClientPayloadError`: For example, a `Response payload not completed` or `Connection reset by peer` error.
+- `OSError`: For example, for Amazon S3 during a file upload, an `[Errno 22] The request body terminated unexpectedly` error.
+
+## Possible causes
+
+- Unstructured failed to connect to a required system.
+- The connection timed out while waiting for a response.
+- An established connection was unexpectedly closed.
+- Transient network issues were encountered with the local network, with the Internet, or with a cloud provider.
+- Firewalls are blocking connections. 
+- Some services are temporarily unavailable, slow, or unresponsive.
+- The processing of very large files is causing long-running operations, which lead to exceeding default timeouts.
+- Issues with DNS resolutions were encountered.
+
+## Possible solutions
+
+- **Retry the job**: Many network errors are transient. Wait a few minutes and then retry the job.
+- **Check network connectivity**: Ensure stable network connectivity with the related source and destination systems.
+- **Check firewalls**: Verify that any firewalls are not blocking necessary connections to source or destination APIs, blob storage, databases, vector stores, or ports.
+- **Process smaller batches or files**: If timeouts occur during processing or uploading very large files, try using smaller files or batches.
+- **Contact Unstructured Support**: For persistent `ClientConnectorError`, `ConnectionError`, or other frequent timeouts or disconnects that aren't resolved by retries, [contact Unstructured Support](/support/request). These issues can sometimes point to internal Unstructured system problems.
+
+## Additional resources
+
+- [Unstructured Status](https://status.unstructured.io) dashboard
+- [Request Unstructured support](/support/request)

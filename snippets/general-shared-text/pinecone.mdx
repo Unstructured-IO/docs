@@ -1,29 +1,38 @@
+<iframe
+width="560"
+height="315"
+src="https://www.youtube.com/embed/Ydj74uBnJyA"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
+
 - A Pinecone account. [Get an account](https://app.pinecone.io/).
+- A Pinecone API key in your Pinecone account. To create an API key, do the following:
 
-  <iframe
-  width="560"
-  height="315"
-  src="https://www.youtube.com/embed/uPoa7PLcuZ4"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  ></iframe>
+  1. [Sign in to your Pinecone account and open the API keys page](https://app.pinecone.io/organizations/-/projects/-/keys).
+  2. Click **+ API key**.
+  3. For **API key name**, enter some descriptive name for the API key.
+  4. Click **Create key**.
+  5. Copy the generated API key to some secure location. You will not be able to access this API key again after you close the dialog.
 
-- A Pinecone API key. [Get an API key](https://docs.pinecone.io/guides/get-started/authentication#find-your-pinecone-api-key).
-- A Pinecone serverless index. [Create a serverless index](https://docs.pinecone.io/guides/indexes/create-an-index).
+- A Pinecone serverless index in your Pinecone account. 
 
-  An existing index is not required. At runtime, the index behavior is as follows:
+  Creating a serverless index on your own is optional. 
+  An index is not required to exist in advance. 
+  
+  When you set up the connector, at runtime, the index behavior is as follows:
 
   For the [Unstructured UI](/ui/overview) and [Unstructured API](/api-reference/overview):
-    
-  - If an existing index name is specified, and Unstructured generates embeddings, 
-    but the number of dimensions that are generated does not match the existing index's embedding settings, the run will fail. 
-    You must change your Unstructured embedding settings or your existing index's embedding settings to match, and try the run again.
-  - If an index name is not specified, Unstructured creates a new index in your Pinecone account. If Unstructured generates embeddings, 
-    the new index's name will be `u<short-workflow-id>-<short-embedding-model-name>-<number-of-dimensions>`. 
-    If Unstructured does not generate embeddings, the new index's name will be `u<short-workflow-id`.
 
+  - Your workflow must contain an embedder node, and the embedder node must specify the embedding model that Unstructured will use to generate the embeedings.
+  - If an existing index name is specified, 
+    and the number of dimensions that Unstructured generates does not match the number of dimensions that are specified in the existing index's embedding settings, the run will fail. 
+    You must change the number of dimensions in your workflow's embedder node or your existing index's embedding settings to match, and try the run again.
+  - If an index name is not specified, Unstructured creates a new index in your Pinecone account. The 
+    new index's name will be `u<short-workflow-id>-<short-embedding-model-name>-<number-of-dimensions>`. 
+ 
   For [Unstructured Ingest](/open-source/ingestion/overview):
 
   - If an existing index name is specified, and Unstructured generates embeddings, 
@@ -38,4 +47,28 @@
       might be written to the index or, in some cases, the operation could fail altogether.
   </Note>
 
+  To create a serverless index on your own, do the following:
+
+  1. [Sign in to your Pinecone account and open the Create a new index page](https://app.pinecone.io/organizations/-/projects/-/create-index/serverless).
+  2. For **Enter index name**, enter some descriptive name for the index.
+  3. For **Configuration**, select the check box labelled **Custom settings**, or click the tile labelled **Manual configuration**.
+  
+     <Warning>
+         Do not click any of the other tiles, such as **text-embedding-3-large**. Clicking any of these other tiles will cause Pinecone to generate embeddings instead of 
+         having Unstructured generate them. If Pinecone generates embeddings instead of Unstructured, this could cause any related Unstructured workflows to fail.
+     </Warning>
+
+  4. For **Vector type**, select **Dense**.
+  5. For **Dimension**, enter the number of dimensions for the embeddings that Unstructured will generate.
+
+     <Warning>
+         The number of dimensions that you enter here must match the number of dimensions for the embedding model that you use in any related Unstructured workflows or ingestion pipelines. If these numbers do not 
+         match in both places, this could cause any related Unstructured workflows or ingestion pipelines to fail.
+     </Warning>
+
+  6. For **Metric**, select **cosine**.
+  7. Leave **Capacity mode** set to **Serverless**.
+  8. You can leave **Cloud provider** and **Region** set to their default values, or you can select a cloud provider and region that is closest to you, if available.
+  9. Click **Create index**.
+  
 - Within a Pinecone serverless index, custom [namespaces](https://docs.pinecone.io/guides/index-data/indexing-overview#namespaces) are supported but are not required.

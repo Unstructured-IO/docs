@@ -21,12 +21,12 @@ Unstructured provides two types of workflow builders:
 
 ### Create an automatic workflow
 
-import EnrichmentImagesTablesHiResOnly from '/snippets/general-shared-text/enrichment-images-tables-hi-res-only.mdx';
+import EnrichmentImagesTablesOCRHiResOnly from '/snippets/general-shared-text/enrichment-images-tables-ocr-hi-res-only.mdx';
 
 <Warning>
     You must first have an existing source connector and destination connector to add to the workflow.
 
-    You cannot create an automatic workflow that uses a local source connector.
+    You cannot create an automatic workflow that uses a local file as a source.
 
     If you do not have an existing remote connector for either your target source (input) or destination (output) location, [create the source connector](/ui/sources/overview), [create the destination connector](/ui/destinations/overview), and then return here.
 
@@ -51,7 +51,7 @@ To create an automatic workflow:
 8. The **Reprocess All** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
 
    - Checking this box reprocesses all documents in the source location on every workflow run.
-   - Unchecking this box causes only new documents that are added to the source location, or existing documents that are updated in the source location, since the last workflow run to be processed on future runs. Previously processed documents are not processed again. However:
+   - Unchecking this box causes only new documents that are added to the source location, or existing documents that are updated in the source location (as determined by checking whether the file's version has changed), since the last workflow run to be processed on future runs. Previously processed documents are not processed again. However:
 
      - Even if this box is unchecked, a renamed file is always treated as a new file, regardless of whether the file's original contents have changed.
      - Even if this box is unchecked, a file that is removed but is added back later with the same file name is processed on future runs only if the file's contents have changed since the file was originally processed.
@@ -102,7 +102,7 @@ After this workflow is created, you can change any or all of its settings if you
 source connector, destination connector, partitioning, chunking, and embedding settings. You can also add enrichments 
 to the workflow if you want to. 
 
-<EnrichmentImagesTablesHiResOnly />
+<EnrichmentImagesTablesOCRHiResOnly />
 
 To change the workflow's default settings or to add enrichments:
 
@@ -123,15 +123,13 @@ If you did not previously set the workflow to run on a schedule, you can [run th
     1. On the sidebar, click **Workflows**.
     2. Click the name of the workflow that you want to change. 
     3. Skip ahead to Step 11 in the following procedure.
-
 </Tip>
 
 <Warning>
-    You must first have an existing source connector and destination connector to add to the workflow.
+    You can create and save a custom workflow that uses a local file as a source or does not have a source or destination connector added. However, you cannot activate the workflow or run the workflow 
+    either manually or on a schedule until a source and destination connector are added to the workflow.
 
-    You can create a custom workflow that uses a local source connector, but you cannot save the workflow.
-
-    If you do not have an existing connector for either your target source (input) or destination (output) location, [create the source connector](/ui/sources/overview), [create the destination connector](/ui/destinations/overview), and then return here.
+    If you do not have an existing connector for either your target source or destination location, [create the source connector](/ui/sources/overview), [create the destination connector](/ui/destinations/overview), and then return here.
 
     To see your existing connectors, on the sidebar, click **Connectors**, and then click **Sources** or **Destinations**.
 </Warning>
@@ -150,7 +148,7 @@ If you did not previously set the workflow to run on a schedule, you can [run th
    The **Reprocess All Files** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
 
    - Checking this box reprocesses all documents in the source location on every workflow run.
-   - Unchecking this box causes only new documents that are added to the source locations, or existing documents that are updated in the source location, since the last workflow run to be processed on future runs. Previously processed documents are not processed again. However:
+   - Unchecking this box causes only new documents that are added to the source locations, or existing documents that are updated in the source location (as determined by checking whether the file's version has changed), since the last workflow run to be processed on future runs. Previously processed documents are not processed again. However:
 
      - Even if this box is unchecked, a renamed file is always treated as a new file, regardless of whether the file's original contents have changed.
      - Even if this box is unchecked, a file that is removed but is added back later with the same file name is processed on future runs only if the file's contents have changed since the file was originally processed.
@@ -186,6 +184,11 @@ If you did not previously set the workflow to run on a schedule, you can [run th
        **Chunker** node before any **Enrichment** nodes could cause incomplete or no enrichment results to be generated.
    </Note>
 
+   <Warning>
+       You can create and save a workflow that does not use a valid workflow layout. However, you cannot activate the workflow or run the workflow 
+       either manually or on a schedule until the workflow is changed to use a valid workflow layout.
+   </Warning>
+
 9. In the pipeline designer, click the **Source** node. In the **Source** pane, select the source location. Then click **Save**.
 
    ![Workflow designer](/img/ui/Workflow-Designer.png)
@@ -211,9 +214,14 @@ If you did not previously set the workflow to run on a schedule, you can [run th
     - Click **Connect** to add another **Source** or **Destination** node. You can add multiple source and destination locations. Files will be ingested from all of the source locations, and the processed data will be delivered to all of the destination locations. [Learn more](#custom-workflow-node-types).
     - Click **Enrich** to add a **Chunker** or **Enrichment** node. [Learn more](#custom-workflow-node-types).
 
-      <EnrichmentImagesTablesHiResOnly />
+      <EnrichmentImagesTablesOCRHiResOnly />
 
     - Click **Transform** to add a **Partitioner** or **Embedder** node. [Learn more](#custom-workflow-node-types).
+
+      <Warning>
+        If you add an **Embedder** node, you must set the **Chunker** node's **Max Characters** setting to a value at or below Unstructured's recommended 
+        maximum chunk size for your selected embedding model. [Learn more](/ui/embedding#chunk-sizing-and-embedding-models).
+      </Warning>
 
     <Tip>
         Make sure to add nodes in the correct order. If you are unsure, see the usage hints in the blue note that appears 
@@ -232,6 +240,7 @@ If you did not previously set the workflow to run on a schedule, you can [run th
 #### Custom workflow node types
 
 import PlatformPartitioningStrategies from '/snippets/general-shared-text/platform-partitioning-strategies.mdx';
+import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-ui.mdx';
 
 <AccordionGroup>
     <Accordion title="Partitioner node">
@@ -239,34 +248,28 @@ import PlatformPartitioningStrategies from '/snippets/general-shared-text/platfo
 
         <PlatformPartitioningStrategies />
 
-        For **VLM**, you must also choose a VLM provider and model. Available choices include:
+        For **VLM**, you must also choose a VLM provider and model from among the available choices that are shown.
 
-          - **Anthropic**: 
-      
-            - **Anthropic Claude 3.5 Sonnet**
+        <DeprecatedModelsUI />
 
-          - **OpenAI**: 
-      
-            - **OpenAI GPT-4o**
+        <Note>
+            When you use the **VLM** strategy with embeddings for PDF files of 200 or more pages, you might notice some errors when 
+            these files are processed. These errors typically occur when these larger PDF files have lots of tables and high-resolution images.
+        </Note>
 
-          - **Amazon Bedrock**: 
+        If you choose the **Fast** strategy, you can also choose from among the following additional settings:
 
-            - **Anthropic Claude 3.5 Sonnet**
-            - **Anthropic Claude 3 Opus**
-            - **Anthropic Claude 3 Haiku**
-            - **Anthropic Claude 3 Sonnet**
-            - **Amazon Nova Pro**
-            - **Amazon Nova Lite**
-            - **Meta Llama 3.2 90B Instruct**
-            - **Meta Llama 3.2 11B Instruct**
+        - **Include Page breaks**: Check this box to include distinct `PageBreak` document elements in the output, if the file type supports it.
+        - **Infer Table Structure**: Check this box to add, for each table in a PDF file, a metadata field named `text_as_html` to the output for that table's document element. This field will contain an HTML representation of the table.
+        - **Elements to Exclude**: Select the name of each available type of [document element](/ui/document-elements) to exclude from the output.
 
-          - **Vertex AI**:
+        If you choose the **High Res** strategy, you can also choose from among the following additional settings:
 
-            - **Gemini 2.0 Flash**
-          <Note>
-              When you use the **VLM** strategy with embeddings for PDF files of 200 or more pages, you might notice some errors when 
-              these files are processed. These errors typically occur when these larger PDF files have lots of tables and high-resolution images.
-          </Note>
+        - **Include Page breaks**: Check this box to include distinct `PageBreak` document elements in the output, if the file type supports it.
+        - **Infer Table Structure**: Check this box to add, for each table in a PDF file, a metadata field named `text_as_html` to the output for that table's document element. This field will contain an HTML representation of the table.
+        - **Include Coordinates**: Check this box to add, for each [document element](/ui/document-elements) in the output, a metadata field named `coordinates` to the output for that document element. This field will contain the bounding box coordinates of the document element's content on the page, as well as the bounding box's width and height in pixels.
+        - **Extract Image Block Types**: Select the name of each available type of document element to add a metadata field named `image_base64` to the output for that document element. This field will contain a Base64-encoded representation of the document element's content. A Base64-to-image decoding of this field's value will return an image representing the document element's original content.
+        - **Elements to Exclude**: Select the name of each available type of document element to exclude from the output.
 
         [Learn more](/ui/partitioning).
     </Accordion>
@@ -318,84 +321,63 @@ import PlatformPartitioningStrategies from '/snippets/general-shared-text/platfo
     <Accordion title="Enrichment node">
         Choose one of the following:
 
-        <EnrichmentImagesTablesHiResOnly />
+        <DeprecatedModelsUI />
 
-        - **Image** to summarize images. Also select one of the following provider (and model) combinations to use:
+        <EnrichmentImagesTablesOCRHiResOnly />
 
-          - **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
-          - **Anthropic (Claude 3.5 Sonnet)**. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
-          - **Amazon Bedrock (Claude 3.5 Sonnet)**. [Learn more](https://aws.amazon.com/bedrock/claude/). 
+        - **Image** to summarize images. Also select one of the available provider (and model) combinations that are shown.
 
           [Learn more](/ui/enriching/image-descriptions).
         
-        - **Table** to summarize tables. Also select one of the following provider (and model) combinations to use:
-
-          - **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
-          - **Anthropic (Claude 3.5 Sonnet)**. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
-          - **Amazon Bedrock (Claude 3.5 Sonnet)**. [Learn more](https://aws.amazon.com/bedrock/claude/). 
+        - **Table** to summarize tables. Also select one of the available provider (and model) combinations that are shown.
 
           Make sure after you choose the provider and model, that **Table Description** is also displayed. If **Table Description** and **Table to HTML** are both 
           displayed, be sure to select **Table Description**.
 
           [Learn more](/ui/enriching/table-descriptions).
           
-        - **Table** to convert tables to HTML. Also select one of the following provider (and model) combinations to use:
-        
-          - **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
+        - **Table** to convert tables to HTML. Also select one of the available provider (and model) combinations that are shown.
 
           Make sure after you choose this provider and model, that **Table to HTML** is also selected.
 
           [Learn more](/ui/enriching/table-to-html).
 
         - **Text** to generate a list of recognized entities and their relationships by using a technique called _named entity recognition_ (NER). 
-          Also select one of the following provider (and model) combinations to use:
-          
-          - **OpenAI (GPT-4o)**. [Learn more](https://openai.com/index/hello-gpt-4o/).
-          - **Anthropic (Claude 3.5 Sonnet)**. [Learn more](https://www.anthropic.com/news/claude-3-5-sonnet).
+          Also select one of the available provider (and model) combinations that are shown.
           
           You can also customize the prompt used to add or remove entities and relationships. In the **Details** tab, under **Prompt**, click **Edit**. Click **Run Prompt** in the 
           **Edit & Test Prompt** section to test the prompt.
 
           [Learn more](/ui/enriching/ner). 
+
+        - **Generative OCR** to optimize the fidelity of text blocks that Unstructured initially processed during its partitioning phase. 
+          Also select one of the available provider (and model) combinations that are shown.
+
+          <Warning>
+              Generative OCR does not process any text blocks by default. You must also explicitly specify which document element 
+              types containing text that you want generative OCR to process. To do this, in the workflow editor for your workflow:
+              
+              1. Click the **Partitioner** node.
+              2. In the node's settings pane, scroll down to and then click a blank area inside of the **Extract Image Block Types** list.
+              3. Select each [document element types](/ui/document-elements#element-type) that you want generative OCR to process. For this 
+                walkthrough, select only **NarrativeText**.
+              
+              Generative OCR does not process the text of any `Image` or `Table` elements if they have already been processed by 
+              [image description](#image-description-task) or [table description](#table-description-task) enrichments, respectively. Do 
+              not remove the **Image** or **Table** document elements types from this **Extract Image Block Types** list, or else 
+              the image description and table description enrichments in your workflow might produce unexepcted results or might not work at all.
+          </Warning>
+
+          [Learn more](/ui/enriching/generative-ocr).
   
     </Accordion>
     <Accordion title="Embedder node">
-        For **Select Embedding Model**, select one of the following:
+        For **Select Embedding Model**, select one of the available models that are shown.
 
-        - **Azure OpenAI**: Use Azure OpenAI to generate embeddings with one of the following models:
-
-          - **text-embedding-3-small**, with 1536 dimensions.
-          - **text-embedding-3-large**, with 3072 dimensions.
-          - **Ada 002 (Text)** (`text-embedding-ada-002`), with 1536 dimensions.
-
-          [Learn more](https://learn.microsoft.com/azure/ai-services/openai/concepts/models#embeddings).
-
-        - **Amazon Bedrock**: Use Amazon Bedrock to generate embeddings with one of the following models:
-
-          - **Titan Text Embeddings V2**, with 1024 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html).
-          - **Titan Embeddings G1 - Text**, with 1536 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-embedding-models.html).
-          - **Titan Multimodal Embeddings G1**, with 1024 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/titan-multiemb-models.html).
-          - **Cohere Embed English**, with 1024 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-embed.html).
-          - **Cohere Embed Multilingual**, with 1024 dimensions. [Learn more](https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-embed.html).
-
-        - **TogetherAI**: Use TogetherAI to generate embeddings with one of the following models:
-
-          - **M2-BERT-80M-32K-Retrieval**, with 768 dimensions.
-          
-          [Learn more](https://docs.together.ai/docs/serverless-models#embedding-models).
-
-        - **Voyage AI**: Use Voyage AI to generate embeddings with one of the following models:
-
-          - **voyage-code-2**, with 1536 dimensions.
-          - **voyage-3**, with 1024 dimensions.
-          - **voyage-3-large**, with 1024 dimensions.
-          - **voyage-3-lite**, with 512 dimensions.
-          - **voyage-code-3**, with 1024 dimensions.
-          - **voyage-finance-2**, with 1024 dimensions.
-          - **voyage-law-2**, with 1024 dimensions.
-          - **voyage-multimodal-3**, with 1024 dimensions.
-
-          [Learn more](https://docs.voyageai.com/docs/embeddings).
+        <Warning>
+          If you add an **Embedder** node, you must set the **Chunker** node's **Max Characters** setting to a value at or below Unstructured's recommended 
+          maximum chunk size for your selected embedding model. [Learn more](/ui/embedding#chunk-sizing-and-embedding-models).
+        </Warning>
 
         Learn more:
         

@@ -1,0 +1,52 @@
+---
+title: Google Drive schema validation failure
+---
+
+## Issue
+
+When you save and test a Google Drive source connector, you get an error that contains text similar to the following:
+
+```text
+Schema validation failure for GoogleDriveConnectionConfig: 
+Value error, Expecting value: line 1 column 1 (char 0) at 
+access_config,service_account_key got -----BEGIN PRIVATE KEY-----
+...
+```
+
+Although you can finish creating and saving this connector, the connection test fails, and you cannot successfully run any 
+workflows that use this failed connector.
+
+## Cause
+
+You have configured the Google Drive source connector with the Google Drive service account's key in an incorrect format. 
+You likely have specified only a portion of the file, such as just the private key part. Unstructured expects the entire contents 
+of the Google Drive service account's key file. 
+
+## Solution
+
+1. Find the original Google Drive service account's key file in JSON format, which you downloaded earlier from your Google Cloud account when 
+   you originally created the Google Drive source connector.
+2. Open the file in a text editor such as Notepad, Visual Studio Code, or TextEdit.
+3. Copy everything in the file, starting from the first opening brace `{` to the final closing brace `}`.
+4. In the original Google Drive source connector's settings, delete the original contents of the **Service Account Key** field, and paste 
+   the complete JSON content that you just copied.
+5. Save the changes and re-test and re-save the connector.
+
+## Additional resources
+
+- If the connector test still fails, try using a tool such as `tr` for macOS or Linux, or PowerShell for Windows, to copy 
+  the entire contents of the file, instead of a text editor, as follows:
+
+  - For macOS or Linux: 
+
+    ```text
+    tr -d '\n' < <path-to-downloaded-key-file>
+    ```
+
+  - For Windows:
+
+    ```text
+    (Get-Content -Path "<path-to-downloaded-key-file>" -Raw).Replace("`r`n", "").Replace("`n", "")
+    ```
+
+- To ask questions or get additional help with this issue, see [requesting support](/support/request).

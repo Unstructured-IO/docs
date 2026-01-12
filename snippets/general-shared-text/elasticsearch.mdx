@@ -24,62 +24,244 @@
   allowfullscreen
   ></iframe>
 
-- You will need the name of the index on the instance. See [Create index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html) and [Get index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-index.html).
+- You will need the name of the index on the instance. 
 
-  The Elasticsearch index that you use must have a schema that is compatible with the schema of the documents 
-  that Unstructured produces for you. Unstructured cannot provide a schema that is guaranteed to work in all 
+  For the destination connector, if you need to create an index, you can use for example the following `curl` command. Replace the following placeholders:
+
+  - Replace `<host>:<port>` with the instance's host identifier and port number.
+  - Replace one of the following, and remove the other:
+
+    - For an instance's user and password combination, replace `<username>` with your Elasticsearch or Elastic Cloud instance's user name, replace `<password>` with your password, and then remove `--user "Authorization: ApiKey <your-api-key>"`.
+    - For an Elastic Cloud API key, replace `<your-api-key>` with your Elastic Cloud API key, and then remove `--user "<username>:<password>"`.
+  
+  - Replace `<index-name>` with the name of the new index on the instance.
+  - Replace `<index-schema>` with the schema for the index. A schema is optional; see the explanation 
+    following this `curl` command for more information.
+  
+  ```bash
+  curl --request PUT "<host>:<port>/<index-name>" \
+  --user "<username>:<password>" \
+  --user "Authorization: ApiKey <your-api-key>" \
+  [--header "Content-Type: application/json" \
+  --data '<index-schema>']
+  ```
+
+  To learn more, see [Create index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-create-index.html) and [Get index](https://www.elastic.co/guide/en/elasticsearch/reference/current/indices-get-index.html).
+
+  For the destination connector, the index does not need to contain a schema beforehand. If Unstructured encounters an index without a schema, 
+  Unstructured will automatically create a compatible schema for you before inserting items into the index. Nonetheless, 
+  to reduce possible schema compatibility issues, Unstructured recommends that you create a schema that is compatible with Unstructured's schema. 
+  Unstructured cannot provide a schema that is guaranteed to work in all 
   circumstances. This is because these schemas will vary based on your source files' types; how you 
   want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors. 
 
-  You can adapt the following index schema example for your own needs:
+  For objects in the `metadata` field that Unstructured produces and that you want to store in an Elasticsearch or Elastic Cloud index, you must create fields in your index's schema that 
+  follows Unstructured's `metadata` field naming convention. For example, if Unstructured produces a `metadata` field with the following 
+  child objects:
+
+  ```json
+  "metadata": {
+    "is_extracted": "true",
+    "coordinates": {
+      "points": [
+        [
+          134.20055555555555,
+          241.36027777777795
+        ],
+        [
+          134.20055555555555,
+          420.0269444444447
+        ],
+        [
+          529.7005555555555,
+          420.0269444444447
+        ],
+        [
+          529.7005555555555,
+          241.36027777777795
+        ]
+      ],
+      "system": "PixelSpace",
+      "layout_width": 1654,
+      "layout_height": 2339
+    },
+    "filetype": "application/pdf",
+    "languages": [
+      "eng"
+    ],
+    "page_number": 1,
+    "image_mime_type": "image/jpeg",
+    "filename": "realestate.pdf",
+    "data_source": {
+      "url": "file:///home/etl/node/downloads/00000000-0000-0000-0000-000000000001/7458635f-realestate.pdf",
+      "record_locator": {
+        "protocol": "file",
+        "remote_file_path": "file:///home/etl/node/downloads/00000000-0000-0000-0000-000000000001/7458635f-realestate.pdf"
+      }
+    },
+    "entities": {
+      "items": [
+        {
+          "entity": "HOME FOR FUTURE",
+          "type": "ORGANIZATION"
+        },
+        {
+          "entity": "221 Queen Street, Melbourne VIC 3000",
+          "type": "LOCATION"
+        }
+      ],
+      "relationships": [
+        {
+          "from": "HOME FOR FUTURE",
+          "relationship": "based_in",
+          "to": "221 Queen Street, Melbourne VIC 3000"
+        }
+      ]
+    }
+  }
+  ```
+
+  You can adapt the following index schema example for your own needs. Note that outside of `metadata`, the following fields are 
+  required by Unstructured whenever you create your own index schema:
+
+  - `element_id`
+  - `record_id`, which is required by Unstructured for intelligent record updates.
+  - `type`, which is not required, but highly recommended.
+  - `text`
+  - `embeddings` if embeddings are generated; make sure to set `dims` to the same number of dimensions as the embedding model generates.
 
   ```json
   {
-      "settings": {
-          "index": {
-              "knn": true,
-              "knn.algo_param.ef_search": 100
+    "mappings": {
+      "properties": {
+        "element_id": {
+          "type": "keyword"
+        },
+        "record_id": {
+          "type": "text"
+        },
+        "text": {
+          "type": "text"
+        },
+        "type": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
           }
-      },
-      "mappings": {
+        },
+        "embeddings": {
+          "type": "dense_vector",
+          "dims": 1536,
+          "index": true,
+          "similarity": "cosine"
+        },
+        "metadata": {
           "properties": {
-              "record_id": {
-                  "type": "text"
-              },
-              "element_id": {
-                  "type": "keyword"
-              },
-              "text": {
-                  "type": "text"
-              },
-              "embeddings": {
-                  "type": "dense_vector",
-                  "dims": 384,
-                  "index": true,
-                  "similarity": "cosine"
-              },
-              "metadata": {
-                  "type": "object",
-                  "properties": {
-                      "parent_id": {
-                          "type": "text"
-                      },
-                      "page_number": {
-                          "type": "integer"
-                      },
-                      "is_continuation": {
-                          "type": "boolean"
-                      },
-                      "orig_elements": {
-                          "type": "text"
-                      },
-                      "partitioner_type": {
-                          "type": "text"
-                      }
-                  }
+            "is_extracted": {
+              "type": "boolean"
+            },
+            "coordinates-points": {
+              "type": "float"
+            },
+            "coordinates-system": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
               }
+            },
+            "coordinates-layout_width": {
+              "type": "long"
+            },
+            "coordinates-layout_height": {
+              "type": "long"
+            },
+            "filetype": {
+              "type": "keyword"
+            },
+            "languages": {
+              "type": "keyword"
+            },
+            "page_number": {
+              "type": "integer"
+            },
+            "image_mime_type": {
+              "type": "keyword"
+            },
+            "filename": {
+              "type": "keyword"
+            },
+            "data_source-url": {
+              "type": "keyword"
+            },
+            "data_source-record_locator-protocol": {
+              "type": "keyword"
+            },
+            "data_source-record_locator-remote_file_path": {
+              "type": "keyword"
+            },
+            "entities-items": {
+              "properties": {
+                "entity": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "type": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "entities-relationships": {
+              "properties": {
+                "from": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "relationship": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "to": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            }
           }
+        }
       }
+    }
   }
   ```
 
@@ -88,7 +270,7 @@
   - [An Introduction to Elasticsearch Mapping](https://www.elastic.co/blog/found-elasticsearch-mapping-introduction)
   - [Explicit mapping](https://www.elastic.co/guide/en/elasticsearch/reference/current/explicit-mapping.html)
   - [Dynamic field mapping](https://www.elastic.co/guide/en/elasticsearch/reference/current/dynamic-field-mapping.html)
-  - [Unstructured document elements and metadata](/api-reference/partition/document-elements)
+  - [Unstructured document elements and metadata](/api-reference/legacy-api/partition/document-elements)
 
   <iframe
   width="560"

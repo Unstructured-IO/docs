@@ -1,0 +1,99 @@
+---
+title: Process an individual file by making a direct POST request
+sidebarTitle: POST request
+---
+
+import PartitionEndpointLegacy from '/snippets/general-shared-text/partition-endpoint-legacy.mdx';
+
+<PartitionEndpointLegacy />
+
+Watch the following 4-minute video to learn how to make POST requests to the Unstructured Partition Endpoint to process individual files:
+
+<iframe
+width="560"
+height="315"
+src="https://www.youtube.com/embed/fU080EahKwc"
+title="YouTube video player"
+frameborder="0"
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+allowfullscreen
+></iframe>
+
+Open the related [notebook](https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/Unstructured_API_Partition_endpoint.ipynb) that is shown in the preceding video.
+
+To make POST requests to the Unstructured Partition Endpoint, you will need:
+
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+
+<SharedAPIKeyURL />
+
+To get your API key, do the following:
+
+import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-simple-api-only.mdx';
+
+<GetStartedSimpleAPIOnly/>
+
+The API URL was provided to you when your Unstructured account was created. 
+If you do not have this URL, email Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
+
+<Note>
+    The default URL for the Unstructured Partition Endpoint is `https://api.unstructuredapp.io/general/v0/general`. 
+    However, you should always use the API URL that was provided to you when your Unstructured account was created.
+</Note>
+
+Let's start with a simple example in which you use [curl](https://curl.se/) to send a local PDF file (`*.pdf`) to partition via the Unstructured Partition Endpoint.
+
+In this command, be sure to replace `<path/to/file>` with the path to your local PDF file.
+
+```bash
+curl --request 'POST' \
+"$UNSTRUCTURED_API_URL" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header 'content-Type: multipart/form-data' \
+--form 'content_type=string' \
+--form 'strategy=vlm' \
+--form 'vlm_model_provider=openai' \
+--form 'vlm_model=gpt-4o' \
+--form 'output_format=application/json' \
+--form 'files=@<path/to/file>;type=application/pdf'
+```
+
+In the example above we're representing the API endpoint with the environment variable `UNSTRUCTURED_API_URL`. Note, however, that you also need to authenticate yourself with
+your individual API Key, represented by the environment variable `UNSTRUCTURED_API_KEY`. Learn how to obtain an API URL and API key in the [Unstructured Partition Endpoint guide](/api-reference/legacy-api/partition/overview).
+
+## Parameters & examples
+
+The API parameters are the same across all methods of accessing the Unstructured Partition Endpoint.
+
+* Refer to the [API parameters](/api-reference/legacy-api/partition/api-parameters) page for the full list of available parameters.
+* Refer to the [Examples](/api-reference/legacy-api/partition/examples) page for some inspiration on using the parameters.
+
+[//]: # (TODO: when we have the concepts page shared across products, link it from here for the users to learn about partition strategies, chunking strategies and other important shared concepts)
+
+## Postman collection
+
+Unstructured offers a [Postman collection](https://learning.postman.com/docs/collections/collections-overview/) that you can import into Postman to make POST requests through a graphical user interface.
+
+1. [Install Postman](https://learning.postman.com/docs/getting-started/installation/installation-and-updates/).
+2. [Sign in to Postman](https://learning.postman.com/docs/getting-started/installation/postman-account/#signing-in-to-postman).
+3. In your workspace, click **Import**.
+
+   ![Import a Postman collection](/img/api/post/import.png)
+
+4. In the **Paste cURL, Raw text or URL** box, enter the following URL, and then press `Enter`:
+
+   ```
+   https://raw.githubusercontent.com/Unstructured-IO/docs/main/examplecode/codesamples/api/Unstructured-POST.postman_collection.json
+   ```
+
+5. On the sidebar, click **Collections**.
+6. Expand **Unstructured POST**.
+7. Click **(Partition Endpoint) Basic Request**.
+8. On the **Headers** tab, next to `unstructured-api-key`, enter your Unstructured API key in the **Value** column.
+9. On the **Body** tab, next to `files`, click the **Select files** box in the **Value** column.
+10. Click **New file from local machine**.
+11. Browse to and select the file that you want Unstructured to process. 
+12. Click **Send**. Processing could take several minutes.
+
+To download the processed data to your local machine, in the response area, click the ellipses, and then click **Save response to file**.

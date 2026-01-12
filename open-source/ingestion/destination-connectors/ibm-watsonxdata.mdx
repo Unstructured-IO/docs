@@ -2,9 +2,16 @@
 title: IBM watsonx.data
 ---
 
-import NewDocument from '/snippets/general-shared-text/new-document.mdx';
+<Tip>
+    The IBM watsonx.data destination connector relies on an Apache Iceberg-based catalog within the watsonx.data data store instance. 
+    Apache Iceberg is suitable for managed data storage and cataloging, but not for embedding storage or semantic similarity 
+    queries. For embedding storage and semantic similarity queries, Unstructured recommends that you use the following destination connectors 
+    instead:
 
-<NewDocument />
+    - [Astra DB](/open-source/ingestion/destination-connectors/astradb)
+    - [Milvus](/open-source/ingestion/destination-connectors/milvus) on IBM watsonx.data
+
+</Tip>
 
 import SharedIBMWatsonxdata from '/snippets/dc-shared-text/ibm-watsonxdata-cli-api.mdx';
 

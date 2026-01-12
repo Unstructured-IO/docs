@@ -1,0 +1,35 @@
+---
+title: Extract tables as HTML
+---
+
+import PartitionEndpointLegacy from '/snippets/general-shared-text/partition-endpoint-legacy.mdx';
+
+<PartitionEndpointLegacy />
+
+## Task
+
+You want to get, save, or show the contents of elements that are represented as HTML, such as tables that are embedded in a PDF document.
+
+## Approach
+
+Extract the contents of an element's `text_as_html` JSON object, which is nested inside of its parent `metadata` object.
+
+## To run this example
+
+You will need a document that is one of the document types that can output the `text_as_html` JSON object. For the list of applicable document types, see the entries in the table at the beginning of [Partitioning](/open-source/core-functionality/partitioning) where "Table Support" is "Yes."
+
+This example uses a PDF file with an embedded table.
+
+import SharedAPIKeyURL from '/snippets/general-shared-text/api-key-url.mdx';
+import ExtractTextAsHTMLPy from '/snippets/how-to-api/extract_text_as_html.py.mdx';
+
+## Code
+
+For the [Unstructured Python SDK](/api-reference/legacy-api/partition/sdk-python), you'll need:
+<SharedAPIKeyURL />
+<ExtractTextAsHTMLPy />
+
+## See also 
+
+- [Extract images and tables from documents](/api-reference/legacy-api/partition/extract-image-block-types)
+- [Table Extraction from PDF](/examplecode/codesamples/apioss/table-extraction-from-pdf)

@@ -1,0 +1,23 @@
+```bash curl
+curl --request 'POST' --location \
+"$UNSTRUCTURED_API_URL/sources" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header 'content-type: application/json' \
+--data \
+'{
+    "name": "<name>",
+    "type": "opensearch",
+    "config": {
+        "hosts": ["<host-name>:<port-number>"],
+        "index_name": "<index-name>",
+        "username": "<username>",
+        "password": "<password>",
+        "aws_access_key_id": "<aws-access-key-id>",
+        "aws_secret_access_key": "<aws-secret-access-key>",
+        "aws_session_token": "<aws-session-token>",
+        "fields": ["<field-name>", "<field-name>"],
+        "use_ssl": "true|false"
+    }
+}'
+```

@@ -8,26 +8,70 @@ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; pic
 allowfullscreen
 ></iframe>
 
-- An Astra account. [Create or sign in to an Astra account](https://astra.datastax.com/).
-- A database in the Astra account. [Create a database in an account](https://docs.datastax.com/en/astra-db-classic/databases/manage-create.html).
-- An application token for the database. [Create a database application token](https://docs.datastax.com/en/astra-db-serverless/administration/manage-application-tokens.html).
-- A namespace in the database. [Create a namespace in a database](https://docs.datastax.com/en/astra-db-serverless/databases/manage-namespaces.html#create-namespace).
-- A collection in the namespace. [Create a collection in a namespace](https://docs.datastax.com/en/astra-db-serverless/databases/manage-collections.html#create-collection).
+- An IBM Cloud account or DataStax account.
 
-  An existing collection is not required. At runtime, the collection behavior is as follows:
+  - For an IBM Cloud account, [sign up](https://cloud.ibm.com/registration) for an IBMid, and then [sign in](https://accounts.datastax.com/session-service/v1/login) to DataStax with your IBMid.
+  - For a DataStax account, [sign up](https://astra.datastax.com/signup) for a DataStax account, and then [sign in](https://accounts.datastax.com/session-service/v1/login) to DataStax with your DataStax account.
+
+- An Astra DB database in the DataStax account. To create a database:
+
+  a. After you sign in to DataStax, click **Create database**.<br/>
+  b. Click the **Serverless (vector)** tile, if it is not already selected.<br/>
+  c. For **Database name**, enter some unique name for the database.<br/>
+  d. Select a **Provider** and a **Region**, and then click **Create database**.<br/>
+  
+  [Learn more](https://docs.datastax.com/en/astra-db-classic/databases/manage-create.html).
+
+- An application token for the database. To create an application token:
+
+  a. After you sign in to DataStax, in the list of databases, click the name of the target database.<br/>
+  b. On the **Overview** tab, under **Database Details**, in the **Application Tokens** tile, click **Generate Token**.<br/>
+  c. Enter some **Token description** and select and **Expiration** time period, and then click **Generate token**.<br/>
+  d. Save the application token that is displayed to a secure location, and then click **Close**.<br/>
+
+  [Learn more](https://docs.datastax.com/en/astra-db-serverless/administration/manage-application-tokens.html).
+
+- A keyspace in the database. To create a keyspace:
+
+  a. After you sign in to DataStax, in the list of databases, click the name of the target database.<br/>
+  b. On the **Data Explorer** tab, in the **Keyspace** list, select **Create keyspace**.<br/>
+  c. Enter some **Keyspace name**, and then click **Add keyspace**.<br/>
+
+  [Learn more](https://docs.datastax.com/en/astra-db-serverless/databases/manage-keyspaces.html#keyspaces).
+
+- A collection in the keyspace.
 
   For the [Unstructured UI](/ui/overview) and [Unstructured API](/api-reference/overview):
 
-  - If an existing collection name is specified, and Unstructured generates embeddings, 
-    but the number of dimensions that are generated does not match the existing collection's embedding settings, the run will fail. 
-    You must change your Unstructured embedding settings or your existing collection's embedding settings to match, and try the run again.
-  - If a collection name is not specified, Unstructured creates a new collection in your namespace. If Unstructured generates embeddings, 
-    the new collections's name will be `u<short-workflow-id>_<short-embedding-model-name>_<number-of-dimensions>`. 
-    If Unstructured does not generate embeddings, the new collections's name will be `u<short-workflow-id`.
+  - An existing collection is not required. At runtime, the collection behavior is as follows:
+  
+    - If an existing collection name is specified, and Unstructured generates embeddings, 
+      but the number of dimensions that are generated does not match the existing collection's embedding settings, the run will fail. 
+      You must change your Unstructured embedding settings or your existing collection's embedding settings to match, and try the run again.
+    - If a collection name is not specified, Unstructured creates a new collection in your keyspace. If Unstructured generates embeddings, 
+      the new collection's name will be `u<short-workflow-id>_<short-embedding-model-name>_<number-of-dimensions>`.
+      If Unstructured does not generate embeddings, the new collection's name will be `u<short-workflow-id`.
 
   For [Unstructured Ingest](/open-source/ingestion/overview):
 
-  - If an existing collection name is specified, and Unstructured generates embeddings, 
-    but the number of dimensions that are generated does not match the existing collection's embedding settings, the run will fail. 
-    You must change your Unstructured embedding settings or your existing collections's embedding settings to match, and try the run again. 
-  - If a collection name is not specified, Unstructured creates a new collection in your Pinecone account. The new collection's name will be `unstructuredautocreated`.
+  - For the source connector only, an existing collection is required.
+  - For the destination connector only, an existing collection is not required. At runtime, the collection behavior is as follows:
+  
+    - If an existing collection name is specified, and Unstructured generates embeddings, 
+      but the number of dimensions that are generated does not match the existing collection's embedding settings, the run will fail. 
+      You must change your Unstructured embedding settings or your existing collection's embedding settings to match, and try the run again. 
+    - If a collection name is not specified, Unstructured creates a new collection in your keyspace. The new collection's name will be `unstructuredautocreated`.
+
+  To create a collection yourself:
+
+  a. After you sign in to DataStax, in the list of databases, click the name of the target database.<br/>
+  b. On the **Data Explorer** tab, in the **Keyspace** list, select the name of the target keyspace.<br/>
+  c. In the **Collections** list, select **Create collection**.<br/>
+  d. Enter some **Collection name**.<br/>
+  e. Turn on **Vector-enabled collection**, if it is not already turned on.<br/>
+  f. Choose a mode for **Embedding generation method**. See [Astra DB generated embeddings](#astra-db-generated-embeddings).<br/>
+  g. If you chose **Bring my own**, enter the number of dimensions for the embedding model that you plan to use.<br/>
+  h. For **Similarity metric**, select **Cosine**.<br/>
+  i. Click **Create collection**.<br/>
+
+  [Learn more](https://docs.datastax.com/en/astra-db-serverless/databases/manage-collections.html#create-collection).

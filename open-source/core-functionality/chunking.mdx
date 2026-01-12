@@ -181,6 +181,10 @@ for element in elements:
 #     ListItem: Violets are blue
 ```
 
+If High Res partitioning is used, the `orig_elements` value of each chunked element will contain an `image_base64` value for each of the `Image` and `Table` elements. To access the original content for an `image_base64` field, 
+[decompress and then Base64-decode](/open-source/how-to/get-chunked-elements) the `orig_elements` value. Then 
+[Base64-decode](/open-source/how-to/extract-image-block-types) the resulting `image_base64` values.
+
 ## Learn more
 
 <Icon icon="blog" />&nbsp;&nbsp;[Chunking for RAG: best practices](https://unstructured.io/blog/chunking-for-rag-best-practices)

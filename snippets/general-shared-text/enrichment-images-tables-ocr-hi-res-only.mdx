@@ -1,0 +1,19 @@
+<Warning>
+    Unstructured can potentially generate image summary descriptions, table summary descriptions, table-to-HTML output, and generative OCR optimizations, only for workflows that are configured as follows:
+    
+    - With a **Partitioner** node set to use the **Auto** or **High Res** partitioning strategy, and an image summary description node, table summary description node, table-to-HTML output node, or generative OCR optimization node is added.  
+    - With a **Partitioner** node set to use the **VLM** partitioning strategy. No image summary description node, table summary description node, table-to-HTML output node, or generative OCR optimization node is needed (or allowed).
+    
+    Even with these configurations, Unstructured actually generates image summary descriptions, table summary descriptions, and table-to-HTML output only for files that contain images or tables and are also eligible 
+    for processing with the following partitioning strategies:
+    
+    - **High Res**, when the workflow's **Partitioner** node is set to use **Auto** or **High Res**.
+    - **VLM** or **High Res**, when the workflow's **Partitioner** node is set to use **VLM**.
+
+    Unstructured never generates image summary descriptions, table summary descriptions, or table-to-HTML output for workflows that are configured as follows:
+    
+    - With a **Partitioner** node set to use the **Fast** partitioning strategy.
+    - With a **Partitioner** node set to use the **Auto**, **High Res**, or **VLM** partitioning strategy, for all files that Unstructured encounters that do not contain images or tables.
+
+    Unstructured never produces generative OCR optimizations for workflows with a **Partitioner** node set to use the **Fast** partitioning strategy.
+</Warning>
