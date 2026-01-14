@@ -1,0 +1,58 @@
+```python Python Ingest
+import os
+
+from unstructured_ingest.pipeline.pipeline import Pipeline
+from unstructured_ingest.interfaces import ProcessorConfig
+
+from unstructured_ingest.processes.connectors.sql.teradata import(
+    TeradataConnectionConfig,
+    TeradataAccessConfig,
+    TeradataUploaderConfig,
+    TeradataUploadStagerConfig
+)
+from unstructured_ingest.processes.connectors.local import (
+    LocalIndexerConfig,
+    LocalDownloaderConfig,
+    LocalConnectionConfig
+)
+from unstructured_ingest.processes.partitioner import PartitionerConfig
+from unstructured_ingest.processes.chunker import ChunkerConfig
+from unstructured_ingest.processes.embedder import EmbedderConfig
+
+# Chunking and embedding are optional.
+
+if __name__ == "__main__":
+    Pipeline.from_configs(
+        context=ProcessorConfig(),
+        indexer_config=LocalIndexerConfig(input_path=os.getenv("LOCAL_FILE_INPUT_DIR")),
+        downloader_config=LocalDownloaderConfig(),
+        source_connection_config=LocalConnectionConfig(),
+        partitioner_config=PartitionerConfig(
+            partition_by_api=True,
+            api_key=os.getenv("UNSTRUCTURED_API_KEY"),
+            partition_endpoint=os.getenv("UNSTRUCTURED_API_URL"),
+            additional_partition_args={
+                "split_pdf_page": True,
+                "split_pdf_allow_failed": True,
+                "split_pdf_concurrency_level": 15
+            }
+        ),
+        chunker_config=ChunkerConfig(chunking_strategy="by_title"),
+        embedder_config=EmbedderConfig(embedding_provider="huggingface"),
+        destination_connection_config=TeradataConnectionConfig(
+            access_config=TeradataAccessConfig(
+                password=os.getenv("TERADATA_PASSWORD")
+            ),
+            host=os.getenv("TERADATA_HOST"),
+            # dbs_port=os.getenv("TERADATA_PORT"),
+            database=os.getenv("TERADATA_DATABASE"),
+            user=os.getenv("TERADATA_USERNAME")
+        ),
+        stager_config=TeradataUploadStagerConfig(),
+        uploader_config=TeradataUploaderConfig(
+            batch_size=50,
+            table_name=os.getenv("TERADATA_TABLE"),
+            record_id_key=os.getenv("TERADATA_RECORD_ID_KEY")
+        )
+    ).run()
+```

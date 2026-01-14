@@ -1,0 +1,20 @@
+The Teradata connector dependencies:
+
+```bash CLI, Python
+pip install "unstructured-ingest[teradata]"
+```
+
+import AdditionalIngestDependencies from '/snippets/general-shared-text/ingest-dependencies.mdx';
+
+<AdditionalIngestDependencies />
+
+These environment variables:
+
+- `TERADATA_HOST` - The host name, represented by `--host` (CLI) or `host` (Python).
+- `TERADATA_PORT` - The port number, represented by `--dbs-port` (CLI) or `dbs_port` (Python). This is optional, and the default is `1025` if not otherwise specified.
+- `TERADATA_USERNAME` - The name of the user who has access to the database, represented by `--user` (CLI) or `user` (Python).
+- `TERADATA_PASSWORD` - The user's password, represented by `--password` (CLI) or `password` (Python).
+- `TERADATA_DATABASE` - The name of the database, represented by `--database` (CLI) or `database` (Python). If not otherwise specified, the default database name is used. To get the name of the default database, you can run the Teradata SQL command `SELECT DATABASE;`.
+- `TERADATA_TABLE` - The name of the table, represented by `--table-name` (CLI) or `table_name` (Python).
+- `TERADATA_ID_COLUMN` - For the source connector, the name of the column that uniquely identifies each record in the table, represented by `--id-column` (CLI) or `id_column` (Python).
+- `TERADATA_RECORD_ID_KEY` - For the destination connector, the name of the column in the table that uniquely identifies each record, represented by `--record-id-key` (CLI) or `record_id_key` (Python).
