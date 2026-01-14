@@ -18,7 +18,9 @@ with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as clien
                     "keyspace": "<keyspace>",
                     "batch_size": <batch-size>,
                     "flatten_metadata": <True|False>,
-                    "binary_encode_vectors": <True|False>
+                    "binary_encode_vectors": <True|False>,
+                    "enable_lexical_search": <True|False>,
+                    "astra_generated_embeddings": <True|False>
                 }
             )
         )

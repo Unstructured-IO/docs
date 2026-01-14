@@ -49,6 +49,16 @@ If the workflow editor is not yet visible, do the following to show it:
 
 1. If you do not already have an Unstructured account, [sign up for free](https://unstructured.io/?modal=try-for-free). 
    After you sign up, you are automatically signed in to your new Unstructured **Let's Go** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+
+   <Note>
+       If you already have an Unstructured **Pay-As-You-Go** or **Business SaaS** account, you are already signed up for Unstructured. 
+       Sign in to your existing Unstructured **Pay-As-You-Go** or **Business SaaS** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+
+       If you already have an Unstructured **dedicated instance** or **in-VPC** deployment, your sign-in link will be unique to your deployment. 
+       If you're not sure what your unique sign-in link is, see your Unstructured account administrator, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+   </Note>
+
 2. After you are signed in, the **Start** page appears.
 3. In the **Welcome** area, do one of the following:
 
@@ -101,7 +111,7 @@ though&mdash;you already have an existing workflow in progress!)
 - **Start** takes you to the UI home page. The home page features a simple way to process one local file at a time with limited default settings. [Learn how](/welcome#unstructured-ui-quickstart).
 - **Connectors** allows you to create and manage your [source](/ui/sources/overview) and 
   [destination](/ui/destinations/overview) connectors.
-- **Jobs** allows you to see the results of your workflows that are run manually (on-demand) and automatically (on a regular time schedule). [Learn more](/ui/jobs).
+- **Jobs** allows you to see the results of your workflows that are run manually (once) and automatically (on a regular time schedule). [Learn more](/ui/jobs).
 - **API Keys** allows you to use code to create and manage connectors, workflows, and jobs programmatically instead of by using the UI. [Learn more](/ui/account/api-key-url). 
 - Your user icon at the bottom of the sidebar allows you to manage your Unstructured account. You can also sign out of your account from here. [Learn more](/ui/account/overview).
 
@@ -200,7 +210,7 @@ In this step, you will test the **High Res** partitioning strategy on the "Chine
    <Note>
        If **Search JSON** is not clickable, this is probably because the JSON output is too large for the online viewer. 
        Click **Download full JSON** and open the downloaded JSON file in an offline text editor (such as Visual Studio Code). 
-       [Learn more](/examplecode/tools/conversion-tools#visual-studio-code).
+       [Learn more](/examplecode/tools/json-tools#visual-studio-code).
    </Note>
 
 7. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
@@ -227,6 +237,15 @@ and generating detected entities (such as people and organizations) and the infe
    - Any available choice under **Provider** (for example, **Anthropic**).
    - Any available choice under **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
    - If not already selected, **Table Description** under **Task**.
+
+   <Note>
+       The lists of available models for these enrichments are constantly being updated. Your lists might also differ from these instructions, depending on your Unstructured 
+       account type. If the suggested model for an enrichment is not available, choose another available model from the list.
+
+       If you have an Unstructured **Business** account and want to add more models to these lists, contact your 
+       Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+   </Note>
 
    <Tip>
        The table description enrichment generates a summary description of each detected table. This can help you to more quickly and easily understand 
@@ -409,6 +428,16 @@ embedding model that is provided by an embedding provider. For the best embeddin
    ![Adding an embedder node](/img/ui/walkthrough/AddEmbedder.png)
 
 2. In the node's settings pane's **Details** tab, under **Select Embedding Model**, for **Azure OpenAI**, select **Text Embedding 3 Small [dim 1536]**.
+
+   <Note>
+       The list of available embedding models is constantly being updated. Your list might also be different, depending on your Unstructured 
+       account type. If **Azure OpenAI** and **Text Embedding 3 Small [dim 1536]** is not available, choose another available model from the list.
+
+       If you have an Unstructured **Business** account and want to add more models to this list, contact your 
+       Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+    </Note>
+
 3. Immediately above the **Source** node, click **Test**.
 4. In the **Test output** pane, make sure that **Embedder (8 of 8)** is showing. If not, click the right arrow (**>**) until **Embedder (8 of 8)** appears, which will show the output from the last node in the workflow.
 5. To explore the embeddings, search for the text `"embeddings"` (including the quotation marks).
@@ -451,7 +480,7 @@ locations, databases, and vector stores. To learn how to do this, try one or mor
 
 Unstructured also offers an API and SDKs, which allow you to use code to work with Unstructured programmatically instead of only with the UI. For details, see:
 
-- [Unstructured API quickstart](/api-reference/workflow/overview#quickstart) - This quickstart uses the Unstructured Workflow Endpoint to programmatically create a Dropbox source connector and a Pinecone destination connector in your Unstructured account. You then programmatically add these connectors to a workflow in your Unstructured account, run that workflow as a job, and then explore the job's results.
+- [Unstructured API quickstart](/api-reference/workflow/overview#quickstart) - This quickstart uses the Unstructured API's workflow operations to programmatically create a Dropbox source connector and a Pinecone destination connector in your Unstructured account. You then programmatically add these connectors to a workflow in your Unstructured account, run that workflow as a job, and then explore the job's results.
 - [Unstructured Python SDK](/api-reference/workflow/overview#unstructured-python-sdk) - This article provides an overview of the Unstructured Python SDK and how to use it.
 - [Unstructured API overview](/api-reference/overview) - This article provides an overview of the Unstructured API and how to use it.
 

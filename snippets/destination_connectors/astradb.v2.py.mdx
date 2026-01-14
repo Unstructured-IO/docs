@@ -47,7 +47,9 @@ if __name__ == "__main__":
             )
         ),
         stager_config=AstraDBUploadStagerConfig(
-            flatten_metadata=True
+            flatten_metadata=True,
+            enable_lexical_search=False,
+            astra_generated_embeddings=False
         ),
         uploader_config=AstraDBUploaderConfig(
             collection_name=os.getenv("ASTRA_DB_COLLECTION"),
