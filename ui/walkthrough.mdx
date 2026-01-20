@@ -87,7 +87,7 @@ Let's get going!
        - **Start** takes you to the UI home page. The home page features a simple way to process one local file at a time with limited default settings. [Learn how](/welcome#unstructured-ui-quickstart).
        - **Connectors** allows you to create and manage your [source](/ui/sources/overview) and 
          [destination](/ui/destinations/overview) connectors.
-       - **Jobs** allows you to see the results of your workflows that are run manually (on-demand) and automatically (on a regular time schedule). [Learn more](/ui/jobs).
+       - **Jobs** allows you to see the results of your workflows that are run manually (once) and automatically (on a regular time schedule). [Learn more](/ui/jobs).
        - **API Keys** allows you to use code to create and manage connectors, workflows, and jobs programmatically instead of by using the UI. [Learn more](/ui/account/api-key-url). 
        - Your user icon at the bottom of the sidebar allows you to manage your Unstructured account. You can also sign out of your account from here. [Learn more](/ui/account/overview).
    </Tip>
@@ -160,9 +160,18 @@ shows how well Unstructured's **VLM** partitioning strategy handles challenging 
       - **VLM** is great for any file, but it is best when you know for certain that some of your files have a combination of tables (especially complex ones), images, and multilanguage, scanned, or handwritten content. It's the highest quality but slowest of all the strategies.
    </Tip>
 
-4. Under **Select VLM Model**, under **Anthropic**, select **Claude Sonnet 4**.<br/>
+4. Under **Select VLM Model**, under **Vertex AI**, select **Gemini 2.0 Flash**.<br/>
 
    ![Selecting the VLM for partitioning](/img/ui/walkthrough/VLMPartitioner.png)
+
+   <Note>
+       The list of available models shown is constantly being updated. Your list might also differ from the preceding screenshot, depending on your Unstructured 
+       account type. If **Gemini 2.0 Flash** is not available, choose another available model from the list.
+
+       If you have an Unstructured **Business** account and want to add more models to this list, contact your 
+       Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+   </Note>
 
    <Tip>
       _When I choose **VLM**, when would I choose one of these models over another?_
@@ -208,9 +217,15 @@ shows how well Unstructured's **VLM** partitioning strategy handles challenging 
 
    ![Searching the JSON output](/img/ui/walkthrough/SearchJSON.png)
 
-   - The Chinese characters on page 1. Search for the text `verbs. The characters`. Notice that the Chinese characters are intepreted correctly.
+   - The Chinese characters on page 1. Search for the text `verbs. The characters`. Notice how the Chinese characters are output. We'll see accuracy improvements to this output later in Step 4 in the enrichments portion of this walkthrough. 
    - The tables on pages 1, 6, 7, 8, 9, and 12. Search for the text `"Table"` (including the quotation marks) to see how the VLM interprets the various tables. We'll see changes to these elements' `text` and `metadata.text_as_html` contents later in Step 4 in the enrichments portion of this walkthrough.
    - The images on pages 3, 7, and 8. Search for the text `"Image"` (including the quotation marks) to see how the VLM interprets the various images. We'll see changes to these elements' `text` contents later in Step 4 in the enrichments portion of this walkthrough.
+
+   <Note>
+       If **Search JSON** is not clickable, this is probably because the JSON output is too large for the online viewer. 
+       Click **Download full JSON** and open the downloaded JSON file in an offline text editor (such as Visual Studio Code). 
+       [Learn more](/examplecode/tools/json-tools#visual-studio-code).
+   </Note>
 
 8. Now try looking at the "Nash letters" PDF file's output. To do this:
 
@@ -222,7 +237,7 @@ shows how well Unstructured's **VLM** partitioning strategy handles challenging 
 9. Notice the following in the JSON output:
 
    - The handwriting on page 3. Search for the text `I have written RAND`. Notice how well the handwriting is recognized.
-   - The mimeograph on page 11. Search for the text `Technicians at this Agency`. Notice how well the mimeographed content is recognized.
+   - The mimeograph on page 18. Search for the text `The system which`. Notice how well the mimeographed content is recognized.
 
 10. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
     the workflow designer for the next step.
@@ -240,10 +255,19 @@ HTML representations of detected tables, and detected entities (such as people a
 3. In the node's settings pane's **Details** tab, click:
 
    - **Image** under **Input Type**.
-   - Any available choice for **Provider**.
-   - Any available choice for **Model**.
+   - Any available choice for **Provider** (for example, **Anthropic**).
+   - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
    - If not already selected, **Image Description** under **Task**.
+   
+   <Note>
+       The lists of available models for these enrichments are constantly being updated. Your lists might also differ from these instructions, depending on your Unstructured 
+       account type. If the suggested model for an enrichment is not available, choose another available model from the list.
 
+       If you have an Unstructured **Business** account and want to add more models to these lists, contact your 
+       Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+   </Note>
+   
    <Tip>
        The image description enrichment generates a summary description of each detected image. This can help you to more quickly and easily understand 
        what each image is all about without having to stop to manually visualize and interpret the image's content yourself. This also provides additional helpful context about the image for your RAG apps, agents, and models. [Learn more](/ui/enriching/image-descriptions).
@@ -257,8 +281,8 @@ HTML representations of detected tables, and detected entities (such as people a
       In the node's settings pane's **Details** tab, click:
 
       - **Table** under **Input Type**.
-      - Any available choice for **Provider**.
-      - Any available choice for **Model**.
+      - Any available choice for **Provider** (for example, **Anthropic**).
+      - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
       - If not already selected, **Table Description** under **Task**.
 
       <Tip>
@@ -271,9 +295,11 @@ HTML representations of detected tables, and detected entities (such as people a
       In the node's settings pane's **Details** tab, click:
 
       - **Table** under **Input Type**.
-      - **OpenAI** under **Provider**.
-      - Any available choice under **Model**.
-      - **Table to HTML** under **Task**.
+      - Any available choice for **Provider** (for example, **Agentic Table Parsing** to use agentic AI, or **Anthropic** to use a VLM).
+      - If you did not choose **Agentic Table Parsing** for **Provider**, click the following:
+      
+        - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
+        - **Table to HTML** under **Task**.
       
       <Tip>
           The table to HTML enrichment generates an HTML representation of each detected table. This can help you to more quickly and accurately recreate the table's content elsewhere later as needed. This also provides additional context about the table's structure for your RAG apps, agents, and models. [Learn more](/ui/enriching/table-to-html).
@@ -284,8 +310,8 @@ HTML representations of detected tables, and detected entities (such as people a
       In the node's settings pane's **Details** tab, click:
       
       - **Text** under **Input Type**.
-      - Any available choice under **Provider**.
-      - Any available choice under **Model**.
+      - Any available choice for **Provider** (for example, **Anthropic**).
+      - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
       
       <Tip>
           The named entity recognition (NER) enrichment generates a list of detected entities (such as people and organizations) and the inferred relationships among these entities. This provides additional context about these entities' types and their relationships for your graph databases, RAG apps, agents, and models. [Learn more](/ui/enriching/ner).
@@ -296,13 +322,28 @@ HTML representations of detected tables, and detected entities (such as people a
       In the node's settings pane's **Details** tab, click:
       
       - **Image** under **Input Type**.
-      - **Anthropic** or **Amazon Bedrock** under **Provider**.
-      - Any available choice under **Model**.
+      - Any available choice for **Provider** (for example, **Anthropic**).
+      - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
       - **Generative OCR** under **Task**.
       
       <Tip>
           The generative OCR enrichment improves, as needed, the accuracy of text blocks that Unstructured initially processed during its partitioning phase. [Learn more](/ui/enriching/generative-ocr).
       </Tip>
+
+      <Warning>
+          Generative OCR does not process any text blocks by default. You must also explicitly specify which document element 
+          types containing text that you want generative OCR to process. To do this:
+          
+          1. Click the **Partitioner** node.
+          2. In the node's settings pane, scroll down to and then click a blank area inside of the **Extract Image Block Types** list.
+          3. Select each [document element types](/ui/document-elements#element-type) that you want generative OCR to process. For this 
+             walkthrough, select only **NarrativeText**.
+          
+          Generative OCR does not process the text of any `Image` or `Table` elements if they have already been processed by 
+          [image description](#image-description-task) or [table description](#table-description-task) enrichments, respectively. Do 
+          not remove the **Image** or **Table** document elements types from this **Extract Image Block Types** list, or else 
+          the image description and table description enrichments in your workflow might produce unexepcted results or might not work at all.
+      </Warning>
 
       <Note>
           The **Generative OCR** enrichment appears under the **Input Type** of **Image**, even though this is not an image-related enrichment. 
@@ -320,8 +361,9 @@ HTML representations of detected tables, and detected entities (such as people a
 
 7. Some interesting portions of the output include the following:
 
-   - The images on pages 3, 7, and 8. Search for the text `"Image"` (including the quotation marks). Notice the summary description for each image.
-   - The tables on pages 1, 6, 7, 8, 9, and 12. Search for the text `"Table"` (including the quotation marks). Notice the summary description for each of these tables. 
+   - The Chinese characters on page 1. Search again for the text `verbs. The characters`. Notice how the accuracy of the Chinese character output is improved.
+   - The images on pages 3, 7, and 8. Search again for the text `"Image"` (including the quotation marks). Notice the summary description for each image.
+   - The tables on pages 1, 6, 7, 8, 9, and 12. Search again for the text `"Table"` (including the quotation marks). Notice the summary description for each of these tables. 
      Also notice the `text_as_html` field for each of these tables.
    - The identified entities and inferred relationships among them. Search for the text `Zhijun Wang`. Of the eight instances of this name, notice 
      the author's identification as a `PERSON` three times, the author's `published` relationship twice, and the author's `affiliated_with` relationship twice.
@@ -395,7 +437,7 @@ the resulting document elements' `text` content into manageable "chunks" to stay
       these chunks were derived from by putting them into each chunk's `metadata`. To have Unstructured do this, use the **Include Original Elements** setting, as described in the preceding tip.
    </Tip>
 
-7. Try running this workflow again with the **Chunk by Title** strategy, as follows:
+7. Optionally, you can try running this workflow again with the **Chunk by Title** strategy, as follows:
 
    a. Click the close (**X**) button above the output on the right side of the screen.<br/>
    b. In the workflow designer, click the **Chunker** node and then, in the node's settings pane's **Details** tab, select **Chunk by Title**.<br/>
@@ -419,7 +461,7 @@ the resulting document elements' `text` content into manageable "chunks" to stay
    f. To explore the chunker's results, search for the text `"CompositeElement"` (including the quotation marks). Notice that the lengths of some of the chunks that immediately 
       precede titles might be shortened due to the presence of the title impacting the chunk's size.
 
-8. Try running this workflow again with the **Chunk by Page** strategy, as follows:
+8. Optionally, you can try running this workflow again with the **Chunk by Page** strategy, as follows:
 
    a. Click the close (**X**) button above the output on the right side of the screen.<br/>
    b. In the workflow designer, click the **Chunker** node and then, in the node's settings pane's **Details** tab, select **Chunk by Page**.<br/>
@@ -436,7 +478,7 @@ the resulting document elements' `text` content into manageable "chunks" to stay
    f. To explore the chunker's results, search for the text `"CompositeElement"` (including the quotation marks). Notice that the lengths of some of the chunks that immediately 
       precede page breaks might be shortened due to the presence of the page break impacting the chunk's size.<br/>
 
-9. Try running this workflow again with the **Chunk by Similarity** strategy, as follows:
+9. Optionally, you can try running this workflow again with the **Chunk by Similarity** strategy, as follows:
 
    a. Click the close (**X**) button above the output on the right side of the screen.<br/>
    b. In the workflow designer, click the **Chunker** node and then, in the node's settings pane's **Details** tab, select **Chunk by Similarity**.<br/>
@@ -466,7 +508,7 @@ the resulting document elements' `text` content into manageable "chunks" to stay
 10. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
     the workflow designer for the next step.
 
-## Step 6: Experiment with embedding
+## Step 6 (Optional): Experiment with embedding
 
 In this step, you generate [embeddings](/ui/embedding) for your workflow. Embeddings are vectors of numbers that represent various aspects of the text that is extracted by Unstructured. 
 These vectors are stored or "embedded" next to the text itself in a vector store or vector database. Chatbots, agents, and other AI solutions can use 
@@ -478,6 +520,16 @@ embedding model that is provided by an embedding provider. For the best embeddin
    ![Adding an embedder node](/img/ui/walkthrough/AddEmbedder.png)
 
 2. In the node's settings pane's **Details** tab, under **Select Embedding Model**, for **Azure OpenAI**, select **Text Embedding 3 Small [dim 1536]**.
+
+   <Note>
+       The list of available embedding models is constantly being updated. Your list might also be different, depending on your Unstructured 
+       account type. If **Azure OpenAI** and **Text Embedding 3 Small [dim 1536]** is not available, choose another available model from the list.
+
+       If you have an Unstructured **Business** account and want to add more models to this list, contact your 
+       Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+    </Note>
+
 3. With the "Chinese Characters" PDF file still selected in the **Source** node, click **Test**.
 4. In the **Test output** pane, make sure that **Embedder (8 of 8)** is showing. If not, click the right arrow (**>**) until **Embedder (8 of 8)** appears, which will show the output from the last node in the workflow.
 5. To explore the embeddings, search for the text `"embeddings"` (including the quotation marks).
@@ -520,7 +572,7 @@ locations, databases, and vector stores. To learn how to do this, try one or mor
 
 Unstructured also offers an API and SDKs, which allow you to use code to work with Unstructured programmatically instead of only with the UI. For details, see:
 
-- [Unstructured API quickstart](/api-reference/workflow/overview#quickstart) - This quickstart uses the Unstructured Workflow Endpoint to programmatically create a Dropbox source connector and a Pinecone destination connector in your Unstructured account. You then programmatically add these connectors to a workflow in your Unstructured account, run that workflow as a job, and then explore the job's results.
+- [Unstructured API quickstart](/api-reference/workflow/overview#quickstart) - This quickstart uses the Unstructured API's workflow operations to programmatically create a Dropbox source connector and a Pinecone destination connector in your Unstructured account. You then programmatically add these connectors to a workflow in your Unstructured account, run that workflow as a job, and then explore the job's results.
 - [Unstructured Python SDK](/api-reference/workflow/overview#unstructured-python-sdk) - This article provides an overview of the Unstructured Python SDK and how to use it.
 - [Unstructured API overview](/api-reference/overview) - This article provides an overview of the Unstructured API and how to use it.
 

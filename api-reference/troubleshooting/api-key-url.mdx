@@ -39,14 +39,10 @@ For the API URL, this URL was provided to you when your Unstructured account was
 If you do not have this URL, email Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
 
 <Note>
-    The default URL for the Unstructured Workflow Endpoint is `https://platform.unstructuredapp.io/api/v1`.
-
-    The default URL for the Unstructured Partition Endpoint is `https://api.unstructuredapp.io/general/v0/general`. 
+    The default URL for the Unstructured API's workflow operations is `https://platform.unstructuredapp.io/api/v1`.
    
     However, you should always use the URLs that were provided to you when your Unstructured account was created.
 </Note>
-
-For the API key, the same API key works for both the [Unstructured Workflow Endpoint](/api-reference/workflow/overview) and the [Unstructured Partition Endpoint](/api-reference/partition/overview). To access your key:
 
 1. If you are not already signed in, sign in to your Unstructured **Let's Go**, **Pay-As-You-Go**, or **Business SaaS** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
 
@@ -68,7 +64,7 @@ For the API key, the same API key works for both the [Unstructured Workflow Endp
    c. Follow the on-screen instructions to finish generating the key.<br/>
    d. Click the **Copy** icon next to your new key to add the key to your system's clipboard. If you lose this key, simply return and click the **Copy** icon again.<br/>
   
-For the API URL, note the value of the Unstructured API URL for the Endpoint that you want to call. To access these API URLs:
+For the API URL, note the value of the Unstructured API URL that you want to call. To access these API URLs:
 
 1. If you are not already signed in, sign in to your Unstructured **Let's Go**, **Pay-As-You-Go**, or **Business SaaS** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
 
@@ -83,8 +79,7 @@ For the API URL, note the value of the Unstructured API URL for the Endpoint tha
        For a **Business** account, before you click **API Keys**, make sure you have selected the organizational workspace you want to get the API URL for.  
    </Note>
 
-3. Note the API URL for the **Unstructured Workflow Endpoint** or the **Unstructured Partition Endpoint**, depending on whether you want to call the 
-   [Unstructured Workflow Endpoint](/api-reference/workflow/overview) or the [Unstructured Partition Endpoint](/api-reference/partition/overview), respectively.
+3. Note the API URL for the Unstructured API's workflow operations, labelled as **Unstructured API Endpoint**.
 
 If you still believe you have the correct API URL and API key, try the following steps:
 
@@ -101,8 +96,8 @@ If you still believe you have the correct API URL and API key, try the following
    - Check the value of the `api_key_auth` parameter. Make sure it is set to the right API key, or an environment variable representing the right API key.
 
    <Note>
-       If you are using the Unstructured Python SDK to call the Workflow Endpoint or the Partition Endpoint, you should not need to set the value of the 
-       `server_url` parameter if you are using these Endpoints' default API URL. However, you might want to try setting this value anyway to see if it otherwise resolves your issue.
+       If you are using the Unstructured Python SDK to call the Unstructured API's workflow operations, you should not need to set the value of the 
+       `server_url` parameter if you are using these operations' default API URL. However, you might want to try setting this value anyway to see if it otherwise resolves your issue.
    </Note>
 
    **For the Unstructured JavaScript/TypeScript SDK**

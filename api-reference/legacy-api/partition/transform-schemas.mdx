@@ -1,0 +1,233 @@
+---
+title: Transform a JSON file into a different schema
+---
+
+import PartitionEndpointLegacy from '/snippets/general-shared-text/partition-endpoint-legacy.mdx';
+
+<PartitionEndpointLegacy />
+
+## Task
+
+You want to convert a JSON file that Unstructured produces into a separate JSON file that uses 
+a different JSON schema than the one that Unstructured uses.
+
+## Approach
+
+Use a Python package such as [json-converter](https://pypi.org/project/json-converter/) in your Python code project 
+to transform your source JSON file into a target JSON file that conforms to your own schema.
+
+<Info>The `json-converter` package is not owned or supported by Unstructured. For questions and 
+requests, see the [Issues](https://github.com/ebi-ait/json-converter/issues) tab of the 
+`json-converter` repository in GitHub.</Info>
+
+## Code
+
+<Steps>
+    <Step title="Install dependencies">
+        In your local Python code project, install the [json-converter](https://pypi.org/project/json-converter/) 
+        package.
+        
+        ```bash
+        pip install json-converter
+        ```
+    </Step>
+    <Step title="Identify the JSON file to transform">
+        1. Find the local source JSON file that you want to transform.
+        2. Note the JSON field names and structures that you want to transform. For example, the JSON file might 
+           look like the following (the ellipses indicate content omitted for brevity):
+
+           ```json
+           [
+             {
+               "type": "...",
+               "element_id": "...",
+               "text": "...",
+               "metadata": {
+                 "filetype": "...",
+                 "languages": [
+                   "eng"
+                 ],
+                 "page_number": 1,
+                 "filename": "..."
+               }
+             },
+             {
+               "type": "...",
+               "element_id": "...",
+               "text": "...",
+               "metadata": {
+                 "filetype": "...",
+                 "languages": [
+                   "eng"
+                 ],
+                 "page_number": 1,
+                 "filename": "..."
+               }
+             },
+             {
+               "...": "..."
+             }
+           ]
+           ```
+    </Step>
+    <Step title="Create the JSON field mappings file">
+        1. Decide what you want the JSON schema in the transformed file to look like. For example, the 
+           transformed JSON file might look like the following (the ellipses indicate content omitted for brevity):
+
+           ```json
+           [
+             {
+               "content_type": "...",
+               "content_id": "...",
+               "content": "...",
+               "content_properties": {
+                 "page": 1
+               }
+             },
+             {
+               "content_type": "...",
+               "content_id": "...",
+               "content": "...",
+               "content_properties": {
+                 "page": 1
+               }
+             },
+             {
+               "...": "..."
+             }
+           ]
+           ```
+
+        2. Create the JSON field mappings file, for example:
+
+           ```json
+           {
+             "content_type": ["type"],
+             "content_id": ["element_id"],
+             "content": ["text"]
+             "content_properties.page": ["metadata.page_number"]
+           }
+           ```
+
+           This file declares the following mappings:
+
+           - The `type` field is renamed to `content_type`.
+           - The `element_id` field is renamed to `content_id`.
+           - The `text` field is renamed to `content`.
+           - The `page_number` field nested inside `metadata` is renamed to `page` and is nested inside `content_properties`.
+           - All of the other fields (`filetype`, `languages`, and `filename`) are dropped. 
+
+           For more information about the format of this JSON field mappings file, see the 
+           [Project Description](https://pypi.org/project/json-converter) in the `json-converter` page on PyPI or the 
+           [README](https://github.com/ebi-ait/json-converter) in the `json-converter` repository in GitHub.
+    </Step>
+    <Step title="Add and run the transform code">
+        1. Set the following local environment variables:
+
+           - Set `LOCAL_FILE_INPUT_PATH` to the local path to the source JSON file.
+           - Set `LOCAL_FILE_OUTPUT_PATH` to the local path to the target JSON file.
+           - Set `LOCAL_FIELD_MAPPINGS_PATH` to the local path to the JSON field mappings file.
+
+        2. Add the following Python code file to your project:
+
+           ```python
+           import os, json
+           from json_converter.json_mapper import JsonMapper
+
+           # Converts one JSON file with one schema to another 
+           # JSON file with a different schema. 
+           # Provide the path to the input (source) and output 
+           # (target) JSON files and the path to the JSON schema 
+           # field mappings file.
+           def convert_json_with_schemas(
+               input_file_path: str,
+               output_file_path: str,
+               field_mappings_path: str
+           ) -> None:
+
+               output_data = []
+
+               try:
+                   with open(field_mappings_path, 'r') as f:
+                       element_mappings = json.load(f)
+               except FileNotFoundError:
+                   print(f"Error: Input JSON schema field mappings file '{input_file_path}' not found.")
+               except IOError as e:
+                   print(f"I/O error occurred: {e}")
+               except Exception as e:
+                   print(f"An unexpected error occurred: {e}")
+
+               try:
+                   with open(input_file_path, 'r') as f:
+                       input_data = json.load(f)
+                       
+                       for item in input_data:
+                           converted_data = JsonMapper(item).map(element_mappings)
+                           output_data.append(converted_data)
+               except FileNotFoundError:
+                   print(f"Error: Input JSON file '{input_file_path}' not found.")
+               except IOError as e:
+                   print(f"I/O error occurred: {e}")
+               except Exception as e:
+                   print(f"An unexpected error occurred: {e}")
+
+               try:
+                   with open(output_file_path, 'w') as f:
+                       json.dump(output_data, f, indent=2)
+               
+                   print(f"Transformation complete. Output written to '{output_file_path}'.")
+               except IOError as e:
+                   print(f"I/O error occurred: {e}")
+               except Exception as e:
+                   print(f"An unexpected error occurred: {e}")
+
+           if __name__ == "__main__":
+               convert_json_with_schemas(
+                   input_file_path=os.getenv("LOCAL_FILE_INPUT_PATH"),
+                   output_file_path=os.getenv("LOCAL_FIELD_MAPPINGS_PATH"),
+                   field_mappings_path=os.getenv("LOCAL_FILE_OUTPUT_PATH")
+               )
+           ```
+
+        3. Run the Python code file.
+        4. Check the path specified by `LOCAL_FILE_OUTPUT_PATH` for the transformed JSON file.
+    </Step>
+</Steps>
+
+## Troubleshooting
+
+### Error when trying to import Mapping from collections
+
+**Issue**: When you run your Python code file, the following error message appears: "ImportError: cannot import name 'Mapping' from 'collections'".
+
+**Cause**: When you use the `json-converter` package with newer versions of Python such as 3.11 and later, 
+Python tries to use an outdated import in this `json-converter` package.
+
+**Solution**: Update the `json-converter` package's source code to use a different import, as follows:
+
+1. In your Python project, find the `json-converter` package's source location, by running the `pip show` command:
+
+   ```bash
+   pip show json-converter
+   ```
+
+   Note the path in the **Location** field.
+
+2. Use your code editor to the open the path to the `json-converter` package's source code.
+3. In the source code, open the file named `json_mapper.py`.
+4. Change the following line of code...
+
+   ```python
+   from collections import Mapping
+   ```
+
+   ...to the following line of code, by adding `.abc`:
+
+   ```python
+   from collections.abc import Mapping
+   ```
+
+5. Save this source code file.
+6. Run your Python code file again.
+
+

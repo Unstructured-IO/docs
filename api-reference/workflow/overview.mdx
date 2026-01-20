@@ -2,46 +2,71 @@
 title: Overview
 ---
 
+import OnDemandJobsLimits from '/snippets/general-shared-text/on-demand-jobs-limits.mdx';
+
 <Tip>
-    To start using the Unstructured Workflow Endpoint right away, skip ahead to the [quickstart](#quickstart) or 
+    To start using the Unstructured API's workflow operations right away, skip ahead to the [quickstart](#quickstart) or 
     [walkthrough](#walkthrough), 
-    which uses the Unstructured Python SDK from a remote hosted Google Colab notebook.
+    which uses the Unstructured Python SDK from remotely hosted Google Colab notebooks. These notebooks require no local setup. 
 </Tip>
 
 The [Unstructured UI](/ui/overview) features a no-code user interface for transforming your unstructured data into data that is ready 
 for retrieval-augmented generation (RAG).
 
-The Unstructured Workflow Endpoint, part of the [Unstructured API](/api-reference/overview), enables a full range of partitioning, chunking, embedding, and 
-enrichment options for your files and data. It is designed to batch-process files and data in remote locations; send processed results to 
-various storage, databases, and vector stores; and use the latest and highest-performing models on the market today. It has built-in logic 
+The workflow operations in the [Unstructured API](/api-reference/overview) enable a full range of partitioning, chunking, embedding, and 
+enrichment options for your files and data. They are designed to batch-process files and data in remote locations; send processed results to 
+various storage, databases, and vector stores; and use the latest and highest-performing models. These workflow operations have built-in logic 
 to deliver the highest quality results at the lowest cost. 
 
-This page provides an overview of the Unstructured Workflow Endpoint. This endpoint enables Unstructured UI automation usage 
+This page provides an overview of the Unstructured API's workflow operations. These operations enable Unstructured UI automation usage 
 scenarios as well as for documentation, reporting, and recovery needs.
 
 ## Getting started
 
-Choose one of the following options to get started with the Unstructured Workflow Endpoint:
+Choose one of the following options to get started with the Unstructured API's workflow operations:
 
-- Follow the [quickstart](#quickstart) or [walkthrough](#walkthrough), which uses the Unstructured Python SDK from a remote hosted Google Colab notebook.
-- Start using the [Unstructred Python SDK](#unstructured-python-sdk).
-- Start using a [REST](#rest-endpoints) client, such as `curl` or Postman.
+- Follow the [quickstart](#quickstart) or [walkthrough](#walkthrough), which use the Unstructured Python SDK from remotely hosted Google Colab notebooks. These notebooks require no local setup. 
+- Start using the [Unstructred Python SDK](#unstructured-python-sdk). This option requires you to set up a local Python virtual environment.
+- Start using a local [REST](#rest-endpoints) client, such as `curl` or Postman.
 
 ## Quickstart
 
-import SharedPlatformAPI from '/snippets/quickstarts/platform-api.mdx';
+The following quickstart shows how to use the [Unstructured Python SDK](/api-reference/workflow/overview#unstructured-python-sdk) 
+to have Unstructured process local files by using the Unstructured API's _on-demand jobs_ functionality. This functionality 
+is part of the Unstructured API's collection of [workflow operations](https://docs.unstructured.io/api-reference/workflow/overview).
 
-<SharedPlatformAPI />
+This quickstart is available in two options:
+
+- [Use a remote notebook](https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/Unstructured_API_On_Demand_Jobs_Quickstart.ipynb) - This option uses a remotely hosted Google Colab notebook. There are no additional setup steps required.
+- [Use your local machine](/api-reference/quickstart) - This option requires you to install the Unstructured Python SDK on your local machine.
+
+<Note>
+    The on-demand jobs functionality is designed to work *only by processing local files*.
+
+    To process files (and data) in remote file and blob storage, databases, and vector stores, you must use other 
+    workflow operations in the Unstructured API. To learn how, see for example the notebook 
+    [Dropbox-To-Pinecone Connector API Quickstart for Unstructured](https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/Dropbox_To_Pinecone_Connector_Quickstart.ipynb).  
+</Note>
 
 ## Walkthrough
 
-import WorkflowAPIWalkthrough from '/snippets/quickstarts/walkthrough-api.mdx';
+[This walkthrough](https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/Unstructured_API_On_Demand_Jobs_Walkthrough.ipynb) builds upon the [quickstart](#quickstart). 
+Like the quickstart, this walkthrough shows how to use the [Unstructured Python SDK](/api-reference/workflow/overview#unstructured-python-sdk) 
+to have Unstructured process local files by using the Unstructured API's _on-demand jobs_ functionality. This walkthrough goes further by 
+also showing in depth how to use Unstructured's [chunking](/ui/chunking), [enriching](/ui/enriching/overview), and [embedding](/ui/embedding) features. 
+This walkthrough is available as a remotely hosted Google Colab notebook. This notebook requires no local setup.
 
-<WorkflowAPIWalkthrough />
+<Note>
+    The on-demand jobs functionality is designed to work *only by processing local files*.
+
+    To process files (and data) in remote file and blob storage, databases, and vector stores, you must use other 
+    workflow operations in the Unstructured API. To learn how, see for example the notebook 
+    [Dropbox-To-Pinecone Connector API Quickstart for Unstructured](https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/Dropbox_To_Pinecone_Connector_Quickstart.ipynb).  
+</Note>
 
 ## Unstructured Python SDK
 
-Watch the following 4-minute video to learn how to use the Python SDK to call the Unstructured Workflow Endpoint to 
+Watch the following 4-minute video to learn how to use the Python SDK to call the Unstructured API's workflow operations to 
 create [connectors](#connectors) in the Unstructured UI.
 
 <iframe
@@ -54,7 +79,7 @@ allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; pic
 allowfullscreen
 ></iframe>
 
-Watch the following 4-minute video to learn how to use the Python SDK to call the Unstructured Workflow Endpoint to 
+Watch the following 4-minute video to learn how to use the Python SDK to call the Unstructured API's workflow operations to 
 create [workflows](#workflows) and [jobs](#jobs) in the Unstructured UI.
 
 <iframe
@@ -71,7 +96,7 @@ Open a related [notebook](https://colab.research.google.com/github/Unstructured-
 the concepts that are shown in the preceding videos.
 
 The [Unstructured Python SDK](https://github.com/Unstructured-IO/unstructured-python-client), beginning with version 0.30.6, 
-allows you to call the Unstructured Workflow Endpoint through standard Python code.
+allows you to call the Unstructured API's workflow operations through standard Python code.
 
 To install the Unstructured Python SDK, run the following command from within your Python virtual environment:
 
@@ -101,18 +126,18 @@ import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-s
 <GetStartedSimpleAPIOnly/>
 
 Calls made by the Unstructured Python SDK's `unstructured_client` functions for creating, listing, updating, 
-and deleting connectors, workflows, and jobs in the Unstructured UI all use the Unstructured Workflow Endpoint URL. 
+and deleting connectors, workflows, and jobs in the Unstructured UI all use the Unstructured API's workflow operations URL. 
 This URL was provided to you when your Unstructured account was created. 
 If you do not have this URL, email Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
 
 <Note>
-    The default URL for the Unstructured Workflow Endpoint is `https://platform.unstructuredapp.io/api/v1`. 
+    The default URL for the Unstructured API's workflow operations is `https://platform.unstructuredapp.io/api/v1`. 
     However, you should always use the URL that was provided to you when your Unstructured account was created.
 </Note>
 
 To specify an API URL in your code, set the `server_url` parameter in the `UnstructuredClient` constructor to the target API URL.
 
-The Unstructured Workflow Endpoint enables you to work with [connectors](#connectors),
+The Unstructured API's workflow operations enable you to work with [connectors](#connectors),
 [workflows](#workflows), and [jobs](#jobs) in the Unstructured UI.
 
 - A _source connector_ ingests files or data into Unstructured from a source location.
@@ -132,14 +157,14 @@ Skip ahead to start learning about how to use the Unstructured Python SDK to wor
 
 ## REST endpoints
 
-The Unstructured Workflow Endpoint is callable from a set of Representational State Transfer (REST) endpoints, which you can call through standard REST-enabled 
-utilities, tools, programming languages, packages, and libraries. The examples, shown later on this page and on related pages, describe how to call the Unstructured Workflow Endpoint with 
+The Unstructured API's workflow operations are callable from a set of Representational State Transfer (REST) endpoints, which you can call through standard REST-enabled 
+utilities, tools, programming languages, packages, and libraries. The examples, shown later on this page and on related pages, describe how to call the Unstructured API's workflow operations with 
 `curl` and Postman. You can adapt this information as needed for your preferred programming languages and libraries, for example by using the 
 `requests` library with Python.
 
 <Tip>
-    You can also use the [Unstructured Workflow Endpoint - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
-    that are available through the default Unstructured Workflow Endpoint URL: `https://platform.unstructuredapp.io`. To use the Swagger UI, you must provide your Unstructured API key with each call. To 
+    You can also use the [Unstructured API's workflow operations - Swagger UI](https://platform.unstructuredapp.io/docs) to call the REST endpoints 
+    that are available through the default Unstructured API's workflow operations URL: `https://platform.unstructuredapp.io`. To use the Swagger UI, you must provide your Unstructured API key with each call. To 
     get this API key, see the [quickstart](#quickstart), earlier on this page.
 
     Note that you should always use the URL that was provided to you when your Unstructured account was created. 
@@ -159,7 +184,7 @@ For the API URL, this URL was provided to you when your Unstructured account was
 If you do not have this URL, email Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
 
 <Note>
-    The default URL for the Unstructured Workflow Endpoint is `https://platform.unstructuredapp.io/api/v1`. 
+    The default URL for the Unstructured API's workflow operations is `https://platform.unstructuredapp.io/api/v1`. 
     However, you should always use the URL that was provided to you when your Unstructured account was created.
 </Note>
 
@@ -178,8 +203,8 @@ The following Postman examples use variables, which you can set as follows:
 
    - **Variable**: `UNSTRUCTURED_API_URL`
    - **Type**: `default`
-   - **Initial value**: The Unstructured Workflow Endpoint URL that was provided to you when your Unstructured account was created.
-   - **Current value**: The Unstructured Workflow Endpoint URL that was provided to you when your Unstructured account was created.
+   - **Initial value**: The Unstructured API's workflow operations URL that was provided to you when your Unstructured account was created.
+   - **Current value**: The Unstructured API's workflow operations URL that was provided to you when your Unstructured account was created.
    <br/>
    - **Variable**: `UNSTRUCTURED_API_KEY`
    - **Type**: `secret`
@@ -191,7 +216,7 @@ The following Postman examples use variables, which you can set as follows:
 These variables enable you to more easily run the following examples in Postman and help prevent you from storing 
 Postman collections that contain sensitive URLs and API keys in public source code repositories.
 
-Unstructured offers a [Postman collection](https://learning.postman.com/docs/collections/collections-overview/) that you can import into Postman to make Workflow Endpoint requests through a graphical user interface.
+Unstructured offers a [Postman collection](https://learning.postman.com/docs/collections/collections-overview/) that you can import into Postman to make Unstructured API's workflow operations requests through a graphical user interface.
 
 1. [Install Postman](https://learning.postman.com/docs/getting-started/installation/installation-and-updates/).
 2. [Sign in to Postman](https://learning.postman.com/docs/getting-started/installation/postman-account/#signing-in-to-postman).
@@ -201,11 +226,22 @@ Unstructured offers a [Postman collection](https://learning.postman.com/docs/col
 
 4. In the **Paste cURL, Raw text or URL** box, enter the following URL, and then press `Enter`:
 
-   ```
+   For all workflow operations:
+
+   ```text
    https://raw.githubusercontent.com/Unstructured-IO/docs/main/examplecode/codesamples/api/Unstructured-REST-API-Workflow-Endpoint.postman_collection.json
+   ```
+
+   For [on-demand job](#run-an-on-demand-job) related operations only:
+
+   ```text
+   https://raw.githubusercontent.com/Unstructured-IO/docs/main/examplecode/codesamples/api/Unstructured-REST-API-On-Demand-Jobs.postman_collection.json
+   ```
+
+   <OnDemandJobsLimits />
 
 5. On the sidebar, click **Collections**.
-6. Expand **Unstructured REST API - Workflow Endpoint**.
+6. Expand **Unstructured REST API - Workflow Operations**.
 7. Select the request that you want to use.
 8. As applicable, modify the URL as needed to specify any required resource IDs for the request.
 9. On the **Headers** tab, next to `unstructured-api-key`, enter your Unstructured API key in the **Value** column. 
@@ -219,7 +255,7 @@ To get your Unstructured API key, do the following:
 
 <GetStartedSimpleAPIOnly/>
 
-The Unstructured Workflow Endpoint enables you to work with [connectors](#connectors),
+The Unstructured API's workflow operations enable you to work with [connectors](#connectors),
 [workflows](#workflows), and [jobs](#jobs) in the Unstructured UI.
 
 - A _source connector_ ingests files or data into Unstructured from a source location.
@@ -239,15 +275,15 @@ Skip ahead to start learning about how to use the REST endpoints to work with
 
 ## Restrictions
 
-The following Unstructured SDKs, tools, and libraries do _not_ work with the Unstructured Workflow Endpoint:
+The following Unstructured SDKs, tools, and libraries do _not_ work with the Unstructured API's workflow operations:
 
-- The [Unstructured JavaScript/TypeScript SDK](/api-reference/partition/sdk-jsts)
-- [Local single-file POST requests](/api-reference/partition/sdk-jsts) to the Unstructured Partition Endpoint
+- The [Unstructured JavaScript/TypeScript SDK](/api-reference/legacy-api/partition/sdk-jsts)
+- [Local single-file POST requests](/api-reference/legacy-api/partition/sdk-jsts) to the legacy Unstructured Partition Endpoint
 - The [Unstructured open source Python library](/open-source/introduction/overview)
 - The [Unstructured Ingest CLI](/open-source/ingestion/ingest-cli)
 - The [Unstructured Ingest Python library](/open-source/ingestion/python-ingest)
 
-The following Unstructured API URL is also _not_ supported: `https://api.unstructuredapp.io/general/v0/general` (the default Unstructured Partition Endpoint URL).
+The following Unstructured API URL is also _not_ supported: `https://api.unstructuredapp.io/general/v0/general` (the default legacy Unstructured Partition Endpoint URL).
 
 ## Connectors
 
@@ -1689,6 +1725,12 @@ the `GET` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or 
 To create a workflow, use the `UnstructuredClient` object's `workflows.create_workflow` function (for the Python SDK) or 
 the `POST` method to call the `/workflows` endpoint (for `curl` or Postman).
 
+<Note>
+    The following instructions create a workflow that exists until it is explicitly deleted (also known as a _long-lived workflow_). 
+    To create a workflow that exists only for the duration of 
+    that workflow's associated job run, and that job run's temporary workflow takes one or more local files only as input, see [Run an on-demand job](#run-an-on-demand-job).
+</Note>
+
 In the `CreateWorkflow` object (for the Python SDK) or 
 the request body (for `curl` or Postman), 
 specify the settings for the workflow. For the specific settings to include, see 
@@ -1834,6 +1876,12 @@ specify the settings for the workflow. For the specific settings to include, see
 To run a workflow manually, use the `UnstructuredClient` object's `workflows.run_workflow` function (for the Python SDK) or 
 the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl` or Postman), replacing 
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
+
+<Note>
+    The following instructions run a workflow that was already created at some point in the past and still exists (also known as 
+    a _long-lived workflow_). To run a workflow that exists only for the duration of a single job run, and the job's temporary workflow 
+    takes one or more local files only as input (known as an _on-demand job_), see [Run an on-demand job](#run-an-on-demand-job).
+</Note>
 
 <AccordionGroup>
     <Accordion title="Python SDK (remote source and remote destination)">
@@ -2024,17 +2072,7 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
 
               To upload multiple files, add additional `input_files` entries after this one, one entry per additional file to upload.
 
-            - **Key**: `filename`, **Text**, **Value**: Type the name of the file that you just uploaded.
-
-              To upload multiple files, add additional `filename` entries after this one, one entry per additional file to upload. Make sure the order of these 
-              `filename` entries matches the order of the `input_files` entries, respectively.
-
-            - **Key**: `type`, **Text**, **Value**: `<local-file-media-type>`
-
-              To upload multiple files, add additional `type` entries after this one, one entry per additional file to upload. Make sure the order of these 
-              `type` entries matches the order of the `input_files` entries, respectively.
-
-            For a list of available media types, such as `application/pdf`, see [Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml).
+              For a list of available media types, such as `application/pdf`, see [Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml).
 
         5. Click **Send**.
 
@@ -2050,6 +2088,12 @@ workflow. See [Create a workflow](/api-reference/workflow/workflows#create-a-wor
 To update information about a workflow, use the `UnstructuredClient` object's `workflows.update_workflow` function (for the Python SDK) or 
 the `PUT` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman), replacing 
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
+
+<Note>
+    The following instructions can be used only to update a long-lived workflow (a workflow that exists until it is explicitly deleted). 
+    A workflow that exists only for the duration of a running [on-demand job](#run-an-on-demand-job) 
+    cannot be updated.
+</Note>
 
 In `UpdateWorkflow` object (for the Python SDK) or 
 the request body (for `curl` or Postman), specify the settings for the workflow. For the specific settings to include, see 
@@ -2198,6 +2242,12 @@ To delete a workflow, use the `UnstructuredClient` object's `workflows.delete_wo
 the `DELETE` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman), replacing 
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
 
+<Note>
+    The following instructions can be used only to delete a long-lived workflow (a workflow that exists until it is explicitly deleted). 
+    A workflow that exists only for the duration of a running [on-demand job](/api-reference/workflow/overview#run-an-on-demand-job) 
+    is automatically deleted after the job run completes.
+</Note>
+
 <AccordionGroup>
     <Accordion title="Python SDK">
         ```python
@@ -2270,14 +2320,199 @@ the `DELETE` method to call the `/workflows/<workflow-id>` endpoint (for `curl` 
 
 ## Jobs
 
-You can [list](#list-jobs), 
+You can [run on-demand](#run-an-on-demand-job), [list](#list-jobs), 
 [get](#get-a-job), 
 and [cancel](#cancel-a-job) jobs.
 
 A job is created automatically whenever a workflow runs on a schedule; see [Create a workflow](#create-a-workflow).
-A job is also created whenever you run a workflow; see [Run a workflow](#run-a-workflow).
+A job is also created automatically whenever you run a workflow; see [Run a workflow](#run-a-workflow).
 
 For general information, see [Jobs](/ui/jobs).
+
+### Run an on-demand job
+
+To run a job whose workflow takes one or more local files only as input, and the job's temporary workflow exists only for the duration of 
+the corresponding job's run (known as an _on-demand job_), use the `UnstructuredClient` object's `jobs.create_job` function (for the Python SDK) or the `POST` method to call the `/jobs/` endpoint (for `curl` or Postman).
+
+<Note>
+    To run a workflow that was already created at some point in the past and still exists (also known as a 
+    _long-lived workflow_), see [Run a workflow](#run-a-workflow) instead.
+
+    To run a workflow that takes files and data from remote locations as input (instead of local files), do the following instead:
+    
+    1. [Create a source connector](#create-a-source-connector) to the remote source locations.
+    2. [Create a destination connector](#create-a-destination-connector) to the remote destination location.
+    3. [Create a long-lived workflow](#create-a-workflow) that uses this specific source connector and destination connector.
+    4. [Run this long-lived workflow](#run-a-workflow) manually, if you have not already created the workflow to run on a schedule.
+</Note>
+
+<Note>
+    If you're new to the Unstructured API, read this note first.
+
+    Before you can run an on-demand job, you must first do the following:
+    
+    - If you want to use Python, [install and set up the Unstructured Python SDK](/api-reference/workflow/overview#unstructured-python-sdk).
+    - If you want to use a REST client such as `curl` or Postman, [set up to use the Unstructured REST endpoints](/api-reference/workflow/overview#rest-endpoints).
+</Note>
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        In the following command, replace:
+
+        - `</full/path/to/local/filename.extension>` with the full path to the local file to upload.
+        - `<filename.extension>` with the filename of the local file to upload.
+        - `<local-file-media-type>` with the local file's media type. For a list of available media types, such as `application/pdf`, see [Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml).
+        - To upload multiple files, add additional `InputFile` objects, one per file.
+
+          <OnDemandJobsLimits />
+
+        - For additional replacements, see the end of this section.
+
+        ```python
+        import os
+        import json
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import CreateJobRequest
+        from unstructured_client.models.shared import BodyCreateJob, InputFiles
+
+        client = UnstructuredClient(
+            api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+        )
+
+        response = client.jobs.create_job(
+            request=CreateJobRequest(
+                body_create_job=BodyCreateJob(
+                    request_data=json.dumps({
+                        "template_id": "<workflow-template-id>",
+                        "job_nodes": [<job-node-settings>]
+                    }),
+                    input_files=[
+                        InputFiles(
+                            content=open("<full/path/to/local/filename.extension>", "rb"),
+                            file_name="<filename.extension>",
+                            content_type="<local-file-media-type>"
+                        )
+                    ]
+                )
+            )
+        )
+
+        print(response.raw_response)
+        ```
+
+        To access the processed files' data, use each of the values in the response's `input_file_ids` list or `output_node_files` array to [download a processed local file](#download-a-processed-local-file-from-a-job) from the job's run.
+    </Accordion>
+    <Accordion title="Python SDK (async)">
+        In the following command, replace:
+
+        - `</full/path/to/local/filename.extension>` with the full path to the local file to upload.
+        - `<filename.extension>` with the filename of the local file to upload.
+        - `<local-file-media-type>` with the local file's media type. For a list of available media types, such as `application/pdf`, see [Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml).
+        - To upload multiple files, add additional `InputFiles` objects, one per file.
+        - For additional replacements, see the end of this section.
+
+        <OnDemandJobsLimits />
+
+        ```python
+        import os
+        import json
+        import asyncio
+
+        from unstructured_client import UnstructuredClient
+        from unstructured_client.models.operations import CreateJobRequest
+        from unstructured_client.models.shared import BodyCreateJob, InputFiles
+
+        async def run_on_demand_job():
+            client = UnstructuredClient(
+                api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")
+            )
+
+            response = client.jobs.create_job(
+                request=CreateJobRequest(
+                    body_create_job=BodyCreateJob(
+                        request_data=json.dumps({
+                            "template_id": "<workflow-template-id>",
+                            "job_nodes": [<job-node-settings>]
+                        }),
+                        input_files=[
+                            InputFiles(
+                                content=open("<full/path/to/local/filename.extension>", "rb"),
+                                file_name="<filename.extension>",
+                                content_type="<local-file-media-type>"
+                            )
+                        ]
+                    )
+                )
+            )
+
+            print(response.raw_response)
+
+        asyncio.run(run_on_demand_job())
+        ```
+
+        To access the processed files' data, use each of the values in the response's `input_file_ids` list or `output_node_files` array to [download a processed local file](#download-a-processed-local-file-from-a-job) from the job's run.
+    </Accordion>
+    <Accordion title="curl">
+        In the following command, replace:
+
+        - `</full/path/to/local/filename.extension>` with the full path to the local file to upload.
+        - `<filename.extension>` with the filename of the local file to upload.
+        - `<local-file-media-type>` with the local file's media type. For a list of available media types, such as `application/pdf`, see [Media Types](https://www.iana.org/assignments/media-types/media-types.xhtml).
+        - To upload multiple files, add additional `--form` entries, one per file.
+        - For additional replacements, see the end of this section.
+
+        <OnDemandJobsLimits />
+
+        ```bash
+        curl --request 'POST' --location \
+        "$UNSTRUCTURED_API_URL/jobs/" \
+        --header 'accept: application/json' \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --form "request_data={\"template_id\":\"<workflow-template-id>\",\"job_nodes\":[<job-node-settings>]}" \
+        --form "input_files=@</full/path/to/local/filename.extension>;filename=<filename.extension>;type=<local-file-media-type>" \
+        --form "input_files=@</full/path/to/local/filename.extension>;filename=<filename.extension>;type=<local-file-media-type>" # For each additional file to be uploaded.
+
+        ```
+
+        To access the processed files' data, use each of the values in the response's `input_file_ids` list or `output_node_files` array to [download a processed local file](#download-a-processed-local-file-from-a-job) from the job's run.
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+            ```text
+            {{UNSTRUCTURED_API_URL}}/jobs/
+            ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+            - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+            - **Key**: `accept`, **Value**: `application/json`
+
+        4. On the **Body** tab, select **form-data**, and specify the settings for the on-demand job, as follows:
+            
+            - **Key**: `input_files`, **File**, **Value**: Click the **Value** box, then click **New file from local machine**, and select the file to upload.
+
+              To upload multiple files, add additional `input_files` entries after this one, one entry per additional file to upload.
+
+            - **Key**: `request_data`, **Text**, **Value**: Specify the settings for the on-demand job, as follows:
+
+              ```json
+              {"template_id":"<workflow-template-id>","job_nodes":[<job-node-settings>]}
+              ```
+        5. Click **Send**.
+
+        <OnDemandJobsLimits />
+
+        To access the processed files' data, use each of the values in the response's `input_file_ids` list or `output_node_files` array to [download a processed local file](#download-a-processed-local-file-from-a-job) from the job's run.
+    </Accordion>
+</AccordionGroup>
+
+Replace the preceding placeholders as follows:
+
+- `<workflow-template-id>` - If the job is to use a workflow template, the unique ID of the workflow template to use for this job's workflow nodes. For instructions, see [List templates](/api-reference/workflow/workflows#list-templates) and [Get a template](/api-reference/workflow/workflows#get-a-template).
+- `<job-node-settings>` - If the job is to use a custom workflow definition, the settings for the job's workflow nodes. For instructions, see [Custom workflow DAG nodes](/api-reference/workflow/workflows#custom-workflow-dag-nodes).
 
 ### List jobs
 
@@ -2784,12 +3019,18 @@ This applies only to jobs that use a workflow with a local source and a local de
 To download a processed local file from a completed job, use `GET` to call the `/jobs/<job-id>/download` endpoint, replacing 
 `<job-id>` with the job's unique ID. To get this ID, see [List jobs](#list-jobs).
 
-You must also provide Unstructured's IDs for the file to download and the workflow's output node. To get these IDs, see [Get a job](#get-a-job). In the 
+You must also provide Unstructured's IDs for the file to download, and optionally a specific workflow node. To get these IDs, see [Get a job](#get-a-job). In the 
 response: 
 
-- Unstructured's IDs for the file to download and the workflow's output node are in the `output_node_files` array. 
-- The ID for the file to download is in the `output_node_files` array's `file_id` field.
-- The ID for the workflow's output node is in the `output_node_files` array's `node_id` field.
+Option 1: To download a file's output from the last workflow node in a job run, you need the following from the response:
+
+- Unstructured's ID for the file to download, which is in the `input_file_ids` array.
+- Do not specify a `node_id` argument. The last workflow node will be used by default.
+
+Option 2: To download a file's output from a specific workflow node in a job run, you need the following from the response:
+
+- Unstructured's ID for the file to download, which is in the `output_node_files` array's `file_id` field.
+- Unstructured's ID for the specific workflow node, which is in the `output_node_files` array's `node_id` field.
 
 Currently, you cannot use the Unstructured user interface (UI) to download a file from a job that uses a 
 workflow with a local source and a local destination.

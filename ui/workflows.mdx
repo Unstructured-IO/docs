@@ -51,7 +51,7 @@ To create an automatic workflow:
 8. The **Reprocess All** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
 
    - Checking this box reprocesses all documents in the source location on every workflow run.
-   - Unchecking this box causes only new documents that are added to the source location, or existing documents that are updated in the source location, since the last workflow run to be processed on future runs. Previously processed documents are not processed again. However:
+   - Unchecking this box causes only new documents that are added to the source location, or existing documents that are updated in the source location (as determined by checking whether the file's version has changed), since the last workflow run to be processed on future runs. Previously processed documents are not processed again. However:
 
      - Even if this box is unchecked, a renamed file is always treated as a new file, regardless of whether the file's original contents have changed.
      - Even if this box is unchecked, a file that is removed but is added back later with the same file name is processed on future runs only if the file's contents have changed since the file was originally processed.
@@ -148,7 +148,7 @@ If you did not previously set the workflow to run on a schedule, you can [run th
    The **Reprocess All Files** box applies only to blob storage connectors such as the Amazon S3, Azure Blob Storage, and Google Cloud Storage connectors:
 
    - Checking this box reprocesses all documents in the source location on every workflow run.
-   - Unchecking this box causes only new documents that are added to the source locations, or existing documents that are updated in the source location, since the last workflow run to be processed on future runs. Previously processed documents are not processed again. However:
+   - Unchecking this box causes only new documents that are added to the source locations, or existing documents that are updated in the source location (as determined by checking whether the file's version has changed), since the last workflow run to be processed on future runs. Previously processed documents are not processed again. However:
 
      - Even if this box is unchecked, a renamed file is always treated as a new file, regardless of whether the file's original contents have changed.
      - Even if this box is unchecked, a file that is removed but is added back later with the same file name is processed on future runs only if the file's contents have changed since the file was originally processed.
@@ -336,9 +336,14 @@ import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-
 
           [Learn more](/ui/enriching/table-descriptions).
           
-        - **Table** to convert tables to HTML. Also select one of the available provider (and model) combinations that are shown.
+        - **Table** to convert tables to HTML. Also select the following:
+        
+          - To use agentic AI to convert tables to HTML, select **Agentic Table Parsing**.
+          - To use a VLM to convert tables to HTML instead, do the following:
 
-          Make sure after you choose this provider and model, that **Table to HTML** is also selected.
+            a. For **Provider**, click **Anthropic** or **OpenAI**.<br/>
+            b. For **Model**, click one of the available models that are shown.<br/>
+            c. For **Task**, click **Table to HTML**.<br/>
 
           [Learn more](/ui/enriching/table-to-html).
 
@@ -352,6 +357,21 @@ import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-
 
         - **Generative OCR** to optimize the fidelity of text blocks that Unstructured initially processed during its partitioning phase. 
           Also select one of the available provider (and model) combinations that are shown.
+
+          <Warning>
+              Generative OCR does not process any text blocks by default. You must also explicitly specify which document element 
+              types containing text that you want generative OCR to process. To do this, in the workflow editor for your workflow:
+              
+              1. Click the **Partitioner** node.
+              2. In the node's settings pane, scroll down to and then click a blank area inside of the **Extract Image Block Types** list.
+              3. Select each [document element types](/ui/document-elements#element-type) that you want generative OCR to process. For this 
+                walkthrough, select only **NarrativeText**.
+              
+              Generative OCR does not process the text of any `Image` or `Table` elements if they have already been processed by 
+              [image description](#image-description-task) or [table description](#table-description-task) enrichments, respectively. Do 
+              not remove the **Image** or **Table** document elements types from this **Extract Image Block Types** list, or else 
+              the image description and table description enrichments in your workflow might produce unexepcted results or might not work at all.
+          </Warning>
 
           [Learn more](/ui/enriching/generative-ocr).
   

@@ -1,0 +1,21 @@
+```bash curl
+curl --request 'POST' --location \
+"$UNSTRUCTURED_API_URL/destinations" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header 'content-type: application/json' \
+--data \
+'{
+    "name": "<name>",
+    "type": "teradata",
+    "config": {
+        "host": "<host>",
+        "database": "<database>",
+        "table_name": "<table-name>",
+        "batch_size": <batch-size>,
+        "record_id_key": "<record-id-key>",
+        "username": "<username>",
+        "password": "<password>"
+    }
+}'
+```

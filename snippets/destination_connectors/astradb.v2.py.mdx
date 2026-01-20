@@ -47,13 +47,16 @@ if __name__ == "__main__":
             )
         ),
         stager_config=AstraDBUploadStagerConfig(
-            flatten_metadata=True
+            flatten_metadata=True,
+            enable_lexical_search=False,
+            astra_generated_embeddings=False
         ),
         uploader_config=AstraDBUploaderConfig(
             collection_name=os.getenv("ASTRA_DB_COLLECTION"),
             keyspace=os.getenv("ASTRA_DB_KEYSPACE"),
             batch_size=20,
-            record_id_key="record_id"
+            record_id_key="record_id",
+            binary_encode_vectors=False
         )
     ).run()
 ```

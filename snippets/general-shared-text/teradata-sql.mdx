@@ -1,0 +1,121 @@
+- A Teradata Vantage system that can be accessed by its host name or IP address.
+
+  For example, a Teradata Vantage system in Teradata ClearScape Analytics Experience includes:
+
+  - A Teradata ClearScape Analytics Experience account.
+  - An environment in the account.
+  - A Teradata Vantage database in the environment.
+  - The name and password for a Teradata user who has the appropriate access to the database.
+
+  [Learn how to create these in Teradata ClearScape Analytics Experience](https://developers.teradata.com/quickstarts/get-access-to-vantage/clearscape-analytics-experience/getting-started-with-csae/).
+
+- The system's corresponding host name or IP address.
+
+  For example, you can get these values from Teradata ClearScape Analytics Experience as follows:
+
+  1. Sign in to your Teradata ClearScape Analytics Experience account.<br/>
+  2. On the sidebar, under **Environments**, click the name of the database's corresponding environment.<br/>
+  3. Under **Connection details for Vantage database**, use the **Host** value.<br/>
+
+- The name of the target database in the system. To get a list of available databases in the system, you can run a Teradata SQL query such as the following:
+
+  ```sql
+  SELECT DatabaseName 
+  FROM DBC.DatabasesV 
+  ORDER BY DatabaseName;
+  ```
+
+- The name of the target table in the database. To get a list of available tables in a database, you can run a Teradata SQL query such as the following, replacing `<database-name>` with the name of the target database:
+
+  ```sql
+  SELECT TableName
+  FROM DBC.TablesV
+  WHERE DatabaseName = '<database-name>' AND TableKind = 'T'
+  ORDER BY TableName;
+  ```
+
+  When Unstructured writes rows to a table, the table's columns must have a schema that is compatible with Unstructured. 
+  Unstructured cannot provide a schema that is guaranteed to work for everyone in all circumstances. 
+  This is because these schemas will vary based on 
+  your source files' types; how you want Unstructured to partition, chunk, and generate embeddings; 
+  any custom post-processing code that you run; and other factors.
+
+  In any case, note the following about table schemas:
+
+  - The following columns are always required by Unstructured: `record_id` and `element_id`.
+  - The following columns are optional for Unstructured, but highly recommended: `text` and `type`.
+  - The rest of the columns are optional and typically will be output by Unstructured as part of the `metadata` field.
+  - If Unstructured is generating vector embeddings, the `embeddings` column is also required.
+
+    <Warning>
+        The destination connector outputs Unstructured-generated [embeddings](/ui/embedding) that are not directly compatible 
+        with Teradata Enterprise Vector Store. To use embeddings with Teradata Enterprise Vector Store, Unstructured 
+        recommends that you choose from among the following options:
+
+        - Define a column in your target table named `embeddings` that is of type `VARCHAR(64000)`, to store the 
+          Unstructured-generated embeddings. After Unstructured adds its embeddings to your `embeddings` column, 
+          choose from among Teradata's options to convert the `embeddings` column's `VARCHAR` values to the 
+          Teradata [VECTOR Data Type](https://docs.teradata.com/r/Enterprise_IntelliFlex_VMware/Teradata-Vector-Store-User-Guide/Vector-Store-Components-and-Features/VECTOR-Data-Type) 
+          yourself.
+        - Omit any columns named `embedding`, `message`, or `num_tokens` from your target table. Then choose from 
+          among Teradata's options (such as [AI_TextEmbeddings](https://docs.teradata.com/r/Enterprise_IntelliFlex_VMware/Teradata-Vector-Store-User-Guide/Vector-Store-Components-and-Features/In-Database-Analytic-Functions-for-Vector-Store)) 
+          to have Teradata generate the embeddings for you, instead of having Unstructured generate them.
+    </Warning>
+
+  Here is an example table schema that is compatible with Unstructured. It includes all of the required and recommended columns, as 
+  well as a few additional columns that are typically output by Unstructured as part of the `metadata` field. Be sure to replace 
+  `<database-name>` with the name of the target database and `<table-name>` with the name of the target table (by Unstructured convention, 
+  the table name is typically `elements`, but this is not a requirement).
+
+  ```sql
+  CREATE SET TABLE "<database-name>"."<table-name>" (
+    "id" VARCHAR(64) NOT NULL,
+    PRIMARY KEY ("id"),
+    "record_id" VARCHAR(64),
+    "element_id" VARCHAR(64),
+    "text" VARCHAR(32000) CHARACTER SET UNICODE,
+    "type" VARCHAR(50),
+    "embeddings" VARCHAR(64000), -- Add this column only if Unstructured is generating vector embeddings.
+    "last_modified" VARCHAR(50),
+    "languages" VARCHAR(200),
+    "file_directory" VARCHAR(500),
+    "filename" VARCHAR(255),
+    "filetype" VARCHAR(50),
+    "record_locator" VARCHAR(1000),
+    "date_created" VARCHAR(50),
+    "date_modified" VARCHAR(50),
+    "date_processed" VARCHAR(50),
+    "permissions_data" VARCHAR(1000),
+    "filesize_bytes" INTEGER,
+    "parent_id" VARCHAR(64)
+  )
+  ```
+
+- For the source connector, the name of the primary key column in the table (for example, a column named `id`, typically defined as `"id" VARCHAR(64) NOT NULL, PRIMARY KEY ("id")`).
+- For the source connector, the names of any specific columns to fetch from the table. By default, all columns are fetched unless otherwise specified.
+- For the destination connector, the name of the column in the table that uniquely identifies each record for Unstructured to perform any necessary record updates. By default convention, Unstructured expects this field to be named `record_id`.
+- The name of the Teradata user who has the appropriate access to the target database.
+
+  For example, you can get this from Teradata ClearScape Analytics Experience as follows:
+
+  1. Sign in to your Teradata ClearScape Analytics account.<br/>
+  2. On the sidebar, under **Environments**, click the name of the database's corresponding environment.<br/>
+  3. Under **Connection details for Vantage database**, use the **Username** value.<br/>
+
+  The Teradata SQL command to get a list of available users is as follows:
+
+  ```sql
+  SELECT UserName 
+  FROM DBC.UsersV 
+  ORDER BY UserName;
+  ```
+
+- The password for the user, which was set up when the user was created.
+
+  If the user has forgotten their password, the Teradata SQL command to change a user's password is as follows, replacing `<user-name>` with the name of the user and `<new-password>` with the new password:
+  
+  ```sql
+  MODIFY USER <user-name> SET PASSWORD = '<new-password>';
+  ```
+
+  To change a user's password, you must be an administrator (such as the `DBC` user or another user with `DROP USER` privileges).

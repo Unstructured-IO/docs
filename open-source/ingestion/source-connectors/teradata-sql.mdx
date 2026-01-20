@@ -1,0 +1,23 @@
+---
+title: Teradata
+---
+
+import SharedContentTeradata from '/snippets/sc-shared-text/teradata-sql-cli-api.mdx';
+
+<SharedContentTeradata/>
+
+Now call the Unstructured Ingest CLI or the Unstructured Ingest Python library. The destination connector can be any of the ones supported. This example uses the local destination connector.
+
+This example sends data to Unstructured for processing by default. To process data locally instead, see the instructions at the end of this page.
+
+import TeradataAPISh from '/snippets/source_connectors/teradata-sql.sh.mdx';
+import TeradataAPIPyV2 from '/snippets/source_connectors/teradata-sql.v2.py.mdx';
+
+<CodeGroup>
+  <TeradataAPISh />
+  <TeradataAPIPyV2 />
+</CodeGroup>
+
+import SharedPartitionByAPIOSS from '/snippets/ingest-configuration-shared/partition-by-api-oss.mdx';
+
+<SharedPartitionByAPIOSS/>

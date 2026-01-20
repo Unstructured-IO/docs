@@ -55,6 +55,7 @@
                   "ui/sources/kafka",
                   "ui/sources/mongodb",
                   "ui/sources/onedrive",
+                  "ui/sources/opensearch",
                   "ui/sources/outlook",
                   "ui/sources/postgresql",
                   "ui/sources/s3",
@@ -62,6 +63,7 @@
                   "ui/sources/sharepoint",
                   "ui/sources/slack",
                   "ui/sources/snowflake",
+                  "ui/sources/teradata-sql",
                   "ui/sources/zendesk"
                 ]
               },
@@ -72,6 +74,7 @@
                   "ui/destinations/pinecone-destination-quickstart",
                   "ui/destinations/astradb",
                   "ui/destinations/azure-ai-search",
+                  "ui/destinations/azure-blob-storage",
                   "ui/destinations/couchbase",
                   "ui/destinations/databricks-volumes",
                   "ui/destinations/delta-table",
@@ -85,12 +88,14 @@
                   "ui/destinations/motherduck",
                   "ui/destinations/neo4j",
                   "ui/destinations/onedrive",
+                  "ui/destinations/opensearch",
                   "ui/destinations/pinecone",
                   "ui/destinations/postgresql",
                   "ui/destinations/qdrant",
                   "ui/destinations/redis",
                   "ui/destinations/s3",
                   "ui/destinations/snowflake",
+                  "ui/destinations/teradata-sql",
                   "ui/destinations/weaviate"
                 ]
               },
@@ -141,11 +146,12 @@
             "group": "Unstructured API",
             "pages": [
               "api-reference/overview",
-              "api-reference/supported-file-types"
+              "api-reference/supported-file-types",
+              "api-reference/quickstart"
             ]
           },
           {
-            "group": "Workflow Endpoint",
+            "group": "Workflow Operations",
             "pages": [
               "api-reference/workflow/overview",
               {
@@ -166,6 +172,7 @@
                   "api-reference/workflow/sources/local",
                   "api-reference/workflow/sources/mongodb",
                   "api-reference/workflow/sources/onedrive",
+                  "api-reference/workflow/sources/opensearch",
                   "api-reference/workflow/sources/outlook",
                   "api-reference/workflow/sources/postgresql",
                   "api-reference/workflow/sources/s3",
@@ -173,6 +180,7 @@
                   "api-reference/workflow/sources/sharepoint",
                   "api-reference/workflow/sources/slack",
                   "api-reference/workflow/sources/snowflake",
+                  "api-reference/workflow/sources/teradata-sql",
                   "api-reference/workflow/sources/zendesk"
                 ]
               },
@@ -182,6 +190,7 @@
                   "api-reference/workflow/destinations/overview",
                   "api-reference/workflow/destinations/astradb",
                   "api-reference/workflow/destinations/azure-ai-search",
+                  "api-reference/workflow/destinations/azure-blob-storage",
                   "api-reference/workflow/destinations/couchbase",
                   "api-reference/workflow/destinations/databricks-volumes",
                   "api-reference/workflow/destinations/delta-table",
@@ -196,12 +205,14 @@
                   "api-reference/workflow/destinations/motherduck",
                   "api-reference/workflow/destinations/neo4j",
                   "api-reference/workflow/destinations/onedrive",
+                  "api-reference/workflow/destinations/opensearch",
                   "api-reference/workflow/destinations/pinecone",
                   "api-reference/workflow/destinations/postgresql",
                   "api-reference/workflow/destinations/qdrant",
                   "api-reference/workflow/destinations/redis",
                   "api-reference/workflow/destinations/s3",
                   "api-reference/workflow/destinations/snowflake",
+                  "api-reference/workflow/destinations/teradata-sql",
                   "api-reference/workflow/destinations/weaviate"
                 ]
               },
@@ -217,38 +228,38 @@
             ]
           },
           {
-            "group": "Partition Endpoint",
-            "pages": [
-              "api-reference/partition/overview",
-              "api-reference/partition/quickstart",
-              "api-reference/partition/post-requests",
-              "api-reference/partition/sdk-python",
-              "api-reference/partition/sdk-jsts",
-              "api-reference/partition/api-parameters",
-              "api-reference/partition/api-validation-errors",
-              "api-reference/partition/examples",
-              "api-reference/partition/document-elements",
-              "api-reference/partition/partitioning",
-              "api-reference/partition/chunking",
-              "api-reference/partition/speed-up-large-files-batches",
-              "api-reference/partition/get-elements",
-              "api-reference/partition/text-as-html",
-              "api-reference/partition/extract-image-block-types",
-              "api-reference/partition/get-chunked-elements",
-              "api-reference/partition/transform-schemas",
-              "api-reference/partition/generate-schema",
-              {
-                "group": "Endpoint Playground",
-                "openapi": "https://api.unstructuredapp.io/general/openapi.json"
-              }
-            ]
-          },
-          {
             "group": "Legacy APIs",
             "pages": [
               "api-reference/legacy-api/overview",
               "api-reference/legacy-api/aws",
-              "api-reference/legacy-api/azure"
+              "api-reference/legacy-api/azure",
+              {
+                "group": "Partition Endpoint",
+                "pages": [
+                  "api-reference/legacy-api/partition/overview",
+                  "api-reference/legacy-api/partition/quickstart",
+                  "api-reference/legacy-api/partition/post-requests",
+                  "api-reference/legacy-api/partition/sdk-python",
+                  "api-reference/legacy-api/partition/sdk-jsts",
+                  "api-reference/legacy-api/partition/api-parameters",
+                  "api-reference/legacy-api/partition/api-validation-errors",
+                  "api-reference/legacy-api/partition/examples",
+                  "api-reference/legacy-api/partition/document-elements",
+                  "api-reference/legacy-api/partition/partitioning",
+                  "api-reference/legacy-api/partition/chunking",
+                  "api-reference/legacy-api/partition/speed-up-large-files-batches",
+                  "api-reference/legacy-api/partition/get-elements",
+                  "api-reference/legacy-api/partition/text-as-html",
+                  "api-reference/legacy-api/partition/extract-image-block-types",
+                  "api-reference/legacy-api/partition/get-chunked-elements",
+                  "api-reference/legacy-api/partition/transform-schemas",
+                  "api-reference/legacy-api/partition/generate-schema",
+                  {
+                    "group": "Endpoint Playground",
+                    "openapi": "https://api.unstructuredapp.io/general/openapi.json"
+                  }
+                ]
+              }
             ]
           },
           {
@@ -282,6 +293,7 @@
           {
             "group": "Tool demos",
             "pages": [
+              "examplecode/tools/json-tools",
               "examplecode/tools/s3-events",
               "examplecode/tools/azure-storage-events",
               "examplecode/tools/databricks-volumes-events",
@@ -297,6 +309,7 @@
               "examplecode/tools/vectorshift",
               "examplecode/tools/mcp",
               "examplecode/tools/mcp-partition",
+              "examplecode/tools/ibm-orchestrate",
               "examplecode/tools/snowflake-streamlit",
               "examplecode/tools/crewai",
               "examplecode/tools/neo4j-chatbot"
@@ -433,6 +446,7 @@
                   "open-source/ingestion/source-connectors/slack",
                   "open-source/ingestion/source-connectors/snowflake",
                   "open-source/ingestion/source-connectors/sqlite",
+                  "open-source/ingestion/source-connectors/teradata-sql",
                   "open-source/ingestion/source-connectors/zendesk"
                 ]
               },
@@ -473,6 +487,7 @@
                   "open-source/ingestion/destination-connectors/singlestore",
                   "open-source/ingestion/destination-connectors/snowflake",
                   "open-source/ingestion/destination-connectors/sqlite",
+                  "open-source/ingestion/destination-connectors/teradata-sql",
                   "open-source/ingestion/destination-connectors/vectara",
                   "open-source/ingestion/destination-connectors/weaviate"
                 ]
@@ -761,6 +776,10 @@
     {
       "source": "/api-reference/legacy/free-api",
       "destination": "/api-reference/overview"
+    },
+    {
+      "source": "/api-reference/partition/:slug*",
+      "destination": "/api-reference/legacy-api/partition/:slug*"
     },
     {
       "source": "/enterprise/:slug*",

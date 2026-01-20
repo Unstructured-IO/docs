@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "24b56b98-87f0-4a94-a3c7-eb03ea243777",
-		"name": "Unstructured REST API - Workflow Endpoint",
+		"name": "Unstructured REST API - Workflow Operations",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "38317384"
 	},
@@ -16,21 +16,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/sources",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/sources",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"sources"
 							]
 						}
@@ -44,21 +39,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/sources?source_type=<type>",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/sources?source_type=<type>",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"sources"
 							],
 							"query": [
@@ -79,21 +69,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/sources/<connector-id>",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/sources/<connector-id>",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"sources",
 								"<connector-id>"
 							]
@@ -118,7 +103,7 @@
 							},
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
@@ -132,16 +117,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/sources",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/sources",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"sources"
 							]
 						}
@@ -165,7 +145,7 @@
 							},
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
@@ -179,16 +159,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/sources/<connector-id>",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/sources/<connector-id>",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"sources",
 								"<connector-id>"
 							]
@@ -203,21 +178,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/sources/<connector-id>",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/sources/<connector-id>",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"sources",
 								"<connector-id>"
 							]
@@ -232,21 +202,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/sources/<connector-id>/connection-check",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/sources/<connector-id>/connection-check",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"sources",
 								"<connector-id>",
 								"connection-check"
@@ -267,21 +232,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/destinations",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/destinations",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"destinations"
 							]
 						}
@@ -295,21 +255,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/destinations?destination_type=<type>",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/destinations?destination_type=<type>",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"destinations"
 							],
 							"query": [
@@ -331,21 +286,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/destinations/<connector-id>",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/destinations/<connector-id>",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"destinations",
 								"<connector-id>"
 							]
@@ -370,7 +320,7 @@
 							},
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
@@ -384,16 +334,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/destinations",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/destinations",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"destinations"
 							]
 						}
@@ -417,7 +362,7 @@
 							},
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
@@ -431,16 +376,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/destinations/<connector-id>",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/destinations/<connector-id>",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"destinations",
 								"<connector-id>"
 							]
@@ -455,21 +395,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/destinations/<connector-id>",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/destinations/<connector-id>",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"destinations",
 								"<connector-id>"
 							]
@@ -484,21 +419,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/destinations/<connector-id>/connection-check",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/destinations/<connector-id>/connection-check",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"destinations",
 								"<connector-id>",
 								"connection-check"
@@ -519,21 +449,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/workflows",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"workflows"
 							]
 						}
@@ -547,21 +472,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/workflows?source_id=<connector-id>",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows?source_id=<connector-id>",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"workflows"
 							],
 							"query": [
@@ -581,21 +501,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/workflows?destination_id=<connector-id>",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows?destination_id=<connector-id>",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"workflows"
 							],
 							"query": [
@@ -615,21 +530,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/workflows?status=<status>",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows?status=<status>",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"workflows"
 							],
 							"query": [
@@ -650,21 +560,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/workflows/<workflow-id>",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"workflows",
 								"<workflow-id>"
 							]
@@ -692,13 +597,13 @@
 							},
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    // Specify the settings for the workflow here.\n    // See https://docs.unstructured.io/api-reference/workflow/workflows#create-a-workflow\n    // For example:\n    \"name\": \"<name>\",\n    \"source_id\": \"<source-connector-id>\", // To use a local source, omit \"source_id\".\n    \"destination_id\": \"<destination-connector-id>\", // To use a local destination, omit \"destination_id\".\n    \"workflow_type\": \"<type>\",\n    \"workflow_nodes\": [\n        {\n            \"name\": \"<node-name>\",\n            \"type\": \"<node-type>\",\n            \"subtype\": \"<node-subtype>\",\n            \"settings\": {\n                \"<key>\": \"<value>\"\n            }\n        },\n        {\n            \"name\": \"<node-name>\",\n            \"type\": \"<node-type>\",\n            \"subtype\": \"<node-subtype>\",\n            \"settings\": {\n                \"<key>\": \"<value>\"\n            }\n        }\n        // And so on for additional workflow DAG nodes.\n    ],\n    \"schedule\": \"<schedule-timeframe>\"\n}\n\n\n\n\n\n\n\n",
+							"raw": "{\n    // Specify the settings for the workflow here.\n    // See https://docs.unstructured.io/api-reference/workflow/workflows#create-a-workflow\n    // For example:\n    \"name\": \"<name>\",\n    \"source_id\": \"<source-connector-id>\", // To use a local source, omit \"source_id\".\n    \"destination_id\": \"<destination-connector-id>\", // To use a local destination, omit \"destination_id\".\n    \"workflow_type\": \"<type>\", // To use a workflow template: \"template\". To specify nodes manually: \"custom\".\n    \"template_id\": \"<workflow-template-id>\", // To specify nodes manually, omit \"template_id\". To use a workflow template, omit \"workflow_nodes\".\n    \"workflow_nodes\": [\n        {\n            \"name\": \"<node-name>\",\n            \"type\": \"<node-type>\",\n            \"subtype\": \"<node-subtype>\",\n            \"settings\": {\n                \"<key>\": \"<value>\"\n            }\n        },\n        {\n            \"name\": \"<node-name>\",\n            \"type\": \"<node-type>\",\n            \"subtype\": \"<node-subtype>\",\n            \"settings\": {\n                \"<key>\": \"<value>\"\n            }\n        }\n        // And so on for additional workflow DAG nodes.\n    ],\n    \"schedule\": \"<schedule-timeframe>\"\n}\n\n\n\n\n\n\n\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -706,16 +611,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/workflows",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"workflows"
 							]
 						}
@@ -742,7 +642,7 @@
 							},
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
@@ -756,16 +656,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/workflows/<workflow-id>",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"workflows",
 								"<workflow-id>"
 							]
@@ -783,21 +678,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/workflows/<workflow-id>",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"workflows",
 								"<workflow-id>"
 							]
@@ -815,7 +705,7 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
@@ -824,16 +714,11 @@
 							"formdata": []
 						},
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/workflows/<workflow-id>/run",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>/run",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"workflows",
 								"<workflow-id>",
 								"run"
@@ -852,7 +737,7 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
@@ -877,22 +762,64 @@
 							]
 						},
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/workflows/<workflow-id>/run",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>/run",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"workflows",
 								"<workflow-id>",
 								"run"
 							]
 						},
-						"description": "To run the workflow for multiple files, add an additional `input_files`, `filename`, and `type` entry for each additional file.\n\nSee also [https://docs.unstructured.io/api-reference/workflow/overview#run-a-workflow](https://docs.unstructured.io/api-reference/workflow/overview#run-a-workflow)"
+						"description": "To run the worfklow for multiple files, add an additional `input_files`, `filename`, and `type` entry for each additional file.\n\nSee also [https://docs.unstructured.io/api-reference/workflow/overview#run-a-workflow](https://docs.unstructured.io/api-reference/workflow/overview#run-a-workflow)"
+					},
+					"response": []
+				},
+				{
+					"name": "List Workflow Templates",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/templates",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"templates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Workflow Template",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/templates/<template-id>",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"templates",
+								"<template-id>"
+							]
+						}
 					},
 					"response": []
 				}
@@ -908,21 +835,16 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/jobs",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/jobs",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"jobs"
 							]
 						}
@@ -939,7 +861,7 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
@@ -953,16 +875,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/jobs/<job-id>",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/jobs/<job-id>",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"jobs",
 								"<job-id>"
 							]
@@ -977,7 +894,7 @@
 						"header": [
 							{
 								"key": "unstructured-api-key",
-								"value": "",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
 								"type": "text"
 							}
 						],
@@ -991,16 +908,11 @@
 							}
 						},
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/jobs/<job-id>/cancel",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/jobs/<job-id>/cancel",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"jobs",
 								"<job-id>",
 								"cancel"
@@ -1029,18 +941,13 @@
 							}
 						],
 						"url": {
-							"raw": "https://platform.unstructuredapp.io/api/v1/jobs/<job-id>/download?file_id=<file-id>&node_id=<node-id>",
-							"protocol": "https",
+							"raw": "{{UNSTRUCTURED_API_URL}}/jobs/><job-id>/download?file_id=<file-id>&node_id=<node-id>",
 							"host": [
-								"platform",
-								"unstructuredapp",
-								"io"
+								"{{UNSTRUCTURED_API_URL}}"
 							],
 							"path": [
-								"api",
-								"v1",
 								"jobs",
-								"<job-id>",
+								"><job-id>",
 								"download"
 							],
 							"query": [
@@ -1055,6 +962,50 @@
 							]
 						},
 						"description": "To get the values for `file_id` and `node_id`, run the \"GET Get a Job\" request.\n\nSee also [https://docs.unstructured.io/api-reference/workflow/overview#download-a-processed-local-file-from-a-job](https://docs.unstructured.io/api-reference/workflow/overview#download-a-processed-local-file-from-a-job)"
+					},
+					"response": []
+				},
+				{
+					"name": "Run an On-Demand Job - Local Source and Local Destination",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "unstructured-api-key",
+								"value": "{{UNSTRUCTURED_API_KEY}}",
+								"type": "text"
+							},
+							{
+								"key": "accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "input_files",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "request_data",
+									"value": "{\"template_id\":\"<workflow-template-id>\",\"job_nodes\":[<job-node-settings>]}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{UNSTRUCTURED_API_URL}}/jobs/",
+							"host": [
+								"{{UNSTRUCTURED_API_URL}}"
+							],
+							"path": [
+								"jobs",
+								""
+							]
+						}
 					},
 					"response": []
 				}

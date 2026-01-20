@@ -1,0 +1,31 @@
+## Astra DB generated embeddings
+When **Astra DB Generated Embeddings** is enabled:
+- Your document text will be inserted into the `$vectorize` field.
+- Astra DB will automatically populate the `$vector` field with embeddings.
+- Your workflow **must not** include an embedder node.
+- You **must** have an embedding provider configured for your collection.
+
+When **Astra DB Generated Embeddings** is disabled (the default):
+ - Unstructured will insert embeddings directly into the `$vector` field
+ - Your workflow **must** include an embedder node.
+
+For more information, see [Auto-generate embeddings with vectorize](https://docs.datastax.com/en/astra-db-serverless/databases/embedding-generation.html) in the Astra DB documentation.
+
+### Troubleshooting
+You might encounter the following errors when running a job that uses this connector:
+
+**Error**:
+
+`Unable to vectorize data, embedding service not configured for the collection : <collection> (EMBEDDING_SERVICE_NOT_CONFIGURED) [with 0 inserted ids])`
+
+You've enabled **Astra DB Generated Embeddings**, but your collection does not have an embedding provider. Either disable **Astra DB Generated Embeddings** in your connector settings, or recreate your collection with an embedding provider.
+
+**Error**:
+
+`Cannot use Unstructured embeddings and Astra-generated embeddings simultaneously. Please disable Astra generated embeddings or remove the Unstructured embedder.`
+
+**or**:
+
+`No vectors provided. Please enable an Unstructured embedding provider or configure Astra to generate embeddings.`
+
+You must choose either Unstructured or Astra DB embeddings. Configuring neither, or both, is unsupported.
