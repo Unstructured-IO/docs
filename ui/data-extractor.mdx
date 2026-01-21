@@ -18,128 +18,94 @@ then output a series of customer records, one record per order form. Each record
 the order's total amount; and any other available details that matter to you. 
 This information is extracted in a consistent JSON format that is already fine-tuned for you to use in your own applications.
 
-To show how the structured data extractor works, take a look at the following sample sales invoice PDF. This file is one of the 
+To show how the structured data extractor works, take a look at the following real estate listing PDF. This file is one of the 
 sample files that is available directly from the **Start** page and the workflow editor in the Unstructured use interface (UI). The file's 
 content is as follows:
 
-![Sample sales invoice PDF](/img/ui/data-extractor/invoice.png)
+![Sample real estate listing PDF](/img/ui/data-extractor/real-estate-listing.png)
 
-Without the structured data extractor, if you run a workflow that references this file, Unstructured extracts the invoice's data in a format similar to the following 
+Without the structured data extractor, if you run a workflow that references this file, Unstructured extracts the listing's data in a format similar to the following 
 (note that the ellipses in this output indicate omitted fields for brevity):
 
 ```json
 [
   {
     "type": "Title",
-    "element_id": "f2f0f022-ea3c-48a9-baa9-53fdc4f0a327",
-    "text": "INVOICE",
+    "element_id": "3f1ad705648037cf65e4d029d834a0de",
+    "text": "HOME FOR FUTURE",
     "metadata": {
-      "filetype": "application/pdf",
-      "languages": [
-        "eng"
-      ],
-      "page_number": 1,
-      "filename": "invoice.pdf",
-      "data_source": {}
-    }
-  },
-  {
-    "type": "Table",
-    "element_id": "42725d08-2909-4397-8ae0-63e1ee76c89b",
-    "text": "INVOICE NO: INVOICE DATE: PAYMENT DUE: BILL TO: 658 12 MAY 2024 12 JUNE 2024 BRIGHTWAVE LLC, 284 MARKET STREET, SAN FRANCISCO, CA 94111",
-    "metadata": {
-      "text_as_html": "<table><thead><tr><th>INVOICE NO:</th><th>INVOICE DATE:</th><th>PAYMENT DUE:</th><th>BILL TO:</th></tr></thead><tbody><tr><td>658</td><td>12 MAY 2024</td><td>12 JUNE 2024</td><td>BRIGHTWAVE LLC, 284 MARKET STREET, SAN FRANCISCO, CA 94</td></tr></tbody></table>",
-      "filetype": "application/pdf",
-      "languages": [
-        "eng"
-      ],
-      "page_number": 1,
       "...": "..."
     }
   },
   {
-    "type": "Table",
-    "element_id": "3a40bded-a85a-4393-826e-9a679b85a8f7",
-    "text": "ITEM QUANTITY PRICE TOTAL Office Desk (Oak wood, 140x70 cm) 2 $249 $498 Ergonomic Chair (Adjustable height & lumbar support) 3 $189 $567 Whiteboard Set (Magnetic, 90x60 cm + 4 markers) 2 $59 $118 SUBTOTAL $1,183 VAT (19%) $224.77 TOTAL $1,407.77",
+    "type": "NarrativeText",
+    "element_id": "320ca4f48e63d8bcfba56ec54c9be9af",
+    "text": "221 Queen Street, Melbourne VIC 3000",
     "metadata": {
-      "text_as_html": "<table><thead><tr><th>ITEM</th><th>QUANTITY</th><th>PRICE</th><th>TOTAL</th></tr></thead><tbody><tr><td>Office Desk (Oak wood, 140x70 cm)</td><td></td><td>$249</td><td>$498</td></tr><tr><td>Ergonomic Chair (Adjustable height &amp; lumbar support)</td><td></td><td>$189</td><td>$567</td></tr><tr><td rowspan=\"4\">Whiteboard Set (Magnetic, 90x60 cm + 4 markers)</td><td></td><td>$59</td><td>$118</td></tr><tr><td></td><td>SUBTOTAL</td><td>$1,183</td></tr><tr><td></td><td>VAT (19%)</td><td>$224.77</td></tr><tr><td></td><td>TOTAL</td><td>$1,407.77</td></tr></tbody></table>",
-      "filetype": "application/pdf",
-      "languages": [
-        "eng"
-      ],
-      "page_number": 1,
       "...": "..."
     }
+  },
+  {
+    "type": "NarrativeText",
+    "element_id": "05f648e815e73fe5140f203a62d8a3cc",
+    "text": "2,800 sq. ft living space",
+    "metadata": {
+      "...": "..."
+    }
+  },
+  {
+    "type": "NarrativeText",
+    "element_id": "27a9ded56b42f559999e48d1dcd76c9e",
+    "text": "Recently renovated kitchen",
+    "metadata": {
+      "...": "..."
+    }
+  },
+  {
+    "...": "..."
   }
 ]
 ```
 
-In the preceding output, the `text` fields for the `Table` elements contain the raw text of the table, and the `text_as_html` field contains corresponding HTML representations of the table. However, 
-you might also want the table's information output as an `invoice` field with, among other details, each of the invoice's line items having a `description`, `quantity`, `price`, and `total` field. 
-However, neither the default Unstructured `text` nor `table_as_html` fields present the tables in this way by default.
+In the preceding output, the `text` fields contain information about the listing, such as the street address, 
+the square footage, one of the listing's features, and so on. However, 
+you might want the information presented as `street_address`, `square_footage`, `features`, and so on.
 
-By using the structured data extractor in your Unstructured workflows, you could have Unstructured extract the invoice's data in a custom-defined output format similar to the following (ellipses indicate omitted fields for brevity):
+By using the structured data extractor in your Unstructured workflows, you could have Unstructured extract the listing's data in a custom-defined output format similar to the following (ellipses indicate omitted fields for brevity):
 
 ```json
 [
   {
     "type": "DocumentData",
-    "element_id": "4321ede0-d6c8-4857-817b-bb53bd37b743",
+    "element_id": "f2ee7334-c00a-4fc0-babc-2fcea28c1fb6",
     "text": "",
     "metadata": {
       "...": "...",
       "extracted_data": {
-        "invoice": {
-          "invoice_no": "658",
-          "invoice_date": "12 MAY 2024",
-          "payment_due": "12 JUNE 2024",
-          "bill_to": "BRIGHTWAVE LLC, 284 MARKET STREET, SAN FRANCISCO, CA 94",
-          "payment_information": {
-            "account_name": "OFFICEPRO SUPPLIES INC.",
-            "bank_name": "CHASE BANK",
-            "account_no": "123456789"
-          },
-          "terms_conditions": "Payment is due within 30 days of the invoice date. Late payments may incur a 1.5% monthly finance charge, and re- turned checks are subject to a $25 fee.",
-          "notes": "Thank you for choosing OfficePro Supplies! For any billing inquiries, please email billing@office- prosupplies.com or call +1 (212) 555-0834.",
-          "items": [
-            {
-              "description": "Office Desk (Oak wood, 140x70 cm)",
-              "quantity": 2,
-              "price": 249,
-              "total": 498
-            },
-            {
-              "description": "Ergonomic Chair (Adjustable height & lumbar support)",
-              "quantity": 3,
-              "price": 189,
-              "total": 567
-            },
-            {
-              "description": "Whiteboard Set (Magnetic, 90x60 cm + 4 markers)",
-              "quantity": 2,
-              "price": 59,
-              "total": 118
-            }
-          ],
-          "subtotal": 1183,
-          "vat": 224.77,
-          "total": 1407.77
+        "street_address": "221 Queen Street, Melbourne VIC 3000",
+        "square_footage": 2800,
+        "price": 1000000,
+        "features": [
+          "Recently renovated kitchen",
+          "Smart home automation system",
+          "2-car garage with storage space",
+          "Spacious open-plan layout with natural lighting",
+          "Designer kitchen with quartz countertops and built-in appliances",
+          "Master suite with walk-in closet and en-suite bath",
+          "Covered patio and landscaped backyard garden"
+        ],
+        "agent_contact": {
+          "phone": "+01 555 123456"
         }
       }
     }
   },
   {
     "type": "Title",
-    "element_id": "f2f0f022-ea3c-48a9-baa9-53fdc4f0a327",
-    "text": "INVOICE",
+    "element_id": "3f1ad705648037cf65e4d029d834a0de",
+    "text": "HOME FOR FUTURE",
     "metadata": {
-      "filetype": "application/pdf",
-      "languages": [
-        "eng"
-      ],
-      "page_number": 1,
-      "filename": "invoice.pdf",
-      "data_source": {}
+      "...": "..."
     }
   },
   {
@@ -152,137 +118,75 @@ In the preceding output, the first document element, of type `DocumentData`, has
 that contains a representation of the document's data in the custom output format that you specify. Beginning with the second document element and continuing 
 until the end of the document, Unstructured also outputs the document's data as a series of Unstructured's document elements and metadata as it normally would.
 
-To use the structured data extractor, you must provide Unstructured with an _extraction schema_, which defines the structure of the data for Unstructured to extract. 
-You can provide this schema by specifying an _extraction prompt_, by providing a JSON object, or by using a visual schema builder.
+To use the structured data extractor, you can provide Unstructured with an _extraction schema_, which defines the structure of the data for Unstructured to extract. 
+Or you can specify an _extraction prompt_ that guides Unstructured on how to extract the data from the source documents, in the format that you want.
 
-An extraction prompt is like a prompt that you would give to a chatbot or AI agent. This prompt guides Unstructured on how to extract the data from the source documents. For this invoice example, the 
+An extraction prompt is like a prompt that you would give to a chatbot or AI agent. This prompt guides Unstructured on how to extract the data from the source documents. For this real estate listing example, the 
 prompt might look like the following:
 
 ```text
-Extract the invoice data.
-Be precise and copy values exactly as written (e.g., dates, amounts, account numbers).
-For line items, include each product or service with its description, quantity, unit price, and total.
-Do not infer or omit fields—if a field is missing, leave it blank.
-Ensure numeric fields use numbers only (no currency symbols).
+Extract the following information from the listing, and present it in the following format:
+
+- street_address: The full street address of the property including street number, street name, city, state, and postal code.
+- square_footage: The total living space area of the property, in square feet.
+- price: The listed selling price of the property, in local currency.
+- features: A list of property features and highlights.
+- agent_contact: Contact information for the real estate agent.
+
+  - phone: The agent's contact phone number.
 ```
 
 An extraction schema is a JSON-formatted schema that defines the structure of the data that Unstructured extracts. The schema must 
 conform to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
 which are a subset of the [JSON Schema](https://json-schema.org/docs) language.
 
-For this invoice example, the schema might look like the following. Notice in this schema the following components:
-
-- The top-level `invoice` object contains nested strings, arrays, and objects such as 
-  `invoice_no`, `invoice_date`, `payment_due`, `bill_to`, `payment_information`, `terms_conditions`, `notes`, `items`, `subtotal`, `vat`, and `total`.
-- The nested `payment_information` object contains nested strings such as `account_name`, `bank_name`, and `account_no`.
-- The nested `items` array contains a series of strings, integers, and numbers such as `description`, `quantity`, `price`, and `total`.
-
-Here is the schema:
+For this real estate listing example, the schema might look like the following:
 
 ```json
 {
   "type": "object",
   "properties": {
-    "invoice": {
+    "property_listing": {
       "type": "object",
       "properties": {
-        "invoice_no": {
+        "street_address": {
           "type": "string",
-          "description": "Unique invoice number assigned to this bill"
+          "description": "The full street address of the property including street number, street name, city, state, and postal code."
         },
-        "invoice_date": {
-          "type": "string",
-          "description": "Date the invoice was issued"
+        "square_footage": {
+          "type": "integer",
+          "description": "The total living space area of the property, in square feet."
         },
-        "payment_due": {
-          "type": "string",
-          "description": "Payment due date for the invoice"
+        "price": {
+          "type": "number",
+          "description": "The listed selling price of the property, in local currency."
         },
-        "bill_to": {
-          "type": "string",
-          "description": "The name and address of the customer being billed"
-        },
-        "payment_information": {
-          "type": "object",
-          "properties": {
-            "account_name": {
-              "type": "string",
-              "description": "The account holder's name receiving payment"
-            },
-            "bank_name": {
-              "type": "string",
-              "description": "Bank where payment should be sent"
-            },
-            "account_no": {
-              "type": "string",
-              "description": "Recipient bank account number"
-            }
-          },
-          "required": ["account_name", "bank_name", "account_no"],
-          "additionalProperties": false
-        },
-        "terms_conditions": {
-          "type": "string",
-          "description": "Terms and conditions of the invoice, including penalties for late payment"
-        },
-        "notes": {
-          "type": "string",
-          "description": "Additional notes provided by the issuer"
-        },
-        "items": {
+        "features": {
           "type": "array",
+          "description": "A list of property features and highlights.",
           "items": {
-            "type": "object",
-            "properties": {
-              "description": {
-                "type": "string",
-                "description": "Description of the item or service"
-              },
-              "quantity": {
-                "type": "integer",
-                "description": "Quantity of the item purchased"
-              },
-              "price": {
-                "type": "number",
-                "description": "Price per unit of the item"
-              },
-              "total": {
-                "type": "number",
-                "description": "Total cost for the line item (quantity * price)"
-              }
-            },
-            "required": ["description", "quantity", "price", "total"],
-            "additionalProperties": false
+            "type": "string",
+            "description": "A single property feature or highlight."
           }
         },
-        "subtotal": {
-          "type": "number",
-          "description": "Subtotal before taxes"
-        },
-        "vat": {
-          "type": "number",
-          "description": "Value-added tax amount"
-        },
-        "total": {
-          "type": "number",
-          "description": "Final total including taxes"
+        "agent_contact": {
+          "type": "object",
+          "description": "Contact information for the real estate agent.",
+          "properties": {
+            "phone": {
+              "type": "string",
+              "description": "The agent's contact phone number."
+            }
+          },
+          "required": ["phone"],
+          "additionalProperties": false
         }
       },
-      "required": [
-        "invoice_no",
-        "invoice_date",
-        "payment_due",
-        "bill_to",
-        "payment_information",
-        "items",
-        "subtotal",
-        "vat",
-        "total"
-      ],
+      "required": ["street_address", "square_footage", "price", "features", "agent_contact"],
       "additionalProperties": false
     }
   },
-  "required": ["invoice"],
+  "required": ["property_listing"],
   "additionalProperties": false
 }
 ```
@@ -295,7 +199,7 @@ You can also use a visual schema builder to define the schema, like this:
 
 There are two ways to use the structured data extractor in your Unstructured workflows:
 
-- From the **Welcome, get started right away!** tile on the **Start** page of your Unstructured account. This approach works 
+- From the **Start** page of your Unstructured account. This approach works 
   only with a single file that is stored on your local machine. [Learn how](#use-the-structured-data-extractor-from-the-start-page).
 - From the Unstructured workflow editor. This approach works with a single file that is stored on your local machine, or with any 
   number of files that are stored in remote locations. [Learn how](#use-the-structured-data-extractor-from-the-workflow-editor).
@@ -320,20 +224,21 @@ There are two ways to use the structured data extractor in your Unstructured wor
 5. In the title bar, next to **Transform**, click **Extract**.
 6. If the **Define Schema** pane, do one of the following to extract the data from the selected file by using a custom-defined format:
 
-   - To use the schema based on one that Unstructured suggests after analyzing the selected files, click the **JSON** tab, make any changes to the suggestedschema as needed, and then click **Run Schema**.
+   - To use the schema based on one that Unstructured suggests after analyzing the selected file, click **Run Schema**.
    - To use a custom schema that conforms to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
-     click the **JSON** tab, enter your own custom schema, and then click **Run Schema**.
-   - To use a visual editor to define the schema, click the **List** tab, enter your own custom schema objects and their properties, 
-     and then click **Run Schema**.
-   - To use a plain language prompt to guide Unstructured on how to extract the data, click **Prompt**, enter your propmpt in the 
-     dialog, and then click **Generate schema**. Unstructured will then suggest a schema on the **JSON** tab. Make any changes to the suggested schema as needed, and then click **Run Schema**.
+     click **Upload JSON**; enter your own custom schema or upload a JSON file that contains your custom schema; click **Use this Schema**; and then click **Run Schema**. 
+     [Learn about the OpenAI Structured Outputs format](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
+   - To use a visual editor to define the schema, click the ellipses (three dots) icon; click **Reset form**, enter your own custom schema objects and their properties, 
+     and then click **Run Schema**. [Learn about OpenAI Structured Outputs data types](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
+   - To use a plain language prompt to guide Unstructured on how to extract the data, click **Suggest**; enter your propmpt in the 
+     dialog; click **Generate schema**; make any changes to the suggested schema as needed; and then click **Run Schema**.
 
 7. The extracted data appears in the **Extract results** pane. You can do one of the following:
 
    - To view a human-viewable representation of the extracted data, click **Formatted**.
    - To view the JSON representation of the extracted data, click **JSON**.
    - To download the JSON representation of the extracted data as a local JSON file, click the download icon next to **Formatted** and **JSON**.
-   - To change the schema and then re-run the extraction, click the back arrow next to **Extract results**, and then skip back to step 6 in this procedure.
+   - To change the schema and then re-run the extraction, click the back arrow next to **Extract Results**, and then skip back to step 6 in this procedure.
 
 ### Use the structured data extractor from the workflow editor
 
@@ -367,8 +272,8 @@ There are two ways to use the structured data extractor in your Unstructured wor
 
 ## Limitations
 
-The structured data extractor does not work with the [Pinecone destination connector](/ui/destinations/pinecone). 
-This is because Pinecone has strict limit on the amount of metadata that it can manage. These limits are 
+The structured data extractor is not guaranteed to work with the [Pinecone destination connector](/ui/destinations/pinecone). 
+This is because Pinecone has strict limits on the amount of metadata that it can manage. These limits are 
 below the threshold of what the structured data extractor typically needs for the amount of metadata that it manages. 
 
 ## Saving the extracted data separately
@@ -457,11 +362,11 @@ if __name__ == "__main__":
 
 ## Additional examples
 
-In addition to the preceding invoice example, here are some more examples that you can adapt for your own use.
+In addition to the preceding real estate listing example, here are some more examples that you can adapt for your own use.
 
 ### Caring for houseplants
 
-Using the following image file:
+Using the following image file ([download this file](https://raw.githubusercontent.com/Unstructured-IO/docs/main/img/ui/data-extractor/house-plant-care.png)):
 
 ![Caring for houseplants](/img/ui/data-extractor/house-plant-care.png)
 
@@ -482,15 +387,15 @@ An extraction schema for this file might look like the following:
           },
           "sunlight": {
             "type": "string",
-            "description": "The sunlight requirements for the plant (e.g., 'Direct', 'Bright Indirect - Some direct')"
+            "description": "The sunlight requirements for the plant (for example: 'Direct', 'Bright Indirect - Some direct')."
           },
           "water": {
             "type": "string",
-            "description": "The watering instructions for the plant (e.g., 'Let dry between thorough watering', 'Water when 50-60% dry')"
+            "description": "The watering instructions for the plant (for example: 'Let dry between thorough watering', 'Water when 50-60% dry')."
           },
           "humidity": {
             "type": "string",
-            "description": "The humidity requirements for the plant (e.g., 'Low', 'Medium', 'High')"
+            "description": "The humidity requirements for the plant (for example:'Low', 'Medium', 'High')"
           }
         },
         "required": ["name", "sunlight", "water", "humidity"],
@@ -506,7 +411,14 @@ An extraction schema for this file might look like the following:
 An extraction guidance prompt for this file might look like the following:
 
 ```text
-Extract the plant information for each of the plants in this document.
+Extract the plant information for each of the plants in this document, and present it in the following format:
+
+- plants: A list of plants.
+
+  - name: The name of the plant.
+  - sunlight: The sunlight requirements for the plant (for example: 'Direct', 'Bright Indirect - Some direct').
+  - water: The watering instructions for the plant (for example: 'Let dry between thorough watering', 'Water when 50-60% dry').
+  - humidity: The humidity requirements for the plant (for example: 'Low', 'Medium', 'High').
 ```
 
 And Unstructured's output would look like the following:
@@ -605,7 +517,7 @@ And Unstructured's output would look like the following:
 
 ### Medical invoicing
 
-Using the following PDF file:
+Using the following PDF file ([download this file](https://raw.githubusercontent.com/Unstructured-IO/docs/main/img/ui/data-extractor/spinalogic-bone-growth-stimulator-form.pdf)):
 
 ![Medical invoice](/img/ui/data-extractor/medical-invoice.png)
 
@@ -620,16 +532,16 @@ An extraction schema for this file might look like the following:
       "properties": {
         "name": {
           "type": "string",
-          "description": "Full name of the patient"
+          "description": "Full name of the patient."
         },
         "birth_date": {
           "type": "string",
-          "description": "Patient's date of birth"
+          "description": "Patient's date of birth."
         },
         "sex": {
           "type": "string",
           "enum": ["M", "F", "Other"],
-          "description": "Patient's biological sex"
+          "description": "Patient's biological sex."
         }
       },
       "required": ["name", "birth_date", "sex"],
@@ -645,35 +557,35 @@ An extraction schema for this file might look like the following:
             "properties": {
               "procedure": {
                 "type": "string",
-                "description": "Name or type of the medical procedure"
+                "description": "Name or type of the medical procedure."
               },
               "date": {
                 "type": "string",
-                "description": "Date when the procedure was performed"
+                "description": "Date when the procedure was performed."
               },
               "levels": {
                 "type": "string",
-                "description": "Anatomical levels or location of the procedure"
+                "description": "Anatomical levels or location of the procedure."
               }
             },
             "required": ["procedure", "date", "levels"],
             "additionalProperties": false
           },
-          "description": "List of prior medical procedures"
+          "description": "List of prior medical procedures."
         },
         "diagnoses": {
           "type": "array",
           "items": {
             "type": "string"
           },
-          "description": "List of medical diagnoses"
+          "description": "List of medical diagnoses."
         },
         "comorbidities": {
           "type": "array",
           "items": {
             "type": "string"
           },
-          "description": "List of comorbid conditions"
+          "description": "List of comorbid conditions."
         }
       },
       "required": ["prior_procedures", "diagnoses", "comorbidities"],
@@ -688,129 +600,102 @@ An extraction schema for this file might look like the following:
 An extraction guidance prompt for this file might look like the following:
 
 ```text
-# Medical Record Data Extraction Instructions
+Extract the medical information from this record, and present it in the following format:
 
-You are a medical data extraction specialist. Your task is to carefully extract patient information and medical history from documents and structure it according to the provided JSON schema.
+- patient
 
-## Extraction Guidelines
+  - name: Full name of the patient.
+  - birth_date: Patient's date of birth.
+  - sex: Patient's biological sex.
 
-### 1. Patient Information
+- medical_summary
 
-- **Name**: Extract the full legal name as it appears in the document. Use proper capitalization (e.g., "Marissa K. Donovan")
-- **Birth Date**: Convert to format "DD MMM YYYY" (e.g., "14 Aug 1974")
+  - prior_procedures
 
-  - Accept variations: MM/DD/YYYY, MM-DD-YYYY, YYYY-MM-DD, Month DD, YYYY
-  - If only age is given, do not infer birth date - mark as null
+    - procedure: Name or type of the medical procedure.
+    - date: Date when the procedure was performed.
+    - levels: Anatomical levels or location of the procedure.
 
-- **Sex**: Extract biological sex as single letter: "M" (Male), "F" (Female), or "Other"
+  - diagnoses: List of medical diagnoses.
+  - comorbidities: List of comorbid conditions.
 
-  - Map variations: Male/Man → "M", Female/Woman → "F"
+Additional extraction guidance:
 
-### 2. Medical Summary
+- name: Extract the full legal name as it appears in the document. Use proper capitalization (for example: "Marissa K. Donovan").
+- birth_date: Convert to format "MM/DD/YYYY" (for example: "03/28/1976"),
 
-#### Prior Procedures
+  - Accept variations: MM/DD/YYYY, MM-DD-YYYY, YYYY-MM-DD, Month DD, YYYY,
+  - If only age is given, do not infer birth date - mark as null,
 
-Extract all surgical and major medical procedures, including:
+- sex: Extract biological sex as single letter: "M" (Male), "F" (Female), or "X" (Other)
 
-- **Procedure**: Use standard medical terminology when possible
-- **Date**: Format as "MM/DD/YYYY". If only year/month available, use "01" for missing day
-- **Levels**: Include anatomical locations, vertebral levels, or affected areas
+  - Map variations: Male/Man → "M", Female/Woman → "F", Others → "X"
 
-  - For spine procedures: Use format like "L4 to L5" or "L4-L5"
-  - Include laterality when specified (left, right, bilateral)
+- prior_procedures:
 
-#### Diagnoses
+  Extract all surgical and major medical procedures, including:
 
-Extract all current and historical diagnoses:
+  - procedure: Use standard medical terminology when possible.
+  - date: Format as "MM/DD/YYYY". If only year/month available, use "01" for missing day.
+  - levels: Include anatomical locations, vertebral levels, or affected areas.
 
-- Include both primary and secondary diagnoses
-- Preserve medical terminology and ICD-10 descriptions if provided
-- Include location/region specifications (e.g., "Radiculopathy — lumbar region")
-- Do not include procedure names unless they represent a diagnostic condition
+    - For spine procedures: Use format like "L4 to L5" or "L4-L5".
+    - Include laterality when specified (left, right, bilateral).
 
-#### Comorbidities
+  - diagnoses:
 
-Extract all coexisting medical conditions that may impact treatment:
+    Extract all current and historical diagnoses:
 
-- Include chronic conditions (Diabetes, Hypertension, etc.)
-- Include relevant surgical history that affects current state (Failed Fusion, Multi-Level Fusion)
-- Include structural abnormalities (Spondylolisthesis, Stenosis)
-- Do not duplicate items already listed in primary diagnoses
+    - Include both primary and secondary diagnoses.
+    - Preserve medical terminology and ICD-10 descriptions if provided.
+    - Include location/region specifications (for example: "radiculopathy — lumbar region").
+    - Do not include procedure names unless they represent a diagnostic condition.
 
-## Data Quality Rules
+  - comorbidities
 
-1. **Completeness**: Only include fields where data is explicitly stated or clearly indicated
-2. **No Inference**: Do not infer or assume information not present in the source
-3. **Preserve Specificity**: Maintain medical terminology and specificity from source
-4. **Handle Missing Data**: Return empty arrays [] for sections with no data, never null
-5. **Date Validation**: Ensure all dates are realistic and properly formatted
-6. **Deduplication**: Avoid listing the same condition in multiple sections
+    Extract all coexisting medical conditions that may impact treatment:
 
-## Common Variations to Handle
+    - Include chronic conditions (for example: "diabetes", "hypertension").
+    - Include relevant surgical history that affects current state (for example: Failed Fusion, Multi-Level Fusion).
+    - Include structural abnormalities (for example: Spondylolisthesis, Stenosis).
+    - Do not duplicate items already listed in primary diagnoses.
 
-### Document Types
+Data quality rules:
 
-- **Operative Reports**: Focus on procedure details, dates, and levels
-- **H&P (History & Physical)**: Rich source for all sections
-- **Progress Notes**: May contain updates to diagnoses and new procedures
-- **Discharge Summaries**: Comprehensive source for all data points
-- **Consultation Notes**: Often contain detailed comorbidity lists
+1. Completeness: Only include fields where data is explicitly stated or clearly indicated.
+2. No inference: Do not infer or assume information not present in the source.
+3. Preserve specificity: Maintain medical terminology and specificity from source.
+4. Handle missing data: Return empty arrays [] for sections with no data, never null.
+5. Date validation: Ensure all dates are realistic and properly formatted.
+6. Deduplication: Avoid listing the same condition in multiple sections.
 
-### Medical Terminology Standardization
+Common variations to handle:
 
-- Spinal levels: C1-C7 (Cervical), T1-T12 (Thoracic), L1-L5 (Lumbar), S1-S5 (Sacral)
-- Use "Fusion Surgery" not "Fusion" alone when referring to procedures
-- Preserve specificity: "Type 2 Diabetes" not just "Diabetes" when specified
+- Operative reports: Focus on procedure details, dates, and levels.
+- H&P (history & physical): Rich source for all sections.
+- Progress notes: May contain updates to diagnoses and new procedures.
+- Discharge summaries: Comprehensive source for all data points.
+- Consultation notes: Often contain detailed comorbidity lists.
+- Spinal levels: C1-C7 (Cervical), T1-T12 (Thoracic), L1-L5 (Lumbar), S1-S5 (Sacral).
+- Use "fusion surgery" not "fusion" alone when referring to procedures.
+- Preserve specificity: "Type 2 Diabetes" not just "Diabetes" when specified.
+- Multiple procedures same date**: List as separate objects in the array.
+- Revised procedures: Include both original and revision as separate entries.
+- Bilateral procedures: Note as single procedure with "bilateral" in levels.
+- Uncertain dates: If date is approximate (for example, "Spring 2023"), use "01/04/2023" for Spring, "01/07/2023" for Summer, and so on.
+- Name variations: Use the most complete version found in the document.
+- Conflicting information**: Use the most recent or most authoritative source.
 
-## Edge Cases
-
-1. **Multiple Procedures Same Date**: List as separate objects in the array
-2. **Revised Procedures**: Include both original and revision as separate entries
-3. **Bilateral Procedures**: Note as single procedure with "bilateral" in levels
-4. **Uncertain Dates**: If date is approximate (e.g., "Spring 2023"), use "01/04/2023" for Spring, "01/07/2023" for Summer, etc.
-5. **Name Variations**: Use the most complete version found in the document
-6. **Conflicting Information**: Use the most recent or most authoritative source
-
-## Output Validation
+Output validation:
 
 Before returning the extraction:
 
-1. Verify all required fields are present
-2. Check date formats are consistent
-3. Ensure no duplicate entries within arrays
-4. Confirm sex field contains only "M", "F", or "Other"
-5. Validate that procedures have all three required fields
-6. Ensure diagnoses and comorbidities are non-overlapping
-
-## Example Extraction Patterns
-
-### From narrative text:
-
-"Mrs. Donovan is a 49-year-old female who underwent L4-L5 fusion on April 5, 2023..."
-→ Extract: name, age (calculate birth year), sex, procedure details
-
-### From problem list:
-
-"1. Lumbar radiculopathy  2. DM Type 2  3. Failed back surgery syndrome"
-
-→ Sort into appropriate categories (diagnosis vs comorbidity)
-
-### From surgical history:
-
-"Prior surgeries: 2023 - Lumbar fusion at L4-5 levels"
-
-→ Structure into prior_procedures with proper date formatting
-
-### From comorbidities checkboxes:
-
-- Multi-Level Fusion
-- Diabetes
-- Failed Fusion
-- Spondylolisthesis
-
-Return the extracted data in valid JSON format matching the provided schema exactly. If uncertain about any extraction, err on the side of precision and completeness rather than speculation.
-
--- Note: Make sure you always extracted Failed Fusion comorbidity -- you often forget it :)
+1. Verify all required fields are present.
+2. Check date formats are consistent.
+3. Ensure no duplicate entries within arrays.
+4. Confirm sex field contains only "M", "F", or "Other".
+5. Validate that procedures have all three required fields.
+6. Ensure diagnoses and comorbidities are non-overlapping.
 ```
 
 And Unstructured's output would look like the following:
