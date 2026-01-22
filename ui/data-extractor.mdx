@@ -267,10 +267,11 @@ number of files that are stored in remote locations, do the following from the w
 4. In the node's settings pane, on the **Details** tab, you can do one of the following:
 
    - To use a custom schema that conforms to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
-     click **Upload JSON**; enter your own custom schema or upload a JSON file that contains your custom schema; click **Use this Schema**; and then click **Run Schema**. 
+     click **Upload JSON**; enter your own custom schema or upload a JSON file that contains your custom schema; and then click **Use this Schema**. 
      [Learn about the OpenAI Structured Outputs format](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
-   - To use a visual editor to define the schema, click the ellipses (three dots) icon; click **Reset form**, enter your own custom schema objects and their properties, 
-     and then click **Run Schema**. [Learn about OpenAI Structured Outputs data types](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
+   - To use a visual editor to define the schema, enter your own custom schema objects and their properties. To clear the current schema and start over, 
+     click the ellipses (three dots) icon, and then click **Reset form**. 
+     [Learn about OpenAI Structured Outputs data types](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
 
 5. Continue building your workflow as desired.
 6. To see the results of the structured data extractor, do one of the following:
@@ -288,8 +289,18 @@ below the threshold of what the structured data extractor typically needs for th
 
 ## Saving the extracted data separately
 
-There might be cases where you want to save the contents of the `extracted_data` field separately from the rest of Unstructured's JSON output. 
-To do this, you could use a Python script such as the following. This script works with one or more Unstructured JSON output files that you already have stored 
+Unstructured does not recommend that you save `DocumentData` elements as rows or entries within a traditionalSQL-style destination database or vector store, for the following reasons:
+
+- Saving a mixture of `DocumentData` elements and default Unstructured elements such as `Title`, `NarrativeText`, and `Table` elements and 
+  so on in the same table, collection, or index might cause unexpected performance issues or might return less useful search and query results. 
+- The `DocumentData` elements' `extracted_data` contents can get quite large and complex, exceeding the column or field limits of some SQL-style databases or vector stores. 
+
+Instead, you should save the JSON containing the `DocumentData` elements that Unstructured outputs into a blob storage, 
+file storage, or No-SQL database destination location. You could then use the following approach to extract and save the 
+`extracted_data` contents from the JSON into a SQL-style destination database or vector store from there.
+
+To save the contents of the `extracted_data` field separately from the rest of Unstructured's JSON output, you 
+could for example use a Python script such as the following. This script works with one or more Unstructured JSON output files that you already have stored 
 on the same machine as this script. Before you run this script, do the following:
 
 - To process all Unstructured JSON files within a directory, change `None` for `input_dir` to a string that contains the path to the directory. This can be a relative or absolute path.
