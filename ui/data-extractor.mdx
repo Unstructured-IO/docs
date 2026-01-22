@@ -2,7 +2,13 @@
 title: Structured data extraction
 ---
 
-When Unstructured [partitions](/ui/partitioning) your source documents, the result is a list of Unstructured 
+<Tip>
+    To begin using the structured data extractor right away, skip ahead to the how-to [procedures](#using-the-structured-data-extractor).
+</Tip>
+
+## Overview
+
+When Unstructured [partitions](/ui/partitioning) your source documents, the default result is a list of Unstructured 
 [document elements](/ui/document-elements). These document elements are expressed in Unstructured's format, which includes elements such as 
 `Title`, `NarrativeText`, `UncategorizedText`, `Table`, `Image`, `List`, and so on. For example, you could have 
 Unstructured ingest a stack of customer order forms in PDF format, where the PDF files' layout is identical, but the 
@@ -19,12 +25,12 @@ the order's total amount; and any other available details that matter to you.
 This information is extracted in a consistent JSON format that is already fine-tuned for you to use in your own applications.
 
 To show how the structured data extractor works, take a look at the following real estate listing PDF. This file is one of the 
-sample files that is available directly from the **Start** page and the workflow editor in the Unstructured use interface (UI). The file's 
+sample files that is available directly from the **Start** page and the workflow editor's **Source** node in the Unstructured use interface (UI). The file's 
 content is as follows:
 
 ![Sample real estate listing PDF](/img/ui/data-extractor/real-estate-listing.png)
 
-Without the structured data extractor, if you run a workflow that references this file, Unstructured extracts the listing's data in a format similar to the following 
+Without the structured data extractor, if you run a workflow that references this file, Unstructured extracts the listing's data in a default format similar to the following 
 (note that the ellipses in this output indicate omitted fields for brevity):
 
 ```json
@@ -197,7 +203,7 @@ You can also use a visual schema builder to define the schema, like this:
 
 ## Using the structured data extractor
 
-There are two ways to use the structured data extractor in your Unstructured workflows:
+There are two ways to use the [structured data extractor](#overview) in your Unstructured workflows:
 
 - From the **Start** page of your Unstructured account. This approach works 
   only with a single file that is stored on your local machine. [Learn how](#use-the-structured-data-extractor-from-the-start-page).
@@ -205,6 +211,8 @@ There are two ways to use the structured data extractor in your Unstructured wor
   number of files that are stored in remote locations. [Learn how](#use-the-structured-data-extractor-from-the-workflow-editor).
 
 ### Use the structured data extractor from the Start page
+
+To have Unstructured [extract the data in a custom-defined format](#overview) for a single file that is stored on your local machine, do the following from the **Start** page:
 
 1. Sign in to your Unstructured account, if you are not already signed in.
 2. On the sidebar, click **Start**, if the **Start** page is not already showing.
@@ -242,6 +250,9 @@ There are two ways to use the structured data extractor in your Unstructured wor
 
 ### Use the structured data extractor from the workflow editor
 
+To have Unstructured [extract the data in a custom-defined format](#overview) for a single file that is stored on your local machine, or with any 
+number of files that are stored in remote locations, do the following from the workflow editor:
+
 1. If you already have an Unstructured workflow that you want to use, open it to show the workflow editor. Otherwise, create a new 
    workflow as follows:
 
@@ -250,25 +261,24 @@ There are two ways to use the structured data extractor in your Unstructured wor
    c. Click **New Workflow +**.<br/>
    d. With **Build it Myself** already selected, click **Continue**. The workflow editor appears.<br/>
 
-2. Add a **Structured Data Extractor** node to your existing Unstructured workflow. This node must be added immediately after the **Partitioner** node 
-   in the workflow. To add this node, in the workflow designer, click the **+** (add node) button, click **Transform**, and then click **Structured Data Extractor**.
-3. Click the newly added **Structured Data Extractor** node to select it.
+2. Add an **Extract** node to your existing Unstructured workflow. This node must be added right before the workflow's **Destination** node. 
+   To add this node, in the workflow designer, click the **+** (add node) button immediately before the **Destination** node, and then click **Enrich > Extract**.
+3. Click the newly added **Extract** node to select it.
+4. In the node's settings pane, on the **Details** tab, you can do one of the following:
 
-4. ...
+   - To use a custom schema that conforms to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
+     click **Upload JSON**; enter your own custom schema or upload a JSON file that contains your custom schema; click **Use this Schema**; and then click **Run Schema**. 
+     [Learn about the OpenAI Structured Outputs format](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
+   - To use a visual editor to define the schema, click the ellipses (three dots) icon; click **Reset form**, enter your own custom schema objects and their properties, 
+     and then click **Run Schema**. [Learn about OpenAI Structured Outputs data types](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
 
-5. In the node's settings pane, on the **Details** tab, specify the following:
+5. Continue building your workflow as desired.
+6. To see the results of the structured data extractor, do one of the following:
 
-   a. For **Extraction Guidance Prompt**, enter the text of your extraction guidance prompt.<br />
-   b. Click **Edit Code**, enter the text of your extraction schema, and then click **Save Changes**. The text you entered 
-      will appear in the **Schema** box.<br />
-
-6. Continue building your workflow as desired.
-7. To see the results of the structured data extractor, do one of the following:
-
-   - If you are using a local file as input to your workflow, click **Test** immediately above the **Source** node. The results will be displayed on-screen 
+   - If you have already selected a local file as input to your workflow, click **Test** immediately above the **Source** node. The results will be displayed on-screen 
      in the **Test output** pane.
-   - If you are using source and destination connectors for your workflow, [run the workflow](), [monitor the workflow's job](), 
-     and then examine the results in your destination location.
+   - If you are using source and destination connectors for your workflow, [run the workflow as a job](/ui/jobs#run-a-job), 
+     [monitor the job](/ui/jobs#monitor-a-job), and then examine the job'sresults in your destination location.
 
 ## Limitations
 

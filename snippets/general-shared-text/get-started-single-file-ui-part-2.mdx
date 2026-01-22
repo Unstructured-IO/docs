@@ -465,9 +465,252 @@ embedding model that is provided by an embedding provider. For the best embeddin
 6. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
    the workflow designer so that you can continue designing things later as you see fit.
 
+## Step 7: Experiment with structured data extraction
+
+In this step, you apply custom [structured data extraction](/ui/data-extractor) to your workflow. Structured data extraction is the process where Unstructured 
+automatically extracts the data from your source documents into a format that you define up front. For example, in addition to Unstructured 
+partitioning your source documents into elements with types such as `NarrativeText`, `UncategorizedText`, and so on, you can have Unstructured 
+output key information from the source documents in a custom structured data format, appearing within a `DocumentData` element that contains a JSON object with custom fields such as `name`, `address`, `phone`, `email`, and so on.
+
+1. With the workflow designer active from the previous step, just before the **Destination** node, click the add (**+**) icon, and then click **Enrich > Extract**.
+
+   ![Adding an extract node](/img/ui/walkthrough/AddExtract.png)
+
+2. In the node's settings pane's **Details** tab, in the **Schema** box, enter the following JSON schema:
+
+   ```json
+   {
+     "type": "object",
+     "properties": {
+       "title": {
+         "type": "string",
+         "description": "Full title of the research paper"
+       },
+       "authors": {
+         "type": "array",
+         "items": {
+           "type": "object",
+           "properties": {
+             "name": {
+               "type": "string",
+               "description": "Author's full name"
+             },
+             "affiliation": {
+               "type": "string",
+               "description": "Author's institutional affiliation"
+             },
+             "email": {
+               "type": "string",
+               "description": "Author's email address"
+             }
+           },
+           "required": [
+             "name",
+             "affiliation",
+             "email"
+           ],
+           "additionalProperties": false
+         },
+         "description": "List of paper authors with their affiliations"
+       },
+       "abstract": {
+         "type": "string",
+         "description": "Paper abstract summarizing the research"
+       },
+       "introduction": {
+         "type": "string",
+         "description": "Introduction section describing the problem and motivation"
+       },
+       "methodology": {
+         "type": "object",
+         "properties": {
+           "approach_name": {
+             "type": "string",
+             "description": "Name of the proposed method (e.g., StrokeNet)"
+           },
+           "description": {
+             "type": "string",
+             "description": "Detailed description of the methodology"
+           },
+           "key_techniques": {
+             "type": "array",
+             "items": {
+               "type": "string"
+             },
+             "description": "List of key techniques used in the approach"
+           }
+         },
+         "required": [
+           "approach_name",
+           "description",
+           "key_techniques"
+         ],
+         "additionalProperties": false
+       },
+       "experiments": {
+         "type": "object",
+         "properties": {
+           "datasets": {
+             "type": "array",
+             "items": {
+               "type": "object",
+               "properties": {
+                 "name": {
+                   "type": "string",
+                   "description": "Dataset name"
+                 },
+                 "description": {
+                   "type": "string",
+                   "description": "Dataset description"
+                 },
+                 "size": {
+                   "type": "string",
+                   "description": "Dataset size (e.g., number of sentence pairs)"
+                 }
+               },
+               "required": [
+                 "name",
+                 "description",
+                 "size"
+               ],
+               "additionalProperties": false
+             },
+             "description": "Datasets used for evaluation"
+           },
+           "baselines": {
+             "type": "array",
+             "items": {
+               "type": "string"
+             },
+             "description": "Baseline methods compared against"
+           },
+           "evaluation_metrics": {
+             "type": "array",
+             "items": {
+               "type": "string"
+             },
+             "description": "Metrics used for evaluation"
+           },
+           "experimental_setup": {
+             "type": "string",
+             "description": "Description of experimental configuration and hyperparameters"
+           }
+         },
+         "required": [
+           "datasets",
+           "baselines",
+           "evaluation_metrics",
+           "experimental_setup"
+         ],
+         "additionalProperties": false
+       },
+       "results": {
+         "type": "object",
+         "properties": {
+           "main_findings": {
+             "type": "string",
+             "description": "Summary of main experimental findings"
+           },
+           "performance_improvements": {
+             "type": "array",
+             "items": {
+               "type": "object",
+               "properties": {
+                 "dataset": {
+                   "type": "string",
+                   "description": "Dataset name"
+                 },
+                 "metric": {
+                   "type": "string",
+                   "description": "Evaluation metric (e.g., BLEU)"
+                 },
+                 "baseline_score": {
+                   "type": "number",
+                   "description": "Baseline method score"
+                 },
+                 "proposed_score": {
+                   "type": "number",
+                   "description": "Proposed method score"
+                 },
+                 "improvement": {
+                   "type": "number",
+                   "description": "Improvement over baseline"
+                 }
+               },
+               "required": [
+                 "dataset",
+                 "metric",
+                 "baseline_score",
+                 "proposed_score",
+                 "improvement"
+               ],
+               "additionalProperties": false
+             },
+             "description": "Performance improvements over baselines"
+           },
+           "parameter_reduction": {
+             "type": "string",
+             "description": "Description of parameter reduction achieved"
+           }
+         },
+         "required": [
+           "main_findings",
+           "performance_improvements",
+           "parameter_reduction"
+         ],
+         "additionalProperties": false
+       },
+       "related_work": {
+         "type": "string",
+         "description": "Summary of related work and prior research"
+       },
+       "conclusion": {
+         "type": "string",
+         "description": "Conclusion section summarizing contributions and findings"
+       },
+       "limitations": {
+         "type": "string",
+         "description": "Limitations and challenges discussed in the paper"
+       },
+       "acknowledgments": {
+         "type": "string",
+         "description": "Acknowledgments section"
+       },
+       "references": {
+         "type": "array",
+         "items": {
+           "type": "string"
+         },
+         "description": "List of cited references"
+       }
+     },
+     "additionalProperties": false,
+     "required": [
+       "title",
+       "authors",
+       "abstract",
+       "introduction",
+       "methodology",
+       "experiments",
+       "results",
+       "related_work",
+       "conclusion",
+       "limitations",
+       "acknowledgments",
+       "references"
+     ]
+   }
+   ```
+
+3. Immediately above the **Source** node, click **Test**.
+4. In the **Test output** pane, make sure that **Extract (9 of 9)** is showing. If not, click the right arrow (**>**) until **Extract (9 of 9)** appears, which will show the output from the last node in the workflow.
+5. To explore the structured data extraction, search for the text `"extracted_data"` (including the quotation marks).
+6. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
+   the workflow designer so that you can continue designing things later as you see fit.
+
 ## Next steps
 
-Congratulations! You now have an Unstructured workflow that partitions, enriches, chunks, and embeds your source documents, producing 
+Congratulations! You now have an Unstructured workflow that partitions, enriches, chunks, embeds, and extracts structured data from your source documents, producing 
 context-rich data that is ready for retrieval-augmented generation (RAG), agentic AI, and model fine-tuning.
 
 Right now, your workflow only accepts one local file at a time for input. Your workflow also only sends Unstructured's processed data to your screen or to be saved locally as a JSON file. 
