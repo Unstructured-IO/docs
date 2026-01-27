@@ -2234,7 +2234,7 @@ Allowed values for `subtype` and `model_name` include the following:
 
 ### Extract node
 
-An **Extract** node has a `type` of `document_data_extractor` and a `subtype` of `llm`.
+An **Extract** node has a `type` of `structured_data_extractor` and a `subtype` of `llm`.
 
 <AccordionGroup>
     <Accordion title="Python SDK">
@@ -2242,8 +2242,9 @@ An **Extract** node has a `type` of `document_data_extractor` and a `subtype` of
        embedder_workflow_node = WorkflowNode(
             name="Extractor",
             subtype="llm",
-            type="document_data_extractor",
+            type="structured_data_extractor",
             settings={
+                "output_mode": "prepend"|"overwrite",
                 "schema_to_extract": {
                     "json_schema": "<json-schema>",
                     "extraction_guidance": "<extraction-guidance>"
@@ -2258,9 +2259,10 @@ An **Extract** node has a `type` of `document_data_extractor` and a `subtype` of
         ```json
         {
             "name": "Extractor",
-            "type": "document_data_extractor",
+            "type": "structured_data_extractor",
             "subtype": "llm",
             "settings": {
+                "output_mode": "prepend"|"overwrite",
                 "schema_to_extract": {
                     "json_schema": "<json-schema>",
                     "extraction_guidance": "<extraction-guidance>"
@@ -2274,6 +2276,11 @@ An **Extract** node has a `type` of `document_data_extractor` and a `subtype` of
 </AccordionGroup>
 
 Fields for `settings` include:
+
+- `output_mode`: _Optional_. The mode in which to output the extracted data. Allowed values include `prepend` (the default if not otherwise specified) and `overwrite`:
+
+  - `prepend`: Prepend the extracted data according to the schema specified in `schema_to_extract` to the data that is partitioned according to the default Unstructured document elements format.
+  - `overwrite`: Output only the extracted data according to the schema specified in `schema_to_extract`.
 
 - `schema_to_extract`: _Required_. The schema or guidance for the structured data that you want to extract. One (and only one) of the following must also be specified:
 

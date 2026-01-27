@@ -568,8 +568,19 @@ output key information from the source documents in a custom structured data for
 
    ![Adding an extract node](/img/ui/walkthrough/AddExtract.png)
 
-2. In the node's settings pane's **Details** tab, click **Upload JSON**.
-3. in the **JSON Schema** box, enter the following JSON schema, and then click **Use this Schema**:
+2. In the node's settings pane's **Details** tab, under **Provider**, select **Anthropic**. Under **Model**, select **Claude Sonnet 4.5**. This is the model that Unstructured will use to do the structured data extraction.
+
+   <Note>
+       The list of available models for structured data extraction is constantly being updated. Your list might also be different, depending on your Unstructured 
+       account type. If **Anthropic** and **Claude Sonnet 4.5** is not available, choose another available model from the list.
+
+       If you have an Unstructured **Business** account and want to add more models to this list, contact your 
+       Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+    </Note>
+
+3. Click **Upload JSON**.
+4. in the **JSON Schema** box, enter the following JSON schema, and then click **Use this Schema**:
 
    ```json
    {
@@ -795,10 +806,10 @@ output key information from the source documents in a custom structured data for
    }
    ```
 
-4. With the "Chinese Characters" PDF file still selected in the **Source** node, click **Test**.
-5. In the **Test output** pane, make sure that **Extract (9 of 9)** is showing. If not, click the right arrow (**>**) until **Extract (9 of 9)** appears, which will show the output from the last node in the workflow.
-6. To explore the structured data extraction, search for the text `"extracted_data"` (including the quotation marks).
-7. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
+5. With the "Chinese Characters" PDF file still selected in the **Source** node, click **Test**.
+6. In the **Test output** pane, make sure that **Extract (9 of 9)** is showing. If not, click the right arrow (**>**) until **Extract (9 of 9)** appears, which will show the output from the last node in the workflow.
+7. To explore the structured data extraction, search for the text `"extracted_data"` (including the quotation marks).
+8. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
    the workflow designer so that you can continue designing things later as you see fit.
 
 ## Next steps

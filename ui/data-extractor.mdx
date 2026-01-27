@@ -157,31 +157,31 @@ For this real estate listing example, the schema might look like the following:
       "properties": {
         "street_address": {
           "type": "string",
-          "description": "The full street address of the property including street number, street name, city, state, and postal code."
+          "description": "The full street address of the property including street number, street name, city, state, and postal code"
         },
         "square_footage": {
           "type": "integer",
-          "description": "The total living space area of the property, in square feet."
+          "description": "The total living space area of the property, in square feet"
         },
         "price": {
           "type": "number",
-          "description": "The listed selling price of the property, in local currency."
+          "description": "The listed selling price of the property, in local currency"
         },
         "features": {
           "type": "array",
-          "description": "A list of property features and highlights.",
+          "description": "A list of property features and highlights",
           "items": {
             "type": "string",
-            "description": "A single property feature or highlight."
+            "description": "A single property feature or highlight"
           }
         },
         "agent_contact": {
           "type": "object",
-          "description": "Contact information for the real estate agent.",
+          "description": "Contact information for the real estate agent",
           "properties": {
             "phone": {
               "type": "string",
-              "description": "The agent's contact phone number."
+              "description": "The agent's contact phone number"
             }
           },
           "required": ["phone"],
@@ -264,7 +264,8 @@ number of files that are stored in remote locations, do the following from the w
 2. Add an **Extract** node to your existing Unstructured workflow. This node must be added right before the workflow's **Destination** node. 
    To add this node, in the workflow designer, click the **+** (add node) button immediately before the **Destination** node, and then click **Enrich > Extract**.
 3. Click the newly added **Extract** node to select it.
-4. In the node's settings pane, on the **Details** tab, you can do one of the following:
+4. In the node's settings pane, on the **Details** tab, under **Provider**, select the provider for the model that you want Unstructured to use to do the extraction. Then, under **Model**, select the model.
+5. To specify the custom schema for Unstructured to use to do the extraction, do one of the following:
 
    - To use a custom schema that conforms to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
      click **Upload JSON**; enter your own custom schema or upload a JSON file that contains your custom schema; and then click **Use this Schema**. 
@@ -273,8 +274,8 @@ number of files that are stored in remote locations, do the following from the w
      click the ellipses (three dots) icon, and then click **Reset form**. 
      [Learn about OpenAI Structured Outputs data types](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
 
-5. Continue building your workflow as desired.
-6. To see the results of the structured data extractor, do one of the following:
+6. Continue building your workflow as desired.
+7. To see the results of the structured data extractor, do one of the following:
 
    - If you have already selected a local file as input to your workflow, click **Test** immediately above the **Source** node. The results will be displayed on-screen 
      in the **Test output** pane.
