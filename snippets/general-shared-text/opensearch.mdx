@@ -46,7 +46,7 @@
   allowfullscreen
   ></iframe>
 
-- The instance's host identifier (and port number, if you're using a local OpenSearch instance), as follows:
+- The instance's host URL, as follows:
 
   - For an AWS OpenSearch Service instance, do the following:
 
@@ -62,15 +62,15 @@
 
   For the destination connector, if you need to create an index and you're using a master user and password as the domain's master user, you can use for example the following `curl` command. Replace the following placeholders:
 
-  - Replace `<host>` with the instance's host identifier.
-  - If you're using a local OpenSearch instance, replace `<port>` with the instance's port number.
+  - Replace `<host>` with the instance's host URL.
+  - Replace `<port>` with the instance's port number, which is typically `443` (for encrypted connections, and less commonly `9200` for unencrypted connections).
   - Replace `<master-username>` with the master user's name, and replace `<master-password>` with the master user's password.
   - Replace `<index-name>` with the name of the new search index on the instance.
   - Replace `<index-schema>` with the schema for the new search index on the instance. A schema is optional; see the explanation 
     following this `curl` command for more information.
   
   ```bash
-  curl --request PUT "<host>[:<port>]/<index-name>" \
+  curl --request PUT "<host>:<port>/<index-name>" \
   --user "<master-username>:<master-password>" \
   [--header "Content-Type: application/json" \
   --data '<index-schema>']

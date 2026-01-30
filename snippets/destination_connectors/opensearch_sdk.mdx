@@ -12,7 +12,7 @@ with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as clien
                 name="<name>",
                 type="opensearch",
                 config={
-                    "hosts": ["<host-name>:<port-number>"],
+                    "hosts": ["https://<host>:<port>"],
                     "index_name": "<index-name>",
                     "username": "<username>",
                     "password": "<password>",

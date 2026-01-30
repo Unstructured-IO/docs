@@ -46,7 +46,7 @@ if __name__ == "__main__":
                 password=os.getenv("OPENSEARCH_PASSWORD"),
                 use_ssl=True
             ),
-            hosts=[os.getenv("OPENSEARCH_HOST")],
+            hosts=[os.getenv("OPENSEARCH_HOST_URL")],
             username=os.getenv("OPENSEARCH_USERNAME")
         ),
         stager_config=OpensearchUploadStagerConfig(
