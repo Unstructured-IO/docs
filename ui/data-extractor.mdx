@@ -280,7 +280,7 @@ number of files that are stored in remote locations, do the following from the w
    - If you have already selected a local file as input to your workflow, click **Test** immediately above the **Source** node. The results will be displayed on-screen 
      in the **Test output** pane.
    - If you are using source and destination connectors for your workflow, [run the workflow as a job](/ui/jobs#run-a-job), 
-     [monitor the job](/ui/jobs#monitor-a-job), and then examine the job'sresults in your destination location.
+     [monitor the job](/ui/jobs#monitor-a-job), and then examine the job's results in your destination location.
 
 ## Limitations
 
@@ -290,7 +290,7 @@ below the threshold of what the structured data extractor typically needs for th
 
 ## Saving the extracted data separately
 
-Unstructured does not recommend that you save `DocumentData` elements as rows or entries within a traditionalSQL-style destination database or vector store, for the following reasons:
+Unstructured does not recommend that you save `DocumentData` elements as rows or entries within a traditional SQL-style destination database or vector store, for the following reasons:
 
 - Saving a mixture of `DocumentData` elements and default Unstructured elements such as `Title`, `NarrativeText`, and `Table` elements and 
   so on in the same table, collection, or index might cause unexpected performance issues or might return less useful search and query results. 
@@ -431,6 +431,12 @@ An extraction schema for this file might look like the following:
 ```
 
 An extraction guidance prompt for this file might look like the following:
+
+<Note>
+    Providing an extraction guidance prompt is available only from the **Start** page. 
+    The workflow editor does not offer an extraction guidance prompt&mdash;you must provide an 
+    extraction schema instead.
+</Note>
 
 ```text
 Extract the plant information for each of the plants in this document, and present it in the following format:
@@ -620,6 +626,12 @@ An extraction schema for this file might look like the following:
 ```
 
 An extraction guidance prompt for this file might look like the following:
+
+<Note>
+    Providing an extraction guidance prompt is available only from the **Start** page. 
+    The workflow editor does not offer an extraction guidance prompt&mdash;you must provide an 
+    extraction schema instead.
+</Note>
 
 ```text
 Extract the medical information from this record, and present it in the following format:
