@@ -48,11 +48,11 @@ If the workflow editor is already visible, skip ahead to [Step 2](#step-2%3A-lea
 If the workflow editor is not yet visible, do the following to show it:
 
 1. If you do not already have an Unstructured account, [sign up for free](https://unstructured.io/?modal=try-for-free). 
-   After you sign up, you are automatically signed in to your new Unstructured **Let's Go** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+   After you sign up, you are automatically signed in to your new Unstructured **Let's Go** account at [https://platform.unstructured.io](https://platform.unstructured.io).
 
    <Note>
        If you already have an Unstructured **Pay-As-You-Go** or **Business SaaS** account, you are already signed up for Unstructured. 
-       Sign in to your existing Unstructured **Pay-As-You-Go** or **Business SaaS** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+       Sign in to your existing Unstructured **Pay-As-You-Go** or **Business SaaS** account at [https://platform.unstructured.io](https://platform.unstructured.io).
 
        If you already have an Unstructured **dedicated instance** or **in-VPC** deployment, your sign-in link will be unique to your deployment. 
        If you're not sure what your unique sign-in link is, see your Unstructured account administrator, or email Unstructured Support at 
@@ -118,7 +118,7 @@ though&mdash;you already have an existing workflow in progress!)
 **_What are all the parts of the workflow designer that I am looking at right now?_**
 
 The middle portion of the workflow designer is the workflow _directed acyclic graph_ (DAG), which contains a 
-a collection of _nodes_ connected by _edges_ that go in only one direction. You can think of the DAG similar to a flowchart 
+collection of _nodes_ connected by _edges_ that go in only one direction. You can think of the DAG similar to a flowchart 
 for a process. _Directed_ means the arrows show the flow from one step to the next, and _acyclic_ means you cannot 
 follow the arrows backward to get back to the starting point.
 
@@ -128,7 +128,7 @@ The workflow settings pane on the right includes the following tabs:
 - **Schedule** allows you to set up a schedule for this workflow to run automatically (on a regular time schedule).
 - **Settings** allows you to specify whether every time this workflow runs, that Unstructured's results will overwrite any previous results in the destination location. 
     To turn on this behavior, check the **Overwrite existing results** box. To turn it off, uncheck the box. Note that this setting works only 
-    for blog storage destination connectors such as the ones for Amazon S3, Azure Blob Storage, and Google Cloud Storage.
+    for blob storage destination connectors such as the ones for Amazon S3, Azure Blob Storage, and Google Cloud Storage.
 - **FAQ** contains additional information about how to use the workflow designer.
 
 If the workflow settings pane is not visible, click the **Settings** button near the bottom to show it.
@@ -198,7 +198,7 @@ In this step, you will test the **High Res** partitioning strategy on the "Chine
 
    ![The final Enrichment node's output](/img/ui/walkthrough/GoToTableToHTMLEnrichmentNode.png)
 
-6. Some interesting portions of the output include the following, which you can get to be clicking **Search JSON** above the output:
+6. Some interesting portions of the output include the following, which you can get to by clicking **Search JSON** above the output:
 
    ![Searching the JSON output](/img/ui/walkthrough/SearchJSON.png)
 
@@ -218,25 +218,23 @@ In this step, you will test the **High Res** partitioning strategy on the "Chine
 
 ## Step 4: Add more enrichments
 
-Your existing workflow already has three **Enrichment** nodes. Recall that these nodes perform the following enrichments:
+Your existing workflow already has three enrichment nodes. Recall that these nodes perform the following enrichments:
 
-- An [image description](ui/enriching/image-descriptions) enrichment, which uses a vision language model (VLM) to provide a text-based summary of the contents of the each detected image.
+- An [image description](ui/enriching/image-descriptions) enrichment, which uses a vision language model (VLM) to provide a text-based summary of the contents of each detected image.
 - A [generative OCR](/ui/enriching/generative-ocr) enrichment, which uses a VLM to improve the accuracy of each block of initially-processed text, as needed.
 - A [table to HTML](/ui/enriching/table-to-html) enrichment, which uses a VLM to provide an HTML-structured representation of each detected table.
 
 In this step, you add a few more [enrichments](/ui/enriching/overview) to your workflow, such as generating summary descriptions of detected tables, 
 and generating detected entities (such as people and organizations) and the inferred relationships among these entities. 
 
-1. In the workflow designer, just before the **Destination** node, click the add (+) icon, and then click **Enrich > Enrichment**.
-   
-   ![Adding an enrichment node](/img/ui/walkthrough/AddEnrichment.png)
+1. Add a table description node: in the workflow designer, just before the **Destination** node, click the add (+) icon, and then click **Enrich > Table Description**.
+
+   ![Adding a table description enrichment node](/img/ui/walkthrough/table-description.png)
 
 2. In the node's settings pane's **Details** tab, click:
 
-   - **Table** under **Input Type**.
    - Any available choice under **Provider** (for example, **Anthropic**).
    - Any available choice under **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
-   - If not already selected, **Table Description** under **Task**.
 
    <Note>
        The lists of available models for these enrichments are constantly being updated. Your lists might also differ from these instructions, depending on your Unstructured 
@@ -252,11 +250,10 @@ and generating detected entities (such as people and organizations) and the infe
        what each table is all about without having to stop to manually read through the table's content yourself. This also provides additional helpful context about the table for your RAG apps, agents, and models. [Learn more](/ui/enriching/table-descriptions).
    </Tip>
 
-3. Add a named entity recognition enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > Enrichment).
+3. Add a named entity recognition enrichment node: click the add (**+**) icon to the right of the preceding node, and then click **Enrich > NER**.
    
    In the node's settings pane's **Details** tab, click:
       
-   - **Text** under **Input Type**.
    - Any available choice under **Provider** (for example, **Anthropic**).
    - Any available choice under **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
       
@@ -269,7 +266,7 @@ and generating detected entities (such as people and organizations) and the infe
    ![The workflow with enrichments added](/img/ui/walkthrough/EnrichedWorkflow.png)
 
 4. Immediately above the **Source** node, click **Test**.
-5. In the **Test output** pane, make sure that **Enrichment (6 of 6)** is showing. If not, click the right arrow (**>**) until **Enrichment (6 of 6)** appears, which will show the output from the last node in the workflow.
+5. In the **Test output** pane, make sure that **NER (6 of 6)** is showing. If not, click the right arrow (**>**) until **NER (6 of 6)** appears, which will show the output from the last node in the workflow.
 6. Some interesting portions of the output include the following:
 
    - The descriptions of the seven tables on pages 6-9 and 12. Search for the text `"Table"` (including the quotation marks).
@@ -301,7 +298,7 @@ the resulting document elements' `text` content into manageable "chunks" to stay
     It's important here to note that _tokens_ and _characters_ are not the same thing! In terms of 
     characters, for English text, a common approximation is 1 token being equal to about 3 or 4 characters or three-quarters of a word. Many AI model providers publish their own token-to-character calculators online that you can use for estimation purposes.
 
-    You should experiement with a variety of chunk sizes, taking into account the kinds of content, the length and complexity of user queries and agent tasks, 
+    You should experiment with a variety of chunk sizes, taking into account the kinds of content, the length and complexity of user queries and agent tasks, 
     the intended end use, and of course the limits of the models you are using. Try different chunking strategies and sizes with your models and evaluate the results for yourself.
 </Tip>
 
@@ -474,7 +471,7 @@ Right now, your workflow only accepts one local file at a time for input. Your w
 You can modify your workflow to accept multiple files and data from&mdash;and send Unstructured's processed data to&mdash;one or more file storage 
 locations, databases, and vector stores. To learn how to do this, try one or more of the following quickstarts:
 
-- [Remote quickstart](/ui/quickstart#remote-quickstart) - This quickstart show you how to begin processing files and semi-structured data from remote source locations at scale, instead of just one local file at a time.
+- [Remote quickstart](/ui/quickstart#remote-quickstart) - This quickstart shows you how to begin processing files and semi-structured data from remote source locations at scale, instead of just one local file at a time.
 - [Dropbox source connector quickstart](/ui/sources/dropbox-source-quickstart) - If you don't have any remote source locations available for Unstructured to connect to, this quickstart shows you how to set up a Dropbox account to store your documents in, and then connect Unstructured to your Dropbox account.
 - [Pinecone destination connector quickstart](/ui/destinations/pinecone-destination-quickstart) - If you don't have any remote destination locations available for Unstructured to send its processed data to, this quickstart shows you how to set up a Pinecone account to have Unstructured store its processed data in, and then connect Unstructured to your Pinecone account.
 
