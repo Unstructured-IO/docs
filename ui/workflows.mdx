@@ -178,6 +178,26 @@ If you did not previously set the workflow to run on a schedule, you can [run th
    flowchart LR
      Source-->Partitioner-->Enrichment-->Chunker-->Embedder-->Destination
    ```
+   ```mermaid
+   flowchart LR
+     Source-->Partitioner-->Extract-->Destination
+   ```
+   ```mermaid
+   flowchart LR
+     Source-->Partitioner-->Chunker-->Extract-->Destination
+   ```
+   ```mermaid
+   flowchart LR
+     Source-->Partitioner-->Chunker-->Embedder-->Extract-->Destination
+   ```
+   ```mermaid
+   flowchart LR
+     Source-->Partitioner-->Enrichment-->Chunker-->Extract-->Destination
+   ```
+   ```mermaid
+   flowchart LR
+     Source-->Partitioner-->Enrichment-->Chunker-->Embedder-->Extract-->Destination
+   ```
 
    <Note>
        For workflows that use **Chunker** and enrichment nodes together, the **Chunker** node should be placed after all enrichment nodes. Placing the 
@@ -381,6 +401,18 @@ import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-
         
         - [Embedding overview](/ui/embedding)
         - [Understanding embedding models: make an informed choice for your RAG](https://unstructured.io/blog/understanding-embedding-models-make-an-informed-choice-for-your-rag).
+    </Accordion>
+    <Accordion title="Extract node">
+        Do one of the following to define the custom schema for the structured data that you want to extract:
+        
+        - To use a custom schema that conforms to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
+          click **Upload JSON**; enter your own custom schema or upload a JSON file that contains your custom schema; and then click **Use this Schema**. 
+          [Learn about the OpenAI Structured Outputs format](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
+        - To use a visual editor to define the schema, enter your own custom schema objects and their properties. To clear the current schema and start over, 
+          click the ellipses (three dots) icon, and then click **Reset form**. 
+          [Learn about OpenAI Structured Outputs data types](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
+
+        [Learn more](/ui/data-extractor).
     </Accordion>
 </AccordionGroup>
 

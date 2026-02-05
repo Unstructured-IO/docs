@@ -2234,6 +2234,85 @@ Allowed values for `subtype` and `model_name` include the following:
   - `"model_name": "voyage-code-2"`
   - `"model_name": "voyage-multimodal-3"`
 
+### Extract node
+
+An **Extract** node has a `type` of `structured_data_extractor` and a `subtype` of `llm`.
+
+<AccordionGroup>
+    <Accordion title="Python SDK">
+        ```python
+       embedder_workflow_node = WorkflowNode(
+            name="Extractor",
+            subtype="llm",
+            type="structured_data_extractor",
+            settings={
+                "schema_to_extract": {
+                    "json_schema": "<json-schema>",
+                    "extraction_guidance": "<extraction-guidance>"
+                },
+                "provider": "<provider>",
+                "model": "<model>"
+            }
+        )
+        ```
+    </Accordion>
+    <Accordion title="curl, Postman">
+        ```json
+        {
+            "name": "Extractor",
+            "type": "structured_data_extractor",
+            "subtype": "llm",
+            "settings": {
+                "schema_to_extract": {
+                    "json_schema": "<json-schema>",
+                    "extraction_guidance": "<extraction-guidance>"
+                },
+                "provider": "<provider>",
+                "model": "<model>"
+            }
+        }
+        ```
+    </Accordion>
+</AccordionGroup>
+
+Fields for `settings` include:
+
+- `schema_to_extract`: _Required_. The schema or guidance for the structured data that you want to extract. One (and only one) of the following must also be specified:
+
+  - `json_schema`: The extraction schema, in [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) format, for the structured data that you want to extract, expressed as a single string.
+  - `extraction_guidance`: The extraction prompt for the structured data that you want to extract, expressed as a single string.
+
+- Allowed values for `provider` and `model` include the following:
+
+  - `"provider": "anthropic"`
+
+    - `"model": "claude-opus-4-5-20251101"`
+    - `"model": "claude-sonnet-4-5-20250929"`
+    - `"model": "claude-haiku-4-5-20251001"`
+    - `"model": "claude-3-7-sonnet-20250219"`
+    - `"model": "claude-sonnet-4-20250514"`
+
+  - `"provider": "azure_openai"`
+
+    - `"model": "gpt-5-mini"`
+    - `"model": "gpt-4o"`
+    - `"model": "gpt-4o-mini"`
+
+  - `"provider": "bedrock"`
+
+    - `"model": "us.anthropic.claude-opus-4-20250514-v1:0"`
+    - `"model": "us.anthropic.claude-sonnet-4-20250514-v1:0"`
+    - `"model": "us.anthropic.claude-3-7-sonnet-20250219-v1:0"`
+    - `"model": "us.anthropic.claude-sonnet-4-5-20250929-v1:0"`
+
+  - `"provider": "openai"`
+
+    - `"model": "gpt-4o"`
+    - `"model": "gpt-5-mini"`
+    - `"model": "gpt-4o-mini"`
+
+[Learn more](/ui/data-extractor).
+
 ## List templates
 
 To list templates, use the `UnstructuredClient` object's `templates.list_templates` function (for the Python SDK) or the `GET` method to call the `/templates` endpoint (for `curl` or Postman). 
