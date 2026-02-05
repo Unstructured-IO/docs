@@ -22,9 +22,16 @@ Unstructured's _structured data extractor_ simplifies this kind of scenario by a
 into a format that you define up front. For example, you could have Unstructured ingest that same stack of customer order form PDFs and 
 then output a series of customer records, one record per order form. Each record could include data, with associated field labels, such as the customer's ID; a series of order line items with descriptions, quantities, and prices; 
 the order's total amount; and any other available details that matter to you. 
-This information is extracted in a consistent JSON format that is already fine-tuned for you to use in your own applications.
+This information is extracted in a consistent JSON format that is already fine-tuned for you to use in your own applications. 
 
-To show how the structured data extractor works, take a look at the following real estate listing PDF. This file is one of the 
+The following diagram provides a conceptual representation of structured data extraction, showing a flow of data from a patient information form into JSON output that is saved as a 
+JSON file in some remote cloud file storage location. From there, you could for example run your own script or similar to insert the JSON as a series of records into a database.
+
+<Frame caption="Extracting structured data from a medical form into JSON output that is saved in cloud file storage and then inserted into a database">
+  <img src="/img/ui/data-extractor/structured-data-extraction-conceptual-flow.png" alt="Conceptual flow of structured data extraction" />
+</Frame>
+
+To show how the structured data extractor works from a technical perspective, take a look at the following real estate listing PDF. This file is one of the 
 sample files that is available directly from the **Start** page and the workflow editor's **Source** node in the Unstructured use interface (UI). The file's 
 content is as follows:
 

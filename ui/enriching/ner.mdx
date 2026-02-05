@@ -149,7 +149,8 @@ prompt that is used to run NER. To do this, see the next section.
 
 import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-ui.mdx';
 
-To generate a list of recognized entities and their relationships, in an **Enrichment** node in a workflow, specify the following:
+To generate a list of recognized entities and their relationships, add an **NER** node to your workflow by clicking **+** in the workflow editor, and then click **Enrich > NER**. 
+Be sure also to select one of the available provider (and model) combinations that are shown, and then do the following:
 
 <Note>
     You can change a workflow's NER settings only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.
@@ -157,13 +158,11 @@ To generate a list of recognized entities and their relationships, in an **Enric
 
 <DeprecatedModelsUI />
 
-1. Select **Text**.
-2. For **Model**, select one of the available models that are shown.
-3. The selected model will follow a default set of instructions (called a _prompt_) to perform NER using a set of predefined entity types and relationships. To experiment 
+1. The selected model will follow a default set of instructions (called a _prompt_) to perform NER using a set of predefined entity types and relationships. To experiment 
    with running the default prompt against some sample data, click **Edit**, and then click **Run Prompt**. The selected **Model** uses the 
    **Prompt** to run NER on the **Input sample** and shows the results in the **Output**. Look specifically at the `response_json` field for the 
    entities that were recognized and their relationships.
-4. To customize the prompt, change the contents of **Prompt**.
+2. To customize the prompt, change the contents of **Prompt**.
 
    <Note>
        For best results, Unstructured strongly recommends that you limit your changes only to certain portions of the default prompt, specifically:
@@ -185,5 +184,5 @@ To generate a list of recognized entities and their relationships, in an **Enric
        - Changing any other portions of the default prompt could produce unexpected results.
    </Note>
 
-5. To experiment with different data, change the contents of **Input sample**. For best results, Unstructured strongly recommends that the JSON structure in **Input sample** be preserved.
-6. When you are satisfied with the **Model** and **Prompt** that you want to use, click **Save**.
+3. To experiment with different data, change the contents of **Input sample**. For best results, Unstructured strongly recommends that the JSON structure in **Input sample** be preserved.
+4. When you are satisfied with the **Model** and **Prompt** that you want to use, click **Save**.

@@ -1051,8 +1051,8 @@ flowchart LR
 ```
 
 <Note>
-    For workflows that use **Chunker** and **Enrichment** nodes together, the **Chunker** node should be placed after all **Enrichment** nodes. Placing the 
-    **Chunker** node before any **Enrichment** nodes could cause incomplete or no enrichment results to be generated.
+    For workflows that use **Chunker** and enrichment nodes together, the **Chunker** node should be placed after all enrichment nodes. Placing the 
+    **Chunker** node before any enrichment nodes could cause incomplete or no enrichment results to be generated.
 </Note>
 
 ### Partitioner node
@@ -1480,7 +1480,9 @@ Fields for `settings` include:
 
 ### Enrichment node
 
-An **Enrichment** node has a `type` of `prompter`. 
+An enrichment node includes a node such as **Image Description**, **Table Description**, **Table to HTML**, **NER**, or **Generative OCR**.
+
+An enrichment node has a `type` of `prompter`.
 
 [Learn about the available enrichments](/ui/enriching/overview).
 
