@@ -81,16 +81,14 @@ Any embeddings that are produced after these summaries are generated will be bas
 import EnrichmentTableSummaryHiResOnly from '/snippets/general-shared-text/enrichment-table-summary-hi-res-only.mdx';
 import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-ui.mdx';
 
-To generate table descriptions, in an **Enrichment** node in a workflow, select **Table**, and then choose one of the available provider (and model) combinations that are shown.
-
-Make sure after you choose the provider and model, that **Table Description** is also displayed. If **Table Description** and **Table to HTML** are both 
-displayed, be sure to select **Table Description**.
+To generate table descriptions, add a **Table Description** node to your workflow by clicking **+** in the workflow editor, and then click **Enrich > Table Description**. 
+Be sure also to select one of the available provider (and model) combinations that are shown.
 
 <Note>
     You can change a workflow's table description settings only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.
     
-    For workflows that use [chunking](/ui/chunking), the **Chunker** node should be placed after all **Enrichment** nodes. Placing the 
-    **Chunker** node before a table descriptions **Enrichment** node could cause incomplete or no table descriptions to be generated.
+    For workflows that use [chunking](/ui/chunking), the **Chunker** node should be placed after all enrichment nodes. Placing the 
+    **Chunker** node before a table description enrichment node could cause incomplete or no table descriptions to be generated.
 </Note>
 
 <DeprecatedModelsUI />
