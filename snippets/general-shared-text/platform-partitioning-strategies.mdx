@@ -7,10 +7,11 @@ strategies other than **Auto** for sets of documents of different types could pr
 including reduction in transformation quality.
 
 - **VLM**: For the highest-quality transformation of these file types: `.bmp`, `.gif`, `.heic`, `.jpeg`, `.jpg`, `.pdf`, `.png`, `.tiff`, and `.webp`.
-- **High Res**: For all other [supported file types](/ui/supported-file-types), and for the generation of bounding box coordinates.
+- **High Res**: For all other [supported file types](/ui/supported-file-types) except video and audio files, and for the generation of bounding box coordinates.
 - **Fast**: For text-only documents.
+- **Multimedia**: For video and audio files.
 
-The **Auto** partitioning strategy routes each file as a complete unit to the appropriate partitioning strategy (**VLM**, **High Res**, or **Fast**) 
+The **Auto** partitioning strategy routes each file as a complete unit to the appropriate partitioning strategy (**VLM**, **High Res**, **Fast**, or **Multimedia**) 
 based on the preceding file types. Additionally, for `.pdf` files, the **Auto** partitioning strategy routes these files' pages 
 on a page-by-page basis, as follows:
 
