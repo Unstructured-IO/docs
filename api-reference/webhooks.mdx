@@ -1,0 +1,164 @@
+---
+title: Webhooks
+---
+
+A _webhook_ is a way for a _sender_ (also sometimes called a _source_, _provider_, _producer_, or _sender 
+application_) to send data to a _receiver_ (also sometimes called a _destination_, _consumer_, 
+_receiver application_, or simply an _endpoint_). For Unstructured webhooks, Unstructured is the sender, 
+and your solution is the receiver. Some popular receivers include 
+[AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/urls-webhook-tutorial.html), 
+[Azure Functions](https://learn.microsoft.com/azure/azure-functions/functions-bindings-http-webhook), 
+[Google Cloud Run](https://docs.cloud.google.com/run/docs/triggering/webhooks), 
+[Zapier](https://zapier.com/blog/what-are-webhooks/), 
+[Slack](https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks/), 
+[Svix](https://svix.com), and 
+[Webhook.site](https://webhook.site/).
+
+The receiver provides a unique URL (often called the 
+_webhook URL_, _callback URL_, or _notification URL_), to receive the data from Unstructured. 
+Unstructured calls the webhook URL by using an HTTP POST operation and 
+passes a payload of data to the receiver in JSON format. The receiver then processes the payload and can decide 
+what to do with the data from there.
+
+Because webhooks are event-driven, something must first happen to trigger the webhook. In 
+Unstructured, these webhooks can be triggered whenever a [job](/api-reference/workflow/jobs) that is associated with its target [workflow](/api-reference/workflow/workflows) does 
+one or more of the following:
+
+- Is scheduled (programmatically, an event type of `job.scheduled`)
+- Begins its work (`job.in_progress`)
+- Has stopped (`job.stopped`)
+- Fails (`job.failed`)
+- Is completed (`job.completed`) 
+
+When a webhook is configured to deliver event-driven notification data payloads from a sender to a receiver, this configuration 
+is called a _notification channel_. For Unstructured webhooks, notification channels can be created and managed at the following levels:
+
+- At the account level, known as an _account-scoped notification channel_. This allows any job that is associated with any 
+  workflow in the account to trigger the webhook. This can be useful for example for routing pager requests to a team of on-call engineers in an 
+  IT operations center whenever any job fails across the organization.
+- At the workflow level, known as _workflow-scoped notification channels_. This allows any job that is associated only with 
+  the target workflow to trigger the webhook. This can be useful for example for emailing a department's data analyst that a long-running job for a specific workflow 
+  has now completed, allowing them to begin working with the latest output. 
+
+Whenever a webhook is triggered, the act of Unstructured sending the notification data payload is called a 
+_notification_. You can get a count or a list of these notifications. You can also mark them in your Unstructured account as read after 
+you have processed them according to your organization's needs. Marking a notification as read can help you keep track of 
+which notifications you have already dealt with and which ones you still need to take action on.
+
+## Requirements
+
+To create, view, and manage webhooks, Unstructured provides a set of Representational State Transfer (REST) endpoints. You can 
+call these endpoints through standard REST-enabled utilities, tools, programming languages, packages, and libraries. 
+The examples, shown later on this page, describe how to call the Unstructured API's webhook operations with 
+`curl` and Postman. You can adapt this information as needed for your preferred programming languages and libraries, 
+for example by using the `requests` library with Python.
+
+To call the Unstructured API's webhook operations, you must have an Unstructured API URL and a valid Unstructured API key.
+
+To get your Unstructured API URL, do the following:
+
+import GetStartedAPIURLOnly from '/snippets/general-shared-text/get-started-api-url-only.mdx';
+
+<GetStartedAPIURLOnly/>
+
+To get your Unstructured API key, do the following:
+
+import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-simple-api-only.mdx';
+
+<GetStartedSimpleAPIOnly/>
+
+In the following examples, the API URL and API key are represented by the following placeholders, respectively:
+
+- `UNSTRUCTURED_API_URL`
+- `UNSTRUCTURED_API_KEY`
+
+To learn how to set these placeholders as variables, see the `curl` or Postman documentation.
+
+## Create an account-scoped notification channel
+
+To create a webhook that is trigged for all corresponding events across your Unstructured account, 
+call the `POST /notifications/channels` operation.
+
+In the following examples, replace the following placeholders:
+
+- Replace `<webhook-url>` with your receiver's webhook URL.
+- Replace `<event-type>` with the programmatic name of the event that you want to trigger the webhook. To allow this 
+  webhook to be triggered in succession for multiple events, add multiple `<event-type>` entries. For the list of 
+  available event types, see this article's introductory section.
+- Replace `<description>` with some meaningful description of the webhook, for your own reference.
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'POST' --location \
+        "$UNSTRUCTURED_API_URL/notifications/channels" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header 'accept: application/json' \
+        --data \
+        '{
+           "channel_type": "webhook",
+           "url": "<webhook-url>",
+           "event_types": [
+             "<event-type>",
+             "<event-type>"
+           ],
+           "description": "<description>"
+        }'
+        ``` 
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/notifications/channels
+           ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+           - **Key**: `accept`, **Value**: `application/json`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify the settings for the notification channel:
+
+            ```json
+            {
+                "channel_type": "webhook",
+                "url": "<webhook-url>",
+                "event_types": [
+                  "<event-type>",
+                  "<event-type>"
+                ],
+                "description": "<description>"
+            }
+            ```
+
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## List account-scoped notification channels
+
+## Get an account-scoped notification channel
+
+## Update an account-scoped notification channel
+
+## Delete an account-scoped notification channel
+
+## Create a workflow-scoped notification channel
+
+## List workflow-scoped notification channels
+
+## Get a workflow-scoped notification channel
+
+## Update a workflow-scoped notification channel
+
+## Delete a workflow-scoped notification channel
+
+## List all notifications
+
+## Get a notification
+
+## Mark a notification as read
+
+## Get a count of unread notifications
