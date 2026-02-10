@@ -9,7 +9,7 @@ private endpoint's private IP address.
 Because TLS is terminated using a provider-managed certificate, clients must connect using the exact service hostname provided. 
 However, DNS resolution must direct that hostname to a private IP inside your network, as follows:
 
-1. Create or select a private DNS zone: create a private DNS zone that matches the service hostname, or use an existing private zone.
+1. Create a private DNS zone that matches the service hostname.
     
    For example, if the service hostname is `example.privatelink.unstructuredapp.io`, the private DNS zone would be 
    `privatelink.unstructuredapp.io`.
