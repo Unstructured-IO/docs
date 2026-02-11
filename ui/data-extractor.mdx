@@ -1,0 +1,777 @@
+---
+title: Structured data extraction
+---
+
+<Tip>
+    To begin using the structured data extractor right away, skip ahead to the how-to [procedures](#using-the-structured-data-extractor).
+</Tip>
+
+## Overview
+
+When Unstructured [partitions](/ui/partitioning) your source documents, the default result is a list of Unstructured 
+[document elements](/ui/document-elements). These document elements are expressed in Unstructured's format, which includes elements such as 
+`Title`, `NarrativeText`, `UncategorizedText`, `Table`, `Image`, `List`, and so on. For example, you could have 
+Unstructured ingest a stack of customer order forms in PDF format, where the PDF files' layout is identical, but the 
+content differs per individual PDF by customer order number. For each PDF, Unstructured might output elements such as 
+a `List` element that contains details about the customer who placed the order, a `Table` element 
+that contains the customer's order details, `NarrativeText` or `UncategorizedText` elements that contains special 
+instructions for the order, and so on. You might then use custom logic that you write yourself to parse those elements further in an attempt to 
+extract information that you're particularly interested in, such as customer IDs, item quantities, order totals, and so on.
+
+Unstructured's _structured data extractor_ simplifies this kind of scenario by allowing Unstructured to automatically extract the data from your source documents 
+into a format that you define up front. For example, you could have Unstructured ingest that same stack of customer order form PDFs and 
+then output a series of customer records, one record per order form. Each record could include data, with associated field labels, such as the customer's ID; a series of order line items with descriptions, quantities, and prices; 
+the order's total amount; and any other available details that matter to you. 
+This information is extracted in a consistent JSON format that is already fine-tuned for you to use in your own applications. 
+
+The following diagram provides a conceptual representation of structured data extraction, showing a flow of data from a patient information form into JSON output that is saved as a 
+JSON file in some remote cloud file storage location. From there, you could for example run your own script or similar to insert the JSON as a series of records into a database.
+
+<Frame caption="Extracting structured data from a medical form into JSON output that is saved in cloud file storage and then inserted into a database">
+  <img src="/img/ui/data-extractor/structured-data-extraction-conceptual-flow.png" alt="Conceptual flow of structured data extraction" />
+</Frame>
+
+To show how the structured data extractor works from a technical perspective, take a look at the following real estate listing PDF. This file is one of the 
+sample files that is available directly from the **Start** page and the workflow editor's **Source** node in the Unstructured use interface (UI). The file's 
+content is as follows:
+
+![Sample real estate listing PDF](/img/ui/data-extractor/real-estate-listing.png)
+
+Without the structured data extractor, if you run a workflow that references this file, Unstructured extracts the listing's data in a default format similar to the following 
+(note that the ellipses in this output indicate omitted fields for brevity):
+
+```json
+[
+  {
+    "type": "Title",
+    "element_id": "3f1ad705648037cf65e4d029d834a0de",
+    "text": "HOME FOR FUTURE",
+    "metadata": {
+      "...": "..."
+    }
+  },
+  {
+    "type": "NarrativeText",
+    "element_id": "320ca4f48e63d8bcfba56ec54c9be9af",
+    "text": "221 Queen Street, Melbourne VIC 3000",
+    "metadata": {
+      "...": "..."
+    }
+  },
+  {
+    "type": "NarrativeText",
+    "element_id": "05f648e815e73fe5140f203a62d8a3cc",
+    "text": "2,800 sq. ft living space",
+    "metadata": {
+      "...": "..."
+    }
+  },
+  {
+    "type": "NarrativeText",
+    "element_id": "27a9ded56b42f559999e48d1dcd76c9e",
+    "text": "Recently renovated kitchen",
+    "metadata": {
+      "...": "..."
+    }
+  },
+  {
+    "...": "..."
+  }
+]
+```
+
+In the preceding output, the `text` fields contain information about the listing, such as the street address, 
+the square footage, one of the listing's features, and so on. However, 
+you might want the information presented as `street_address`, `square_footage`, `features`, and so on.
+
+By using the structured data extractor in your Unstructured workflows, you could have Unstructured extract the listing's data in a custom-defined output format similar to the following (ellipses indicate omitted fields for brevity):
+
+```json
+[
+  {
+    "type": "DocumentData",
+    "element_id": "f2ee7334-c00a-4fc0-babc-2fcea28c1fb6",
+    "text": "",
+    "metadata": {
+      "...": "...",
+      "extracted_data": {
+        "street_address": "221 Queen Street, Melbourne VIC 3000",
+        "square_footage": 2800,
+        "price": 1000000,
+        "features": [
+          "Recently renovated kitchen",
+          "Smart home automation system",
+          "2-car garage with storage space",
+          "Spacious open-plan layout with natural lighting",
+          "Designer kitchen with quartz countertops and built-in appliances",
+          "Master suite with walk-in closet and en-suite bath",
+          "Covered patio and landscaped backyard garden"
+        ],
+        "agent_contact": {
+          "phone": "+01 555 123456"
+        }
+      }
+    }
+  },
+  {
+    "type": "Title",
+    "element_id": "3f1ad705648037cf65e4d029d834a0de",
+    "text": "HOME FOR FUTURE",
+    "metadata": {
+      "...": "..."
+    }
+  },
+  {
+    "...": "..."
+  }
+]
+```
+
+In the preceding output, the first document element, of type `DocumentData`, has an `extracted_data` field within `metadata` 
+that contains a representation of the document's data in the custom output format that you specify. Beginning with the second document element and continuing 
+until the end of the document, Unstructured also outputs the document's data as a series of Unstructured's document elements and metadata as it normally would.
+
+To use the structured data extractor, you can provide Unstructured with an _extraction schema_, which defines the structure of the data for Unstructured to extract. 
+Or you can specify an _extraction prompt_ that guides Unstructured on how to extract the data from the source documents, in the format that you want.
+
+An extraction prompt is like a prompt that you would give to a chatbot or AI agent. This prompt guides Unstructured on how to extract the data from the source documents. For this real estate listing example, the 
+prompt might look like the following:
+
+```text
+Extract the following information from the listing, and present it in the following format:
+
+- street_address: The full street address of the property including street number, street name, city, state, and postal code.
+- square_footage: The total living space area of the property, in square feet.
+- price: The listed selling price of the property, in local currency.
+- features: A list of property features and highlights.
+- agent_contact: Contact information for the real estate agent.
+
+  - phone: The agent's contact phone number.
+```
+
+An extraction schema is a JSON-formatted schema that defines the structure of the data that Unstructured extracts. The schema must 
+conform to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
+which are a subset of the [JSON Schema](https://json-schema.org/docs) language.
+
+For this real estate listing example, the schema might look like the following:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "property_listing": {
+      "type": "object",
+      "properties": {
+        "street_address": {
+          "type": "string",
+          "description": "The full street address of the property including street number, street name, city, state, and postal code"
+        },
+        "square_footage": {
+          "type": "integer",
+          "description": "The total living space area of the property, in square feet"
+        },
+        "price": {
+          "type": "number",
+          "description": "The listed selling price of the property, in local currency"
+        },
+        "features": {
+          "type": "array",
+          "description": "A list of property features and highlights",
+          "items": {
+            "type": "string",
+            "description": "A single property feature or highlight"
+          }
+        },
+        "agent_contact": {
+          "type": "object",
+          "description": "Contact information for the real estate agent",
+          "properties": {
+            "phone": {
+              "type": "string",
+              "description": "The agent's contact phone number"
+            }
+          },
+          "required": ["phone"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["street_address", "square_footage", "price", "features", "agent_contact"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["property_listing"],
+  "additionalProperties": false
+}
+```
+
+You can also use a visual schema builder to define the schema, like this:
+
+![Visual schema builder](/img/ui/data-extractor/schema-builder.png)
+
+## Using the structured data extractor
+
+There are two ways to use the [structured data extractor](#overview) in your Unstructured workflows:
+
+- From the **Start** page of your Unstructured account. This approach works 
+  only with a single file that is stored on your local machine. [Learn how](#use-the-structured-data-extractor-from-the-start-page).
+- From the Unstructured workflow editor. This approach works with a single file that is stored on your local machine, or with any 
+  number of files that are stored in remote locations. [Learn how](#use-the-structured-data-extractor-from-the-workflow-editor).
+
+### Use the structured data extractor from the Start page
+
+To have Unstructured [extract the data in a custom-defined format](#overview) for a single file that is stored on your local machine, do the following from the **Start** page:
+
+1. Sign in to your Unstructured account, if you are not already signed in.
+2. On the sidebar, click **Start**, if the **Start** page is not already showing.
+3. In the **Welcome, get started right away!** tile, do one of the following:
+
+   - To use a file on your local machine, click **Browse files** and then select the file, or drag and drop the file onto **Drop file to test**.
+     
+     <Note>
+         If you use a local file, the file must be 10 MB or less in size.
+     </Note>
+
+   - To use a sample file provided by Unstructured, click one of the the sample files that are shown, such as **realestate.pdf**.
+
+4. After Unstructured partitions the selected file into Unstructured's document element format, click **Update results** to 
+   have Unstructured apply generative enrichments, such as [image descriptions](/ui/enriching/image-descriptions) and 
+   [generative OCR](/ui/enriching/generative-ocr), to those document elements.
+5. In the title bar, next to **Transform**, click **Extract**.
+6. If the **Define Schema** pane, do one of the following to extract the data from the selected file by using a custom-defined format:
+
+   - To use the schema based on one that Unstructured suggests after analyzing the selected file, click **Run Schema**.
+   - To use a custom schema that conforms to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
+     click **Upload JSON**; enter your own custom schema or upload a JSON file that contains your custom schema; click **Use this Schema**; and then click **Run Schema**. 
+     [Learn about the OpenAI Structured Outputs format](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
+   - To use a visual editor to define the schema, click the ellipses (three dots) icon; click **Reset form**, enter your own custom schema objects and their properties, 
+     and then click **Run Schema**. [Learn about OpenAI Structured Outputs data types](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
+   - To use a plain language prompt to guide Unstructured on how to extract the data, click **Suggest**; enter your propmpt in the 
+     dialog; click **Generate schema**; make any changes to the suggested schema as needed; and then click **Run Schema**.
+
+7. The extracted data appears in the **Extract results** pane. You can do one of the following:
+
+   - To view a human-viewable representation of the extracted data, click **Formatted**.
+   - To view the JSON representation of the extracted data, click **JSON**.
+   - To download the JSON representation of the extracted data as a local JSON file, click the download icon next to **Formatted** and **JSON**.
+   - To change the schema and then re-run the extraction, click the back arrow next to **Extract Results**, and then skip back to step 6 in this procedure.
+
+### Use the structured data extractor from the workflow editor
+
+To have Unstructured [extract the data in a custom-defined format](#overview) for a single file that is stored on your local machine, or with any 
+number of files that are stored in remote locations, do the following from the workflow editor:
+
+1. If you already have an Unstructured workflow that you want to use, open it to show the workflow editor. Otherwise, create a new 
+   workflow as follows:
+
+   a. Sign in to your Unstructured account, if you are not already signed in.<br/>
+   b. On the sidebar, click **Workflows**.<br/>
+   c. Click **New Workflow +**.<br/>
+   d. With **Build it Myself** already selected, click **Continue**. The workflow editor appears.<br/>
+
+2. Add an **Extract** node to your existing Unstructured workflow. This node must be added right before the workflow's **Destination** node. 
+   To add this node, in the workflow designer, click the **+** (add node) button immediately before the **Destination** node, and then click **Enrich > Extract**.
+3. Click the newly added **Extract** node to select it.
+4. In the node's settings pane, on the **Details** tab, under **Provider**, select the provider for the model that you want Unstructured to use to do the extraction. Then, under **Model**, select the model.
+5. To specify the custom schema for Unstructured to use to do the extraction, do one of the following:
+
+   - To use a custom schema that conforms to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
+     click **Upload JSON**; enter your own custom schema or upload a JSON file that contains your custom schema; and then click **Use this Schema**. 
+     [Learn about the OpenAI Structured Outputs format](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
+   - To use a visual editor to define the schema, enter your own custom schema objects and their properties. To clear the current schema and start over, 
+     click the ellipses (three dots) icon, and then click **Reset form**. 
+     [Learn about OpenAI Structured Outputs data types](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
+
+6. Continue building your workflow as desired.
+7. To see the results of the structured data extractor, do one of the following:
+
+   - If you have already selected a local file as input to your workflow, click **Test** immediately above the **Source** node. The results will be displayed on-screen 
+     in the **Test output** pane.
+   - If you are using source and destination connectors for your workflow, [run the workflow as a job](/ui/jobs#run-a-job), 
+     [monitor the job](/ui/jobs#monitor-a-job), and then examine the job's results in your destination location.
+
+## Limitations
+
+The structured data extractor is not guaranteed to work with the [Pinecone destination connector](/ui/destinations/pinecone). 
+This is because Pinecone has strict limits on the amount of metadata that it can manage. These limits are 
+below the threshold of what the structured data extractor typically needs for the amount of metadata that it manages. 
+
+## Saving the extracted data separately
+
+Unstructured does not recommend that you save `DocumentData` elements as rows or entries within a traditional SQL-style destination database or vector store, for the following reasons:
+
+- Saving a mixture of `DocumentData` elements and default Unstructured elements such as `Title`, `NarrativeText`, and `Table` elements and 
+  so on in the same table, collection, or index might cause unexpected performance issues or might return less useful search and query results. 
+- The `DocumentData` elements' `extracted_data` contents can get quite large and complex, exceeding the column or field limits of some SQL-style databases or vector stores. 
+
+Instead, you should save the JSON containing the `DocumentData` elements that Unstructured outputs into a blob storage, 
+file storage, or No-SQL database destination location. You could then use the following approach to extract and save the 
+`extracted_data` contents from the JSON into a SQL-style destination database or vector store from there.
+
+To save the contents of the `extracted_data` field separately from the rest of Unstructured's JSON output, you 
+could for example use a Python script such as the following. This script works with one or more Unstructured JSON output files that you already have stored 
+on the same machine as this script. Before you run this script, do the following:
+
+- To process all Unstructured JSON files within a directory, change `None` for `input_dir` to a string that contains the path to the directory. This can be a relative or absolute path.
+- To process specific Unstructured JSON files within a directory or across multiple directories, change `None` for `input_file` to a string that contains a comma-separated list of filepaths on your local machine, for example `"./input/2507.13305v1.pdf.json,./input2/table-multi-row-column-cells.pdf.json"`. These filepaths can be relative or absolute.
+
+  <Note>
+      If `input_dir` and `input_file` are both set to something other than `None`, then the `input_dir` setting takes precedence, and the `input_file` setting is ignored.
+  </Note>
+
+- For the `output_dir` parameter, specify a string that contains the path to the directory on your local machine that you want to send the `extracted_data` JSON. If the specified directory does not exist at that location, the code will create the missing directory for you. This path can be relative or absolute.
+
+```python
+import asyncio
+import os
+import json
+
+async def process_file_and_save_result(input_filename, output_dir):
+    with open(input_filename, "r") as f:
+        input_data = json.load(f)
+
+    if input_data[0].get("type") == "DocumentData":
+        if "extracted_data" in input_data[0]["metadata"]:
+            extracted_data = input_data[0]["metadata"]["extracted_data"]
+
+            results_name = f"{os.path.basename(input_filename)}"
+            output_filename = os.path.join(output_dir, results_name)
+
+            try:
+                with open(output_filename, "w") as f:
+                    json.dump(extracted_data, f)
+                print(f"Successfully wrote 'metadata.extracted_data' to '{output_filename}'.")
+            except Exception as e:
+                print(f"Error: Failed to write 'metadata.extracted_data' to '{output_filename}'.")
+        else:
+            print(f"Error: Cannot find 'metadata.extracted_data' field in '{input_filename}'.")
+    else: 
+        print(f"Error: The first element in '{input_filename}' does not have 'type' set to 'DocumentData'.")
+        
+
+def load_filenames_in_directory(input_dir):
+    filenames = []
+    for root, _, files in os.walk(input_dir):
+        for file in files:
+            if file.endswith('.json'):
+                filenames.append(os.path.join(root, file))
+                print(f"Found JSON file '{file}'.")
+            else:
+                print(f"Error: '{file}' is not a JSON file.")
+
+    return filenames
+
+async def process_files():
+    # Initialize with either a directory name, to process everything in the dir,
+    # or a comma-separated list of filepaths.
+    input_dir   = None # "path/to/input/directory"
+    input_files = None # "path/to/file,path/to/file,path/to/file"
+
+    # Set to the directory for output json files. This dir 
+    # will be created if needed.
+    output_dir = "./extracted_data/"
+
+    if input_dir:
+        filenames = load_filenames_in_directory(input_dir)
+    else:
+        filenames = input_files.split(",")
+
+    os.makedirs(output_dir, exist_ok=True)
+
+    tasks = []
+    for filename in filenames:
+        tasks.append(
+            process_file_and_save_result(filename, output_dir)
+        )
+
+    await asyncio.gather(*tasks)
+
+if __name__ == "__main__":
+    asyncio.run(process_files())
+```
+
+## Additional examples
+
+In addition to the preceding real estate listing example, here are some more examples that you can adapt for your own use.
+
+### Caring for houseplants
+
+Using the following image file ([download this file](https://raw.githubusercontent.com/Unstructured-IO/docs/main/img/ui/data-extractor/house-plant-care.png)):
+
+![Caring for houseplants](/img/ui/data-extractor/house-plant-care.png)
+
+An extraction schema for this file might look like the following:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "plants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the plant"
+          },
+          "sunlight": {
+            "type": "string",
+            "description": "The sunlight requirements for the plant (for example: 'Direct', 'Bright Indirect - Some direct')."
+          },
+          "water": {
+            "type": "string",
+            "description": "The watering instructions for the plant (for example: 'Let dry between thorough watering', 'Water when 50-60% dry')."
+          },
+          "humidity": {
+            "type": "string",
+            "description": "The humidity requirements for the plant (for example:'Low', 'Medium', 'High')"
+          }
+        },
+        "required": ["name", "sunlight", "water", "humidity"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["plants"],
+  "additionalProperties": false
+}
+```
+
+An extraction guidance prompt for this file might look like the following:
+
+<Note>
+    Providing an extraction guidance prompt is available only from the **Start** page. 
+    The workflow editor does not offer an extraction guidance prompt&mdash;you must provide an 
+    extraction schema instead.
+</Note>
+
+```text
+Extract the plant information for each of the plants in this document, and present it in the following format:
+
+- plants: A list of plants.
+
+  - name: The name of the plant.
+  - sunlight: The sunlight requirements for the plant (for example: 'Direct', 'Bright Indirect - Some direct').
+  - water: The watering instructions for the plant (for example: 'Let dry between thorough watering', 'Water when 50-60% dry').
+  - humidity: The humidity requirements for the plant (for example: 'Low', 'Medium', 'High').
+```
+
+And Unstructured's output would look like the following:
+
+```json
+[
+  {
+    "type": "DocumentData",
+    "element_id": "3be179f1-e1e5-4dde-a66b-9c370b6d23e8",
+    "text": "",
+    "metadata": {
+      "...": "...",
+      "extracted_data": {
+        "plants": [
+          {
+            "name": "Krimson Queen",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Let dry between thorough watering",
+            "humidity": "Low"
+          },
+          {
+            "name": "Chinese Money Plant",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Let dry between thorough watering",
+            "humidity": "Low - Medium"
+          },
+          {
+            "name": "String of Hearts",
+            "sunlight": "Direct - Bright Indirect",
+            "water": "Let dry between thorough watering",
+            "humidity": "Low"
+          },
+          {
+            "name": "Marble Queen",
+            "sunlight": "Low- High Indirect",
+            "water": "Water when 50 - 80% dry",
+            "humidity": "Low - Medium"
+          },
+          {
+            "name": "Sansevieria Whitney",
+            "sunlight": "Direct - Low Direct",
+            "water": "Let dry between thorough watering",
+            "humidity": "Low"
+          },
+          {
+            "name": "Prayer Plant",
+            "sunlight": "Medium - Bright Indirect",
+            "water": "Keep soil moist",
+            "humidity": "Medium - High"
+          },
+          {
+            "name": "Aloe Vera",
+            "sunlight": "Direct - Bright Indirect",
+            "water": "Water when dry",
+            "humidity": "Low"
+          },
+          {
+            "name": "Philodendron Brasil",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Water when 80% dry",
+            "humidity": "Low - Medium"
+          },
+          {
+            "name": "Pink Princess",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Water when 50 - 80% dry",
+            "humidity": "Medium"
+          },
+          {
+            "name": "Stromanthe Triostar",
+            "sunlight": "Bright Indirect",
+            "water": "Keep soil moist",
+            "humidity": "Medium - High"
+          },
+          {
+            "name": "Rubber Plant",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Let dry between thorough watering",
+            "humidity": "Low - Medium"
+          },
+          {
+            "name": "Monstera Deliciosa",
+            "sunlight": "Bright Indirect - Some direct",
+            "water": "Water when 80% dry",
+            "humidity": "Low - Medium"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "...": "..."
+  }
+]
+```
+
+### Medical invoicing
+
+Using the following PDF file ([download this file](https://raw.githubusercontent.com/Unstructured-IO/docs/main/img/ui/data-extractor/spinalogic-bone-growth-stimulator-form.pdf)):
+
+![Medical invoice](/img/ui/data-extractor/medical-invoice.png)
+
+An extraction schema for this file might look like the following:
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "patient": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Full name of the patient."
+        },
+        "birth_date": {
+          "type": "string",
+          "description": "Patient's date of birth."
+        },
+        "sex": {
+          "type": "string",
+          "enum": ["M", "F", "Other"],
+          "description": "Patient's biological sex."
+        }
+      },
+      "required": ["name", "birth_date", "sex"],
+      "additionalProperties": false
+    },
+    "medical_summary": {
+      "type": "object",
+      "properties": {
+        "prior_procedures": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "procedure": {
+                "type": "string",
+                "description": "Name or type of the medical procedure."
+              },
+              "date": {
+                "type": "string",
+                "description": "Date when the procedure was performed."
+              },
+              "levels": {
+                "type": "string",
+                "description": "Anatomical levels or location of the procedure."
+              }
+            },
+            "required": ["procedure", "date", "levels"],
+            "additionalProperties": false
+          },
+          "description": "List of prior medical procedures."
+        },
+        "diagnoses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of medical diagnoses."
+        },
+        "comorbidities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of comorbid conditions."
+        }
+      },
+      "required": ["prior_procedures", "diagnoses", "comorbidities"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["patient", "medical_summary"],
+  "additionalProperties": false
+}
+```
+
+An extraction guidance prompt for this file might look like the following:
+
+<Note>
+    Providing an extraction guidance prompt is available only from the **Start** page. 
+    The workflow editor does not offer an extraction guidance prompt&mdash;you must provide an 
+    extraction schema instead.
+</Note>
+
+```text
+Extract the medical information from this record, and present it in the following format:
+
+- patient
+
+  - name: Full name of the patient.
+  - birth_date: Patient's date of birth.
+  - sex: Patient's biological sex.
+
+- medical_summary
+
+  - prior_procedures
+
+    - procedure: Name or type of the medical procedure.
+    - date: Date when the procedure was performed.
+    - levels: Anatomical levels or location of the procedure.
+
+  - diagnoses: List of medical diagnoses.
+  - comorbidities: List of comorbid conditions.
+
+Additional extraction guidance:
+
+- name: Extract the full legal name as it appears in the document. Use proper capitalization (for example: "Marissa K. Donovan").
+- birth_date: Convert to format "MM/DD/YYYY" (for example: "03/28/1976"),
+
+  - Accept variations: MM/DD/YYYY, MM-DD-YYYY, YYYY-MM-DD, Month DD, YYYY,
+  - If only age is given, do not infer birth date - mark as null,
+
+- sex: Extract biological sex as single letter: "M" (Male), "F" (Female), or "X" (Other)
+
+  - Map variations: Male/Man → "M", Female/Woman → "F", Others → "X"
+
+- prior_procedures:
+
+  Extract all surgical and major medical procedures, including:
+
+  - procedure: Use standard medical terminology when possible.
+  - date: Format as "MM/DD/YYYY". If only year/month available, use "01" for missing day.
+  - levels: Include anatomical locations, vertebral levels, or affected areas.
+
+    - For spine procedures: Use format like "L4 to L5" or "L4-L5".
+    - Include laterality when specified (left, right, bilateral).
+
+  - diagnoses:
+
+    Extract all current and historical diagnoses:
+
+    - Include both primary and secondary diagnoses.
+    - Preserve medical terminology and ICD-10 descriptions if provided.
+    - Include location/region specifications (for example: "radiculopathy — lumbar region").
+    - Do not include procedure names unless they represent a diagnostic condition.
+
+  - comorbidities
+
+    Extract all coexisting medical conditions that may impact treatment:
+
+    - Include chronic conditions (for example: "diabetes", "hypertension").
+    - Include relevant surgical history that affects current state (for example: Failed Fusion, Multi-Level Fusion).
+    - Include structural abnormalities (for example: Spondylolisthesis, Stenosis).
+    - Do not duplicate items already listed in primary diagnoses.
+
+Data quality rules:
+
+1. Completeness: Only include fields where data is explicitly stated or clearly indicated.
+2. No inference: Do not infer or assume information not present in the source.
+3. Preserve specificity: Maintain medical terminology and specificity from source.
+4. Handle missing data: Return empty arrays [] for sections with no data, never null.
+5. Date validation: Ensure all dates are realistic and properly formatted.
+6. Deduplication: Avoid listing the same condition in multiple sections.
+
+Common variations to handle:
+
+- Operative reports: Focus on procedure details, dates, and levels.
+- H&P (history & physical): Rich source for all sections.
+- Progress notes: May contain updates to diagnoses and new procedures.
+- Discharge summaries: Comprehensive source for all data points.
+- Consultation notes: Often contain detailed comorbidity lists.
+- Spinal levels: C1-C7 (Cervical), T1-T12 (Thoracic), L1-L5 (Lumbar), S1-S5 (Sacral).
+- Use "fusion surgery" not "fusion" alone when referring to procedures.
+- Preserve specificity: "Type 2 Diabetes" not just "Diabetes" when specified.
+- Multiple procedures same date**: List as separate objects in the array.
+- Revised procedures: Include both original and revision as separate entries.
+- Bilateral procedures: Note as single procedure with "bilateral" in levels.
+- Uncertain dates: If date is approximate (for example, "Spring 2023"), use "01/04/2023" for Spring, "01/07/2023" for Summer, and so on.
+- Name variations: Use the most complete version found in the document.
+- Conflicting information**: Use the most recent or most authoritative source.
+
+Output validation:
+
+Before returning the extraction:
+
+1. Verify all required fields are present.
+2. Check date formats are consistent.
+3. Ensure no duplicate entries within arrays.
+4. Confirm sex field contains only "M", "F", or "Other".
+5. Validate that procedures have all three required fields.
+6. Ensure diagnoses and comorbidities are non-overlapping.
+```
+
+And Unstructured's output would look like the following:
+
+```json
+[
+  {
+    "type": "DocumentData",
+    "element_id": "e8f09cb1-1439-4e89-af18-b6285aef5d37",
+    "text": "",
+    "metadata": {
+      "...": "...",
+      "extracted_data": {
+        "patient": {
+          "name": "Ms. Daovan",
+          "birth_date": "01/01/1974",
+          "sex": "F"
+        },
+        "medical_summary": {
+          "prior_procedures": [],
+          "diagnoses": [
+            "Radiculopathy — lumbar region"
+          ],
+          "comorbidities": [
+            "Diabetes",
+            "Multi-Level Fusion",
+            "Failed Fusion",
+            "Spondylolisthesis"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "...": "..."
+  }
+]
+```

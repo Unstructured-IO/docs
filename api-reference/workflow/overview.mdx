@@ -241,7 +241,7 @@ Unstructured offers a [Postman collection](https://learning.postman.com/docs/col
    <OnDemandJobsLimits />
 
 5. On the sidebar, click **Collections**.
-6. Expand **Unstructured REST API - Workflow Endpoint**.
+6. Expand **Unstructured REST API - Workflow Operations**.
 7. Select the request that you want to use.
 8. As applicable, modify the URL as needed to specify any required resource IDs for the request.
 9. On the **Headers** tab, next to `unstructured-api-key`, enter your Unstructured API key in the **Value** column. 
@@ -278,12 +278,12 @@ Skip ahead to start learning about how to use the REST endpoints to work with
 The following Unstructured SDKs, tools, and libraries do _not_ work with the Unstructured API's workflow operations:
 
 - The [Unstructured JavaScript/TypeScript SDK](/api-reference/legacy-api/partition/sdk-jsts)
-- [Local single-file POST requests](/api-reference/legacy-api/partition/sdk-jsts) to the Unstructured Partition Endpoint
+- [Local single-file POST requests](/api-reference/legacy-api/partition/sdk-jsts) to the legacy Unstructured Partition Endpoint
 - The [Unstructured open source Python library](/open-source/introduction/overview)
 - The [Unstructured Ingest CLI](/open-source/ingestion/ingest-cli)
 - The [Unstructured Ingest Python library](/open-source/ingestion/python-ingest)
 
-The following Unstructured API URL is also _not_ supported: `https://api.unstructuredapp.io/general/v0/general` (the default Unstructured Partition Endpoint URL).
+The following Unstructured API URL is also _not_ supported: `https://api.unstructuredapp.io/general/v0/general` (the default legacy Unstructured Partition Endpoint URL).
 
 ## Connectors
 
@@ -1726,9 +1726,9 @@ To create a workflow, use the `UnstructuredClient` object's `workflows.create_wo
 the `POST` method to call the `/workflows` endpoint (for `curl` or Postman).
 
 <Note>
-    The following instructions create a workflow that exists until it is explicitly deleted. 
+    The following instructions create a workflow that exists until it is explicitly deleted (also known as a _long-lived workflow_). 
     To create a workflow that exists only for the duration of 
-    that workflow's job run, and that job run's temporary workflow takes one or more local files only as input, see [Run an on-demand job](#run-an-on-demand-job).
+    that workflow's associated job run, and that job run's temporary workflow takes one or more local files only as input, see [Run an on-demand job](#run-an-on-demand-job).
 </Note>
 
 In the `CreateWorkflow` object (for the Python SDK) or 
@@ -1878,8 +1878,8 @@ the `POST` method to call the `/workflows/<workflow-id>/run` endpoint (for `curl
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
 
 <Note>
-    The following instructions run a workflow that was already created at some point in the past and still exists. 
-    To run a workflow that exists only for the duration of a single job run, and the job's temporary workflow 
+    The following instructions run a workflow that was already created at some point in the past and still exists (also known as 
+    a _long-lived workflow_). To run a workflow that exists only for the duration of a single job run, and the job's temporary workflow 
     takes one or more local files only as input (known as an _on-demand job_), see [Run an on-demand job](#run-an-on-demand-job).
 </Note>
 
@@ -2089,6 +2089,12 @@ To update information about a workflow, use the `UnstructuredClient` object's `w
 the `PUT` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman), replacing 
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
 
+<Note>
+    The following instructions can be used only to update a long-lived workflow (a workflow that exists until it is explicitly deleted). 
+    A workflow that exists only for the duration of a running [on-demand job](#run-an-on-demand-job) 
+    cannot be updated.
+</Note>
+
 In `UpdateWorkflow` object (for the Python SDK) or 
 the request body (for `curl` or Postman), specify the settings for the workflow. For the specific settings to include, see 
 [Update a workflow](/api-reference/workflow/workflows#update-a-workflow).
@@ -2236,6 +2242,12 @@ To delete a workflow, use the `UnstructuredClient` object's `workflows.delete_wo
 the `DELETE` method to call the `/workflows/<workflow-id>` endpoint (for `curl` or Postman), replacing 
 `<workflow-id>` with the workflow's unique ID. To get this ID, see [List workflows](#list-workflows).
 
+<Note>
+    The following instructions can be used only to delete a long-lived workflow (a workflow that exists until it is explicitly deleted). 
+    A workflow that exists only for the duration of a running [on-demand job](/api-reference/workflow/overview#run-an-on-demand-job) 
+    is automatically deleted after the job run completes.
+</Note>
+
 <AccordionGroup>
     <Accordion title="Python SDK">
         ```python
@@ -2320,10 +2332,27 @@ For general information, see [Jobs](/ui/jobs).
 ### Run an on-demand job
 
 To run a job whose workflow takes one or more local files only as input, and the job's temporary workflow exists only for the duration of 
-that job's run (known as an _on-demand job_), use the `UnstructuredClient` object's `jobs.create_job` function (for the Python SDK) or the `POST` method to call the `/jobs/` endpoint (for `curl` or Postman).
+the corresponding job's run (known as an _on-demand job_), use the `UnstructuredClient` object's `jobs.create_job` function (for the Python SDK) or the `POST` method to call the `/jobs/` endpoint (for `curl` or Postman).
 
 <Note>
-    To run a workflow that was already created at some point in the past and still exists, see [Run a workflow](#run-a-workflow).
+    To run a workflow that was already created at some point in the past and still exists (also known as a 
+    _long-lived workflow_), see [Run a workflow](#run-a-workflow) instead.
+
+    To run a workflow that takes files and data from remote locations as input (instead of local files), do the following instead:
+    
+    1. [Create a source connector](#create-a-source-connector) to the remote source locations.
+    2. [Create a destination connector](#create-a-destination-connector) to the remote destination location.
+    3. [Create a long-lived workflow](#create-a-workflow) that uses this specific source connector and destination connector.
+    4. [Run this long-lived workflow](#run-a-workflow) manually, if you have not already created the workflow to run on a schedule.
+</Note>
+
+<Note>
+    If you're new to the Unstructured API, read this note first.
+
+    Before you can run an on-demand job, you must first do the following:
+    
+    - If you want to use Python, [install and set up the Unstructured Python SDK](/api-reference/workflow/overview#unstructured-python-sdk).
+    - If you want to use a REST client such as `curl` or Postman, [set up to use the Unstructured REST endpoints](/api-reference/workflow/overview#rest-endpoints).
 </Note>
 
 <AccordionGroup>

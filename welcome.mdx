@@ -7,7 +7,22 @@ sidebarTitle: Welcome!
 
 ## What is Unstructured?
 
-Unstructured provides a platform and tools to ingest and process unstructured documents for [retrieval-augmented generation (RAG)](https://unstructured.io/blog/rag-whitepaper) and [agentic AI](https://unstructured.io/problems-we-solve#powering-agentic-ai).
+<Frame caption="Unstructured turns your organization's unstructured documents into structured, AI-ready data at scale with high performance, accuracy, and relevance">
+  <img src="/img/welcome/conceptual-flow.png" alt="Unstructured conceptual data flow" />
+</Frame>
+
+Unstructured provides a platform and tools to ingest and process your unstructured documents for:
+
+- [Enhancing retrieval-augmented generation (RAG)](https://unstructured.io/blog/rag-whitepaper): RAG boosts AI accuracy and relevance by working with the data that's most important to you, providing results that are more current, focused, and meaningful to your queries and tasks.
+- [Fueling agentic AI](https://unstructured.io/problems-we-solve#powering-agentic-ai): Agentic AI acts like virtual teammates that can plan, decide, and take action on their own to get things done on your behalf, freeing you up for bigger challenges.
+
+We empower your organization to take full advantage of RAG and agentic AI opportunities through:
+
+- [Rapid prototyping](https://unstructured.io/problems-we-solve#rapid-prototyping): Quickly iterating on AI experiences powered by enterprise data.
+- [Replacing do-it-yourself data transformation pipelines](https://unstructured.io/problems-we-solve#replacing-diy-pipelines): Building your own data transformation pipelines is time-consuming and error-prone.
+- [Unifying data silos](https://unstructured.io/problems-we-solve#unifying-data-silos): Eliminating data barriers and creating shared GenAI data layers.
+- [Continuous data delivery](https://unstructured.io/problems-we-solve#continuous-data-delivery): Scheduling jobs, routing documents, and optimizing every task.
+- [Business process automation](https://unstructured.io/problems-we-solve#business-process-automation): Report generation, automatic responses, decision-making, content analysis, and more!
 
 This 60-second video describes more about what Unstructured does and its benefits (no sound):
 
@@ -47,6 +62,14 @@ This 60-second video shows why using Unstructured is preferable to building your
 
 You can use Unstructured through a user interface (UI), an API, or both. Read on to learn more.
 
+<Frame caption="An example of the Unstructured user interface, showing a local file being partitioned">
+  <img src="/img/welcome/user-interface.png" alt="Unstructured user interface example" />
+</Frame>
+
+<Frame caption="An example of the Unstructured API, showing the code to process a local file on demand">
+  <img src="/img/welcome/api.png" alt="Unstructured API example" />
+</Frame>
+
 ---
 
 ## <Icon icon="desktop" />    Unstructured UI quickstart
@@ -72,14 +95,30 @@ transformation results for files that are stored locally.
 
 1. If you do not already have an Unstructured account, [sign up for free](https://unstructured.io/?modal=try-for-free). 
    After you sign up, you are automatically signed in to your Unstructured **Let's Go** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+
+   <Note>
+       If you already have an Unstructured **Pay-As-You-Go** or **Business SaaS** account, you are already signed up for Unstructured. 
+       Sign in to your existing Unstructured **Pay-As-You-Go** or **Business SaaS** account, at [https://platform.unstructured.io](https://platform.unstructured.io).
+   
+       If you already have an Unstructured **dedicated instance** or **in-VPC** deployment, your sign-in link will be unique to your deployment. 
+       If you're not sure what your unique sign-in link is, see your Unstructured account administrator, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+   </Note>
+
 2. Get your Unstructured API key:
 
-   a. After you sign in to your Unstructured **Let's Go** account, click **API Keys** on the sidebar.<br/>
+   a. After you sign in to your Unstructured account, click **API Keys** on the sidebar.<br/>
+
+      <Note>
+          For a **Business** account, before you click **API Keys**, make sure you have selected the organizational workspace you want to create an API key 
+          for. Each API key works with one and only one organizational workspace. [Learn more](/ui/account/workspaces#create-an-api-key-for-a-workspace).
+      </Note>
+
    b. Click **Generate API Key**.<br/>
    c. Follow the on-screen instructions to finish generating the key.<br/>
    d. Click the **Copy** icon next to your new key to add the key to your system's clipboard. If you lose this key, simply return and click the **Copy** icon again.<br/>
 
-2. Now that you have your Unstructured API key, choose one of the following options to continue:
+3. Now that you have your Unstructured API key, choose one of the following options to continue:
 
    - [Use a remote notebook](https://colab.research.google.com/github/Unstructured-IO/notebooks/blob/main/notebooks/Unstructured_API_On_Demand_Jobs_Quickstart.ipynb) - This option uses a remotely hosted Google Colab notebook. There are no additional setup steps required.
    - [Use your local machine](/api-reference/quickstart) - This option requires you to install the Unstructured Python SDK on your local machine.

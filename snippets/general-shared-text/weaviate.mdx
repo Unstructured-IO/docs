@@ -39,7 +39,7 @@
       You must change your Unstructured embedding settings or your existing collection's embedding settings to match, and try the run again. 
     - If a collection name is not specified, Unstructured creates a new collection in your Weaviate cluster. The new collection's name will be `Unstructuredautocreated`.
 
-    If Unstructured creates a new collection and generates embeddings, you will not see an embeddings property in tools such as the Weaviate Cloud 
+    If Unstructured creates a new collection and generates embeddings, you will not see an `embeddings` property in tools such as the Weaviate Cloud 
     **Collections** user interface. To view the generated embeddings, you can run a Weaviate GraphQL query such as the following. In this query, replace `<collection-name>` with 
     the name of the new collection, and replace `<property-name>` with the name of each additional available property that 
     you want to return results for, such as `text`, `type`, `element_id`, `record_id`, and so on. The embeddings will be 
@@ -59,81 +59,194 @@
     }
     ```
 
-Weaviate requires an existing collection to have a data schema before you add data. At minimum, this schema must contain the `record_id` property, as follows:
+If [auto-schema](https://docs.weaviate.io/weaviate/config-refs/collections#auto-schema) is enabled in Weaviate (which it is by default), 
+Weaviate can infer missing properties and add them to the collection definition at run time. However, it is a Weaviate best practice to manually define as much 
+of the data schema in advance as possible, since manual definition gives you the most control.
+
+The minimum viable schema for Unstructured includes only the `element_id` and `record_id` properties. The `text` and `type` properties should also be included, but they are technically optional. 
+If you are using Unstructured to generate embeddings, you must 
+
+The following code example shows how to use the [weaviate-client](https://pypi.org/project/weaviate-client/) Python package to create a 
+collection in a Weaviate Cloud database cluster with this minimum viable schema, and to specify that Unstructured will generate the embeddings for this collection. 
+To connect to a locally hosted Weaviate instance instead, call [weaviate.connect_to_local](https://docs.weaviate.io/weaviate/connections/connect-local). 
+To connect to Embedded Weaviate instead, call [weaviate.connect_to_embedded](https://docs.weaviate.io/weaviate/connections/connect-embedded). 
+
+```python
+import os
+import weaviate
+from weaviate.classes.init import Auth
+import weaviate.classes.config as wvc
+
+client = weaviate.connect_to_weaviate_cloud(
+    cluster_url=os.getenv("WEAVIATE_URL"),
+    auth_credentials=Auth.api_key(api_key=os.getenv("WEAVIATE_API_KEY")),
+)
+
+collection = client.collections.create(
+    name="MyCollection",
+    properties=[
+        wvc.Property(name="element_id", data_type=wvc.DataType.UUID),
+        wvc.Property(name="record_id", data_type=wvc.DataType.TEXT),
+        wvc.Property(name="text", data_type=wvc.DataType.TEXT),
+        wvc.Property(name="type", data_type=wvc.DataType.TEXT),
+    ],
+    vectorizer_config=None, # Unstructured will generate the embeddings instead of Weaviate.
+)
+
+client.close()
+```
+
+For objects in the `metadata` field that Unstructured produces and that you want to store in a Weaviate collection, be sure to follow 
+Unstructured's `metadata` field naming convention. For example, if Unstructured produces a `metadata` field with the following 
+child objects:
 
 ```json
-{
-    "class": "Elements",
-    "properties": [
-        {
-            "name": "record_id",
-            "dataType": ["text"]
-        }
+"metadata": {
+  "is_extracted": "true",
+  "coordinates": {
+    "points": [
+      [
+        134.20055555555555,
+        241.36027777777795
+      ],
+      [
+        134.20055555555555,
+        420.0269444444447
+      ],
+      [
+        529.7005555555555,
+        420.0269444444447
+      ],
+      [
+        529.7005555555555,
+        241.36027777777795
+      ]
+    ],
+    "system": "PixelSpace",
+    "layout_width": 1654,
+    "layout_height": 2339
+  },
+  "filetype": "application/pdf",
+  "languages": [
+    "eng"
+  ],
+  "page_number": 1,
+  "image_mime_type": "image/jpeg",
+  "filename": "realestate.pdf",
+  "data_source": {
+    "url": "file:///home/etl/node/downloads/00000000-0000-0000-0000-000000000001/7458635f-realestate.pdf",
+    "record_locator": {
+      "protocol": "file",
+      "remote_file_path": "file:///home/etl/node/downloads/00000000-0000-0000-0000-000000000001/7458635f-realestate.pdf"
+    }
+  },
+  "entities": {
+    "items": [
+      {
+        "entity": "HOME FOR FUTURE",
+        "type": "ORGANIZATION"
+      },
+      {
+        "entity": "221 Queen Street, Melbourne VIC 3000",
+        "type": "LOCATION"
+      }
+    ],
+    "relationships": [
+      {
+        "from": "HOME FOR FUTURE",
+        "relationship": "based_in",
+        "to": "221 Queen Street, Melbourne VIC 3000"
+      }
     ]
+  }
 }
 ```
 
-Weaviate generates any additional properties based on the incoming data.
+You could create corresponding properties in your collection's schema by using the following property names and data types:
 
-If you have specific schema requirements, you can define the schema manually. 
-Unstructured cannot provide a schema that is guaranteed to work for everyone in all circumstances. 
-This is because these schemas will vary based on 
-your source files' types; how you want Unstructured to partition, chunk, and generate embeddings; 
-any custom post-processing code that you run; and other factors.
+```python
+import os
+import weaviate
+from weaviate.classes.init import Auth
+import weaviate.classes.config as wvc
 
-You can adapt the following collection schema example for your own specific schema requirements:
+client = weaviate.connect_to_weaviate_cloud(
+    cluster_url=os.getenv("WEAVIATE_URL"),
+    auth_credentials=Auth.api_key(api_key=os.getenv("WEAVIATE_API_KEY")),
+)
 
-```json
-{
-    "class": "Elements",
-    "properties": [
-        {
-            "name": "record_id",
-            "dataType": ["text"]
-        },
-        {
-            "name": "element_id",
-            "dataType": ["text"]
-        },
-        {
-            "name": "text",
-            "dataType": ["text"]
-        },
-        {
-            "name": "embeddings",
-            "dataType": ["number[]"]
-        },
-        {
-            "name": "metadata",
-            "dataType": ["object"],
-            "nestedProperties": [
-                {
-                    "name": "parent_id",
-                    "dataType": ["text"]
-                },
-                {
-                    "name": "page_number",
-                    "dataType": ["text"]
-                },
-                {
-                    "name": "is_continuation",
-                    "dataType": ["boolean"]
-                },
-                {
-                    "name": "orig_elements",
-                    "dataType": ["text"]
-                },
-                {
-                    "name": "partitioner_type",
-                    "dataType": ["text"]
-                }
-            ]
-        }
-    ]
-}
+collection = client.collections.create(
+    name="MyCollection",
+    properties=[
+        wvc.Property(name="element_id", data_type=wvc.DataType.UUID),
+        wvc.Property(name="record_id", data_type=wvc.DataType.TEXT),
+        wvc.Property(name="text", data_type=wvc.DataType.TEXT),
+        wvc.Property(name="type", data_type=wvc.DataType.TEXT),
+        wvc.Property(
+            name="metadata",
+            data_type=wvc.DataType.OBJECT,
+            nested_properties=[
+                wvc.Property(name="is_extracted", data_type=wvc.DataType.TEXT),
+                wvc.Property(
+                    name="coordinates",
+                    data_type=wvc.DataType.OBJECT,
+                    nested_properties=[
+                        wvc.Property(name="points", data_type=wvc.DataType.TEXT),
+                        wvc.Property(name="system", data_type=wvc.DataType.TEXT),
+                        wvc.Property(name="layout_width", data_type=wvc.DataType.NUMBER),
+                        wvc.Property(name="layout_height", data_type=wvc.DataType.NUMBER),
+                    ],
+                ),
+                wvc.Property(name="filetype", data_type=wvc.DataType.TEXT),
+                wvc.Property(name="languages", data_type=wvc.DataType.TEXT_ARRAY),
+                wvc.Property(name="page_number", data_type=wvc.DataType.TEXT),
+                wvc.Property(name="image_mime_type", data_type=wvc.DataType.TEXT),
+                wvc.Property(name="filename", data_type=wvc.DataType.TEXT),
+                wvc.Property(
+                    name="data_source",
+                    data_type=wvc.DataType.OBJECT,
+                    nested_properties=[
+                        wvc.Property(name="url", data_type=wvc.DataType.TEXT),
+                        wvc.Property(name="record_locator", data_type=wvc.DataType.TEXT),
+                    ],
+                ),
+                wvc.Property(
+                    name="entities", 
+                    data_type=wvc.DataType.OBJECT,
+                    nested_properties=[
+                        wvc.Property(
+                            name="items", 
+                            data_type=wvc.DataType.OBJECT_ARRAY,
+                            nested_properties=[
+                                wvc.Property(name="entity", data_type=wvc.DataType.TEXT),
+                                wvc.Property(name="type", data_type=wvc.DataType.TEXT),
+                            ],
+                        ),
+                        wvc.Property(
+                            name="relationships", 
+                            data_type=wvc.DataType.OBJECT_ARRAY,
+                            nested_properties=[
+                                wvc.Property(name="to", data_type=wvc.DataType.TEXT),
+                                wvc.Property(name="from", data_type=wvc.DataType.TEXT),
+                                wvc.Property(name="relationship", data_type=wvc.DataType.TEXT),
+                            ],
+                        ),
+                    ],
+                ),
+            ],
+        ),
+    ],
+    vectorizer_config=None, # Unstructured will generate the embeddings instead of Weaviate.
+)
+
+client.close()
 ```
 
-See also :
+Unstructured cannot provide a schema that is guaranteed to work in all 
+circumstances. This is because these schemas will vary based on your source files' types; how you 
+want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors. 
+
+See also:
 
 - [Collection schema](https://weaviate.io/developers/weaviate/config-refs/schema)
 - [Unstructured document elements and metadata](/api-reference/legacy-api/partition/document-elements)

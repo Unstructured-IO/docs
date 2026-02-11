@@ -4,7 +4,7 @@ sidebarTitle: Walkthrough
 ---
 
 This walkthrough provides you with deep, hands-on experience with the [Unstructured user interface (UI)](/ui/overview). As you follow along, you will learn how to use many of Unstructured's 
-features for [partitioning](/ui/partitioning), [enriching](/ui/enriching/overview), [chunking](/ui/chunking), and [embedding](/ui/embedding). These features are optimized for turning 
+features for [partitioning](/ui/partitioning), [enriching](/ui/enriching/overview), [chunking](/ui/chunking), [embedding](/ui/embedding), and [structured data extraction](/ui/data-extractor). These features are optimized for turning 
 your source documents and data into information that is well-tuned for 
 [retrieval-augmented generation (RAG)](https://unstructured.io/blog/rag-whitepaper), 
 [agentic AI](https://unstructured.io/problems-we-solve#powering-agentic-ai), 
@@ -117,7 +117,7 @@ Let's get going!
        _What are all the parts of the workflow designer?_
 
        The middle portion of the workflow designer is the workflow _directed acyclic graph_ (DAG), which contains a 
-       a collection of _nodes_ connected by _edges_ that go in only one direction. You can think of the DAG similar to a flowchart 
+       collection of _nodes_ connected by _edges_ that go in only one direction. You can think of the DAG similar to a flowchart 
        for a process. _Directed_ means the arrows show the flow from one step to the next, and _acyclic_ means you cannot 
        follow the arrows backward to get back to the starting point.
 
@@ -127,7 +127,7 @@ Let's get going!
        - **Schedule** allows you to set up a schedule for this workflow to run automatically (on a regular time schedule).
        - **Settings** allows you to specify whether every time this workflow runs, that Unstructured's results will overwrite any previous results in the destination location. 
          To turn on this behavior, check the **Overwrite existing results** box. To turn it off, uncheck the box. Note that this setting works only 
-         for blog storage destination connectors such as the ones for Amazon S3, Azure Blob Storage, and Google Cloud Storage.
+         for blob storage destination connectors such as the ones for Amazon S3, Azure Blob Storage, and Google Cloud Storage.
        - **FAQ** contains additional information about how to use the workflow designer.
 
        If the workflow settings pane is not visible, click the **Settings** button near the bottom to show it.
@@ -164,6 +164,15 @@ shows how well Unstructured's **VLM** partitioning strategy handles challenging 
 
    ![Selecting the VLM for partitioning](/img/ui/walkthrough/VLMPartitioner.png)
 
+   <Note>
+       The list of available models shown is constantly being updated. Your list might also differ from the preceding screenshot, depending on your Unstructured 
+       account type. If **Gemini 2.0 Flash** is not available, choose another available model from the list.
+
+       If you have an Unstructured **Business** account and want to add more models to this list, contact your 
+       Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+   </Note>
+
    <Tip>
       _When I choose **VLM**, when would I choose one of these models over another?_
 
@@ -171,7 +180,7 @@ shows how well Unstructured's **VLM** partitioning strategy handles challenging 
       contextually-rich output.
       
       As VLMs are constantly being released and improved, Unstructured is always adding to and updating its list of supported VLMs. 
-      If you aren't getting consistent results with one VLM for a particular set of files, switching over to another one might improve your results, depending on that VLM's capabilities and the sample data that is was trained on. 
+      If you aren't getting consistent results with one VLM for a particular set of files, switching over to another one might improve your results, depending on that VLM's capabilities and the sample data that it was trained on. 
    </Tip>
 
 5. Click **Test**.<br/>
@@ -239,57 +248,60 @@ In this step, you add several [enrichments](/ui/enriching/overview) to your work
 HTML representations of detected tables, and detected entities (such as people and organizations) and the inferred relationships among these entities. 
 
 1. With the workflow designer active from the previous step, change the **Partitioner** node to use **High Res**.
-2. Between the **Partitioner** and **Destination** nodes, click the add (**+**) icon, and then click **Enrich > Enrichment**.
+2. Between the **Partitioner** and **Destination** nodes, click the add (**+**) icon, and then click **Enrich > Image Description**.
    
-   ![Adding an enrichment node](/img/ui/walkthrough/AddEnrichment.png)
+   ![Adding an image description enrichment node](/img/ui/walkthrough/image-description.png)
 
 3. In the node's settings pane's **Details** tab, click:
 
-   - **Image** under **Input Type**.
    - Any available choice for **Provider** (for example, **Anthropic**).
    - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
-   - If not already selected, **Image Description** under **Task**.
+   
+   <Note>
+       The lists of available models for these enrichments are constantly being updated. Your lists might also differ from these instructions, depending on your Unstructured 
+       account type. If the suggested model for an enrichment is not available, choose another available model from the list.
 
+       If you have an Unstructured **Business** account and want to add more models to these lists, contact your 
+       Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+   </Note>
+   
    <Tip>
        The image description enrichment generates a summary description of each detected image. This can help you to more quickly and easily understand 
        what each image is all about without having to stop to manually visualize and interpret the image's content yourself. This also provides additional helpful context about the image for your RAG apps, agents, and models. [Learn more](/ui/enriching/image-descriptions).
    </Tip>
 
-4. Repeat this process to add four more nodes between the **Partitioner** and **Destination** nodes. To do this, click 
-   the add (**+**) icon, and then click **Enrich > Enrichment**, as follows:
+4. Repeat this process to add four more nodes between the **Partitioner** and **Destination** nodes, as follows:
 
-   a. Add a table description enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > Enrichment).
+   a. Add a table description enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > Table Description**).
    
       In the node's settings pane's **Details** tab, click:
 
-      - **Table** under **Input Type**.
       - Any available choice for **Provider** (for example, **Anthropic**).
       - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
-      - If not already selected, **Table Description** under **Task**.
-
+      
       <Tip>
           The table description enrichment generates a summary description of each detected table. This can help you to more quickly and easily understand 
           what each table is all about without having to stop to manually read through the table's content yourself. This also provides additional helpful context about the table for your RAG apps, agents, and models. [Learn more](/ui/enriching/table-descriptions).
       </Tip>
 
-   b. Add a table to HTML enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > Enrichment).
+   b. Add a table to HTML enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > Table to HTML**).
    
       In the node's settings pane's **Details** tab, click:
 
-      - **Table** under **Input Type**.
-      - Any available choice for **Provider** (for example, **Anthropic**).
-      - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
-      - **Table to HTML** under **Task**.
-      
+      - If you choose **Standard** for **Mode**, any available choice for **Provider** (for example, **Anthropic**).
+      - If you choose **Standard** for **Mode**, any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
+      - If you choose **Agentic** for **Mode**, a default provider and model are automatically selected for you.
+
       <Tip>
-          The table to HTML enrichment generates an HTML representation of each detected table. This can help you to more quickly and accurately recreate the table's content elsewhere later as needed. This also provides additional context about the table's structure for your RAG apps, agents, and models. [Learn more](/ui/enriching/table-to-html).
+          The table to HTML enrichment generates an HTML representation of each detected table. This can help you to more quickly and accurately recreate the table's content elsewhere later as needed. This also provides additional context about the table's structure for your RAG apps, agents, and models. 
+          The **Agentic** mode uses agentic AI to generate the table-to-HTML output, which typically provides more accurate output for complex tables than the **Standard** mode. [Learn more](/ui/enriching/table-to-html).
       </Tip>
 
-   c. Add a named entity recognition enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > Enrichment).
+   c. Add a named entity recognition enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > NER**).
    
       In the node's settings pane's **Details** tab, click:
       
-      - **Text** under **Input Type**.
       - Any available choice for **Provider** (for example, **Anthropic**).
       - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
       
@@ -297,14 +309,12 @@ HTML representations of detected tables, and detected entities (such as people a
           The named entity recognition (NER) enrichment generates a list of detected entities (such as people and organizations) and the inferred relationships among these entities. This provides additional context about these entities' types and their relationships for your graph databases, RAG apps, agents, and models. [Learn more](/ui/enriching/ner).
       </Tip>
 
-   d. Add a generative OCR enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > Enrichment).
+   d. Add a generative OCR enrichment (click the add (**+**) icon to the right of the preceding node, and then click **Enrich > Generative OCR**).
    
       In the node's settings pane's **Details** tab, click:
       
-      - **Image** under **Input Type**.
       - Any available choice for **Provider** (for example, **Anthropic**).
       - Any available choice for **Model** (for example, **Claude Sonnet 4.5** if you chose **Anthropic** for **Provider**).
-      - **Generative OCR** under **Task**.
       
       <Tip>
           The generative OCR enrichment improves, as needed, the accuracy of text blocks that Unstructured initially processed during its partitioning phase. [Learn more](/ui/enriching/generative-ocr).
@@ -316,29 +326,21 @@ HTML representations of detected tables, and detected entities (such as people a
           
           1. Click the **Partitioner** node.
           2. In the node's settings pane, scroll down to and then click a blank area inside of the **Extract Image Block Types** list.
-          3. Select each [document element types](/ui/document-elements#element-type) that you want generative OCR to process. For this 
+          3. Select each [document element type](/ui/document-elements#element-type) that you want generative OCR to process. For this 
              walkthrough, select only **NarrativeText**.
           
           Generative OCR does not process the text of any `Image` or `Table` elements if they have already been processed by 
           [image description](#image-description-task) or [table description](#table-description-task) enrichments, respectively. Do 
           not remove the **Image** or **Table** document elements types from this **Extract Image Block Types** list, or else 
-          the image description and table description enrichments in your workflow might produce unexepcted results or might not work at all.
+          the image description and table description enrichments in your workflow might produce unexpected results or might not work at all.
       </Warning>
-
-      <Note>
-          The **Generative OCR** enrichment appears under the **Input Type** of **Image**, even though this is not an image-related enrichment. 
-          This is a known issue and will be addressed in a future release. 
-      </Note>
    
    The workflow designer should now look similar to this:
    
    ![The workflow with enrichments added](/img/ui/walkthrough/EnrichedWorkflow.png)
 
 5. Change the **Source** node to use the "Chinese Characters" PDF file, and then click **Test**.
-6. In the **Test output** pane, make sure that **Enrichment (6 of 6)** is showing. If not, click the right arrow (**>**) until **Enrichment (6 of 6)** appears, which will show the output from the last node in the workflow.
-
-   ![The final Enrichment node's output](/img/ui/walkthrough/GoToEnrichmentNode.png)
-
+6. In the **Test output** pane, make sure that **Generative OCR (6 of 6)** is showing. If not, click the right arrow (**>**) until **Generative OCR (6 of 6)** appears, which will show the output from the last node in the workflow.
 7. Some interesting portions of the output include the following:
 
    - The Chinese characters on page 1. Search again for the text `verbs. The characters`. Notice how the accuracy of the Chinese character output is improved.
@@ -373,7 +375,7 @@ the resulting document elements' `text` content into manageable "chunks" to stay
     It's important here to note that _tokens_ and _characters_ are not the same thing! In terms of 
     characters, for English text, a common approximation is 1 token being equal to about 3 or 4 characters or three-quarters of a word. Many AI model providers publish their own token-to-character calculators online that you can use for estimation purposes.
 
-    You should experiement with a variety of chunk sizes, taking into account the kinds of content, the length and complexity of user queries and agent tasks, 
+    You should experiment with a variety of chunk sizes, taking into account the kinds of content, the length and complexity of user queries and agent tasks, 
     the intended end use, and of course the limits of the models you are using. Try different chunking strategies and sizes with your models and evaluate the results for yourself.
 </Tip>
 
@@ -400,7 +402,7 @@ the resulting document elements' `text` content into manageable "chunks" to stay
        - **Max Characters** is the "hard" or maximum number of characters that any one chunk can contain. Unstructured cannot exceed this number when forming chunks. [Learn more](/ui/chunking#max-characters-setting).
        - **New After N Characters**: is the "soft" or approximate number of characters that any one chunk can contain. Unstructured can exceed this number if needed when forming chunks (but still cannot exceed the **Max Characters** setting). [Learn more](/ui/chunking#new-after-n-characters-setting).
        - **Overlap**, when applied (see **Overlap All**), prepends to the current chunk the specified number of characters from the previous chunk, which can help provide additional context about this chunk relative to the previous chunk. [Learn more](/ui/chunking#overlap-setting)
-       - **Overlap All** applies the **Overlap** setting (if greater than zero) to all chunks. Otherwise, unchecking this box means that the **Overlap** setting (if greater than zero)is applied only in edge cases where "normal" chunks cannot be formed by combining whole elements. Check this box with caution as it can introduce noise into otherwise clean semantic units. [Learn more](/ui/chunking#overlap-all-setting).
+       - **Overlap All** applies the **Overlap** setting (if greater than zero) to all chunks. Otherwise, unchecking this box means that the **Overlap** setting (if greater than zero) is applied only in edge cases where "normal" chunks cannot be formed by combining whole elements. Check this box with caution as it can introduce noise into otherwise clean semantic units. [Learn more](/ui/chunking#overlap-all-setting).
    </Tip>
 
 4. With the "Chinese Characters" PDF file still selected in the **Source** node, click **Test**.
@@ -500,6 +502,16 @@ embedding model that is provided by an embedding provider. For the best embeddin
    ![Adding an embedder node](/img/ui/walkthrough/AddEmbedder.png)
 
 2. In the node's settings pane's **Details** tab, under **Select Embedding Model**, for **Azure OpenAI**, select **Text Embedding 3 Small [dim 1536]**.
+
+   <Note>
+       The list of available embedding models is constantly being updated. Your list might also be different, depending on your Unstructured 
+       account type. If **Azure OpenAI** and **Text Embedding 3 Small [dim 1536]** is not available, choose another available model from the list.
+
+       If you have an Unstructured **Business** account and want to add more models to this list, contact your 
+       Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+    </Note>
+
 3. With the "Chinese Characters" PDF file still selected in the **Source** node, click **Test**.
 4. In the **Test output** pane, make sure that **Embedder (8 of 8)** is showing. If not, click the right arrow (**>**) until **Embedder (8 of 8)** appears, which will show the output from the last node in the workflow.
 5. To explore the embeddings, search for the text `"embeddings"` (including the quotation marks).
@@ -527,16 +539,271 @@ embedding model that is provided by an embedding provider. For the best embeddin
 6. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
    the workflow designer so that you can continue designing things later as you see fit.
 
+## Step 7: Experiment with structured data extraction
+
+In this step, you apply custom [structured data extraction](/ui/data-extractor) to your workflow. Structured data extraction is the process where Unstructured 
+automatically extracts the data from your source documents into a format that you define up front. For example, in addition to Unstructured 
+partitioning your source documents into elements with types such as `NarrativeText`, `UncategorizedText`, and so on, you can have Unstructured 
+output key information from the source documents in a custom structured data format, within a `DocumentData` element containing aJSON object with custom fields such as `name`, `address`, `phone`, `email`, and so on.
+
+1. With the workflow designer active from the previous step, just before the **Destination** node, click the add (**+**) icon, and then click **Enrich > Extract**.
+
+   ![Adding an extract node](/img/ui/walkthrough/AddExtract.png)
+
+2. In the node's settings pane's **Details** tab, under **Provider**, select **Anthropic**. Under **Model**, select **Claude Sonnet 4.5**. This is the model that Unstructured will use to do the structured data extraction.
+
+   <Note>
+       The list of available models for structured data extraction is constantly being updated. Your list might also be different, depending on your Unstructured 
+       account type. If **Anthropic** and **Claude Sonnet 4.5** is not available, choose another available model from the list.
+
+       If you have an Unstructured **Business** account and want to add more models to this list, contact your 
+       Unstructured account administrator or Unstructured sales representative, or email Unstructured Support at 
+       [support@unstructured.io](mailto:support@unstructured.io).
+    </Note>
+
+3. Click **Upload JSON**.
+4. in the **JSON Schema** box, enter the following JSON schema, and then click **Use this Schema**:
+
+   ```json
+   {
+     "type": "object",
+     "properties": {
+       "title": {
+         "type": "string",
+         "description": "Full title of the research paper"
+       },
+       "authors": {
+         "type": "array",
+         "items": {
+           "type": "object",
+           "properties": {
+             "name": {
+               "type": "string",
+               "description": "Author's full name"
+             },
+             "affiliation": {
+               "type": "string",
+               "description": "Author's institutional affiliation"
+             },
+             "email": {
+               "type": "string",
+               "description": "Author's email address"
+             }
+           },
+           "required": [
+             "name",
+             "affiliation",
+             "email"
+           ],
+           "additionalProperties": false
+         },
+         "description": "List of paper authors with their affiliations"
+       },
+       "abstract": {
+         "type": "string",
+         "description": "Paper abstract summarizing the research"
+       },
+       "introduction": {
+         "type": "string",
+         "description": "Introduction section describing the problem and motivation"
+       },
+       "methodology": {
+         "type": "object",
+         "properties": {
+           "approach_name": {
+             "type": "string",
+             "description": "Name of the proposed method (e.g., StrokeNet)"
+           },
+           "description": {
+             "type": "string",
+             "description": "Detailed description of the methodology"
+           },
+           "key_techniques": {
+             "type": "array",
+             "items": {
+               "type": "string"
+             },
+             "description": "List of key techniques used in the approach"
+           }
+         },
+         "required": [
+           "approach_name",
+           "description",
+           "key_techniques"
+         ],
+         "additionalProperties": false
+       },
+       "experiments": {
+         "type": "object",
+         "properties": {
+           "datasets": {
+             "type": "array",
+             "items": {
+               "type": "object",
+               "properties": {
+                 "name": {
+                   "type": "string",
+                   "description": "Dataset name"
+                 },
+                 "description": {
+                   "type": "string",
+                   "description": "Dataset description"
+                 },
+                 "size": {
+                   "type": "string",
+                   "description": "Dataset size (e.g., number of sentence pairs)"
+                 }
+               },
+               "required": [
+                 "name",
+                 "description",
+                 "size"
+               ],
+               "additionalProperties": false
+             },
+             "description": "Datasets used for evaluation"
+           },
+           "baselines": {
+             "type": "array",
+             "items": {
+               "type": "string"
+             },
+             "description": "Baseline methods compared against"
+           },
+           "evaluation_metrics": {
+             "type": "array",
+             "items": {
+               "type": "string"
+             },
+             "description": "Metrics used for evaluation"
+           },
+           "experimental_setup": {
+             "type": "string",
+             "description": "Description of experimental configuration and hyperparameters"
+           }
+         },
+         "required": [
+           "datasets",
+           "baselines",
+           "evaluation_metrics",
+           "experimental_setup"
+         ],
+         "additionalProperties": false
+       },
+       "results": {
+         "type": "object",
+         "properties": {
+           "main_findings": {
+             "type": "string",
+             "description": "Summary of main experimental findings"
+           },
+           "performance_improvements": {
+             "type": "array",
+             "items": {
+               "type": "object",
+               "properties": {
+                 "dataset": {
+                   "type": "string",
+                   "description": "Dataset name"
+                 },
+                 "metric": {
+                   "type": "string",
+                   "description": "Evaluation metric (e.g., BLEU)"
+                 },
+                 "baseline_score": {
+                   "type": "number",
+                   "description": "Baseline method score"
+                 },
+                 "proposed_score": {
+                   "type": "number",
+                   "description": "Proposed method score"
+                 },
+                 "improvement": {
+                   "type": "number",
+                   "description": "Improvement over baseline"
+                 }
+               },
+               "required": [
+                 "dataset",
+                 "metric",
+                 "baseline_score",
+                 "proposed_score",
+                 "improvement"
+               ],
+               "additionalProperties": false
+             },
+             "description": "Performance improvements over baselines"
+           },
+           "parameter_reduction": {
+             "type": "string",
+             "description": "Description of parameter reduction achieved"
+           }
+         },
+         "required": [
+           "main_findings",
+           "performance_improvements",
+           "parameter_reduction"
+         ],
+         "additionalProperties": false
+       },
+       "related_work": {
+         "type": "string",
+         "description": "Summary of related work and prior research"
+       },
+       "conclusion": {
+         "type": "string",
+         "description": "Conclusion section summarizing contributions and findings"
+       },
+       "limitations": {
+         "type": "string",
+         "description": "Limitations and challenges discussed in the paper"
+       },
+       "acknowledgments": {
+         "type": "string",
+         "description": "Acknowledgments section"
+       },
+       "references": {
+         "type": "array",
+         "items": {
+           "type": "string"
+         },
+         "description": "List of cited references"
+       }
+     },
+     "additionalProperties": false,
+     "required": [
+       "title",
+       "authors",
+       "abstract",
+       "introduction",
+       "methodology",
+       "experiments",
+       "results",
+       "related_work",
+       "conclusion",
+       "limitations",
+       "acknowledgments",
+       "references"
+     ]
+   }
+   ```
+
+5. With the "Chinese Characters" PDF file still selected in the **Source** node, click **Test**.
+6. In the **Test output** pane, make sure that **Extract (9 of 9)** is showing. If not, click the right arrow (**>**) until **Extract (9 of 9)** appears, which will show the output from the last node in the workflow.
+7. To explore the structured data extraction, search for the text `"extracted_data"` (including the quotation marks).
+8. When you are done, be sure to click the close (**X**) button above the output on the right side of the screen, to return to 
+   the workflow designer so that you can continue designing things later as you see fit.
+
 ## Next steps
 
-Congratulations! You now have an Unstructured workflow that partitions, enriches, chunks, and embeds your source documents, producing 
+Congratulations! You now have an Unstructured workflow that partitions, enriches, chunks, embeds, and extracts structured data from your source documents, producing 
 context-rich data that is ready for retrieval-augmented generation (RAG), agentic AI, and model fine-tuning.
 
 Right now, your workflow only accepts one local file at a time for input. Your workflow also only sends Unstructured's processed data to your screen or to be saved locally as a JSON file. 
 You can modify your workflow to accept multiple files and data from&mdash;and send Unstructured's processed data to&mdash;one or more file storage 
 locations, databases, and vector stores. To learn how to do this, try one or more of the following quickstarts:
 
-- [Remote quickstart](/ui/quickstart#remote-quickstart) - This quickstart show you how to begin processing files and semi-structured data from remote source locations at scale, instead of just one local file at a time.
+- [Remote quickstart](/ui/quickstart#remote-quickstart) - This quickstart shows you how to begin processing files and semi-structured data from remote source locations at scale, instead of just one local file at a time.
 - [Dropbox source connector quickstart](/ui/sources/dropbox-source-quickstart) - If you don't have any remote source locations available for Unstructured to connect to, this quickstart shows you how to set up a Dropbox account to store your documents in, and then connect Unstructured to your Dropbox account.
 - [Pinecone destination connector quickstart](/ui/destinations/pinecone-destination-quickstart) - If you don't have any remote destination locations available for Unstructured to send its processed data to, this quickstart shows you how to set up a Pinecone account to have Unstructured store its processed data in, and then connect Unstructured to your Pinecone account.
 

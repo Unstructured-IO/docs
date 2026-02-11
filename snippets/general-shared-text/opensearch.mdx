@@ -46,7 +46,7 @@
   allowfullscreen
   ></iframe>
 
-- The instance's host identifier (and port number, if you're using a local OpenSearch instance), as follows:
+- The instance's host URL, as follows:
 
   - For an AWS OpenSearch Service instance, do the following:
 
@@ -62,15 +62,15 @@
 
   For the destination connector, if you need to create an index and you're using a master user and password as the domain's master user, you can use for example the following `curl` command. Replace the following placeholders:
 
-  - Replace `<host>` with the instance's host identifier.
-  - If you're using a local OpenSearch instance, replace `<port>` with the instance's port number.
+  - Replace `<host>` with the instance's host URL.
+  - Replace `<port>` with the instance's port number, which is typically `443` (for encrypted connections, and less commonly `9200` for unencrypted connections).
   - Replace `<master-username>` with the master user's name, and replace `<master-password>` with the master user's password.
   - Replace `<index-name>` with the name of the new search index on the instance.
   - Replace `<index-schema>` with the schema for the new search index on the instance. A schema is optional; see the explanation 
     following this `curl` command for more information.
   
   ```bash
-  curl --request PUT "<host>[:<port>]/<index-name>" \
+  curl --request PUT "<host>:<port>/<index-name>" \
   --user "<master-username>:<master-password>" \
   [--header "Content-Type: application/json" \
   --data '<index-schema>']
@@ -85,53 +85,217 @@
   circumstances. This is because these schemas will vary based on your source files' types; how you 
   want Unstructured to partition, chunk, and generate embeddings; any custom post-processing code that you run; and other factors. 
 
-  You can adapt the following index schema example for your own needs:
+  For objects in the `metadata` field that Unstructured produces and that you want to store in an OpenSearch index, you must create fields in your index's schema that 
+  follows Unstructured's `metadata` field naming convention. For example, if Unstructured produces a `metadata` field with the following 
+  child objects:
+
+  ```json
+  "metadata": {
+    "is_extracted": "true",
+    "coordinates": {
+      "points": [
+        [
+          134.20055555555555,
+          241.36027777777795
+        ],
+        [
+          134.20055555555555,
+          420.0269444444447
+        ],
+        [
+          529.7005555555555,
+          420.0269444444447
+        ],
+        [
+          529.7005555555555,
+          241.36027777777795
+        ]
+      ],
+      "system": "PixelSpace",
+      "layout_width": 1654,
+      "layout_height": 2339
+    },
+    "filetype": "application/pdf",
+    "languages": [
+      "eng"
+    ],
+    "page_number": 1,
+    "image_mime_type": "image/jpeg",
+    "filename": "realestate.pdf",
+    "data_source": {
+      "url": "file:///home/etl/node/downloads/00000000-0000-0000-0000-000000000001/7458635f-realestate.pdf",
+      "record_locator": {
+        "protocol": "file",
+        "remote_file_path": "file:///home/etl/node/downloads/00000000-0000-0000-0000-000000000001/7458635f-realestate.pdf"
+      }
+    },
+    "entities": {
+      "items": [
+        {
+          "entity": "HOME FOR FUTURE",
+          "type": "ORGANIZATION"
+        },
+        {
+          "entity": "221 Queen Street, Melbourne VIC 3000",
+          "type": "LOCATION"
+        }
+      ],
+      "relationships": [
+        {
+          "from": "HOME FOR FUTURE",
+          "relationship": "based_in",
+          "to": "221 Queen Street, Melbourne VIC 3000"
+        }
+      ]
+    }
+  }
+  ```
+
+   You can adapt the following index schema example for your own needs. Note that outside of `metadata`, the following fields are 
+  required by Unstructured whenever you create your own index schema:
+
+  - `element_id`
+  - `record_id`, which is required by Unstructured for intelligent record updates.
+  - `type`, which is not required, but highly recommended.
+  - `text`
+  - `embeddings` if embeddings are generated; make sure to set `dimension` to the same number of dimensions as the embedding model generates.
 
   ```json
   {
-      "settings": {
-          "index": {
-              "knn": true,
-              "knn.algo_param.ef_search": 100
-          }
-      },
-      "mappings": {
-          "properties": {
-              "record_id": {
-                  "type": "text"
-              },
-              "element_id": {
-                  "type": "keyword"
-              },
-              "text": {
-                  "type": "text"
-              },
-              "embeddings": {
-                  "type": "knn_vector",
-                  "dimension": 384
-              },
-              "metadata": {
-                  "type": "object",
-                  "properties": {
-                      "parent_id": {
-                          "type": "text"
-                      },
-                      "page_number": {
-                          "type": "integer"
-                      },
-                      "is_continuation": {
-                         "type": "boolean"
-                      },
-                      "orig_elements": {
-                         "type": "text"
-                      },
-                      "partitioner_type": {
-                         "type": "text"
-                      }
-                  }
-              }
-          }
+    "settings": {
+      "index": {
+        "knn": true,
+        "knn.algo_param.ef_search": 100
       }
+    },
+    "mappings": {
+      "properties": {
+        "element_id": {
+          "type": "keyword"
+        },
+        "record_id": {
+          "type": "text"
+        },
+        "text": {
+          "type": "text"
+        },
+        "type": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        },
+        "embeddings": {
+          "type": "knn_vector",
+          "dimension": 1536
+        },
+        "metadata": {
+          "properties": {
+            "is_extracted": {
+              "type": "boolean"
+            },
+            "coordinates-points": {
+              "type": "float"
+            },
+            "coordinates-system": {
+              "type": "text",
+              "fields": {
+                "keyword": {
+                  "type": "keyword",
+                  "ignore_above": 256
+                }
+              }
+            },
+            "coordinates-layout_width": {
+              "type": "long"
+            },
+            "coordinates-layout_height": {
+              "type": "long"
+            },
+            "filetype": {
+              "type": "keyword"
+            },
+            "languages": {
+              "type": "keyword"
+            },
+            "page_number": {
+              "type": "integer"
+            },
+            "image_mime_type": {
+              "type": "keyword"
+            },
+            "filename": {
+              "type": "keyword"
+            },
+            "data_source-url": {
+              "type": "keyword"
+            },
+            "data_source-record_locator-protocol": {
+              "type": "keyword"
+            },
+            "data_source-record_locator-remote_file_path": {
+              "type": "keyword"
+            },
+            "entities-items": {
+              "properties": {
+                "entity": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "type": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            },
+            "entities-relationships": {
+              "properties": {
+                "from": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "relationship": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                },
+                "to": {
+                  "type": "text",
+                  "fields": {
+                    "keyword": {
+                      "type": "keyword",
+                      "ignore_above": 256
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
   ```
 

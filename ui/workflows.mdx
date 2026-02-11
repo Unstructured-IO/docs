@@ -17,7 +17,7 @@ Workflows are crucial for establishing a systematic approach to managing data fl
 Unstructured provides two types of workflow builders:
 
 - [Automatic](#create-an-automatic-workflow) or **Build it For Me** workflows, which use sensible default workflow settings to enable you to get good-quality results faster.
-- [Custom](#create-a-custom-worklow) or **Build it Myself** workflows, which enable you to fine-tune the workflow settings behind the scenes to get very specific results.
+- [Custom](#create-a-custom-workflow) or **Build it Myself** workflows, which enable you to fine-tune the workflow settings behind the scenes to get very specific results.
 
 ### Create an automatic workflow
 
@@ -92,9 +92,9 @@ By default, this workflow partitions, chunks, and generates embeddings as follow
 
   [Learn about embedding providers and models](/ui/embedding).
 
-- **Enrichments**:
+- Enrichments:
 
-  This workflow contains no enrichments. 
+  This workflow contains no enrichments, other than a **Chunker** node. 
 
   [Learn about available enrichments](/ui/enriching/overview).
 
@@ -113,7 +113,7 @@ To change the workflow's default settings or to add enrichments:
 3. To learn how to change a node's settings or to add enrichment nodes, click the **FAQ** button in the flyout pane in 
    the workflow DAG designer.
 
-If you did not previously set the workflow to run on a schedule, you can [run the worklow](#edit-delete-or-run-a-workflow) now.
+If you did not previously set the workflow to run on a schedule, you can [run the workflow](#edit-delete-or-run-a-workflow) now.
 
 ### Create a custom workflow
 
@@ -178,10 +178,30 @@ If you did not previously set the workflow to run on a schedule, you can [run th
    flowchart LR
      Source-->Partitioner-->Enrichment-->Chunker-->Embedder-->Destination
    ```
+   ```mermaid
+   flowchart LR
+     Source-->Partitioner-->Extract-->Destination
+   ```
+   ```mermaid
+   flowchart LR
+     Source-->Partitioner-->Chunker-->Extract-->Destination
+   ```
+   ```mermaid
+   flowchart LR
+     Source-->Partitioner-->Chunker-->Embedder-->Extract-->Destination
+   ```
+   ```mermaid
+   flowchart LR
+     Source-->Partitioner-->Enrichment-->Chunker-->Extract-->Destination
+   ```
+   ```mermaid
+   flowchart LR
+     Source-->Partitioner-->Enrichment-->Chunker-->Embedder-->Extract-->Destination
+   ```
 
    <Note>
-       For workflows that use **Chunker** and **Enrichment** nodes together, the **Chunker** node should be placed after all **Enrichment** nodes. Placing the 
-       **Chunker** node before any **Enrichment** nodes could cause incomplete or no enrichment results to be generated.
+       For workflows that use **Chunker** and enrichment nodes together, the **Chunker** node should be placed after all enrichment nodes. Placing the 
+       **Chunker** node before any enrichment nodes could cause incomplete or no enrichment results to be generated.
    </Note>
 
    <Warning>
@@ -212,7 +232,7 @@ If you did not previously set the workflow to run on a schedule, you can [run th
     ![Add node to workflow](/img/ui/Workflow-Add-Node.png)
 
     - Click **Connect** to add another **Source** or **Destination** node. You can add multiple source and destination locations. Files will be ingested from all of the source locations, and the processed data will be delivered to all of the destination locations. [Learn more](#custom-workflow-node-types).
-    - Click **Enrich** to add a **Chunker** or **Enrichment** node. [Learn more](#custom-workflow-node-types).
+    - Click **Enrich** to add a chunker or enrichment node. [Learn more](#custom-workflow-node-types).
 
       <EnrichmentImagesTablesOCRHiResOnly />
 
@@ -235,7 +255,7 @@ If you did not previously set the workflow to run on a schedule, you can [run th
     To delete a node, click that node, and then click the trash can icon above it.
 
 12. Click **Save**.
-13. If you did not set the workflow to run on a schedule, you can [run the worklow](#edit-delete-or-run-a-workflow) now.
+13. If you did not set the workflow to run on a schedule, you can [run the workflow](#edit-delete-or-run-a-workflow) now.
 
 #### Custom workflow node types
 
@@ -283,7 +303,7 @@ import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-
           - **Include original elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
           - **Max characters**: Cut off new sections after reaching a length of this many characters. This is a strict limit. The default is **2048**.
           - **Multipage sections**: Check this box to allow sections to span multiple pages. By default, this box is unchecked.
-          - **New after n chars**: Cut off new sections after reaching a length of this many characters. This is an approximate limit. The default is **1500*.
+          - **New after n chars**: Cut off new sections after reaching a length of this many characters. This is an approximate limit. The default is **1500**.
           - **Overlap**: Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting. The default is **160**.
           - **Overlap all**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. By default, this box is unchecked.
 
@@ -292,7 +312,7 @@ import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-
           - **Contextual chunking**: When switched on, prepends chunk-specific explanatory context to each chunk. [Learn more](/ui/chunking#contextual-chunking).
           - **Include original elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
           - **Max characters**: Cut off new sections after reaching a length of this many characters. The default is **2048**.
-          - **New after n chars**: Cut off new sections after reaching a length of this many characters. This is an approximate limit. The default is **1500*.
+          - **New after n chars**: Cut off new sections after reaching a length of this many characters. This is an approximate limit. The default is **1500**.
           - **Overlap**: Apply a prefix of this many trailing characters from the prior text-split chunk to second and later chunks formed from oversized elements by text-splitting. The default is **160**.
           - **Overlap All**: Check this box to apply overlap to "normal" chunks formed by combining whole elements. Use with caution as this can introduce noise into otherwise clean semantic units. By default, this box is unchecked.
         
@@ -310,7 +330,7 @@ import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-
           - **Contextual chunking**: When switched on, prepends chunk-specific explanatory context to each chunk. [Learn more](/ui/chunking#contextual-chunking).
           - **Include original elements**: Check this box to output the elements that were used to form a chunk, to appear in the `metadata` field's `orig_elements` field for that chunk. By default, this box is unchecked.
           - **Max characters**: Cut off new sections after reaching a length of this many characters. This is a strict limit. The default is **500**.
-          - **Similarity threshold**: Specify a threshold between 0 and 1 exclusive (0.01 to 0.99 inclusive), where 0 indicates completely dissimilar vectors and 1 indicates identical vectors, taking into consider the trade-offs between precision (a higher threshold) and recall (a lower threshold). The default is **0.5**. [Learn more](https://towardsdatascience.com/introduction-to-embedding-clustering-and-similarity-11dd80b00061).
+          - **Similarity threshold**: Specify a threshold between 0 and 1 exclusive (0.01 to 0.99 inclusive), where 0 indicates completely dissimilar vectors and 1 indicates identical vectors, taking into consideration the trade-offs between precision (a higher threshold) and recall (a lower threshold). The default is **0.5**. [Learn more](https://towardsdatascience.com/introduction-to-embedding-clustering-and-similarity-11dd80b00061).
 
         Learn more:
         
@@ -319,39 +339,37 @@ import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-
 
     </Accordion>
     <Accordion title="Enrichment node">
-        Choose one of the following:
+        Each enrichment node type has its own unique settings:
 
         <DeprecatedModelsUI />
 
         <EnrichmentImagesTablesOCRHiResOnly />
 
-        - **Image** to summarize images. Also select one of the available provider (and model) combinations that are shown.
+        - The **Image Description** node summarizes images. You must select one of the available provider (and model) combinations that are shown.
 
           [Learn more](/ui/enriching/image-descriptions).
         
-        - **Table** to summarize tables. Also select one of the available provider (and model) combinations that are shown.
-
-          Make sure after you choose the provider and model, that **Table Description** is also displayed. If **Table Description** and **Table to HTML** are both 
-          displayed, be sure to select **Table Description**.
+        - The **Table Description** node summarizes tables. You must select one of the available provider (and model) combinations that are shown.
 
           [Learn more](/ui/enriching/table-descriptions).
           
-        - **Table** to convert tables to HTML. Also select one of the available provider (and model) combinations that are shown.
-
-          Make sure after you choose this provider and model, that **Table to HTML** is also selected.
+        - The **Table to HTML** node generates HTML representations for tables. Also select the following:
+        
+          - To use agentic AI to increase HTML accuracy for complex tables, select **Agentic** for **Mode**.
+          - To use a VLM for standard tables, select **Standard** for **Mode**. Then select one of the available **Provider** and **Model** combinations that are shown.
 
           [Learn more](/ui/enriching/table-to-html).
 
-        - **Text** to generate a list of recognized entities and their relationships by using a technique called _named entity recognition_ (NER). 
-          Also select one of the available provider (and model) combinations that are shown.
+        - The **NER** node generates a list of recognized entities and their relationships by using a technique called _named entity recognition_ (NER). 
+          You must select one of the available provider (and model) combinations that are shown.
           
           You can also customize the prompt used to add or remove entities and relationships. In the **Details** tab, under **Prompt**, click **Edit**. Click **Run Prompt** in the 
           **Edit & Test Prompt** section to test the prompt.
 
           [Learn more](/ui/enriching/ner). 
 
-        - **Generative OCR** to optimize the fidelity of text blocks that Unstructured initially processed during its partitioning phase. 
-          Also select one of the available provider (and model) combinations that are shown.
+        - The **Generative OCR** node optimizes the fidelity of text blocks that Unstructured initially processed during its partitioning phase. 
+          You must select one of the available provider (and model) combinations that are shown.
 
           <Warning>
               Generative OCR does not process any text blocks by default. You must also explicitly specify which document element 
@@ -359,13 +377,13 @@ import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-
               
               1. Click the **Partitioner** node.
               2. In the node's settings pane, scroll down to and then click a blank area inside of the **Extract Image Block Types** list.
-              3. Select each [document element types](/ui/document-elements#element-type) that you want generative OCR to process. For this 
+              3. Select each [document element type](/ui/document-elements#element-type) that you want generative OCR to process. For this 
                 walkthrough, select only **NarrativeText**.
               
               Generative OCR does not process the text of any `Image` or `Table` elements if they have already been processed by 
               [image description](#image-description-task) or [table description](#table-description-task) enrichments, respectively. Do 
               not remove the **Image** or **Table** document elements types from this **Extract Image Block Types** list, or else 
-              the image description and table description enrichments in your workflow might produce unexepcted results or might not work at all.
+              the image description and table description enrichments in your workflow might produce unexpected results or might not work at all.
           </Warning>
 
           [Learn more](/ui/enriching/generative-ocr).
@@ -383,6 +401,18 @@ import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-
         
         - [Embedding overview](/ui/embedding)
         - [Understanding embedding models: make an informed choice for your RAG](https://unstructured.io/blog/understanding-embedding-models-make-an-informed-choice-for-your-rag).
+    </Accordion>
+    <Accordion title="Extract node">
+        Do one of the following to define the custom schema for the structured data that you want to extract:
+        
+        - To use a custom schema that conforms to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
+          click **Upload JSON**; enter your own custom schema or upload a JSON file that contains your custom schema; and then click **Use this Schema**. 
+          [Learn about the OpenAI Structured Outputs format](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
+        - To use a visual editor to define the schema, enter your own custom schema objects and their properties. To clear the current schema and start over, 
+          click the ellipses (three dots) icon, and then click **Reset form**. 
+          [Learn about OpenAI Structured Outputs data types](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
+
+        [Learn more](/ui/data-extractor).
     </Accordion>
 </AccordionGroup>
 
