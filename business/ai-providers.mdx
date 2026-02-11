@@ -1,0 +1,95 @@
+---
+title: AI providers
+---
+
+<Note>
+    The following information applies only to **dedicated instance** and **in-VPC** deployments of [Unstructured Business](/business/overview). 
+</Note>
+
+For Unstructured Business **dedicated instance** and **in-VPC** deployments, Unstructured requires that you complete special 
+AI provider configuration steps before you can use any of the following features in your Unstructured account:
+
+- [Partitioning](/ui/partitioning) that uses the **VLM** strategy, or the **Auto** strategy whenever it routes documents or pages to the **VLM** strategy
+- [Enrichments](/ui/enriching/overview)
+- [Structured data extraction](/ui/data-extractor)
+- [Embedding](/ui/embedding)
+
+Each of these features rely on AI models by AI providers that you give information to Unstructured about. For example, when you have 
+Unstructured generate embeddings, you must have already configured your Unstructured account with the corresponding AI 
+provider's access credentials for your account with that AI provider, and any other miscellaneous settings that the AI provider might also require.
+
+You must already have an account with the AI provider of each model that you configure your Unstructured account to use. 
+Whenever Unstructured uses one of these models, its usage is billed directly to your account with the model's AI provider. 
+These third-party charges are not included in your Unstructured account's bill. You are responsible for paying 
+these third-party bills separately from your Unstructured account's bills. If you do not pay these third-party bills 
+in a timely manner, these Unstructured features might stop working as expected at any time and without any prior notice.
+
+<Tip>
+    The following steps do not apply to **Let's Go**, **Pay-As-You-Go**, or **Business SaaS** accounts. 
+    This is because the costs for using the models that Unstructured provides are already factored into the 
+    pricing structures for these account types.
+
+    For Unstructured Business **dedicated instance** and **in-VPC** deployments, completing the following steps enables you to 
+    better manage and reduce your overall costs by negotiating lower overall billing rates with Unstructured for its core features, while also 
+    leveraging any separately negotiated volume discounts with the AI providers that you want to use.
+</Tip>
+
+## Configure an AI provider
+
+To have Unstructured use an AI model, you must first configure the model's AI provider for each target Unstructured 
+[workspace](/ui/account/workspaces) within each corresponding Unstructured [organizational account](/ui/account/organizations) in 
+your **dedicated instance** or **in-VPC** deployment, as follows.
+
+This procedure assumes that you have already created an account with the model's AI provider, generated access credentials for your account 
+with that AI provider, and obtained any other miscellaneous settings that the AI provider might also require. For 
+more information, see the AI provider's documentation.
+
+To configure an AI provider for a workspace, do the following:
+
+1. If you are not already signed in, sign in to your Unstructured account.
+2. In the top navigation bar, in the organizational account selector, select the name of the organizational account to which  
+   the target workspace belongs.
+3. Next to the organizational account selector, click the workspace selector, and then select the name of the target workspace.
+4. In the workspace navigation bar, click the **AI Providers** tab.
+5. In the list of available AI providers, next to the target AI provider's name, click **Configure**.
+6. In the **Configure AI Provider** dialog, enter your access credentials for the AI provider, along with any other 
+   miscellaneous settings that the AI provider might also require. To get these settings, see your AI provider's documentation.
+7. Click **Save Configuration**.
+
+The configured AI provider is now ready to be used by all workflows in this workspace.
+
+## Update an AI provider's configuration
+
+After you [configure an AI provider](#configure-an-ai-provider), you can no longer open that AI provider's 
+settings screen to make any changes to it. This is by design to prevent users from 
+accessing sensitive access credentials strings or other sensitive settings that they might not otherwise be allowed 
+to access across your organization.
+
+To update the settings for an AI provider, do the following:
+
+1. [Delete the target AI provider's current configuration](#delete-an-ai-provider's-configuration).
+2. [Configure the target AI provider again](#configure-an-ai-provider).
+
+## Delete an AI provider's configuration
+
+<Warning>
+    After you delete an AI provider's configuration, any workflows in the selected workspace that rely on this AI provider 
+    might produce unexpected results or stop working altogether.
+</Warning>
+
+To delete an AI provider's configuration, do the following:
+
+1. If you are not already signed in, sign in to your Unstructured account.
+2. In the top navigation bar, in the organizational account selector, select the name of the organizational account to which  
+   the workspace with the target AI provider's configuration belongs.
+3. Next to the organizational account selector, click the workspace selector, and then select the name of the target workspace.
+4. In the workspace navigation bar, click the **AI Providers** tab.
+5. In the list of AI providers, next to the target AI provider's name, click the ellipsis (three dots) icon.
+6. Click **Delete Configuration**.
+7. To confirm the deletion, click **Delete Configuration**.
+
+You can [configure the target AI provider again](#configure-an-ai-provider) at any time.
+
+## No API support for AI provider management
+
+You cannot use the Unstructured API to manage AI providers. You can manage AI providers only through the Unstructured UI.
