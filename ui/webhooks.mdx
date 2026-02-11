@@ -2,8 +2,12 @@
 title: Webhooks
 ---
 
-A _webhook_ is a common technique that allows a _sender_ to automatically send data to a _receiver_ based on events that happen in the sender. For Unstructured webhooks, Unstructured is the sender, 
-and your solution is the receiver. Some popular receivers include 
+A _webhook_ is a common technique that allows a _sender_ to automatically send data to a _receiver_ based on events that happen in the sender. 
+Some common uses for webhooks include sending real-time notifications such as emails, pages, or alerts to messaging apps; automatically 
+triggering build, test, or deployment workflows in CI/CD pipelines; launching downstream data synchronization updates; or triggering agentic AI workflows. 
+
+For Unstructured webhooks, Unstructured is the sender, 
+and your solution is the receiver. Some popular receiver solutions include 
 [AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/urls-webhook-tutorial.html), 
 [Azure Functions](https://learn.microsoft.com/azure/azure-functions/functions-bindings-http-webhook), 
 [Google Cloud Run](https://docs.cloud.google.com/run/docs/triggering/webhooks), 
@@ -28,28 +32,10 @@ one or more of the following:
 - Has failed to successfully complete (**Job failed**)
 - Has successfully completed (**Job completed**) 
 
-Unstructured webhooks can be created and managed for the following scopes:
-
-- In your Unstructured personal account, or for a workspace within an Unstructured **Business** account. 
-  This allows any job that is associated with any workflow across this scope to trigger the webhook. This can be useful 
-  for example for routing pager requests to a team of on-call engineers in an IT operations center 
-  whenever any job fails within this scope.
-- For an individual workflow. This allows any job that is associated only with 
-  the target workflow to trigger the webhook. This can be useful for example for emailing a department's data analyst 
-  that a long-running job for a specific workflow 
-  has now completed, allowing them to begin working with the latest output.
-  
-Webhooks within the personal account and workspace scope can be created, viewed, and managed with the 
-Unstructured user interface (UI), as described later in this article. They can also be created, viewed, and 
-managed with the 
-Unstructured API ([learn how](/api-reference/webhooks)).
-
-Whenever a webhook is triggered, the act of Unstructured sending the event data payload to a receiver is called a 
-_notification_. You can get a count or a list of these notifications. You can also mark them as read after 
-you have processed them according to your organization's needs. Marking a notification as read can help you keep track of 
-which notifications you have already dealt with and which ones you still need to take action on.
-
-Notifications can be created, viewed, and managed only with the Unstructured API. [Learn how](/api-reference/webhooks).
+You can use the Unstructured user interface (UI) to create and manage webhooks in your Unstructured personal account, or for a 
+[workspace](/ui/account/workspaces) within an Unstructured **Business** account. This allows any job that is associated with any workflow across this scope 
+to trigger the webhook. This can be useful for example for routing pager requests to a team of on-call engineers in an IT operations center 
+whenever any job fails within the given scope.
 
 ## View your personal account webhooks
 
@@ -118,4 +104,22 @@ To delete an existing webhook, do the following:
 3. In the list of available webhooks, click the name of the webhook you want to delete.
 4. In the webhook's settings pane, click **Delete Webhook**.
 
-The webhook is deleted, and notifications will no longer be sent for this webhook.
+The webhook is deleted, and event data will no longer be sent through this webhook.
+
+## Unstructured API support for webhooks
+
+The Unstructured user interface (UI) only supports the creation and management of webhooks in your Unstructured personal account, or for a 
+workspace within an Unstructured **Business** account.
+
+You also can use the [Unstructured API](/api-reference/overview) to do this, as well as:
+
+- Create and manage webhooks at the level, known as a _workflow-scoped notification channel_. This allows any job that is associated only with 
+  the target workflow to trigger the webhook. This can be useful for example for emailing a department's data analyst that a long-running job for a specific workflow 
+  has now completed, allowing them to begin working with the latest output. 
+- Manage notifications. Whenever a webhook is triggered, the act of Unstructured sending the event data payload is called a 
+  _notification_. You can get a count or a list of these notifications. You can also mark them as read after 
+  you have processed them according to your organization's needs. Marking a notification as read can help you keep track of 
+  which notifications you have already dealt with and which ones you still need to take action on.
+
+[Learn more](/api-reference/webhooks).
+
