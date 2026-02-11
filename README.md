@@ -4,7 +4,7 @@ This repo hosts documentation for:
 
 * [Unstructured Open Source Library](https://github.com/Unstructured-IO/unstructured) 
 * [Unstructured APIs](https://unstructured.io/api-key-hosted)
-* [Unstructured Enterprise platform](https://unstructured.io/platform)
+* [Unstructured Business platform](https://unstructured.io/platform)
 
 👉 Looking for the live documentation site powered by this repo? Visit [docs.unstructured.io](https://docs.unstructured.io/)
 

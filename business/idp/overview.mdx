@@ -1,0 +1,57 @@
+---
+title: IdP overview
+sidebarTitle: Overview
+---
+
+<Note>
+    The following information applies only to dedicated instance and in-VPC deployments of [Unstructured Business](/business/overview). 
+
+    IdP integration is not available for Unstructured **Let's Go**, **Pay-As-You-Go**, or **Business SaaS** accounts.
+</Note>
+
+An _identity provider_ (IdP) is a service that manages and verifies the digital identities of users. 
+It authenticates who a user is and provides that information to other systems (known as _service providers_) to control access. 
+You can connect your organization's IdP to Unstructured so you can manage who has access across all your connected systems from one place. 
+Instead of having to manually create and manage user accounts and roles within your Unstructured account, Unstructured can use your organization's IdP to determine 
+things such as:
+
+- Who can sign in to your Unstructured account's organizational accounts.
+- Which roles and permissions they should have within your organizational accounts.
+- Revoking access to your organizational accounts&mdash;for example, when someone leaves your organization.
+
+## Supported IdPs
+
+Unstructured supports IdPs that use any of the following protocols:
+
+- Keycloak OpenID Connect
+- OpenID Connect v1.0
+- SAML 2.0
+
+## IdP groups
+
+_IdP groups_ are collections of users defined within your IdP&mdash;for example, an Engineering group, a Marketing group, or an 
+Administrators group. Unstructured can use your IdP groups to automatically assign roles and permissions within your Unstructured account 
+at the account level and for each of your account's workspaces.
+
+## Roles
+
+_Roles_ are the sets of permissions that Unstructured can assign to your IdP groups&mdash;as well as to individual users separately within your Unstructed account, if needed&mdash; through 
+a common security best-practice technique called _role-based access control_ (RBAC). Unstructured has two kinds of roles:
+
+- **Account roles**: These roles include **Super Administrator**, **Account Member**, and **Billing Administrator**. They apply at the account level.
+- **Workspace roles**: These roles include **Workspace Administrator**, **Developer**, **Operator**, and **Viewer**. They apply to each of your account's workspaces.
+
+[Learn more about these roles](/ui/account/roles).
+
+## Getting started
+
+To have Unstructured connect your organization's IdP to your Unstructured account, contact your assigned 
+Unstructured Account Executive (AE) or Customer Success Manager (CSM). If you do not know who your assigned AE or CSM is, 
+email Unstructured Support at [support@unstructured.io](mailto:support@unstructured.io).
+
+## Next steps
+
+After Unstructured has connected your organization's IdP to your Unstructured account, you can manage access by your IdP groups and individual users to your 
+Unstructured account's organizational accounts and their workspaces. To do this, you can use your 
+Unstructured account's user interface (UI). For details, see 
+[IdP management with the Unstructured UI](/business/idp/ui).
