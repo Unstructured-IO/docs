@@ -29,8 +29,8 @@ one or more of the following:
 - Is scheduled to start running later (programmatically, an event type of `job.scheduled`)
 - Has begun running (`job.in_progress`)
 - Has stopped running (`job.stopped`)
-- Has failed to successfully complete (`job.failed`)
-- Has successfully completed (`job.completed`) 
+- Has failed to successfully complete (`job.failed`) - less than 90% of the job's files or data were successfully processed.
+- Has successfully completed (`job.completed`) - 90% or more of the job's files or data were successfully processed.
 
 When a webhook is configured to deliver event-driven notification data payloads from a sender to a receiver, this configuration 
 is called a _notification channel_. For Unstructured webhooks, notification channels can be created and managed at the following levels:
