@@ -84,7 +84,9 @@ In the preceding output, the `text` fields contain information about the listing
 the square footage, one of the listing's features, and so on. However, 
 you might want the information presented as `street_address`, `square_footage`, `features`, and so on.
 
-By using the structured data extractor in your Unstructured workflows, you could have Unstructured extract the listing's data in a custom-defined output format similar to the following (ellipses indicate omitted fields for brevity):
+By using the structured data extractor in your Unstructured workflows, you can have Unstructured extract the listing's data in a custom-defined output format.
+
+The first custom-defined output format is known as the _elements with extracted data_ format, as follows (ellipses indicate omitted fields for brevity):
 
 ```json
 [
@@ -127,9 +129,33 @@ By using the structured data extractor in your Unstructured workflows, you could
 ]
 ```
 
-In the preceding output, the first document element, of type `DocumentData`, has an `extracted_data` field within `metadata` 
+In the preceding elements with extracted data output, the first document element in the JSON output, of type `DocumentData`, has an `extracted_data` field within `metadata` 
 that contains a representation of the document's data in the custom output format that you specify. Beginning with the second document element and continuing 
 until the end of the document, Unstructured also outputs the document's data as a series of Unstructured's document elements and metadata as it normally would.
+
+The second custom-defined output format is known as the _extracted data only_ format, as follows:
+
+```json
+{
+  "street_address": "221 Queen Street, Melbourne VIC 3000",
+  "square_footage": 2800,
+  "price": 1000000,
+  "features": [
+    "Recently renovated kitchen",
+    "Smart home automation system",
+    "2-car garage with storage space",
+    "Spacious open-plan layout with natural lighting",
+    "Designer kitchen with quartz countertops and built-in appliances",
+    "Master suite with walk-in closet and en-suite bath",
+    "Covered patio and landscaped backyard garden"
+  ],
+  "agent_contact": {
+    "phone": "+01 555 123456"
+  }
+}
+```
+
+In the preceding extracted data only output, the document's data is output as JSON and only in the custom output format that you specify.
 
 To use the structured data extractor, you can provide Unstructured with an _extraction schema_, which defines the structure of the data for Unstructured to extract. 
 Or you can specify an _extraction prompt_ that guides Unstructured on how to extract the data from the source documents, in the format that you want.
@@ -297,7 +323,14 @@ below the threshold of what the structured data extractor typically needs for th
 
 ## Saving the extracted data separately
 
-Unstructured does not recommend that you save `DocumentData` elements as rows or entries within a traditional SQL-style destination database or vector store, for the following reasons:
+Unstructured recommends that you save the extracted JSON data only to a blob storage, file storage, or No-SQL database destination location.
+
+For the extracted data only output format, because of the custom nature of the extracted JSON data, Unstructured's destination connectors 
+do not have the built-in ability to insert custom-defined JSON objects as rows, records, or entries in a traditional SQL-style destination database or vector store. 
+Instead, you should save the extracted JSON data to a blob storage, file storage, or No-SQL database destination location. You can 
+then use your own custom code to insert the extracted JSON data into a traditional SQL-style destination database or vector store.
+
+For the elements with extracted data output format, Unstructured does not recommend that you save `DocumentData` elements as rows, records, or entries within a traditional SQL-style destination database or vector store either, for the following reasons:
 
 - Saving a mixture of `DocumentData` elements and default Unstructured elements such as `Title`, `NarrativeText`, and `Table` elements and 
   so on in the same table, collection, or index might cause unexpected performance issues or might return less useful search and query results. 
@@ -456,7 +489,7 @@ Extract the plant information for each of the plants in this document, and prese
   - humidity: The humidity requirements for the plant (for example: 'Low', 'Medium', 'High').
 ```
 
-And Unstructured's output would look like the following:
+And Unstructured's elements with extracted data output would look like the following:
 
 ```json
 [
@@ -739,7 +772,7 @@ Before returning the extraction:
 6. Ensure diagnoses and comorbidities are non-overlapping.
 ```
 
-And Unstructured's output would look like the following:
+And Unstructured's elements with extracted data output would look like the following:
 
 ```json
 [

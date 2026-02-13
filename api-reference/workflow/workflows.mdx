@@ -2250,6 +2250,7 @@ An **Extract** node has a `type` of `structured_data_extractor` and a `subtype` 
                     "json_schema": "<json-schema>",
                     "extraction_guidance": "<extraction-guidance>"
                 },
+                "output_mode": "<elements_with_extracted_data|extracted_data_only>",
                 "provider": "<provider>",
                 "model": "<model>"
             }
@@ -2267,6 +2268,7 @@ An **Extract** node has a `type` of `structured_data_extractor` and a `subtype` 
                     "json_schema": "<json-schema>",
                     "extraction_guidance": "<extraction-guidance>"
                 },
+                "output_mode": "<elements_with_extracted_data|extracted_data_only>",
                 "provider": "<provider>",
                 "model": "<model>"
             }
@@ -2281,6 +2283,11 @@ Fields for `settings` include:
 
   - `json_schema`: The extraction schema, in [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) format, for the structured data that you want to extract, expressed as a single string.
   - `extraction_guidance`: The extraction prompt for the structured data that you want to extract, expressed as a single string.
+
+- `output_mode`: _Optional_. The mode in which to output the extracted data. Allowed values include:
+
+  - `elements_with_extracted_data` (the default, if not otherwise specified): Output the extracted data as JSON into an `extracted_data` field inside of `metadata` within a parent `DocumentData` element, followed by other built-in Unstructured document elements.
+  - `extracted_data_only`: Output only the extracted data as JSON, without any parent `DocumentData` element or any other built-in Unstructured document elements.
 
 - Allowed values for `provider` and `model` include the following:
 
