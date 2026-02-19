@@ -1,0 +1,39 @@
+---
+title: Unstructured self-hosted plugins overview
+sidebarTitle: Overview
+---
+
+In Unstructured, a _plugin_ is a self-contained unit of code that can be used to add, change, or use data within the context of an Unstructured ETL+ workflow. Every 
+node in a workflow is itself a plugin. You can also create your own plugins to extend your organization's workflow capabilities. 
+
+Developing, deploying, and running your own custom plugins is available only for  
+the [Unstructured user interface](/ui/overview) (UI) that has already been deployed to 
+infrastructure that you maintain in your 
+[Amazon Web Services (AWS)](/self-hosted/aws/overview), [Azure](/self-hosted/azure/overview), or
+[Google Cloud Platform (GCP)](/self-hosted/gcp/overview) account.
+
+If you do not already have a self-hosted deployment of the Unstructured UI, 
+contact your Unstructured sales representative, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io), or fill out the 
+[contact form](https://unstructured.io/contact) on the Unstructured website, and a member of the Unstructured sales or support teams 
+will get back to you as soon as possible to discuss self-hosting options.
+
+## Concepts
+
+Plugins are rather straightforward in they accept a named input and emit a named output. The following diagram illustrates this concept:
+
+![Conceptual programmatic flow of plugins](/img/ui/Plugins-DAG.png)
+
+In the preceding diagram:
+
+- The blue boxes represent the default plugins that come with Unstructured.
+- The yellow circles describe what each default plugin does.  
+- The green box represents the indexer that gathers all of the source files.
+- The red box represents the destination location.
+- The arrows represent the flow of data between the plugins. 
+- The words within the arrows represent the programmatic names of the inputs and outputs of the plugins. For example, 
+  the **Partitioner** plugin accepts its input, represented by the programmatic name `doc_path`, from the previous plugin. 
+  The **Partitioner** plugin emits its output, represented by the programmatic name `element_dicts` to the next plugin.
+
+## Getting started
+
+To get started with eveloping, deploying, and running your own custom plugins, try out the [tutorial](/self-hosted/plugins/tutorial).
