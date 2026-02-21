@@ -57,8 +57,8 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
    - `openai` for [OpenAI](https://openai.com/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/openai/).
    - `togetherai` for [Together.ai](https://www.together.ai/). [Learn more](https://docs.together.ai/docs/embedding-models).
    - `vertexai` for [Google Vertex AI PaLM](https://cloud.google.com/vertex-ai/docs/generative-ai/learn/overview). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/google_vertex_ai_palm/).
-   - `voyageai` for [Voyage AI](https://www.voyageai.com/). [Learn more](https://python.langchain.com/v0.2/docs/integrations/text_embedding/voyageai/).
-   
+   - `voyageai` for [Voyage AI](https://www.voyageai.com/). [Learn more](https://docs.voyageai.com/docs/embeddings).
+
 2. Run the following command to install the required Python package for the embedding provider:
 
    - For `bedrock`, run `pip install "unstructured-ingest[bedrock]"`.
@@ -157,3 +157,66 @@ To use the Ingest CLI or Ingest Python library to generate embeddings, do the fo
           - Set `embedding_aws_region` to the corresponding AWS Region identifier.
     </Accordion>
 </AccordionGroup>
+
+## VoyageAI Advanced Features
+
+VoyageAI embeddings offer several advanced capabilities beyond standard embedding generation:
+
+### Contextualized Embeddings
+
+The `voyage-context-3` model provides contextualized embeddings that capture relationships between documents in a batch. This is particularly useful for RAG applications where understanding document relationships improves retrieval accuracy.
+
+### Automatic Batching
+
+VoyageAI integration automatically handles batching based on:
+- Model-specific token limits (ranging from 32k to 1M tokens depending on the model)
+- Maximum batch size of 1000 documents per request
+- Efficient token counting to optimize API usage
+
+### Output Dimension Control
+
+You can specify a custom `output_dimension` parameter to reduce the dimensionality of embeddings, which can:
+- Reduce storage requirements
+- Speed up similarity search
+- Maintain embedding quality for many use cases
+
+### Progress Tracking
+
+Enable `show_progress_bar` to monitor embedding progress for large document collections. This requires installing `tqdm`: `pip install tqdm`.
+
+### Example: Using VoyageAI with Ingest CLI
+
+```bash
+unstructured-ingest \
+  local \
+  --input-path /path/to/documents \
+  --output-dir /path/to/output \
+  --embedding-provider voyageai \
+  --embedding-api-key $VOYAGE_API_KEY \
+  --embedding-model-name voyage-3.5 \
+  --num-processes 2
+```
+
+### Example: Using VoyageAI with Contextualized Embeddings
+
+```bash
+unstructured-ingest \
+  local \
+  --input-path /path/to/documents \
+  --output-dir /path/to/output \
+  --embedding-provider voyageai \
+  --embedding-api-key $VOYAGE_API_KEY \
+  --embedding-model-name voyage-context-3 \
+  --num-processes 2
+```
+
+### Choosing the Right VoyageAI Model
+
+- **voyage-4-large**: Best retrieval quality in the voyage-4 series for demanding multilingual and general-purpose tasks
+- **voyage-4**: Balanced general-purpose and multilingual retrieval with higher throughput than voyage-4-large
+- **voyage-4-lite**: Best performance-to-cost ratio with the highest batch throughput (1M tokens/batch)
+- **voyage-3.5**: General-purpose embeddings with high token limits
+- **voyage-3.5-lite**: Optimal for very large documents or when you need maximum token capacity
+- **voyage-context-3**: Use when document relationships matter for your retrieval task
+- **voyage-code-3**: Specifically optimized for code and technical documentation
+- **Domain-specific models**: Choose finance-2, law-2, or multilingual-2 for specialized domains
