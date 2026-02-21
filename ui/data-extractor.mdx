@@ -151,7 +151,7 @@ Extract the following information from the listing, and present it in the follow
 
 An extraction schema is a JSON-formatted schema that defines the structure of the data that Unstructured extracts. The schema must 
 conform to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
-which are a subset of the [JSON Schema](https://json-schema.org/docs) language.
+which are a subset of the [JSON Schema](https://json-schema.org/docs) language. Unstructured provides a visual schema builder to help you define the schema without having to write the JSON schema manually.
 
 For this real estate listing example, the schema might look like the following:
 
@@ -204,7 +204,7 @@ For this real estate listing example, the schema might look like the following:
 }
 ```
 
-You can also use a visual schema builder to define the schema, like this:
+You would then use Unstructured's visual schema builder to define the schema, like this:
 
 ![Visual schema builder](/img/ui/data-extractor/schema-builder.png)
 
@@ -240,12 +240,9 @@ To have Unstructured [extract the data in a custom-defined format](#overview) fo
 6. If the **Define Schema** pane, do one of the following to extract the data from the selected file by using a custom-defined format:
 
    - To use the schema based on one that Unstructured suggests after analyzing the selected file, click **Run Schema**.
-   - To use a custom schema that conforms to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
-     click **Upload JSON**; enter your own custom schema or upload a JSON file that contains your custom schema; click **Use this Schema**; and then click **Run Schema**. 
-     [Learn about the OpenAI Structured Outputs format](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
    - To use a visual editor to define the schema, click the ellipses (three dots) icon; click **Reset form**, enter your own custom schema objects and their properties, 
      and then click **Run Schema**. [Learn about OpenAI Structured Outputs data types](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
-   - To use a plain language prompt to guide Unstructured on how to extract the data, click **Suggest**; enter your propmpt in the 
+   - To use a plain language prompt to guide Unstructured on how to extract the data, click **Suggest**; enter your prompt in the 
      dialog; click **Generate schema**; make any changes to the suggested schema as needed; and then click **Run Schema**.
 
 7. The extracted data appears in the **Extract results** pane. You can do one of the following:
@@ -272,15 +269,7 @@ number of files that are stored in remote locations, do the following from the w
    To add this node, in the workflow designer, click the **+** (add node) button immediately before the **Destination** node, and then click **Enrich > Extract**.
 3. Click the newly added **Extract** node to select it.
 4. In the node's settings pane, on the **Details** tab, under **Provider**, select the provider for the model that you want Unstructured to use to do the extraction. Then, under **Model**, select the model.
-5. To specify the custom schema for Unstructured to use to do the extraction, do one of the following:
-
-   - To use a custom schema that conforms to the [OpenAI Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas) guidelines, 
-     click **Upload JSON**; enter your own custom schema or upload a JSON file that contains your custom schema; and then click **Use this Schema**. 
-     [Learn about the OpenAI Structured Outputs format](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
-   - To use a visual editor to define the schema, enter your own custom schema objects and their properties. To clear the current schema and start over, 
-     click the ellipses (three dots) icon, and then click **Reset form**. 
-     [Learn about OpenAI Structured Outputs data types](https://platform.openai.com/docs/guides/structured-outputs#supported-schemas).
-
+5. Specify the custom schema for Unstructured to use to do the extraction, by entering your own custom schema objects and their properties.
 6. Continue building your workflow as desired.
 7. To see the results of the structured data extractor, do one of the following:
 
@@ -399,7 +388,7 @@ Using the following image file ([download this file](https://raw.githubuserconte
 
 ![Caring for houseplants](/img/ui/data-extractor/house-plant-care.png)
 
-An extraction schema for this file might look like the following:
+An extraction schema for this file might look like the following, which you would then use Unstructured's visual schema builder to define:
 
 ```json
 {
@@ -556,7 +545,7 @@ Using the following PDF file ([download this file](https://raw.githubusercontent
 
 ![Medical invoice](/img/ui/data-extractor/medical-invoice.png)
 
-An extraction schema for this file might look like the following:
+An extraction schema for this file might look like the following, which you would then use Unstructured's visual schema builder to define:
 
 ```json
 {
