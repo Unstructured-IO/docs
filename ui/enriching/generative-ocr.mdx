@@ -84,16 +84,8 @@ After (Chinese characters, now represented correctly from the original content, 
 
 import EnrichmentOCRHiResOnly from '/snippets/general-shared-text/enrichment-ocr-high-res-only.mdx';
 
-To produce generative OCR optimizations, in an **Enrichment** node in a workflow, click the following 
-in the node's settings pane's **Details** tab:
-      
-- **Image** under **Input Type**.
-- One of the following providers and models:
-
-  - **Anthropic** under **Provider** and any choice under **Model**
-  - **OpenAI** under **Provider** and any choice under **Model**
-
-- **Generative OCR** under **Task**.
+To produce generative OCR optimizations, add a **Generative OCR** node to your workflow by clicking **+** in the workflow editor, and then click **Enrich > Generative OCR**. 
+Be sure also to select one of the available provider (and model) combinations that are shown.
 
 <Warning>
     Generative OCR does not process any text blocks by default. You must also explicitly specify which document element 
@@ -101,25 +93,20 @@ in the node's settings pane's **Details** tab:
     
     1. Click the **Partitioner** node.
     2. In the node's settings pane, scroll down to and then click a blank area inside of the **Extract Image Block Types** list.
-    3. Select each [document element types](/ui/document-elements#element-type) that you want generative OCR to process. For this 
+    3. Select each [document element type](/ui/document-elements#element-type) that you want generative OCR to process. For this 
         walkthrough, select only **NarrativeText**.
     
     Generative OCR does not process the text of any `Image` or `Table` elements if they have already been processed by 
     [image description](#image-description-task) or [table description](#table-description-task) enrichments, respectively. Do 
     not remove the **Image** or **Table** document elements types from this **Extract Image Block Types** list, or else 
-    the image description and table description enrichments in your workflow might produce unexepcted results or might not work at all.
+    the image description and table description enrichments in your workflow might produce unexpected results or might not work at all.
 </Warning>
 
 <Note>
-    The **Generative OCR** enrichment appears under the **Input Type** of **Image**, even though this is not an image-related enrichment. 
-    This is a known issue and will be addressed in a future release. 
-</Note>
+    You can change a workflow's generative OCR settings only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.
 
-<Note>
-    You can change a workflow's image description settings only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.
-
-    For workflows that use [chunking](/ui/chunking), the **Chunker** node should be placed after all **Enrichment** nodes. Placing the 
-    **Chunker** node before an image descriptions **Enrichment** node could cause incomplete or no image descriptions to be generated.
+    For workflows that use [chunking](/ui/chunking), the **Chunker** node should be placed after all enrichment nodes. Placing the 
+    **Chunker** node before an image descriptions enrichment node could cause incomplete or no image descriptions to be generated.
 </Note>
 
 <EnrichmentOCRHiResOnly />

@@ -174,13 +174,14 @@ Any embeddings that are produced after these summaries are generated will be bas
 import EnrichmentImageSummaryHiResOnly from '/snippets/general-shared-text/enrichment-image-summary-hi-res-only.mdx';
 import DeprecatedModelsUI from '/snippets/general-shared-text/deprecated-models-ui.mdx';
 
-To generate image descriptions, in an **Enrichment** node in a workflow, select **Image**, and then choose one of the available provider (and model) combinations that are shown.
+To generate image descriptions, add an **Image Description** node to your workflow by clicking **+** in the workflow editor, and then click **Enrich > Image Description**. 
+Be sure also to select one of the available provider (and model) combinations that are shown.
 
 <Note>
     You can change a workflow's image description settings only through [Custom](/ui/workflows#create-a-custom-workflow) workflow settings.
 
-    For workflows that use [chunking](/ui/chunking), the **Chunker** node should be placed after all **Enrichment** nodes. Placing the 
-    **Chunker** node before an image descriptions **Enrichment** node could cause incomplete or no image descriptions to be generated.
+    For workflows that use [chunking](/ui/chunking), the **Chunker** node should be placed after all enrichment nodes. Placing the 
+    **Chunker** node before an image description enrichment node could cause incomplete or no image descriptions to be generated.
 </Note>
 
 <DeprecatedModelsUI />
