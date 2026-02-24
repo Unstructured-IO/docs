@@ -116,6 +116,9 @@ You can also use the [Unstructured API](/api-reference/overview) to do this, as 
 - Create and manage webhooks at the workflow level, known as a _workflow-scoped notification channel_. This allows any job that is associated only with 
   the target workflow to trigger the webhook. This can be useful for example for emailing a department's data analyst that a long-running job for a specific workflow 
   has now completed, allowing them to begin working with the latest output. 
+- Create, get, and rotate the secret for a webhook. Whenever a webhook is created, a secret is generated for it. You can verify this secret 
+  to check whether the webhook originated from Unstructured, if you need to make sure. If you suspect that the original secret was somehow 
+  compromised, you can rotate the secret to a new value. 
 - Manage notifications. Whenever a webhook is triggered, the act of Unstructured sending the event data payload is called a 
   _notification_. You can get a count or a list of these notifications. You can also mark them as read after 
   you have processed them according to your organization's needs. Marking a notification as read can help you keep track of 
