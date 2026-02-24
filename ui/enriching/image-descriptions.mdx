@@ -148,6 +148,79 @@ Here is an example. Line breaks have been inserted here for readability. The out
 }
 ```
 
+For images of data plot graphs (for example bar charts, line charts, pie charts, and scatter plots), 
+the `text` field will contain a `type` of `graph`; `description` containing a summary of the graph, 
+`data` containing numerical values that can be used to regenerate the graph, and `texts` containing 
+the text strings found in the graph. 
+Here is an example. Line breaks have been inserted here for readability. The output will not contain these line breaks.
+
+![Example of a data-plot-graph](/img/enriching/Data-Plot-Graph-Example.png)
+
+```json
+{
+  "type": "Image",
+  "element_id": "322b067931bc59555ae95dbb63ab9b78",
+  "text": "{
+    \"type\": \"graph\",
+    \"description\": \"This is a comprehensive comparison chart showing 6 different 
+      metrics across 7 machine learning models (RF, FFNN, LSTM, MHA, GCN, GCN+MHA, 
+      MT+GCN+MHA) represented by different colored bars. The metrics include 
+      PAVIS-TW-MSE, PAVIS-LS-MSE, PAVIS-EL@ACC 1, Trainable Parameters, Training 
+      Time, and Inference Time. The models are categorized into paradigms: SNN (blue), 
+      TNN (green), ReNN (orange), TReNN (purple), and MT-TReNN (red). Key trends show 
+      RF and FFNN having higher MSE values but faster inference times, while more 
+      complex models like MT+GCN+MHA achieve better accuracy but require more parameters 
+      and training time.\", 
+    \"data\": {
+      \"PAVIS-TW-MSE\": {
+        \"RF\": 1.222, \"FFNN\": 1.039, \"LSTM\": 0.817, \"MHA\": 0.790, \"GCN\": 0.800, 
+          \"GCN+MHA\": 0.768, \"MT+GCN+MHA\": 0.760
+      }, 
+      \"PAVIS-LS-MSE\": {
+        \"RF\": 0.763, \"FFNN\": 0.878, \"LSTM\": 0.649, \"MHA\": 0.611, \"GCN\": 0.596, 
+        \"GCN+MHA\": 0.551, \"MT+GCN+MHA\": 0.549
+      }, 
+      \"PAVIS-EL@ACC 1\": {
+        \"RF\": 79.54, \"FFNN\": 77.05, \"LSTM\": 80.69, \"MHA\": 82.10, \"GCN\": 83.39, 
+        \"GCN+MHA\": 85.95, \"MT+GCN+MHA\": 85.98
+      }, 
+      \"Trainable Parameters\": {
+        \"RF\": 328050, \"FFNN\": 237790, \"LSTM\": 264516, \"MHA\": 318941, \"GCN\": 221886, 
+        \"GCN+MHA\": 324018, \"MT+GCN+MHA\": 99638
+      }, 
+      \"Training Time\": {
+        \"RF\": 17968, \"FFNN\": 1447, \"LSTM\": 1985, \"MHA\": 2502, \"GCN\": 1620, 
+        \"GCN+MHA\": 2808, \"MT+GCN+MHA\": 748
+      }, 
+      \"Inference Time\": {
+        \"RF\": 190, \"FFNN\": 35, \"LSTM\": 75, \"MHA\": 79, \"GCN\": 69, 
+        \"GCN+MHA\": 108, \"MT+GCN+MHA\": 18
+      }
+    }, 
+    \"texts\": \"PAVIS - TW - MSE (↓) PAVIS - LS - MSE (↓) PAVIS - EL@ACC 1 (↑) Paradigm 
+      SNN TNN ReNN TReNN MT-TReNN 1.222 1.039 0.817 0.790 0.800 0.768 0.760 RF FFNN LSTM 
+      MHA GCN GCN+MHA MT+GCN+MHA 0.763 0.878 0.649 0.611 0.596 0.551 0.549 RF FFNN LSTM 
+      MHA GCN GCN+MHA MT+GCN+MHA 79.54 77.05 80.69 82.10 83.39 85.95 85.98 RF FFNN LSTM 
+      MHA GCN GCN+MHA MT+GCN+MHA Trainable Parameters (↓) Training Time (ms/epoch) (↓) 
+      Inference Time (ms) (↓) 328050 237790 264516 318941 221886 324018 99638 RF FFNN LSTM 
+      MHA GCN GCN+MHA MT+GCN+MHA 17968 1447 1985 2502 1620 2808 748 RF FFNN LSTM 
+      MHA GCN GCN+MHA MT+GCN+MHA 190 35 75 79 69 108 18 RF FFNN 
+      LSTM MHA GCN GCN+MHA MT+GCN+MHA\"
+  }",
+  "metadata": {
+    "filetype": "application/pdf",
+    "languages": [
+      "eng"
+    ],
+    "page_number": 17,
+    "image_base64": "/9j...<full results omitted for brevity>...//Z",
+    "image_mime_type": "image/jpeg",
+    "filename": "250713305v1-48da34f2.pdf",
+    "data_source": {}
+  }
+}
+```
+
 <Note>
     The `image_base64` field is generated only for documents or PDF pages that are [partitioned](/ui/partitioning) by using the High Res strategy. This field is not generated for 
     documents or PDF pages that are partitioned by using the Fast or VLM strategy.
