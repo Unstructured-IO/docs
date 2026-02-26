@@ -1,0 +1,884 @@
+---
+title: Webhooks
+---
+
+A _webhook_ is a common technique that allows a _sender_ to automatically send data to a _receiver_ based on events that happen in the sender. 
+Some common uses for webhooks include sending real-time notifications such as emails, pages, or alerts to messaging apps; automatically 
+triggering build, test, or deployment workflows in CI/CD pipelines; launching downstream data synchronization updates; or triggering agentic AI workflows. 
+
+For Unstructured webhooks, Unstructured is the sender, 
+and your solution is the receiver. Some popular receiver solutions include 
+[AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/urls-webhook-tutorial.html), 
+[Azure Functions](https://learn.microsoft.com/azure/azure-functions/functions-bindings-http-webhook), 
+[Google Cloud Run](https://docs.cloud.google.com/run/docs/triggering/webhooks), 
+[Zapier](https://zapier.com/blog/what-are-webhooks/), 
+[Slack](https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks/), 
+[Svix](https://svix.com), and 
+[Webhook.site](https://webhook.site/).
+
+The receiver provides a unique URL, called the 
+_webhook URL_, to receive the data that Unstructured sends. 
+Behind the scenes, when specific events happen in Unstructured, Unstructured then automatically calls the webhook URL by using an HTTP POST operation and 
+passes payloads of data in JSON format related to those events to the receiver. The receiver then processes the payload and can decide 
+what to do with the data from there.
+
+Because webhooks are event-driven, some event must first be triggered to begin generating the related data to be sent. In 
+Unstructured, these webhooks can be triggered whenever a [job](/api-reference/workflow/jobs) that is associated with its target [workflow](/api-reference/workflow/workflows) does 
+one or more of the following:
+
+- Is scheduled to start running later (programmatically, an event type of `job.scheduled`)
+- Has begun running (`job.in_progress`)
+- Has stopped running (`job.stopped`)
+- Has failed to successfully complete (`job.failed`) - less than 90% of the job's files or data were successfully processed.
+- Has successfully completed (`job.completed`) - 90% or more of the job's files or data were successfully processed.
+
+When a webhook is configured to deliver event-driven notification data payloads from a sender to a receiver, this configuration 
+is called a _notification channel_. For Unstructured webhooks, notification channels can be created and managed at the following levels:
+
+- At the **workspace** level, known as a _workspace-scoped notification channel_. This allows any job that is associated with a 
+  workspace in an Unstructured account to trigger the webhook. This can be useful for example for routing pager requests to a team of on-call engineers in an 
+  IT operations center whenever any job fails across the workspace.
+
+  <Note>
+    Each **Let's Go** or **Pay-As-You-Go** account has one and only one workspace.
+
+    An Unstructured **Business** account can have multiple workspaces.
+  </Note>
+
+- At the **workflow** level, known as a _workflow-scoped notification channel_. This allows any job that is associated only with 
+  the target workflow in an Unstructured account to trigger the webhook. This can be useful for example for emailing a department's data analyst that a long-running job for a specific workflow 
+  has now completed, allowing them to begin working with the latest output.
+
+Whenever a notification channel is created, a secret is generated for it. You can have Unstructured generate this secret's value for you, 
+or you can specify this secret's value yourself. You can get this secret's value and then [verify this secret](https://docs.svix.com/receiving/verifying-payloads/how) 
+to check whether the notification channel's webhook originated from Unstructured. If you suspect that the original secret was somehow 
+compromised, you can rotate this secret to a new value. 
+
+Whenever a webhook is triggered, the act of Unstructured sending the event data payload is called a 
+_notification_. You can get a count or a list of these notifications. You can also mark them in your Unstructured account as read after 
+you have processed them according to your organization's needs. Marking a notification as read can help you keep track of 
+which notifications you have already dealt with and which ones you still need to take action on.
+
+<Info>
+  The Unstructured user interface (UI) allows limited creation, viewing, and managing of webhooks only, as follows ([learn how](/ui/webhooks)):
+
+  - Webhooks for a personal Unstructured workspace. Each personal Unstructured account has one and only one personal Unstructured workspace.
+  - Webhooks for a workspace within an Unstructured **Business** account.
+
+  You cannot use the Unstructured UI to create, view, or manage notifications or workflow-level webhooks.
+</Info>
+
+## Requirements
+
+To create, view, and manage webhooks, Unstructured provides a set of Representational State Transfer (REST) endpoints. You can 
+call these endpoints through standard REST-enabled utilities, tools, programming languages, packages, and libraries. 
+The examples, shown later on this page, describe how to call the Unstructured API's webhook operations with 
+`curl` and Postman. You can adapt this information as needed for your preferred programming languages and libraries, 
+for example by using the `requests` library with Python.
+
+To call the Unstructured API's webhook operations, you must have an Unstructured API URL and a valid Unstructured API key.
+
+To get your Unstructured API URL, do the following:
+
+import GetStartedAPIURLOnly from '/snippets/general-shared-text/get-started-api-url-only.mdx';
+
+<GetStartedAPIURLOnly/>
+
+To get your Unstructured API key, do the following:
+
+import GetStartedSimpleAPIOnly from '/snippets/general-shared-text/get-started-simple-api-only.mdx';
+
+<GetStartedSimpleAPIOnly/>
+
+In the following examples, the API URL and API key are represented by the following placeholders, respectively:
+
+- `UNSTRUCTURED_API_URL`
+- `UNSTRUCTURED_API_KEY`
+
+<Tip>
+  Each Unstructured API key works with one and only one workspace (and the workflows within that workspace). Make sure you are using the right API key 
+  for your target workspace!
+</Tip>
+
+To learn how to set these placeholders as variables, see the `curl` or Postman documentation.
+
+## Create a workspace-scoped notification channel
+
+To create a notification channel that is used for all corresponding events across a workspace, 
+call the `POST /notifications/channels` operation.
+
+In the following examples, replace the following placeholders:
+
+- Replace `<webhook-url>` with your receiver's webhook URL.
+- Replace `<event-type>` with the programmatic name of the event that you want to trigger. To allow multiple 
+  events to be triggered, add multiple `<event-type>` entries. For the list of 
+  available event types, see this article's introductory section.
+- Replace `<description>` with some meaningful description of the notification channel, for your own reference.
+- Optionally, replace `<secret>` with a Base64-encoded string to serve as the secret for the notification channel. If you do not provide a secret, a random secret will be generated for you.
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'POST' --location \
+        "$UNSTRUCTURED_API_URL/notifications/channels" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header 'accept: application/json' \
+        --data \
+        '{
+           "channel_type": "webhook",
+           "url": "<webhook-url>",
+           "event_types": [
+             "<event-type>",
+             "<event-type>"
+           ],
+           "description": "<description>",
+           "secret": "<secret>"
+        }'
+        ``` 
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/notifications/channels
+           ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+           - **Key**: `accept`, **Value**: `application/json`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify the settings for the notification channel:
+
+            ```json
+            {
+                "channel_type": "webhook",
+                "url": "<webhook-url>",
+                "event_types": [
+                  "<event-type>",
+                  "<event-type>"
+                ],
+                "description": "<description>"
+            }
+            ```
+
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## List all workspace-scoped notification channels
+
+To get a list of all notification channels that are used for all corresponding events across a workspace, 
+call the `GET /notifications/channels` operation.
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'GET' --location \
+        "$UNSTRUCTURED_API_URL/notifications/channels?channel_type=webhook" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ``` 
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/notifications/channels
+           ```
+
+        3. On the **Params** tab, enter the following query parameter:
+
+           - **Key**: `channel_type`, **Value**: `webhook`
+
+        4. On the **Headers** tab, enter the following header:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Get a workspace-scoped notification channel
+
+To get information about a notification channel that is used for all corresponding events across a workspace, 
+call the `GET /notifications/channels/<channel-id>` operation.
+
+In the following examples, replace `<channel-id>` with the workspace-scoped notification channel's unique ID. 
+To get this ID, see [List all workspace-scoped notification channels](#list-all-workspace-scoped-notification-channels).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'GET' --location \
+        "$UNSTRUCTURED_API_URL/notifications/channels/<channel-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/notifications/channels/<channel-id>
+           ```
+
+        3. On the **Headers** tab, enter the following header:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Get the secret for a workspace-scoped notification channel
+
+To get the secret for a notification channel that is used for all corresponding events across a workspace, 
+call the `GET /notifications/channels/<channel-id>/secret` operation.
+
+In the following examples, replace `<channel-id>` with the workspace-scoped notification channel's unique ID. 
+To get this ID, see [List all workspace-scoped notification channels](#list-all-workspace-scoped-notification-channels).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'GET' --location \
+        "$UNSTRUCTURED_API_URL/notifications/channels/<channel-id>/secret" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/notifications/channels/<channel-id>/secret
+           ```
+
+        3. On the **Headers** tab, enter the following header:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Rotate the secret for a workspace-scoped notification channel
+
+To rotate the secret for a notification channel that is used for all corresponding events across a workspace, 
+call the `POST /notifications/channels/<channel-id>/secret/rotate` operation.
+
+In the following examples, replace `<channel-id>` with the workspace-scoped notification channel's unique ID. 
+To get this ID, see [List all workspace-scoped notification channels](#list-all-workspace-scoped-notification-channels).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'POST' --location \
+        "$UNSTRUCTURED_API_URL/notifications/channels/<channel-id>/secret/rotate" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/notifications/channels/<channel-id>/secret/rotate
+           ```
+
+        3. On the **Headers** tab, enter the following header:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Update a workspace-scoped notification channel
+
+To change the settings of a notification channel that is used for all corresponding events across a workspace, 
+call the `PATCH /notifications/channels/<channel-id>` operation.
+
+In the following examples, replace the following placeholders:
+
+- Replace `<channel-id>` with the workspace-scoped notification channel's unique ID. 
+  To get this ID, see [List all workspace-scoped notification channels](#list-all-workspace-scoped-notification-channels).
+- Replace any or all of the following settings with the new settings you want to use for the notification channel:
+
+  - `<webhook-url>`: Your receiver's webhook URL.
+  - `<event-type>`: The programmatic name of the event that you want to trigger. To allow multiple 
+    events to be triggered, add multiple `<event-type>` entries. For the list of 
+    available event types, see this article's introductory section.
+  - `<description>`: Some meaningful description of the notification channel, for your own reference.
+  - For `enabled`: Set to true to enable the notification channel, or false to disable it.
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'PATCH' --location \
+        "$UNSTRUCTURED_API_URL/notifications/channels/<channel-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header 'content-type: application/json' \
+        --data \
+        '{
+           "url": "<webhook-url>",
+           "event_types": [
+             "<event-type>",
+             "<event-type>"
+           ],
+           "description": "<description>",
+           "enabled": "<true|false>"
+        }'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **PATCH**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/notifications/channels/<channel-id>
+           ```
+
+        3. On the **Headers** tab, enter the following header:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify any settings to change for the notification channel:
+
+            ```json
+            {
+              "url": "<webhook-url>",
+              "event_types": [
+                "<event-type>",
+                "<event-type>"
+              ],
+              "description": "<description>",
+              "enabled": "<true|false>"
+            }
+            ```
+
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Delete a workspace-scoped notification channel
+
+<Warning>
+  Deleting a workspace-scoped notification channel is a permanent action and is not recoverable.
+</Warning>
+
+To delete a notification channel that is used for all corresponding events across a workspace, 
+call the `DELETE /notifications/channels/<channel-id>` operation.
+
+In the following examples, replace `<channel-id>` with the workspace-scoped notification channel's unique ID. 
+To get this ID, see [List all workspace-scoped notification channels](#list-all-workspace-scoped-notification-channels).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'DELETE' --location \
+        "$UNSTRUCTURED_API_URL/notifications/channels/<channel-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **DELETE**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/notifications/channels/<channel-id>
+           ```
+
+        3. On the **Headers** tab, enter the following header:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Create a workflow-scoped notification channel
+
+To create a notification channel that is used only for a specific workflow, 
+call the `POST /workflows/<workflow-id>/notifications/channels` operation.
+
+In the following examples, replace the following placeholders:
+
+- Replace `<workflow-id>` with the workflow's unique ID. 
+  To get this ID, see [List workflows](/api-reference/workflow/overview#list-workflows).
+- Replace `<webhook-url>` with your receiver's webhook URL.
+- Replace `<event-type>` with the programmatic name of the event that you want to trigger. To allow multiple 
+  events to be triggered, add multiple `<event-type>` entries. For the list of 
+  available event types, see this article's introductory section.
+- Replace `<description>` with some meaningful description of the notification channel, for your own reference.
+- Optionally, replace `<secret>` with a Base64-encoded string to serve as the secret for the notification channel. If you do not provide a secret, a random secret will be generated for you.
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'POST' --location \
+        "$UNSTRUCTURED_API_URL/workflows/<workflow-id>/notifications/channels" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header 'accept: application/json' \
+        --data \
+        '{
+           "channel_type": "webhook",
+           "url": "<webhook-url>",
+           "event_types": [
+             "<event-type>",
+             "<event-type>"
+           ],
+           "description": "<description>",
+           "secret": "<secret>"
+        }'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>/notifications/channels
+           ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+           - **Key**: `accept`, **Value**: `application/json`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify the settings for the notification channel:
+
+            ```json
+            {
+                "channel_type": "webhook",
+                "url": "<webhook-url>",
+                "event_types": [
+                  "<event-type>",
+                  "<event-type>"
+                ],
+                "description": "<description>"
+            }
+            ```
+
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## List all workflow-scoped notification channels
+
+To get a list of all notification channels that are used only for a specific workflow, 
+call the `GET /workflows/<workflow-id>/notifications/channels` operation.
+
+In the following examples, replace `<workflow-id>` with the workflow's unique ID. 
+To get this ID, see [List workflows](/api-reference/workflow/overview#list-workflows).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'GET' --location \
+        "$UNSTRUCTURED_API_URL/workflows/<workflow-id>/notifications/channels?channel_type=webhook" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ``` 
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>/notifications/channels
+           ```
+
+        3. On the **Params** tab, enter the following query parameter:
+
+           - **Key**: `channel_type`, **Value**: `webhook`
+
+        4. On the **Headers** tab, enter the following header:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Get a workflow-scoped notification channel
+
+To get information about a notification channel that is used only for a specific workflow, 
+call the `GET /workflows/<workflow-id>/notifications/channels/<channel-id>` operation.
+
+In the following examples, replace the following placeholders:
+
+- Replace `<workflow-id>` with the workflow's unique ID. 
+  To get this ID, see [List workflows](/api-reference/workflow/overview#list-workflows).
+- Replace`<channel-id>` with the workspace-scoped notification channel's unique ID. 
+  To get this ID, see [List all workflow-scoped notification channels](#list-all-workflow-scoped-notification-channels).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'GET' --location \
+        "$UNSTRUCTURED_API_URL/workflows/<workflow-id>/notifications/channels/<channel-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>/notifications/channels/<channel-id>
+           ```
+
+        3. On the **Headers** tab, enter the following header:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Get the secret for a workflow-scoped notification channel
+
+To get the secret for a notification channel that is used only for a specific workflow, 
+call the `GET /workflows/<workflow-id>/notifications/channels/<channel-id>/secret` operation.
+
+In the following examples, replace the following placeholders:
+
+- Replace `<workflow-id>` with the workflow's unique ID. 
+  To get this ID, see [List workflows](/api-reference/workflow/overview#list-workflows).
+- Replace`<channel-id>` with the workspace-scoped notification channel's unique ID. 
+  To get this ID, see [List all workflow-scoped notification channels](#list-all-workflow-scoped-notification-channels).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'GET' --location \
+        "$UNSTRUCTURED_API_URL/workflows/<workflow-id>/notifications/channels/<channel-id>/secret" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>/notifications/channels/<channel-id>/secret
+           ```
+
+        3. On the **Headers** tab, enter the following header:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Rotate the secret for a workflow-scoped notification channel
+
+To rotate the secret for a notification channel that is used only for a specific workflow, 
+call the `POST /workflows/<workflow-id>/notifications/channels/<channel-id>/secret/rotate` operation.
+
+In the following examples, replace the following placeholders:
+
+- Replace `<workflow-id>` with the workflow's unique ID. 
+  To get this ID, see [List workflows](/api-reference/workflow/overview#list-workflows).
+- Replace`<channel-id>` with the workspace-scoped notification channel's unique ID. 
+  To get this ID, see [List all workflow-scoped notification channels](#list-all-workflow-scoped-notification-channels).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'POST' --location \
+        "$UNSTRUCTURED_API_URL/workflows/<workflow-id>/notifications/channels/<channel-id>/secret/rotate" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>/notifications/channels/<channel-id>/secret/rotate
+           ```
+
+        3. On the **Headers** tab, enter the following header:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Update a workflow-scoped notification channel
+
+To change the settings of a notification channel that is used only for a specific workflow, 
+call the `PATCH /workflows/<workflow-id>/notifications/channels/<channel-id>` operation.
+
+In the following examples, replace the following placeholders:
+
+- Replace `<workflow-id>` with the workflow's unique ID. 
+  To get this ID, see [List workflows](/api-reference/workflow/overview#list-workflows).
+- Replace`<channel-id>` with the workspace-scoped notification channel's unique ID. 
+  To get this ID, see [List all workflow-scoped notification channels](#list-all-workflow-scoped-notification-channels).
+- Replace any or all of the following settings with the new settings you want to use for the notification channel:
+
+  - `<webhook-url>`: Your receiver's webhook URL.
+  - `<event-type>`: The programmatic name of the event that you want to trigger. To allow multiple 
+    events to be triggered, add multiple `<event-type>` entries. For the list of 
+    available event types, see this article's introductory section.
+  - `<description>`: Some meaningful description of the notification channel, for your own reference.
+  - For `enabled`: Set to true to enable the notification channel, or false to disable it.
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'PATCH' --location \
+        "$UNSTRUCTURED_API_URL/workflows/<workflow-id>/notifications/channels/<channel-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header 'content-type: application/json' \
+        --data \
+        '{
+           "url": "<webhook-url>",
+           "event_types": [
+             "<event-type>",
+             "<event-type>"
+           ],
+           "description": "<description>",
+           "enabled": "<true|false>"
+        }'
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **PATCH**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>/notifications/channels/<channel-id>
+           ```
+
+        3. On the **Headers** tab, enter the following header:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify any settings to update for the notification channel:
+
+            ```json
+            {
+              "url": "<webhook-url>",
+              "event_types": [
+                "<event-type>",
+               "<event-type>"
+              ],
+              "description": "<description>",
+              "enabled": "<true|false>"
+            }
+            ```
+
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Delete a workflow-scoped notification channel
+
+<Warning>
+  Deleting a workflow-scoped notification channel is a permanent action and is not recoverable.
+</Warning>
+
+To delete a notification channel that is used only for a specific workflow, 
+call the `DELETE /workflows/<workflow-id>/notifications/channels/<channel-id>` operation.
+
+In the following examples, replace the following placeholders:
+
+- Replace `<workflow-id>` with the workflow's unique ID. 
+  To get this ID, see [List workflows](/api-reference/workflow/overview#list-workflows).
+- Replace`<channel-id>` with the workflow-scoped notification channel's unique ID. 
+  To get this ID, see [List all workflow-scoped notification channels](#list-all-workflow-scoped-notification-channels).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'DELETE' --location \
+        "$UNSTRUCTURED_API_URL/notifications/channels/<channel-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **DELETE**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/notifications/channels/<channel-id>
+           ```
+
+        3. On the **Headers** tab, enter the following header:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## List all notifications for a workspace
+
+To list all notifications for a workspace, call the `GET /notifications` operation.
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'GET' --location \
+        "$UNSTRUCTURED_API_URL/notifications" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ``` 
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/notifications
+           ```
+
+        3. On the **Headers** tab, enter the following header:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Get a notification
+
+To get information about a notification for a workspace, 
+call the `GET /notifications/<notification-id>` operation.
+
+In the following examples, replace `<notification-id>` with the notification's unique ID. 
+To get this ID, see [List all notifications for a workspace](#list-all-notifications-for-a-workspace).
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'GET' --location \
+        "$UNSTRUCTURED_API_URL/notifications/<notification-id>" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/notifications/<notification-id>
+           ```
+
+        3. On the **Headers** tab, enter the following header:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Mark notifications as read
+
+To mark any number of notifications as read, 
+call the `GET /notifications/mark-read` operation.
+
+In the following examples, replace the following placeholders:
+
+- Replace `<webhook-url>` with your receiver's webhook URL.
+- Replace `<notification-id>` with the unique ID of the notification that you want to mark as read. To allow multiple 
+  notifications to be marked as read, add multiple `<notification-id>` entries. To get these IDs, see [List all notifications for a workspace](#list-all-notifications-for-a-workspace).
+- Replace `<before>` to mark all notifications sent before the specified timestamp as read. The value must be a valid ISO 8601 timestamp in the 
+  format `YYYY-MM-DDTHH:MM:SSZ`, for example `2024-09-19T15:45:30Z`.
+- For `mark_all`, set to `true` to mark all notifications as read.
+- Replace `<workflow-id>` with the unique ID of the workflow that the notification is associated with.
+  To get this ID, see [List workflows](/api-reference/workflow/overview#list-workflows).
+- Only one of the following can be specified: `notification_ids`, `before`, or `mark_all`.
+- If you specify `workflow_id`, you must also specify `before` or `mark_all`.
+
+This results in the following behaviors:
+
+- If you specify `notification_ids` only, it will mark all notifications with the specified IDs as read.
+- If you specify `before` only, it will mark all notifications created in the workspace before the specified timestamp as read.
+- If you specify `mark_all` only, it will mark at the time of the API call all existing notifications in the workspace as read.
+- If you specify `workflow_id` and `before`, it will mark all notifications created before the specified timestamp for the specified workflow as read.
+- If you specify `workflow_id` and `mark_all`, it will mark at the time of the API call all existing notifications associated with the specified workflow as read.
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'POST' --location \
+        "$UNSTRUCTURED_API_URL/notifications/mark-read" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+        --header 'accept: application/json' \
+        --data \
+        '{
+           "notification_ids": [
+             "<notification-id>",
+             "<notification-id>"
+           ],
+           "before": "<before>",
+           "mark_all": "true",
+           "workflow_id": "<workflow-id>"
+        }'
+        ``` 
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **POST**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/notifications/mark-read
+           ```
+
+        3. On the **Headers** tab, enter the following headers:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+           - **Key**: `accept`, **Value**: `application/json`
+
+        4. On the **Body** tab, select **raw** and **JSON**, and specify the settings for the notification channel:
+
+            ```json
+            {
+              "notification_ids": [
+                "<notification-id>",
+                "<notification-id>"
+              ],
+              "before": "<epoch-timestamp>",
+              "mark_all": "true",
+              "workflow_id": "<workflow-id>"
+            }
+            ```
+
+        5. Click **Send**.
+    </Accordion>
+</AccordionGroup>
+
+## Get a count of all unread notifications for a workspace
+
+To get a count of all unread notifications for a workspace, call the `GET /notifications/count` operation.
+
+<AccordionGroup>
+    <Accordion title="curl">
+        ```bash
+        curl --request 'GET' --location \
+        "$UNSTRUCTURED_API_URL/notifications/count" \
+        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
+        ```
+    </Accordion>
+    <Accordion title="Postman">
+        1. In the method drop-down list, select **GET**.
+        2. In the address box, enter the following URL:
+
+           ```text
+           {{UNSTRUCTURED_API_URL}}/notifications/count
+           ```
+
+        3. On the **Headers** tab, enter the following header:
+
+           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
+
+        4. Click **Send**.
+    </Accordion>
+</AccordionGroup>

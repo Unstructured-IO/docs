@@ -1,0 +1,128 @@
+---
+title: Webhooks
+---
+
+A _webhook_ is a common technique that allows a _sender_ to automatically send data to a _receiver_ based on events that happen in the sender. 
+Some common uses for webhooks include sending real-time notifications such as emails, pages, or alerts to messaging apps; automatically 
+triggering build, test, or deployment workflows in CI/CD pipelines; launching downstream data synchronization updates; or triggering agentic AI workflows. 
+
+For Unstructured webhooks, Unstructured is the sender, 
+and your solution is the receiver. Some popular receiver solutions include 
+[AWS Lambda](https://docs.aws.amazon.com/lambda/latest/dg/urls-webhook-tutorial.html), 
+[Azure Functions](https://learn.microsoft.com/azure/azure-functions/functions-bindings-http-webhook), 
+[Google Cloud Run](https://docs.cloud.google.com/run/docs/triggering/webhooks), 
+[Zapier](https://zapier.com/blog/what-are-webhooks/), 
+[Slack](https://docs.slack.dev/messaging/sending-messages-using-incoming-webhooks/), 
+[Svix](https://svix.com), and 
+[Webhook.site](https://webhook.site/).
+
+Your solution provides a unique URL, called the 
+_webhook URL_, to receive the data that Unstructured sends. 
+Behind the scenes, when specific events happen in Unstructured, Unstructured then automatically calls the webhook URL and 
+passes to this webhook URL payloads of data in JSON format related to those events. The receiver then processes these payloads and can decide 
+what to do with the data from there.
+
+Because webhooks are event-driven, some event must first be triggered to begin generating the related data to be sent. In 
+Unstructured, these webhooks can be triggered whenever a [job](/ui/jobs) that is associated with its target [workflow](/ui/workflows) does 
+one or more of the following:
+
+- Is scheduled to start running later (in the user interface, **Job scheduled**)
+- Has begun running  (**Job in progress**)
+- Has stopped running (**Job stopped**)
+- Has failed to successfully complete (**Job failed**) - less than 90% of the job's files or data were successfully processed.
+- Has successfully completed (**Job completed**) - 90% or more of the job's files or data were successfully processed.
+
+You can use the Unstructured user interface (UI) to create and manage webhooks in your Unstructured personal account, or for a 
+[workspace](/ui/account/workspaces) within an Unstructured **Business** account. This allows any job that is associated with any workflow across this scope 
+to trigger the webhook. This can be useful for example for routing pager requests to a team of on-call engineers in an IT operations center 
+whenever any job fails within the given scope.
+
+## View your personal account webhooks
+
+To view the webhooks for your Unstructured personal account, do the following:
+
+1. If you are not already signed in, sign in to your Unstructured account.
+2. If you have an Unstructured **Business** account, in the top navigation bar's account selector, select **Personal Account**.
+3. In the sidebar, click your user icon, and then click **Account Settings**.
+4. In the top navigation bar, click the **Webhooks** tab.
+
+The webhooks for your personal account are displayed.
+
+## View workspace webhooks
+
+To view the webhooks for a workspace within an Unstructured **Business** account, do the following:
+
+1. If you are not already signed in, sign in to your Unstructured account.
+2. In the top navigation bar, in the account selector, select the account for your target workspace.
+3. Next to the account selector, in the workspace selector, select your target workspace.
+4. In the sidebar, click the **Settings** (gear) icon, and then click **Manage Workspace**.
+5. Below the top navigation bar, click the **Webhooks** tab.
+
+The webhooks for this workspace are displayed.
+
+## Create a webhook
+
+To create a webhook that sends notifications for all specified events within the selected scope, regardless of the 
+resource that triggers the event, do the following:
+
+1. If you are not already signed in, sign in to your Unstructured account.
+2. [View your personal account webhooks](#view-your-personal-account-webhooks) or 
+   [view workspace webhooks](#view-workspace-webhooks), depending on the scope of the webhook you want to create.
+3. Click **Add Webhook +**.
+4. In the **Webhook Setup** dialog, for **Webhook URL**, enter the target receiver's webhook URL.
+5. Optionally, for **Description**, enter a meaningful description of the webhook, for your own reference.
+6. For **Select Events**, click one or more of the available events that you want to Unstructured to send a notification for. 
+   For more information about the list of available events, see this article's introductory section.
+7. Click **Save Webhook**.
+
+The new webhook is created and appears in the list of available webhooks.
+
+## Change a webhook's settings
+
+To change the settings for an existing webhook, do the following:
+
+1. If you are not already signed in, sign in to your Unstructured account.
+2. [View your personal account webhooks](#view-your-personal-account-webhooks) or 
+   [view workspace webhooks](#view-workspace-webhooks), depending on where the target webhook is located.
+3. In the list of available webhooks, click the name of the webhook you want to change the settings for.
+4. In the webhook's settings pane, make the desired changes. 
+5. When you are done making your changes, click **Save Changes**.
+
+The webhook's settings are updated, and the new settings begin taking effect.
+
+## Delete a webhook
+
+<Warning>
+  Deleting a webhook is a permanent action and is not recoverable.
+</Warning>
+
+To delete an existing webhook, do the following:
+
+1. If you are not already signed in, sign in to your Unstructured account.
+2. [View your personal account webhooks](#view-your-personal-account-webhooks) or 
+   [view workspace webhooks](#view-workspace-webhooks), depending on where the target webhook is located.
+3. In the list of available webhooks, click the name of the webhook you want to delete.
+4. In the webhook's settings pane, click **Delete Webhook**.
+
+The webhook is deleted, and event data will no longer be sent through this webhook.
+
+## Unstructured API support for webhooks
+
+The Unstructured user interface (UI) only supports the creation and management of webhooks in your Unstructured personal account, or for a 
+workspace within an Unstructured **Business** account.
+
+You can also use the [Unstructured API](/api-reference/overview) to do this, as well as:
+
+- Create and manage webhooks at the workflow level, known as a _workflow-scoped notification channel_. This allows any job that is associated only with 
+  the target workflow to trigger the webhook. This can be useful for example for emailing a department's data analyst that a long-running job for a specific workflow 
+  has now completed, allowing them to begin working with the latest output. 
+- Create, get, and rotate the secret for a webhook. Whenever a webhook is created, a secret is generated for it. You can verify this secret 
+  to check whether the webhook originated from Unstructured, if you need to make sure. If you suspect that the original secret was somehow 
+  compromised, you can rotate the secret to a new value. 
+- Manage notifications. Whenever a webhook is triggered, the act of Unstructured sending the event data payload is called a 
+  _notification_. You can get a count or a list of these notifications. You can also mark them as read after 
+  you have processed them according to your organization's needs. Marking a notification as read can help you keep track of 
+  which notifications you have already dealt with and which ones you still need to take action on.
+
+[Learn more](/api-reference/webhooks).
+
