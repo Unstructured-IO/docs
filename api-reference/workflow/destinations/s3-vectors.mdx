@@ -1,0 +1,59 @@
+---
+title: S3 Vectors
+---
+
+<Tip>
+    This article covers connecting Unstructured to Amazon S3 Vectors.
+    
+    For information about connecting Unstructured to Amazon S3 without support for Amazon S3 Vectors instead, see 
+    [S3](/api-reference/workflow/destinations/s3).
+</Tip>
+
+import FirstTimeAPIDestinationConnector from '/snippets/general-shared-text/first-time-api-destination-connector.mdx';
+
+<FirstTimeAPIDestinationConnector />
+
+Send processed data from Unstructured to Amazon S3 Vectors.
+
+The requirements are as follows.
+
+import s3VectorsPrerequisites from '/snippets/general-shared-text/s3-vectors.mdx';
+
+<s3VectorsPrerequisites />
+
+## Add an access policy to an existing S3 Vectors bucket
+
+import S3VectorsBucketPolicy from '/snippets/general-shared-text/s3-vectors-bucket-policy.mdx';
+
+<S3VectorsBucketPolicy />
+
+## Create an S3 Vectors bucket with AWS CloudFormation
+
+import S3VectorsBucketCloudFormation from '/snippets/general-shared-text/s3-vectors-cf-setup.mdx';
+
+<S3VectorsBucketCloudFormation />
+
+## Create an S3 Vectors bucket with the AWS CLI
+
+import S3VectorsBucketCLI from '/snippets/general-shared-text/s3-vectors-cli-setup.mdx';
+
+<S3VectorsBucketCLI />
+
+## Create the destination connector
+
+To create an S3 Vectorsdestination connector, see the following examples.
+
+import s3VectorsSDK from '/snippets/destination_connectors/s3-vectors_sdk.mdx';
+import s3VectorsAPIRESTCreate from '/snippets/destination_connectors/s3-vectors_rest_create.mdx';
+
+<CodeGroup>
+    <s3VectorsSDK />
+    <s3VectorsAPIRESTCreate />
+</CodeGroup>
+
+Replace the preceding placeholders as follows:
+
+import s3VectorsAPIPlaceholders from '/snippets/general-shared-text/s3-vectors-api-placeholders.mdx';
+
+<s3VectorsAPIPlaceholders />
+
