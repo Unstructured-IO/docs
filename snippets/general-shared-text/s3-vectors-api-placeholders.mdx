@@ -1,0 +1,11 @@
+- `<name>` (_required_) - A unique name for this connector.
+- `<region>` (_required_): The AWS Region (such as `us-east-1`) of the target Amazon S3 Vectors bucket.
+- `<key>` (_required_): The AWS access key ID for the target AWS IAM principal that has the appropriate access to the target bucket.
+- `<secret>` (_required_): The AWS secret access key for the corresponding AWS access key ID.
+- `<vector-bucket-name>` (_required_): The name of the target bucket.
+- `<index-name>` (_required_): The name of the target index in the bucket.
+- `<batch-size>`: The maximum number of vectors to generate a single batch. The maximum is `500`. The default is `100` if not otherwise specified.
+- `<key-prefix>`: Some string to prepend to each vector key. Prepending a string to each vector key can be useful for distinguishing between different 
+  datasets in the same bucket. 
+  Learn more about [vector keys](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-vectors.html). 
+  The default is to not prepend a string to each vector key, if this value is not otherwise specified.
