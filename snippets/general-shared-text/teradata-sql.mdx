@@ -36,8 +36,7 @@
 
   When Unstructured writes rows to a table, the table's columns must have a schema that is compatible with Unstructured. 
   Unstructured cannot provide a schema that is guaranteed to work for everyone in all circumstances. 
-  This is because these schemas will vary based on 
-  your source files' types; how you want Unstructured to partition, chunk, and generate embeddings; 
+  This is because these schemas will vary based on your source files' types; how you want Unstructured to partition, chunk, and generate embeddings; 
   any custom post-processing code that you run; and other factors.
 
   In any case, note the following about table schemas:
@@ -62,17 +61,33 @@
           to have Teradata generate the embeddings for you, instead of having Unstructured generate them.
     </Warning>
 
-  Here is an example table schema that is compatible with Unstructured. It includes all of the required and recommended columns, as 
+  If you specify a table name and it does not exist, Unstructured creates it with the standard schema. If a table name is not specified or already exists, Unstructured creates a table called `<unstructuredautocreated>` with the following schema:
+
+```sql
+CREATE MULTISET TABLE "elements"
+(
+  "id"         VARCHAR(256) NOT NULL,
+  "record_id"  VARCHAR(1024) NOT NULL,
+  "element_id" VARCHAR(256) NOT NULL,
+  "text"       CLOB CHARACTER SET UNICODE,
+  "type"       VARCHAR(256),
+  "metadata"   JSON
+)
+PRIMARY INDEX ("id");
+ ```
+  If you leave the table name blank, you must check the "Metadata as JSON" option in the UI or set `metadata_as_json` to "true" in the API.
+  
+  Here is a legacy example table schema that is compatible with Unstructured. It includes all of the required and recommended columns, as 
   well as a few additional columns that are typically output by Unstructured as part of the `metadata` field. Be sure to replace 
   `<database-name>` with the name of the target database and `<table-name>` with the name of the target table (by Unstructured convention, 
   the table name is typically `elements`, but this is not a requirement).
 
   ```sql
   CREATE SET TABLE "<database-name>"."<table-name>" (
-    "id" VARCHAR(64) NOT NULL,
+    "id" VARCHAR(256) NOT NULL,
     PRIMARY KEY ("id"),
-    "record_id" VARCHAR(64),
-    "element_id" VARCHAR(64),
+    "record_id" VARCHAR(1024),
+    "element_id" VARCHAR(256),
     "text" VARCHAR(32000) CHARACTER SET UNICODE,
     "type" VARCHAR(50),
     "embeddings" VARCHAR(64000), -- Add this column only if Unstructured is generating vector embeddings.
@@ -87,7 +102,7 @@
     "date_processed" VARCHAR(50),
     "permissions_data" VARCHAR(1000),
     "filesize_bytes" INTEGER,
-    "parent_id" VARCHAR(64)
+    "parent_id" VARCHAR(256)
   )
   ```
 
