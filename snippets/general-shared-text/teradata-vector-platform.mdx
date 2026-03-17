@@ -1,0 +1,13 @@
+Fill in the following fields:
+
+- **Host** (_required_): The hostname or IP address associated with the target Teradata Vantage database.
+- **User** (_required_): The name of the user who has the appropriate access to the database.
+- **Password** (_required_): The password for the user.
+- **Database**: The name of the target database. If not specified, the default database name is used. To get the name of the default database, you can run the Teradata SQL command `SELECT DATABASE;`.
+- **Base Url** (destination connector only): The name of the base URL for the Vector Store Analytics REST API.
+- **Vector Store Name** (_required_, destination connector only): The name of the vector store to which data is written. If the vector store does not exist, it is created automatically. Valid characters are alphanumeric characters and underscores only.
+- **Use Precomputed Embeddings** (destination connector only): Enable if your data already contains embedding vectors. If disabled, Teradata will generate embeddings automatically.
+- **Embedding Dimensions** (destination connector only): The dimension of embedding vectors.
+- **Batch Size** (destination connector only): The maximum number of rows per upload batch.  Batches of over 100,000 rows automatically use FastLoad.
+
+

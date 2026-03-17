@@ -1,0 +1,54 @@
+- A Teradata Vantage system that can be accessed by its host name or IP address.
+
+  For example, a Teradata Vantage system in Teradata ClearScape Analytics Experience includes:
+
+  - A Teradata ClearScape Analytics Experience account.
+  - An environment in the account.
+  - A Teradata Vantage database in the environment.
+  - The name and password for a Teradata user who has the appropriate access to the database.
+
+  [Learn how to create these in Teradata ClearScape Analytics Experience](https://developers.teradata.com/quickstarts/get-access-to-vantage/clearscape-analytics-experience/getting-started-with-csae/).
+
+- The system's corresponding host name or IP address.
+
+**?? Verify how to obtain parameters for vector store**
+
+  For example, you can get these values from Teradata ClearScape Analytics Experience as follows:
+
+  1. Sign in to your Teradata ClearScape Analytics Experience account.<br/>
+  2. On the sidebar, under **Environments**, click the name of the database's corresponding environment.<br/>
+  3. Under **Connection details for Vantage database**, use the **Host** value.<br/>
+
+- The name of the target database in the system. To get a list of available databases in the system, you can run a Teradata SQL query such as the following:
+
+  ```sql
+  SELECT DatabaseName 
+  FROM DBC.DatabasesV 
+  ORDER BY DatabaseName;
+  ```
+
+- The name of the Teradata user who has the appropriate access to the target database.
+
+  For example, you can get this from Teradata ClearScape Analytics Experience as follows:
+
+  1. Sign in to your Teradata ClearScape Analytics account.<br/>
+  2. On the sidebar, under **Environments**, click the name of the database's corresponding environment.<br/>
+  3. Under **Connection details for Vantage database**, use the **Username** value.<br/>
+
+  The Teradata SQL command to get a list of available users is as follows:
+
+  ```sql
+  SELECT UserName 
+  FROM DBC.UsersV 
+  ORDER BY UserName;
+  ```
+
+- The password for the user, which was set up when the user was created.
+
+  If the user has forgotten their password, the Teradata SQL command to change a user's password is as follows, replacing `<user-name>` with the name of the user and `<new-password>` with the new password:
+  
+  ```sql
+  MODIFY USER <user-name> SET PASSWORD = '<new-password>';
+  ```
+
+  To change a user's password, you must be an administrator (such as the `DBC` user or another user with `DROP USER` privileges).
