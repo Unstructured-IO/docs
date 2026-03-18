@@ -1,0 +1,29 @@
+---
+title: Architecture
+description: Core components and data flow
+---
+
+## Architecture
+
+### Overview
+
+Dedicated Instances provide isolated, private data processing.
+
+### Key Components
+
+- Customer Environment  
+- Dedicated Instance  
+- Ingestion Services  
+- Streaming Layer (MSK)  
+- Processing Services  
+- Indexing (OpenSearch)  
+
+### Network Model
+
+Private endpoints only. No public exposure.
+
+### Data Flow
+
+1. Data originates in customer environment  
+2. Ingested and processed  
+3. Indexed for downstream use
