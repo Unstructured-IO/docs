@@ -1,86 +1,26 @@
 ---
 title: Architecture
-description: Core components, network model, and data flow for Dedicated Instances
 ---
 
-## Architecture
 
-### Overview
+Dedicated Instances provide a secure, isolated deployment for processing unstructured data from your environment. Data stays within private network boundaries, with managed ingestion and processing handled in that same isolated deployment.
 
-Dedicated Instances provide a secure, isolated deployment model for processing unstructured data within a customer-controlled environment. The architecture is designed to ensure that data remains within private network boundaries while enabling managed ingestion, transformation, and indexing services.
+The system leverages cloud-native infrastructure and private networking without exposing data to the public internet.
 
-The system leverages cloud-native infrastructure and private networking, such as AWS PrivateLink, Azure Private Endpoint, or GCP Private Service Connect, to integrate with customer environments without exposing data to the public internet.
+**AWS private connectivity** uses AWS PrivateLink interface endpoints to connect customer VPCs to the Unstructured VPC without traversing the public internet.
 
-### Key Components
+**Azure private connectivity** uses Azure Private Link so access occurs through a private IP and traffic stays on the Microsoft backbone.
 
-A Dedicated Instance deployment consists of the following core components:
+There are two directions of connectivity:
 
-- **Customer Environment**  
-  The customer cloud environment where source data resides and where network connectivity is established. This may include storage systems, SaaS connectors, and internal services that act as data sources.
+| Direction | Description |
+| --- | --- |
+| **Customer → Unstructured** | Customer applications access the Unstructured UI and API via a private endpoint in the customer’s VPC/VNet. |
+| **Unstructured → Customer** | Unstructured accesses customer data sources (S3 buckets, databases, vector stores, etc.) via private endpoints created in the Unstructured VPC/VNet. |
 
-- **Dedicated Instance Environment**  
-  A managed, single-tenant environment provisioned specifically for the customer. This environment contains the ingestion, processing, and indexing services required to support the deployment.
+Both directions can be established independently. Customers with strict egress controls should configure both.
 
-- **Ingestion Services**  
-  Services responsible for retrieving data from customer sources. These may include connector-based ingestion, API-driven ingestion, or event-driven workflows.
 
-- **Streaming and Messaging Layer**  
-  A distributed streaming platform, such as Amazon MSK, used to buffer, decouple, and scale ingestion workflows.
-
-- **Processing Services**  
-  Compute services that transform raw data into structured or enriched formats suitable for downstream use. This may include parsing, chunking, metadata extraction, and enrichment.
-
-- **Indexing and Storage Layer**  
-  Systems used to store and index processed data. For example:
-  - OpenSearch for search and retrieval
-  - Object storage for intermediate or raw data
-
-- **Networking Layer**  
-  Private connectivity mechanisms that securely connect the customer environment to the Dedicated Instance.
-
-### Network Model
-
-The architecture is built around private, network-level isolation:
-
-- All communication between the customer environment and the Dedicated Instance occurs over private endpoints
-- Public internet exposure is minimized or eliminated
-- Access is restricted using network controls such as:
-  - VPC/VNet endpoints
-  - Security groups, NSGs, or firewall rules
-  - Private DNS resolution for service endpoints
-
-This model ensures that data transfer occurs entirely within trusted network boundaries and aligns with enterprise security expectations.
-
-### Data Flow
-
-At a high level, data flows through the system as follows:
-
-1. Data originates in the customer environment, such as object storage, databases, or SaaS platforms
-2. Ingestion services retrieve data using configured connectors or APIs
-3. Data is transmitted through private networking endpoints into the Dedicated Instance
-4. The streaming layer buffers and distributes data for processing
-5. Processing services transform and enrich the data
-6. Processed data is indexed or stored for downstream applications such as search or AI pipelines
-
-This architecture enables scalable, fault-tolerant ingestion while maintaining strict data isolation.
-
-### Cloud-Specific Variations
-
-While the core architecture is consistent, implementation details vary by cloud provider:
-
-- **AWS**
-  - Uses PrivateLink for private connectivity
-  - Supports Dedicated Instance and In-VPC deployment options
-  - Common services may include Amazon MSK and OpenSearch Service
-
-- **Azure**
-  - Uses Private Endpoint and VNet integration
-  - Requires explicit DNS configuration for private endpoint routing
-  - Networking and routing patterns differ from AWS VPC constructs
-
-- **GCP**
-  - Uses Private Service Connect or equivalent private connectivity
-  - Service exposure and endpoint configuration differ from AWS and Azure
 
 Detailed setup instructions are provided in the deployment sections for each cloud provider.
 
