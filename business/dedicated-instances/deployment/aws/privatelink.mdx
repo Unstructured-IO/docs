@@ -1,0 +1,41 @@
+---
+title: PrivateLink Setup
+description: Configure AWS PrivateLink for Dedicated Instances
+---
+
+## PrivateLink Setup
+
+This section describes how to configure the Dedicated Instance deployment model using AWS PrivateLink.
+
+### Prerequisites
+
+- A configured VPC with appropriate subnets
+- Permissions to create and manage interface endpoints
+- Security group and route table access
+- Private DNS enabled
+
+### Step 1: Create Interface Endpoints
+
+- Create interface VPC endpoints for the required services
+- Use the service names provided during onboarding
+- Place endpoints in the correct subnets
+
+### Step 2: Configure Security Groups
+
+- Allow inbound and outbound traffic for required ports and protocols
+- Restrict access to only necessary resources
+
+### Step 3: Configure Private DNS
+
+- Enable private DNS resolution for the endpoints
+- Verify that service domains resolve to private IP addresses
+
+### Step 4: Approve Endpoint Connections
+
+- Accept endpoint connection requests if required
+- Confirm connectivity between the customer VPC and the Dedicated Instance
+
+### Step 5: Validate Connectivity
+
+- Verify services are reachable through the private endpoints
+- Confirm that no traffic is routed through public internet paths

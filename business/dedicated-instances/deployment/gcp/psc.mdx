@@ -1,0 +1,33 @@
+---
+title: Private Service Connect Setup
+description: Configure Private Service Connect for Dedicated Instances
+---
+
+## Private Service Connect Setup
+
+This section describes how to configure connectivity using Private Service Connect.
+
+### Prerequisites
+
+- GCP project access
+- VPC network configuration
+- Permissions to create PSC endpoints
+- Firewall rule and DNS configuration access
+
+### Step 1: Create PSC Endpoints
+
+- Create PSC endpoints that connect to the service attachments provided during onboarding
+
+### Step 2: Configure Firewall Rules
+
+- Allow internal traffic between workloads and PSC endpoints
+- Restrict access to trusted sources only
+
+### Step 3: Configure DNS
+
+- Create DNS entries that map service domains to PSC endpoint IP addresses
+
+### Step 4: Validate Connectivity
+
+- Confirm services are reachable through PSC endpoints
+- Confirm traffic remains on internal network paths

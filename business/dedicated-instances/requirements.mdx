@@ -1,0 +1,82 @@
+---
+title: Requirements and Limitations
+description: Prerequisites and constraints for Dedicated Instance deployments
+---
+
+## Requirements and Limitations
+
+### Overview
+
+Dedicated Instances require specific network, infrastructure, and operational prerequisites to ensure a secure and successful deployment. This section outlines the key requirements customers must meet, as well as known limitations that may affect implementation decisions.
+
+Understanding these constraints early helps reduce onboarding delays and ensures alignment across security, platform, and engineering teams.
+
+### General Requirements
+
+The following requirements apply to all Dedicated Instance deployments:
+
+- **Cloud environment access**  
+  Customers must have administrative or delegated access to their cloud environment to configure networking, DNS, and access controls.
+
+- **Private networking configuration**  
+  The deployment requires the ability to configure private connectivity, such as:
+  - AWS PrivateLink
+  - Azure Private Endpoint
+  - GCP Private Service Connect
+
+- **DNS configuration**  
+  Customers must be able to configure private DNS resolution to route service endpoints correctly within their network.
+
+- **Identity readiness**  
+  If SSO is required, customers must support integration with a compatible identity provider.
+
+### Networking Requirements
+
+Dedicated Instances rely heavily on correct network configuration:
+
+- VPC or VNet configuration
+- Private endpoint or equivalent setup
+- Firewall and security rules allowing required traffic
+- Private DNS resolution for service endpoints
+
+### Service and Data Requirements
+
+- **Supported data sources**  
+  Data sources must be accessible from the customer environment and compatible with supported ingestion methods.
+
+- **Data volume and throughput**  
+  Customers should consider expected data volume, ingestion rate, and processing requirements, because these factors may affect sizing and performance decisions.
+
+- **Data format considerations**  
+  Data should be in formats supported by ingestion and processing pipelines. Additional transformation may be required for unsupported formats.
+
+### Operational Requirements
+
+- Cross-team coordination between security, infrastructure, and application teams
+- Internal approval processes for network and identity changes
+- Monitoring and observability planning
+
+### Cloud-Specific Considerations
+
+- **AWS**
+  - Requires PrivateLink endpoint configuration or In-VPC deployment planning
+  - May involve additional setup for service endpoints and private routing
+
+- **Azure**
+  - Requires Private Endpoint configuration and DNS setup
+  - DNS configuration is often a critical dependency
+
+- **GCP**
+  - Uses Private Service Connect or equivalent
+  - Endpoint configuration and service exposure differ from AWS and Azure
+
+### Limitations
+
+The following limitations should be considered when planning a deployment:
+
+- No public endpoint access
+- Cloud provider and regional constraints may apply
+- DNS misconfiguration can prevent connectivity
+- Managed service customization boundaries may apply
+
+Next, review [Preparing for a Dedicated Instance](./preparing).

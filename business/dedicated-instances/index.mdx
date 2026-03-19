@@ -1,0 +1,19 @@
+---
+title: Dedicated Instance
+sidebarTitle: Overview
+---
+
+A Dedicated Instance is a privately isolated deployment hosted by Unstructured, intended for customers who need increased network isolation, data isolation, and strict compliance controls. By leveraging cloud-native infrastructure and private networking, Dedicated Instances enable Unstructured to connect to your data sources and process your data while keeping it within trusted boundaries. 
+
+With AWS or Azure PrivateLink, you get private IP connectivity between your VPC/VNet and Unstructured without traversing the public internet. Network filtering lets you fully block incoming and outgoing traffic to the public internet or limit it to specific IP addresses or CIDR ranges.
+
+**Benefits:**
+
+- **Eliminates public exposure:** Traffic between your VPC/VNet and Unstructured can avoid the public internet and instead traverse cloud-provider private networking.
+- **Stronger network isolation for sensitive workloads:** Helps customers meet internal security requirements and compliance where *private network access* is preferred or mandated.
+- **Simpler enterprise network integration:** Works well with existing private connectivity patterns (VPC/VNet isolation, VPN/DirectConnect/ExpressRoute to corporate on-prem networks).
+- **Control and visibility:** Private endpoints and private DNS enable you to manage where traffic flows, enforce access policies at the network level, and give you visibility into traffic paths and access patterns.
+
+<Note>
+    A Dedicated Instance is a **regional service** deployed in a single cloud region. Everything runs in one region, so plan for data residency, failover design, and latency. Unstructured supports cross-region PrivateLink, but we do not recommend it because it incurs additional data transfer costs.
+</Note>

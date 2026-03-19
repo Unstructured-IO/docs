@@ -1,0 +1,100 @@
+---
+title: Preparing for a Dedicated Instance
+description: Pre-deployment planning and readiness checklist
+---
+
+## Preparing for a Dedicated Instance
+
+### Overview
+
+Before deploying a Dedicated Instance, ensure that network, identity, and operational requirements are in place. This preparation phase helps align internal teams, validate prerequisites, and reduce delays during onboarding.
+
+### Who Should Be Involved
+
+Dedicated Instance onboarding typically requires coordination across multiple teams:
+
+- **Security and Compliance Teams**
+  - Review network isolation and data protection requirements
+  - Approve private connectivity and access controls
+
+- **Platform and Infrastructure Teams**
+  - Configure cloud networking, DNS, and firewall rules
+  - Manage deployment and connectivity
+
+- **Application and Data Owners**
+  - Identify data sources
+  - Provide access requirements and integration details
+
+### Pre-Deployment Checklist
+
+- Cloud environment is identified
+- VPC or VNet is configured with required subnets
+- Private connectivity approach is selected
+- DNS configuration approach is defined
+- Firewall and security rules are planned
+- Identity provider requirements are defined
+- Data sources and access methods are identified
+- Required permissions and approvals are in place
+
+### Choose a Deployment Model
+
+Before starting setup, determine the appropriate deployment model for your environment.
+
+- **AWS**
+  - PrivateLink
+  - In-VPC deployment
+
+- **Azure**
+  - Private Endpoint
+
+- **GCP**
+  - Private Service Connect
+
+Choosing the correct model early helps guide networking and implementation decisions.
+
+### Plan Your Network Configuration
+
+Networking is the most critical part of deployment. Ensure the following are defined:
+
+- Which VPC or VNet will be used
+- Which subnets will host endpoints or services
+- How private connectivity will be established
+- How data will move from your environment to the Dedicated Instance
+
+### Plan DNS Configuration
+
+DNS configuration is required to ensure that service endpoints resolve to private IP addresses.
+
+- Define how DNS will be managed
+- Ensure private DNS zones are created where required
+- Confirm that service records resolve to private endpoints
+
+Misconfigured DNS is one of the most common causes of onboarding issues.
+
+### Identify Data Sources
+
+Determine which data sources will be ingested, such as object storage, databases, SaaS platforms, or internal services.
+
+For each data source, confirm:
+
+- Access method
+- Required permissions
+- Network accessibility
+
+### Validate Permissions and Approvals
+
+Before beginning deployment, confirm that:
+
+- Required cloud permissions are granted
+- Network changes are approved
+- Security reviews are completed if required
+
+### Next Steps
+
+Proceed to the appropriate deployment section:
+
+- [AWS](./deployment/aws/index)
+- [Azure](./deployment/azure/index)
+- [GCP](./deployment/gcp/index)
+
+After deployment, configure [IdP Integration](./identity/idp-integration) and set up monitoring and observability.

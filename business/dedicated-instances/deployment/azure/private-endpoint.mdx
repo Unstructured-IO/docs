@@ -1,0 +1,31 @@
+---
+title: Private Endpoint Setup
+description: Configure Azure Private Endpoints for Dedicated Instances
+---
+
+## Private Endpoint Setup
+
+This section describes how to configure connectivity using Azure Private Endpoint.
+
+### Prerequisites
+
+- Azure subscription access
+- VNet and subnet configuration
+- Permissions to create Private Endpoints
+- Network Security Group access
+- Private DNS capability
+
+### Step 1: Create Private Endpoints
+
+- Create a Private Endpoint for each required service
+- Associate each endpoint with the correct VNet and subnet
+
+### Step 2: Configure Network Security Groups
+
+- Allow traffic between your resources and the Private Endpoints
+- Restrict access to trusted sources only
+
+### Step 3: Validate Connectivity
+
+- Confirm resources within the VNet can access the Dedicated Instance services
+- Confirm that traffic flows through Private Endpoints only

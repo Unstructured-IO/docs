@@ -1,0 +1,27 @@
+---
+title: DNS Configuration
+description: Configure DNS for Azure Private Endpoints
+---
+
+## DNS Configuration
+
+Azure Private Endpoint connectivity depends on correct DNS configuration.
+
+> ⚠️ Misconfigured DNS is one of the most common causes of onboarding issues.
+
+### Step 1: Create Private DNS Zones
+
+- Create Private DNS Zones for required service domains
+
+### Step 2: Link DNS Zones to the VNet
+
+- Link the DNS zones to the appropriate VNet
+
+### Step 3: Configure DNS Records
+
+- Ensure service domains resolve to private IP addresses
+
+### Step 4: Validate DNS Resolution
+
+- Use `nslookup` or equivalent tools
+- Confirm that no public endpoints are being used

@@ -1,0 +1,36 @@
+---
+title: AWS Deployment
+description: Deploy Dedicated Instances on AWS
+---
+
+## AWS
+
+### Overview
+
+Dedicated Instances on AWS provide a secure, private deployment model for ingesting, processing, and indexing data within a customer-controlled environment. AWS deployments support multiple models depending on the level of control, isolation, and integration required.
+
+### Deployment Models
+
+#### Dedicated Instance (PrivateLink)
+
+In this model:
+
+- The Dedicated Instance is deployed in a managed, single-tenant environment
+- The customer connects to the instance using AWS PrivateLink
+- All communication occurs over private endpoints within the AWS network
+
+Use this model if you want a managed deployment with minimal operational overhead and strong network isolation.
+
+#### In-VPC Deployment
+
+In this model:
+
+- Components of the Dedicated Instance are deployed within the customer VPC
+- The customer manages networking, routing, and some infrastructure components
+
+Use this model if you require deeper integration with existing VPC resources and more control over networking and infrastructure.
+
+### Next Steps
+
+- [PrivateLink Setup](./privatelink)
+- [In-VPC Setup](./in-vpc)

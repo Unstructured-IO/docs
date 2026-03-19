@@ -1,0 +1,128 @@
+---
+title: Security
+description: Security model for Dedicated Instances, including isolation, encryption, and identity controls
+---
+
+## Security
+
+### Overview
+
+Dedicated Instances are designed with a defense-in-depth security model that protects customer data across network, infrastructure, and service layers. The architecture prioritizes data isolation, private connectivity, and controlled access, ensuring that sensitive data remains within trusted boundaries at all times.
+
+Security controls are implemented across multiple layers, including network isolation, encryption, identity and access management, and service-level protections.
+
+### Core Principles
+
+The security model is based on the following principles:
+
+- **Isolation by design**  
+  Each Dedicated Instance is provisioned as a single-tenant environment, ensuring that customer data and resources are isolated from other customers.
+
+- **Private connectivity only**  
+  Data is transmitted exclusively over private network paths, avoiding exposure to the public internet.
+
+- **Least privilege access**  
+  Access to services and resources is restricted using fine-grained permissions and role-based access controls.
+
+- **End-to-end encryption**  
+  Data is encrypted both in transit and at rest using industry-standard encryption mechanisms.
+
+- **Controlled data flow**  
+  Data movement is explicitly defined and restricted to approved ingestion and processing paths.
+
+### Network Isolation
+
+Dedicated Instances enforce strict network isolation:
+
+- All service endpoints are exposed via private endpoints only
+- No inbound public access is required
+- Network access is restricted using:
+  - VPC/VNet-level controls
+  - Security groups, NSGs, or firewall rules
+  - Private DNS resolution
+
+In most deployments:
+- The customer initiates connections to the Dedicated Instance
+- The Dedicated Instance does not require unsolicited inbound access
+
+This model reduces the attack surface and aligns with zero-trust networking principles.
+
+### Data Protection
+
+#### Encryption in Transit
+
+- All data transferred between the customer environment and the Dedicated Instance is encrypted using TLS
+- Private endpoints help ensure that encrypted traffic remains within the cloud provider network
+
+#### Encryption at Rest
+
+- Data stored within the Dedicated Instance is encrypted using provider-managed or customer-managed keys where supported
+- Encryption may apply to:
+  - Indexed data
+  - Intermediate processing data
+  - Logs and metadata
+
+### Identity and Access Control
+
+Access to the Dedicated Instance is controlled through a combination of:
+
+- **Role-based access control (RBAC)**  
+  Permissions are assigned based on roles, limiting access to only what is required
+
+- **Identity provider integration**  
+  Customers can integrate with their existing identity providers, such as SAML or OIDC providers, to enforce centralized authentication and policy management
+
+- **Service-level authentication and authorization**  
+  Internal services authenticate securely when communicating with each other
+
+For identity configuration details, see [IdP Integration](./identity/idp-integration).
+
+### Service-Level Security
+
+Security controls are also enforced at the service layer:
+
+- **Streaming layer**
+  - Encrypted communication between producers and consumers
+  - Authentication and authorization for topic or stream access
+
+- **Processing services**
+  - Restricted execution environments
+  - Controlled access to input and output data
+
+- **Indexing layer**
+  - Access policies to restrict query and indexing operations
+  - Encryption and audit capabilities where supported
+
+### Data Residency and Control
+
+Dedicated Instances are deployed within a specific cloud region, allowing customers to control where their data is processed and stored.
+
+- Data does not leave the configured region unless explicitly configured to do so
+- Regional deployment supports data residency and sovereignty requirements
+
+### Shared Responsibility Model
+
+Security is a shared responsibility between the platform and the customer.
+
+**Platform responsibilities:**
+
+- Infrastructure provisioning and isolation
+- Managed services security and hardening
+- Default encryption and secure configurations
+
+**Customer responsibilities:**
+
+- Configuring network access
+- Managing identity provider integration
+- Controlling access to data sources and connectors
+- Defining internal access policies
+
+### Audit and Monitoring
+
+The platform supports observability and security monitoring through:
+
+- Logging of system and service activity
+- Monitoring of ingestion and processing workflows
+- Integration with cloud-native monitoring tools, depending on provider capabilities
+
+Customers can use these capabilities to track access and activity, detect anomalies, and support compliance and auditing requirements.
