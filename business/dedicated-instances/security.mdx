@@ -1,7 +1,7 @@
 ---
 title: Security model
 ---
-Dedicated Instances use a defense-in-depth security model that protects your data across network, infrastructure, and service layers. The architecture prioritizes data isolation, private connectivity, and controlled access so your data stays within trusted boundaries.
+Dedicated Instances use a security model that protects your data across network, infrastructure, and service layers. The architecture prioritizes data isolation, private connectivity, and controlled access so your data stays within trusted boundaries.
 
 This page covers PrivateLink, encryption, and network access controls for Dedicated Instances. For more information about security across the Unstructured platform, see [Security and compliance](business/security-compliance/overview).
 
@@ -18,12 +18,12 @@ All connections to Dedicated Instances use TLS 1.2 or higher for encryption in t
 
 ### Security without PrivateLink (internet-facing mode)
 
-Customers who deploy a Dedicated Instance without PrivateLink access the platform over the public internet via HTTPS. The following controls apply:
+Customers who deploy a Dedicated Instance without PrivateLink access the platform over the public internet via HTTPS. The following controls apply.
 
 - **TLS 1.2+** for all traffic in transit.
 - **AWS WAF** (Web Application Firewall) provides DDoS protection, rate limiting, and optional geo-blocking for ITAR compliance.
-- **IP Allowlisting** — Access to the platform can be restricted to specific source IP addresses or CIDR ranges. Submit a support ticket with your IP list to enable this.
-- **No data egress change** — Unstructured can still access customer data sources via PrivateLink even if the customer accesses the platform UI/API over the internet. The two directions are configured independently.
+- **IP Allowlisting** restricts Unstructured platform access to specific source IP addresses or CIDR ranges. Submit a support ticket with your IP list to enable this. [**?? check standard wording and links for submitting support ticket ??**]
+- **Independent ingress and outbound** means you can access the platform over the internet with the UI or API, while Unstructured uses PrivateLink to reach your data sources.  The two paths are configured separately.
 
 ### Security with PrivateLink
 
