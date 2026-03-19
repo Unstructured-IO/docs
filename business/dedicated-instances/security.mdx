@@ -1,128 +1,89 @@
 ---
-title: Security
-description: Security model for Dedicated Instances, including isolation, encryption, and identity controls
+title: Security model
 ---
+Dedicated Instances use a defense-in-depth security model that protects your data across network, infrastructure, and service layers. The architecture prioritizes data isolation, private connectivity, and controlled access so your data stays within trusted boundaries.
 
-## Security
+This page covers PrivateLink, encryption, and network access controls for Dedicated Instances. For more information about security across the Unstructured platform, see [Security and compliance](business/security-compliance/overview).
 
-### Overview
 
-Dedicated Instances are designed with a defense-in-depth security model that protects customer data across network, infrastructure, and service layers. The architecture prioritizes data isolation, private connectivity, and controlled access, ensuring that sensitive data remains within trusted boundaries at all times.
+### Encryption
 
-Security controls are implemented across multiple layers, including network isolation, encryption, identity and access management, and service-level protections.
+All connections to Dedicated Instances use TLS 1.2 or higher for encryption in transit.
 
-### Core Principles
+| Layer | Encryption |
+| --- | --- |
+| API Endpoints | TLS 1.2+ with certificate validation |
+| Cloud Storage Connections (S3, Blob Storage) | TLS encryption with bucket/container policies enforcing encryption |
+| Internal Service Mesh | mTLS between microservices |
 
-The security model is based on the following principles:
+### Security without PrivateLink (internet-facing mode)
 
-- **Isolation by design**  
-  Each Dedicated Instance is provisioned as a single-tenant environment, ensuring that customer data and resources are isolated from other customers.
+Customers who deploy a Dedicated Instance without PrivateLink access the platform over the public internet via HTTPS. The following controls apply:
 
-- **Private connectivity only**  
-  Data is transmitted exclusively over private network paths, avoiding exposure to the public internet.
+- **TLS 1.2+** for all traffic in transit.
+- **AWS WAF** (Web Application Firewall) provides DDoS protection, rate limiting, and optional geo-blocking for ITAR compliance.
+- **IP Allowlisting** — Access to the platform can be restricted to specific source IP addresses or CIDR ranges. Submit a support ticket with your IP list to enable this.
+- **No data egress change** — Unstructured can still access customer data sources via PrivateLink even if the customer accesses the platform UI/API over the internet. The two directions are configured independently.
 
-- **Least privilege access**  
-  Access to services and resources is restricted using fine-grained permissions and role-based access controls.
+### Security with PrivateLink
 
-- **End-to-end encryption**  
-  Data is encrypted both in transit and at rest using industry-standard encryption mechanisms.
+When PrivateLink is enabled, traffic between your environment and Unstructured flows entirely over cloud-provider private networking. Service endpoints resolve to private IP addresses, and no inbound access from the public internet is permitted.
 
-- **Controlled data flow**  
-  Data movement is explicitly defined and restricted to approved ingestion and processing paths.
+### What PrivateLink does and does not protect
 
-### Network Isolation
+**Protected**
+* Network traffic from public internet exposure 
+* Data in-transit between VPCs/VNets 
+* DNS resolution of service endpoints
 
-Dedicated Instances enforce strict network isolation:
+**Not Protected**
+* Application-layer vulnerabilities
+* Misconfigured IAM/RBAC policies
+* Compromised credentials
 
-- All service endpoints are exposed via private endpoints only
-- No inbound public access is required
-- Network access is restricted using:
-  - VPC/VNet-level controls
-  - Security groups, Network Security Groups, or firewall rules
-  - Private DNS resolution
+### Optional: Customer-managed encryption keys
 
-In most deployments:
-- The customer initiates connections to the Dedicated Instance
-- The Dedicated Instance does not require unsolicited inbound access
+By default, Unstructured manages encryption keys using the cloud provider’s key management service (AWS KMS or Azure Key Vault). Customers with strict key custody requirements can optionally bring their own KMS Customer Managed Keys (CMK). Contact your account representative to enable this.
 
-This model reduces the attack surface and aligns with zero-trust networking principles.
 
-### Data Protection
+### Network access controls
 
-#### Encryption in Transit
+**Default configuration:**
 
-- All data transferred between the customer environment and the Dedicated Instance is encrypted using TLS
-- Private endpoints help ensure that encrypted traffic remains within the cloud provider network
+| Traffic Direction | Default State |
+| --- | --- |
+| Public Ingress | **Blocked** — All inbound traffic from the public internet is denied. Access is only available via PrivateLink. |
+| Public Egress | **Blocked** — All outbound traffic to the public internet is denied. The platform can only communicate with resources accessible via PrivateLink or within the Unstructured VPC/VNet. |
 
-#### Encryption at Rest
+This default configuration provides maximum network isolation and is recommended for customers with strict compliance requirements.
 
-- Data stored within the Dedicated Instance is encrypted using provider-managed or customer-managed keys where supported
-- Encryption may apply to:
-  - Indexed data
-  - Intermediate processing data
-  - Logs and metadata
+**Optional: Enabling public egress**
 
-### Identity and Access Control
+Some integrations require outbound internet access. Examples include:
+- Third-party AI/ML APIs (e.g., OpenAI, Anthropic, Gemini) not hosted in your cloud environment.
+- External webhooks or callback URLs.
+- Public SaaS services without PrivateLink support (see [connector coverage](about:blank#aws-privatelink-connector-coverage) below).
 
-Access to the Dedicated Instance is controlled through a combination of:
+If your use case requires public egress, Unstructured can enable outbound internet access with the following options:
 
-- **Role-based access control (RBAC)**  
-  Permissions are assigned based on roles, limiting access to only what is required
+| Option | Description |
+| --- | --- |
+| Full Egress | All outbound internet traffic is permitted (not recommended) |
+| Specific IPs/CIDRs | Outbound traffic is permitted only to specified IP addresses or CIDR ranges |
 
-- **Identity provider integration**  
-  Customers can integrate with their existing identity providers, such as SAML or OIDC providers, to enforce centralized authentication and policy management
+To request egress configuration changes, log a support ticket and provide:
+- Application/use-case requirements for the access change.
+- List of IPs or CIDR ranges to allowlist.
+- Expected traffic patterns (e.g., VLM API calls, SSO integration).
 
-- **Service-level authentication and authorization**  
-  Internal services authenticate securely when communicating with each other
+**Optional: Enabling public ingress**
 
-For identity configuration details, see [IdP Integration](./identity/idp-integration).
+In rare cases, customers may require public ingress (e.g., for users who cannot access via PrivateLink). Access will be restricted to specified IP addresses or CIDR ranges, and all traffic remains encrypted via TLS 1.2+.
 
-### Service-Level Security
+To request ingress configuration changes, log a support ticket and provide:
+- Application/use-case requirements.
+- List of source IP addresses or CIDR ranges to allowlist.
+- Expected access patterns.
 
-Security controls are also enforced at the service layer:
-
-- **Streaming layer**
-  - Encrypted communication between producers and consumers
-  - Authentication and authorization for topic or stream access
-
-- **Processing services**
-  - Restricted execution environments
-  - Controlled access to input and output data
-
-- **Indexing layer**
-  - Access policies to restrict query and indexing operations
-  - Encryption and audit capabilities where supported
-
-### Data Residency and Control
-
-Dedicated Instances are deployed within a specific cloud region, allowing customers to control where their data is processed and stored.
-
-- Data does not leave the configured region unless explicitly configured to do so
-- Regional deployment supports data residency and sovereignty requirements
-
-### Shared Responsibility Model
-
-Security is a shared responsibility between the platform and the customer.
-
-**Platform responsibilities:**
-
-- Infrastructure provisioning and isolation
-- Managed services security and hardening
-- Default encryption and secure configurations
-
-**Customer responsibilities:**
-
-- Configuring network access
-- Managing identity provider integration
-- Controlling access to data sources and connectors
-- Defining internal access policies
-
-### Audit and Monitoring
-
-The platform supports observability and security monitoring through:
-
-- Logging of system and service activity
-- Monitoring of ingestion and processing workflows
-- Integration with cloud-native monitoring tools, depending on provider capabilities
-
-Customers can use these capabilities to track access and activity, detect anomalies, and support compliance and auditing requirements.
+> **Note:** Enabling public ingress or egress reduces the network isolation benefits of a Dedicated Instance. Unstructured recommends using PrivateLink for all connectivity where possible.
+> 
