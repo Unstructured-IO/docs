@@ -22,7 +22,8 @@ Customers who deploy a Dedicated Instance without PrivateLink access the platfor
 
 - **TLS 1.2+** for all traffic in transit.
 - **AWS WAF** (Web Application Firewall) provides DDoS protection, rate limiting, and optional geo-blocking for ITAR compliance.
-- **IP Allowlisting** restricts Unstructured platform access to specific source IP addresses or CIDR ranges. Submit a support ticket with your IP list to enable this. [**?? check standard wording and links for submitting support ticket ??**]
+- **IP Allowlisting** - restricts Unstructured platform access to specific source IP addresses or CIDR ranges. Submit a support ticket with your IP list to enable this. 
+<Warning>!! WRITER: check standard wording and links for submitting support ticket !!</Warning>
 - **Independent ingress and outbound** means you can access the platform over the internet with the UI or API, while Unstructured uses PrivateLink to reach your data sources.  The two paths are configured separately.
 
 ### Security with PrivateLink
@@ -41,7 +42,11 @@ When PrivateLink is enabled, traffic between your environment and Unstructured f
 * Misconfigured IAM/RBAC policies
 * Compromised credentials
 
-### Optional: Customer-managed encryption keys
+### (Optional) Customer-managed encryption keys
+
+<Warning>
+!! WRITER:  Check formatting for "Optional" in titles !!
+</Warning>
 
 By default, Unstructured manages encryption keys using the cloud provider’s key management service (AWS KMS or Azure Key Vault). Customers with strict key custody requirements can optionally bring their own KMS Customer Managed Keys (CMK). Contact your account representative to enable this.
 
@@ -57,7 +62,11 @@ By default, Unstructured manages encryption keys using the cloud provider’s ke
 
 This default configuration provides maximum network isolation and is recommended for customers with strict compliance requirements.
 
-**Optional: Enabling public egress**
+**(Optional) Enabling public egress**
+
+<Warning>
+!! WRITER:  Check formatting for "Optional" in titles !!
+</Warning>
 
 Some integrations require outbound internet access. Examples include:
 - Third-party AI/ML APIs (e.g., OpenAI, Anthropic, Gemini) not hosted in your cloud environment.
@@ -85,5 +94,6 @@ To request ingress configuration changes, log a support ticket and provide:
 - List of source IP addresses or CIDR ranges to allowlist.
 - Expected access patterns.
 
-> **Note:** Enabling public ingress or egress reduces the network isolation benefits of a Dedicated Instance. Unstructured recommends using PrivateLink for all connectivity where possible.
-> 
+<note>
+Enabling public ingress or egress reduces the network isolation benefits of a Dedicated Instance. Unstructured recommends using PrivateLink for all connectivity where possible.
+</note>

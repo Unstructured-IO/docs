@@ -1,100 +1,37 @@
 ---
 title: Preparing for a Dedicated Instance
-description: Pre-deployment planning and readiness checklist
 ---
 
-## Preparing for a Dedicated Instance
+Once you’ve decided to proceed with a Dedicated Instance, the next steps involve provisioning the environment and establishing private connectivity. The deployment process is conducted remotely and can typically be completed within the following timeframes:
 
-### Overview
+| Cloud Provider | Without PrivateLink | With PrivateLink |
+| --- | --- | --- |
+| AWS | 2–3 Days | 4–5 Days |
+| Azure | 2–3 Days | 4–5 Days |
 
-Before deploying a Dedicated Instance, ensure that network, identity, and operational requirements are in place. This preparation phase helps align internal teams, validate prerequisites, and reduce delays during onboarding.
+> Times are subject to Customer infrastructure team availability. More complex integrations (multiple connectors, custom models, etc.) will extend the deployment timeline.
+> 
 
-### Who Should Be Involved
+### Information Required for Provisioning
 
-Dedicated Instance onboarding typically requires coordination across multiple teams:
+Before deployment can begin, please provide the following:
 
-- **Security and Compliance Teams**
-  - Review network isolation and data protection requirements
-  - Approve private connectivity and access controls
+| Information Required | Description |
+| --- | --- |
+| Name of Administrator | Primary administrator of the account (others can be added after) |
+| Admin Email Address | Email address of the primary admin |
+| Cloud Provider | AWS or Azure |
+| Cloud Region | Please see [list of supported regions](about:blank#supported-cloud-providers-and-regions) |
+| Desired URL | Without PrivateLink: `<companyname>.unstructuredapp.io` / With PrivateLink: `<companyname>.privatelink.unstructuredapp.io` |
+| VLM Provider | Anthropic, Bedrock, OpenAI, Azure OpenAI, etc. |
+| VLM Models | e.g., Claude Sonnet 4.5, GPT-4o, Gemini 2.0 Flash |
+| Embedding Models | e.g., Titan, Granite (ensure you select correct dimensions) |
 
-- **Platform and Infrastructure Teams**
-  - Configure cloud networking, DNS, and firewall rules
-  - Manage deployment and connectivity
+> **Do not send API keys by email or any collaboration tool.** Unstructured has a secure method of capturing these.
+> 
 
-- **Application and Data Owners**
-  - Identify data sources
-  - Provide access requirements and integration details
+### Information Exchange
 
-### Pre-Deployment Checklist
+All PrivateLink configuration data exchanges between Customer and Unstructured must be conducted via support tickets. This ensures a documented audit trail of all shared information, including Account IDs, VPC Endpoint Service Names, IAM Role ARNs, Service Principal IDs, and other sensitive configuration details.
 
-- Cloud environment is identified
-- VPC or VNet is configured with required subnets
-- Private connectivity approach is selected
-- DNS configuration approach is defined
-- Firewall and security rules are planned
-- Identity provider requirements are defined
-- Data sources and access methods are identified
-- Required permissions and approvals are in place
-
-### Choose a Deployment Model
-
-Before starting setup, determine the appropriate deployment model for your environment.
-
-- **AWS**
-  - PrivateLink
-  - In-VPC deployment
-
-- **Azure**
-  - Private Endpoint
-
-- **GCP**
-  - Private Service Connect
-
-Choosing the correct model early helps guide networking and implementation decisions.
-
-### Plan Your Network Configuration
-
-Networking is the most critical part of deployment. Ensure the following are defined:
-
-- Which VPC or VNet will be used
-- Which subnets will host endpoints or services
-- How private connectivity will be established
-- How data will move from your environment to the Dedicated Instance
-
-### Plan DNS Configuration
-
-DNS configuration is required to ensure that service endpoints resolve to private IP addresses.
-
-- Define how DNS will be managed
-- Ensure private DNS zones are created where required
-- Confirm that service records resolve to private endpoints
-
-Misconfigured DNS is one of the most common causes of onboarding issues.
-
-### Identify Data Sources
-
-Determine which data sources will be ingested, such as object storage, databases, SaaS platforms, or internal services.
-
-For each data source, confirm:
-
-- Access method
-- Required permissions
-- Network accessibility
-
-### Validate Permissions and Approvals
-
-Before beginning deployment, confirm that:
-
-- Required cloud permissions are granted
-- Network changes are approved
-- Security reviews are completed if required
-
-### Next Steps
-
-Proceed to the appropriate deployment section:
-
-- [AWS](./deployment/aws/index)
-- [Azure](./deployment/azure/index)
-- [GCP](./deployment/gcp/index)
-
-After deployment, configure [IdP Integration](./identity/idp-integration) and set up monitoring and observability.
+To initiate a PrivateLink configuration, log a ticket via the [Unstructured Support Portal](https://support.unstructured.io/) with the subject line: **“PrivateLink Configuration Request — [Your Company Name]”**. A technical enablement engineer will respond to guide you through the exchange.

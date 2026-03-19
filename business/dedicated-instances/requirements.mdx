@@ -1,82 +1,64 @@
 ---
 title: Requirements and Limitations
-description: Prerequisites and constraints for Dedicated Instance deployments
 ---
 
-## Requirements and Limitations
+Dedicated Instances rely on cloud-provider private networking features and therefore require certain baseline infrastructure components to ensure a secure and successful deployment. This section outlines the key requirements customers must meet, as well as known limitations that may affect implementation decisions.  Understanding these constraints early helps reduce onboarding delays and ensures alignment across security, platform, and engineering teams.
 
-### Overview
+### Supported Cloud Providers and Regions
 
-Dedicated Instances require specific network, infrastructure, and operational prerequisites to ensure a secure and successful deployment. This section outlines the key requirements customers must meet, as well as known limitations that may affect implementation decisions.
+| Cloud Provider | Availability |
+| --- | --- |
+| AWS | General Availability |
+| Azure | General Availability |
+| GCP | Not currently supported |
 
-Understanding these constraints early helps reduce onboarding delays and ensures alignment across security, platform, and engineering teams.
+**AWS Supported Regions**
 
-### General Requirements
+| Region Name | Region Code |
+| --- | --- |
+| US East (N. Virginia) | `us-east-1` |
+| US East (Ohio) | `us-east-2` |
+| US West (Oregon) | `us-west-2` |
+| Europe (Ireland) | `eu-west-1` |
+| Europe (Stockholm) | `eu-north-1` |
+| Europe (Frankfurt) | `eu-central-1` |
+| Asia Pacific (Sydney) | `ap-southeast-2` |
+| Asia Pacific (Mumbai) | `ap-south-1` |
+| Asia Pacific (Seoul) | `ap-northeast-2` |
 
-The following requirements apply to all Dedicated Instance deployments:
+If your required region is not listed above, contact your Unstructured account representative.
 
-- **Cloud environment access**  
-  Customers must have administrative or delegated access to their cloud environment to configure networking, DNS, and access controls.
 
-- **Private networking configuration**  
-  The deployment requires the ability to configure private connectivity, such as:
-  - AWS PrivateLink
-  - Azure Private Endpoint
-  - GCP Private Service Connect
+**Azure Supported Regions** 
 
-- **DNS configuration**  
-  Customers must be able to configure private DNS resolution to route service endpoints correctly within their network.
+Contact your Unstructured account representative for the current list of supported Azure regions.
 
-- **Identity readiness**  
-  If SSO is required, customers must support integration with a compatible identity provider.
+### Prerequisites
 
-### Networking Requirements
+**AWS Requirements:**
+- VPC with private subnets
+- Network Load Balancer (for connections into Customer environment)
+- IAM permissions to create VPC endpoints, security groups, and Route 53 records
 
-Dedicated Instances rely heavily on correct network configuration:
+**Azure Requirements:**
+- Virtual Network with subnets configured for private endpoints
+- Private endpoint network policies disabled on target subnets
+- Standard Load Balancer (for connections into Customer environment)
 
-- VPC or VNet configuration
-- Private endpoint or equivalent setup
-- Firewall and security rules allowing required traffic
-- Private DNS resolution for service endpoints
+### DNS Requirements
 
-### Service and Data Requirements
+Private connectivity requires DNS configuration to route traffic through private endpoints:
+- AWS: Route 53 Private Hosted Zone (and on-premise DNS forwarding if needed)
+- Azure: Azure Private DNS Zone linked to your VNet
+- CNAME records pointing to the private endpoint
 
-- **Supported data sources**  
-  Data sources must be accessible from the customer environment and compatible with supported ingestion methods.
+The DNS name will be provided to you by Unstructured, in the form `<company>.privatelink.unstructuredapp.io`.
 
-- **Data volume and throughput**  
-  Customers should consider expected data volume, ingestion rate, and processing requirements, because these factors may affect sizing and performance decisions.
+### Known Limitations
 
-- **Data format considerations**  
-  Data should be in formats supported by ingestion and processing pipelines. Additional transformation may be required for unsupported formats.
+| Limitation | Notes |
+| --- | --- |
+| Cross-Region PrivateLink | Supported but incurs additional data transfer costs; not advised |
+| Cross-Cloud PrivateLink | Not supported (e.g., AWS to Azure) |
+| VPC Peering | Not supported as an alternative to PrivateLink |
 
-### Operational Requirements
-
-- Cross-team coordination between security, infrastructure, and application teams
-- Internal approval processes for network and identity changes
-- Monitoring and observability planning
-
-### Cloud-Specific Considerations
-
-- **AWS**
-  - Requires PrivateLink endpoint configuration or In-VPC deployment planning
-  - May involve additional setup for service endpoints and private routing
-
-- **Azure**
-  - Requires Private Endpoint configuration and DNS setup
-  - DNS configuration is often a critical dependency
-
-- **GCP**
-  - Uses Private Service Connect or equivalent
-  - Endpoint configuration and service exposure differ from AWS and Azure
-
-### Limitations
-
-The following limitations should be considered when planning a deployment:
-
-- No public endpoint access
-- Cloud provider and regional constraints may apply
-- DNS misconfiguration can prevent connectivity
-- Managed service customization boundaries may apply
-
-Next, review [Preparing for a Dedicated Instance](./preparing).
