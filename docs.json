@@ -344,19 +344,28 @@
 			  "pages": [
 				"business/dedicated-instances/overview",
 				"business/dedicated-instances/architecture",
-				"business/dedicated-instances/security",
-        "business/dedicated-instances/security-faq",
-        "business/dedicated-instances/shared-responsibility-model",
-				"business/dedicated-instances/requirements",
-				"business/dedicated-instances/preparing"				
-			  ]
-			},
+        { "group": "Security",
+        "pages": [
+          "business/dedicated-instances/security/security-model",
+          "business/dedicated-instances/security/shared-responsibility-model",
+          "business/dedicated-instances/security/security-faq"
+        ]
+        },         
+         "business/dedicated-instances/requirements",
+         "business/dedicated-instances/preparing" 
+        ]
+  },
           {
             "group": "AWS",
             "pages": [
               "business/aws/overview",
-              "business/aws/dedicated-instance-privatelink",
-              "business/aws/onboard"
+              { "group": "Dedicated Instance and PrivateLink",
+              "pages": [
+                "business/dedicated-instances/security-model",
+                "business/dedicated-instances/shared-responsibility-model",
+              ]
+            }
+              "business/aws/in-vpc-onboarding"
             ]
           },
           {
