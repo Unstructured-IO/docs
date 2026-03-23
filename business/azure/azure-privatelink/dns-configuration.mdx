@@ -1,0 +1,13 @@
+---
+title: DNS configuration for Private Link access
+sidebarTitle: DNS configuration
+---
+
+1. Create a Private DNS Zone matching the service hostname domain (e.g., `privatelink.unstructuredapp.io`).
+2. Create an A record for the full service hostname pointing to the private IP of your Private Endpoint:
+    
+    ```
+    example.privatelink.unstructuredapp.io → 10.12.34.56
+    ```
+    
+3. Link the Private DNS Zone to the VNet(s) where clients will access the service.

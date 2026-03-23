@@ -354,30 +354,43 @@
          "business/dedicated-instances/requirements",
          "business/dedicated-instances/preparing" 
         ]
-  },
+      },
           {
-            "group": "AWS",
+            "group": "Amazon Web Services (AWS)",
             "pages": [
-              "business/aws/overview",
-              { "group": "Dedicated Instance and PrivateLink",
+              "business/aws/x-overview",
+              "business/aws/x-dedicated-instance-privatelink",
+              { "group": "AWS PrivateLink for your Dedicated Instance",
               "pages": [
-                "business/dedicated-instances/security-model",
-                "business/dedicated-instances/shared-responsibility-model",
-              ]
-            }
-              "business/aws/in-vpc-onboarding"
+                "business/aws/aws-privatelink/overview",
+                "business/aws/aws-privatelink/connector-support",
+                "business/aws/aws-privatelink/connect-to-platform",
+                "business/aws/aws-privatelink/dns-configuration",
+                "business/aws/aws-privatelink/connect-to-services"
+                ]
+            },
+              "business/aws/onboard-in-vpc"
             ]
           },
           {
-            "group": "Azure",
+            "group": "Microsoft Azure (Azure)",
             "pages": [
-              "business/azure/overview",
-              "business/azure/onboard",
-              "business/azure/dns-privatelink"
+              "business/azure/x-overview",
+              "business/azure/x-onboard",
+              "business/azure/x-dns-privatelink",
+              { "group": "Microsoft Azure Private Link for your Dedicated Instance",
+              "pages": [
+                "business/azure/azure-privatelink/overview",
+                "business/azure/azure-privatelink/connector-support",
+                "business/azure/azure-privatelink/connect-to-platform",
+                "business/azure/azure-privatelink/dns-configuration",
+                "business/azure/azure-privatelink/connect-to-services"
+                ]
+            }
             ]
           },
           {
-            "group": "GCP",
+            "group": "Google Cloud Platform (GCP)",
             "pages": [
               "business/gcp/overview",
               "business/gcp/onboard"
