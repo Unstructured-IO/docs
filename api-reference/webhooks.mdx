@@ -116,6 +116,11 @@ In the following examples, replace the following placeholders:
 - Replace `<description>` with some meaningful description of the notification channel, for your own reference.
 - Optionally, replace `<secret>` with a Base64-encoded string to serve as the secret for the notification channel. If you do not provide a secret, a random secret will be generated for you.
 
+<Warning>
+  The secret is shown in the response payload of this operation. This secret is shown only once. If you forget this secret, 
+  you can get a new, replacement one by [rotating this workspace-scoped notification channel's secret](#rotate-the-secret-for-a-workspace-scoped-notification-channel).
+</Warning>
+
 <AccordionGroup>
     <Accordion title="curl">
         ```bash
@@ -232,41 +237,9 @@ To get this ID, see [List all workspace-scoped notification channels](#list-all-
     </Accordion>
 </AccordionGroup>
 
-## Get the secret for a workspace-scoped notification channel
-
-To get the secret for a notification channel that is used for all corresponding events across a workspace, 
-call the `GET /notifications/channels/<channel-id>/secret` operation.
-
-In the following examples, replace `<channel-id>` with the workspace-scoped notification channel's unique ID. 
-To get this ID, see [List all workspace-scoped notification channels](#list-all-workspace-scoped-notification-channels).
-
-<AccordionGroup>
-    <Accordion title="curl">
-        ```bash
-        curl --request 'GET' --location \
-        "$UNSTRUCTURED_API_URL/notifications/channels/<channel-id>/secret" \
-        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
-        ```
-    </Accordion>
-    <Accordion title="Postman">
-        1. In the method drop-down list, select **GET**.
-        2. In the address box, enter the following URL:
-
-           ```text
-           {{UNSTRUCTURED_API_URL}}/notifications/channels/<channel-id>/secret
-           ```
-
-        3. On the **Headers** tab, enter the following header:
-
-           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
-
-        4. Click **Send**.
-    </Accordion>
-</AccordionGroup>
-
 ## Rotate the secret for a workspace-scoped notification channel
 
-To rotate the secret for a notification channel that is used for all corresponding events across a workspace, 
+To _rotate_ (generate a new, replacement) secret for a notification channel that is used for all corresponding events across a workspace, 
 call the `POST /notifications/channels/<channel-id>/secret/rotate` operation.
 
 In the following examples, replace `<channel-id>` with the workspace-scoped notification channel's unique ID. 
@@ -415,6 +388,11 @@ In the following examples, replace the following placeholders:
 - Replace `<description>` with some meaningful description of the notification channel, for your own reference.
 - Optionally, replace `<secret>` with a Base64-encoded string to serve as the secret for the notification channel. If you do not provide a secret, a random secret will be generated for you.
 
+<Warning>
+  The secret is shown in the response payload of this operation. This secret is shown only once. If you forget this secret, 
+  you can get a new, replacement one by [rotating this workflow-scoped notification channel's secret](#rotate-the-secret-for-a-workflow-scoped-notification-channel).
+</Warning>
+
 <AccordionGroup>
     <Accordion title="curl">
         ```bash
@@ -538,45 +516,9 @@ In the following examples, replace the following placeholders:
     </Accordion>
 </AccordionGroup>
 
-## Get the secret for a workflow-scoped notification channel
-
-To get the secret for a notification channel that is used only for a specific workflow, 
-call the `GET /workflows/<workflow-id>/notifications/channels/<channel-id>/secret` operation.
-
-In the following examples, replace the following placeholders:
-
-- Replace `<workflow-id>` with the workflow's unique ID. 
-  To get this ID, see [List workflows](/api-reference/workflow/overview#list-workflows).
-- Replace`<channel-id>` with the workspace-scoped notification channel's unique ID. 
-  To get this ID, see [List all workflow-scoped notification channels](#list-all-workflow-scoped-notification-channels).
-
-<AccordionGroup>
-    <Accordion title="curl">
-        ```bash
-        curl --request 'GET' --location \
-        "$UNSTRUCTURED_API_URL/workflows/<workflow-id>/notifications/channels/<channel-id>/secret" \
-        --header "unstructured-api-key: $UNSTRUCTURED_API_KEY"
-        ```
-    </Accordion>
-    <Accordion title="Postman">
-        1. In the method drop-down list, select **GET**.
-        2. In the address box, enter the following URL:
-
-           ```text
-           {{UNSTRUCTURED_API_URL}}/workflows/<workflow-id>/notifications/channels/<channel-id>/secret
-           ```
-
-        3. On the **Headers** tab, enter the following header:
-
-           - **Key**: `unstructured-api-key`, **Value**: `{{UNSTRUCTURED_API_KEY}}`
-
-        4. Click **Send**.
-    </Accordion>
-</AccordionGroup>
-
 ## Rotate the secret for a workflow-scoped notification channel
 
-To rotate the secret for a notification channel that is used only for a specific workflow, 
+To _rotate_ (generate a new, replacement) secret for a notification channel that is used only for a specific workflow, 
 call the `POST /workflows/<workflow-id>/notifications/channels/<channel-id>/secret/rotate` operation.
 
 In the following examples, replace the following placeholders:
