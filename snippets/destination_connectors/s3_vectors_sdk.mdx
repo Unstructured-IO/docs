@@ -1,0 +1,32 @@
+```python Python SDK
+import os
+
+from unstructured_client import UnstructuredClient
+from unstructured_client.models.operations import CreateDestinationRequest
+from unstructured_client.models.shared import CreateDestinationConnector
+
+with UnstructuredClient(api_key_auth=os.getenv("UNSTRUCTURED_API_KEY")) as client:
+    response = client.destinations.create_destination(
+        request=CreateDestinationRequest(
+            create_destination_connector=CreateDestinationConnector(
+                name="<name>",
+                type="s3_vectors",
+                config={
+                    "region": "<region>",
+                    "access_config": {
+                        "key": "<key>",
+                        "secret": "<secret>",
+                        "token": "<token>"
+                    },
+                    "ambient_credentials": "true|false",
+                    "vector_bucket_name": "<vector-bucket-name>",
+                    "index_name": "<index-name>",
+                    "key_prefix": "<key-prefix>",
+                    "batch_size": <batch-size>
+                }
+            )
+        )
+    )
+
+    print(response.destination_connector_information)
+```

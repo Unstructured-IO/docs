@@ -1,0 +1,25 @@
+```bash curl
+curl --request 'POST' --location \
+"$UNSTRUCTURED_API_URL/destinations" \
+--header 'accept: application/json' \
+--header "unstructured-api-key: $UNSTRUCTURED_API_KEY" \
+--header 'content-type: application/json' \
+--data \
+'{
+    "name": "<name>",
+    "type": "s3_vectors",
+    "config": {
+      "region": "<region>",
+      "access_config": {
+        "key": "<key>",
+        "secret": "<secret>",
+        "token": "<token>"
+      },
+      "ambient_credentials": "true|false",
+      "vector_bucket_name": "<vector-bucket-name>",
+      "index_name": "<index-name>",
+      "key_prefix": "<key-prefix>",
+      "batch_size": <batch-size>
+    }
+}'
+```

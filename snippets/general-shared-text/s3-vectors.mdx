@@ -1,0 +1,92 @@
+- An Amazon S3 Vectors bucket. 
+
+  - Learn how to [create an S3 Vectors bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-buckets-create.html).
+  - Learn how to [get the name of an existing S3 Vectors bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-buckets-list.html).
+
+- The AWS Region (such as `us-east-1`) of the target S3 Vectors bucket. Learn how to [get the Region of an existing S3 Vectors bucket](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-buckets-details.html).
+- An index for the target S3 Vectors bucket.
+
+  - Learn how to [create an index](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-create-index.html).
+  - Learn how to [get the name of an existing index](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-index-list.html).
+
+  When creating an index, be sure to specify these settings:
+
+  - **Vector index name** can be any allowed name pattern.
+  - For **Dimension**, only specify a number that is supported by Unstructured's available embedding models.
+  - For **Distance metric**, only specify **Cosine**.
+  - For **Metadata configuration** under **Additional settings**, Unstructured recommends that you specify the following 10 keys for **Non-filterable metadata**:
+
+    - `text`
+    - `link_urls`
+    - `link_texts`
+    - `coordinates-points`
+    - `coordinates-system`
+    - `data_source-url`
+    - `data_source-record_locator`
+    - `data_source-date_created`
+    - `data_source-date_modified`
+    - `data_source-date_processed`
+
+  - There are no Unstructured-specific requirements for **Encryption** or **Tags**.
+
+  [Learn more about these index settings](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-create-index.html).
+
+- For the target index, the number of dimensions that are generated. 
+  Learn how to [get the index's number of dimensions](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-index-list.html).
+
+- The AWS access key ID and the AWS secret access key for the target AWS IAM principal (such as an IAM user or group) that has the appropriate access to the S3 Vectors bucket.
+
+  - If you use identity-based policies to control access, the target IAM principal must have at minimum the following access permissions. Replace the following placeholders:
+    
+    - Replace `<region-short-id>` with the AWS Region short ID of the target S3 Vectors bucket.
+    - Replace `<account-id>` with the AWS account ID of the target S3 Vectors bucket.
+    - Replace `<bucket-name>` with the name of the target S3 Vectors bucket.
+    - Replace `<index-name>` with the name of the target index.
+
+    ```json
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Sid": "AccountBucketListing",
+                "Effect": "Allow",
+                "Action": [
+                    "s3vectors:ListVectorBuckets"
+                ],
+                "Resource": "*"
+            },
+            {
+                "Sid": "AllowBucketAccess",
+                "Effect": "Allow",
+                "Action": [
+                    "s3vectors:GetVectorBucket",
+                    "s3vectors:ListIndexes"
+                ],
+                "Resource": "arn:aws:s3vectors:<region-short-id>:<account-id>:bucket/<bucket-name>"
+            },
+            {
+                "Sid": "AllowIndexAccess",
+                "Effect": "Allow",
+                "Action": [
+                    "s3vectors:ListIndexes",
+                    "s3vectors:GetIndex",
+                    "s3vectors:ListVectors",
+                    "s3vectors:QueryVectors",
+                    "s3vectors:PutVectors",
+                    "s3vectors:GetVectors",
+                    "s3vectors:DeleteVectors"
+                ],
+                "Resource": "arn:aws:s3vectors:<region-short-id>:<account-id>:bucket/<bucket-name>/index/<vector-name>"
+            }
+        ]
+    }
+    ```
+
+    [Learn more about these S3 Vectors access permissions](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-vectors-access-management.html).
+
+  - Learn how to attach an access policy to an IAM [user](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_change-permissions.html#users_change_permissions-add-console), 
+    [group](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_groups_manage_attach-policy.html), 
+    or [role](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-user.html).
+  - Learn how to [create and manage AWS access key IDs and their related AWS secret access keys for IAM users](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html).
+  - Learn how to [switch from an IAM user to a role for temporary access](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_manage-assume.html).
+
