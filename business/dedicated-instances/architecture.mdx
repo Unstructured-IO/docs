@@ -2,7 +2,7 @@
 title: Architecture
 ---
 
-Your **Dedicated Instance** is an isolated Unstructured deployment. You use private connectivity with your cloud provider so traffic between you and Unstructured stays on private network path and not the public internet.
+Your **Dedicated Instance** is an isolated Unstructured deployment. You use private connectivity with your cloud provider so traffic between you and Unstructured stays on private network paths, not the public internet.
 
 ## Private connectivity by CSP
 
@@ -12,11 +12,11 @@ Your **Dedicated Instance** is an isolated Unstructured deployment. You use priv
 
 ## Traffic directions
 
-Private connectivity runs **in two directions**, and you can configure **either direction on its own**:
+Private connectivity runs in two directions, and you can configure either direction on its own:
 
 - **You → Unstructured** — You access the Unstructured UI and API through a private endpoint in your VPC or VNet.
 - **Unstructured → you** — Unstructured reaches your data sources (for example S3 buckets, databases, and vector stores) through private endpoints in the Unstructured VPC or VNet.
 
-If you enforce strict outbound controls, configure **both** directions so private access works end to end.
+If you enforce strict outbound controls, configure both directions so private access works end to end.
 
 

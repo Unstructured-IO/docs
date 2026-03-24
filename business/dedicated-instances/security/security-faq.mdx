@@ -2,35 +2,49 @@
 title: Security FAQ
 ---
 
+<Note>
+This topic uses _private connectivity_ as a collective term for AWS PrivateLink and Azure Private Link.
+</Note>
+
+
 **Is my Dedicated Instance single-tenant?**
+
 Yes. Each Dedicated Instance is logically isolated and single-tenant. Your instance is not shared with other customers at the application or network level.
 
 **Does traffic ever traverse the public internet?**
-By default, Dedicated Instances are configured with strict network controls to block public ingress and egress. When PrivateLink is enabled, traffic between your environment and Unstructured flows entirely over cloud-provider private networking. Public ingress/egress can be enabled on request for specific use cases — see [Network Access Controls](about:blank#network-access-controls).
+
+By default, Dedicated Instances are configured with strict network controls to block public ingress and egress. When private connectivity is enabled, traffic between your environment and Unstructured flows entirely over cloud-provider private networking. Public ingress/egress can be enabled on request for specific use cases — see [Network Access Controls](about:blank#network-access-controls).
 
 **Is data encrypted?**
-Yes.
+
+Yes. Data is encrypted in the following cases:
 - **In transit:** All traffic uses TLS 1.2 or higher.
 - **Internally:** Mutual TLS (mTLS) is used between platform services.
 - **Cloud storage:** Encryption policies are enforced at the storage layer.
 - **At rest:** Optional customer-managed KMS keys are available on request.
 
 **Can Unstructured access my data?**
+
 Unstructured personnel do not access customer data as part of normal operations. Access to customer data sources is explicitly configured, limited to the minimum permissions required, and governed by customer-controlled IAM, RBAC, and resource policies. Any exceptional access (e.g., for troubleshooting) follows strict internal controls and auditing.
 
 **Is customer data used to train models?**
+
 No. Customer data processed within a Dedicated Instance is not used to train models.
 
 **How is access to the platform controlled?**
+
 - Customers manage user access to the Unstructured UI and APIs.
 - Network access is restricted using private endpoints, security groups, and firewall rules.
 - DNS resolution is private and scoped to customer networks.
 
-**What does PrivateLink protect against?**
-PrivateLink helps protect against exposure to the public internet, unintended inbound network access, and DNS-based traffic interception. PrivateLink does not protect against application-layer vulnerabilities, misconfigured IAM or RBAC policies, or compromised credentials.
+**What does private connectivity protect against?**
+
+Private connectivity helps protect against exposure to the public internet, unintended inbound network access, and DNS-based traffic interception. Private connectivity does not protect against application-layer vulnerabilities, misconfigured IAM or RBAC policies, or compromised credentials.
 
 **How long is customer data retained?**
+
 Unstructured does not store customer data long-term. Customer artifacts are used ephemerally during workflow execution and removed upon completion or failure. Transformed data is written to the configured destination. The only data that persists in the Unstructured platform is connector and workflow configuration metadata, connector keys (stored in a secret store), and workflow execution telemetry (which does not contain file data).
 
 **What compliance standards does Unstructured support?**
-Unstructured maintains industry-standard security and compliance programs including HIPAA compliance architecture, ITAR-readiness with geo-blocking via AWS WAF, and SOC 2 controls. Detailed compliance artifacts are available from our trust center.
+
+Unstructured maintains industry-standard security and compliance programs including HIPAA compliance architecture, ITAR-readiness with geo-blocking via AWS WAF, and SOC 2 controls. Detailed compliance artifacts are available from our trust center.<Warning> !! Writer:  Add link to Turst Center !! </Warning>

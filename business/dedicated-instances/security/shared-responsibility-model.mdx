@@ -2,40 +2,37 @@
 title: Shared responsibility model
 ---
 
-<Warning>
-!! WRITER:  Add intro paras and more context !!
-</Warning>
+A **shared responsibility model** documents how responsibility for security and operations is divided between a service provider and its customers. The provider protects the infrastructure and software it operates; customers protect their accounts, data, identities, access policies, and the network resources they control. Major cloud providers publish similar high-level shared responsibility frameworks for their own platforms.
+
+
+The following tables indicate which responsibilities are assigned to the **Customer** or to **Unstructured**. The first table covers traffic to the Unstructured platform (UI and API access from your environment). The second covers traffic to your data sources (when Unstructured connects into your cloud).
 
 **Customer → Unstructured (Accessing Unstructured UI and API)**
 
 | Responsibility | Customer | Unstructured |
-| --- | --- | --- |
-| VPC/VNet Configuration | ✔ |  |
-| VPC Endpoint / Private Endpoint Creation | ✔ |  |
-| DNS Configuration | ✔ |  |
-| Security Group / NSG Rules | ✔ |  |
-| VPC Endpoint Service Creation |  | ✔ |
-| Endpoint Connection Approval |  | ✔ |
-| Load Balancer and Target Configuration |  | ✔ |
-| Platform Security & Certificate Management |  | ✔ |
+| --- | :---: | :---: |
+| VPC / VNet configuration | ✔ |  |
+| VPC Endpoint / Private Endpoint creation | ✔ |  |
+| DNS configuration | ✔ |  |
+| Security group /  Network Security Group rules | ✔ |  |
+| VPC Endpoint service creation |  | ✔ |
+| Endpoint connection approval |  | ✔ |
+| Load balancer and target configuration |  | ✔ |
+| Platform security & certificate management |  | ✔ |
 
 
 
 **Unstructured → Customer (Accessing Customer Data Sources)**
 
 | Responsibility | Customer | Unstructured |
-| --- | --- | --- |
-| VPC Endpoint Service Creation | ✔ |  |
-| Load Balancer and Target Configuration | ✔ |  |
-| Endpoint Connection Approval | ✔ |  |
-| Security Group / NSG Rules | ✔ |  |
-| Bucket/Container Policies | ✔ |  |
-| VPC Endpoint / Private Endpoint Creation |  | ✔ |
-| DNS Configuration |  | ✔ |
-
-<Warning>
-!! WRITER:  Include info from below note in intro para, or leave as note for emphasis? !!
-</Warning>
+| --- | :---: | :---: |
+| VPC Endpoint service creation | ✔ |  |
+| Load Balancer and target configuration | ✔ |  |
+| Endpoint connection approval | ✔ |  |
+| Security Group /  Network Security Group rules | ✔ |  |
+| Bucket and Container policies | ✔ |  |
+| VPC endpoint / Private Endpoint creation |  | ✔ |
+| DNS configuration |  | ✔ |
 
 <Note>
 Each party is only responsible for the cloud resources it operates.

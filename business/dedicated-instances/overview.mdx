@@ -9,11 +9,11 @@ Use this overview to help teams across your organization evaluate, secure, and d
 
 This overview covers:
 
-* How Dedicated Instances address strict security requirements
-* High-level benefits and trade-offs of using a Dedicated Instance
-* Technical integration requirements for connecting your Dedicated Instance, hosted on the Unstructured platform, to your cloud
+* How Dedicated Instances meet stricter security and compliance expectations.
+* High-level benefits and trade-offs.
+* Technical requirements for integrating your Dedicated Instance with your cloud platform.
 
-## Cloud Service Provider support ##
+## Cloud service provider (CSP) support ##
 Unstructured supports Dedicated Instances for integration with Amazon Web Services (AWS) and Microsoft Azure (Azure).  
 
 This overview covers pertinent information for both of these cloud service providers. Detailed, service-specific configuration requirements are covered in the following sections:
@@ -21,7 +21,9 @@ This overview covers pertinent information for both of these cloud service provi
 * AWS — [AWS PrivateLink overview](/business/aws/aws-privatelink/overview)
 * Azure — [Azure Private Link overview](/business/azure/azure-privatelink/overview)
 
-In this topic we use _private connectivity_ as a general term for AWS PrivateLink and Azure Private Link collectively.
+<Note>
+This topic uses _private connectivity_ as a collective term for AWS PrivateLink and Azure Private Link.
+</Note>
 
 
 ## Private connectivity for your Dedicated Instance ##
@@ -32,7 +34,7 @@ Network filtering lets you fully block incoming and outgoing traffic to the publ
 **Benefits**
 
 - **Eliminate public exposure** - Traffic between your VPC/VNet and Unstructured can avoid the public internet and instead traverse cloud-provider private networking.
-- **Stronger network isolation for sensitive workloads** - Meet your  internal security requirements and compliance where *private network access* is preferred or mandated.
+- **Stronger network isolation for sensitive workloads** - Meet your internal security requirements and compliance where *private network access* is preferred or mandated.
 - **Simpler enterprise network integration** - Works well with existing private connectivity patterns (VPC/VNet isolation, VPN/DirectConnect/ExpressRoute to corporate on-prem networks).
 - **Control and visibility** - Private endpoints and private DNS enable you to manage where traffic flows, enforce access policies at the network level, and give you visibility into traffic paths and access patterns.
 

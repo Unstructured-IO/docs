@@ -27,7 +27,7 @@ The following security measures and connectivity options apply:
 
 - **TLS 1.2+** for all traffic in transit.
 - **AWS WAF** (Web Application Firewall) provides DDoS protection, rate limiting, and optional geo-blocking for ITAR compliance.
-- **IP Allowlisting** - restricts Unstructured platform access to specific source IP addresses or CIDR ranges. Submit a support ticket with your IP list to enable this. 
+- **IP Allowlisting** - restricts Unstructured platform access to specific source IP addresses or CIDR ranges. Submit a support ticket with your IP list to enable this.
 <Warning>!! WRITER: check standard wording and links for submitting support ticket !!</Warning>
 
 - **Independent paths** - allow you to use the UI and API over the public internet while Unstructured uses private connectivity to reach your data sources. The two paths are configured separately.
@@ -39,14 +39,16 @@ When private connectivity is enabled, traffic between your environment and the U
 ### What private connectivity does and does not protect
 
 Private connectivity protects:
-* Network traffic from public internet exposure 
-* Data in-transit between VPCs/VNets 
-* DNS resolution of service endpoints
+
+* Network traffic from public internet exposure.
+* Data in transit between VPCs/VNets.
+* DNS resolution of service endpoints.
 
 Private connectivity does not protect:
-* Application-layer vulnerabilities
-* Misconfigured Identify and Access Management (IAM) or Role-Based Access Control (RBAC) policies
-* Compromised credentials
+
+* Application-layer vulnerabilities.
+* Misconfigured Identity and Access Management (IAM) or Role-Based Access Control (RBAC) policies.
+* Compromised credentials.
 
 ### (Optional) Customer-managed encryption keys
 
@@ -55,7 +57,7 @@ By default, Unstructured manages encryption keys using the cloud provider’s ke
 
 ### Network access controls
 
-**Network access controls** govern whether traffic may use the **public internet** to enter or exit your Dedicated Instance. This section covers the default configuration settings for inbound and outbound traffic and the available options for any exceptions you'd like to make the defaults.
+Network access controls govern whether traffic may use the public internet across the boundary between the Unstructured platform and your cloud environment (the VPC or VNet where your data sources and related resources run). This section explains the default rules for inbound and outbound traffic and how you can request changes when a use case requires it.
 
 **Default configuration:**
 
@@ -71,7 +73,7 @@ This default configuration provides maximum network isolation and is recommended
 Some integrations require outbound internet access. Examples include:
 - Third-party AI/ML APIs (e.g., OpenAI, Anthropic, Gemini) not hosted in your cloud environment.
 - External webhooks or callback URLs.
-- Public SaaS services without private connectivity support (see [connector coverage](about:blank#aws-privatelink-connector-coverage) below).
+- Public SaaS services without private connectivity support.
 
 If your use case requires public egress, Unstructured can enable outbound internet access with the following options:
 

@@ -2,15 +2,17 @@
 title: Requirements and Limitations
 ---
 
-Dedicated Instances rely on cloud-provider private networking features and therefore require certain baseline infrastructure components to ensure a secure and successful deployment. This section outlines the key requirements customers must meet, as well as known limitations that may affect implementation decisions.  Understanding these constraints early helps reduce onboarding delays and ensures alignment across security, platform, and engineering teams.
+Dedicated Instances rely on cloud provider private networking features and therefore require certain baseline infrastructure components to ensure a secure and successful deployment. 
 
-### Supported Cloud Providers and Regions
+This section outlines the key requirements customers must meet, as well as known limitations that may affect implementation decisions.  Understanding these constraints early helps reduce onboarding delays and ensures alignment across security, platform, and engineering teams.
+
+### Cloud provider and Region support
 
 | Cloud Provider | Availability |
 | --- | --- |
-| AWS | General Availability |
-| Azure | General Availability |
-| GCP | Not currently supported |
+| Amazon Web Services (AWS)  | General Availability |
+| Microsoft Azure (Azure)| General Availability |
+| Google Cloud Platform (GCP) | Not currently supported |
 
 **AWS Supported Regions**
 
@@ -33,19 +35,19 @@ If your required region is not listed above, contact your Unstructured account r
 
 Contact your Unstructured account representative for the current list of supported Azure regions.
 
-### Prerequisites
+### Requirements
 
-**AWS Requirements:**
+**AWS requirements:**
 - VPC with private subnets
 - Network Load Balancer (for connections into Customer environment)
 - IAM permissions to create VPC endpoints, security groups, and Route 53 records
 
-**Azure Requirements:**
+**Azure requirements:**
 - Virtual Network with subnets configured for private endpoints
 - Private endpoint network policies disabled on target subnets
 - Standard Load Balancer (for connections into Customer environment)
 
-### DNS Requirements
+### DNS requirements
 
 Private connectivity requires DNS configuration to route traffic through private endpoints:
 - AWS: Route 53 Private Hosted Zone (and on-premise DNS forwarding if needed)
@@ -54,11 +56,11 @@ Private connectivity requires DNS configuration to route traffic through private
 
 The DNS name will be provided to you by Unstructured, in the form `<company>.privatelink.unstructuredapp.io`.
 
-### Known Limitations
+### Known limitations
 
 | Limitation | Notes |
 | --- | --- |
-| Cross-Region PrivateLink | Supported but incurs additional data transfer costs; not advised |
-| Cross-Cloud PrivateLink | Not supported (e.g., AWS to Azure) |
-| VPC Peering | Not supported as an alternative to PrivateLink |
+| Cross-Region private connectivity  | Supported but incurs additional data transfer costs. Not recommended. |
+| Cross-CSP private connectivity | Not supported (e.g., AWS to Azure) |
+| VPC Peering | Not supported as an alternative to private connectivity |
 

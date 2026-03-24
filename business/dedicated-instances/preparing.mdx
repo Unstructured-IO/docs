@@ -1,16 +1,21 @@
 ---
 title: Preparing for a Dedicated Instance
 ---
+<Note>
+This topic uses _private connectivity_ as a collective term for AWS PrivateLink and Azure Private Link.
+</Note>
 
-Once you’ve decided to proceed with a Dedicated Instance, the next steps involve provisioning the environment and establishing private connectivity. The deployment process is conducted remotely and can typically be completed within the following timeframes:
+Once you’ve decided to proceed with a Dedicated Instance, the next steps involve provisioning the required environment resources and establishing private connectivity. The deployment process is conducted remotely and can typically be completed within the following timeframes:
 
-| Cloud Provider | Without PrivateLink | With PrivateLink |
+| Cloud Provider | Without private connectivity | With private connectivity |
 | --- | --- | --- |
 | AWS | 2–3 Days | 4–5 Days |
 | Azure | 2–3 Days | 4–5 Days |
 
-> Times are subject to Customer infrastructure team availability. More complex integrations (multiple connectors, custom models, etc.) will extend the deployment timeline.
-> 
+<Note>
+Times are subject to Customer infrastructure team availability. More complex integrations (multiple connectors, custom models, etc.) will extend the deployment timeline.
+</Note>
+
 
 ### Information Required for Provisioning
 
@@ -19,19 +24,21 @@ Before deployment can begin, please provide the following:
 | Information Required | Description |
 | --- | --- |
 | Name of Administrator | Primary administrator of the account (others can be added after) |
-| Admin Email Address | Email address of the primary admin |
-| Cloud Provider | AWS or Azure |
+| Admin email address | Email address of the primary admin |
+| Cloud provider | AWS or Azure |
 | Cloud Region | Please see [list of supported regions](about:blank#supported-cloud-providers-and-regions) |
-| Desired URL | Without PrivateLink: `<companyname>.unstructuredapp.io` / With PrivateLink: `<companyname>.privatelink.unstructuredapp.io` |
-| VLM Provider | Anthropic, Bedrock, OpenAI, Azure OpenAI, etc. |
-| VLM Models | e.g., Claude Sonnet 4.5, GPT-4o, Gemini 2.0 Flash |
-| Embedding Models | e.g., Titan, Granite (ensure you select correct dimensions) |
+| Desired URL | Without private connectivity: `<companyname>.unstructuredapp.io` <br /> With private connectivity: `<companyname>.privatelink.unstructuredapp.io` |
+| VLM provider | Anthropic, Bedrock, OpenAI, Azure OpenAI, etc. |
+| VLM models | e.g., Claude Sonnet 4.5, GPT-4o, Gemini 2.0 Flash |
+| Embedding models | e.g., Titan, Granite (ensure you select correct dimensions) |
 
-> **Do not send API keys by email or any collaboration tool.** Unstructured has a secure method of capturing these.
-> 
+<Important>
+Do not send API keys by email or any collaboration tool. Unstructured has a secure method of capturing these.
+</Important>
+
 
 ### Information Exchange
 
-All PrivateLink configuration data exchanges between Customer and Unstructured must be conducted via support tickets. This ensures a documented audit trail of all shared information, including Account IDs, VPC Endpoint Service Names, IAM Role ARNs, Service Principal IDs, and other sensitive configuration details.
+All private connectivity configuration data exchanges between Customer and Unstructured must be conducted via support tickets. This ensures a documented audit trail of all shared information, including Account IDs, VPC Endpoint service names, IAM Role ARNs, Service Principal IDs, and other sensitive configuration details.
 
-To initiate a PrivateLink configuration, log a ticket via the [Unstructured Support Portal](https://support.unstructured.io/) with the subject line: **“PrivateLink Configuration Request — [Your Company Name]”**. A technical enablement engineer will respond to guide you through the exchange.
+To initiate a private connectivity configuration, log a ticket via the [Unstructured Support Portal](https://support.unstructured.io/) with the subject line: **“PrivateLink Configuration Request — [Your Company Name]”**. A technical enablement engineer will respond to guide you through the exchange.
