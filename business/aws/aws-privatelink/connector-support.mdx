@@ -1,0 +1,22 @@
+---
+title: Connector support for AWS PrivateLink
+sidebarTitle: Connector support
+---
+
+Not all Unstructured platform connectors can be accessed via AWS PrivateLink. The table below summarizes the coverage and configuration approach for each connector in a Dedicated Instance context.
+
+| Connector | PrivateLink Supported | Approach | Configuration Section |
+| --- | --- | --- | --- |
+| **Customer → Unstructured (UI/API)** | ✅ | Interface VPC Endpoint | [Link](about:blank#connections-into-unstructured-vpc-aws) |
+| **AWS S3** | ✅ | Gateway Endpoint | [Link](about:blank#aws-s3-gateway-endpoint) |
+| **AWS Bedrock** (VLM) | ✅ | Interface VPC Endpoint (Unstructured side) | [Link](about:blank#aws-bedrock) |
+| **AWS OpenSearch Service** | ✅ | Interface VPC Endpoint | [Link](about:blank#aws-managed-services-with-native-privatelink) |
+| **AWS OpenSearch Serverless** | ✅ | VPC Endpoint + Data Access Policy | [Link](about:blank#aws-opensearch-serverless) |
+| **AWS MSK (Kafka)** | ✅ | Multi-VPC Connectivity (MSK native) | [Link](about:blank#aws-msk-kafka) |
+| **AWS RDS / PostgreSQL** | ✅ | NLB-backed Endpoint Service | [Link](about:blank#customer-managed-services-aws-or-aws-services-with-nlb) |
+| **Databricks on AWS** | ✅ | Databricks PrivateLink | [Link](about:blank#aws-databricks) |
+| **Elasticsearch (self-hosted on AWS)** | ✅ | NLB-backed Endpoint Service | [Link](about:blank#customer-managed-services-aws-or-aws-services-with-nlb) |
+| **MongoDB (self-hosted on AWS)** | ✅ | NLB-backed Endpoint Service | [Link](about:blank#customer-managed-services-aws-or-aws-services-with-nlb) |
+| **Box, Confluence, Dropbox, Google Drive, Jira, OneDrive, Outlook, Salesforce, SharePoint, Slack, Zendesk** | ❌ | SaaS — requires public egress | Requires [public egress](about:blank#optional-enabling-public-egress) |
+| **Google Cloud Storage** | ❌ | Cross-cloud not supported | Requires public egress |
+| **Snowflake (multi-cloud/SaaS)** | Varies | Native if on AWS; public egress otherwise | See Snowflake section |

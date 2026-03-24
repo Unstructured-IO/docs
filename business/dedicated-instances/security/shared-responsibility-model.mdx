@@ -1,0 +1,42 @@
+---
+title: Shared responsibility model
+---
+
+<Warning>
+!! WRITER:  Add intro paras and more context !!
+</Warning>
+
+**Customer → Unstructured (Accessing Unstructured UI and API)**
+
+| Responsibility | Customer | Unstructured |
+| --- | --- | --- |
+| VPC/VNet Configuration | ✔ |  |
+| VPC Endpoint / Private Endpoint Creation | ✔ |  |
+| DNS Configuration | ✔ |  |
+| Security Group / NSG Rules | ✔ |  |
+| VPC Endpoint Service Creation |  | ✔ |
+| Endpoint Connection Approval |  | ✔ |
+| Load Balancer and Target Configuration |  | ✔ |
+| Platform Security & Certificate Management |  | ✔ |
+
+
+
+**Unstructured → Customer (Accessing Customer Data Sources)**
+
+| Responsibility | Customer | Unstructured |
+| --- | --- | --- |
+| VPC Endpoint Service Creation | ✔ |  |
+| Load Balancer and Target Configuration | ✔ |  |
+| Endpoint Connection Approval | ✔ |  |
+| Security Group / NSG Rules | ✔ |  |
+| Bucket/Container Policies | ✔ |  |
+| VPC Endpoint / Private Endpoint Creation |  | ✔ |
+| DNS Configuration |  | ✔ |
+
+<Warning>
+!! WRITER:  Include info from below note in intro para, or leave as note for emphasis? !!
+</Warning>
+
+<Note>
+Each party is only responsible for the cloud resources it operates.
+</Note>

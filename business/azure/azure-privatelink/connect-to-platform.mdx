@@ -1,0 +1,16 @@
+---
+title: Connecting to the Unstructured Platform (UI and API)
+sidebarTitle: Connecting to the Unstructured Platform
+---
+This enables Customer applications to access the Unstructured Platform (UI and API).
+
+| Order | Information Required | Description | Example | Who |
+| --- | --- | --- | --- | --- |
+| 1 | Private Link Service Resource ID | Resource ID of Unstructured’s Private Link Service | `/subscriptions/…/providers/Microsoft.Network/privateLinkServices/uio-pls` | Unstructured |
+| 1 | Private Link Service Alias | Alias for Unstructured’s Private Link Service | `uio-pls.abc123.eastus.azure.privatelinkservice` | Unstructured |
+| 1 | Service Region | Region where Unstructured’s service is hosted | `eastus` | Unstructured |
+| 2 | Azure Subscription ID | Customer’s Azure Subscription ID (to approve connection) | `a1b2c3d4-e5f6-7890-abcd-ef1234567890` | Customer |
+| 2 | Azure Region | Region where Private Endpoint will be created | `eastus` | Customer |
+| 2 | Virtual Network Name | VNet where endpoint will be deployed | `customer-vnet` | Customer |
+| 2 | Subnet Name | Subnet for the private endpoint | `private-endpoints-subnet` | Customer |
+| 2 | Resource Group | Resource group containing the VNet | `customer-network-rg` | Customer |

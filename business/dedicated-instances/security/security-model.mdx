@@ -1,0 +1,99 @@
+---
+title: Security model
+---
+Dedicated Instances use a security model that protects your data across network, infrastructure, and service layers. The architecture prioritizes data isolation, private connectivity, and controlled access so your data stays within trusted boundaries.
+
+This page covers PrivateLink, encryption, and network access controls for Dedicated Instances. For more information about security across the Unstructured platform, see [Security and compliance](business/security-compliance/overview).
+
+
+### Encryption
+
+All connections to Dedicated Instances use TLS 1.2 or higher for encryption in transit.
+
+| Layer | Encryption |
+| --- | --- |
+| API Endpoints | TLS 1.2+ with certificate validation |
+| Cloud Storage Connections (S3, Blob Storage) | TLS encryption with bucket/container policies enforcing encryption |
+| Internal Service Mesh | mTLS between microservices |
+
+### Security without PrivateLink (internet-facing mode)
+
+Customers who deploy a Dedicated Instance without PrivateLink access the platform over the public internet via HTTPS. The following controls apply.
+
+- **TLS 1.2+** for all traffic in transit.
+- **AWS WAF** (Web Application Firewall) provides DDoS protection, rate limiting, and optional geo-blocking for ITAR compliance.
+- **IP Allowlisting** - restricts Unstructured platform access to specific source IP addresses or CIDR ranges. Submit a support ticket with your IP list to enable this. 
+<Warning>!! WRITER: check standard wording and links for submitting support ticket !!</Warning>
+- **Independent ingress and outbound** means you can access the platform over the internet with the UI or API, while Unstructured uses PrivateLink to reach your data sources.  The two paths are configured separately.
+
+### Security with PrivateLink
+
+When PrivateLink is enabled, traffic between your environment and Unstructured flows entirely over cloud-provider private networking. Service endpoints resolve to private IP addresses, and no inbound access from the public internet is permitted.
+
+### What PrivateLink does and does not protect
+
+**Protected**
+* Network traffic from public internet exposure 
+* Data in-transit between VPCs/VNets 
+* DNS resolution of service endpoints
+
+**Not Protected**
+* Application-layer vulnerabilities
+* Misconfigured IAM/RBAC policies
+* Compromised credentials
+
+### (Optional) Customer-managed encryption keys
+
+<Warning>
+!! WRITER:  Check formatting for "Optional" in titles !!
+</Warning>
+
+By default, Unstructured manages encryption keys using the cloud provider’s key management service (AWS KMS or Azure Key Vault). Customers with strict key custody requirements can optionally bring their own KMS Customer Managed Keys (CMK). Contact your account representative to enable this.
+
+
+### Network access controls
+
+**Default configuration:**
+
+| Traffic Direction | Default State |
+| --- | --- |
+| Public Ingress | **Blocked** — All inbound traffic from the public internet is denied. Access is only available via PrivateLink. |
+| Public Egress | **Blocked** — All outbound traffic to the public internet is denied. The platform can only communicate with resources accessible via PrivateLink or within the Unstructured VPC/VNet. |
+
+This default configuration provides maximum network isolation and is recommended for customers with strict compliance requirements.
+
+**(Optional) Enabling public egress**
+
+<Warning>
+!! WRITER:  Check formatting for "Optional" in titles !!
+</Warning>
+
+Some integrations require outbound internet access. Examples include:
+- Third-party AI/ML APIs (e.g., OpenAI, Anthropic, Gemini) not hosted in your cloud environment.
+- External webhooks or callback URLs.
+- Public SaaS services without PrivateLink support (see [connector coverage](about:blank#aws-privatelink-connector-coverage) below).
+
+If your use case requires public egress, Unstructured can enable outbound internet access with the following options:
+
+| Option | Description |
+| --- | --- |
+| Full Egress | All outbound internet traffic is permitted (not recommended) |
+| Specific IPs/CIDRs | Outbound traffic is permitted only to specified IP addresses or CIDR ranges |
+
+To request egress configuration changes, log a support ticket and provide:
+- Application/use-case requirements for the access change.
+- List of IPs or CIDR ranges to allowlist.
+- Expected traffic patterns (e.g., VLM API calls, SSO integration).
+
+**Optional: Enabling public ingress**
+
+In rare cases, customers may require public ingress (e.g., for users who cannot access via PrivateLink). Access will be restricted to specified IP addresses or CIDR ranges, and all traffic remains encrypted via TLS 1.2+.
+
+To request ingress configuration changes, log a support ticket and provide:
+- Application/use-case requirements.
+- List of source IP addresses or CIDR ranges to allowlist.
+- Expected access patterns.
+
+<note>
+Enabling public ingress or egress reduces the network isolation benefits of a Dedicated Instance. Unstructured recommends using PrivateLink for all connectivity where possible.
+</note>
