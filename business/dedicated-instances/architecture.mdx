@@ -3,25 +3,17 @@ title: Architecture
 ---
 
 
-Dedicated Instances provide a secure, isolated deployment for processing unstructured data from your environment. Data stays within private network boundaries, with managed ingestion and processing handled in that same isolated deployment.
+Your **Dedicated Instance** is an isolated Unstructured deployment. You use private connectivity with your cloud provider so traffic between you and Unstructured stays on private network paths, not the public internet.
 
-The system leverages cloud-native infrastructure and private networking without exposing data to the public internet.
+**AWS:** **AWS PrivateLink** (with interface VPC endpoints) carries traffic **in both directions** between your VPC and the Unstructured VPC.
 
-**AWS private connectivity** uses AWS PrivateLink interface endpoints to connect customer VPCs to the Unstructured VPC without traversing the public internet.
+**Azure:** **Azure Private Link** connects your VNet and Unstructured **in both directions** over private endpoints; traffic stays on the Microsoft backbone instead of the public internet.
 
-**Azure private connectivity** uses Azure Private Link so access occurs through a private IP and traffic stays on the Microsoft backbone.
+Traffic can run **in two directions**, and you can configure **either direction on its own**:
 
-There are two directions of connectivity:
+- **You → Unstructured** — You access the Unstructured UI and API through a private endpoint in your VPC or VNet.
+- **Unstructured → you** — Unstructured reaches your data sources (for example S3 buckets, databases, and vector stores) through private endpoints in the Unstructured VPC or VNet.
 
-| Direction | Description |
-| --- | --- |
-| **Customer → Unstructured** | Customer applications access the Unstructured UI and API via a private endpoint in the customer’s VPC/VNet. |
-| **Unstructured → Customer** | Unstructured accesses customer data sources (S3 buckets, databases, vector stores, etc.) via private endpoints created in the Unstructured VPC/VNet. |
-
-Both directions can be established independently. Customers with strict outbound traffic controls should configure both.
+If you use strict outbound controls, configure **both** directions so private access works end to end.
 
 
-
-Detailed setup instructions are provided in the deployment sections for each cloud provider.
-
-See [Security](./security) for more information about isolation, encryption, and access controls.
