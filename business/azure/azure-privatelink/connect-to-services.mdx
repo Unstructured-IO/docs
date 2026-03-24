@@ -10,6 +10,20 @@ This topic covers the required information to enable your Dedicated Instance to 
 * Customer managed AWS services  
 * AWS services that require a Network Loa Balancer (NLB) front end
 
+---
+
+### Suggested introduction (for editors)
+
+This page covers **Unstructured → your Azure services**: what to provide so your Dedicated Instance can reach Azure data sources and APIs over Private Link or private endpoints. The sections below map to **Azure managed services** (Blob/ADLS Gen2, OpenAI, Databricks, AI Search, databases, Synapse, etc.) and **customer-managed workloads** exposed via a Private Link service and Standard Load Balancer.
+
+**Replace the bullet list above**—it describes AWS, not Azure. Use something like:
+
+- Azure managed PaaS with **private endpoints** (storage, OpenAI, AI Search, SQL, Cosmos DB, PostgreSQL, MySQL, Synapse, …)
+- **Azure Databricks** (Private Link–enabled workspace)
+- **Customer-managed** applications via **Private Link service** + Standard Load Balancer (and note API Management internal mode if applicable)
+
+For whether a connector is supported and the high-level pattern, see [Connector support](/business/azure/azure-privatelink/connector-support). For user access to the platform, see [Connecting to the Unstructured Platform](/business/azure/azure-privatelink/connect-to-platform).
+
 ## Azure managed services
 
 ### Azure Blob Storage

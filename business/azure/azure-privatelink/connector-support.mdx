@@ -3,20 +3,28 @@ title: Connector support for Azure Private Link
 sidebarTitle: Connector support
 ---
 
-This section outlines the information required by both parties to establish Azure Private Link. For connectivity into the Customer, depending on the service to be accessed there are different data points to capture. If Unstructured is accessing multiple services, we require the information for each one.
+This section provides a list of connectors to Azure services. For each connector it summarizes the following:
+
+- Whether the connector supports Private Link
+- Which Azure components are involved
+- A reference for detailed setup information
+
+Review the table first, then follow [Connecting to the Unstructured Platform](/business/azure/azure-privatelink/connect-to-platform) for UI/API access and [Connecting to your Azure services](/business/azure/azure-privatelink/connect-to-services) for data sources and other Azure workloads.
+
 
 ### Azure Connector Coverage
 
-| Connector | PrivateLink Supported | Approach | Configuration Section |
-| --- | --- | --- | --- |
+| Connector | Private Link supported | Approach | Configuration information |
+| --- | :---: | --- | --- |
 | **Customer → Unstructured (UI/API)** | ✅ | Private Endpoint | [Link](about:blank#connections-into-unstructured-vpc-azure) |
-| **Azure Blob Storage / ADLS Gen2** | ✅ | Private Endpoint | [Link](about:blank#azure-blob-storage) |
+| **Azure Blob Storage / ADLS Gen2** | ✅ | Private Endpoint | [Link](business/azure/azure-privatelink/connect-to-services#azure-blob-storage) |
 | **Azure OpenAI** | ✅ | Private Endpoint | [Link](about:blank#azure-openai) |
 | **Azure OpenAI via API Management** | ✅ | Private Endpoint + APIM Private mode | Contact Unstructured |
-| **Azure AI Search** | ✅ | Private Endpoint | [Link](about:blank#azure-managed-services) |
-| **Databricks (Azure)** | ✅ | Private Link | [Link](about:blank#azure-databricks) |
-| **Azure SQL / Cosmos DB / PostgreSQL / MySQL / Synapse** | ✅ | Private Endpoint | [Link](about:blank#azure-managed-services) |
-| **Customer Managed Services (Azure)** | ✅ | Private Link Service + Standard Load Balancer | [Link](about:blank#customer-managed-services-azure) |
+| **Azure AI Search** | ✅ | Private Endpoint | [Link](business/azure/azure-privatelink/connect-to-services#azure-managed-services-with-private-endpoint-access) |
+| **Databricks (Azure)** | ✅ | Private Link | [Link](business/azure/azure-privatelink/connect-to-services#azure-databricks) |
+| **Azure SQL / Cosmos DB / PostgreSQL / MySQL / Synapse** | ✅ | Private Endpoint | [Link](business/azure/azure-privatelink/connect-to-services#azure-managed-services-with-private-endpoint-access) |
+| **Customer Managed Services (Azure)** | ✅ | Private Link Service + Standard Load Balancer | [Link](business/azure/azure-privatelink/connect-to-services#customer-managed-services-azure) |
 | **OneDrive / SharePoint / Outlook** | ❌ | Microsoft SaaS — requires public egress | Requires public egress |
 | **Google Cloud Storage** | ❌ | Cross-cloud not supported | Requires public egress |
+
 
