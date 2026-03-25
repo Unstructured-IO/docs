@@ -1,0 +1,45 @@
+---
+title: DNS configuration for PrivateLink access
+sidebarTitle: DNS configuration
+---
+
+dd
+## DNS Configuration for PrivateLink Access
+
+### Why this matters
+PrivateLink establishes a private network path between VPCs, but DNS determines how clients resolve and reach that path. Configuring DNS correctly ensures that service requests resolve to the private endpoint, remain within your network boundaries, and successfully complete TLS validation using the expected hostname. Misconfigured DNS can result in failed connections or traffic being routed outside the intended private path.
+
+<Callout type="warning" title="Common pitfall">
+PrivateLink connectivity may be correctly configured, but if DNS still resolves the service hostname to a public endpoint, traffic will bypass PrivateLink. This can lead to failed connections (for private-only services) or unintended public network access.
+</Callout>
+
+<Callout type="tip" title="Verify DNS resolution">
+From within your VPC, use tools such as <code>nslookup</code> or <code>dig</code> to resolve the service hostname and confirm it returns private IP addresses associated with your Interface VPC Endpoint.
+</Callout>
+
+---
+
+### How PrivateLink and DNS Work Together
+
+```mermaid
+flowchart LR
+    subgraph Customer_VPC[Customer VPC]
+        A[Client Application]
+        D[Route 53 / VPC DNS Resolver]
+        E[Interface VPC Endpoint ENI<br/>Private IP]
+    end
+
+    subgraph PrivateLink[AWS PrivateLink]
+        B[Interface VPC Endpoint]
+    end
+
+    subgraph Vendor_VPC[Vendor VPC]
+        C[Network Load Balancer]
+        F[Service Application]
+    end
+
+    A -->|1. Resolve service hostname| D
+    D -->|2. Return private IP for endpoint| E
+    A -->|3. Connect using service hostname<br/>TLS hostname validation / SNI| B
+    B --> C
+    C --> F

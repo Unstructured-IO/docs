@@ -1,6 +1,6 @@
 ---
 title: Onboarding checklist -  Preparing for a Dedicated Instance
-sidebarTitle: Onboarding checklist
+sidebarTitle: Onboarding steps
 ---
 
 <Note>
@@ -10,8 +10,8 @@ sidebarTitle: Onboarding checklist
     or email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
 </Note>
 
-<Callout icon="question" color="#ff00ff" iconType="regular">??Question:  Integrated the "Preparing for a Dedicated Instance" from the new [DI internal doc](https://www.notion.so/dedicated-instances-documentation-30d2c3765a0a80709acef67a48caacc6) into the  public Onboarding steps into this new version.
-(Old version is in TOC, temporary for reference, with suffix [(TO BE ARCHIVED)-](/business/aws/aws-privatelink/onboarding-preparing).) (1) Is this the  information that's been merged in here from the "old" content is still valid?  (2) Does this combined content align correctly with our current onboarding process?</Callout>
+<Callout icon="question" color="#ff00ff" iconType="regular">?!!COMMENT:  Integrated the *_Preparing for a Dedicated Instance_" from new DI Internal Doc into the public Onboarding steps.
+(Old version is in TOC, temporary for reference:  [(TO BE ARCHIVED)-](/business/aws/aws-privatelink/onboarding-preparing).)</Callout>
 
 After your organization has signed the **Business** account agreement with Unstructured, a member of the Unstructured technical enablement team will reach out to you to begin the **deployment onboarding process**. 
 
@@ -20,11 +20,35 @@ The next steps are provisioning the required environment resources and, optional
 - **With AWS PrivateLink** - 4–5 days
 - **Without AWS PrivateLink** -   2–3 days
 
-
 <Note>
 Times are subject to Customer infrastructure team availability. More complex integrations (multiple connectors, custom models, etc.) will extend the deployment timeline.
 </Note>
 
+## References to help you onboard
+The following refences can provide background or more detail to help you onboard:
+* [Dedicated instance concepts](/business/dedicated-instances/overview) - 
+* [Create an endpoint service powered by AWS PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html)
+* [Configure an AWS PrivateLink endpoint service](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html)
+
+## High level onboarding process
+| ID | Owner | Action |
+| :---: | --- | --- |
+| 1 | Customer | Provides Unstructured information for provisioning |
+| 2 | Customer | Creates an **AWS PrivateLink endpoint service**. <br />Provides infromation to Unstructured via Support ticket.<br />Prerequisites: **AWS VPC** with a **Network Load Balancer** |
+| 4 | Unstructured | Creates a **related endpoint service** in its own AWS account in the **same region** that Customer provided in previous step.<br />Prerequisites: 3 ; New AWS VPC with a Network Load Balancer allocated |
+|5 | Unstructured | Sends Customer an endpoint connection request to complete the connection between its endpoint service (as the service consumer) and your endpoint service (as the service provider).<br />Prerequisites: 4 |
+| 6 | Customer | Accepts Unstructured's **endpoint connection request**.  This step is a prerequisite to establish Unstructured as a Service Consumer to the Customer's AWS services and applications. <br />Prerequisites: 5 |
+| 7 | Unstructured | Creates your Dedicated Instance on the Unstructured platform in the unique VPC associated with (4).<br />Prerequisites: 1 |
+| 8 | Unstructured | Grants your applications on your AWS account access to the Unstructured platform (UI/API).<br />Prerequisites: 7 |
+
+
+
+
+Unstructured provides your applications access to the Unstructured Platform (UI and API).
+You:In your AWS account, create an endpoint service powered by AWS PrivateLink. 
+
+
+## Next steps in onboarding
 While you wait for a member of the Unstructured technical enablement team to reach out to you to begin the deployment onboarding process, you can get started by following the onboarding process:
 
 1. Provide your Unstructured sales representative or technical enablement contact with the following information. Unstructured will begin creating the dedicated instance deployment in that AWS Region.
@@ -66,8 +90,11 @@ If your required region is not listed above, contact your Unstructured account r
 All private connectivity configuration data exchanges between the Customer and Unstructured must be conducted via support tickets. This ensures a documented audit trail of all shared information, including Account IDs, VPC Endpoint service names, IAM Role ARNs, Service Principal IDs, and other sensitive configuration details.
 
 To initiate a private connectivity configuration, log a ticket via the [Unstructured Support Portal](https://support.unstructured.io/) with the subject line: **“PrivateLink Configuration Request — [Your Company Name]”**. A technical enablement engineer will respond to guide you through the exchange.
+
 <Callout icon="question" color="#ff00ff" iconType="regular">??QUESTION:  Is the Customer Portal site available?</Callout>
 </Accordion>
+
+
 
 
 2. In your AWS account, **create an endpoint service** powered by AWS PrivateLink. Be sure when creating the endpoint service to use the same AWS Region name that you provided to Unstructured. 
