@@ -4,7 +4,7 @@ sidebarTitle: Overview
 ---
 
 
-This section helps you plan **Azure Private Link** for your Dedicated Instance on the Unstructured platform. You will coordinate two kinds of connectivity:
+This section helps you plan **Azure Private Link** for your Dedicated Instance on the Unstructured platform. You coordinate two kinds of connectivity:
 
 1. **Into Unstructured** — Your users and applications reach the Unstructured UI and API over private networking.
 2. **Into your Azure environment** — Your Dedicated Instance reaches your Azure data sources and services privately.
