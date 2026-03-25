@@ -13,16 +13,14 @@ This overview covers:
 * High-level benefits and trade-offs.
 * Technical requirements for integrating your Dedicated Instance with your cloud platform.
 
-## Cloud service provider (CSP) support ##
-Unstructured supports Dedicated Instances for integration with Amazon Web Services (AWS) and Microsoft Azure (Azure).  
+## Cloud service provider (CSP) support
+Unstructured supports Dedicated Instances for integration with Amazon Web Services (AWS) and Microsoft Azure (Azure).   This topic provides information for both of these cloud service providers. For specific and detailed  onboarding information about each provider see:
 
-This overview covers pertinent information for both of these cloud service providers. Detailed, service-specific configuration requirements are covered in the following sections:
-
-* AWS — [AWS PrivateLink overview](/business/aws/aws-privatelink/overview)
-* Azure — [Azure Private Link overview](/business/azure/azure-privatelink/overview)
+* AWS — [Onboarding your Dedicated Instance + AWS PrivateLink](/business/aws/aws-privatelink/overview)
+* Azure — [Onboarding your Dedicated Instance + Azure Private Link](/business/azure/azure-privatelink/overview)
 
 <Note>
-This topic uses _private connectivity_ as a collective term for AWS PrivateLink and Azure Private Link.
+This topic uses **private connectivity** as a general term for AWS PrivateLink and Azure Private Link.
 </Note>
 
 
@@ -39,5 +37,5 @@ Network filtering lets you fully block incoming and outgoing traffic to the publ
 - **Control and visibility** - Private endpoints and private DNS enable you to manage where traffic flows, enforce access policies at the network level, and give you visibility into traffic paths and access patterns.
 
 <Note>
-    A Dedicated Instance is a **regional service**: it runs entirely in a single cloud region. Plan for data residency, failover design, and latency with that constraint in mind. Unstructured supports cross-region PrivateLink, but we do not recommend it because of the added data transfer costs.
+    A Dedicated Instance is a **regional service**.  It runs entirely in a single cloud region. Plan for data residency, failover design, and latency with that constraint in mind. Unstructured supports cross-region PrivateLink, but we do not recommend it because of the added data transfer costs.
 </Note>
