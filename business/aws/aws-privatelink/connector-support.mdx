@@ -3,17 +3,14 @@ title: Connector support for AWS PrivateLink
 sidebarTitle: Connector support
 ---
 
-This section provides a list of connectors to AWS services. For each connector it summarizes the following:
+The following table provides a list of connectors to AWS services and includes the following information for each:
 
 - Whether the connector supports AWS PrivateLink
 - Which AWS components are involved
 - A reference for detailed configuration information
 
-Review the table first, then follow [Connecting to the Unstructured Platform](/business/aws/aws-privatelink/connect-to-platform) for UI/API access and [Connecting to your AWS services](/business/aws/aws-privatelink/connect-to-services) for data sources and other AWS workloads.
-
-
-| Connector | PrivateLink Supported | Approach | Configuration Section |
-| --- | --- | --- | --- |
+| Connector | PrivateLink Supported | Approach | Configuration information |
+| --- | :---: | --- | --- |
 | **Customer → Unstructured (UI/API)** | ✅ | Interface VPC Endpoint | [Link](/business/aws/aws-privatelink/connect-to-platform) |
 | **AWS S3** | ✅ | Gateway Endpoint | [Link](/business/aws/aws-privatelink/connect-to-services#aws-s3-gateway-endpoint) |
 | **AWS Bedrock** (VLM) | ✅ | Interface VPC Endpoint (Unstructured side) | [Link](/business/aws/aws-privatelink/connect-to-services#aws-bedrock) |
@@ -26,4 +23,6 @@ Review the table first, then follow [Connecting to the Unstructured Platform](/b
 | **MongoDB (self-hosted on AWS)** | ✅ | NLB-backed Endpoint Service | [Link](/business/aws/aws-privatelink/connect-to-services#customer-managed-services-aws-or-aws-services-with-nlb) |
 | **Box, Confluence, Dropbox, Google Drive, Jira, OneDrive, Outlook, Salesforce, SharePoint, Slack, Zendesk** | ❌ | SaaS — requires public egress | Requires [public egress](/business/dedicated-instances/security/security-model#network-access-controls) |
 | **Google Cloud Storage** | ❌ | Cross-cloud not supported | Requires [public egress](/business/dedicated-instances/security/security-model#network-access-controls) |
-| **Snowflake (multi-cloud/SaaS)** | Varies | Native if on AWS; public egress otherwise | See [Snowflake section](/business/aws/aws-privatelink/connect-to-services#snowflake-on-aws) |
+| **Snowflake (multi-cloud/SaaS)** | Varies | Native if on AWS; public egress otherwise | [Link](/business/aws/aws-privatelink/connect-to-services#snowflake-on-aws) |
+
+<Callout icon="question" color="#ff00ff" iconType="regular">??Question: Do we omit all of the Snowflake section or mention any limitations?</Callout>

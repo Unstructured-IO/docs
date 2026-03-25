@@ -2,7 +2,7 @@
 title: Security model
 ---
 <Note>
-This topic uses **private connectivity** as a general term for AWS PrivateLink and Azure Private Link.
+This topic uses *private connectivity* as a general term for AWS PrivateLink and Azure Private Link.
 </Note>
 
 Dedicated Instances use a security model that protects your data across network, infrastructure, and service layers. The architecture prioritizes data isolation, private connectivity, and controlled access so your data stays within trusted boundaries.
@@ -28,7 +28,7 @@ The following security measures and connectivity options apply:
 - **TLS 1.2+** for all traffic in transit.
 - **AWS WAF** (Web Application Firewall) provides DDoS protection, rate limiting, and optional geo-blocking for ITAR compliance.
 - **IP Allowlisting** - restricts Unstructured platform access to specific source IP addresses or CIDR ranges. Submit a support ticket with your IP list to enable this.
-<Warning>!! WRITER: check standard wording and links for submitting support ticket !!</Warning>
+<Callout icon="arrow-right" color="#9900ff" iconType="regular">!!WRITER: check standard wording and links for submitting support ticket or reference to Customer Portal. </Callout>
 
 - **Independent paths** - allow you to use the UI and API over the public internet while Unstructured uses private connectivity to reach your data sources. The two paths are configured separately.
 
@@ -82,7 +82,8 @@ If your use case requires public egress, Unstructured can enable outbound intern
 | Full Egress | All outbound internet traffic is permitted (not recommended) |
 | Specific IPs/CIDRs | Outbound traffic is permitted only to specified IP addresses or CIDR ranges |
 
-To request egress configuration changes, log a support ticket and provide:<Warning>!! WRITER: check standard wording and links for submitting support ticket !!</Warning>
+To request egress configuration changes, log a support ticket and provide:
+<Callout icon="arrow-right" color="#9900ff" iconType="regular">!!WRITER: check standard wording and links for submitting support ticket or reference to Customer Portal. </Callout>
 - Application/use-case requirements for the access change.
 - List of IPs or CIDR ranges to allowlist.
 - Expected traffic patterns (e.g., VLM API calls, SSO integration).
@@ -91,7 +92,8 @@ To request egress configuration changes, log a support ticket and provide:<Warni
 
 In rare cases, customers may require public ingress (e.g., for users who cannot access via private connectivity). Access will be restricted to specified IP addresses or CIDR ranges, and all traffic remains encrypted via TLS 1.2+.
 
-To request ingress configuration changes, log a support ticket and provide:<Warning>!! WRITER: check standard wording and links for submitting support ticket !!</Warning>
+To request ingress configuration changes, log a support ticket and provide:
+<Callout icon="arrow-right" color="#9900ff" iconType="regular">!!WRITER: check standard wording and links for submitting support ticket or reference to Customer Portal. </Callout>
 - Application/use-case requirements.
 - List of source IP addresses or CIDR ranges to allowlist.
 - Expected access patterns.

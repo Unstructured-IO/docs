@@ -8,26 +8,25 @@ This topic covers the required information to enable your Dedicated Instance to 
 * AWS PrivateLink
 * Native PrivateLink
 * Customer managed AWS services  
-* AWS services that require a Network Loa Balancer (NLB) front end
+* AWS services that require a Network Load Balancer (NLB) front end
 
 ## AWS managed services 
 
 ### AWS S3 (Gateway Endpoint)
 
-<Callout icon="question" color="#ff00ff" iconType="regular">QUESTION: What does the ORDER column depict? What does this convey to the customer?.</Callout>
 
-| Order | Information Required | Description | Example | Who |
+| Order | Information Required | Description | Example | Owner |
 | --- | --- | --- | --- | --- |
 | 1 | S3 Bucket Name | Buckets Unstructured needs to access | `my-documents` | Customer |
 | 1 | S3 Bucket Region | Region where bucket is located | `us-east-1` | Customer |
 | 2 | Unstructured IAM Role ARN | IAM Role ARN that will access S3 | `arn:aws:iam::987654321098:role/unstructured-s3-access` | Unstructured |
 
-> **Note:** This section also covers **Delta Tables in Amazon S3** — the S3 Gateway Endpoint configuration is the same.
-> 
+This section also covers **Delta Tables in Amazon S3** — the S3 Gateway Endpoint configuration is the same.
+
 
 **Example S3 Bucket Policy**
 
-The customer must create a bucket policy that grants Unstructured’s IAM Role access to the required S3 buckets.
+You must create a bucket policy that grants Unstructured’s IAM Role access to the required S3 buckets.
 
 For read-only access:
 
@@ -54,7 +53,7 @@ For read-only access:
 }
 ```
 
-For write access (e.g., if S3 is a destination), add:
+Use this Action clause for write access (e.g., if S3 is a destination):
 
 ```json
 {
@@ -77,15 +76,15 @@ Replace:
 
 Amazon Bedrock is accessed via AWS-provided VPC endpoints. Unstructured configures VPC endpoints in our VPC to ensure all traffic to Bedrock stays off the public internet. Access to customer-specific Bedrock resources is controlled via IAM policies.
 
-| Order | Information Required | Description | Example | Who |
+| Order | Information Required | Description | Example | Owner |
 | --- | --- | --- | --- | --- |
 | 1 | Bedrock Region | AWS region where Bedrock resources are located | `us-east-1` | Customer |
 | 1 | Model IDs / ARNs | Foundation models or custom models to access | `anthropic.claude-sonnet-4-5`, `arn:aws:bedrock:us-east-1:123456789012:custom-model/my-model` | Customer |
 | 2 | Unstructured AWS Account ID | Account ID to allow in IAM/resource policies | `987654321098` | Unstructured |
 | 2 | Unstructured IAM Role ARN | IAM Role ARN that will access Bedrock | `arn:aws:iam::987654321098:role/unstructured-bedrock` | Unstructured |
 
-> Unstructured configures the Bedrock VPC endpoint on our side. The customer must create IAM policies that grant access to Unstructured’s IAM Role.
-> 
+Unstructured configures the Bedrock VPC endpoint on the Unstructured platform. You must create IAM policies that grant access to Unstructured’s IAM Role.
+
 
 **Example IAM Policy**
 
@@ -122,12 +121,12 @@ Replace:
 
 ### AWS MSK (Kafka)
 
-Amazon MSK supports native multi-VPC private connectivity via PrivateLink. This enables Unstructured to connect to the customer’s MSK cluster (as a Kafka source) entirely within the AWS private network. The customer must have an MSK cluster with **Multi-VPC Connectivity** enabled.
+Amazon MSK supports native multi-VPC private connectivity via PrivateLink. This enables Unstructured to connect to the customer’s MSK cluster (as a Kafka source) entirely within the AWS private network. You must have an MSK cluster with **Multi-VPC Connectivity** enabled.
 
-> **Note:** MSK Multi-VPC Connectivity requires MSK cluster type: **provisioned** (not serverless). The cluster must use TLS or SASL/TLS authentication.
-> 
+MSK Multi-VPC Connectivity requires MSK cluster type **provisioned** (not serverless). The cluster must use TLS or SASL/TLS authentication.
 
-| Order | Information Required | Description | Example | Who |
+
+| Order | Information Required | Description | Example | Owner |
 | --- | --- | --- | --- | --- |
 | 1 | MSK Cluster ARN | ARN of the MSK cluster | `arn:aws:kafka:us-east-1:123456789012:cluster/my-cluster/abc-123` | Customer |
 | 1 | MSK Cluster Region | AWS region where cluster is deployed | `us-east-1` | Customer |
@@ -139,13 +138,13 @@ Amazon MSK supports native multi-VPC private connectivity via PrivateLink. This 
 
 **Enabling MSK Multi-VPC Connectivity**
 
-Using AWS Console:
+Use the AWS Console:
 1. Navigate to **Amazon MSK** > select your cluster.
 2. Choose **Actions** > **Edit cluster connectivity**.
 3. Enable **Multi-VPC connectivity**.
 4. Confirm — MSK will create a VPC Endpoint Service automatically.
 
-Using AWS CLI:
+Use the AWS CLI:
 
 ```bash
 aws kafka update-connectivity \
@@ -169,7 +168,7 @@ aws kafka describe-cluster \
 
 **Adding Unstructured as an Allowed Principal**
 
-Once Multi-VPC Connectivity is enabled, add Unstructured’s AWS Account ID as an allowed principal on the endpoint service:
+Once Multi-VPC Connectivity is enabled, use the AWS CLI to add Unstructured’s AWS Account ID as an allowed principal on the endpoint service:
 
 ```bash
 aws ec2 modify-vpc-endpoint-service-permissions \
@@ -187,7 +186,7 @@ Replace:
 
 Amazon OpenSearch Service supports native Interface VPC Endpoints. Unstructured creates a VPC endpoint in our VPC targeting the customer’s OpenSearch domain.
 
-| Order | Information Required | Description | Example | Who |
+| Order | Information Required | Description | Example | Owner |
 | --- | --- | --- | --- | --- |
 | 1 | OpenSearch Domain ARN | ARN of the OpenSearch domain | `arn:aws:es:us-east-1:123456789012:domain/my-domain` | Customer |
 | 1 | OpenSearch Domain Region | AWS region where domain is deployed | `us-east-1` | Customer |
@@ -230,10 +229,12 @@ Replace:
 
 ### AWS OpenSearch Serverless
 
-> **Important:** OpenSearch Serverless uses a fundamentally different access model compared to OpenSearch Service. It does not use resource-based access policies. Instead, access is controlled through **data access policies** and **network access policies** tied to VPC endpoints.
-> 
+<Important>
+OpenSearch Serverless uses a fundamentally different access model compared to OpenSearch Service. It does not use resource-based access policies. Instead, access is controlled through **data access policies** and **network access policies** tied to VPC endpoints.
+</Important>
 
-| Order | Information Required | Description | Example | Who |
+
+| Order | Information Required | Description | Example | Owner |
 | --- | --- | --- | --- | --- |
 | 1 | Collection Name | Name of the OpenSearch Serverless collection | `my-vector-store` | Customer |
 | 1 | Collection ARN | Full ARN of the collection | `arn:aws:aoss:us-east-1:123456789012:collection/abc123` | Customer |
@@ -324,7 +325,7 @@ Replace:
 
 Databricks on AWS supports native PrivateLink connectivity. The customer must have a Databricks Enterprise plan with a customer-managed VPC and PrivateLink enabled on their workspace.
 
-| Order | Information Required | Description | Example | Who |
+| Order | Information Required | Description | Example | Owner |
 | --- | --- | --- | --- | --- |
 | 1 | Databricks Workspace URL | The workspace URL | `myworkspace.cloud.databricks.com` | Customer |
 | 1 | Databricks Workspace Region | AWS region where workspace is deployed | `us-east-1` | Customer |
@@ -352,16 +353,18 @@ Replace:
 - `<UNSTRUCTURED_VPCE_ID>` — VPC Endpoint ID provided by Unstructured.
 - `<REGION>` — Your Databricks region.
 
-> For ACCOUNT level access, no explicit endpoint allowlisting is required — any VPC endpoint registered in the Databricks account can connect.
-> 
+For ACCOUNT level access, no explicit endpoint allowlisting is required — any VPC endpoint registered in the Databricks account can connect.
+
 
 ---
 
-### ~~Snowflake on AWS~~ {#snowflake-on-aws}
+<Callout icon="question" color="#ff00ff" iconType="regular">??Question: Do we ommmit all of the Snowflake section or mention any limitations?</Callout>
+
+### ~~Snowflake on AWS~~
 
 ~~Snowflake supports AWS PrivateLink via Snowflake’s native Private Link feature. This is available for Snowflake accounts hosted on AWS. The customer must have a **Business Critical** or higher Snowflake edition to use Private Link.~~
 
-| Order | Information Required | Description | Example | Who |
+| Order | Information Required | Description | Example | Owner |
 | --- | --- | --- | --- | --- |
 | 1 | Snowflake Account Identifier | The Snowflake account identifier | `myorg-myaccount` | Customer |
 | 1 | Snowflake Account Region | AWS region where account is hosted | `us-east-1` | Customer |
@@ -395,9 +398,9 @@ SELECT SYSTEM$AUTHORIZE_PRIVATELINK('<UNSTRUCTURED_AWS_ACCOUNT_ID>', '<UNSTRUCTU
 
 ## AWS Managed Services with native PrivateLink
 
-Some AWS managed services support native PrivateLink endpoints. The customer creates a VPC endpoint for their service, and Unstructured connects to it. This pattern applies to services like **Amazon ElastiCache (Redis)** and **AWS Elasticsearch Service (legacy)**.
+Some AWS managed services support native PrivateLink endpoints. You must first create a VPC endpoint for the service.  Unstructured then connects to it. This pattern applies to services like **Amazon ElastiCache (Redis)** and **AWS Elasticsearch Service (legacy)**.
 
-| Order | Information Required | Description | Example | Who |
+| Order | Information Required | Description | Example | Owner |
 | --- | --- | --- | --- | --- |
 | 1 | Service Type | The AWS Service being accessed | `ElastiCache`, `Elasticsearch` | Customer |
 | 1 | Service Region | Region where the service is hosted | `us-east-1` | Customer |
@@ -412,11 +415,11 @@ Some AWS managed services support native PrivateLink endpoints. The customer cre
 
 ## Customer Managed Services (AWS) or AWS Services with NLB
 
-This applies to:
-- Applications the customer is **self-hosting** in their AWS VPC (e.g., Elasticsearch, MongoDB, Couchbase).
+This information applies to:
+- Applications that your organization is **self-hosting** in your AWS VPC (e.g., Elasticsearch, MongoDB, Couchbase).
 - AWS services that do **not** have native PrivateLink support and require an NLB front-end, such as **Amazon RDS, Aurora, Redshift, DocumentDB**.
 
-| Order | Information Required | Description | Example | Who |
+| Order | Information Required | Description | Example | Owner |
 | --- | --- | --- | --- | --- |
 | 1 | Service Type | The service being accessed | `PostgreSQL (RDS)`, `MongoDB`, `Elasticsearch` | Customer |
 | 1 | Service Region | Region where the service is hosted | `us-east-1` | Customer |
@@ -426,8 +429,10 @@ This applies to:
 | 3 | VPC Endpoint Service Name | Service name for the endpoint service fronting the NLB | `com.amazonaws.vpce.us-east-1.vpce-svc-0abc123` | Customer |
 | 3 | Service Endpoint | The endpoint URL for connection | Custom DNS or endpoint service DNS | Customer |
 
-> The customer must create: (1) a Network Load Balancer targeting their managed service, and (2) a VPC Endpoint Service pointing to the NLB.
-> 
+You must create both of the following:
+* Network Load Balancer targeting their managed service
+* VPC Endpoint Service pointing to the NLB.
+
 
 **Example: Allow Unstructured as a Principal on the Endpoint Service**
 

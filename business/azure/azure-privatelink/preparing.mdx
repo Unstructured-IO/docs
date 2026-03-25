@@ -1,16 +1,12 @@
 ---
 title: Preparing for a Dedicated Instance
 ---
-<Note>
-This topic uses **private connectivity** as a general term for AWS PrivateLink and Azure Private Link.
-</Note>
 
-Once you’ve decided to proceed with a Dedicated Instance, the next steps involve provisioning the required environment resources and establishing private connectivity. The deployment process is conducted remotely and can typically be completed within the following timeframes:
+After you decide to proceed with a Dedicated Instance, the next steps are provisioning the required environment resources and, optionally, establishing private connectivity with Azure Private Link. Deployment is conducted remotely and can usually be completed within the following timeframes:
 
-| Cloud Provider | Without private connectivity | With private connectivity |
-| --- | --- | --- |
-| AWS | 2–3 Days | 4–5 Days |
-| Azure | 2–3 Days | 4–5 Days |
+- **With AWS PrivateLink** - 4–5 days
+- **Without AWS PrivateLink** -   2–3 days
+
 
 <Note>
 Times are subject to Customer infrastructure team availability. More complex integrations (multiple connectors, custom models, etc.) will extend the deployment timeline.
@@ -25,8 +21,8 @@ Before deployment can begin, please provide the following:
 | --- | --- |
 | Name of Administrator | Primary administrator of the account (others can be added after) |
 | Admin email address | Email address of the primary admin |
-| Cloud provider | AWS or Azure |
-| Cloud Region | Please see [list of supported regions](about:blank#supported-cloud-providers-and-regions) |
+| Cloud provider | Azure |
+| Cloud Region | Contact your Unstructured account representative for the current list of supported Azure regions.|
 | Desired URL | Without private connectivity: `<companyname>.unstructuredapp.io` <br /> With private connectivity: `<companyname>.privatelink.unstructuredapp.io` |
 | VLM provider | Anthropic, Bedrock, OpenAI, Azure OpenAI, etc. |
 | VLM models | e.g., Claude Sonnet 4.5, GPT-4o, Gemini 2.0 Flash |
@@ -42,3 +38,5 @@ Do not send API keys by email or any collaboration tool. Unstructured has a secu
 All private connectivity configuration data exchanges between Customer and Unstructured must be conducted via support tickets. This ensures a documented audit trail of all shared information, including Account IDs, VPC Endpoint service names, IAM Role ARNs, Service Principal IDs, and other sensitive configuration details.
 
 To initiate a private connectivity configuration, log a ticket via the [Unstructured Support Portal](https://support.unstructured.io/) with the subject line: **“PrivateLink Configuration Request — [Your Company Name]”**. A technical enablement engineer will respond to guide you through the exchange.
+<Callout icon="question" color="#ff00ff" iconType="regular">??QUESTION:  Is the Customer Portal site available?</Callout>
+

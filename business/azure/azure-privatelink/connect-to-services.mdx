@@ -37,7 +37,7 @@ az role assignment create \
 
 For **read/write** access, use the **Storage Blob Data Contributor** role instead of **Storage Blob Data Reader**.
 
-Replace the placeholders as follows:
+Replace:
 
 - `<UNSTRUCTURED_SP_ID>` — Service principal ID for Unstructured (provided during onboarding)
 - `<SUBSCRIPTION_ID>` — Your Azure subscription ID
@@ -71,7 +71,7 @@ az role assignment create \
   --role "Cognitive Services OpenAI User" \
   --scope "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.CognitiveServices/accounts/<OPENAI_RESOURCE>"
 ```
-Replace the placeholders as follows:
+Replace:
 
 - `<UNSTRUCTURED_SP_ID>` — Service principal ID for Unstructured (provided during onboarding)
 - `<SUBSCRIPTION_ID>` — Your Azure subscription ID
@@ -112,7 +112,7 @@ az network private-endpoint-connection approve \
 
 You can also approve the same request in the **Azure portal**: open the Databricks workspace resource > **Networking** > **Private endpoint connections**, then approve the pending connection from Unstructured.
 
-Replace the placeholders as follows:
+Replace:
 
 - `<RESOURCE_GROUP>` — Resource group that contains the Databricks workspace
 - `<WORKSPACE_NAME>` — Name of the Databricks workspace resource
@@ -191,7 +191,7 @@ az network private-link-service connection approve \
   --name "<CONNECTION_NAME>"
 ```
 
-Replace the placeholders as follows:
+Replace:
 
 - `<RESOURCE_GROUP>` — Resource group for the Private Link service and related resources
 - `<VNET_NAME>` — Virtual network name
