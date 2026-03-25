@@ -1,6 +1,6 @@
 ---
-title: Preparing for a Dedicated Instance
-sidebarTitle: Preparing for a Dedicated Instance
+title: Onboarding checklist -  Preparing for a Dedicated Instance
+sidebarTitle: Onboarding checklist
 ---
 
 <Note>
@@ -9,6 +9,9 @@ sidebarTitle: Preparing for a Dedicated Instance
     For dedicated instance deployments of Unstructured Business to AWS _without_ PrivateLink, contact your Unstructured sales representative, 
     or email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
 </Note>
+
+<Callout icon="question" color="#ff00ff" iconType="regular">??Question:  Integrated the "Preparing for a Dedicated Instance" from the new [DI internal doc](https://www.notion.so/dedicated-instances-documentation-30d2c3765a0a80709acef67a48caacc6) into the  public Onboarding steps into this new version.
+(Old version is in TOC, temporary for reference, with suffix [(TO BE ARCHIVED)-](/business/aws/aws-privatelink/onboarding-preparing).) (1) Is this the  information that's been merged in here from the "old" content is still valid?  (2) Does this combined content align correctly with our current onboarding process?</Callout>
 
 After your organization has signed the **Business** account agreement with Unstructured, a member of the Unstructured technical enablement team will reach out to you to begin the **deployment onboarding process**. 
 
@@ -67,15 +70,15 @@ To initiate a private connectivity configuration, log a ticket via the [Unstruct
 </Accordion>
 
 
-2. In your AWS account, create an endpoint service powered by AWS PrivateLink. Be sure when creating the endpoint service to use the same AWS Region name that you provided to Unstructured. 
+2. In your AWS account, **create an endpoint service** powered by AWS PrivateLink. Be sure when creating the endpoint service to use the same AWS Region name that you provided to Unstructured. 
    [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html). (In AWS terminology, this makes you the _service provider_ and 
    Unstructured the _service consumer_.)
-3. As the service provider, you must provide your Unstructured sales representative or technical enablement contact (as the service consumer) with the name of your endpoint service 
+3. As the service provider, you must provide your Unstructured sales representative or technical enablement contact (as the service consumer) with the **name of your endpoint service** 
    (for example, `com.amazonaws.vpce.us-east-1.vpce-svc-0e123abc123198abc`) and the supported Availability Zones for that endpoint service, for the AWS Region 
    name that you provided to Unstructured earlier. [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html#share-endpoint-service).
 4. As the service consumer, Unstructured will create a related endpoint service in its own AWS account in the same AWS Region as your AWS account. Unstructured will then send you an endpoint connection request to 
    complete the connection between its endpoint service (as the service consumer) and your endpoint service (as the service provider). 
-   You must accept Unstructured's endpoint connection request as soon as possible, to avoid delays in the deployment process. 
+   You must **accept Unstructured's endpoint connection request** as soon as possible, to avoid delays in the deployment process. 
    [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html#accept-reject-connection-requests).
 
 ## Questions? Need help?
