@@ -43,7 +43,7 @@ This onboarding workflow covers two connectivity paths:
 | 5 | Customer | Share the required Azure resource details with Unstructured. |
 | 6 | Unstructured | Create the required private endpoints from the Unstructured-managed environment. |
 | 7 | Customer | Approve the pending private endpoint connection requests in Azure. |
-| 8 | Unstructured | Complete the Dedicated Instance deployment and enable customer access to the Unstructured platform. |
+| 8 | Unstructured | Complete the Dedicated Instance deployment and enable customer access to the Unstructured platform. <br /> See [Connecting to the Unstructured Platform (UI and API)](/business/azure/azure-privatelink/connect-to-platform) for the required platform access details. |
 
 ## Detailed onboarding steps
 Use the following steps to prepare the deployment and configure Azure Private Link connectivity.
@@ -90,11 +90,20 @@ For more information, see [Connecting to the Unstructured Platform (UI and API)]
 Provide Unstructured with the Azure resource details required for the connection. Depending on the service type, this can include subscription IDs, resource group names, resource IDs, Private Link service resource IDs, sub-resource types, and supported regions.
 
 ### Step 6: Approve the private endpoint connection requests
-After Unstructured creates the required private endpoints from the Unstructured-managed environment, approve the pending private endpoint connection requests in Azure.
+After you share the resource details, Unstructured creates the required private endpoints from the Unstructured-managed environment.
+
+
+### Step 7: Approve the pending private endpoint connection requests in Azure.
+After Unstructured creates the required private endpoints, it sends a connection request. 
 
 Approve the requests as soon as possible to avoid delays in the deployment process.
 
 You can approve the requests in the Azure portal under the target resource's **Networking** settings, or by using Azure CLI where applicable.
+
+### Step 8: Complete deployment and enable platform access
+After the private connectivity steps are complete, Unstructured finishes the Dedicated Instance deployment and enables Customer access to the Unstructured platform UI and API.
+
+For the required platform access details, see [Connecting to the Unstructured Platform (UI and API)](/business/azure/azure-privatelink/connect-to-platform).
 
 ## Questions? Need help?
 

@@ -43,7 +43,7 @@ This onboarding workflow covers two connectivity paths:
 | 5 | Customer | Share the endpoint service name and supported Availability Zones with Unstructured. |
 | 6 | Unstructured | Configure connectivity from the Unstructured-managed environment to the Customer-managed AWS service. |
 | 7 | Customer | Accept the endpoint connection request from Unstructured. |
-| 8 | Unstructured | Complete the Dedicated Instance deployment and enable customer access to the Unstructured platform. See [Connecting to the Unstructured Platform (UI and API)](/business/aws/aws-privatelink/connect-to-platform) for the required platform access details. |
+| 8 | Unstructured | Complete the Dedicated Instance deployment and enable customer access to the Unstructured platform. <br /> See [Connecting to the Unstructured Platform (UI and API)](/business/aws/aws-privatelink/connect-to-platform) for the required platform access details. |
 
 ## Detailed onboarding steps
 Use the following steps to prepare the deployment and configure AWS PrivateLink connectivity.
@@ -95,18 +95,14 @@ To start the private connectivity process, open a ticket in the [Unstructured Su
 </Accordion>
 
 ### Step 4: Create an AWS PrivateLink endpoint service
-In your AWS account, create an endpoint service powered by AWS PrivateLink in the same AWS Region that you provided to Unstructured.
-
-[Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html)
+In your AWS account, create an endpoint service powered by AWS PrivateLink in the same AWS Region that you provided to Unstructured.  [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html)
 
 In AWS terminology, you are the _service provider_ and Unstructured is the _service consumer_.
 
 ### Step 5: Share the endpoint service details
-Provide Unstructured with the endpoint service name and the supported Availability Zones for that service in the selected AWS Region.
+Provide Unstructured with the endpoint service name and the supported Availability Zones for that service in the selected AWS Region.  [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html#share-endpoint-service)
 
 For example: `com.amazonaws.vpce.us-east-1.vpce-svc-0e123abc123198abc`
-
-[Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html#share-endpoint-service)
 
 ### Step 6: Unstructured configures connectivity to the Customer-managed service
 After you share the endpoint service details, Unstructured configures connectivity from the Unstructured-managed environment to the Customer-managed AWS service.
