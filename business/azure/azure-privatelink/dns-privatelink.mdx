@@ -6,6 +6,21 @@ sidebarTitle: DNS for Private Link
 To access the dedicated instance over Azure Private Link, you must configure DNS so the service hostname resolves to your 
 private endpoint's private IP address.
 
+### Goal
+
+Configure Azure DNS so the Unstructured service hostname resolves to the private IP address of your private endpoint.
+
+### To complete this task
+
+- **Unstructured** provides the service hostname for the Unstructured Platform.
+- **Customer** configures Azure DNS so that the service hostname resolves to the private IP address of the private endpoint.
+
+### References
+
+- [Azure Private Endpoint private DNS zone values](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns) - Use this to identify the recommended private DNS zone pattern for private endpoint name resolution.
+- [Azure Private Endpoint DNS Integration Scenarios](https://learn.microsoft.com/en-us/azure/private-link/private-endpoint-dns-integration) - Use this to understand how private DNS resolution works across VNets, peered networks, and hybrid environments.
+- [What is a virtual network link subresource of Azure DNS private zones](https://learn.microsoft.com/en-us/azure/dns/private-dns-virtual-network-links) - Use this to link your private DNS zone to the VNets that need to resolve the service hostname.
+
 Because TLS is terminated using a provider-managed certificate, clients must connect using the exact service hostname provided. 
 However, DNS resolution must direct that hostname to a private IP inside your network, as follows:
 

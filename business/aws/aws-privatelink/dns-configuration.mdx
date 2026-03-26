@@ -5,14 +5,28 @@ sidebarTitle: DNS configuration
 
 To access the Dedicated Instance over PrivateLink, DNS must be configured so the service hostname resolves to the private IPs of the VPC Endpoint. Clients must connect using the exact service hostname provided, because TLS is terminated using a provider-managed certificate.
 
-**Option 1: Enable Private DNS on the VPC Endpoint (Recommended)**
+### Goal
+
+Configure AWS DNS so the Unstructured service hostname resolves to the private IP addresses of your interface VPC endpoint.
+
+### To complete this task
+
+- **Unstructured** provides the service hostname for the Unstructured Platform.
+- **Customer** configures DNS in AWS so that the service hostname resolves to the private IP addresses of the interface VPC endpoint.
+
+### References
+
+- [Configure an interface endpoint](https://docs.aws.amazon.com/vpc/latest/privatelink/interface-endpoints.html) - Use this to review how private DNS works on interface VPC endpoints and when to enable it.
+- [Working with private hosted zones](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zones-private.html) - Use this to manually configure Route 53 private hosted zones and records when private DNS is not enabled on the endpoint.
+
+### Option 1: Enable Private DNS on the VPC Endpoint (Recommended)
 
 If your VPC uses Route 53 for DNS resolution, enable Private DNS on the Interface VPC Endpoint. When Private DNS is enabled:
 - Route 53 automatically creates DNS records for the service hostname.
 - The hostname resolves to the private IPs of the VPC Endpoint.
 - No manual hosted zone or records are required.
 
-**Option 2: Manually Manage DNS Using a Private Hosted Zone**
+### Option 2: Manually Manage DNS Using a Private Hosted Zone
 
 If Private DNS cannot be enabled, configure DNS manually using Route 53:
 

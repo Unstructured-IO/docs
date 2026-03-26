@@ -4,8 +4,29 @@ sidebarTitle: Connecting to the Unstructured Platform
 ---
 This section outlines the information required for your applications to access the Unstructured Platform (UI and API).
 
+### Goal
 
-<Callout icon="question" color="#ff00ff" iconType="regular">??QUESTION: What exactly does the ORDER column indicate? Looks like two sets of rows, and within those order can be simultaneous.  Would like to understand context in case I need to clarify in the doc.  Thanks!</Callout>
+Create and configure the Azure networking components required for Customer applications to access the Unstructured Platform (UI and API) over Azure Private Link.
+
+### To complete this task
+
+- **Unstructured** provides the Private Link service resource ID, alias, and Azure Region where the service is hosted.
+- **Customer** provides the Azure subscription, Region, virtual network, subnet, and resource group details needed for setup, and creates the private endpoint in the Customer virtual network (VNet).
+
+### References
+
+- [Quickstart: Create a private endpoint - Azure portal](https://learn.microsoft.com/en-us/azure/private-link/create-private-endpoint-portal?tabs=dynamic-ip) - Use this to create the private endpoint in your virtual network for access to the Unstructured Private Link service.
+- [Manage Azure private endpoints](https://learn.microsoft.com/en-us/azure/private-link/manage-private-endpoint) - Use this to review private endpoint connection states and management options, including approval workflows.
+- [Approve private endpoint connections across subscriptions](https://learn.microsoft.com/en-us/azure/private-link/how-to-approve-private-link-cross-subscription) - Use this if the private endpoint approval flow spans separate Azure subscriptions.
+
+
+### Required Azure identifier information
+
+The following table lists the information required to configure access to the Unstructured Platform over Azure Private Link.
+
+<Note>
+The **Order** column indicates the general sequence for the information exchange. Items with the same order value can usually be provided at the same stage.
+</Note>
 
 
 | Order | Information Required | Description | Example | Provided by |
