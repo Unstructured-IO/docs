@@ -4,13 +4,13 @@ sidebarTitle: Onboarding
 ---
 
 <Note>
-    The following information applies only to dedicated instance deployments with PrivateLink for [Unstructured Business](/business/overview) on AWS. 
+    The following information applies only to dedicated instance deployments with AWS PrivateLink for [Unstructured Business](/business/overview) on AWS.
 
-    For dedicated instance deployments of Unstructured Business to AWS _without_ PrivateLink, contact your Unstructured sales representative, 
+    For dedicated instance deployments of Unstructured Business to AWS _without_ PrivateLink, contact your Unstructured sales representative,
     or email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
 </Note>
 
-After your organization has signed the **Business** account agreement with Unstructured, a member of the Unstructured technical enablement team will reach out to you to begin the **deployment onboarding process**. 
+After your organization signs the **Business** account agreement with Unstructured, a member of the Unstructured technical enablement team will reach out to begin the **deployment onboarding process**.
 
 The next steps are to provision the required environment resources and, optionally, establish private connectivity with AWS PrivateLink. Deployment is conducted remotely and can usually be completed within the following timeframes:
 
@@ -23,9 +23,10 @@ Times are subject to Customer infrastructure team availability. More complex int
 
 ## References to help you onboard
 The following references can provide background or more detail to help you onboard:
-* [Dedicated instance concepts](/business/dedicated-instances/overview)
-* [Create an endpoint service powered by AWS PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html)
-* [Configure an AWS PrivateLink endpoint service](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html)
+
+- [Dedicated instance concepts](/business/dedicated-instances/overview)
+- [Create an endpoint service powered by AWS PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html)
+- [Configure an AWS PrivateLink endpoint service](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html)
 
 ## High-level onboarding process
 This onboarding workflow covers two connectivity paths:
@@ -107,12 +108,22 @@ For example: `com.amazonaws.vpce.us-east-1.vpce-svc-0e123abc123198abc`
 
 [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html#share-endpoint-service)
 
-### Step 6: Accept the endpoint connection request
-After Unstructured configures connectivity from the Unstructured-managed environment to your AWS-hosted service, Unstructured sends an endpoint connection request.
+### Step 6: Unstructured configures connectivity to the Customer-managed service
+After you share the endpoint service details, Unstructured configures connectivity from the Unstructured-managed environment to the Customer-managed AWS service.
+
+No action is required from the Customer during this step unless Unstructured requests clarification.
+
+### Step 7: Accept the endpoint connection request
+After Unstructured completes the configuration, Unstructured sends an endpoint connection request.
 
 Accept the endpoint connection request as soon as possible to avoid delays in the deployment process.
 
 [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html#accept-reject-connection-requests)
+
+### Step 8: Complete deployment and enable platform access
+After the private connectivity steps are complete, Unstructured finishes the Dedicated Instance deployment and enables Customer access to the Unstructured platform UI and API.
+
+For the required platform access details, see [Connecting to the Unstructured Platform (UI and API)](/business/aws/aws-privatelink/connect-to-platform).
 
 ## Questions? Need help?
 

@@ -5,19 +5,19 @@ title: Security model
 This topic uses *private connectivity* as a general term for AWS PrivateLink and Azure Private Link.
 </Note>
 
-Dedicated Instances use a security model that protects your data across network, infrastructure, and service layers. The architecture prioritizes data isolation, private connectivity, and controlled access so your data stays within trusted boundaries.
+Dedicated Instances use a security model designed to protect your data across the network, infrastructure, and service layers. The architecture emphasizes data isolation, private connectivity, and controlled access to keep your data within trusted boundaries.
 
 This page covers private connectivity, encryption, and network access controls for Dedicated Instances.
 
 ### Encryption
 
-All connections to Dedicated Instances use TLS 1.2 or higher for encryption in transit.
+Dedicated Instances use encryption in transit across external and internal service boundaries. All supported connections use TLS 1.2 or higher.
 
 | Layer | Encryption |
 | --- | --- |
-| API endpoints | TLS 1.2+ with certificate validation |
-| Cloud storage connections (S3, Blob Storage) | TLS encryption with bucket/container policies enforcing encryption |
-| Internal Service Mesh | mTLS between microservices |
+| API endpoints | TLS 1.2 or higher with certificate validation |
+| Cloud storage connections (S3, Blob Storage) | TLS 1.2 or higher, with bucket or container policies used to enforce encryption requirements |
+| Internal service mesh | mTLS between microservices |
 
 ### Security without private connectivity (internet-facing mode)
 
@@ -28,23 +28,22 @@ The following security measures and connectivity options apply:
 - **TLS 1.2+** for all traffic in transit.
 - **AWS WAF** (Web Application Firewall) provides DDoS protection, rate limiting, and optional geo-blocking for ITAR compliance.
 - **IP Allowlisting** - restricts Unstructured platform access to specific source IP addresses or CIDR ranges. Submit a support ticket with your IP list to enable this.
-<Callout icon="arrow-right" color="#9900ff" iconType="regular">!!WRITER: check standard wording and links for submitting support ticket or reference to Customer Portal. </Callout>
 
 - **Independent paths** - allow you to use the UI and API over the public internet while Unstructured uses private connectivity to reach your data sources. The two paths are configured separately.
 
 ### Security with private connectivity
 
-When private connectivity is enabled, traffic between your environment and the Unstructured platform flows entirely over cloud provider private networking. Service endpoints resolve to private IP addresses, and no inbound access from the public internet is permitted.
+When private connectivity is enabled, traffic between your environment and the Unstructured platform stays on cloud-provider private networking. Service endpoints resolve to private IP addresses, and inbound access from the public internet is blocked.
 
 ### What private connectivity does and does not protect
 
-Private connectivity protects:
+Private connectivity helps protect:
 
 * Network traffic from public internet exposure.
-* Data in transit between VPCs/VNets.
+* Data in transit between VPCs and VNets.
 * DNS resolution of service endpoints.
 
-Private connectivity does not protect:
+Private connectivity does not protect against:
 
 * Application-layer vulnerabilities.
 * Misconfigured Identity and Access Management (IAM) or Role-Based Access Control (RBAC) policies.
@@ -52,12 +51,12 @@ Private connectivity does not protect:
 
 ### (Optional) Customer-managed encryption keys
 
-By default, Unstructured manages encryption keys using the cloud provider’s key management service, AWS Key Management Service (KMS) or Azure Key Vault. Customers with strict key custody requirements can optionally bring their customer-managed keys with their cloud provider services. Contact your account representative to enable this.
+By default, Unstructured manages encryption keys by using the cloud provider's native key management service: AWS Key Management Service (KMS) on AWS and Azure Key Vault on Azure. Customers with strict key custody requirements can use customer-managed keys for supported cloud services. Contact your account representative to enable this option.
 
 
 ### Network access controls
 
-Network access controls govern whether traffic may use the public internet across the boundary between the Unstructured platform and your cloud environment (the VPC or VNet where your data sources and related resources run). This section explains the default rules for inbound and outbound traffic and how you can request changes when a use case requires it.
+Network access controls determine whether traffic between the Unstructured platform and your cloud environment may traverse the public internet. Your cloud environment is the VPC or VNet that hosts your data sources and related resources. This section describes the default inbound and outbound traffic rules and how to request exceptions when a use case requires them.
 
 **Default configuration:**
 
@@ -68,36 +67,34 @@ Network access controls govern whether traffic may use the public internet acros
 
 This default configuration provides maximum network isolation and is recommended for customers with strict compliance requirements.
 
-**(Optional) Enabling public egress**
+### (Optional) Enabling public egress
 
-Some integrations require outbound internet access. Examples include:
+Some integrations require outbound internet access, for example:
 - Third-party AI/ML APIs (e.g., OpenAI, Anthropic, Gemini) not hosted in your cloud environment.
 - External webhooks or callback URLs.
 - Public SaaS services without private connectivity support.
 
-If your use case requires public egress, Unstructured can enable outbound internet access with the following options:
+If your use case requires public egress, Unstructured can enable one of the following configurations:
 
 | Option | Description |
 | --- | --- |
-| Full Egress | All outbound internet traffic is permitted (not recommended) |
-| Specific IPs/CIDRs | Outbound traffic is permitted only to specified IP addresses or CIDR ranges |
+| Full egress | Permits all outbound internet traffic (not recommended) |
+| Specific IPs/CIDRs | Permits outbound traffic only to specified IP addresses or CIDR ranges |
 
-To request egress configuration changes, log a support ticket and provide:
-<Callout icon="arrow-right" color="#9900ff" iconType="regular">!!WRITER: check standard wording and links for submitting support ticket or reference to Customer Portal. </Callout>
-- Application/use-case requirements for the access change.
-- List of IPs or CIDR ranges to allowlist.
-- Expected traffic patterns (e.g., VLM API calls, SSO integration).
+To request a public egress configuration change, log a support ticket and provide:
+- Application or use-case requirements for the access change.
+- The IP addresses or CIDR ranges to allowlist.
+- Expected traffic patterns, such as VLM API calls or SSO integration.
 
-**(Optional) Enabling public ingress**
+### (Optional) Enabling public ingress
 
-In rare cases, customers may require public ingress (e.g., for users who cannot access via private connectivity). Access will be restricted to specified IP addresses or CIDR ranges, and all traffic remains encrypted via TLS 1.2+.
+In rare cases, customers may require public ingress, for example for users who cannot access the platform through private connectivity. When enabled, access is restricted to specified IP addresses or CIDR ranges, and all traffic remains encrypted with TLS 1.2 or higher.
 
-To request ingress configuration changes, log a support ticket and provide:
-<Callout icon="arrow-right" color="#9900ff" iconType="regular">!!WRITER: check standard wording and links for submitting support ticket or reference to Customer Portal. </Callout>
-- Application/use-case requirements.
-- List of source IP addresses or CIDR ranges to allowlist.
+To request a public ingress configuration change, log a support ticket and provide:
+- Application or use-case requirements.
+- The source IP addresses or CIDR ranges to allowlist.
 - Expected access patterns.
 
-<note>
-Enabling public ingress or egress reduces the network isolation benefits of a Dedicated Instance. Unstructured recommends using private connectivity for all connectivity where possible.
-</note>
+<Note>
+Enabling public ingress or egress reduces the network isolation benefits of a Dedicated Instance. Unstructured recommends using private connectivity wherever possible.
+</Note>

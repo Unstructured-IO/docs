@@ -6,21 +6,21 @@ title: Architecture
 This topic uses *private connectivity* as a general term for AWS PrivateLink and Azure Private Link.
 </Note>
 
-Your **Dedicated Instance** is an isolated Unstructured deployment. You use private connectivity with your cloud provider so traffic between you and Unstructured stays on private network paths, not the public internet.
+A **Dedicated Instance** is an isolated Unstructured deployment. When private connectivity is enabled, traffic between the Customer environment and Unstructured stays on private network paths instead of traversing the public internet.
 
-## Private connectivity by CSP
+![Private connectivity traffic directions](/img/architecture/components-in-pl-cusomter-unstruc.png)
 
-**AWS private connectivity** uses AWS PrivateLink interface endpoints to connect your VPC to the Unstructured private network without traversing the public internet.
+## Private connectivity by cloud provider
 
-**Azure private connectivity** uses Azure Private Link to connect your VNet to the Unstructured private network with your traffic staying on the Microsoft backbone instead of the public internet.
+**AWS private connectivity** uses AWS PrivateLink interface endpoints to connect the Customer VPC to the Unstructured private network without traversing the public internet.
+
+**Azure private connectivity** uses Azure Private Link to connect the Customer VNet to the Unstructured private network while keeping traffic on the Microsoft backbone instead of the public internet.
 
 ## Traffic directions
 
-Private connectivity runs in two directions, and you can configure either direction on its own:
+Private connectivity can be configured in one or both directions:
 
-- **You → Unstructured** — You access the Unstructured UI and API through a private endpoint in your VPC or VNet.
-- **Unstructured → you** — Unstructured reaches your data sources (for example S3 buckets, databases, and vector stores) through private endpoints in the Unstructured VPC or VNet.
+- **Customer → Unstructured** — Customer users and applications access the Unstructured UI and API through private endpoints in the Customer VPC or VNet.
+- **Unstructured → Customer** — Unstructured accesses Customer data sources, such as S3 buckets, databases, and vector stores, through private endpoints in the Unstructured VPC or VNet.
 
-If you enforce strict outbound controls, configure both directions so private access works end to end.
-
-
+If you enforce strict outbound controls, configure both directions so traffic remains private end to end.

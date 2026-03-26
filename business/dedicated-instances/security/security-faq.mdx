@@ -6,45 +6,57 @@ title: Security FAQ
 This topic uses *private connectivity* as a general term for AWS PrivateLink and Azure Private Link.
 </Note>
 
+<AccordionGroup>
+    <Accordion title="Is my Dedicated Instance single-tenant?">
+        Yes. Each Dedicated Instance is single-tenant and logically isolated. It is not shared with other customers at the application or network level.
+    </Accordion>
 
-**Is my Dedicated Instance single-tenant?**
+    <Accordion title="Does traffic ever traverse the public internet?">
+        By default, Dedicated Instances block public ingress and egress. When private connectivity is enabled, traffic between the Customer environment and Unstructured stays on cloud-provider private networking. Public ingress or egress can be enabled on request for specific use cases. For more information, see [Network access controls](/business/dedicated-instances/security/security-model#network-access-controls).
+    </Accordion>
 
-Yes. Each Dedicated Instance is logically isolated and single-tenant. Your instance is not shared with other customers at the application or network level.
+    <Accordion title="Is data encrypted?">
+        Yes. Data is encrypted in the following ways:
 
-**Does traffic ever traverse the public internet?**
+        - **In transit:** All traffic uses TLS 1.2 or higher.
+        - **Internally:** Mutual TLS (mTLS) is used between platform services.
+        - **In cloud storage:** Encryption policies are enforced at the storage layer.
+        - **At rest:** Customer-managed KMS keys are available as an option on request.
+    </Accordion>
 
-By default, Dedicated Instances are configured with strict network controls to block public ingress and egress. When private connectivity is enabled, traffic between your environment and Unstructured flows entirely over cloud-provider private networking. Public ingress/egress can be enabled on request for specific use cases — see [Network Access Controls](about:blank#network-access-controls).
+    <Accordion title="Can Unstructured access my data?">
+        Unstructured personnel do not access Customer data as part of normal operations. Access to Customer data sources is explicitly configured, limited to the minimum permissions required, and governed by Customer-controlled IAM, RBAC, and resource policies. Any exceptional access, such as for troubleshooting, is controlled and audited.
+    </Accordion>
 
-**Is data encrypted?**
+    <Accordion title="Is customer data used to train models?">
+        No. Customer data processed within a Dedicated Instance is not used to train models.
+    </Accordion>
 
-Yes. Data is encrypted in the following cases:
-- **In transit:** All traffic uses TLS 1.2 or higher.
-- **Internally:** Mutual TLS (mTLS) is used between platform services.
-- **Cloud storage:** Encryption policies are enforced at the storage layer.
-- **At rest:** Optional customer-managed KMS keys are available on request.
+    <Accordion title="How is access to the platform controlled?">
+        - Customers manage user access to the Unstructured UI and APIs.
+        - Network access can be restricted by using private endpoints, security groups, and firewall rules.
+        - DNS resolution can be kept private and scoped to Customer networks.
+    </Accordion>
 
-**Can Unstructured access my data?**
+    <Accordion title="What does private connectivity protect against?">
+        Private connectivity helps protect against:
 
-Unstructured personnel do not access customer data as part of normal operations. Access to customer data sources is explicitly configured, limited to the minimum permissions required, and governed by customer-controlled IAM, RBAC, and resource policies. Any exceptional access (e.g., for troubleshooting) follows strict internal controls and auditing.
+        - Exposure to the public internet
+        - Unintended inbound network access
+        - DNS-based traffic interception
 
-**Is customer data used to train models?**
+        Private connectivity does not protect against:
 
-No. Customer data processed within a Dedicated Instance is not used to train models.
+        - Application-layer vulnerabilities
+        - Misconfigured IAM or RBAC policies
+        - Compromised credentials
+    </Accordion>
 
-**How is access to the platform controlled?**
+    <Accordion title="How long is customer data retained?">
+        Unstructured does not store Customer data long-term. Customer artifacts are used ephemerally during workflow execution and removed upon completion or failure. Transformed data is written to the configured destination. The data that persists in the Unstructured platform is limited to connector and workflow configuration metadata, connector keys stored in a secret store, and workflow execution telemetry, which does not contain file data.
+    </Accordion>
 
-- Customers manage user access to the Unstructured UI and APIs.
-- Network access is restricted using private endpoints, security groups, and firewall rules.
-- DNS resolution is private and scoped to customer networks.
-
-**What does private connectivity protect against?**
-
-Private connectivity helps protect against exposure to the public internet, unintended inbound network access, and DNS-based traffic interception. Private connectivity does not protect against application-layer vulnerabilities, misconfigured IAM or RBAC policies, or compromised credentials.
-
-**How long is customer data retained?**
-
-Unstructured does not store customer data long-term. Customer artifacts are used ephemerally during workflow execution and removed upon completion or failure. Transformed data is written to the configured destination. The only data that persists in the Unstructured platform is connector and workflow configuration metadata, connector keys (stored in a secret store), and workflow execution telemetry (which does not contain file data).
-
-**What compliance standards does Unstructured support?**
-
-Unstructured maintains industry-standard security and compliance programs including HIPAA compliance architecture, ITAR-readiness with geo-blocking via AWS WAF, and SOC 2 controls. Detailed compliance artifacts are available from our [trust portal](https://trust.unstructured.io/).
+    <Accordion title="What compliance standards does Unstructured support?">
+        Unstructured maintains industry-standard security and compliance programs, including HIPAA compliance architecture, ITAR readiness with geo-blocking through AWS WAF, and SOC 2 controls. Detailed compliance artifacts are available in the [trust portal](https://trust.unstructured.io/).
+    </Accordion>
+</AccordionGroup>

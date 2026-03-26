@@ -6,21 +6,21 @@ title: Requirements and Limitations
 This topic uses *private connectivity* as a general term for AWS PrivateLink and Azure Private Link.
 </Note>
 
-Dedicated Instances rely on cloud provider private networking features and therefore require certain baseline infrastructure components to ensure a secure and successful deployment. 
+Dedicated Instances rely on cloud-provider private networking features and require baseline infrastructure components for a secure and successful deployment.
 
-This section outlines the key requirements customers must meet, as well as known limitations that may affect implementation decisions.  Understanding these constraints early helps reduce onboarding delays and ensures alignment across security, platform, and engineering teams.
+This page outlines the key requirements that Customers must meet, along with known limitations that can affect implementation decisions. Understanding these constraints early helps reduce onboarding delays and align security, platform, and engineering teams.
 
-### Cloud provider and Region support
+### Cloud provider and region support
 
-| Cloud Provider | Availability |
+| Cloud provider | Availability |
 | --- | --- |
-| Amazon Web Services (AWS)  | General Availability |
-| Microsoft Azure (Azure)| General Availability |
+| Amazon Web Services (AWS) | General availability |
+| Microsoft Azure | General availability |
 | Google Cloud Platform (GCP) | Not currently supported |
 
-**AWS Supported Regions**
+**Supported AWS Regions**
 
-| Region Name | Region Code |
+| Region name | Region code |
 | --- | --- |
 | US East (N. Virginia) | `us-east-1` |
 | US East (Ohio) | `us-east-2` |
@@ -32,39 +32,40 @@ This section outlines the key requirements customers must meet, as well as known
 | Asia Pacific (Mumbai) | `ap-south-1` |
 | Asia Pacific (Seoul) | `ap-northeast-2` |
 
-If your required region is not listed above, contact your Unstructured account representative.
+If your required AWS Region is not listed, contact your Unstructured account representative.
 
 
-**Azure Supported Regions** 
+**Supported Azure Regions**
 
-Contact your Unstructured account representative for the current list of supported Azure regions.
+Contact your Unstructured account representative for the current list of supported Azure Regions.
 
 ### Requirements
 
 **AWS requirements:**
 - VPC with private subnets
-- Network Load Balancer (for connections into Customer environment)
+- Network Load Balancer for connections into the Customer environment
 - IAM permissions to create VPC endpoints, security groups, and Route 53 records
 
 **Azure requirements:**
-- Virtual Network with subnets configured for private endpoints
+- Virtual network with subnets configured for private endpoints
 - Private endpoint network policies disabled on target subnets
-- Standard Load Balancer (for connections into Customer environment)
+- Standard Load Balancer for connections into the Customer environment
 
 ### DNS requirements
 
 Private connectivity requires DNS configuration to route traffic through private endpoints:
-- AWS: Route 53 Private Hosted Zone (and on-premise DNS forwarding if needed)
-- Azure: Azure Private DNS Zone linked to your VNet
-- CNAME records pointing to the private endpoint
 
-The DNS name will be provided to you by Unstructured, in the form `<company>.privatelink.unstructuredapp.io`.
+- **AWS:** Route 53 Private Hosted Zone, and on-premises DNS forwarding if needed
+- **Azure:** Azure Private DNS Zone linked to the Customer VNet
+- **Both:** CNAME records that point to the private endpoint
+
+Unstructured provides the DNS name in the format `<company>.privatelink.unstructuredapp.io`.
 
 ### Known limitations
 
 | Limitation | Notes |
 | --- | --- |
-| Cross-Region private connectivity  | Supported but incurs additional data transfer costs. Not recommended. |
-| Cross-CSP private connectivity | Not supported (e.g., AWS to Azure) |
+| Cross-Region private connectivity | Supported but incurs additional data transfer costs. Not recommended. |
+| Cross-CSP private connectivity | Not supported, for example AWS to Azure |
 | VPC Peering | Not supported as an alternative to private connectivity |
 

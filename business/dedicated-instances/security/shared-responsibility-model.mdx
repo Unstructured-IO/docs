@@ -2,45 +2,47 @@
 title: Shared responsibility model
 ---
 
-## What the shared responsibility model means
-A shared responsibility model defines how security and operational responsibilities are divided between Unstructured and the customer.
+## What shared responsibility means
+A shared responsibility model explains how security and operational responsibilities are divided between Unstructured and the Customer.
 
-Unstructured is responsible for the infrastructure and software it operates. Customers are responsible for their accounts, data, identities, access policies, and the network resources they control.
+Unstructured is responsible for the infrastructure and software that it operates. The Customer is responsible for its accounts, data, identities, access policies, and the network resources that it controls.
 
-Major cloud providers use similar shared responsibility models for their own services.
+This approach aligns with the shared responsibility models used by major cloud providers.
 
-## How to use these tables
+## Using these tables
 The following tables show which responsibilities belong to the Customer and which belong to Unstructured.
 
-The first table covers traffic to the Unstructured platform, including UI and API access from your environment. The second table covers traffic to your data sources, when Unstructured connects to resources in your cloud environment.
+The first table covers traffic from the Customer environment to the Unstructured Platform, including access to the UI and API.
 
-**Customer → Unstructured (Accessing Unstructured UI and API)**
+The second table covers traffic from Unstructured to Customer-managed data sources in the Customer cloud environment.
+
+**Customer → Unstructured (Access to the Unstructured UI and API)**
 
 | Responsibility | Customer | Unstructured |
 | --- | :---: | :---: |
-| VPC / VNet configuration | ✔ |  |
-| VPC Endpoint / Private Endpoint creation | ✔ |  |
+| VPC or VNet configuration | ✔ |  |
+| VPC endpoint or private endpoint creation | ✔ |  |
 | DNS configuration | ✔ |  |
-| Security group /  Network Security Group rules | ✔ |  |
-| VPC Endpoint service creation |  | ✔ |
+| Security group or Network Security Group rules | ✔ |  |
+| VPC endpoint service creation |  | ✔ |
 | Endpoint connection approval |  | ✔ |
 | Load balancer and target configuration |  | ✔ |
-| Platform security & certificate management |  | ✔ |
+| Platform security and certificate management |  | ✔ |
 
 
 
-**Unstructured → Customer (Accessing Customer Data Sources)**
+**Unstructured → Customer (Access to Customer-managed data sources)**
 
 | Responsibility | Customer | Unstructured |
 | --- | :---: | :---: |
-| VPC Endpoint service creation | ✔ |  |
-| Load Balancer and target configuration | ✔ |  |
+| VPC endpoint service creation | ✔ |  |
+| Load balancer and target configuration | ✔ |  |
 | Endpoint connection approval | ✔ |  |
-| Security Group /  Network Security Group rules | ✔ |  |
-| Bucket and Container policies | ✔ |  |
-| VPC endpoint / Private Endpoint creation |  | ✔ |
+| Security group or Network Security Group rules | ✔ |  |
+| Bucket and container policies | ✔ |  |
+| VPC endpoint or private endpoint creation |  | ✔ |
 | DNS configuration |  | ✔ |
 
 <Note>
-Each party is only responsible for the cloud resources it operates.
+Each party is responsible only for the cloud resources that it owns and operates.
 </Note>
