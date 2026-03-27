@@ -1,7 +1,7 @@
 - For the [Unstructured UI](/ui/overview) or the [Unstructured API](/api-reference/overview), local OpenSearch instances are not supported.
 - For [Unstructured Ingest](/open-source/ingestion/overview), local and non-local OpenSearch instances are supported.
 
-  For example, to set up an [AWS OpenSearch Service](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/createupdatedomains.html) instance, complete steps similar to the following:
+  For example, to set up an [Amazon OpenSearch Service managed cluster](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/createupdatedomains.html) instance, complete steps similar to the following:
   
   1. Sign in to your AWS account, and then open your AWS Management Console.
   2. Open your Amazon OpenSearch Service console.
@@ -34,6 +34,88 @@
       d. Click **Clear policy**.<br/>
       e. Click **Save changes**.
 
+  To set up an [Amazon OpenSearch Serverless collection](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless-create-console.html), complete steps similar to the following:
+
+  1. Sign in to your AWS account, and then open your AWS Management Console.
+  2. Open your Amazon OpenSearch Service console.
+  3. On the sidebar, expand **Serverless**, and then click **Dashboard**.
+  4. Click **Create collection**.
+  5. In the **Collection details** tile, for **Collection name**, enter some unique name for your new OpenSearch Serverless collection. 
+     Optionally, for **Description**, enter some meaningful description for your new collection.
+  6. For **Collection type**, select **Search**.
+
+     <Note>
+       Unstructured does not support the **Vector search** collection type. If you need vector search support, you can either continue 
+       with these steps to use the **Search** collection type, or you can follow the preceding steps to set up set up an Amazon OpenSearch Service managed cluster instead. 
+       However, note that the Amazon OpenSearch Serverless **Search** collection type is not as optimal as the **Vector search** collection type.
+     </Note>
+
+  7. In the **Collection creation method** tile, select **Standard create**.
+  8. For **Encryption**, choose an AWS KMS key type.
+  9. For **Network access settings**, choose an **Access type**.
+  10. For **Resource type**, select both **Enable access to OpenSearch endpoint** and **Enable access to OpenSearch Dashboards**.
+  11. Click **Next**.
+  12. In the **Definition method** tile, select **JSON**.
+  13. In the **JSON editor** box, enter the following JSON, replacing the following placeholders:
+  
+      - Replace `<collection-name>` with the name of the new OpenSearch Serverless collection.
+      - Replace `<account-id>` with the target AWS account ID.
+      - Replace `<user-id>` with the ID of the target AWS IAM user.
+
+      ```json
+      [
+          {
+              "Rules": [
+                  {
+                      "Resource": ["collection/<collection-name>"],
+                      "Permission": [
+                          "aoss:CreateCollectionItems",
+                          "aoss:UpdateCollectionItems",
+                          "aoss:DescribeCollectionItems"
+                      ],
+                      "ResourceType": "collection"
+                  },
+                  {
+                      "Resource": ["index/<collection-name>/*"],
+                      "Permission": [
+                          "aoss:CreateIndex",
+                          "aoss:DescribeIndex",
+                          "aoss:ReadDocument",
+                          "aoss:WriteDocument",
+                          "aoss:UpdateIndex",
+                          "aoss:DeleteIndex"
+                      ],
+                      "ResourceType": "index"
+                  },
+                  {
+                      "Resource": ["model/<collection-name>/*"],
+                      "Permission": [
+                          "aoss:DescribeMLResource",
+                          "aoss:CreateMLResource",
+                          "aoss:UpdateMLResource",
+                          "aoss:DeleteMLResource",
+                          "aoss:ExecuteMLResource"
+                      ],
+                      "ResourceType": "model"
+                  }
+              ],
+              "Principal": ["arn:aws:iam::<account-id>:user/<user-id>"]
+          }
+      ]
+      ```
+
+  14. Click **Next**.
+  15. For **Data access policy settings**, select **Create as a new data access policy**.
+  16. In the **Name and description** tile, enter some unique name and an optional description for the new data access policy.
+  17. Click **Next**.
+  18. Enter any desired index details, and click **Next** again. For example:
+
+      a. For **Index name**, enter the name of the new index in the collection.<br/>
+      b. For **Automatic Semantic Enrichment fields**, click **Add**, enter `embeddings` for **Automatic Semantic Enrichment field name**, click **Add**, and click ***Confirm**.<br/>
+      c. For **Lexical search fields**, click **Add**, enter `text` for **Field name** and select **Text** for **Data type**, click **Add**, and click ***Confirm**.<br/>
+
+  19. Click **Submit**.
+
   The following video shows how to set up a [local OpenSearch](https://opensearch.org/downloads.html) instance.
 
   <iframe
@@ -48,13 +130,21 @@
 
 - The instance's host URL, as follows:
 
-  - For an AWS OpenSearch Service instance, do the following:
+  - For an Amazon OpenSearch Service instance, do the following:
 
     1. Sign in to your AWS account, and then open your AWS Management Console.
     2. Open your Amazon OpenSearch Service console.
     3. On the sidebar, expand **Managed clusters**, and then click **Dashboard**.
     4. In the list of available domains, click the name of your domain.
     5. In the **General information** tile, copy the value of **Domain endpoint v2 (dual stack)**.
+
+  - For an Amazon OpenSearch Serverless collection, do the following:
+  
+    1. Sign in to your AWS account, and then open your AWS Management Console.
+    2. Open your Amazon OpenSearch Service console.
+    3. On the sidebar, expand **Serverless**, and then click **Dashboard**.
+    4. In the list of available collections, click the name of your collection.
+    5. On the **Overview** tab, in the **Endpoint** tile, copy the value of **OpenSearch endpoint**.
 
   - For a local OpenSearch instance, see [Communicate with OpenSearch](https://opensearch.org/docs/latest/getting-started/communicate/).
 
@@ -151,7 +241,7 @@
   }
   ```
 
-   You can adapt the following index schema example for your own needs. Note that outside of `metadata`, the following fields are 
+  You can adapt the following index schema example for your own needs. Note that outside of `metadata`, the following fields are 
   required by Unstructured whenever you create your own index schema:
 
   - `element_id`
