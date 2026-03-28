@@ -1,5 +1,5 @@
 ---
-title: Onboarding Dedicated Instance + AWS PrivateLink
+title: Onboarding your dedicated instance + AWS PrivateLink
 sidebarTitle: Onboarding
 ---
 
@@ -18,58 +18,56 @@ The next steps are to provision the required environment resources and, optional
 - **Without AWS PrivateLink:** 2–3 days
 
 <Note>
-Times are subject to Customer infrastructure team availability. More complex integrations (multiple connectors, custom models, etc.) will extend the deployment timeline.
+Times are subject to customer infrastructure team availability. More complex integrations (multiple connectors, custom models, etc.) will extend the deployment timeline.
 </Note>
-
-## References to help you onboard
-The following references can provide background or more detail to help you onboard:
-
-- [Dedicated instance concepts](/business/dedicated-instances/overview)
-- [Create an endpoint service powered by AWS PrivateLink](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html)
-- [Configure an AWS PrivateLink endpoint service](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html)
 
 ## High-level onboarding process
 This onboarding workflow covers two connectivity paths:
 
 - Customer access to the Unstructured platform UI and API
-- Unstructured access to supported Customer-managed AWS services over AWS PrivateLink
+- Unstructured access to supported customer-managed AWS services over AWS PrivateLink
 
 | Step | Owner | Action |
 | :---: | --- | --- |
-| 1 | Customer | Provide the information required to provision the Dedicated Instance in AWS. |
-| 2 | Customer | Confirm that the selected AWS Region is supported. |
-| 3 | Customer and Unstructured | Exchange private connectivity details through a support ticket. |
-| 4 | Customer | Create an AWS PrivateLink endpoint service for supported Customer-managed AWS services. |
-| 5 | Customer | Share the endpoint service name and supported Availability Zones with Unstructured. |
-| 6 | Unstructured | Configure connectivity from the Unstructured-managed environment to the Customer-managed AWS service. |
-| 7 | Customer | Accept the endpoint connection request from Unstructured. |
-| 8 | Unstructured | Complete the Dedicated Instance deployment and enable customer access to the Unstructured platform. <br /> See [Connecting to the Unstructured Platform (UI and API)](/business/aws/aws-privatelink/connect-to-platform) for the required platform access details. |
+| 1 | Customer | Provide Unstructured the AWS region where you want the dedicated instance deployed, along with the other information required to provision it. |
+| 2 | Unstructured | Unstructured begins creating the dedicated instance deployment in that AWS Region.  |
+| 3 | Customer | In your AWS account, create an AWS PrivateLink endpoint service. |
+| 4 | Customer | Provide Unstructured the endpoint service name and the supported Availability Zones for that service in the selected AWS Region. |
+| 5 | Unstructured | Unstructured configures connectivity from the Unstructured-managed environment to your endpoint service. Unstructured will then send you an endpoint connection request. |
+| 6 | Customer | Accept the endpoint connection request from Unstructured. |
+
+
+**Next steps**
+
+After you complete these steps, Unstructured works with you to complete the remaining configuration for platform access, connectivity, and required permissions. For more information about the overall architecture, see [Dedicated instance concepts](/business/dedicated-instances/overview).
+
 
 ## Detailed onboarding steps
 Use the following steps to prepare the deployment and configure AWS PrivateLink connectivity.
 
 ### Step 1: Provide provisioning information
-Provide your Unstructured sales representative or technical enablement contact with the following information. Unstructured uses this information to begin provisioning your Dedicated Instance in the selected AWS Region.
+Provide the following information to Unstructured to begin provisioning the dedicated instance in the selected AWS Region.
 
-<Accordion title="Information Required for Provisioning">
+<Accordion title="Required information for provisioning">
 | Information Required | Description |
 | --- | --- |
-| Name of Administrator | Primary administrator of the account (others can be added later) |
+| Name of administrator | Primary administrator of the account (others can be added later) |
 | Admin email address | Email address of the primary administrator |
 | Cloud provider | AWS |
-| Cloud Region | See the expandable list of **AWS Supported Regions** on this page |
+| Cloud Region | See the expandable list of AWS Regions on this page |
 | Desired URL | `<companyname>.privatelink.unstructuredapp.io` |
 | VLM provider | Anthropic, Bedrock, OpenAI, Azure OpenAI, etc. |
 | VLM models | For example, Claude Sonnet 4.5, GPT-4o, or Gemini 2.0 Flash |
 | Embedding models | For example, Titan or Granite. Ensure that you select the correct dimensions. |
 </Accordion>
 
-<Important>
-Do not send API keys by email or through collaboration tools. Unstructured provides a secure method for sharing secrets.
-</Important>
+<Note>
+Use a support ticket for all private connectivity configuration data exchanges. This provides the required audit trail for sensitive configuration information.  
 
-### Step 2: Confirm the AWS Region
-Review the supported AWS Regions for Dedicated Instance deployments.
+Open a ticket in the [Unstructured Support Portal](https://support.unstructured.io/) with the subject line **`PrivateLink Configuration Request — [Your Company Name]`**.
+</Note>
+
+Expand to see the supported AWS Regions for dedicated instance deployments.
 
 <Accordion title="AWS Supported Regions">
 | Region Name | Region Code |
@@ -83,43 +81,46 @@ Review the supported AWS Regions for Dedicated Instance deployments.
 | Asia Pacific (Sydney) | `ap-southeast-2` |
 | Asia Pacific (Mumbai) | `ap-south-1` |
 | Asia Pacific (Seoul) | `ap-northeast-2` |
-
-If your required Region is not listed above, contact your Unstructured account representative.
 </Accordion>
 
-### Step 3: Exchange private connectivity information
-All private connectivity configuration data exchanges between the Customer and Unstructured must be conducted through support tickets. This provides a documented audit trail for account IDs, VPC endpoint service names, IAM role ARNs, and other sensitive configuration details.
+If your required AWS Region is not listed above, contact your Unstructured account representative.
 
-<Accordion title="Information Exchange">
-To start the private connectivity process, open a ticket in the [Unstructured Support Portal](https://support.unstructured.io/) with the subject line **`PrivateLink Configuration Request — [Your Company Name]`**. A technical enablement engineer will guide you through the remaining steps.
-</Accordion>
+### Step 2: Unstructured begins provisioning the dedicated instance in the selected AWS Region.
 
-### Step 4: Create an AWS PrivateLink endpoint service
-In your AWS account, create an endpoint service powered by AWS PrivateLink in the same AWS Region that you provided to Unstructured.  [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html)
+### Step 3: Create an AWS PrivateLink endpoint service.
+In your AWS account, create an AWS PrivateLink endpoint service in the same AWS Region that you provided to Unstructured.  [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html).
 
 In AWS terminology, you are the _service provider_ and Unstructured is the _service consumer_.
 
-### Step 5: Share the endpoint service details
-Provide Unstructured with the endpoint service name and the supported Availability Zones for that service in the selected AWS Region.  [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html#share-endpoint-service)
+
+### Step 4: Provide Unstructured with the endpoint service information.
+
+As the service provider, you must provide Unstructured with your endpoint service name and the supported Availability Zones for that service in the selected AWS Region. [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html#share-endpoint-service).
 
 For example: `com.amazonaws.vpce.us-east-1.vpce-svc-0e123abc123198abc`
 
-### Step 6: Unstructured configures connectivity to the Customer-managed service
-After you share the endpoint service details, Unstructured configures connectivity from the Unstructured-managed environment to the Customer-managed AWS service.
+<Note>
+Use a support ticket for all private connectivity configuration data exchanges. This provides the required audit trail for sensitive configuration information.  
 
-No action is required from the Customer during this step unless Unstructured requests clarification.
+Open a ticket in the [Unstructured Support Portal](https://support.unstructured.io/) with the subject line **`PrivateLink Configuration Request — [Your Company Name]`**.
+</Note>
 
-### Step 7: Accept the endpoint connection request
-After Unstructured completes the configuration, Unstructured sends an endpoint connection request.
+### Step 5: Unstructured configures connectivity to your endpoint service and sends an endpoint connection request.
+As the service consumer, Unstructured creates a related endpoint in its own AWS account in the same AWS Region.
 
-Accept the endpoint connection request as soon as possible to avoid delays in the deployment process.
+Unstructured then sends an endpoint connection request to complete the connection between the Unstructured-managed endpoint and your endpoint service.
+ 
+### Step 6: Accept the pending endpoint connection request
+Accept the endpoint connection request as soon as possible to avoid delays in the deployment process. [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html#accept-reject-connection-requests).
 
-[Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html#accept-reject-connection-requests)
+## Remaining configuration
+After you complete these steps, Unstructured works with you to complete the remaining configuration:
 
-### Step 8: Complete deployment and enable platform access
-After the private connectivity steps are complete, Unstructured finishes the Dedicated Instance deployment and enables Customer access to the Unstructured platform UI and API.
+* Enable customer access to the Unstructured platform UI and API.
+* Establish the connectivity and permissions required for the dedicated instance to access the target data sources. The required configuration depends on the services being accessed. The remaining sections in this topic describe how to complete it.
 
-For the required platform access details, see [Connecting to the Unstructured Platform (UI and API)](/business/aws/aws-privatelink/connect-to-platform).
+For general architecture information, see [Dedicated instance concepts](/business/dedicated-instances/overview).
+
 
 ## Questions? Need help?
 

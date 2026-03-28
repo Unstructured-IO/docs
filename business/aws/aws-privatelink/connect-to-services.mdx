@@ -3,13 +3,17 @@ title: Connecting to your AWS services
 sidebarTitle: Connecting to your AWS services
 ---
 
-This section describes the AWS service information required for your Dedicated Instance to reach AWS services in your VPC. The sections below cover **AWS managed services**, **AWS Managed Services with native PrivateLink**, and **Customer Managed Services (AWS) or AWS Services with NLB**.
+This section describes the AWS service information required for your dedicated instance to reach AWS services in your VPC. The sections below cover **AWS managed services**, **AWS Managed Services with native PrivateLink**, and **Customer Managed Services (AWS) or AWS Services with NLB**.
 
 ## AWS managed services 
 
 This section covers AWS-managed services that Unstructured can access using AWS-native private networking features, without requiring you to create a customer-managed endpoint service or Network Load Balancer.
 
-### AWS S3 (Gateway Endpoint)
+<Note>
+The **Order** column indicates the general sequence for the information exchange. Items with the same order value can usually be provided at the same stage.
+</Note>
+
+### AWS S3 (gateway endpoint)
 
 
 | Order | Information Required | Description | Example | Owner |
@@ -116,7 +120,7 @@ Replace:
 
 ---
 
-### AWS MSK (Kafka)
+### Amazon Managed Streaming for Apache Kafka (MSK)
 
 Amazon MSK supports native multi-VPC private connectivity via PrivateLink. This enables Unstructured to connect to the customer’s MSK cluster (as a Kafka source) entirely within the AWS private network. You must have an MSK cluster with **Multi-VPC Connectivity** enabled.
 
@@ -179,7 +183,7 @@ Replace:
 
 ---
 
-### AWS OpenSearch Service
+### Amazon OpenSearch Service
 
 Amazon OpenSearch Service supports native Interface VPC Endpoints. Unstructured creates a VPC endpoint in our VPC targeting the customer’s OpenSearch domain.
 
@@ -226,9 +230,9 @@ Replace:
 
 ### AWS OpenSearch Serverless
 
-<Important>
+<Note>
 OpenSearch Serverless uses a fundamentally different access model compared to OpenSearch Service. It does not use resource-based access policies. Instead, access is controlled through **data access policies** and **network access policies** tied to VPC endpoints.
-</Important>
+</Note>
 
 
 | Order | Information Required | Description | Example | Owner |
@@ -355,47 +359,14 @@ For ACCOUNT level access, no explicit endpoint allowlisting is required — any 
 
 ---
 
-<Callout icon="question" color="#ff00ff" iconType="regular">??Question: Do we ommmit all of the Snowflake section or mention any limitations?</Callout>
-
-### ~~Snowflake on AWS~~
-
-~~Snowflake supports AWS PrivateLink via Snowflake’s native Private Link feature. This is available for Snowflake accounts hosted on AWS. The customer must have a **Business Critical** or higher Snowflake edition to use Private Link.~~
-
-| Order | Information Required | Description | Example | Owner |
-| --- | --- | --- | --- | --- |
-| 1 | Snowflake Account Identifier | The Snowflake account identifier | `myorg-myaccount` | Customer |
-| 1 | Snowflake Account Region | AWS region where account is hosted | `us-east-1` | Customer |
-| 2 | Unstructured AWS Account ID | AWS Account ID to authorize for Private Link | `987654321098` | Unstructured |
-| 3 | Snowflake Private Link URL | Private Link hostname after enablement | `myorg-myaccount.privatelink.snowflakecomputing.com` | Customer |
-| 3 | Snowflake VPC Endpoint Service Name | The service name for Snowflake’s endpoint service | `com.amazonaws.vpce.us-east-1.vpce-svc-0abc123` | Customer |
-
-**~~Enabling Snowflake Private Link~~**
-
-1. ~~Contact Snowflake Support or your Snowflake account representative to enable Private Link for your account and authorize Unstructured’s AWS Account ID.~~
-2. ~~Once enabled, retrieve the Private Link configuration:~~
-
-```sql
-SELECT SYSTEM$GET_PRIVATELINK_CONFIG();
-```
-
-~~This returns the VPC Endpoint Service name and private hostname that Unstructured will need.~~
-
-1. ~~Share the output with Unstructured via a support ticket. Unstructured will create a VPC endpoint and provide the VPC Endpoint ID.~~
-2. ~~Authorize Unstructured’s VPC Endpoint in Snowflake:~~
-
-```sql
-SELECT SYSTEM$AUTHORIZE_PRIVATELINK('<UNSTRUCTURED_AWS_ACCOUNT_ID>', '<UNSTRUCTURED_VPC_ENDPOINT_ID>');
-```
-
-~~Replace:
-- `<UNSTRUCTURED_AWS_ACCOUNT_ID>` — Unstructured’s AWS Account ID (provided during setup).
-- `<UNSTRUCTURED_VPC_ENDPOINT_ID>` — VPC Endpoint ID provided by Unstructured.~~
-
----
-
 ## AWS Managed Services with native PrivateLink
 
 Some AWS managed services support native PrivateLink endpoints. You must first create a VPC endpoint for the service.  Unstructured then connects to it. This pattern applies to services like **Amazon ElastiCache (Redis)** and **AWS Elasticsearch Service (legacy)**.
+
+<Note>
+The **Order** column indicates the general sequence for the information exchange. Items with the same order value can usually be provided at the same stage.
+</Note>
+
 
 | Order | Information Required | Description | Example | Owner |
 | --- | --- | --- | --- | --- |
@@ -415,6 +386,11 @@ Some AWS managed services support native PrivateLink endpoints. You must first c
 This information applies to:
 - Applications that your organization is **self-hosting** in your AWS VPC (e.g., Elasticsearch, MongoDB, Couchbase).
 - AWS services that do **not** have native PrivateLink support and require an NLB front-end, such as **Amazon RDS, Aurora, Redshift, DocumentDB**.
+
+<Note>
+The **Order** column indicates the general sequence for the information exchange. Items with the same order value can usually be provided at the same stage.
+</Note>
+
 
 | Order | Information Required | Description | Example | Owner |
 | --- | --- | --- | --- | --- |

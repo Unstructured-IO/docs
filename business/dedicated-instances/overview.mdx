@@ -1,34 +1,34 @@
 ---
-title: Dedicated Instance concepts
+title: Dedicated instance concepts
 sidebarTitle: Overview
 ---
 
-A Dedicated Instance is a private, isolated deployment hosted by Unstructured for organizations that require stronger network boundaries, data isolation, and compliance controls. Using cloud-native infrastructure and private networking, Unstructured connects to your sources and processes your data within your trusted environment.
+A dedicated instance is a private, isolated deployment hosted by Unstructured for organizations that require stronger network boundaries, data isolation, and compliance controls. Using cloud-native infrastructure and private networking, Unstructured connects to your sources and processes your data within your trusted environment.
 
-Use this section to help your teams evaluate, secure, and implement a Dedicated Instance in the Unstructured platform.
+Use this section to help your teams evaluate, secure, and implement a dedicated instance in the Unstructured platform.
 
 This section covers:
 
-* How Dedicated Instances support stricter security and compliance requirements.
+* How dedicated instances support stricter security and compliance requirements.
 * Key benefits and trade-offs.
 * Technical requirements for integrating with your cloud platform.
 
 ## Cloud service provider (CSP) support
-Unstructured supports Dedicated Instances on Amazon Web Services (AWS) and Microsoft Azure (Azure). This section includes information for both cloud providers.
+Unstructured supports dedicated instances on Amazon Web Services (AWS) and Microsoft Azure (Azure). This section includes information for both cloud providers.
 
 For provider-specific onboarding guidance, see:
 
-* AWS — [Onboarding your Dedicated Instance + AWS PrivateLink](/business/aws/aws-privatelink/onboarding-di-pl)
-* Azure — [Onboarding your Dedicated Instance + Azure Private Link](/business/azure/azure-privatelink/onboarding-di-pl)
+* AWS — [Onboarding your dedicated instance + AWS PrivateLink](/business/aws/aws-privatelink/onboarding-di-pl)
+* Azure — [Onboarding your dedicated instance + Azure Private Link](/business/azure/azure-privatelink/onboarding-di-pl)
 
 <Note>
 This section uses *private connectivity* as a general term for AWS PrivateLink and Azure Private Link.
 </Note>
 
 
-## Private connectivity for your Dedicated Instance
+## Private connectivity for your dedicated instance
 
-Both AWS and Azure let you privately connect your Virtual Private Cloud (VPC) or Virtual Network (VNet) to your Dedicated Instance on the Unstructured platform without traversing the public internet.
+Both AWS and Azure let you privately connect your Virtual Private Cloud (VPC) or Virtual Network (VNet) to your dedicated instance on the Unstructured platform without traversing the public internet.
 
 Network filtering lets you block inbound and outbound internet traffic entirely or restrict it to specific IP addresses or CIDR ranges.
 
@@ -40,5 +40,5 @@ Network filtering lets you block inbound and outbound internet traffic entirely 
 - **Control and visibility** - Use private endpoints and private DNS to control traffic flow, enforce network-level access policies, and improve visibility into traffic paths and access patterns.
 
 <Note>
-A Dedicated Instance is a regional service. It runs entirely in a single cloud region. Plan for data residency, failover design, and latency accordingly. Unstructured supports cross-region PrivateLink, but does not recommend it because of the additional data transfer costs.
+A dedicated instance is a regional service. It runs entirely in a single cloud region. Plan for data residency, failover design, and latency accordingly. Unstructured supports cross-region PrivateLink, but does not recommend it because of the additional data transfer costs.
 </Note>

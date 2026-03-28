@@ -3,11 +3,15 @@ title: Connecting to your Azure services
 sidebarTitle: Connecting to your Azure services
 ---
 
-This section describes the Azure service information required for your Dedicated Instance to reach Azure data sources and APIs over Private Link or private endpoints. The sections below cover **Azure managed services** and **customer-managed workloads** exposed through a **Private Link service** and **Azure Standard Load Balancer**.
+This section describes the Azure service information required for your dedicated instance to reach Azure data sources and APIs over Private Link or private endpoints. The sections below cover **Azure managed services** and **customer-managed workloads** exposed through a **Private Link service** and **Azure Standard Load Balancer**.
 
 ## Azure managed services
 
 This section covers Azure-managed services that have service-specific private connectivity requirements. Unlike the later **Azure Managed Services** with **private endpoint access** section, these services require service-specific configuration details or additional access controls. It does not cover **Customer-managed services** exposed through a **Private Link service**.
+
+<Note>
+The **Order** column indicates the general sequence for the information exchange. Items with the same order value can usually be provided at the same stage.
+</Note>
 
 ### Azure Blob Storage
 
@@ -125,6 +129,10 @@ Replace:
 
 This section applies to Azure Managed Services that support private endpoint access, including: **Azure AI Search, Azure SQL Database, Azure SQL Managed Instance, Azure Cosmos DB, Azure Database for PostgreSQL, Azure Database for MySQL,** and **Azure Synapse Analytics**.
 
+<Note>
+The **Order** column indicates the general sequence for the information exchange. Items with the same order value can usually be provided at the same stage.
+</Note>
+
 | Order | Information Required | Description | Example | Owner |
 | --- | --- | --- | --- | --- |
 | 1 | Service Type | The Azure managed service being accessed | `Azure AI Search`, `Azure SQL` | Customer |
@@ -151,9 +159,13 @@ This section applies to Azure Managed Services that support private endpoint acc
 
 ---
 
-## Customer Managed Services (Azure)
+## Customer Managed Services
 
 This section applies to applications that your organization hosts in your Azure virtual network. Create a **Private Link service** in front of your application, backed by an Azure Standard Load Balancer.
+
+<Note>
+The **Order** column indicates the general sequence for the information exchange. Items with the same order value can usually be provided at the same stage.
+</Note>
 
 | Order | Information Required | Description | Example | Owner |
 | --- | --- | --- | --- | --- |
