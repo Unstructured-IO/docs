@@ -5,11 +5,9 @@ title: Security model
 This topic uses *private connectivity* as a general term for AWS PrivateLink and Azure Private Link.
 </Note>
 
-Dedicated Instances use a security model designed to protect your data across the network, infrastructure, and service layers. The architecture emphasizes data isolation, private connectivity, and controlled access to keep your data within trusted boundaries.
+This page explains how dedicated instances protect data through private connectivity, encryption, and network access controls.
 
-This page covers private connectivity, encryption, and network access controls for dedicated instances.
-
-### Encryption
+## Encryption
 
 Dedicated Instances use encryption in transit across external and internal service boundaries. All supported connections use TLS 1.2 or higher.
 
@@ -19,7 +17,7 @@ Dedicated Instances use encryption in transit across external and internal servi
 | Cloud storage connections (S3, Blob Storage) | TLS 1.2 or higher, with bucket or container policies used to enforce encryption requirements |
 | Internal service mesh | mTLS between microservices |
 
-### Security without private connectivity (internet-facing mode)
+## Security without private connectivity (internet-facing mode)
 
 Customers who deploy a dedicated instance without private connectivity access the Unstructured platform over the public internet via HTTPS. 
 
@@ -31,19 +29,19 @@ The following security measures and connectivity options apply:
 
 - **Independent paths** - allow you to use the UI and API over the public internet while Unstructured uses private connectivity to reach your data sources. The two paths are configured separately.
 
-### Security with private connectivity
+## Security with private connectivity
 
 When private connectivity is enabled, traffic between your environment and the Unstructured platform stays on cloud-provider private networking. Service endpoints resolve to private IP addresses, and inbound access from the public internet is blocked.
 
 ### What private connectivity does and does not protect
 
-Private connectivity helps protect:
+**Private connectivity helps protect:**
 
 * Network traffic from public internet exposure.
 * Data in transit between VPCs and VNets.
 * DNS resolution of service endpoints.
 
-Private connectivity does not protect against:
+**Private connectivity does not protect against:**
 
 * Application-layer vulnerabilities.
 * Misconfigured Identity and Access Management (IAM) or Role-Based Access Control (RBAC) policies.
@@ -54,7 +52,7 @@ Private connectivity does not protect against:
 By default, Unstructured manages encryption keys by using the cloud provider's native key management service: AWS Key Management Service (KMS) on AWS and Azure Key Vault on Azure. Customers with strict key custody requirements can use customer-managed keys for supported cloud services. Contact your account representative to enable this option.
 
 
-### Network access controls
+## Network access controls
 
 Network access controls determine whether traffic between the Unstructured platform and your cloud environment may traverse the public internet. Your cloud environment is the VPC or VNet that hosts your data sources and related resources. This section describes the default inbound and outbound traffic rules and how to request exceptions when a use case requires them.
 

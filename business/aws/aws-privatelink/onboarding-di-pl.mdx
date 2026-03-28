@@ -22,10 +22,8 @@ Times are subject to customer infrastructure team availability. More complex int
 </Note>
 
 ## High-level onboarding process
-This onboarding workflow covers two connectivity paths:
 
-- Customer access to the Unstructured platform UI and API
-- Unstructured access to supported customer-managed AWS services over AWS PrivateLink
+Complete these steps with Unstructured to prepare the deployment and configure AWS PrivateLink connectivity in your AWS environment.
 
 | Step | Owner | Action |
 | :---: | --- | --- |
@@ -39,7 +37,7 @@ This onboarding workflow covers two connectivity paths:
 
 **Next steps**
 
-After you complete these steps, Unstructured works with you to complete the remaining configuration for platform access, connectivity, and required permissions. For more information about the overall architecture, see [Dedicated instance concepts](/business/dedicated-instances/overview).
+After you complete these steps, Unstructured works with you to complete the remaining configuration for platform access, connectivity, and required permissions. For more information about the overall architecture, see [dedicated instance](/business/dedicated-instances/overview).
 
 
 ## Detailed onboarding steps
@@ -86,6 +84,7 @@ Expand to see the supported AWS Regions for dedicated instance deployments.
 If your required AWS Region is not listed above, contact your Unstructured account representative.
 
 ### Step 2: Unstructured begins provisioning the dedicated instance in the selected AWS Region.
+No action is required from you during this step unless Unstructured requests additional information. You can proceed to the next step.
 
 ### Step 3: Create an AWS PrivateLink endpoint service.
 In your AWS account, create an AWS PrivateLink endpoint service in the same AWS Region that you provided to Unstructured.  [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html).
@@ -114,12 +113,12 @@ Unstructured then sends an endpoint connection request to complete the connectio
 Accept the endpoint connection request as soon as possible to avoid delays in the deployment process. [Learn how](https://docs.aws.amazon.com/vpc/latest/privatelink/configure-endpoint-service.html#accept-reject-connection-requests).
 
 ## Remaining configuration
-After you complete these steps, Unstructured works with you to complete the remaining configuration:
+After the completion of these steps, Unstructured works with you to complete the remaining configuration:
 
 * Enable customer access to the Unstructured platform UI and API.
-* Establish the connectivity and permissions required for the dedicated instance to access the target data sources. The required configuration depends on the services being accessed. The remaining sections in this topic describe how to complete it.
+* Complete the connectivity and permissions required for the dedicated instance to access the target data sources.
 
-For general architecture information, see [Dedicated instance concepts](/business/dedicated-instances/overview).
+For general architecture information, see [dedicated instance](/business/dedicated-instances/overview).
 
 
 ## Questions? Need help?

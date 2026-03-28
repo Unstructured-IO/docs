@@ -8,9 +8,7 @@ This topic uses *private connectivity* as a general term for AWS PrivateLink and
 
 Dedicated Instances rely on cloud-provider private networking features and require baseline infrastructure components for a secure and successful deployment.
 
-This page outlines the key requirements that Customers must meet, along with known limitations that can affect implementation decisions. Understanding these constraints early helps reduce onboarding delays and align security, platform, and engineering teams.
-
-### Cloud provider and region support
+## Supported cloud provider and regions
 
 | Cloud provider | Availability |
 | --- | --- |
@@ -39,7 +37,7 @@ If your required AWS Region is not listed, contact your Unstructured account rep
 
 Contact your Unstructured account representative for the current list of supported Azure Regions.
 
-### Requirements
+## Prerequisites
 
 **AWS requirements:**
 - VPC with private subnets
@@ -51,7 +49,7 @@ Contact your Unstructured account representative for the current list of support
 - Private endpoint network policies disabled on target subnets
 - Standard Load Balancer for connections into the Customer environment
 
-### DNS requirements
+## DNS requirements
 
 Private connectivity requires DNS configuration to route traffic through private endpoints:
 
@@ -61,7 +59,7 @@ Private connectivity requires DNS configuration to route traffic through private
 
 Unstructured provides the DNS name in the format `<company>.privatelink.unstructuredapp.io`.
 
-### Known limitations
+## Known limitations
 
 | Limitation | Notes |
 | --- | --- |
