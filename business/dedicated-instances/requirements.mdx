@@ -1,0 +1,69 @@
+---
+title: Requirements and limitations
+---
+
+<Note>
+This topic uses *private connectivity* as a general term for AWS PrivateLink and Azure Private Link.
+</Note>
+
+Dedicated Instances rely on cloud-provider private networking features and require baseline infrastructure components for a secure and successful deployment.
+
+## Supported cloud provider and regions
+
+| Cloud provider | Availability |
+| --- | --- |
+| Amazon Web Services (AWS) | General availability |
+| Microsoft Azure | General availability |
+| Google Cloud Platform (GCP) | Not currently supported |
+
+**Supported AWS Regions**
+
+| Region name | Region code |
+| --- | --- |
+| US East (N. Virginia) | `us-east-1` |
+| US East (Ohio) | `us-east-2` |
+| US West (Oregon) | `us-west-2` |
+| Europe (Ireland) | `eu-west-1` |
+| Europe (Stockholm) | `eu-north-1` |
+| Europe (Frankfurt) | `eu-central-1` |
+| Asia Pacific (Sydney) | `ap-southeast-2` |
+| Asia Pacific (Mumbai) | `ap-south-1` |
+| Asia Pacific (Seoul) | `ap-northeast-2` |
+
+If your required AWS Region is not listed, contact your Unstructured account representative.
+
+
+**Supported Azure Regions**
+
+Contact your Unstructured account representative for the current list of supported Azure Regions.
+
+## Prerequisites
+
+**AWS requirements:**
+- VPC with private subnets
+- Network Load Balancer for connections into the Customer environment
+- IAM permissions to create VPC endpoints, security groups, and Route 53 records
+
+**Azure requirements:**
+- Virtual network with subnets configured for private endpoints
+- Private endpoint network policies disabled on target subnets
+- Standard Load Balancer for connections into the Customer environment
+
+## DNS requirements
+
+Private connectivity requires DNS configuration to route traffic through private endpoints:
+
+- **AWS:** Route 53 Private Hosted Zone, and on-premises DNS forwarding if needed
+- **Azure:** Azure Private DNS Zone linked to the Customer VNet
+- **Both:** CNAME records that point to the private endpoint
+
+Unstructured provides the DNS name in the format `<company>.privatelink.unstructuredapp.io`.
+
+## Known limitations
+
+| Limitation | Notes |
+| --- | --- |
+| Cross-Region private connectivity | Supported but incurs additional data transfer costs. Not recommended. |
+| Cross-CSP private connectivity | Not supported, for example AWS to Azure |
+| VPC Peering | Not supported as an alternative to private connectivity |
+

@@ -1,0 +1,26 @@
+---
+title: Concepts and architecture
+---
+
+<Note>
+This topic uses *private connectivity* as a general term for AWS PrivateLink and Azure Private Link.
+</Note>
+
+A **dedicated instance** is an isolated Unstructured deployment. When private connectivity is enabled, traffic between the Customer environment and Unstructured stays on private network paths instead of traversing the public internet.
+
+![Private connectivity traffic directions](/img/architecture/components-in-pl-cusomter-unstruc.png)
+
+## Private connectivity by cloud provider
+
+**AWS private connectivity** uses AWS PrivateLink interface endpoints to connect the Customer VPC to the Unstructured private network without traversing the public internet.
+
+**Azure private connectivity** uses Azure Private Link to connect the Customer VNet to the Unstructured private network while keeping traffic on the Microsoft backbone instead of the public internet.
+
+## Traffic directions
+
+Private connectivity can be configured in one or both directions:
+
+- **Customer → Unstructured** — Customer users and applications access the Unstructured UI and API through private endpoints in the Customer VPC or VNet.
+- **Unstructured → Customer** — Unstructured accesses Customer data sources, such as S3 buckets, databases, and vector stores, through private endpoints in the Unstructured VPC or VNet.
+
+If you enforce strict outbound controls, configure both directions so traffic remains private end to end.

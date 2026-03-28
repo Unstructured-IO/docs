@@ -1,0 +1,86 @@
+---
+title: Security FAQ
+---
+
+<Note>
+This topic uses *private connectivity* as a general term for AWS
+PrivateLink and Azure Private Link.
+</Note>
+
+**Is my dedicated instance single-tenant?**
+
+Yes. Each dedicated instance is single-tenant and logically isolated.
+It is not shared with other customers at the application or network
+level.
+
+**Does traffic ever traverse the public internet?**
+
+By default, dedicated instances block public ingress and egress.
+When private connectivity is enabled, traffic between the Customer
+environment and Unstructured stays on cloud-provider private
+networking. Public ingress or egress can be enabled on request for
+specific use cases. For more information, see [Network access
+controls](/business/dedicated-instances/security/security-model#network-access-controls).
+
+**Is data encrypted?**
+
+Yes. Data is encrypted in the following ways:
+
+- **In transit:** All traffic uses TLS 1.2 or higher.
+- **Internally:** Mutual TLS (mTLS) is used between platform services.
+- **In cloud storage:** Encryption policies are enforced at the
+  storage layer.
+- **At rest:** Customer-managed KMS keys are available as an option
+  on request.
+
+**Can Unstructured access my data?**
+
+Unstructured personnel do not access Customer data as part of normal
+operations. Access to Customer data sources is explicitly configured,
+limited to the minimum permissions required, and governed by
+Customer-controlled IAM, RBAC, and resource policies. Any exceptional
+access, such as for troubleshooting, is controlled and audited.
+
+**Is customer data used to train models?**
+
+No. Customer data processed within a dedicated instance is not used to
+train models.
+
+**How is access to the platform controlled?**
+
+- Customers manage user access to the Unstructured UI and APIs.
+- Network access can be restricted by using private endpoints,
+  security groups, and firewall rules.
+- DNS resolution can be kept private and scoped to Customer networks.
+
+**What does private connectivity protect against?**
+
+Private connectivity helps protect against:
+
+- Exposure to the public internet
+- Unintended inbound network access
+- DNS-based traffic interception
+
+Private connectivity does not protect against:
+
+- Application-layer vulnerabilities
+- Misconfigured IAM or RBAC policies
+- Compromised credentials
+
+**How long is customer data retained?**
+
+Unstructured does not store Customer data long-term. Customer
+artifacts are used ephemerally during workflow execution and removed
+upon completion or failure. Transformed data is written to the
+configured destination. The data that persists in the Unstructured
+platform is limited to connector and workflow configuration metadata,
+connector keys stored in a secret store, and workflow execution
+telemetry, which does not contain file data.
+
+**What compliance standards does Unstructured support?**
+
+Unstructured maintains industry-standard security and compliance
+programs, including HIPAA compliance architecture, ITAR readiness
+with geo-blocking through AWS WAF, and SOC 2 controls. Detailed
+compliance artifacts are available in the [trust
+portal](https://trust.unstructured.io/).

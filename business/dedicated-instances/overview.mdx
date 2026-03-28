@@ -1,0 +1,44 @@
+---
+title: Dedicated instance overview
+sidebarTitle: Overview
+---
+
+A dedicated instance is a private, isolated deployment hosted by Unstructured for organizations that require stronger network boundaries, data isolation, and compliance controls. Using cloud-native infrastructure and private networking, Unstructured connects to your sources and processes your data within your trusted environment.
+
+Use this section to help your teams evaluate, secure, and implement a dedicated instance in the Unstructured platform.
+
+This section covers:
+
+* How dedicated instances support stricter security and compliance requirements.
+* Key benefits and trade-offs.
+* Technical requirements for integrating with your cloud platform.
+
+## Cloud service provider (CSP) support
+Unstructured supports dedicated instances on Amazon Web Services (AWS) and Microsoft Azure (Azure). This section covers architecture and configuration information that generally applies to dedicated instances on both cloud providers.
+
+For provider-specific onboarding guidance, see:
+
+* AWS — [Onboarding your dedicated instance + AWS PrivateLink](/business/aws/aws-privatelink/onboarding-di-pl)
+* Azure — [Onboarding your dedicated instance + Azure Private Link](/business/azure/azure-privatelink/onboarding-di-pl)
+
+<Note>
+This section uses *private connectivity* as a general term for AWS PrivateLink and Azure Private Link.
+</Note>
+
+
+## Private connectivity for your dedicated instance
+
+Both AWS and Azure let you privately connect your Virtual Private Cloud (VPC) or Virtual Network (VNet) to your dedicated instance on the Unstructured platform without traversing the public internet.
+
+Network filtering lets you block inbound and outbound internet traffic entirely or restrict it to specific IP addresses or CIDR ranges.
+
+**Benefits**
+
+- **Eliminate public exposure** - Traffic between your VPC or VNet and Unstructured stays on cloud-provider private networking instead of the public internet.
+- **Stronger network isolation for sensitive workloads** - Support internal security and compliance requirements where private network access is preferred or required.
+- **Simpler enterprise network integration** - Align with existing private connectivity patterns, including VPC or VNet isolation and private connectivity to on-premises networks.
+- **Control and visibility** - Use private endpoints and private DNS to control traffic flow, enforce network-level access policies, and improve visibility into traffic paths and access patterns.
+
+<Note>
+A dedicated instance is a regional service. It runs entirely in a single cloud region. Plan for data residency, failover design, and latency accordingly. Unstructured supports cross-region PrivateLink, but does not recommend it because of the additional data transfer costs.
+</Note>

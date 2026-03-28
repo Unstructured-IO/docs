@@ -1,0 +1,104 @@
+---
+title: Onboarding Dedicated Instance + Azure PrivateLink
+sidebarTitle: Onboarding
+---
+
+<Note>
+    The following information applies only to dedicated instance deployments with PrivateLink for [Unstructured Business](/business/overview) on Azure.
+
+    For dedicated instance deployments of Unstructured Business to Azure _without_ PrivateLink, contact your Unstructured sales representative,
+    or email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+</Note>
+
+After your organization has signed the **Business** account agreement with Unstructured, a member of the Unstructured technical enablement team will reach out to you to begin the **deployment onboarding process**.
+
+The next steps are to provision the required environment resources and, optionally, establish private connectivity with Azure PrivateLink. Deployment is conducted remotely and can usually be completed within the following timeframes:
+
+- **With Azure PrivateLink:** 4–5 days
+- **Without Azure PrivateLink:** 2–3 days
+
+<Note>
+Times are subject to customer infrastructure team availability. More complex integrations (multiple connectors, custom models, etc.) will extend the deployment timeline.
+</Note>
+
+## High-level onboarding process
+Review these steps for an overview of the deployment and private connectivity workflow.
+
+| Step | Owner | Action |
+| :---: | --- | --- |
+| 1 | Customer | Provide Unstructured the Azure region where you want the dedicated instance deployed, along with the other information required to provision it.|
+| 2 | Unstructured | Unstructured begins creating the dedicated instance deployment in that Azure region.  |
+| 3 | Customer | Prepare Azure resources for private connectivity.|
+| 4 | Customer | Provide Unstructured with the PrivateLink service connection information. |
+| 5 | Unstructured | Unstructured configures connectivity from the Unstructured-managed environment to your endpoint service. Unstructured will then send you an endpoint connection request.|
+| 6 | Customer | Approve the pending private endpoint connection requests in Azure.|
+
+
+**Next steps**
+
+After you complete these steps, Unstructured works with you to complete the remaining configuration for platform access, connectivity, and required permissions. For more information about the overall architecture, see [dedicated instance](/business/dedicated-instances/overview).
+
+
+## Detailed onboarding steps
+Use the following steps to prepare the deployment and configure Azure PrivateLink connectivity.
+
+### Step 1: Provide provisioning information
+Provide the following information to Unstructured to begin provisioning the dedicated instance in the selected Azure region.
+
+<Accordion title="Required information for provisioning">
+| Information Required | Description |
+| --- | --- |
+| Name of Administrator | Primary administrator of the account (others can be added later) |
+| Admin email address | Email address of the primary administrator |
+| Cloud provider | Azure |
+| Cloud Region | Contact your Unstructured account representative for the current list of supported Azure Regions. |
+| Desired URL | `<companyname>.privatelink.unstructuredapp.io` |
+| VLM provider | Anthropic, OpenAI, Azure OpenAI, etc. |
+| VLM models | For example, Claude Sonnet 4.5, GPT-4o, or Gemini 2.0 Flash |
+| Embedding models | For example, Titan or Granite. Ensure that you select the correct dimensions. |
+</Accordion>
+
+<Note>
+Use a support ticket for all private connectivity configuration data exchanges. This provides the required audit trail for sensitive configuration information.  
+
+Open a ticket in the [Unstructured Support Portal](https://support.unstructured.io/) with the subject line **`PrivateLink Configuration Request — [Your Company Name]`**.
+</Note>
+
+### Step 2: Unstructured begins creating the dedicated instance deployment in that Azure region.
+No action is required from you during this step unless Unstructured requests additional information. You can proceed to the next step.
+
+### Step 3: Prepare Azure resources for private connectivity. 
+Create a PrivateLink service for customer-managed services. [Learn how](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview). Also see [Azure PrivateLink FAQ](https://learn.microsoft.com/en-us/azure/private-link/private-link-faq)
+
+In Azure terminology, you are the _service provider_ and Unstructured is the _service consumer_.
+
+### Step 4: Provide Unstructured with the PrivateLink service connection information.
+As the service provider, you must provide Unstructured with the PrivateLink service ID. [Learn how](https://learn.microsoft.com/en-us/azure/private-link/private-link-service-overview#share-your-service).
+
+<Note>
+Use a support ticket for all private connectivity configuration data exchanges. This provides the required audit trail for sensitive configuration information.  
+
+Open a ticket in the [Unstructured Support Portal](https://support.unstructured.io/) with the subject line **`PrivateLink Configuration Request — [Your Company Name]`**.
+</Note>
+
+### Step 5: Unstructured creates the required private endpoints to your PrivateLink service and sends an endpoint connection request.
+As the service consumer, Unstructured creates the required private endpoints in its own Azure account in the same Azure region.
+
+Unstructured then sends an endpoint connection request to complete the connection between the Unstructured-managed endpoint and your endpoint service.
+
+
+### Step 6: Approve the pending private endpoint connection requests in Azure.
+Approve the private endpoint connection  as soon as possible to avoid delays in the deployment process. [Learn how](https://learn.microsoft.com/en-us/azure/private-link/how-to-approve-private-link-cross-subscription).
+
+## Remaining configuration
+After the completion of these steps, Unstructured works with you to complete the remaining configuration:
+
+* Enable customer access to the Unstructured platform UI and API.
+* Complete the connectivity and permissions required for the dedicated instance to access the target data sources.
+
+For general architecture information, see [dedicated instance](/business/dedicated-instances/overview).
+
+## Questions? Need help?
+
+If you have questions or need help as you go, contact your Unstructured sales representative or technical enablement contact. If you do not know who they are, email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io), and a member of the Unstructured sales or technical enablement teams will get back to you as soon as possible.
+

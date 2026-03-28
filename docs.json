@@ -339,27 +339,58 @@
               "business/idp/ui"
             ]
           },
+		  {
+			  "group": "Dedicated instance",
+			  "pages": [
+				"business/dedicated-instances/overview",
+				"business/dedicated-instances/architecture",
+         "business/dedicated-instances/requirements",
+        { "group": "Security",
+        "pages": [
+          "business/dedicated-instances/security/security-model",
+          "business/dedicated-instances/security/shared-responsibility-model",
+          "business/dedicated-instances/security/security-faq"
+          ]
+        }          
+        ]
+      },
           {
-            "group": "AWS",
+            "group": "Amazon Web Services",
             "pages": [
               "business/aws/overview",
-              "business/aws/dedicated-instance-privatelink",
-              "business/aws/onboard"
+              { "group": "Onboarding Dedicated Instance + AWS PrivateLink",
+              "pages": [
+                "business/aws/aws-privatelink/onboarding-di-pl",
+                "business/aws/aws-privatelink/connector-support",
+                "business/aws/aws-privatelink/connect-to-platform",
+                "business/aws/aws-privatelink/dns-configuration",
+                "business/aws/aws-privatelink/connect-to-services"
+                ]
+            },
+              "business/aws/onboarding-in-vpc"
             ]
           },
           {
-            "group": "Azure",
+            "group": "Microsoft Azure",
             "pages": [
               "business/azure/overview",
-              "business/azure/onboard",
-              "business/azure/dns-privatelink"
+              { "group": "Onboarding Dedicated instance + Azure Private Link",
+              "pages": [
+                "business/azure/azure-privatelink/onboarding-di-pl",
+                "business/azure/azure-privatelink/connector-support",
+                "business/azure/azure-privatelink/connect-to-platform",
+                "business/azure/azure-privatelink/dns-privatelink",
+                "business/azure/azure-privatelink/connect-to-services"
+                ]
+            },
+              "business/azure/onboarding-in-vpc"
             ]
           },
           {
-            "group": "GCP",
+            "group": "Google Cloud Platform (GCP)",
             "pages": [
               "business/gcp/overview",
-              "business/gcp/onboard"
+              "business/gcp/onboarding-in-vpc"
             ]
           }
         ]
@@ -699,6 +730,10 @@
     }
   },
   "redirects": [
+    {
+      "source": "/business/aws/dedicated-instance-privatelink",
+      "destination": "/business/aws/aws-privatelink/onboarding-di-pl"
+    },
     {
       "source": "/api-reference/api-services/accessing-unstructured-api",
       "destination": "/api-reference/overview"

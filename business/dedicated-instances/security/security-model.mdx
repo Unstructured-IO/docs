@@ -1,0 +1,98 @@
+---
+title: Security model
+---
+<Note>
+This topic uses *private connectivity* as a general term for AWS PrivateLink and Azure Private Link.
+</Note>
+
+This page explains how dedicated instances protect data through private connectivity, encryption, and network access controls.
+
+## Encryption
+
+Dedicated Instances use encryption in transit across external and internal service boundaries. All supported connections use TLS 1.2 or higher.
+
+| Layer | Encryption |
+| --- | --- |
+| API endpoints | TLS 1.2 or higher with certificate validation |
+| Cloud storage connections (S3, Blob Storage) | TLS 1.2 or higher, with bucket or container policies used to enforce encryption requirements |
+| Internal service mesh | mTLS between microservices |
+
+## Security without private connectivity (internet-facing mode)
+
+Customers who deploy a dedicated instance without private connectivity access the Unstructured platform over the public internet via HTTPS. 
+
+The following security measures and connectivity options apply:
+
+- **TLS 1.2+** for all traffic in transit.
+- **AWS WAF** (Web Application Firewall) provides DDoS protection, rate limiting, and optional geo-blocking for ITAR compliance.
+- **IP Allowlisting** - restricts Unstructured platform access to specific source IP addresses or CIDR ranges. Submit a support ticket with your IP list to enable this.
+
+- **Independent paths** - allow you to use the UI and API over the public internet while Unstructured uses private connectivity to reach your data sources. The two paths are configured separately.
+
+## Security with private connectivity
+
+When private connectivity is enabled, traffic between your environment and the Unstructured platform stays on cloud-provider private networking. Service endpoints resolve to private IP addresses, and inbound access from the public internet is blocked.
+
+### What private connectivity does and does not protect
+
+**Private connectivity helps protect:**
+
+* Network traffic from public internet exposure.
+* Data in transit between VPCs and VNets.
+* DNS resolution of service endpoints.
+
+**Private connectivity does not protect against:**
+
+* Application-layer vulnerabilities.
+* Misconfigured Identity and Access Management (IAM) or Role-Based Access Control (RBAC) policies.
+* Compromised credentials.
+
+### (Optional) Customer-managed encryption keys
+
+By default, Unstructured manages encryption keys by using the cloud provider's native key management service: AWS Key Management Service (KMS) on AWS and Azure Key Vault on Azure. Customers with strict key custody requirements can use customer-managed keys for supported cloud services. Contact your account representative to enable this option.
+
+
+## Network access controls
+
+Network access controls determine whether traffic between the Unstructured platform and your cloud environment may traverse the public internet. Your cloud environment is the VPC or VNet that hosts your data sources and related resources. This section describes the default inbound and outbound traffic rules and how to request exceptions when a use case requires them.
+
+**Default configuration:**
+
+| Traffic Direction | Default State |
+| --- | --- |
+| Public Ingress | **Blocked** — All inbound traffic from the public internet is denied. Access is only available via private connectivity. |
+| Public Egress | **Blocked** — All outbound traffic to the public internet is denied. The platform can only communicate with resources accessible via private connectivity or within the Unstructured VPC/VNet. |
+
+This default configuration provides maximum network isolation and is recommended for customers with strict compliance requirements.
+
+### (Optional) Enabling public egress
+
+Some integrations require outbound internet access, for example:
+- Third-party AI/ML APIs (e.g., OpenAI, Anthropic, Gemini) not hosted in your cloud environment.
+- External webhooks or callback URLs.
+- Public SaaS services without private connectivity support.
+
+If your use case requires public egress, Unstructured can enable one of the following configurations:
+
+| Option | Description |
+| --- | --- |
+| Full egress | Permits all outbound internet traffic (not recommended) |
+| Specific IPs/CIDRs | Permits outbound traffic only to specified IP addresses or CIDR ranges |
+
+To request a public egress configuration change, log a support ticket and provide:
+- Application or use-case requirements for the access change.
+- The IP addresses or CIDR ranges to allowlist.
+- Expected traffic patterns, such as VLM API calls or SSO integration.
+
+### (Optional) Enabling public ingress
+
+In rare cases, customers may require public ingress, for example for users who cannot access the platform through private connectivity. When enabled, access is restricted to specified IP addresses or CIDR ranges, and all traffic remains encrypted with TLS 1.2 or higher.
+
+To request a public ingress configuration change, log a support ticket and provide:
+- Application or use-case requirements.
+- The source IP addresses or CIDR ranges to allowlist.
+- Expected access patterns.
+
+<Note>
+Enabling public ingress or egress reduces the network isolation benefits of a dedicated instance. Unstructured recommends using private connectivity wherever possible.
+</Note>

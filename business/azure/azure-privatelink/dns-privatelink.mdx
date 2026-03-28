@@ -1,0 +1,16 @@
+---
+title: DNS configuration for Private Link access
+sidebarTitle: DNS for Private Link
+---
+
+To access the dedicated instance over Azure Private Link, you must configure DNS so the service hostname resolves to your private endpoint's private IP address.
+
+1. Create a private DNS zone that matches the service hostname.
+    
+   For example, if the service hostname is `example.privatelink.unstructuredapp.io`, the private DNS zone would be  `privatelink.unstructuredapp.io`.
+
+2. Create an A record for the full service hostname pointing to the private IP of your Private Endpoint:
+
+   For example, `example.privatelink.unstructuredapp.io` would point to `10.12.34.56`.
+
+3. Link the Private DNS Zone to the VNet(s) where clients will access the service.

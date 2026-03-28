@@ -1,6 +1,6 @@
 ---
-title: Unstructured Business in-VPC on Azure - onboarding checklist
-sidebarTitle: Onboarding
+title: Onboarding in-VPC on your Microsoft Azure platform
+sidebarTitle: Onboarding in-VPC
 ---
 
 <Note>
@@ -8,6 +8,9 @@ sidebarTitle: Onboarding
 
     For dedicated instance deployments of Unstructured Business, contact your Unstructured sales representative, 
     or email Unstructured Sales at [sales@unstructured.io](mailto:sales@unstructured.io).
+
+    For dedicated instance deployments of Unstructured Business that also use PrivateLink, see 
+    the [onboarding process for Azure Private Link](/business/azure/azure-privatelink/onboarding-di-pl).
 </Note>
 
 After your organization has signed the **Business** account agreement with Unstructured, a member of the Unstructured technical enablement team will reach out to you to begin the 
@@ -42,8 +45,8 @@ the access credentials for a Microsoft Entra ID user or service principal in you
 - `Microsoft.Network/natGateways/read` (to read the NAT Gateway)
 - `Microsoft.Network/routeTables/write` (to create the route tables)
 - `Microsoft.Network/routeTables/read` (to read the route tables)
-- `Microsoft.Network/networkSecurityGroups/write` (to create the NSGs)
-- `Microsoft.Network/networkSecurityGroups/read` (to read the NSGs)
+- `Microsoft.Network/networkSecurityGroups/write` (to create the Network Security Groups)
+- `Microsoft.Network/networkSecurityGroups/read` (to read the Network Security Groups)
 
 ### AKS cluster
 
@@ -170,7 +173,7 @@ Unstructured UI and API into.
   - SSH: Enabled via key pair
   - SSH key exported in PEM format
 
-- **NSGs (Network Security Groups)**
+- **Network Security Groups**
 
   - Allow intra-cluster traffic (`10.0.0.0/16`)
   - Allow all egress

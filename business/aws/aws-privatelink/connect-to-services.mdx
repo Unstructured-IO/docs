@@ -1,0 +1,427 @@
+---
+title: Connecting to your AWS services
+sidebarTitle: Connecting to your AWS services
+---
+
+This section describes the information required for your dedicated instance to reach AWS services in your VPC.
+
+## AWS managed services 
+
+This section covers AWS-managed services that Unstructured can access using AWS-native private networking features, without requiring you to create a customer-managed endpoint service or Network Load Balancer.
+
+<Note>
+The **Order** column indicates the general sequence for the information exchange. Items with the same order value can usually be provided at the same stage.
+</Note>
+
+### AWS S3 (gateway endpoint)
+
+
+| Order | Information Required | Description | Example | Owner |
+| --- | --- | --- | --- | --- |
+| 1 | S3 Bucket Name | Buckets Unstructured needs to access | `my-documents` | Customer |
+| 1 | S3 Bucket Region | Region where bucket is located | `us-east-1` | Customer |
+| 2 | Unstructured IAM Role ARN | IAM Role ARN that will access S3 | `arn:aws:iam::987654321098:role/unstructured-s3-access` | Unstructured |
+
+This section also covers **Delta Tables in Amazon S3** — the S3 Gateway Endpoint configuration is the same.
+
+
+**Example S3 Bucket Policy**
+
+You must create a bucket policy that grants Unstructured’s IAM Role access to the required S3 buckets.
+
+For read-only access:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowUnstructuredAccess",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "<UNSTRUCTURED_IAM_ROLE_ARN>"
+      },
+      "Action": [
+        "s3:GetObject",
+        "s3:ListBucket"
+      ],
+      "Resource": [
+        "arn:aws:s3:::<BUCKET_NAME>",
+        "arn:aws:s3:::<BUCKET_NAME>/*"
+      ]
+    }
+  ]
+}
+```
+
+Use this Action clause for write access (e.g., if S3 is a destination):
+
+```json
+{
+  "Action": [
+    "s3:GetObject",
+    "s3:PutObject",
+    "s3:DeleteObject",
+    "s3:ListBucket"
+  ]
+}
+```
+
+Replace:
+- `<UNSTRUCTURED_IAM_ROLE_ARN>` — Unstructured’s IAM Role ARN (provided during setup).
+- `<BUCKET_NAME>` — Your S3 bucket name.
+
+---
+
+### AWS Bedrock
+
+Amazon Bedrock is accessed via AWS-provided VPC endpoints. Unstructured configures VPC endpoints in our VPC to ensure all traffic to Bedrock stays off the public internet. Access to customer-specific Bedrock resources is controlled via IAM policies.
+
+| Order | Information Required | Description | Example | Owner |
+| --- | --- | --- | --- | --- |
+| 1 | Bedrock Region | AWS region where Bedrock resources are located | `us-east-1` | Customer |
+| 1 | Model IDs / ARNs | Foundation models or custom models to access | `anthropic.claude-sonnet-4-5`, `arn:aws:bedrock:us-east-1:123456789012:custom-model/my-model` | Customer |
+| 2 | Unstructured AWS Account ID | Account ID to allow in IAM/resource policies | `987654321098` | Unstructured |
+| 2 | Unstructured IAM Role ARN | IAM Role ARN that will access Bedrock | `arn:aws:iam::987654321098:role/unstructured-bedrock` | Unstructured |
+
+Unstructured configures the Bedrock VPC endpoint on the Unstructured platform. You must create IAM policies that grant access to Unstructured’s IAM Role.
+
+
+**Example IAM Policy**
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowBedrockModelInvocation",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "<UNSTRUCTURED_IAM_ROLE_ARN>"
+      },
+      "Action": [
+        "bedrock:InvokeModel",
+        "bedrock:InvokeModelWithResponseStream"
+      ],
+      "Resource": [
+        "arn:aws:bedrock:<REGION>::foundation-model/anthropic.claude-sonnet-4-5-*",
+        "arn:aws:bedrock:<REGION>::foundation-model/anthropic.claude-opus-4-5-*",
+        "arn:aws:bedrock:<REGION>:<CUSTOMER_ACC_NO>:custom-model/*"
+      ]
+    }
+  ]
+}
+```
+
+Replace:
+- `<UNSTRUCTURED_IAM_ROLE_ARN>` — Unstructured’s AWS IAM Role ARN (provided during setup).
+- `<CUSTOMER_ACC_NO>` — Your AWS Account ID.
+- `<REGION>` — Your Bedrock region.
+
+---
+
+### Amazon Managed Streaming for Apache Kafka (MSK)
+
+Amazon MSK supports native multi-VPC private connectivity via PrivateLink. This enables Unstructured to connect to the customer’s MSK cluster (as a Kafka source) entirely within the AWS private network. You must have an MSK cluster with **Multi-VPC Connectivity** enabled.
+
+MSK Multi-VPC Connectivity requires MSK cluster type **provisioned** (not serverless). The cluster must use TLS or SASL/TLS authentication.
+
+
+| Order | Information Required | Description | Example | Owner |
+| --- | --- | --- | --- | --- |
+| 1 | MSK Cluster ARN | ARN of the MSK cluster | `arn:aws:kafka:us-east-1:123456789012:cluster/my-cluster/abc-123` | Customer |
+| 1 | MSK Cluster Region | AWS region where cluster is deployed | `us-east-1` | Customer |
+| 1 | Kafka Port | Port the brokers listen on | `9094` (TLS) or `9096` (SASL/TLS) | Customer |
+| 1 | Topic Name(s) | Kafka topics Unstructured needs to read | `documents-raw`, `documents-processed` | Customer |
+| 2 | Unstructured AWS Account ID | Account ID to add as allowed principal | `987654321098` | Unstructured |
+| 3 | VPC Endpoint Service Name | Service name created when Multi-VPC Connectivity is enabled | `com.amazonaws.vpce.us-east-1.vpce-svc-0abc123` | Customer |
+| 3 | Bootstrap Broker Endpoints | Private broker DNS names for the cluster | `b-1.mycluster.abc123.kafka.us-east-1.amazonaws.com:9094` | Customer |
+
+**Enabling MSK Multi-VPC Connectivity**
+
+Use the AWS Console:
+1. Navigate to **Amazon MSK** > select your cluster.
+2. Choose **Actions** > **Edit cluster connectivity**.
+3. Enable **Multi-VPC connectivity**.
+4. Confirm — MSK will create a VPC Endpoint Service automatically.
+
+Use the AWS CLI:
+
+```bash
+aws kafka update-connectivity \
+  --cluster-arn "<MSK_CLUSTER_ARN>" \
+  --connectivity-info '{
+    "VpcConnectivity": {
+      "ClientAuthentication": {
+        "Tls": { "Enabled": true }
+      }
+    }
+  }'
+```
+
+After enabling, retrieve the VPC Endpoint Service name:
+
+```bash
+aws kafka describe-cluster \
+  --cluster-arn "<MSK_CLUSTER_ARN>" \
+  --query 'ClusterInfo.BrokerNodeGroupInfo.ConnectivityInfo'
+```
+
+**Adding Unstructured as an Allowed Principal**
+
+Once Multi-VPC Connectivity is enabled, use the AWS CLI to add Unstructured’s AWS Account ID as an allowed principal on the endpoint service:
+
+```bash
+aws ec2 modify-vpc-endpoint-service-permissions \
+  --service-id <MSK_ENDPOINT_SERVICE_ID> \
+  --add-allowed-principals "arn:aws:iam::<UNSTRUCTURED_AWS_ACCOUNT_ID>:root"
+```
+
+Replace:
+- `<MSK_ENDPOINT_SERVICE_ID>` — The endpoint service ID created by MSK Multi-VPC Connectivity.
+- `<UNSTRUCTURED_AWS_ACCOUNT_ID>` — Unstructured’s AWS Account ID (provided during setup).
+
+---
+
+### Amazon OpenSearch Service
+
+Amazon OpenSearch Service supports native Interface VPC Endpoints. Unstructured creates a VPC endpoint in our VPC targeting the customer’s OpenSearch domain.
+
+| Order | Information Required | Description | Example | Owner |
+| --- | --- | --- | --- | --- |
+| 1 | OpenSearch Domain ARN | ARN of the OpenSearch domain | `arn:aws:es:us-east-1:123456789012:domain/my-domain` | Customer |
+| 1 | OpenSearch Domain Region | AWS region where domain is deployed | `us-east-1` | Customer |
+| 1 | Service Port | Port the service listens on | `443` | Customer |
+| 2 | Unstructured AWS Account ID | Account ID to add as allowed principal | `987654321098` | Unstructured |
+| 2 | Unstructured IAM Role ARN | IAM Role that will access OpenSearch | `arn:aws:iam::987654321098:role/unstructured-opensearch` | Unstructured |
+| 3 | VPC Endpoint DNS | The endpoint DNS name for connection | `vpc-my-domain-xyz.us-east-1.es.amazonaws.com` | Customer |
+
+**Example Domain Access Policy**
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "<UNSTRUCTURED_IAM_ROLE_ARN>"
+      },
+      "Action": [
+        "es:ESHttpGet",
+        "es:ESHttpHead",
+        "es:ESHttpPost",
+        "es:ESHttpPut",
+        "es:ESHttpDelete"
+      ],
+      "Resource": "arn:aws:es:<REGION>:<CUSTOMER_ACC_NO>:domain/<DOMAIN_NAME>/*"
+    }
+  ]
+}
+```
+
+Replace:
+- `<UNSTRUCTURED_IAM_ROLE_ARN>` — Unstructured’s AWS Role ARN (provided during setup).
+- `<CUSTOMER_ACC_NO>` — Your AWS Account ID.
+- `<REGION>` — Your OpenSearch region.
+- `<DOMAIN_NAME>` — Your OpenSearch domain name.
+
+---
+
+### AWS OpenSearch Serverless
+
+<Note>
+OpenSearch Serverless uses a fundamentally different access model compared to OpenSearch Service. It does not use resource-based access policies. Instead, access is controlled through **data access policies** and **network access policies** tied to VPC endpoints.
+</Note>
+
+
+| Order | Information Required | Description | Example | Owner |
+| --- | --- | --- | --- | --- |
+| 1 | Collection Name | Name of the OpenSearch Serverless collection | `my-vector-store` | Customer |
+| 1 | Collection ARN | Full ARN of the collection | `arn:aws:aoss:us-east-1:123456789012:collection/abc123` | Customer |
+| 1 | Collection Endpoint | HTTPS endpoint of the collection | `abc123.us-east-1.aoss.amazonaws.com` | Customer |
+| 1 | Collection Region | AWS region where collection is deployed | `us-east-1` | Customer |
+| 2 | Unstructured AWS Account ID | Account ID to add to network access policy | `987654321098` | Unstructured |
+| 2 | Unstructured IAM Role ARN | IAM Role ARN to grant data access | `arn:aws:iam::987654321098:role/unstructured-aoss` | Unstructured |
+| 3 | VPC Endpoint ID | VPC endpoint ID created by Unstructured for `aoss.amazonaws.com` | `vpce-0abc123def456789` | Unstructured |
+
+**Step 1: Create a Network Access Policy**
+
+The network access policy must allow Unstructured’s VPC endpoint to access the collection. Create or update the network policy for your collection:
+
+```json
+[
+  {
+    "Rules": [
+      {
+        "Resource": ["collection/my-vector-store"],
+        "ResourceType": "collection"
+      }
+    ],
+    "AllowFromPublic": false,
+    "SourceVPCEs": ["<UNSTRUCTURED_VPC_ENDPOINT_ID>"]
+  }
+]
+```
+
+Using AWS CLI:
+
+```bash
+aws opensearchserverless update-security-policy \
+  --name "my-network-policy" \
+  --type network \
+  --policy '[{"Rules":[{"Resource":["collection/my-vector-store"],"ResourceType":"collection"}],"AllowFromPublic":false,"SourceVPCEs":["<UNSTRUCTURED_VPC_ENDPOINT_ID>"]}]'
+```
+
+**Step 2: Create a Data Access Policy**
+
+The data access policy grants Unstructured’s IAM Role permissions to read/write the collection’s indexes.
+
+For a vector store destination (read/write):
+
+```json
+[
+  {
+    "Rules": [
+      {
+        "Resource": ["index/my-vector-store/*"],
+        "Permission": [
+          "aoss:CreateIndex",
+          "aoss:DeleteIndex",
+          "aoss:UpdateIndex",
+          "aoss:DescribeIndex",
+          "aoss:ReadDocument",
+          "aoss:WriteDocument"
+        ],
+        "ResourceType": "index"
+      },
+      {
+        "Resource": ["collection/my-vector-store"],
+        "Permission": ["aoss:DescribeCollectionItems"],
+        "ResourceType": "collection"
+      }
+    ],
+    "Principal": ["<UNSTRUCTURED_IAM_ROLE_ARN>"]
+  }
+]
+```
+
+Using AWS CLI:
+
+```bash
+aws opensearchserverless create-access-policy \
+  --name "unstructured-access" \
+  --type data \
+  --policy '[{"Rules":[{"Resource":["index/my-vector-store/*"],"Permission":["aoss:CreateIndex","aoss:DeleteIndex","aoss:UpdateIndex","aoss:DescribeIndex","aoss:ReadDocument","aoss:WriteDocument"],"ResourceType":"index"},{"Resource":["collection/my-vector-store"],"Permission":["aoss:DescribeCollectionItems"],"ResourceType":"collection"}],"Principal":["<UNSTRUCTURED_IAM_ROLE_ARN>"]}]'
+```
+
+Replace:
+- `<UNSTRUCTURED_VPC_ENDPOINT_ID>` — VPC Endpoint ID provided by Unstructured (from Step 2 of the information exchange).
+- `<UNSTRUCTURED_IAM_ROLE_ARN>` — Unstructured’s IAM Role ARN (provided during setup).
+- `my-vector-store` — Your OpenSearch Serverless collection name.
+
+---
+
+### AWS Databricks
+
+Databricks on AWS supports native PrivateLink connectivity. The customer must have a Databricks Enterprise plan with a customer-managed VPC and PrivateLink enabled on their workspace.
+
+| Order | Information Required | Description | Example | Owner |
+| --- | --- | --- | --- | --- |
+| 1 | Databricks Workspace URL | The workspace URL | `myworkspace.cloud.databricks.com` | Customer |
+| 1 | Databricks Workspace Region | AWS region where workspace is deployed | `us-east-1` | Customer |
+| 1 | Private Access Level | Whether access is at ACCOUNT or ENDPOINT level | `ACCOUNT`, `ENDPOINT` | Customer |
+| 2 | Unstructured VPC Endpoint ID | VPC Endpoint ID to add to allowed list (if ENDPOINT level) | `vpce-0abc123def456789` | Unstructured |
+| 3 | Workspace VPC Endpoint DNS | The private endpoint DNS for the workspace | `myworkspace.privatelink.cloud.databricks.com` | Customer |
+
+**Example: Databricks Private Access Settings (ENDPOINT level)**
+
+If using ENDPOINT level access, add Unstructured’s VPC Endpoint ID to the allowed list via the Databricks Account Console or API:
+
+```json
+{
+  "private_access_settings_name": "unstructured-access",
+  "region": "<REGION>",
+  "public_access_enabled": false,
+  "private_access_level": "ENDPOINT",
+  "allowed_vpc_endpoint_ids": [
+    "<UNSTRUCTURED_VPCE_ID>"
+  ]
+}
+```
+
+Replace:
+- `<UNSTRUCTURED_VPCE_ID>` — VPC Endpoint ID provided by Unstructured.
+- `<REGION>` — Your Databricks region.
+
+For ACCOUNT level access, no explicit endpoint allowlisting is required — any VPC endpoint registered in the Databricks account can connect.
+
+
+---
+
+## AWS Managed Services with native PrivateLink
+
+Some AWS managed services support native PrivateLink endpoints. You must first create a VPC endpoint for the service.  Unstructured then connects to it. This pattern applies to services like **Amazon ElastiCache (Redis)** and **AWS Elasticsearch Service (legacy)**.
+
+<Note>
+The **Order** column indicates the general sequence for the information exchange. Items with the same order value can usually be provided at the same stage.
+</Note>
+
+
+| Order | Information Required | Description | Example | Owner |
+| --- | --- | --- | --- | --- |
+| 1 | Service Type | The AWS Service being accessed | `ElastiCache`, `Elasticsearch` | Customer |
+| 1 | Service Region | Region where the service is hosted | `us-east-1` | Customer |
+| 1 | Service Port | Port the service listens on | `6379` (Redis), `443` (Elasticsearch) | Customer |
+| 1 | Resource ARN | ARN of the resource | `arn:aws:elasticache:us-east-1:123456789012:cluster/my-cache` | Customer |
+| 2 | Unstructured AWS Account ID | Account ID to add as allowed principal | `987654321098` | Unstructured |
+| 2 | Unstructured IAM Role ARN | IAM Role that will access the service | `arn:aws:iam::987654321098:role/unstructured-access` | Unstructured |
+| 3 | VPC Endpoint ID | The service-managed VPC endpoint ID | `vpce-0abc123def456789` | Customer |
+| 3 | VPC Endpoint DNS | The endpoint DNS name for connection | `vpce-0abc123.us-east-1.es.amazonaws.com` | Customer |
+
+---
+
+## Customer Managed Services (AWS) or AWS Services with NLB
+
+This information applies to:
+- Applications that your organization is **self-hosting** in your AWS VPC (e.g., Elasticsearch, MongoDB, Couchbase).
+- AWS services that do **not** have native PrivateLink support and require an NLB front-end, such as **Amazon RDS, Aurora, Redshift, DocumentDB**.
+
+<Note>
+The **Order** column indicates the general sequence for the information exchange. Items with the same order value can usually be provided at the same stage.
+</Note>
+
+
+| Order | Information Required | Description | Example | Owner |
+| --- | --- | --- | --- | --- |
+| 1 | Service Type | The service being accessed | `PostgreSQL (RDS)`, `MongoDB`, `Elasticsearch` | Customer |
+| 1 | Service Region | Region where the service is hosted | `us-east-1` | Customer |
+| 1 | Service Port | Port the service listens on | `5432` (PostgreSQL), `27017` (MongoDB), `9200` (Elasticsearch) | Customer |
+| 2 | Unstructured AWS Account ID | Account ID to add as allowed principal | `987654321098` | Unstructured |
+| 2 | Unstructured IAM Role ARN | IAM Role that will access the service | `arn:aws:iam::987654321098:role/unstructured-access` | Unstructured |
+| 3 | VPC Endpoint Service Name | Service name for the endpoint service fronting the NLB | `com.amazonaws.vpce.us-east-1.vpce-svc-0abc123` | Customer |
+| 3 | Service Endpoint | The endpoint URL for connection | Custom DNS or endpoint service DNS | Customer |
+
+You must create both of the following:
+* Network Load Balancer targeting their managed service
+* VPC Endpoint Service pointing to the NLB.
+
+
+**Example: Allow Unstructured as a Principal on the Endpoint Service**
+
+Using AWS Console:
+1. Navigate to **VPC > Endpoint Services**.
+2. Select your endpoint service.
+3. Go to the **“Allow principals”** tab and click **“Allow principals”**.
+4. Add the Unstructured ARN captured during the setup process.
+
+Using AWS CLI:
+
+```bash
+aws ec2 modify-vpc-endpoint-service-permissions \
+  --service-id vpce-svc-0abc123def456789 \
+  --add-allowed-principals "<UNSTRUCTURED_IAM_ROLE_ARN>"
+```
+
+Replace:
+- `<UNSTRUCTURED_IAM_ROLE_ARN>` — Unstructured’s AWS Role ARN (provided during setup).

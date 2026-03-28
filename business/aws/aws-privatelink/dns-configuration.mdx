@@ -1,0 +1,26 @@
+---
+title: DNS configuration for PrivateLink access
+sidebarTitle: DNS configuration
+---
+
+To access the dedicated instance over PrivateLink, DNS must be configured so the service hostname resolves to the private IPs of the VPC Endpoint. Clients must connect using the exact service hostname provided, because TLS is terminated using a provider-managed certificate.
+
+### Option 1: Enable Private DNS on the VPC Endpoint (Recommended)
+
+If your VPC uses Route 53 for DNS resolution, enable Private DNS on the Interface VPC Endpoint. When Private DNS is enabled:
+- Route 53 automatically creates DNS records for the service hostname.
+- The hostname resolves to the private IPs of the VPC Endpoint.
+- No manual hosted zone or records are required.
+
+### Option 2: Manually Manage DNS Using a Private Hosted Zone
+
+If Private DNS cannot be enabled, configure DNS manually using Route 53:
+
+1. Create a Route 53 Private Hosted Zone matching the service hostname domain (e.g., `privatelink.unstructuredapp.io`).
+2. Create an A record or alias record pointing to the VPC Endpoint:
+    
+    ```
+    example.privatelink.unstructuredapp.io → vpce-0abc123def456789.elb.us-east-1.vpce.amazonaws.com
+    ```
+    
+3. Associate the hosted zone with the VPC(s) where clients will access the service.

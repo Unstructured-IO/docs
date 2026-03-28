@@ -1,0 +1,220 @@
+---
+title: Connecting to your Azure services
+sidebarTitle: Connecting to your Azure services
+---
+
+This section describes the information required for your dedicated instance to reach Azure services in your Virtual Network.
+
+## Azure managed services
+
+This section covers Azure-managed services that have service-specific private connectivity requirements.
+
+<Note>
+The **Order** column indicates the general sequence for the information exchange. Items with the same order value can usually be provided at the same stage.
+</Note>
+
+### Azure Blob Storage
+
+This applies to Azure Blob Storage and Azure Data Lake Storage Gen2 (ADLS Gen2).
+
+| Order | Information Required | Description | Example | Owner |
+| --- | --- | --- | --- | --- |
+| 1 | Storage Account Name | Name of the Azure Storage Account | `customerstorageacct` | Customer |
+| 1 | Storage Account Resource ID | Full Azure Resource ID of the storage account | `/subscriptions/…/providers/Microsoft.Storage/storageAccounts/customerstorageacct` | Customer |
+| 1 | Container Name(s) | Containers Unstructured needs to access | `documents, processed-data` | Customer |
+| 1 | Storage Account Region | Region where storage account is located | `eastus` | Customer |
+| 1 | Sub-resource Type | `blob`, `dfs` (for ADLS Gen2), `file`, `table`, `queue` | `blob`, `dfs` | Customer |
+| 2 | Unstructured Service Principal ID | Service Principal ID for RBAC role assignment | `b2c3d4e5-f6a7-8901-bcde-f23456789012` | Unstructured |
+| 2 | Unstructured Subscription ID | Subscription ID for private endpoint approval | `a1b2c3d4-e5f6-7890-abcd-ef1234567890` | Unstructured |
+
+For ADLS Gen2, use sub-resource type `dfs` for hierarchical namespace operations. You must approve the private endpoint connection request.  To do so, navigate to **Storage Account > Networking > Private endpoint connections**.
+ 
+**Example: Azure role assignment**
+
+The following Azure CLI command assigns the **Storage Blob Data Reader** role to Unstructured’s service principal so the platform can read blobs in your storage account.
+
+```bash
+az role assignment create \
+  --assignee "<UNSTRUCTURED_SP_ID>" \
+  --role "Storage Blob Data Reader" \
+  --scope "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.Storage/storageAccounts/<STORAGE_ACCOUNT>"
+```
+
+For **read/write** access, use the **Storage Blob Data Contributor** role instead of **Storage Blob Data Reader**.
+
+Replace:
+
+- `<UNSTRUCTURED_SP_ID>` — Service principal ID for Unstructured (provided during onboarding)
+- `<SUBSCRIPTION_ID>` — Your Azure subscription ID
+- `<RESOURCE_GROUP>` — Resource group that contains the storage account
+- `<STORAGE_ACCOUNT>` — Storage account name
+
+
+---
+
+### Azure OpenAI
+
+Azure OpenAI supports private endpoint access. Unstructured creates a private endpoint in our VNet to access the your Azure OpenAI resource privately.
+
+| Order | Information Required | Description | Example | Owner |
+| --- | --- | --- | --- | --- |
+| 1 | Azure OpenAI Resource Name | Name of the Azure OpenAI resource | `customer-openai` | Customer |
+| 1 | Azure OpenAI Resource ID | Full Azure Resource ID | `/subscriptions/…/providers/Microsoft.CognitiveServices/accounts/customer-openai` | Customer |
+| 1 | Azure OpenAI Region | Region where the resource is deployed | `eastus` | Customer |
+| 1 | Deployment Name(s) | Model deployment names to access | `gpt-4-deployment, embedding-deployment` | Customer |
+| 1 | Sub-resource Type | Always `account` for Azure OpenAI | `account` | Customer |
+| 2 | Unstructured Service Principal ID | Service Principal ID for RBAC role assignment | `b2c3d4e5-f6a7-8901-bcde-f23456789012` | Unstructured |
+| 2 | Unstructured Subscription ID | Subscription ID for private endpoint approval | `a1b2c3d4-e5f6-7890-abcd-ef1234567890` | Unstructured |
+
+**Example: Azure role assignment for OpenAI**
+
+Use Azure CLI to assign the **Cognitive Services OpenAI User** role to Unstructured’s service principal for your Azure OpenAI resource:
+
+```bash
+az role assignment create \
+  --assignee "<UNSTRUCTURED_SP_ID>" \
+  --role "Cognitive Services OpenAI User" \
+  --scope "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.CognitiveServices/accounts/<OPENAI_RESOURCE>"
+```
+Replace:
+
+- `<UNSTRUCTURED_SP_ID>` — Service principal ID for Unstructured (provided during onboarding)
+- `<SUBSCRIPTION_ID>` — Your Azure subscription ID
+- `<RESOURCE_GROUP>` — Resource group that contains the storage account
+- `<OPENAI_RESOURCE>` — Your Azure OpenAI Resource ID
+
+After the role assignment:
+
+1. **Firewall:** On the Azure OpenAI resource, configure networking so **public access is disabled** and traffic is allowed only as required for your private endpoint design.
+2. **Approve the connection:** In the Azure portal, go to the OpenAI resource > **Networking** > **Private endpoint connections**, then approve the pending private endpoint connection from Unstructured.
+
+---
+
+### Azure Databricks
+
+Azure Databricks supports Private Link for both front-end (user-to-workspace) and back-end (compute-to-control plane) connectivity. You must have Private Link enabled on your workspace.
+
+| Order | Information Required | Description | Example | Owner |
+| --- | --- | --- | --- | --- |
+| 1 | Databricks Workspace URL | The workspace URL | `adb-1234567890123456.12.azuredatabricks.net` | Customer |
+| 1 | Databricks Workspace Resource ID | Full Azure Resource ID of the workspace | `/subscriptions/…/providers/Microsoft.Databricks/workspaces/customer-workspace` | Customer |
+| 1 | Databricks Workspace Region | Azure region where workspace is deployed | `eastus` | Customer |
+| 1 | Sub-resource Type | `databricks_ui_api` for workspace access | `databricks_ui_api` | Customer |
+| 2 | Unstructured Subscription ID | Subscription ID for private endpoint approval | `a1b2c3d4-e5f6-7890-abcd-ef1234567890` | Unstructured |
+| 3 | Private endpoint DNS | The private endpoint DNS for the workspace | `adb-1234567890123456.12.privatelink.azuredatabricks.net` | Customer |
+
+**Example: Approve the Databricks private endpoint connection**
+
+After Unstructured creates the private endpoint toward your workspace, approve the pending connection using Azure CLI:
+
+```bash
+az network private-endpoint-connection approve \
+  --resource-group "<RESOURCE_GROUP>" \
+  --resource-name "<WORKSPACE_NAME>" \
+  --name "<PRIVATE_ENDPOINT_NAME>" \
+  --type Microsoft.Databricks/workspaces
+```
+
+You can also approve the same request in the **Azure portal**: open the Databricks workspace resource > **Networking** > **Private endpoint connections**, then approve the pending connection from Unstructured.
+
+Replace:
+
+- `<RESOURCE_GROUP>` — Resource group that contains the Databricks workspace
+- `<WORKSPACE_NAME>` — Name of the Databricks workspace resource
+- `<PRIVATE_ENDPOINT_NAME>` — Name of the private endpoint connection (shown in the portal or provided by Unstructured)
+
+---
+
+## Azure Managed Services with private endpoint access
+
+This section applies to Azure Managed Services that support private endpoint access, including: **Azure AI Search, Azure SQL Database, Azure SQL Managed Instance, Azure Cosmos DB, Azure Database for PostgreSQL, Azure Database for MySQL,** and **Azure Synapse Analytics**.
+
+<Note>
+The **Order** column indicates the general sequence for the information exchange. Items with the same order value can usually be provided at the same stage.
+</Note>
+
+| Order | Information Required | Description | Example | Owner |
+| --- | --- | --- | --- | --- |
+| 1 | Service Type | The Azure managed service being accessed | `Azure AI Search`, `Azure SQL` | Customer |
+| 1 | Resource Name | Name of the Azure resource | `my-search-service` | Customer |
+| 1 | Resource ID | Full Azure Resource ID | `/subscriptions/…/providers/Microsoft.Search/searchServices/my-search` | Customer |
+| 1 | Service Region | Region where the service is hosted | `eastus` | Customer |
+| 1 | Sub-Resource Type | The sub-resource type for Private Link (see table below) | `searchService`, `sqlServer` | Customer |
+| 1 | Service Port | Port the service listens on | `443` (AI Search), `1433` (SQL) | Customer |
+| 2 | Unstructured Service Principal ID | Service Principal ID for RBAC role assignment | `b2c3d4e5-f6a7-8901-bcde-f23456789012` | Unstructured |
+| 2 | Unstructured Subscription ID | Subscription ID to approve for private endpoint | `a1b2c3d4-e5f6-7890-abcd-ef1234567890` | Unstructured |
+
+**Sub-resource types by service:**
+
+| Service | Sub-Resource Type |
+| --- | --- |
+| AI Search | `searchService` |
+| Azure SQL Database | `sqlServer` |
+| Azure SQL Managed Instance | `managedInstance` |
+| Azure Cosmos DB (SQL API) | `Sql` |
+| Azure Cosmos DB (MongoDB API) | `MongoDB` |
+| Azure Database for PostgreSQL | `postgresqlServer` |
+| Azure Database for MySQL | `mysqlServer` |
+| Azure Synapse Analytics | `Sql`, `SqlOnDemand`, `Dev` |
+
+---
+
+## Customer Managed Services
+
+This section applies to applications that your organization hosts in your Azure virtual network. Create a **Private Link service** in front of your application, backed by an Azure Standard Load Balancer.
+
+<Note>
+The **Order** column indicates the general sequence for the information exchange. Items with the same order value can usually be provided at the same stage.
+</Note>
+
+| Order | Information Required | Description | Example | Owner |
+| --- | --- | --- | --- | --- |
+| 1 | Private Link Service Name | Name of your Private Link service | `customer-app-pls` | Customer |
+| 1 | Private Link Service Resource ID | Full resource ID of the Private Link service | `/subscriptions/…/providers/Microsoft.Network/privateLinkServices/customer-app-pls` | Customer |
+| 1 | Service Region | Region where the service is hosted | `eastus` | Customer |
+| 1 | Service Port | Port(s) the service listens on | `443`, `8080` | Customer |
+| 2 | Unstructured Subscription ID | Subscription ID to approve for connection | `a1b2c3d4-e5f6-7890-abcd-ef1234567890` | Unstructured |
+
+You must:
+
+1. **Load balancer:** Deploy an **Azure Standard Load Balancer** in front of your application.
+2. **Private Link service:** Create a **Private Link service** attached to the load balancer’s frontend IP configuration.
+
+Unstructured then creates a **private endpoint** that targets your Private Link service. Approve the pending connection after Unstructured creates the private endpoint (using Azure CLI below or the Azure portal).
+
+**Example: Create a Private Link service with Azure CLI**
+
+Use Azure CLI to create the Private Link service. After Unstructured creates a private endpoint to your service, run the second command to approve that connection.
+
+```bash
+# Create Private Link service
+az network private-link-service create \
+  --name "customer-app-pls" \
+  --resource-group "<RESOURCE_GROUP>" \
+  --vnet-name "<VNET_NAME>" \
+  --subnet "<SUBNET_NAME>" \
+  --lb-name "<LOAD_BALANCER_NAME>" \
+  --lb-frontend-ip-configs "<FRONTEND_IP_CONFIG_NAME>" \
+  --location "<REGION>"
+
+# Approve the private endpoint connection from Unstructured
+az network private-link-service connection approve \
+  --resource-group "<RESOURCE_GROUP>" \
+  --service-name "customer-app-pls" \
+  --name "<CONNECTION_NAME>"
+```
+
+Replace:
+
+- `<RESOURCE_GROUP>` — Resource group for the Private Link service and related resources
+- `<VNET_NAME>` — Virtual network name
+- `<SUBNET_NAME>` — Subnet used for the Private Link service (must meet Azure subnet requirements for Private Link)
+- `<LOAD_BALANCER_NAME>` — Name of the Standard Load Balancer fronting your application
+- `<FRONTEND_IP_CONFIG_NAME>` — Frontend IP configuration name on the load balancer
+- `<REGION>` — Azure region (for example `eastus`)
+- `<CONNECTION_NAME>` — Name of the private endpoint connection request (shown in the portal or provided by Unstructured)
+
+
+#### Private API Gateway use case
+
+If your application uses Azure API Management in private-only (internal VNet) mode, you cannot target the API Management resource directly with a Private Link service. In this case, deploy an Azure Standard Load Balancer in front of API Management and create a Private Link service that points to the Load Balancer.
